@@ -1033,7 +1033,7 @@ Public Class Main
         ' Dim cmd As String = "-i " + Chr(34) + URL_DL + Chr(34) + " -c copy -bsf:a aac_adtstoasc " + Pfad_DL 'start ffmpeg with command strFFCMD string
         '-bsf:a aac_adtstoasc 
         Dim cmd As String = "-i " + DL_URL + " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
-        MsgBox(cmd)
+        'MsgBox(cmd)
         '22050
         ' 
         Dim ffmpegOutput As String = Nothing

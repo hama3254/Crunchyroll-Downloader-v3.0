@@ -124,7 +124,7 @@ Public Class GeckoFX
                                 Main.WebbrowserTitle = WebBrowser1.DocumentTitle
                                 Main.MassGrapp()
                                 'ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "free_trial" + Chr(34))) Then
-                                Main.MassGrapp()
+                                'Main.MassGrapp()
                                 'Else
                                 '    MsgBox(Main.CR_Premium_Failed, MsgBoxStyle.Information)
                                 '    Anime_Add.groupBox1.Visible = True

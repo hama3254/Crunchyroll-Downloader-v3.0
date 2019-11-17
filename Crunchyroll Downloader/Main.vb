@@ -342,8 +342,10 @@ Public Class Main
         Anime_Add.PictureBox1.Enabled = True
         Anime_Add.PictureBox1.Visible = True
         Anime_Add.groupBox1.Visible = False
+        Anime_Add.ComboBox1.Items.Clear()
         Anime_Add.comboBox3.Items.Clear()
         Anime_Add.comboBox4.Items.Clear()
+        Anime_Add.ComboBox1.Enabled = False
         Anime_Add.comboBox3.Enabled = True
         Anime_Add.comboBox4.Enabled = True
         Dim Anzahl As String() = WebbrowserText.Split(New String() {"wrapper container-shadow hover-classes"}, System.StringSplitOptions.RemoveEmptyEntries)

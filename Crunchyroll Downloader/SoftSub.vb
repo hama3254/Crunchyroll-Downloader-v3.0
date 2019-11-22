@@ -184,7 +184,7 @@ Public Class SoftSub
                 LocalSoftSubs.Add("esES")
             End If
         Catch ex As Exception
-
+            MsgBox(ex.ToString)
         End Try
         If LocalSoftSubs.Count > 0 Then
             If CBool(InStr(textBox1.Text, "crunchyroll.com")) Then
@@ -195,6 +195,7 @@ Public Class SoftSub
             End If
         Else
             'Label2.Text = "Status: Error - nothing selected"
+            MsgBox("Error: no language selected", MsgBoxStyle.Information, "CRD Subtitel")
             PictureBox2.Visible = True
         End If
     End Sub
@@ -212,14 +213,14 @@ Public Class SoftSub
             Dim CR_Anime_Folge As String
             'Dim CR_Name_by_Titel As String() = GeckoFX.WebBrowser1.Document.Body.OuterHtml.Split(New String() {"<title>"}, System.StringSplitOptions.RemoveEmptyEntries)
             'Dim CR_Name_by_Titel_2_Patch As String =CR_Name_by_Titel(1).Split(New String() {"</title>"}, System.StringSplitOptions.RemoveEmptyEntries)
-            If CBool(InStr(GeckoFX.WebBrowser1.DocumentTitle, ":")) Then
+            If CBool(InStr(GeckoFX.WebBrowser1.DocumentTitle, "Anschauen auf Crunchyroll")) Then
                 Bug_Deutsch = ":"
                 'Throw New System.Exception("Test")
             Else
             End If
             Dim CR_Name_by_Titel_2 As String() = Main.WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim CR_Name_by_Script As String() = Main.WebbrowserText.Split(New String() {Chr(34) + "name" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim CR_Name_by_Script2 As String() = CR_Name_by_Script(1).Split(New [Char]() {Chr(34)})
+            'Dim CR_Name_by_Script As String() = Main.WebbrowserText.Split(New String() {Chr(34) + "name" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            'Dim CR_Name_by_Script2 As String() = CR_Name_by_Script(1).Split(New [Char]() {Chr(34)})
             CR_FilenName = CR_Name_by_Titel_2(0).Trim() '+ " " + CR_Name_by_Script2(0).Trim
 
             Dim CR_FilenName_Backup As String = Nothing
@@ -265,29 +266,15 @@ Public Class SoftSub
             End If
             CR_FilenName = System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = Main.RemoveExtraSpaces(CR_FilenName)
-            If SubfolderValue = Nothing Then
-                Pfad2 = Main.Pfad + "\" + CR_FilenName + ".mp4"
-            Else
-                Pfad2 = Main.Pfad + "\" + SubfolderValue + CR_FilenName + ".mp4"
-            End If
 
-            If Not IO.Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
-                ' Nein! Jetzt erstellen...
-                Try
-                    IO.Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
-                Catch ex As Exception
-                    ' Ordner wurde nich erstellt
-                    Pfad2 = Main.Pfad + "\" + CR_FilenName_Backup + ".mp4"
-                End Try
-            End If
-            Pfad2 = Chr(34) + Pfad2 + Chr(34)
+            Pfad2 = Main.Pfad + "\" + CR_FilenName + ".ass"
 
 #End Region
 #Region "Subs"
             Dim SoftSubs2 As New List(Of String)
             If LocalSoftSubs.Count > 0 Then
                 For i As Integer = 0 To LocalSoftSubs.Count - 1
-                    If CBool(InStr(GeckoFX.WebBrowser1.Document.Body.OuterHtml, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + LocalSoftSubs(i) + Chr(34) + ",")) Then
+                    If CBool(InStr(Main.WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + LocalSoftSubs(i) + Chr(34) + ",")) Then
                         SoftSubs2.Add(LocalSoftSubs(i))
                     Else
                         MsgBox("Softsubtitle for " + LocalSoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
@@ -309,12 +296,11 @@ Public Class SoftSub
                     Dim client0 As New Net.WebClient
                     client0.Encoding = Encoding.UTF8
                     Dim str0 As String = client0.DownloadString(SoftSub_3)
-                    Dim Pfad3 As String = Pfad2.Replace(".mp4", " " + SoftSubs2(i) + ".ass")
-                    If i = 0 Then
-                        Pfad3 = Pfad2.Replace(".mp4", ".ass")
+                    If File.Exists(Pfad2) Then
+                        Pfad2 = Main.Pfad + "\" + CR_FilenName + " " + SoftSubs2(i) + ".ass"
                     End If
-                    Dim Pfad4 As String = Pfad3.Replace(Chr(34), "")
-                    File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                    MsgBox(Pfad2 + vbNewLine + Main.Pfad)
+                    File.WriteAllText(Pfad2, str0, Encoding.UTF8)
                     Main.Pause(1)
                 Next
             End If

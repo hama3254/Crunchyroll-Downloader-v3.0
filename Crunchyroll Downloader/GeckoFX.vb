@@ -142,7 +142,11 @@ Public Class GeckoFX
                 ElseIf c = False Then
                     If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "hardsub_lang")) Then
                         c = True
+                        Main.WebbrowserURL = WebBrowser1.Url.ToString
+                        Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+                        Main.WebbrowserTitle = WebBrowser1.DocumentTitle
                         SoftSub.DownloadSubs()
+                        Me.Close()
                     End If
                 Else
                     If Main.UserBowser = False Then

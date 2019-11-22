@@ -134,6 +134,14 @@ Public Class Main
         Catch ex As Exception
         End Try
 
+
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            Pfad = rkg.GetValue("Ordner").ToString
+        Catch ex As Exception
+
+        End Try
+
 #Region "Startup IU"
         StatusToolTip.Active = True
 #End Region

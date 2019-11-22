@@ -49,13 +49,6 @@ Public Class Anime_Add
         End Try
 
         Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Main.Pfad = rkg.GetValue("Ordner").ToString
-            TextBox4.Text = Main.Pfad
-        Catch ex As Exception
-            TextBox4.Text = Main.Pfad
-        End Try
-        Try
             Dim di As New System.IO.DirectoryInfo(Main.Pfad)
             For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
                 If fi.Attributes.HasFlag(System.IO.FileAttributes.Hidden) Then

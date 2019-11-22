@@ -205,49 +205,62 @@ Public Class Main
     End Sub
 
     Public Sub ListAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal VideoURL As String)
-        Dim b As New Bitmap(838, 142, System.Drawing.Imaging.PixelFormat.Format24bppRgb)
-        Dim g As Graphics = Graphics.FromImage(b)
-        Dim ZeroPoint As Point = New Point(0, 0)
-        Dim TextPoint As Point = New Point(195, 15)
-        Dim TextPointL2 As Point = New Point(195, 42)
-        Dim TextPointL3 As Point = New Point(773, 95)
-        Dim TextPointL4 As Point = New Point(195, 101)
-        Dim TextPointL4A2 As Point = New Point(300, 101)
-        Dim ThumbnialPoint As Point = New Point(11, 20)
-        Dim ProgressbarPoint As Point = New Point(195, 70)
-        Dim newImage As Image = My.Resources.backgroud
-        Dim img As Image = My.Resources.main_del
-        Try
-            Dim wc As New WebClient()
-            Dim bytes As Byte() = wc.DownloadData(ThumbnialURL)
-            Dim ms As New MemoryStream(bytes)
-            img = System.Drawing.Image.FromStream(ms)
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-            MsgBox(ThumbnialURL)
-        End Try
-        g.DrawImage(newImage, ZeroPoint)
-        Dim Thumnail As New Bitmap(168, 95, System.Drawing.Imaging.PixelFormat.Format24bppRgb)
-        Dim gr_dest As Graphics = Graphics.FromImage(Thumnail)
-        gr_dest.DrawImage(img, 0, 0,
-        Thumnail.Width + 1,
-        Thumnail.Height + 1)
-        g.DrawImage(Thumnail, ThumbnialPoint)
-        g.DrawString(NameP1, FontLabel.Font, Brushes.Black, TextPoint)
-        g.DrawString(NameP2, FontLabel.Font, Brushes.Black, TextPointL2)
-        g.DrawRectangle(Pens.Black, ProgressbarPoint.X, ProgressbarPoint.Y, 601, 20)
-        Dim brGradient As Brush = New SolidBrush(Color.FromArgb(247, 140, 37))
-        g.FillRectangle(brGradient, ProgressbarPoint.X + 1, ProgressbarPoint.Y + 1, 0, 19)
-        g.DrawString("0%", FontLabel2.Font, Brushes.Black, TextPointL3)
-        g.DrawString(Reso, FontLabel.Font, Brushes.Black, TextPointL4)
-        g.DrawString(HardSub, FontLabel.Font, Brushes.Black, TextPointL4A2)
-        g.Dispose()
-        gIndexH = gIndexH + 1
+        Dim ReDl As Boolean = False
+        Dim index As Integer = 0
+        For i As Integer = 0 To PB_list.Count - 1
+            If PB_list.Item(i).Name = NameKomplett Then
+                ReDl = True
+                index = i
+            End If
+        Next
+        If ReDl = True Then
+            Dim PB As PictureBox = bt_dl.Item(index)
+            PB.Enabled = True
+        Else
+            Dim b As New Bitmap(838, 142, System.Drawing.Imaging.PixelFormat.Format24bppRgb)
+            Dim g As Graphics = Graphics.FromImage(b)
+            Dim ZeroPoint As Point = New Point(0, 0)
+            Dim TextPoint As Point = New Point(195, 15)
+            Dim TextPointL2 As Point = New Point(195, 42)
+            Dim TextPointL3 As Point = New Point(773, 95)
+            Dim TextPointL4 As Point = New Point(195, 101)
+            Dim TextPointL4A2 As Point = New Point(300, 101)
+            Dim ThumbnialPoint As Point = New Point(11, 20)
+            Dim ProgressbarPoint As Point = New Point(195, 70)
+            Dim newImage As Image = My.Resources.backgroud
+            Dim img As Image = My.Resources.main_del
+            Try
+                Dim wc As New WebClient()
+                Dim bytes As Byte() = wc.DownloadData(ThumbnialURL)
+                Dim ms As New MemoryStream(bytes)
+                img = System.Drawing.Image.FromStream(ms)
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+                MsgBox(ThumbnialURL)
+            End Try
+            g.DrawImage(newImage, ZeroPoint)
+            Dim Thumnail As New Bitmap(168, 95, System.Drawing.Imaging.PixelFormat.Format24bppRgb)
+            Dim gr_dest As Graphics = Graphics.FromImage(Thumnail)
+            gr_dest.DrawImage(img, 0, 0,
+            Thumnail.Width + 1,
+            Thumnail.Height + 1)
+            g.DrawImage(Thumnail, ThumbnialPoint)
+            g.DrawString(NameP1, FontLabel.Font, Brushes.Black, TextPoint)
+            g.DrawString(NameP2, FontLabel.Font, Brushes.Black, TextPointL2)
+            g.DrawRectangle(Pens.Black, ProgressbarPoint.X, ProgressbarPoint.Y, 601, 20)
+            Dim brGradient As Brush = New SolidBrush(Color.FromArgb(247, 140, 37))
+            g.FillRectangle(brGradient, ProgressbarPoint.X + 1, ProgressbarPoint.Y + 1, 0, 19)
+            g.DrawString("0%", FontLabel2.Font, Brushes.Black, TextPointL3)
+            g.DrawString(Reso, FontLabel.Font, Brushes.Black, TextPointL4)
+            g.DrawString(HardSub, FontLabel.Font, Brushes.Black, TextPointL4A2)
+            g.Dispose()
+            gIndexH = gIndexH + 1
 
-        With ListView1.Items.Add(0)
-            LVPictureBox(ListView1, gIndexH, b, "Softsubs: " + SoftSubs, NameKomplett)
-            bt_del(ListView1, gIndexH, NameKomplett)
-        End With
+            With ListView1.Items.Add(0)
+                LVPictureBox(ListView1, gIndexH, b, "Softsubs: " + SoftSubs, NameKomplett)
+                bt_del(ListView1, gIndexH, NameKomplett)
+            End With
+        End If
     End Sub
 
     Public Function bt_del(ByVal pListView As ListView, ByVal ItemIndex As Integer, ByVal NameKomplett As String) As PictureBox
@@ -673,7 +686,7 @@ Public Class Main
                     CR_Anime_Folge = CR_Name_Staffel0_Folge1(1).Trim()
                     CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
                 Else
-                    CR_Anime_Staffel = ""
+                    CR_Anime_Staffel = Nothing
                     CR_Anime_Folge = CR_Name_2(0).Trim()
                     CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
                 End If
@@ -941,8 +954,13 @@ Public Class Main
                     ResoHTMLDisplay = ResoHTML(0) + "p"
                 End If
             End If
+            Dim L2Name As String = CR_Anime_Staffel + " " + CR_Anime_Folge
+
+            If CR_Anime_Staffel = Nothing Then
+                L2Name = CR_Anime_Folge
+            End If
             Me.Invoke(New Action(Function()
-                                     ListAdd(CR_FilenName, CR_Anime_Titel, CR_Anime_Staffel + " " + CR_Anime_Folge, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL)
+                                     ListAdd(CR_FilenName, CR_Anime_Titel, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL)
                                      Return Nothing
                                  End Function))
             ' liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_Anime_Titel + " <br> " + CR_Anime_Staffel + " " + CR_Anime_Folge + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + CR_FilenName + "-->")
@@ -1126,6 +1144,7 @@ Public Class Main
                     Dim brGradient As Brush = New SolidBrush(Color.FromArgb(125, 0, 0))
                     g.FillRectangle(brGradient, ProgressbarPoint.X + 1, ProgressbarPoint.Y + 1, 600, 19)
                     g.Dispose()
+                    AbourtList.Remove(sender)
                 Else
                     Dim p As PictureBox = PB_list(i)
                     Dim c As Integer = CInt(ListView1.Items.Item(i).Text)

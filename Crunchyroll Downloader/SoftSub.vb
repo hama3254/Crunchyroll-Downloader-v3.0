@@ -299,7 +299,7 @@ Public Class SoftSub
                     If File.Exists(Pfad2) Then
                         Pfad2 = Main.Pfad + "\" + CR_FilenName + " " + SoftSubs2(i) + ".ass"
                     End If
-                    MsgBox(Pfad2 + vbNewLine + Main.Pfad)
+                    'MsgBox(Pfad2 + vbNewLine + Main.Pfad)
                     File.WriteAllText(Pfad2, str0, Encoding.UTF8)
                     Main.Pause(1)
                 Next

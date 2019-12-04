@@ -760,9 +760,12 @@ Public Class Main
                 If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":null")) Then
                     SubSprache2 = "null"
                 Else
-                    ResoNotFoundString = WebbrowserText
-                    DialogTaskString = "Language"
-                    Reso.ShowDialog()
+                    Me.Invoke(New Action(Function()
+                                             ResoNotFoundString = WebbrowserText
+                                             DialogTaskString = "Language"
+                                             Reso.ShowDialog()
+                                             Return Nothing
+                                         End Function))
                     If UserCloseDialog = True Then
                         Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
                     Else
@@ -789,9 +792,12 @@ Public Class Main
 
 
                 Else
-                    ResoNotFoundString = WebbrowserText
-                    DialogTaskString = "Language"
-                    Reso.ShowDialog()
+                    Me.Invoke(New Action(Function()
+                                             ResoNotFoundString = WebbrowserText
+                                             DialogTaskString = "Language"
+                                             Reso.ShowDialog()
+                                             Return Nothing
+                                         End Function))
                     If UserCloseDialog = True Then
                         Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
                     Else
@@ -912,14 +918,19 @@ Public Class Main
             If CBool(InStr(str, "x" + Resu.ToString + ",")) Then
                 Resu2 = "x" + Resu.ToString
             Else
+                'MsgBox(str)
                 If CBool(InStr(str, ResuSave + ",")) Then
                     Resu2 = Resu2
                 Else
+                    Me.Invoke(New Action(Function()
+                                             DialogTaskString = "Resolution"
+                                             ResoNotFoundString = str
+                                             Reso.ShowDialog()
+                                             Return Nothing
+                                         End Function))
 
-                    ResoNotFoundString = str
-                    DialogTaskString = "Resolution"
-                    Reso.ShowDialog()
-                    'MsgBox(ResoBackString)
+
+                    MsgBox(ResoBackString)
                     If UserCloseDialog = True Then
                         Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
                     Else

@@ -52,28 +52,21 @@
                 ComboBox1.Items.Add(langsplit(0))
             Next
             SurroundingSub()
-            'ComboBox1.SelectedIndex = 0
         ElseIf Main.DialogTaskString = "Resolution" Then
-            ' CheckBox1.Visible = True
             StatusLabel.Text = Main.LabelResoNotFoundText
-            MsgBox(Main.ResoNotFoundString)
-            Dim Zeilen() As String = Main.ResoNotFoundString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
-            For i As Integer = 0 To Zeilen.Count - 1
-                If InStr(Zeilen(i), ": Video:") Then
-                    Dim ZeileReso() As String = Zeilen(i).Split(New String() {" ["}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim ZeileReso2() As String = ZeileReso(0).Split(New String() {", "}, System.StringSplitOptions.RemoveEmptyEntries)
-                    ComboBox1.Items.Add(ZeileReso2(ZeileReso2.Count - 1))
-                End If
+            Dim Reso_avaible1 As String() = Main.ResoNotFoundString.Split(New String() {"RESOLUTION="}, System.StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = 1 To Reso_avaible1.Count - 1
+                Dim Reso_avaible2 As String() = Reso_avaible1(i).Split(New [Char]() {Chr(44)})
+                ComboBox1.Items.Add(Reso_avaible2(0))
             Next
-
-            'Dim Reso_avaible1 As String() = Main.ResoNotFoundString.Split(New String() {"RESOLUTION="}, System.StringSplitOptions.RemoveEmptyEntries)
-            'For i As Integer = 1 To Reso_avaible1.Count - 1
-            '    Dim Reso_avaible2 As String() = Reso_avaible1(i).Split(New [Char]() {Chr(44)})
-            '    ComboBox1.Items.Add(Reso_avaible2(0))
-            'Next
             SurroundingSub()
-            'ComboBox1.SelectedIndex = 0
+            Try
+                ComboBox1.SelectedIndex = 0
+            Catch ex As Exception
+            End Try
+
         End If
+
     End Sub
 
     Private Sub SurroundingSub()
@@ -107,7 +100,7 @@
     End Sub
 
     Private Sub PictureBox9_Click(sender As Object, e As EventArgs) Handles PictureBox9.Click
-        If ComboBox1.SelectedText = Nothing Then
+        If ComboBox1.SelectedItem.ToString = Nothing Then
         Else
             Main.ResoBackString = ComboBox1.SelectedItem.ToString
             Main.UserCloseDialog = False

@@ -148,18 +148,16 @@ Public Class GeckoFX
                         SoftSub.DownloadSubs()
                         Me.Close()
                     End If
-                Else
-                    If Main.UserBowser = False Then
-                        Main.WebbrowserURL = WebBrowser1.Url.ToString
-                        Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
-                        Main.WebbrowserTitle = WebBrowser1.DocumentTitle
-                        Me.Close()
-                    End If
                 End If
 
             End If
         End If
-
+        If Main.UserBowser = False Then
+            Main.WebbrowserURL = WebBrowser1.Url.ToString
+            Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+            Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+            Me.Close()
+        End If
     End Sub
 
     Private Sub GeckoFX_Load(sender As Object, e As EventArgs) Handles MyBase.Load

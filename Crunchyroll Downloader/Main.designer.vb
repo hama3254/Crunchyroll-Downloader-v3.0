@@ -119,6 +119,7 @@ Partial Class Main
         Me.ListView1.Font = New System.Drawing.Font("Microsoft Sans Serif", 93.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListView1.ForeColor = System.Drawing.Color.Black
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+        Me.ListView1.HideSelection = False
         Me.ListView1.Location = New System.Drawing.Point(1, 64)
         Me.ListView1.MinimumSize = New System.Drawing.Size(800, 400)
         Me.ListView1.Name = "ListView1"

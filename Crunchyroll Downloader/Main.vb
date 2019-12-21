@@ -34,10 +34,11 @@ Public Class Main
     Dim URL_DL As String
     Dim Pfad_DL As String
     Public Grapp_RDY As Boolean = True
+    Public Grapp_non_cr_RDY As Boolean = True
     Public Grapp_Abord As Boolean = False
     Public MaxDL As Integer
     Public TaskCount As Integer = 0
-    Public Event UpdateUI(ByVal sender As String, ByVal Int As Integer)
+    Public Event UpdateUI(ByVal sender As String, ByVal Int As Integer, ByVal Size As Double, ByVal Finished As Double)
     Public ResoNotFoundString As String
     Public ResoBackString As String
     Dim PB_list As New List(Of PictureBox)
@@ -230,7 +231,7 @@ Public Class Main
             Dim ZeroPoint As Point = New Point(0, 0)
             Dim TextPoint As Point = New Point(195, 15)
             Dim TextPointL2 As Point = New Point(195, 42)
-            Dim TextPointL3 As Point = New Point(773, 95)
+            Dim TextPointL3 As Point = New Point(773, 100)
             Dim TextPointL4 As Point = New Point(195, 101)
             Dim TextPointL4A2 As Point = New Point(300, 101)
             Dim ThumbnialPoint As Point = New Point(11, 20)
@@ -243,8 +244,8 @@ Public Class Main
                 Dim ms As New MemoryStream(bytes)
                 img = System.Drawing.Image.FromStream(ms)
             Catch ex As Exception
-                MsgBox(ex.ToString)
-                MsgBox(ThumbnialURL)
+                'MsgBox(ex.ToString)
+                'MsgBox(ThumbnialURL)
             End Try
             g.DrawImage(newImage, ZeroPoint)
             Dim Thumnail As New Bitmap(168, 95, System.Drawing.Imaging.PixelFormat.Format24bppRgb)
@@ -930,7 +931,7 @@ Public Class Main
                                          End Function))
 
 
-                    MsgBox(ResoBackString)
+                    'MsgBox(ResoBackString)
                     If UserCloseDialog = True Then
                         Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
                     Else
@@ -1071,9 +1072,12 @@ Public Class Main
         Dim sr As StreamReader
         ' Dim cmd As String = "-i " + Chr(34) + URL_DL + Chr(34) + " -c copy -bsf:a aac_adtstoasc " + Pfad_DL 'start ffmpeg with command strFFCMD string
         '-bsf:a aac_adtstoasc 
-        Dim cmd As String = "-i " + DL_URL + " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        Dim cmd As String = "-i " + Chr(34) + URL_DL + Chr(34) + " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
         'MsgBox(cmd)
+
+
         '22050
+
         ' 
         Dim ffmpegOutput As String = Nothing
         Dim ffmpegOutput2 As String = Nothing
@@ -1090,6 +1094,8 @@ Public Class Main
         sr = proc.StandardError 'standard error is used by ffmpeg
         Dim x As Boolean = False
         Dim Grundwert As Integer
+        Dim EndFileSize As Double = Nothing
+        Dim Debug As String = Nothing
         Do
             'If BG.CancellationPending Then 'check if a cancellation request was made
             '    proc.Kill()
@@ -1099,37 +1105,61 @@ Public Class Main
             ffmpegOutput = ffmpegOutput + vbNewLine + sr.ReadLine
             ffmpegOutput2 = sr.ReadLine
 
-
             Try
                 If x = False Then
-                    Dim ZeitGesamt As String() = ffmpegOutput.Split(New String() {"Duration: "}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
-                    Dim ZeitGesamtSplit() As String = ZeitGesamt2(0).Split(New [Char]() {System.Convert.ToChar(":")})
-                    Dim ZeitGesamtInteger As Integer = CInt(ZeitGesamtSplit(0)) * 3600 + CInt(ZeitGesamtSplit(1)) * 60 + CInt(ZeitGesamtSplit(2))
-                    Grundwert = ZeitGesamtInteger
-                    x = True
+                    If InStr(ffmpegOutput, "Duration: ") Then
+                        Dim ZeitGesamt As String() = ffmpegOutput.Split(New String() {"Duration: "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
+                        Dim ZeitGesamtSplit() As String = ZeitGesamt2(0).Split(New [Char]() {System.Convert.ToChar(":")})
+                        Dim ZeitGesamtInteger As Integer = CInt(ZeitGesamtSplit(0)) * 3600 + CInt(ZeitGesamtSplit(1)) * 60 + CInt(ZeitGesamtSplit(2))
+                        Grundwert = ZeitGesamtInteger
+                        x = True
+                    End If
                 End If
                 If Me.Visible = False Or AbourtList.Contains(Filename) Then
                     proc.Kill()
-                    RaiseEvent UpdateUI(Filename, 200)
+                    RaiseEvent UpdateUI(Filename, 200, 0, 0)
                     Return Nothing
                     Exit Function
                 End If
-                Dim ZeitFertig As String() = sr.ReadLine.Split(New String() {"time="}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim ZeitFertig2 As String() = ZeitFertig(1).Split(New [Char]() {System.Convert.ToChar(".")})
+                If InStr(ffmpegOutput2, "time=") Then
 
-                Dim ZeitFertigSplit() As String = ZeitFertig2(0).Split(New [Char]() {System.Convert.ToChar(":")})
-                Dim ZeitFertigInteger As Integer = CInt(ZeitFertigSplit(0)) * 3600 + CInt(ZeitFertigSplit(1)) * 60 + CInt(ZeitFertigSplit(2))
-                Dim percent As Integer = (CInt(ZeitFertigInteger / Grundwert * 100))
-                RaiseEvent UpdateUI(Filename, percent)
+                    Dim ZeitFertig As String() = ffmpegOutput2.Split(New String() {"time="}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Debug = ZeitFertig(0)
+                    Debug = ZeitFertig(0) + ZeitFertig(1)
+                    Dim ZeitFertig2 As String() = ZeitFertig(1).Split(New [Char]() {System.Convert.ToChar(".")})
+                    Dim ZeitFertigSplit() As String = ZeitFertig2(0).Split(New [Char]() {System.Convert.ToChar(":")})
+                    Dim ZeitFertigInteger As Integer = CInt(ZeitFertigSplit(0)) * 3600 + CInt(ZeitFertigSplit(1)) * 60 + CInt(ZeitFertigSplit(2))
+                    Dim bitrate3 As String = 0
+                    If InStr(ffmpegOutput2, "bitrate=") Then
+                        Dim bitrate As String() = ffmpegOutput2.Split(New String() {"bitrate="}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim bitrate2 As String() = bitrate(1).Split(New String() {"kbits/s"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                        If InStr(bitrate2(0), ".") Then
+                            Dim bitrateTemo As String() = bitrate2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+                            bitrate3 = bitrateTemo(0)
+                        ElseIf InStr(bitrate2(0), ",") Then
+                            Dim bitrateTemo As String() = bitrate2(0).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                            bitrate3 = bitrateTemo(0)
+                        End If
+                    End If
+                    Dim bitrateInt As Double = CInt(bitrate3) / 1024
+                    Dim FileSize As Double = Grundwert * bitrateInt / 8
+                    Dim DownloadFinished As Double = ZeitFertigInteger * bitrateInt / 8
+                    Dim percent As Integer = (CInt(ZeitFertigInteger / Grundwert * 100))
+                    EndFileSize = FileSize
+                    RaiseEvent UpdateUI(Filename, percent, Math.Round(DownloadFinished, 2, MidpointRounding.AwayFromZero), Math.Round(FileSize, 2, MidpointRounding.AwayFromZero))
+                End If
                 'AsyncWorkerX.RunAsync(AddressOf Main_Update_Gecko, Filename, percent)
             Catch ex As Exception
-
+                'MsgBox(ex.ToString + vbNewLine + Debug)
             End Try
 
         Loop Until proc.HasExited And ffmpegOutput2 = Nothing Or ffmpegOutput2 = ""
         'AsyncWorkerX.RunAsync(AddressOf Main_Update_Gecko, Filename, 100)
-        RaiseEvent UpdateUI(Filename, 100)
+        'MsgBox(ffmpegOutput)
+
+        RaiseEvent UpdateUI(Filename, 100, Math.Round(EndFileSize, 2, MidpointRounding.AwayFromZero), Math.Round(EndFileSize, 2, MidpointRounding.AwayFromZero))
         TaskCount = TaskCount - 1
         'MsgBox(ffmpegOutput)
         Return Nothing
@@ -1144,7 +1174,7 @@ Public Class Main
 
     End Sub
 
-    Private Sub Main_UpdateUI(sender As String, ByVal int As Integer) Handles Me.UpdateUI
+    Private Sub Main_UpdateUI(sender As String, ByVal int As Integer, ByVal Size As Double, ByVal Finished As Double) Handles Me.UpdateUI
         For i As Integer = 0 To PB_list.Count - 1
 
             If PB_list(i).Name = sender Then
@@ -1155,16 +1185,19 @@ Public Class Main
                     p.Image = p.BackgroundImage
                     Dim g As Graphics = Graphics.FromImage(p.Image)
                     Dim ProgressbarPoint As Point = New Point(195, 70)
-                    Dim WeißeBox As Point = New Point(750, 93)
-                    Dim ProzentText As Point = New Point(773, 95)
+                    Dim WeißeBox As Point = New Point(450, 93)
+                    Dim ProzentText As Point = New Point(773, 100)
                     Dim Weiß As Brush = New SolidBrush(Color.FromArgb(242, 242, 242))
-                    g.FillRectangle(Weiß, WeißeBox.X + 1, WeißeBox.Y + 1, 50, 20)
+                    g.FillRectangle(Weiß, WeißeBox.X + 1, WeißeBox.Y + 1, 350, 30)
                     g.DrawString("-%", FontLabel2.Font, Brushes.Black, ProzentText)
                     Dim brGradient As Brush = New SolidBrush(Color.FromArgb(125, 0, 0))
                     g.FillRectangle(brGradient, ProgressbarPoint.X + 1, ProgressbarPoint.Y + 1, 600, 19)
                     g.Dispose()
                     AbourtList.Remove(sender)
                 Else
+                    Dim stringFormat As New StringFormat()
+                    stringFormat.Alignment = StringAlignment.Far
+                    stringFormat.LineAlignment = StringAlignment.Center
                     Dim p As PictureBox = PB_list(i)
                     Dim c As Integer = CInt(ListView1.Items.Item(i).Text)
                     ListView1.Items.Item(i).Text = int
@@ -1172,16 +1205,16 @@ Public Class Main
                     Dim g As Graphics = Graphics.FromImage(p.Image)
 
                     Dim ProgressbarPoint As Point = New Point(195, 70)
-                    Dim WeißeBox As Point = New Point(750, 93)
-                    Dim ProzentText As Point = New Point(755, 95)
+                    Dim WeißeBox As Point = New Point(450, 93)
+                    Dim ProzentText As Point = New Point(795, 113)
                     Dim Weiß As Brush = New SolidBrush(Color.FromArgb(242, 242, 242))
-                    If int < 10 Then
-                        ProzentText = New Point(773, 95)
-                    ElseIf int < 100 Then
-                        ProzentText = New Point(768, 95)
-                    End If
-                    g.FillRectangle(Weiß, WeißeBox.X + 1, WeißeBox.Y + 1, 50, 20)
-                    g.DrawString(int.ToString + "%", FontLabel2.Font, Brushes.Black, ProzentText)
+                    'If int < 10 Then
+                    '    ProzentText = New Point(773, 95)
+                    'ElseIf int < 100 Then
+                    '    ProzentText = New Point(768, 95)
+                    'End If
+                    g.FillRectangle(Weiß, WeißeBox.X + 1, WeißeBox.Y + 1, 350, 30)
+                    g.DrawString(Size.ToString + "MB/" + Finished.ToString + "MB " + int.ToString + "%", FontLabel2.Font, Brushes.Black, ProzentText, stringFormat)
                     Dim brGradient As Brush = New SolidBrush(Color.FromArgb(247, 140, 37))
                     g.FillRectangle(brGradient, ProgressbarPoint.X + 1, ProgressbarPoint.Y + 1, int * 6, 19)
                     g.Dispose()
@@ -1405,4 +1438,203 @@ Public Class Main
     'Dim VLC_URI_1 As String() = str.Split(New String() {Resu2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
     'Dim VLC_URI_2 As String() = VLC_URI_1(1).Split(New [Char]() {Chr(34)})
     'Dim VLC_URI_3 As String() = VLC_URI_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+
+
+    Public Sub Grapp_non_CR()
+        'Try
+        'MsgBox(WebbrowserTitle)
+
+        Grapp_non_cr_RDY = False
+            TaskCount = TaskCount + 1
+        Dim Video_Title As String = WebbrowserTitle.Replace(" - Watch on VRV", "")
+#Region "Name + Pfad"
+        Dim Video_FilenName As String = Video_Title
+        Video_FilenName = System.Text.RegularExpressions.Regex.Replace(Video_FilenName, "[^\w\\-]", " ")
+        Video_FilenName = RemoveExtraSpaces(Video_FilenName + ".mp4")
+        'MsgBox(Video_FilenName)
+#End Region
+#Region "m3u8 suche"
+        Dim ii As Integer = 0
+            Dim Video_URI_Master As String = Nothing
+            Dim Video_URI_Master_Split1 As String() = WebbrowserText.Split(New String() {".m3u8?"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim hls_List As New List(Of String)
+            For i As Integer = 0 To Video_URI_Master_Split1.Count - 2
+                Dim Video_URI_Master_Split_Top As String() = Video_URI_Master_Split1(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Video_URI_Master_Split_Bottom As String() = Video_URI_Master_Split1(i + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                hls_List.Add(Video_URI_Master_Split_Top(Video_URI_Master_Split_Top.Count - 1) + ".m3u8?" + Video_URI_Master_Split_Bottom(0))
+            Next
+
+            Me.Invoke(New Action(Function()
+                                     Anime_Add.StatusLabel.Text = "Status: m3u8 found, looking for resolution"
+                                     Return Nothing
+                                 End Function))
+
+#End Region
+
+#Region "lösche doppel download"
+
+        Dim Pfad5 As String = Path.Combine(Pfad + Video_FilenName)
+            If My.Computer.FileSystem.FileExists(Pfad5) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
+                If MessageBox.Show("The file " + Pfad5 + " already exists." + vbNewLine + "You want to override it?", "File exists!", MessageBoxButtons.OKCancel) = DialogResult.OK Then
+                    Try
+                        My.Computer.FileSystem.DeleteFile(Pfad5)
+                    Catch ex As Exception
+                    End Try
+                Else
+                    Grapp_non_cr_RDY = True
+                    TaskCount = TaskCount - 1
+                    Exit Sub
+                End If
+
+            End If
+#End Region
+            Dim str As String = Nothing
+            Dim StreamSuccess = False
+            For i2 As Integer = 0 To hls_List.Count - 1
+            Dim client As New System.Net.WebClient
+            client.Encoding = Encoding.UTF8
+            'MsgBox(CR_URI_Master)
+            Dim urlnow As String = hls_List.Item(i2).Replace("&amp;", "&")
+            urlnow = urlnow.Replace("/u0026", "&")
+            'MsgBox(urlnow)
+            str = client.DownloadString(urlnow)
+            'MsgBox(str)
+            If CBool(InStr(str, "x" + Resu.ToString + ",")) Then
+                Resu2 = "x" + Resu.ToString
+            Else
+                'MsgBox(str)
+                If CBool(InStr(str, ResuSave + ",")) Then
+                        Resu2 = Resu2
+                    Else
+                        Me.Invoke(New Action(Function()
+                                                 DialogTaskString = "Resolution"
+                                                 ResoNotFoundString = str
+                                                 Reso.ShowDialog()
+                                                 Return Nothing
+                                             End Function))
+                    'MsgBox(ResoBackString)
+                    If UserCloseDialog = True Then
+                            Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
+                        Else
+                            ResuSave = ResoBackString
+                        End If
+                    End If
+                End If
+                Dim Video_URI_1 As String() = str.Split(New String() {Resu2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Video_URI_2 As String() = Video_URI_1(1).Split(New [Char]() {Chr(34)})
+                Dim Video_URI_3 As String() = Video_URI_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+                Dim clientIndex As New System.Net.WebClient
+                clientIndex.Encoding = Encoding.UTF8
+                'MsgBox(CR_URI_Master)
+                Dim DRM_Check As String = clientIndex.DownloadString(Video_URI_3(0).Trim())
+                If InStr(DRM_Check, "drm") Then
+                Else
+                    URL_DL = Video_URI_3(0).Trim()
+                'MsgBox(URL_DL)
+                StreamSuccess = True
+                    Exit For
+                End If
+            Next
+            If StreamSuccess = False Then
+                Grapp_non_cr_RDY = True
+                TaskCount = TaskCount - 1
+                Exit Sub
+            End If
+#Region "thumbnail"
+            'Dim thumbnail As String() = WebbrowserText.Split(New String() {My.Resources.thumbnailString}, System.StringSplitOptions.RemoveEmptyEntries)
+            'Dim thumbnail2 As String() = thumbnail(1).Split(New String() {Chr(34) + "}"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+            Dim thumbnail3 As String = "None, will usese fail image" 'thumbnail2(0).Replace("\/", "/")
+#End Region
+#Region "<li> constructor"
+            Dim Subsprache3 As String = "undefined" 'HardSubValuesToDisplay(SubSprache2)
+            Dim ResoHTMLDisplay As String = Nothing
+            If ResoBackString = Nothing Then
+                ResoHTMLDisplay = Resu.ToString + "p"
+                ResoBackString = Nothing
+            Else
+                Dim ResoHTML As String() = ResoBackString.Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
+                If ResoHTML.Count > 1 Then
+                    ResoHTMLDisplay = ResoHTML(1) + "p"
+
+                Else
+                    ResoHTMLDisplay = ResoHTML(0) + "p"
+                End If
+            End If
+        Dim L2Name As String = WebbrowserTitle.Replace(" - Watch on VRV", "")
+        Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim L1Name As String = L1Name_Split(1)
+            Me.Invoke(New Action(Function()
+                                     ListAdd(Video_FilenName, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL)
+                                     Return Nothing
+                                 End Function))
+#End Region
+
+        Pfad_DL = Chr(34) + Pfad + "\" + Video_FilenName + Chr(34)
+        AsyncWorkerX.RunAsync(AddressOf DownloadFFMPEG, URL_DL, Pfad_DL, Video_FilenName)
+        Grapp_non_cr_RDY = True
+        Me.Invoke(New Action(Function()
+
+                                     Anime_Add.StatusLabel.Text = "Status: idle"
+                                     Return Nothing
+                                 End Function))
+        ' ManageWorker(URL_DL, Pfad_DL, CR_FilenName)()
+        'Catch ex As Exception
+        '    TaskCount = TaskCount - 1
+        '    Me.Invoke(New Action(Function()
+
+        '                             Anime_Add.StatusLabel.Text = "Status: idle"
+        '                             Return Nothing
+        '                         End Function))
+        '    'StatusLabel.Text = "Status: idle"
+        '    Grapp_RDY = True
+        '    'MsgBox(ex.ToString)
+        '    If CBool(InStr(ex.ToString, "Could not find the sub language")) Then
+        '        MsgBox(Sub_language_NotFound + SubSprache)
+        '    ElseIf CBool(InStr(ex.ToString, "RESOLUTION Not Found")) Then
+        '        MsgBox(Resolution_NotFound)
+        '    ElseIf CBool(InStr(ex.ToString, "Premnium Episode")) Then
+        '        MsgBox(Premium_Stream, MsgBoxStyle.Information)
+        '    ElseIf CBool(InStr(ex.ToString, "System.UnauthorizedAccessException")) Then
+        '        MsgBox(ErrorNoPermisson + vbNewLine + ex.ToString, MsgBoxStyle.Information)
+        '    ElseIf CBool(InStr(ex.ToString, Chr(34) + "UserAbort" + Chr(34))) Then
+        '        MsgBox(ex.ToString, MsgBoxStyle.Information)
+        '    Else
+        '        ' MsgBox(ex.ToString, MsgBoxStyle.Information)
+
+        '        If MessageBox.Show(Error_unknown, "Error!", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+
+        '            Dim CCC As String() = WebbrowserText.Split(New String() {Chr(34) + "country_code" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        '            Dim CCC1 As String() = CCC(1).Split(New String() {Chr(34) + "});"}, System.StringSplitOptions.RemoveEmptyEntries)
+        '            'MsgBox(CCC1(0))
+        '            Dim SaveString As String = "Operating System: " + My.Computer.Info.OSFullName + vbNewLine + vbNewLine + "Crunchyroll URL: " + WebbrowserURL + vbNewLine + vbNewLine + "subtitle language: " + SubSprache + vbNewLine + vbNewLine + "video resolution: " + Resu.ToString + vbNewLine + vbNewLine + "error message: " + ex.ToString + vbNewLine + ex.StackTrace.ToString + vbNewLine + vbNewLine + "softsubs enabled?: " + SoftSubs.ToString + vbNewLine + vbNewLine + "Crunchyroll Downloader Version: " + Application.ProductVersion + vbNewLine + vbNewLine + "detected location from Crunchyroll: " + CCC1(0)
+        '            'MsgBox(SaveString)
+        '            File.WriteAllText("Error " + DateTime.Now.ToString("dd.MM.yyyy HH.mm") + ".txt", SaveString)
+        '            Dim Request As HttpWebRequest = CType(WebRequest.Create("https://docs.google.com/forms/d/e/1FAIpQLSdR1QI19Lh-c-XO_iXNkDwsTUZhCMEu84boQkgW5AOBUxyiyA/formResponse"), HttpWebRequest)
+        '            Request.Method = "POST"
+        '            Request.ContentType = "application/x-www-form-urlencoded"
+        '            Dim Post As String = "entry.240217066=" + My.Computer.Info.OSFullName + "&entry.358200455=" + WebbrowserURL + "&entry.618751432=" + SubSprache + "&entry.924054550=" + Resu.ToString + "&entry.679000538=" + ex.ToString + "&entry.1789515979=" + SoftSubsString + "&entry.683247287=" + Application.ProductVersion + "&entry.377264428=" + CCC1(0) + "&fvv=1&draftResponse=[null,null," + Chr(34) + "-3005021683493723280" + Chr(34) + "] &pageHistory=0&fbzx=-3005021683493723280"
+        '            Dim byteArray() As Byte = Encoding.UTF8.GetBytes(Post)
+        '            Request.ContentLength = byteArray.Length
+        '            Dim DataStream As Stream = Request.GetRequestStream()
+        '            DataStream.Write(byteArray, 0, byteArray.Length)
+        '            DataStream.Close()
+        '            Dim Response As HttpWebResponse = Request.GetResponse()
+        '            DataStream = Response.GetResponseStream()
+        '            Dim reader As New StreamReader(DataStream)
+        '            Dim ServerResponse As String = reader.ReadToEnd()
+        '            reader.Close()
+        '            DataStream.Close()
+        '            Response.Close()
+        '            Dim Version_Check As String() = ServerResponse.Split(New String() {"<div class=" + Chr(34) + "freebirdFormviewerViewResponseConfirmationMessage" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
+        '            Dim Version_Check2 As String() = Version_Check(1).Split(New String() {"</div>"}, System.StringSplitOptions.RemoveEmptyEntries)
+        '            If Application.ProductVersion = Version_Check2(0) Then
+        '            Else
+        '                MsgBox("A newer version is available: v" + Version_Check2(0))
+        '            End If
+        '        End If
+        '    End If
+
+        'End Try
+    End Sub
+
 End Class

@@ -199,8 +199,17 @@ Public Class Anime_Add
                     End If
                 ElseIf CBool(InStr(textBox1.Text, "Test=true")) Then
                     GeckoFX.WebBrowser1.Navigate(textBox1.Text)
-                Else
-                    MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
+                Else 'If CBool(InStr(textBox1.Text, "vrv.co")) Then
+                    If MessageBox.Show("This in NOT a Crunchyroll URL, try anyway?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                        GeckoFX.WebBrowser1.Navigate(textBox1.Text)
+                        StatusLabel.Text = "Status: looking for non CR video file"
+                    Else
+                        Exit Sub
+                        pictureBox4.Enabled = True
+                    End If
+
+                    'Else
+                    '    MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
                 End If
             Catch ex As Exception
                 Main.b = True

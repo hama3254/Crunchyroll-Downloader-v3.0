@@ -149,13 +149,34 @@ Public Class GeckoFX
                         Me.Close()
                     End If
                 End If
-
+                If Main.UserBowser = False Then
+                    Main.WebbrowserURL = WebBrowser1.Url.ToString
+                    Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+                    Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                    Me.Close()
+                End If
+            Else
+                If Main.UserBowser = False Then
+                    'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.OuterHtml)
+                    'If InStr(WebBrowser1.DocumentTitle, " - Watch on VRV") Then
+                    Main.WebbrowserURL = WebBrowser1.Url.ToString
+                    Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                    WebBrowser1.Navigate("view-source:" + Main.WebbrowserURL)
+                    Main.Pause(3)
+                    If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, ".m3u8")) Then
+                        'MsgBox("test3")
+                        Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+                        Main.b = True
+                        t = New Thread(AddressOf Main.Grapp_non_CR)
+                        t.Priority = ThreadPriority.Normal
+                        t.IsBackground = True
+                        t.Start()
+                    End If
+                    'End If
+                End If
             End If
         End If
         If Main.UserBowser = False Then
-            Main.WebbrowserURL = WebBrowser1.Url.ToString
-            Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
-            Main.WebbrowserTitle = WebBrowser1.DocumentTitle
             Me.Close()
         End If
     End Sub
@@ -164,7 +185,7 @@ Public Class GeckoFX
         If WebBrowser1.Url.ToString = "about:blank" Then
             'WebBrowser1.Navigate("about:preferences")
             'WebBrowser1.Navigate("about:addons")
-            WebBrowser1.Navigate("https://www.crunchyroll.com/login") '")
+            WebBrowser1.Navigate("https://duckduckgo.com/") '")
             'WebBrowser1.Navigate("https://www.crunchyroll.com/de/rwby/episode-45-world-of-remnant-1-dust-658499")
             'WebBrowser1.Navigate("https://www.crunchyroll.com/de/rwby")
         End If
@@ -176,4 +197,6 @@ Public Class GeckoFX
     Private Sub GeckoFX_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         Main.UserBowser = False
     End Sub
+
+
 End Class

@@ -209,7 +209,7 @@ Public Class Anime_Add
                     End If
 
                     'Else
-                    '    MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
+                    'MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
                 End If
             Catch ex As Exception
                 Main.b = True

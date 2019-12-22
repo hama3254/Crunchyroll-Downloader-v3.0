@@ -43,6 +43,8 @@ Partial Class einstellungen
         Me.pictureBox1 = New System.Windows.Forms.PictureBox()
         Me.pictureBox4 = New System.Windows.Forms.PictureBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Firefox_True = New System.Windows.Forms.CheckBox()
         Me.PictureBox6 = New System.Windows.Forms.PictureBox()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
@@ -223,9 +225,9 @@ Partial Class einstellungen
         Me.GroupBox4.Controls.Add(Me.pictureBox3)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox4.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox4.Location = New System.Drawing.Point(6, 119)
+        Me.GroupBox4.Location = New System.Drawing.Point(6, 173)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(339, 115)
+        Me.GroupBox4.Size = New System.Drawing.Size(339, 81)
         Me.GroupBox4.TabIndex = 4
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Crunchyroll US"
@@ -299,24 +301,43 @@ Partial Class einstellungen
         'GroupBox1
         '
         Me.GroupBox1.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox1.Controls.Add(Me.Label1)
+        Me.GroupBox1.Controls.Add(Me.TextBox1)
         Me.GroupBox1.Controls.Add(Me.Firefox_True)
         Me.GroupBox1.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox1.ForeColor = System.Drawing.Color.Black
         Me.GroupBox1.Location = New System.Drawing.Point(6, 17)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(339, 80)
+        Me.GroupBox1.Size = New System.Drawing.Size(339, 138)
         Me.GroupBox1.TabIndex = 4
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Browser Settings"
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(120, 28)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(100, 16)
+        Me.Label1.TabIndex = 2
+        Me.Label1.Text = "Default Website"
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(6, 57)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(327, 22)
+        Me.TextBox1.TabIndex = 1
+        Me.TextBox1.Text = "https://www.crunchyroll.com/"
+        '
         'Firefox_True
         '
         Me.Firefox_True.AutoSize = True
-        Me.Firefox_True.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.Firefox_True.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Firefox_True.ForeColor = System.Drawing.Color.Black
-        Me.Firefox_True.Location = New System.Drawing.Point(54, 35)
+        Me.Firefox_True.Location = New System.Drawing.Point(88, 99)
         Me.Firefox_True.Name = "Firefox_True"
-        Me.Firefox_True.Size = New System.Drawing.Size(212, 23)
+        Me.Firefox_True.Size = New System.Drawing.Size(166, 20)
         Me.Firefox_True.TabIndex = 0
         Me.Firefox_True.Text = "Use Firefox Profil Folder"
         Me.Firefox_True.UseVisualStyleBackColor = True
@@ -325,7 +346,7 @@ Partial Class einstellungen
         '
         Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox6.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_credits_default
-        Me.PictureBox6.Location = New System.Drawing.Point(134, 267)
+        Me.PictureBox6.Location = New System.Drawing.Point(131, 276)
         Me.PictureBox6.Name = "PictureBox6"
         Me.PictureBox6.Size = New System.Drawing.Size(76, 39)
         Me.PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -433,4 +454,6 @@ Partial Class einstellungen
     Friend WithEvents TabControl1 As TabControl
     Friend WithEvents TabPage1 As TabPage
     Friend WithEvents TabPage2 As TabPage
+    Friend WithEvents Label1 As Label
+    Friend WithEvents TextBox1 As TextBox
 End Class

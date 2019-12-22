@@ -76,6 +76,7 @@ Public Class einstellungen
             RBStaffel.Checked = True
         End If
         NumericUpDown1.Value = Main.MaxDL
+        TextBox1.Text = Main.Startseite
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             Firefox_True.Checked = CBool(Integer.Parse(rkg.GetValue("NoUse").ToString))
@@ -86,6 +87,15 @@ Public Class einstellungen
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
         Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
+        If InStr(TextBox1.Text, "https://") Then
+            Main.Startseite = TextBox1.Text
+            rk.SetValue("Startseite", Main.Startseite, RegistryValueKind.String)
+        ElseIf TextBox1.Text = Nothing Then
+            Main.Startseite = "https://www.crunchyroll.com/"
+            rk.SetValue("Startseite", Main.Startseite, RegistryValueKind.String)
+        Else
+
+        End If
         If A1080p.Checked Then
             Main.Resu = 1080
             rk.SetValue("Resu", 1080, RegistryValueKind.String)
@@ -182,6 +192,7 @@ Public Class einstellungen
     Private Sub pictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
         Main.LoginOnly = "US_UnBlock"
         GeckoFX.keks = InputBox("Please insert the cookie below.")
+        GeckoFX.Show()
         GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
     End Sub
 
@@ -208,12 +219,16 @@ Public Class einstellungen
             Exit Sub
         Else
             'MsgBox(Session)
+            GeckoFX.Show()
             GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
             Dim SessionID1 As String() = Session.Split(New String() {Chr(34) + "session_id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim SessionID2 As String() = SessionID1(1).Split(New [Char]() {Chr(34)})
             GeckoFX.keks = SessionID2(0)
 
         End If
+        'MsgBox(Session)
+        'Dim JS As String = "javascript:console.log(`got session id.Setting cookie " + GeckoFX.keks + ".`);browser.cookies.set({url:`http:name:'session_id',value:" + GeckoFX.keks + ",domain:`crunchyroll.com`,httpOnly:true},()=>{browser.cookies.set({url:`http:name:'sess_id',value:" + GeckoFX.keks + ",domain:`crunchyroll.com`,httpOnly:true},()=>{browser.cookies.set({url:`http:name:'c_locale',value:'enUS',domain:`crunchyroll.com`,httpOnly:true}})});"
+
     End Sub
 
     Private Function GeräteID() As String
@@ -346,8 +361,6 @@ Public Class einstellungen
     Private Sub Button1_Click_1(sender As Object, e As EventArgs)
         GeckoFX.WebBrowser1.Navigate("about:config")
     End Sub
-
-
 
 
 #End Region

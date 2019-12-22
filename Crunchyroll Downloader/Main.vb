@@ -30,6 +30,7 @@ Public Class Main
     Dim CR_Unlock_Error As String
     Dim versuch2 As Integer = 0
     Public keks As String = Nothing
+    Public Startseite As String = "https://www.crunchyroll.com/"
     Dim SubSprache2 As String
     Dim URL_DL As String
     Dim Pfad_DL As String
@@ -143,6 +144,12 @@ Public Class Main
 
         End Try
 
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            Startseite = rkg.GetValue("Startseite").ToString
+        Catch ex As Exception
+
+        End Try
 #Region "Startup IU"
         StatusToolTip.Active = True
 #End Region
@@ -477,7 +484,7 @@ Public Class Main
                     If CBool(InStr(WebbrowserText, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "premium" + Chr(34))) Then
                     ElseIf CBool(InStr(WebbrowserText, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "free_trial" + Chr(34))) Then
                         'Else
-                        '    MsgBox(CR_Premium_Failed, MsgBoxStyle.Information)
+                        '    'MsgBox(CR_Premium_Failed, MsgBoxStyle.Information)
                         '    Anime_Add.groupBox1.Visible = True
                         '    Anime_Add.groupBox2.Visible = False
                         '    Anime_Add.GroupBox3.Visible = False
@@ -950,7 +957,7 @@ Public Class Main
             '                Catch ex As Exception
             '                End Try
             '            Next
-            '            MsgBox(CR_URI_Master)
+            '            'MsgBox(CR_URI_Master)
             '            Dim FFMPEG_ResoBack As String = FFMPEG_Reso(CR_URI_Master)
             '            'MsgBox(FFMPEG_ResoBack)
             '            Dim FFMPEG_Back() As String = FFMPEG_ResoBack.Split(New String() {"#1"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1397,7 +1404,7 @@ Public Class Main
             End If
         Next
         If StreamNR = Nothing Then
-            MsgBox(cmd + vbNewLine + ffmpegOutput)
+            'MsgBox(cmd + vbNewLine + ffmpegOutput)
             ResoNotFoundString = ffmpegOutput
             DialogTaskString = "Resolution"
             Reso.ShowDialog()
@@ -1589,15 +1596,15 @@ Public Class Main
         '    Grapp_RDY = True
         '    'MsgBox(ex.ToString)
         '    If CBool(InStr(ex.ToString, "Could not find the sub language")) Then
-        '        MsgBox(Sub_language_NotFound + SubSprache)
+        '        'MsgBox(Sub_language_NotFound + SubSprache)
         '    ElseIf CBool(InStr(ex.ToString, "RESOLUTION Not Found")) Then
-        '        MsgBox(Resolution_NotFound)
+        '        'MsgBox(Resolution_NotFound)
         '    ElseIf CBool(InStr(ex.ToString, "Premnium Episode")) Then
-        '        MsgBox(Premium_Stream, MsgBoxStyle.Information)
+        '        'MsgBox(Premium_Stream, MsgBoxStyle.Information)
         '    ElseIf CBool(InStr(ex.ToString, "System.UnauthorizedAccessException")) Then
-        '        MsgBox(ErrorNoPermisson + vbNewLine + ex.ToString, MsgBoxStyle.Information)
+        '        'MsgBox(ErrorNoPermisson + vbNewLine + ex.ToString, MsgBoxStyle.Information)
         '    ElseIf CBool(InStr(ex.ToString, Chr(34) + "UserAbort" + Chr(34))) Then
-        '        MsgBox(ex.ToString, MsgBoxStyle.Information)
+        '        'MsgBox(ex.ToString, MsgBoxStyle.Information)
         '    Else
         '        ' MsgBox(ex.ToString, MsgBoxStyle.Information)
 
@@ -1629,7 +1636,7 @@ Public Class Main
         '            Dim Version_Check2 As String() = Version_Check(1).Split(New String() {"</div>"}, System.StringSplitOptions.RemoveEmptyEntries)
         '            If Application.ProductVersion = Version_Check2(0) Then
         '            Else
-        '                MsgBox("A newer version is available: v" + Version_Check2(0))
+        '                'MsgBox("A newer version is available: v" + Version_Check2(0))
         '            End If
         '        End If
         '    End If

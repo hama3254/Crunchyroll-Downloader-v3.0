@@ -23,7 +23,11 @@ Public Class GeckoFX
         'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.InnerHtml)
         If Main.LoginOnly = "US_UnBlock" Then
             Main.LoginOnly = "US_UnBlock_Wait"
-            'MsgBox(WebBrowser1.Document.Cookie)
+            'My.Computer.Clipboard.SetText(WebBrowser1.Url.ToString + vbNewLine + "before" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie)
+            'einstellungen.RichTextBox1.Text = WebBrowser1.Url.ToString + vbNewLine + "before" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie
+            WebBrowser1.Document.Cookie = ""
+            'einstellungen.RichTextBox1.Text = einstellungen.RichTextBox1.Text + vbNewLine + WebBrowser1.Url.ToString + vbNewLine + "after" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie
+            'My.Computer.Clipboard.SetText(before + vbNewLine + WebBrowser1.Url.ToString + vbNewLine + "after" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie)
             Try
                 Dim cookieName As String = "session_id"
                 Dim cookieValue As String = keks
@@ -44,10 +48,14 @@ Public Class GeckoFX
             Main.LoginOnly = "false"
             If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "Your detected location is United States of America.")) Then
                 MsgBox("unlock successful", MsgBoxStyle.Information)
+                Me.Close()
                 'MsgBox(WebBrowser1.Document.Cookie)
             Else
+
+                'MsgBox(WebBrowser1.Document.Cookie)
                 'MsgBox(WebBrowser1.Document.Cookie)
                 MsgBox("unlock failes", MsgBoxStyle.Exclamation)
+                Me.Close()
             End If
         Else
 
@@ -104,7 +112,7 @@ Public Class GeckoFX
                                 ' ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "free_trial" + Chr(34))) Then
                                 'Main.SeasonDropdownGrapp()
                                 'Else
-                                '    MsgBox(Main.CR_Premium_Failed, MsgBoxStyle.Information)
+                                'MsgBox(Main.CR_Premium_Failed, MsgBoxStyle.Information)
                                 '    Anime_Add.groupBox1.Visible = True
                                 '    Anime_Add.groupBox2.Visible = False
                                 '    Anime_Add.GroupBox3.Visible = False
@@ -126,7 +134,7 @@ Public Class GeckoFX
                                 'ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "free_trial" + Chr(34))) Then
                                 'Main.MassGrapp()
                                 'Else
-                                '    MsgBox(Main.CR_Premium_Failed, MsgBoxStyle.Information)
+                                '    'MsgBox(Main.CR_Premium_Failed, MsgBoxStyle.Information)
                                 '    Anime_Add.groupBox1.Visible = True
                                 '    Anime_Add.groupBox2.Visible = False
                                 '    Anime_Add.GroupBox3.Visible = False
@@ -175,23 +183,29 @@ Public Class GeckoFX
                     'End If
                 End If
             End If
-        End If
-        If Main.UserBowser = False Then
-            Me.Close()
+            If Main.UserBowser = False Then
+                Me.Close()
+            End If
         End If
     End Sub
 
     Private Sub GeckoFX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If WebBrowser1.Url.ToString = "about:blank" Then
+            If Main.LoginOnly = "US_UnBlock" Then
+                WebBrowser1.Navigate("https://www.crunchyroll.com/login")
+            Else
+                'WebBrowser1.Navigate("https://duckduckgo.com/") '")
+                WebBrowser1.Navigate(Main.Startseite)
+            End If
             'WebBrowser1.Navigate("about:preferences")
             'WebBrowser1.Navigate("about:addons")
-            WebBrowser1.Navigate("https://duckduckgo.com/") '")
+
             'WebBrowser1.Navigate("https://www.crunchyroll.com/de/rwby/episode-45-world-of-remnant-1-dust-658499")
             'WebBrowser1.Navigate("https://www.crunchyroll.com/de/rwby")
         End If
         Me.Icon = My.Resources.icon
         'MsgBox(WebBrowser1.Url.ToString)
-
+        Main.UserBowser = True
     End Sub
 
     Private Sub GeckoFX_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing

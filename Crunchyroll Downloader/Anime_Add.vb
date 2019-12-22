@@ -203,6 +203,7 @@ Public Class Anime_Add
                     If MessageBox.Show("This in NOT a Crunchyroll URL, try anyway?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         GeckoFX.WebBrowser1.Navigate(textBox1.Text)
                         StatusLabel.Text = "Status: looking for non CR video file"
+                        'System.Threading.Thread.Sleep(20000)
                     Else
                         Exit Sub
                         pictureBox4.Enabled = True

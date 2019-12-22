@@ -22,21 +22,37 @@ Public Class GeckoFX
         'End Try
         'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.InnerHtml)
         If Main.LoginOnly = "US_UnBlock" Then
-            Main.LoginOnly = "US_UnBlock_Wait"
+            Main.LoginOnly = "US_UnBlocck_Wait2nd"
+            'Main.LoginOnly = "US_UnBlock_Wait"
             'My.Computer.Clipboard.SetText(WebBrowser1.Url.ToString + vbNewLine + "before" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie)
             'einstellungen.RichTextBox1.Text = WebBrowser1.Url.ToString + vbNewLine + "before" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie
-            WebBrowser1.Document.Cookie = ""
+            'WebBrowser1.Document.Cookie = ""
+            'WebBrowser1.Navigate("javascript:document.cookie = 'session_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';")
+            'WebBrowser1.Navigate("javascript:$$")
+            'WebBrowser1.ExecuteCommand("alert(document.cookie);")
+            'WebBrowser1.Document.Body.InnerHtml = WebBrowser1.Document.Body.InnerHtml + "<script>alert(document.cookie);</script>"
             'einstellungen.RichTextBox1.Text = einstellungen.RichTextBox1.Text + vbNewLine + WebBrowser1.Url.ToString + vbNewLine + "after" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie
             'My.Computer.Clipboard.SetText(before + vbNewLine + WebBrowser1.Url.ToString + vbNewLine + "after" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie)
             Try
-                Dim cookieName As String = "session_id"
-                Dim cookieValue As String = keks
-                WebBrowser1.Document.Cookie = String.Format("{0}={1}; {2}", cookieName, cookieValue, WebBrowser1.Document.Cookie)
-                Dim cookieName2 As String = "sess_id"
-                WebBrowser1.Document.Cookie = String.Format("{0}={1}; {2}", cookieName2, cookieValue, WebBrowser1.Document.Cookie)
-                Dim cookieFillName As String = "c_locale"
-                Dim cookieFillValue As String = "enUS"
-                WebBrowser1.Document.Cookie = String.Format("{0}={1}; {2}", cookieFillName, cookieFillValue, WebBrowser1.Document.Cookie)
+                'Dim cookieName As String = "session_id"
+                'Dim cookieValue As String = keks
+                'WebBrowser1.Document.Cookie = String.Format("{0}={1}; {2}", cookieName, cookieValue, WebBrowser1.Document.Cookie)
+                'Dim cookieName2 As String = "sess_id"
+                'WebBrowser1.Document.Cookie = String.Format("{0}={1}; {2}", cookieName2, cookieValue, WebBrowser1.Document.Cookie)
+                'Dim cookieFillName As String = "c_locale"
+                'Dim cookieFillValue As String = "enUS"
+                'WebBrowser1.Document.Cookie = String.Format("{0}={1}; {2}", cookieFillName, cookieFillValue, WebBrowser1.Document.Cookie)
+                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                Main.Pause(2)
+                WebBrowser1.Navigate("javascript:document.cookie = " + Chr(34) + "sess_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                Main.Pause(2)
+                WebBrowser1.Navigate("javascript:document.cookie = " + Chr(34) + "c_locale=enUS; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                Main.Pause(2)
+                'WebBrowser1.Navigate("javascript:alert(document.cookie);")
+                'Main.Pause(2)
+                WebBrowser1.Navigate("https://www.crunchyroll.com/")
+                Main.LoginOnly = "US_UnBlock_Check"
+                'WebBrowser1.Navigate("https://www.crunchyroll.com/")
             Catch ex As Exception
             End Try
         ElseIf Main.LoginOnly = "US_UnBlock_Wait" Then
@@ -47,13 +63,14 @@ Public Class GeckoFX
         ElseIf Main.LoginOnly = "US_UnBlock_Check" Then
             Main.LoginOnly = "false"
             If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "Your detected location is United States of America.")) Then
+                'MsgBox(keks + vbNewLine + WebBrowser1.Document.Cookie)
                 MsgBox("unlock successful", MsgBoxStyle.Information)
                 Me.Close()
                 'MsgBox(WebBrowser1.Document.Cookie)
             Else
 
                 'MsgBox(WebBrowser1.Document.Cookie)
-                'MsgBox(WebBrowser1.Document.Cookie)
+                'MsgBox(keks + vbNewLine + WebBrowser1.Document.Cookie)
                 MsgBox("unlock failes", MsgBoxStyle.Exclamation)
                 Me.Close()
             End If

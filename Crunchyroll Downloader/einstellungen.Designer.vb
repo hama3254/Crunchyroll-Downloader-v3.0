@@ -24,6 +24,7 @@ Partial Class einstellungen
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GB_Resolution = New System.Windows.Forms.GroupBox()
+        Me.AAuto = New System.Windows.Forms.RadioButton()
         Me.A480p = New System.Windows.Forms.RadioButton()
         Me.A360p = New System.Windows.Forms.RadioButton()
         Me.A720p = New System.Windows.Forms.RadioButton()
@@ -71,27 +72,41 @@ Partial Class einstellungen
         'GB_Resolution
         '
         Me.GB_Resolution.BackColor = System.Drawing.Color.Transparent
+        Me.GB_Resolution.Controls.Add(Me.AAuto)
         Me.GB_Resolution.Controls.Add(Me.A480p)
         Me.GB_Resolution.Controls.Add(Me.A360p)
         Me.GB_Resolution.Controls.Add(Me.A720p)
         Me.GB_Resolution.Controls.Add(Me.A1080p)
         Me.GB_Resolution.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Resolution.ForeColor = System.Drawing.Color.Black
-        Me.GB_Resolution.Location = New System.Drawing.Point(6, 172)
+        Me.GB_Resolution.Location = New System.Drawing.Point(6, 158)
         Me.GB_Resolution.Name = "GB_Resolution"
-        Me.GB_Resolution.Size = New System.Drawing.Size(339, 54)
+        Me.GB_Resolution.Size = New System.Drawing.Size(339, 68)
         Me.GB_Resolution.TabIndex = 0
         Me.GB_Resolution.TabStop = False
         Me.GB_Resolution.Text = "Auflösung"
         '
+        'AAuto
+        '
+        Me.AAuto.AutoSize = True
+        Me.AAuto.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AAuto.ForeColor = System.Drawing.Color.Black
+        Me.AAuto.Location = New System.Drawing.Point(267, 22)
+        Me.AAuto.Name = "AAuto"
+        Me.AAuto.Size = New System.Drawing.Size(66, 22)
+        Me.AAuto.TabIndex = 3
+        Me.AAuto.TabStop = True
+        Me.AAuto.Text = "[Auto]"
+        Me.AAuto.UseVisualStyleBackColor = True
+        '
         'A480p
         '
         Me.A480p.AutoSize = True
-        Me.A480p.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.A480p.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.A480p.ForeColor = System.Drawing.Color.Black
-        Me.A480p.Location = New System.Drawing.Point(162, 21)
+        Me.A480p.Location = New System.Drawing.Point(141, 21)
         Me.A480p.Name = "A480p"
-        Me.A480p.Size = New System.Drawing.Size(64, 23)
+        Me.A480p.Size = New System.Drawing.Size(62, 22)
         Me.A480p.TabIndex = 2
         Me.A480p.TabStop = True
         Me.A480p.Text = "480p"
@@ -100,11 +115,11 @@ Partial Class einstellungen
         'A360p
         '
         Me.A360p.AutoSize = True
-        Me.A360p.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.A360p.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.A360p.ForeColor = System.Drawing.Color.Black
-        Me.A360p.Location = New System.Drawing.Point(242, 21)
+        Me.A360p.Location = New System.Drawing.Point(205, 22)
         Me.A360p.Name = "A360p"
-        Me.A360p.Size = New System.Drawing.Size(64, 23)
+        Me.A360p.Size = New System.Drawing.Size(62, 22)
         Me.A360p.TabIndex = 2
         Me.A360p.TabStop = True
         Me.A360p.Text = "360p"
@@ -113,11 +128,11 @@ Partial Class einstellungen
         'A720p
         '
         Me.A720p.AutoSize = True
-        Me.A720p.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.A720p.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.A720p.ForeColor = System.Drawing.Color.Black
-        Me.A720p.Location = New System.Drawing.Point(88, 21)
+        Me.A720p.Location = New System.Drawing.Point(82, 21)
         Me.A720p.Name = "A720p"
-        Me.A720p.Size = New System.Drawing.Size(64, 23)
+        Me.A720p.Size = New System.Drawing.Size(62, 22)
         Me.A720p.TabIndex = 1
         Me.A720p.TabStop = True
         Me.A720p.Text = "720p"
@@ -126,11 +141,11 @@ Partial Class einstellungen
         'A1080p
         '
         Me.A1080p.AutoSize = True
-        Me.A1080p.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.A1080p.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.A1080p.ForeColor = System.Drawing.Color.Black
         Me.A1080p.Location = New System.Drawing.Point(9, 21)
         Me.A1080p.Name = "A1080p"
-        Me.A1080p.Size = New System.Drawing.Size(73, 23)
+        Me.A1080p.Size = New System.Drawing.Size(71, 22)
         Me.A1080p.TabIndex = 0
         Me.A1080p.TabStop = True
         Me.A1080p.Text = "1080p"
@@ -183,9 +198,9 @@ Partial Class einstellungen
         Me.GB_Sub_Path.Controls.Add(Me.RBAnime)
         Me.GB_Sub_Path.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Sub_Path.ForeColor = System.Drawing.Color.Black
-        Me.GB_Sub_Path.Location = New System.Drawing.Point(5, 96)
+        Me.GB_Sub_Path.Location = New System.Drawing.Point(6, 85)
         Me.GB_Sub_Path.Name = "GB_Sub_Path"
-        Me.GB_Sub_Path.Size = New System.Drawing.Size(342, 70)
+        Me.GB_Sub_Path.Size = New System.Drawing.Size(342, 67)
         Me.GB_Sub_Path.TabIndex = 3
         Me.GB_Sub_Path.TabStop = False
         Me.GB_Sub_Path.Text = "Unterordner "
@@ -193,11 +208,11 @@ Partial Class einstellungen
         'RBStaffel
         '
         Me.RBStaffel.AutoSize = True
-        Me.RBStaffel.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.RBStaffel.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RBStaffel.ForeColor = System.Drawing.Color.Black
-        Me.RBStaffel.Location = New System.Drawing.Point(153, 24)
+        Me.RBStaffel.Location = New System.Drawing.Point(159, 24)
         Me.RBStaffel.Name = "RBStaffel"
-        Me.RBStaffel.Size = New System.Drawing.Size(183, 23)
+        Me.RBStaffel.Size = New System.Drawing.Size(174, 22)
         Me.RBStaffel.TabIndex = 1
         Me.RBStaffel.TabStop = True
         Me.RBStaffel.Text = "Anime Serie + Staffel"
@@ -207,11 +222,11 @@ Partial Class einstellungen
         'RBAnime
         '
         Me.RBAnime.AutoSize = True
-        Me.RBAnime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.RBAnime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RBAnime.ForeColor = System.Drawing.Color.Black
         Me.RBAnime.Location = New System.Drawing.Point(9, 24)
         Me.RBAnime.Name = "RBAnime"
-        Me.RBAnime.Size = New System.Drawing.Size(118, 23)
+        Me.RBAnime.Size = New System.Drawing.Size(113, 22)
         Me.RBAnime.TabIndex = 1
         Me.RBAnime.TabStop = True
         Me.RBAnime.Text = "Anime Serie"
@@ -260,14 +275,14 @@ Partial Class einstellungen
         Me.DL_Count_simultaneous.ForeColor = System.Drawing.Color.Black
         Me.DL_Count_simultaneous.Location = New System.Drawing.Point(12, 11)
         Me.DL_Count_simultaneous.Name = "DL_Count_simultaneous"
-        Me.DL_Count_simultaneous.Size = New System.Drawing.Size(333, 79)
+        Me.DL_Count_simultaneous.Size = New System.Drawing.Size(333, 68)
         Me.DL_Count_simultaneous.TabIndex = 5
         Me.DL_Count_simultaneous.TabStop = False
         Me.DL_Count_simultaneous.Text = "simultaneous downloads"
         '
         'NumericUpDown1
         '
-        Me.NumericUpDown1.Location = New System.Drawing.Point(35, 35)
+        Me.NumericUpDown1.Location = New System.Drawing.Point(35, 31)
         Me.NumericUpDown1.Maximum = New Decimal(New Integer() {12, 0, 0, 0})
         Me.NumericUpDown1.Name = "NumericUpDown1"
         Me.NumericUpDown1.Size = New System.Drawing.Size(265, 22)
@@ -456,4 +471,5 @@ Partial Class einstellungen
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents Label1 As Label
     Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents AAuto As RadioButton
 End Class

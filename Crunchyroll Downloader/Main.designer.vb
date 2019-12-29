@@ -120,7 +120,7 @@ Partial Class Main
         Me.ListView1.ForeColor = System.Drawing.Color.Black
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.ListView1.HideSelection = False
-        Me.ListView1.Location = New System.Drawing.Point(1, 64)
+        Me.ListView1.Location = New System.Drawing.Point(1, 56)
         Me.ListView1.MinimumSize = New System.Drawing.Size(800, 400)
         Me.ListView1.Name = "ListView1"
         Me.ListView1.Size = New System.Drawing.Size(838, 487)

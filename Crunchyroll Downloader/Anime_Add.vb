@@ -169,6 +169,7 @@ Public Class Anime_Add
 
     Private Sub pictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
         'pictureBox4.Enabled = False
+        Main.RemoveFinishedTask()
         If groupBox1.Visible = True Then
             Try
                 If CBool(InStr(textBox1.Text, "crunchyroll.com")) Then
@@ -183,7 +184,7 @@ Public Class Anime_Add
                         '    Exit Sub
                         '    pictureBox4.Enabled = True
                     Else
-                        If Main.TaskCount >= Main.MaxDL Then
+                        If Main.PR_List.Count >= Main.MaxDL Then
                             ListBox1.Items.Add(textBox1.Text)
                             textBox1.ForeColor = Color.FromArgb(9248044)
                             Main.Pause(1)
@@ -357,7 +358,8 @@ Public Class Anime_Add
                 pictureBox4.Image = My.Resources.main_button_download_default
             End If
         End If
-        If Main.TaskCount >= Main.MaxDL Then
+        If Main.PR_List.Count >= Main.MaxDL Then
+            Main.RemoveFinishedTask()
         Else
             If ListBox1.Items.Count > 0 Then
                 If GroupBox3.Visible = True Then

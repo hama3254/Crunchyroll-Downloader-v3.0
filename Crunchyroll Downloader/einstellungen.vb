@@ -27,6 +27,8 @@ Public Class einstellungen
             A480p.Checked = True
         ElseIf Main.Resu = 360 Then
             A360p.Checked = True
+        ElseIf Main.Resu = 42 Then
+            AAuto.Checked = True
         End If
         'ComboBox1.Items.Add("English")
         'ComboBox1.Items.Add("Deutsch")
@@ -108,6 +110,9 @@ Public Class einstellungen
         ElseIf A480p.Checked Then
             Main.Resu = 480
             rk.SetValue("Resu", 480, RegistryValueKind.String)
+        ElseIf AAuto.Checked Then
+            Main.Resu = 42
+            rk.SetValue("Resu", 42, RegistryValueKind.String)
         End If
         If ComboBox1.SelectedItem.ToString = "English" Then
             Main.SubSprache = "enUS"
@@ -361,6 +366,12 @@ Public Class einstellungen
     Private Sub Button1_Click_1(sender As Object, e As EventArgs)
         GeckoFX.WebBrowser1.Navigate("about:config")
     End Sub
+
+    Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles AAuto.CheckedChanged
+
+    End Sub
+
+
 
 
 #End Region

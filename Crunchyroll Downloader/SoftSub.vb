@@ -184,7 +184,7 @@ Public Class SoftSub
                 LocalSoftSubs.Add("esES")
             End If
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
         End Try
         If LocalSoftSubs.Count > 0 Then
             If CBool(InStr(textBox1.Text, "crunchyroll.com")) Then

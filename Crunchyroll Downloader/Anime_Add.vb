@@ -385,9 +385,14 @@ Public Class Anime_Add
 
     End Sub
 
-    Private Sub comboBox2_SelectedValueChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedValueChanged
 
+    Private Sub textBox2_Click(sender As Object, e As EventArgs) Handles textBox2.Click
+        If textBox2.Text = "Name of the Anime" Then
+            textBox2.Text = Nothing
+        End If
     End Sub
+
+
 #End Region
 
 End Class

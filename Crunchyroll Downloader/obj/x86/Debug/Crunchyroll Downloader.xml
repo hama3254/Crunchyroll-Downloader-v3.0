@@ -67,6 +67,11 @@ Crunchyroll Downloader
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.CC_String">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &lt;img id=&quot;footer_country_flag&quot; src=&quot;https://www.crunchyroll.com/i/country_flags/ ähnelt.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.crdSettings_Background">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.

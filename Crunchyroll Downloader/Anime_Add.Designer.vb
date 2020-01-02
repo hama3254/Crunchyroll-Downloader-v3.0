@@ -130,7 +130,6 @@ Partial Class Anime_Add
         Me.textBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.textBox2.Location = New System.Drawing.Point(18, 42)
         Me.textBox2.Name = "textBox2"
-        Me.textBox2.ReadOnly = True
         Me.textBox2.Size = New System.Drawing.Size(585, 22)
         Me.textBox2.TabIndex = 5
         Me.textBox2.TabStop = False
@@ -273,11 +272,11 @@ Partial Class Anime_Add
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.add_background
         Me.ClientSize = New System.Drawing.Size(630, 275)
-        Me.Controls.Add(Me.GroupBox3)
-        Me.Controls.Add(Me.groupBox2)
         Me.Controls.Add(Me.pictureBox3)
         Me.Controls.Add(Me.pictureBox4)
         Me.Controls.Add(Me.groupBox1)
+        Me.Controls.Add(Me.GroupBox3)
+        Me.Controls.Add(Me.groupBox2)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Anime_Add"

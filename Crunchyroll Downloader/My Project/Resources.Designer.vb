@@ -149,6 +149,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;img id=&quot;footer_country_flag&quot; src=&quot;https://www.crunchyroll.com/i/country_flags/ ähnelt.
+        '''</summary>
+        Friend ReadOnly Property CC_String() As String
+            Get
+                Return ResourceManager.GetString("CC_String", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property crdSettings_Background() As System.Drawing.Bitmap

@@ -668,73 +668,92 @@ Public Class Main
 
     Public Sub GrappURL()
         Try
+            'Throw New System.Exception("Test")
             Grapp_RDY = False
             Dim CR_Anime_Titel As String = Nothing
             Dim CR_Anime_Staffel As String = Nothing
             Dim CR_Anime_Folge As String = Nothing
 #Region "Name + Pfad"
             Dim Pfad2 As String
+            Dim TextBox2_Text As String = Nothing
             Dim CR_FilenName As String = Nothing
-            Dim Bug_Deutsch As String = "-"
-            'Dim CR_Anime_Titel As String
-            'Dim CR_Anime_Staffel As String
-            'Dim CR_Anime_Folge As String
-            'Dim CR_Name_by_Titel As String() = GeckoFX.WebBrowser1.Document.Body.OuterHtml.Split(New String() {"<title>"}, System.StringSplitOptions.RemoveEmptyEntries)
-            'Dim CR_Name_by_Titel_2_Patch As String =CR_Name_by_Titel(1).Split(New String() {"</title>"}, System.StringSplitOptions.RemoveEmptyEntries)
-            If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
-                Bug_Deutsch = ":"
-                'Throw New System.Exception("Test")
-            Else
-            End If
-            Dim CR_Name_by_Titel_2 As String() = WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
-            'Dim CR_Name_by_Script As String() = WebbrowserText.Split(New String() {Chr(34) + "name" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            'Dim CR_Name_by_Script2 As String() = CR_Name_by_Script(1).Split(New [Char]() {Chr(34)})
-            CR_FilenName = CR_Name_by_Titel_2(0).Trim() '+ " " + CR_Name_by_Script2(0).Trim
-
+            Dim SubfolderValue As String = Nothing
             Dim CR_FilenName_Backup As String = Nothing
 
-            Dim SubfolderValue As String = Nothing
-            If CBool(InStr(WebbrowserText, "<h4>")) Then ' Film statt Serie
-                Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {"<h4>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {"</h4>"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                Dim CR_Name_Staffel0_Folge1 As String()
-                If CBool(InStr(CR_Name_2(0), ",")) Then
-                    CR_Name_Staffel0_Folge1 = CR_Name_2(0).Split(New [Char]() {System.Convert.ToChar(",")}, System.StringSplitOptions.RemoveEmptyEntries)
-                    CR_Anime_Staffel = CR_Name_Staffel0_Folge1(0).Trim()
-                    CR_Anime_Folge = CR_Name_Staffel0_Folge1(1).Trim()
-                    CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
-                Else
-                    CR_Anime_Staffel = Nothing
-                    CR_Anime_Folge = CR_Name_2(0).Trim()
-                    CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
+            Me.Invoke(New Action(Function()
+                                     TextBox2_Text = Anime_Add.textBox2.Text
+                                     Return Nothing
+                                 End Function))
+#Region "Name von Crunchyroll"
+            If TextBox2_Text = Nothing Or TextBox2_Text = "Name of the Anime" Then
+                'MsgBox("True")
+                Dim Bug_Deutsch As String = "-"
+                If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
+                    Bug_Deutsch = ":"
                 End If
+                Dim CR_Name_by_Titel_2 As String() = WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
+                CR_FilenName = CR_Name_by_Titel_2(0).Trim() '+ " " + CR_Name_by_Script2(0).Trim
+
+                If CBool(InStr(WebbrowserText, "<h4>")) Then ' false on movie true on series
+                    Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {"<h4>"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {"</h4>"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                    Dim CR_Name_Staffel0_Folge1 As String()
+                    If CBool(InStr(CR_Name_2(0), ",")) Then
+                        CR_Name_Staffel0_Folge1 = CR_Name_2(0).Split(New [Char]() {System.Convert.ToChar(",")}, System.StringSplitOptions.RemoveEmptyEntries)
+                        CR_Anime_Staffel = CR_Name_Staffel0_Folge1(0).Trim()
+                        CR_Anime_Folge = CR_Name_Staffel0_Folge1(1).Trim()
+                        CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
+                    Else
+                        CR_Anime_Staffel = Nothing
+                        CR_Anime_Folge = CR_Name_2(0).Trim()
+                        CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
+                    End If
 
 
-                Dim CR_Name_4 As String() = CR_Name_1(0).Split(New String() {"class=" + Chr(34) + "text-link" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                Dim CR_Name_Anime0 As String() = CR_Name_4(CR_Name_4.Length - 1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                CR_Name_Anime0(0) = System.Text.RegularExpressions.Regex.Replace(CR_Name_Anime0(0), "[^\w\\-]", " ")
-                CR_Anime_Titel = CR_Name_Anime0(0).Trim
-                If CR_Anime_Staffel = Nothing Then
-                    CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Folge
-                Else
-                    CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Staffel + " " + CR_Anime_Folge
+                    Dim CR_Name_4 As String() = CR_Name_1(0).Split(New String() {"class=" + Chr(34) + "text-link" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                    Dim CR_Name_Anime0 As String() = CR_Name_4(CR_Name_4.Length - 1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    CR_Name_Anime0(0) = System.Text.RegularExpressions.Regex.Replace(CR_Name_Anime0(0), "[^\w\\-]", " ")
+                    CR_Anime_Titel = CR_Name_Anime0(0).Trim
+                    If CR_Anime_Staffel = Nothing Then
+                        CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Folge
+                    Else
+                        CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Staffel + " " + CR_Anime_Folge
+                    End If
+
+                    CR_FilenName_Backup = RemoveExtraSpaces(CR_FilenName)
+
+
                 End If
+#End Region
 
-                CR_FilenName_Backup = RemoveExtraSpaces(CR_FilenName)
+            Else
                 Me.Invoke(New Action(Function()
                                          If Anime_Add.ComboBox2.Text = SubFolder_automatic Then
-                                             If SubFolder = 2 Then
-                                                 SubfolderValue = CR_Anime_Titel + "\" + CR_Anime_Staffel + "\"
-                                             ElseIf SubFolder = 1 Then
-                                                 SubfolderValue = CR_Anime_Titel + "\"
-                                             End If
+                                             MsgBox(SubFolder_automatic + " is not working with a costum name", MsgBoxStyle.Information)
                                          ElseIf Anime_Add.ComboBox2.Text = SubFolder_Nothing Then
                                          Else
                                              SubfolderValue = Anime_Add.ComboBox2.Text + "\"
                                          End If
                                          Return Nothing
                                      End Function))
+                'MsgBox(TextBox2_Text)
+                CR_FilenName = RemoveExtraSpaces(System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
+                CR_FilenName_Backup = CR_FilenName
             End If
+            Me.Invoke(New Action(Function()
+                                     If Anime_Add.ComboBox2.Text = SubFolder_automatic Then
+                                         If SubFolder = 2 Then
+                                             SubfolderValue = CR_Anime_Titel + "\" + CR_Anime_Staffel + "\"
+                                         ElseIf SubFolder = 1 Then
+                                             SubfolderValue = CR_Anime_Titel + "\"
+                                         End If
+                                     ElseIf Anime_Add.ComboBox2.Text = SubFolder_Nothing Then
+                                     Else
+                                         SubfolderValue = Anime_Add.ComboBox2.Text + "\"
+                                     End If
+                                     Return Nothing
+                                 End Function))
+            'MsgBox(CR_FilenName)
             CR_FilenName = System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = RemoveExtraSpaces(CR_FilenName)
             If SubfolderValue = Nothing Then
@@ -849,18 +868,6 @@ Public Class Main
                     CR_URI_Master = s(1).Replace("\/", "/")
                     'MsgBox(CR_URI_Master)
                 End If
-
-                'Dim CR_URI_Master_Split2 As String() = CR_URI_Master_Split1(i).Split(New [Char]() {Chr(34)})
-                'If CBool(InStr(CR_URI_Master_Split2(0), "master.m3u8")) Then 'If CBool(InStr(CR_URI_Master_Split2(0), "master.m3u8")) Then
-                '    CR_URI_Master = CR_URI_Master_Split2(0).Replace("\/", "/")
-                '    ii = i
-
-                '    Exit For
-                'ElseIf CBool(InStr(CR_URI_Master_Split2(0), "index.m3u8")) Then
-                '    'MsgBox("Premnium Episode")
-                '    Throw New System.Exception("Premnium Episode")
-                '    Exit For
-                'End If
             Next
             If CBool(InStr(CR_URI_Master, "master.m3u8")) Then
                 Me.Invoke(New Action(Function()
@@ -966,6 +973,8 @@ Public Class Main
             Dim ResoHTMLDisplay As String = Nothing
             If ResoBackString = Nothing Then
                 ResoHTMLDisplay = Resu.ToString + "p"
+            ElseIf DialogTaskString = "Language" Then
+                ResoHTMLDisplay = Resu.ToString + "p"
             Else
                 Dim ResoHTML As String() = ResoBackString.Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
                 If ResoHTML.Count > 1 Then
@@ -975,43 +984,33 @@ Public Class Main
                     ResoHTMLDisplay = ResoHTML(0) + "p"
                 End If
             End If
-            Dim L2Name As String = CR_Anime_Staffel + " " + CR_Anime_Folge
+            Dim L2Name As String = CR_FilenName_Backup
             If Resu = 42 Then
                 ResoHTMLDisplay = "[Auto]"
             End If
-            If CR_Anime_Staffel = Nothing Then
-                L2Name = CR_Anime_Folge
-            End If
             Pfad_DL = Pfad2
+            Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim L1Name As String = L1Name_Split(1).Replace("www.", "")
             Me.Invoke(New Action(Function()
-                                     ListAdd(Pfad_DL, CR_Anime_Titel, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL)
+                                     ListAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL)
                                      Return Nothing
                                  End Function))
-            ' liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_Anime_Titel + " <br> " + CR_Anime_Staffel + " " + CR_Anime_Folge + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + CR_FilenName + "-->")
 #End Region
-            'MsgBox(liList(0))
-
-            ' URL_DL = Chr(34) + GetPage(CR_URI_Master) + Chr(34) + " -map 0:a " + "-map " + FFMPEG_Back(1)
-            'MsgBox(URL_DL)
-
             AsyncWorkerX.RunAsync(AddressOf DownloadFFMPEG, URL_DL, Pfad_DL, Pfad_DL)
-            'GeckoWebBrowser1.LoadHtml(My.Resources.htmlTop + vbNewLine + liList.Last + vbNewLine + My.Resources.ulEnd + My.Resources.htmlEnd)
             Grapp_RDY = True
             Me.Invoke(New Action(Function()
 
                                      Anime_Add.StatusLabel.Text = "Status: idle"
                                      Return Nothing
                                  End Function))
-            ' ManageWorker(URL_DL, Pfad_DL, CR_FilenName)()
         Catch ex As Exception
-
             Me.Invoke(New Action(Function()
 
                                      Anime_Add.StatusLabel.Text = "Status: idle"
                                      Return Nothing
                                  End Function))
             Grapp_RDY = True
-            'MsgBox(ex.ToString)
+
             If CBool(InStr(ex.ToString, "Could not find the sub language")) Then
                 MsgBox(Sub_language_NotFound + SubSprache)
             ElseIf CBool(InStr(ex.ToString, "RESOLUTION Not Found")) Then
@@ -1023,15 +1022,12 @@ Public Class Main
             ElseIf CBool(InStr(ex.ToString, Chr(34) + "UserAbort" + Chr(34))) Then
                 MsgBox(ex.ToString, MsgBoxStyle.Information)
             Else
-                ' MsgBox(ex.ToString, MsgBoxStyle.Information)
-
                 If MessageBox.Show(Error_unknown, "Error!", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+                    Dim CCC As String() = WebbrowserText.Split(New String() {My.Resources.CC_String}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim CCC1 As String() = CCC(1).Split(New String() {".gif" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                    Dim CCC As String() = WebbrowserText.Split(New String() {Chr(34) + "country_code" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim CCC1 As String() = CCC(1).Split(New String() {Chr(34) + "});"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    'MsgBox(CCC1(0))
                     Dim SaveString As String = "Operating System: " + My.Computer.Info.OSFullName + vbNewLine + vbNewLine + "Crunchyroll URL: " + WebbrowserURL + vbNewLine + vbNewLine + "subtitle language: " + SubSprache + vbNewLine + vbNewLine + "video resolution: " + Resu.ToString + vbNewLine + vbNewLine + "error message: " + ex.ToString + vbNewLine + ex.StackTrace.ToString + vbNewLine + vbNewLine + "softsubs enabled?: " + SoftSubs.ToString + vbNewLine + vbNewLine + "Crunchyroll Downloader Version: " + Application.ProductVersion + vbNewLine + vbNewLine + "detected location from Crunchyroll: " + CCC1(0)
-                    'MsgBox(SaveString)
+
                     File.WriteAllText("Error " + DateTime.Now.ToString("dd.MM.yyyy HH.mm") + ".txt", SaveString)
                     Dim Request As HttpWebRequest = CType(WebRequest.Create("https://docs.google.com/forms/d/e/1FAIpQLSdR1QI19Lh-c-XO_iXNkDwsTUZhCMEu84boQkgW5AOBUxyiyA/formResponse"), HttpWebRequest)
                     Request.Method = "POST"
@@ -1051,10 +1047,10 @@ Public Class Main
                     Response.Close()
                     Dim Version_Check As String() = ServerResponse.Split(New String() {"<div class=" + Chr(34) + "freebirdFormviewerViewResponseConfirmationMessage" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim Version_Check2 As String() = Version_Check(1).Split(New String() {"</div>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    If Application.ProductVersion = Version_Check2(0) Then
-                    Else
-                        MsgBox("A newer version is available: v" + Version_Check2(0))
-                    End If
+                    'If Application.ProductVersion = Version_Check2(0) Then
+                    'Else
+                    '    MsgBox("A newer version is available: v" + Version_Check2(0))
+                    'End If
                 End If
             End If
 
@@ -1062,21 +1058,24 @@ Public Class Main
     End Sub
 
     Public Sub RemoveFinishedTask()
-        Dim FinishedTask As Integer = 0
-        For i As Integer = 0 To PR_List.Count - 1
-            If PR_List.Item(i).HasExited = True Then
-                FinishedTask = FinishedTask + 1
-            End If
-        Next
-        For ii As Integer = 0 To FinishedTask
+        Try
+            Dim FinishedTask As Integer = 0
             For i As Integer = 0 To PR_List.Count - 1
                 If PR_List.Item(i).HasExited = True Then
-                    PR_List.Remove(PR_List.Item(i))
-                    Exit For
+                    FinishedTask = FinishedTask + 1
                 End If
             Next
-        Next
+            For ii As Integer = 0 To FinishedTask
+                For i As Integer = 0 To PR_List.Count - 1
+                    If PR_List.Item(i).HasExited = True Then
+                        PR_List.Remove(PR_List.Item(i))
+                        Exit For
+                    End If
+                Next
+            Next
+        Catch ex As Exception
 
+        End Try
     End Sub
 
     Private Function DownloadFFMPEG(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String

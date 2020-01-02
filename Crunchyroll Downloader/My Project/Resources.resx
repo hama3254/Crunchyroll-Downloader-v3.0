@@ -342,4 +342,7 @@
   <data name="hls_Value" xml:space="preserve">
     <value>"format":"adaptive_hls",</value>
   </data>
+  <data name="CC_String" xml:space="preserve">
+    <value>&lt;img id="footer_country_flag" src="https://www.crunchyroll.com/i/country_flags/</value>
+  </data>
 </root>

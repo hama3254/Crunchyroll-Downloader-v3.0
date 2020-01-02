@@ -226,6 +226,7 @@ Public Class GeckoFX
     End Sub
 
     Private Sub GeckoFX_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.InnerHtml)
         Main.UserBowser = False
     End Sub
 

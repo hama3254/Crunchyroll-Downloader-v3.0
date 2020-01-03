@@ -23,23 +23,44 @@ Partial Class GeckoFX
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.WebBrowser1 = New Gecko.GeckoWebBrowser()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'WebBrowser1
         '
         Me.WebBrowser1.ConsoleMessageEventReceivesConsoleLogCalls = True
         Me.WebBrowser1.FrameEventsPropagateToMainWindow = False
-        Me.WebBrowser1.Location = New System.Drawing.Point(0, 0)
+        Me.WebBrowser1.Location = New System.Drawing.Point(0, 30)
         Me.WebBrowser1.Name = "WebBrowser1"
         Me.WebBrowser1.Size = New System.Drawing.Size(1280, 720)
         Me.WebBrowser1.TabIndex = 0
         Me.WebBrowser1.UseHttpActivityObserver = False
         '
+        'TextBox1
+        '
+        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox1.Location = New System.Drawing.Point(99, 1)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(1178, 26)
+        Me.TextBox1.TabIndex = 1
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(0, 1)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(96, 26)
+        Me.Button1.TabIndex = 2
+        Me.Button1.Text = "Enter"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'GeckoFX
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1279, 720)
+        Me.ClientSize = New System.Drawing.Size(1279, 750)
+        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.WebBrowser1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
@@ -48,8 +69,11 @@ Partial Class GeckoFX
         Me.ShowIcon = False
         Me.Text = "GeckoFX-Firefox-Browser"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
     Public WithEvents WebBrowser1 As Gecko.GeckoWebBrowser
+    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents Button1 As Button
 End Class

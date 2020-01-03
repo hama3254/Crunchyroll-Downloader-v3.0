@@ -9,6 +9,10 @@ Public Class GeckoFX
     Public c As Boolean = True
     Dim t As Thread
     Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
+        Try
+            TextBox1.Text = WebBrowser1.Url.ToString
+        Catch ex As Exception
+        End Try
         'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.InnerHtml)
         'Try
         '    Dim ads_add As String = My.Resources.ads_preroll
@@ -43,11 +47,11 @@ Public Class GeckoFX
                 'Dim cookieFillValue As String = "enUS"
                 'WebBrowser1.Document.Cookie = String.Format("{0}={1}; {2}", cookieFillName, cookieFillValue, WebBrowser1.Document.Cookie)
                 WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
-                Main.Pause(2)
+                Main.Pause(1)
                 WebBrowser1.Navigate("javascript:document.cookie = " + Chr(34) + "sess_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
-                Main.Pause(2)
+                Main.Pause(1)
                 WebBrowser1.Navigate("javascript:document.cookie = " + Chr(34) + "c_locale=enUS; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
-                Main.Pause(2)
+                Main.Pause(1)
                 'WebBrowser1.Navigate("javascript:alert(document.cookie);")
                 'Main.Pause(2)
                 WebBrowser1.Navigate("https://www.crunchyroll.com/")
@@ -226,9 +230,29 @@ Public Class GeckoFX
     End Sub
 
     Private Sub GeckoFX_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-        My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.InnerHtml)
+        'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.InnerHtml)
         Main.UserBowser = False
     End Sub
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Try
 
+        Catch ex As Exception
+        End Try
+
+    End Sub
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
+
+    End Sub
+
+    Private Sub TextBox1_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox1.KeyPress
+        Try
+            If Asc(e.KeyChar) = 13 Then
+                WebBrowser1.Navigate(TextBox1.Text)
+            End If
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
 End Class

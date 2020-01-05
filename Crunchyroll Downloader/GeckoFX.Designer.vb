@@ -51,7 +51,7 @@ Partial Class GeckoFX
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(96, 26)
         Me.Button1.TabIndex = 2
-        Me.Button1.Text = "Enter"
+        Me.Button1.Text = "Copy URL"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'GeckoFX

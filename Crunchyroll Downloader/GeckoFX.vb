@@ -9,10 +9,7 @@ Public Class GeckoFX
     Public c As Boolean = True
     Dim t As Thread
     Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
-        Try
-            TextBox1.Text = WebBrowser1.Url.ToString
-        Catch ex As Exception
-        End Try
+
         'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.InnerHtml)
         'Try
         '    Dim ads_add As String = My.Resources.ads_preroll
@@ -119,49 +116,18 @@ Public Class GeckoFX
 
                         ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "season-dropdown content-menu block")) Then
                             Main.b = True
-                            'MsgBox("1")
-                            If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "premium" + Chr(34))) Then
-                                Main.WebbrowserURL = WebBrowser1.Url.ToString
-                                Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
-                                Main.WebbrowserTitle = WebBrowser1.DocumentTitle
-                                Main.SeasonDropdownGrapp()
-                            Else 'If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "free_trial" + Chr(34))) Then
-                                Main.WebbrowserURL = WebBrowser1.Url.ToString
-                                Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
-                                Main.WebbrowserTitle = WebBrowser1.DocumentTitle
-                                Main.SeasonDropdownGrapp()
-                                ' ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "free_trial" + Chr(34))) Then
-                                'Main.SeasonDropdownGrapp()
-                                'Else
-                                'MsgBox(Main.CR_Premium_Failed, MsgBoxStyle.Information)
-                                '    Anime_Add.groupBox1.Visible = True
-                                '    Anime_Add.groupBox2.Visible = False
-                                '    Anime_Add.GroupBox3.Visible = False
-                                '    Anime_Add.pictureBox4.Image = My.Resources.main_button_download_default
-                            End If
+                            Anime_Add.textBox2.Text = "Name of the Anime"
+                            Main.WebbrowserURL = WebBrowser1.Url.ToString
+                            Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+                            Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                            Main.SeasonDropdownGrapp()
                         ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "wrapper container-shadow hover-classes")) Then
                             Main.b = True
-                            'MsgBox("1")
-                            If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "premium" + Chr(34))) Then
-                                Main.WebbrowserURL = WebBrowser1.Url.ToString
-                                Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
-                                Main.WebbrowserTitle = WebBrowser1.DocumentTitle
-                                Main.MassGrapp()
-                            Else 'If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "free_trial" + Chr(34))) Then
-                                Main.WebbrowserURL = WebBrowser1.Url.ToString
-                                Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
-                                Main.WebbrowserTitle = WebBrowser1.DocumentTitle
-                                Main.MassGrapp()
-                                'ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "free_trial" + Chr(34))) Then
-                                'Main.MassGrapp()
-                                'Else
-                                '    'MsgBox(Main.CR_Premium_Failed, MsgBoxStyle.Information)
-                                '    Anime_Add.groupBox1.Visible = True
-                                '    Anime_Add.groupBox2.Visible = False
-                                '    Anime_Add.GroupBox3.Visible = False
-                                '    Anime_Add.pictureBox4.Image = My.Resources.main_button_download_default
-
-                            End If
+                            Anime_Add.textBox2.Text = "Name of the Anime"
+                            Main.WebbrowserURL = WebBrowser1.Url.ToString
+                            Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+                            Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                            Main.MassGrapp()
                         Else
                             MsgBox(Main.No_Stream, MsgBoxStyle.OkOnly)
                         End If
@@ -236,12 +202,10 @@ Public Class GeckoFX
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
-
+            My.Computer.Clipboard.SetText(WebBrowser1.Url.ToString)
+            MsgBox("copied: " + Chr(34) + WebBrowser1.Url.ToString + Chr(34))
         Catch ex As Exception
         End Try
-
-    End Sub
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
 
     End Sub
 
@@ -251,8 +215,14 @@ Public Class GeckoFX
                 WebBrowser1.Navigate(TextBox1.Text)
             End If
         Catch ex As Exception
-
+            MsgBox("Error in URL", MsgBoxStyle.Critical)
         End Try
+    End Sub
 
+    Private Sub WebBrowser1_DocumentTitleChanged(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentTitleChanged
+        Try
+            TextBox1.Text = WebBrowser1.Url.ToString
+        Catch ex As Exception
+        End Try
     End Sub
 End Class

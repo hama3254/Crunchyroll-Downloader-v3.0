@@ -94,8 +94,9 @@
     <Reference Include="Geckofx-Winforms, Version=60.0.39.0, Culture=neutral, PublicKeyToken=3209ac31600d1857, processorArchitecture=x86">
       <HintPath>..\packages\Geckofx60.32.60.0.39\lib\net45\Geckofx-Winforms.dll</HintPath>
     </Reference>
-    <Reference Include="Helpers">
-      <HintPath>..\Helpers.dll</HintPath>
+    <Reference Include="Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\Projects\AsyncWorkerVB08\Helpers\bin\x86\Release\Helpers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -291,6 +292,9 @@
     <None Include="Resources\crdSettings_Button_SafeExit_hover.png" />
     <None Include="Resources\crdSettings_Button_SafeExit.png" />
     <None Include="Resources\crdSettings_Background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="..\packages\Geckofx60.32.60.0.39\build\Geckofx60.32.targets" Condition="Exists('..\packages\Geckofx60.32.60.0.39\build\Geckofx60.32.targets')" />

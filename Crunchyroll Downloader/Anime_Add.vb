@@ -1,6 +1,7 @@
 ﻿Imports Microsoft.Win32
 Imports System.Net
-
+Imports Gecko
+Imports System.IO
 Public Class Anime_Add
     Public Mass_DL_Cancel As Boolean = False
     Public List_DL_Cancel As Boolean = False
@@ -22,6 +23,11 @@ Public Class Anime_Add
     End Sub
 
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Try
+            Main.waveOutSetVolume(0, 0)
+        Catch ex As Exception
+
+        End Try
         Me.Location = New Point(Main.Location.X + Main.Width / 2 - Me.Width / 2, Main.Location.Y + Main.Height / 2 - Me.Height / 2)
         TextBox4.Text = Main.Pfad
 
@@ -155,19 +161,19 @@ Public Class Anime_Add
 
 
 #End Region
-    Private Sub pictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
+    Private Sub PictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
         pictureBox3.BackColor = SystemColors.Control
     End Sub
 
-    Private Sub pictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
+    Private Sub PictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
         pictureBox3.BackColor = Color.Transparent
     End Sub
 
-    Private Sub pictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
+    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
         Me.Close()
     End Sub
 
-    Private Sub pictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
+    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
         'pictureBox4.Enabled = False
         Main.RemoveFinishedTask()
         If groupBox1.Visible = True Then
@@ -202,9 +208,28 @@ Public Class Anime_Add
                     GeckoFX.WebBrowser1.Navigate(textBox1.Text)
                 Else 'If CBool(InStr(textBox1.Text, "vrv.co")) Then
                     If MessageBox.Show("This in NOT a Crunchyroll URL, try anyway?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                        Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
+                        Dim CurrentFile As String = Nothing
+                        For Each File In FileLocation.GetFiles()
+                            If InStr(File.FullName, "log.txt") Then
+                                CurrentFile = File.FullName
+                                Exit For
+                            End If
+                        Next
+                        If CurrentFile = Nothing Then
+                        Else
+                            Dim logFileStream As FileStream = New FileStream(CurrentFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
+                            Dim logFileReader As StreamReader = New StreamReader(logFileStream)
+                            logFileStream.SetLength(0)
+                            logFileReader.Close()
+                            logFileStream.Close()
+                        End If
+                        Main.LoggingBrowser = True
+                        GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                        GeckoPreferences.Default("logging.nsHttp") = 3
                         GeckoFX.WebBrowser1.Navigate(textBox1.Text)
                         StatusLabel.Text = "Status: looking for non CR video file"
-                        'System.Threading.Thread.Sleep(20000)
+                        Main.b = False
                     Else
                         Exit Sub
                         pictureBox4.Enabled = True
@@ -214,6 +239,7 @@ Public Class Anime_Add
                     'MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
                 End If
             Catch ex As Exception
+                MsgBox(ex.ToString)
                 Main.b = True
                 MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
             End Try
@@ -237,7 +263,7 @@ Public Class Anime_Add
                 comboBox3.Enabled = False
                 ComboBox1.Enabled = False
             End If
-        ElseIf groupBox3.Visible = True Then
+        ElseIf GroupBox3.Visible = True Then
             GroupBox3.Visible = False
             groupBox2.Visible = False
             groupBox1.Visible = True
@@ -263,7 +289,7 @@ Public Class Anime_Add
         End If
     End Sub
 
-    Private Sub pictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
+    Private Sub PictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
         If Mass_DL_Cancel = True Then
             pictureBox4.Image = My.Resources.add_mass_running_cancel_hover
         ElseIf List_DL_Cancel = True Then
@@ -275,7 +301,7 @@ Public Class Anime_Add
 
     End Sub
 
-    Private Sub pictureBox4_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox4.MouseLeave
+    Private Sub PictureBox4_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox4.MouseLeave
         If Mass_DL_Cancel = True Then
             pictureBox4.Image = My.Resources.add_mass_running_cancel
         ElseIf List_DL_Cancel = True Then
@@ -286,7 +312,7 @@ Public Class Anime_Add
 
     End Sub
 
-    Private Sub textBox1_Click(sender As Object, e As EventArgs) Handles textBox1.Click
+    Private Sub TextBox1_Click(sender As Object, e As EventArgs) Handles textBox1.Click
         If textBox1.Text = "URL" Then
             textBox1.Text = Nothing
         End If
@@ -386,7 +412,7 @@ Public Class Anime_Add
     End Sub
 
 
-    Private Sub textBox2_Click(sender As Object, e As EventArgs) Handles textBox2.Click
+    Private Sub TextBox2_Click(sender As Object, e As EventArgs) Handles textBox2.Click
         If textBox2.Text = "Name of the Anime" Then
             textBox2.Text = Nothing
         End If

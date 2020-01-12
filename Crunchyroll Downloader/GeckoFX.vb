@@ -4,56 +4,25 @@ Imports System.IO
 Imports Gecko.Cache
 Imports System.ComponentModel
 Imports System.Threading
+Imports System.Net
+Imports System.Net.WebUtility
 Public Class GeckoFX
     Public keks As String = Nothing
     Public c As Boolean = True
     Dim t As Thread
-    Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
 
-        'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.InnerHtml)
-        'Try
-        '    Dim ads_add As String = My.Resources.ads_preroll
-        '    For Each c As String In WebBrowser1.Document.Body.InnerHtml
-        '        If c = My.Resources.ads_midroll Then
-        '            ads_add = ads_add + My.Resources.ads_preroll
-        '        End If
-        '    Next
-        '    WebBrowser1.Document.Body.InnerHtml = WebBrowser1.Document.Body.InnerHtml.Replace(My.Resources.ads_preroll, ads_add)
-        'Catch ex As Exception
-        'End Try
-        'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.InnerHtml)
+    Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
         If Main.LoginOnly = "US_UnBlock" Then
             Main.LoginOnly = "US_UnBlocck_Wait2nd"
-            'Main.LoginOnly = "US_UnBlock_Wait"
-            'My.Computer.Clipboard.SetText(WebBrowser1.Url.ToString + vbNewLine + "before" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie)
-            'einstellungen.RichTextBox1.Text = WebBrowser1.Url.ToString + vbNewLine + "before" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie
-            'WebBrowser1.Document.Cookie = ""
-            'WebBrowser1.Navigate("javascript:document.cookie = 'session_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';")
-            'WebBrowser1.Navigate("javascript:$$")
-            'WebBrowser1.ExecuteCommand("alert(document.cookie);")
-            'WebBrowser1.Document.Body.InnerHtml = WebBrowser1.Document.Body.InnerHtml + "<script>alert(document.cookie);</script>"
-            'einstellungen.RichTextBox1.Text = einstellungen.RichTextBox1.Text + vbNewLine + WebBrowser1.Url.ToString + vbNewLine + "after" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie
-            'My.Computer.Clipboard.SetText(before + vbNewLine + WebBrowser1.Url.ToString + vbNewLine + "after" + vbNewLine + vbNewLine + WebBrowser1.Document.Cookie)
             Try
-                'Dim cookieName As String = "session_id"
-                'Dim cookieValue As String = keks
-                'WebBrowser1.Document.Cookie = String.Format("{0}={1}; {2}", cookieName, cookieValue, WebBrowser1.Document.Cookie)
-                'Dim cookieName2 As String = "sess_id"
-                'WebBrowser1.Document.Cookie = String.Format("{0}={1}; {2}", cookieName2, cookieValue, WebBrowser1.Document.Cookie)
-                'Dim cookieFillName As String = "c_locale"
-                'Dim cookieFillValue As String = "enUS"
-                'WebBrowser1.Document.Cookie = String.Format("{0}={1}; {2}", cookieFillName, cookieFillValue, WebBrowser1.Document.Cookie)
                 WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
                 WebBrowser1.Navigate("javascript:document.cookie = " + Chr(34) + "sess_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
                 WebBrowser1.Navigate("javascript:document.cookie = " + Chr(34) + "c_locale=enUS; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
-                'WebBrowser1.Navigate("javascript:alert(document.cookie);")
-                'Main.Pause(2)
                 WebBrowser1.Navigate("https://www.crunchyroll.com/")
                 Main.LoginOnly = "US_UnBlock_Check"
-                'WebBrowser1.Navigate("https://www.crunchyroll.com/")
             Catch ex As Exception
             End Try
         ElseIf Main.LoginOnly = "US_UnBlock_Wait" Then
@@ -64,14 +33,9 @@ Public Class GeckoFX
         ElseIf Main.LoginOnly = "US_UnBlock_Check" Then
             Main.LoginOnly = "false"
             If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "Your detected location is United States of America.")) Then
-                'MsgBox(keks + vbNewLine + WebBrowser1.Document.Cookie)
                 MsgBox("unlock successful", MsgBoxStyle.Information)
                 Me.Close()
-                'MsgBox(WebBrowser1.Document.Cookie)
             Else
-
-                'MsgBox(WebBrowser1.Document.Cookie)
-                'MsgBox(keks + vbNewLine + WebBrowser1.Document.Cookie)
                 MsgBox("unlock failes", MsgBoxStyle.Exclamation)
                 Me.Close()
             End If
@@ -151,27 +115,141 @@ Public Class GeckoFX
                     Me.Close()
                 End If
             Else
-                If Main.UserBowser = False Then
-                    'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.OuterHtml)
-                    'If InStr(WebBrowser1.DocumentTitle, " - Watch on VRV") Then
+                If Main.b = False Then
                     Main.WebbrowserURL = WebBrowser1.Url.ToString
+                    Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                     Main.WebbrowserTitle = WebBrowser1.DocumentTitle
-                    WebBrowser1.Navigate("view-source:" + Main.WebbrowserURL)
-                    Main.Pause(3)
-                    If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, ".m3u8")) Then
-                        'MsgBox("test3")
-                        Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
-                        Main.b = True
-                        t = New Thread(AddressOf Main.Grapp_non_CR)
-                        t.Priority = ThreadPriority.Normal
-                        t.IsBackground = True
-                        t.Start()
+                    Main.b = True
+                    Main.UserBowser = True
+                    For i As Integer = 20 To 0 Step -1
+                        Main.Pause(1)
+                        Anime_Add.StatusLabel.Text = "Status: scanning network traffic " + Math.Abs(i).ToString
+                    Next
+                    Anime_Add.StatusLabel.Text = "Status:  "
+                    Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
+                    Dim CurrentFile As String = Nothing
+                    For Each File In FileLocation.GetFiles()
+                        If InStr(File.FullName, "log.txt") Then
+                            CurrentFile = File.FullName
+                            Exit For
+                        End If
+                    Next
+                    Dim logFileStream As FileStream = New FileStream(CurrentFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
+                    Dim logFileReader As StreamReader = New StreamReader(logFileStream)
+                    Dim line As String = Nothing
+                    Dim HTMLString As String = Nothing
+                    line = logFileReader.ReadLine
+
+                    While (line IsNot Nothing)
+                        line = logFileReader.ReadLine
+                        If InStr(line, ".m3u8?") Then
+                            If HTMLString = Nothing Then
+                                HTMLString = line
+                            Else
+                                HTMLString = HTMLString + vbNewLine + line
+                            End If
+                            For i As Integer = 0 To 10
+                                line = logFileReader.ReadLine
+                                If InStr(line, " Host: ") Then
+                                    HTMLString = HTMLString + vbNewLine + line
+                                End If
+                            Next
+                        End If
+                    End While
+                    logFileReader.Close()
+                    logFileStream.Close()
+                    'MsgBox(HTMLString)
+                    If InStr(HTMLString, ".m3u8?") Then
+                        Anime_Add.StatusLabel.Text = "Status: m3u8 found, trying to start the download"
+                        Main.LoggingBrowser = False
+                        GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                        GeckoPreferences.Default("logging.nsHttp") = 0
+                        Dim URL As String = Nothing
+                        Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
+                        For i As Integer = 0 To HTMLSplit.Count - 1
+                            If InStr(HTMLSplit(i), ".m3u8?") Then
+                                Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
+                                Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                Dim URLPart1() As String = HTMLSplit(i + 1).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
+                                Main.NonCR_URL = "https://" + URLPart1(1) + URLPart2Split2(0)
+                                'MsgBox(Main.NonCR_URL)
+                                'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
+                                t = New Thread(AddressOf Main.Grapp_non_CR)
+                                t.Priority = ThreadPriority.Normal
+                                t.IsBackground = True
+                                t.Start()
+                                Exit For
+                                Me.Close()
+                            End If
+                        Next
+                    Else
+                        Anime_Add.StatusLabel.Text = "Status: no m3u8 found, analyzing HTML content"
+                        WebBrowser1.Navigate("view-source:" + Main.WebbrowserURL)
+                        Main.Pause(3)
+                        If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, ".m3u8")) Then
+#Region "m3u8 suche"
+                            Main.WebbrowserText = UrlDecode(WebBrowser1.Document.Body.OuterHtml)
+                            If InStr(Main.WebbrowserText, ".m3u8?") Then
+                            Else
+                                Anime_Add.StatusLabel.Text = "Status: no m3u8 found"
+                                Main.UserBowser = False
+                                Me.Close()
+                                Exit Sub
+                            End If
+                            Dim ii As Integer = 0
+                            Dim Video_URI_Master As String = Nothing
+                            Dim Video_URI_Master_Split1 As String() = Main.WebbrowserText.Split(New String() {".m3u8?"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim m3u8Link As String = Nothing
+                            For i As Integer = 0 To Video_URI_Master_Split1.Count - 2
+                                Dim Video_URI_Master_Split_Top As String() = Video_URI_Master_Split1(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                                Dim Video_URI_Master_Split_Bottom As String() = Video_URI_Master_Split1(i + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                                m3u8Link = Video_URI_Master_Split_Top(Video_URI_Master_Split_Top.Count - 1) + ".m3u8?" + Video_URI_Master_Split_Bottom(0)
+                                Exit For
+                            Next
+                            m3u8Link = m3u8Link.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/")
+                            Dim req As WebRequest
+                            Dim res As WebResponse
+
+                            req = WebRequest.Create(m3u8Link)
+
+                            Try
+                                res = req.GetResponse()
+                                Dim ResponseStreamReader As StreamReader = New StreamReader(res.GetResponseStream)
+                                Dim ResponseStreamString As String = ResponseStreamReader.ReadToEnd
+                                If InStr(ResponseStreamString, "drm") Then
+                                    Anime_Add.StatusLabel.Text = "Status: m3u8 found, but looks like it is DRM protected"
+                                Else
+                                    Anime_Add.StatusLabel.Text = "Status: m3u8 found, looks good"
+                                    Main.Pause(1)
+                                    Main.NonCR_URL = m3u8Link
+                                    t = New Thread(AddressOf Main.Grapp_non_CR)
+                                    t.Priority = ThreadPriority.Normal
+                                    t.IsBackground = True
+                                    t.Start()
+                                    Me.Close()
+                                End If
+                            Catch ee As WebException
+                                Anime_Add.StatusLabel.Text = "Status: error while loading m3u8"
+                                Main.UserBowser = False
+                                Me.Close()
+                                Exit Sub
+                                ' URL doesn't exists
+                            Catch eee As Exception
+                                'MsgBox(eee.ToString + vbNewLine + m3u8Link)
+                            End Try
+#End Region
+                        End If
+                        Anime_Add.StatusLabel.Text = "Status: idle"
+                        Me.Close()
+                        Main.UserBowser = False
                     End If
-                    'End If
                 End If
             End If
             If Main.UserBowser = False Then
-                Me.Close()
+                If Main.b = True Then
+                    Anime_Add.StatusLabel.Text = "Status: idle"
+                    Me.Close()
+                End If
             End If
         End If
     End Sub
@@ -181,22 +259,14 @@ Public Class GeckoFX
             If Main.LoginOnly = "US_UnBlock" Then
                 WebBrowser1.Navigate("https://www.crunchyroll.com/login")
             Else
-                'WebBrowser1.Navigate("https://duckduckgo.com/") '")
                 WebBrowser1.Navigate(Main.Startseite)
             End If
-            'WebBrowser1.Navigate("about:preferences")
-            'WebBrowser1.Navigate("about:addons")
-
-            'WebBrowser1.Navigate("https://www.crunchyroll.com/de/rwby/episode-45-world-of-remnant-1-dust-658499")
-            'WebBrowser1.Navigate("https://www.crunchyroll.com/de/rwby")
         End If
         Me.Icon = My.Resources.icon
-        'MsgBox(WebBrowser1.Url.ToString)
         Main.UserBowser = True
     End Sub
 
     Private Sub GeckoFX_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-        'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.InnerHtml)
         Main.UserBowser = False
     End Sub
 
@@ -209,11 +279,13 @@ Public Class GeckoFX
 
     End Sub
 
-    Private Sub TextBox1_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox1.KeyPress
+    Private Sub TextBox1_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBox1.KeyDown
         Try
-            If Asc(e.KeyChar) = 13 Then
+            If e.KeyCode = Keys.Return Then
+                e.SuppressKeyPress = True
                 WebBrowser1.Navigate(TextBox1.Text)
             End If
+
         Catch ex As Exception
             MsgBox("Error in URL", MsgBoxStyle.Critical)
         End Try

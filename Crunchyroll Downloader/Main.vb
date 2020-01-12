@@ -4,6 +4,9 @@ Imports System.IO
 Imports Microsoft.Win32
 Imports System.ComponentModel
 Public Class Main
+    Public LoggingBrowser As Boolean = False
+    Public NonCR_Timeout As Integer = 5
+    Public NonCR_URL As String = Nothing
     Public gIndexH As Integer = -1
     Public DialogTaskString As String
     Public UserCloseDialog As Boolean = False
@@ -87,38 +90,38 @@ Public Class Main
 
 #Region "UI"
 
-    Private Sub pictureBox1_MouseHover(sender As Object, e As EventArgs) Handles pictureBox1.MouseMove
+    Private Sub PictureBox1_MouseHover(sender As Object, e As EventArgs) Handles pictureBox1.MouseMove
         pictureBox1.BackColor = SystemColors.Control
     End Sub
 
-    Private Sub pictureBox1_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox1.MouseLeave
+    Private Sub PictureBox1_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox1.MouseLeave
         pictureBox1.BackColor = Color.Transparent
     End Sub
 
 
-    Private Sub pictureBox2_MouseHover(sender As Object, e As EventArgs) Handles pictureBox2.MouseMove
+    Private Sub PictureBox2_MouseHover(sender As Object, e As EventArgs) Handles pictureBox2.MouseMove
         pictureBox2.BackColor = SystemColors.Control
     End Sub
 
-    Private Sub pictureBox2_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox2.MouseLeave
+    Private Sub PictureBox2_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox2.MouseLeave
         pictureBox2.BackColor = Color.Transparent
     End Sub
 
 
 
-    Private Sub pictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
+    Private Sub PictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
         pictureBox3.BackColor = SystemColors.Control
     End Sub
 
-    Private Sub pictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
+    Private Sub PictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
         pictureBox3.BackColor = Color.Transparent
     End Sub
 
-    Private Sub pictureBox4_MouseHover(sender As Object, e As EventArgs) Handles pictureBox4.MouseMove
+    Private Sub PictureBox4_MouseHover(sender As Object, e As EventArgs) Handles pictureBox4.MouseMove
         pictureBox4.BackColor = SystemColors.Control
     End Sub
 
-    Private Sub pictureBox4_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox4.MouseLeave
+    Private Sub PictureBox4_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox4.MouseLeave
         pictureBox4.BackColor = Color.Transparent
     End Sub
 
@@ -126,8 +129,21 @@ Public Class Main
 
 
 #End Region
+    Public Declare Function waveOutSetVolume Lib "winmm.dll" (ByVal uDeviceID As Integer, ByVal dwVolume As Integer) As Integer
 
     Private Sub Form8_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        waveOutSetVolume(0, 0)
+        Try
+            Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
+            For Each File In FileLocation.GetFiles()
+                If InStr(File.FullName, "log.txt") Then
+                    My.Computer.FileSystem.DeleteFile(Path.Combine(Application.StartupPath, File.FullName))
+                    Exit For
+                End If
+            Next
+        Catch ex As Exception
+
+        End Try
         ServicePointManager.Expect100Continue = True
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
         Me.Icon = My.Resources.icon
@@ -281,7 +297,7 @@ Public Class Main
         End If
     End Sub
 
-    Public Function bt_del(ByVal pListView As ListView, ByVal ItemIndex As Integer, ByVal NameKomplett As String) As PictureBox
+    Public Function Bt_del(ByVal pListView As ListView, ByVal ItemIndex As Integer, ByVal NameKomplett As String) As PictureBox
         'btn erstellen funktion
         Dim r As Rectangle
         Dim bt_r As New PictureBox
@@ -301,13 +317,13 @@ Public Class Main
         ToolTip1.SetToolTip(bt_r, NameKomplett)
         'bt_r.FlatAppearance.BorderSize = 1
         'bt_r.FlatAppearance.BorderColor = Color.Black
-        AddHandler bt_r.Click, AddressOf Me.bt_r_click
-        AddHandler bt_r.MouseEnter, AddressOf Me.bt_r_ME
-        AddHandler bt_r.MouseLeave, AddressOf Me.bt_r_ML
+        AddHandler bt_r.Click, AddressOf Me.Bt_r_click
+        AddHandler bt_r.MouseEnter, AddressOf Me.Bt_r_ME
+        AddHandler bt_r.MouseLeave, AddressOf Me.Bt_r_ML
         Return Nothing
     End Function
 
-    Private Sub bt_r_click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub Bt_r_click(ByVal sender As Object, ByVal e As EventArgs)
         Dim b As PictureBox = sender
         b.Image = My.Resources.main_close
         If MessageBox.Show("Cancel this Download?", "Cancel?", MessageBoxButtons.YesNo) = DialogResult.Yes Then
@@ -318,11 +334,11 @@ Public Class Main
         End If
 
     End Sub
-    Private Sub bt_r_ME(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub Bt_r_ME(ByVal sender As Object, ByVal e As EventArgs)
         Dim b As PictureBox = sender
         b.Image = My.Resources.main_del_hover
     End Sub
-    Private Sub bt_r_ML(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub Bt_r_ML(ByVal sender As Object, ByVal e As EventArgs)
         Dim b As PictureBox = sender
         b.Image = My.Resources.main_del
     End Sub
@@ -1108,7 +1124,10 @@ Public Class Main
         Dim FileNameSplit As String() = pr.StartInfo.Arguments.ToString().Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim FileName As String = Chr(34) + FileNameSplit(FileNameSplit.Count - 1) + Chr(34)
         If Me.Visible = False Or AbourtList.Contains(FileName) Then
-            pr.Kill()
+            Try
+                pr.Kill()
+            Catch ex As Exception
+            End Try
             RaiseEvent UpdateUI(FileName, 200, 0, 0)
         End If
         Me.Invoke(New Action(Function()
@@ -1208,7 +1227,7 @@ Public Class Main
         Next
     End Sub
 
-    Private Sub pictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
+    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
         RemoveFinishedTask()
         Pause(1)
         If PR_List.Count > 0 Then
@@ -1221,16 +1240,16 @@ Public Class Main
     End Sub
 
 
-    Private Sub pictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
+    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
         Anime_Add.Show()
 
     End Sub
 
-    Private Sub pictureBox2_Click(sender As Object, e As EventArgs) Handles pictureBox2.Click
+    Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles pictureBox2.Click
         einstellungen.Show()
     End Sub
 
-    Private Sub pictureBox1_Click(sender As Object, e As EventArgs) Handles pictureBox1.Click
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles pictureBox1.Click
         UserBowser = True
         GeckoFX.Show()
     End Sub
@@ -1412,9 +1431,12 @@ Public Class Main
 #End Region
 
     Public Sub Grapp_non_CR()
-        'Try
-        'MsgBox(WebbrowserTitle)
 
+        If NonCR_URL = Nothing Then Exit Sub
+        Me.Invoke(New Action(Function()
+                                 Anime_Add.StatusLabel.Text = "Status: m3u8 found, trying to start the download"
+                                 Return Nothing
+                             End Function))
         Grapp_non_cr_RDY = False
         Dim Video_Title As String = WebbrowserTitle.Replace(" - Watch on VRV", "").Replace("Free Streaming", "").Replace("Tubi", "")
         Video_Title = RemoveExtraSpaces(Video_Title)
@@ -1422,36 +1444,24 @@ Public Class Main
         Dim Video_FilenName As String = Video_Title
         Video_FilenName = System.Text.RegularExpressions.Regex.Replace(Video_FilenName, "[^\w\\-]", " ")
         Video_FilenName = RemoveExtraSpaces(Video_FilenName + ".mp4")
-        'MsgBox(Video_FilenName)
 #End Region
 
-
-
-#Region "m3u8 suche"
-        Dim ii As Integer = 0
-        Dim Video_URI_Master As String = Nothing
-        Dim Video_URI_Master_Split1 As String() = WebbrowserText.Split(New String() {".m3u8?"}, System.StringSplitOptions.RemoveEmptyEntries)
 #Region "thumbnail"
         Dim thumbnail As String() = Nothing
         Dim thumbnail2 As String() = Nothing
         Dim thumbnail4 As String = "None, will usese fail image"
         Try
-            If InStr(Video_URI_Master_Split1(0), "thumbnail") Then
-                thumbnail = Video_URI_Master_Split1(0).Split(New String() {"thumbnail"}, System.StringSplitOptions.RemoveEmptyEntries)
-            ElseIf InStr(Video_URI_Master_Split1(1), "thumbnail") Then
-                thumbnail = Video_URI_Master_Split1(1).Split(New String() {"thumbnail"}, System.StringSplitOptions.RemoveEmptyEntries)
+            If InStr(WebbrowserText, "thumbnail") Then
+                thumbnail = WebbrowserText.Split(New String() {"thumbnail"}, System.StringSplitOptions.RemoveEmptyEntries)
             End If
         Catch ex As Exception
-            'MsgBox(ex.ToString)
-        End Try
 
+        End Try
         Try
             For i As Integer = 0 To thumbnail.Count - 1
-                'MsgBox((thumbnail.Count - 1).ToString + vbNewLine + i.ToString + vbNewLine + thumbnail(i))
                 If InStr(thumbnail(i), ".jpg") Then
                     If InStr(thumbnail(i), "https:") Then
                         thumbnail2 = thumbnail(i).Split(New String() {".jpg"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        'MsgBox(thumbnail2(thumbnail2.Count - 1))
                         Dim thumbnail3 As String() = thumbnail2(0).Split(New String() {"https:"}, System.StringSplitOptions.RemoveEmptyEntries)
                         thumbnail4 = "https:" + thumbnail3(thumbnail3.Count - 1).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\/", "/") + ".jpg"
                         Exit For
@@ -1460,25 +1470,9 @@ Public Class Main
             Next
 
         Catch ex As Exception
-            'MsgBox(ex.ToString)
         End Try
-        'MsgBox(thumbnail4)
-        'Dim thumbnail2 As String() = thumbnail(1).Split(New String() {Chr(34) + "}"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-        'Dim thumbnail3 As String = "None, will usese fail image" 'thumbnail2(0).Replace("\/", "/")
 #End Region
-        Dim hls_List As New List(Of String)
-        For i As Integer = 0 To Video_URI_Master_Split1.Count - 2
-            Dim Video_URI_Master_Split_Top As String() = Video_URI_Master_Split1(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim Video_URI_Master_Split_Bottom As String() = Video_URI_Master_Split1(i + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            hls_List.Add(Video_URI_Master_Split_Top(Video_URI_Master_Split_Top.Count - 1) + ".m3u8?" + Video_URI_Master_Split_Bottom(0))
-        Next
 
-        Me.Invoke(New Action(Function()
-                                 Anime_Add.StatusLabel.Text = "Status: m3u8 found, looking for resolution"
-                                 Return Nothing
-                             End Function))
-
-#End Region
 
 #Region "lösche doppel download"
 
@@ -1496,88 +1490,10 @@ Public Class Main
 
         End If
 #End Region
-        Dim str As String = Nothing
-        Dim StreamSuccess = False
-
-        For i2 As Integer = 0 To hls_List.Count - 1
-            Dim client As New System.Net.WebClient
-            client.Encoding = Encoding.UTF8
-            'MsgBox(CR_URI_Master)
-            Dim urlnow As String = hls_List.Item(i2).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/")
-            'MsgBox(urlnow)
-            str = client.DownloadString(urlnow)
-            'MsgBox(str)
-
-
-
-            If CBool(InStr(str, "x" + Resu.ToString + ",")) Then
-                Resu2 = "x" + Resu.ToString
-            Else
-                'MsgBox(str)
-                If CBool(InStr(str, ResuSave + ",")) Then
-                    Resu2 = ResuSave + ","
-                Else
-                    Me.Invoke(New Action(Function()
-                                             DialogTaskString = "Resolution"
-                                             ResoNotFoundString = str
-                                             Reso.ShowDialog()
-                                             Return Nothing
-                                         End Function))
-                    'MsgBox(ResoBackString)
-                    If UserCloseDialog = True Then
-                        Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
-                    Else
-                        ResuSave = ResoBackString
-
-                    End If
-                End If
-            End If
-            Dim URL_Temp As String = Nothing
-            Try
-                Dim Video_URI_1 As String() = str.Split(New String() {Resu2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim Video_URI_2 As String() = Video_URI_1(1).Split(New [Char]() {Chr(34)})
-                Dim Video_URI_3 As String() = Video_URI_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
-                URL_Temp = Video_URI_3(0).Trim()
-            Catch ex As Exception
-                ResoBackString = "[Auto]"
-                URL_Temp = urlnow
-            End Try
-            Dim clientIndex As New System.Net.WebClient
-            clientIndex.Encoding = Encoding.UTF8
-            'MsgBox(CR_URI_Master)
-            Dim DRM_Check As String = clientIndex.DownloadString(URL_Temp)
-            If InStr(DRM_Check, "drm") Then
-            Else
-                URL_DL = URL_Temp
-                'MsgBox(URL_DL)
-                StreamSuccess = True
-                Exit For
-            End If
-
-        Next
-
-        If StreamSuccess = False Then
-            Grapp_non_cr_RDY = True
-            Exit Sub
-        End If
-
+        URL_DL = NonCR_URL.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/") 'hls_List.Item(i2).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/")
 #Region "<li> constructor"
         Dim Subsprache3 As String = "undefined" 'HardSubValuesToDisplay(SubSprache2)
-        Dim ResoHTMLDisplay As String = Nothing
-        If ResoBackString = Nothing Then
-            ResoHTMLDisplay = Resu.ToString + "p"
-        ElseIf ResoBackString = "[Auto]" Then
-            ResoHTMLDisplay = "[Auto]"
-        Else
-            'MsgBox(ResoBackString)
-            Dim ResoHTML As String() = ResoBackString.Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
-            If ResoHTML.Count > 1 Then
-                ResoHTMLDisplay = ResoHTML(1) + "p"
-
-            Else
-                ResoHTMLDisplay = ResoHTML(0) + "p"
-            End If
-        End If
+        Dim ResoHTMLDisplay As String = "[Auto]"
         Dim L2Name As String = Video_Title
         Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim L1Name As String = L1Name_Split(1)
@@ -1594,63 +1510,6 @@ Public Class Main
                                  Anime_Add.StatusLabel.Text = "Status: idle"
                                  Return Nothing
                              End Function))
-        ' ManageWorker(URL_DL, Pfad_DL, CR_FilenName)()
-        'Catch ex As Exception
-        '    TaskCount = TaskCount - 1
-        '    Me.Invoke(New Action(Function()
 
-        '                             Anime_Add.StatusLabel.Text = "Status: idle"
-        '                             Return Nothing
-        '                         End Function))
-        '    'StatusLabel.Text = "Status: idle"
-        '    Grapp_RDY = True
-        '    'MsgBox(ex.ToString)
-        '    If CBool(InStr(ex.ToString, "Could not find the sub language")) Then
-        '        'MsgBox(Sub_language_NotFound + SubSprache)
-        '    ElseIf CBool(InStr(ex.ToString, "RESOLUTION Not Found")) Then
-        '        'MsgBox(Resolution_NotFound)
-        '    ElseIf CBool(InStr(ex.ToString, "Premnium Episode")) Then
-        '        'MsgBox(Premium_Stream, MsgBoxStyle.Information)
-        '    ElseIf CBool(InStr(ex.ToString, "System.UnauthorizedAccessException")) Then
-        '        'MsgBox(ErrorNoPermisson + vbNewLine + ex.ToString, MsgBoxStyle.Information)
-        '    ElseIf CBool(InStr(ex.ToString, Chr(34) + "UserAbort" + Chr(34))) Then
-        '        'MsgBox(ex.ToString, MsgBoxStyle.Information)
-        '    Else
-        '        ' MsgBox(ex.ToString, MsgBoxStyle.Information)
-
-        '        If MessageBox.Show(Error_unknown, "Error!", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-
-        '            Dim CCC As String() = WebbrowserText.Split(New String() {Chr(34) + "country_code" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-        '            Dim CCC1 As String() = CCC(1).Split(New String() {Chr(34) + "});"}, System.StringSplitOptions.RemoveEmptyEntries)
-        '            'MsgBox(CCC1(0))
-        '            Dim SaveString As String = "Operating System: " + My.Computer.Info.OSFullName + vbNewLine + vbNewLine + "Crunchyroll URL: " + WebbrowserURL + vbNewLine + vbNewLine + "subtitle language: " + SubSprache + vbNewLine + vbNewLine + "video resolution: " + Resu.ToString + vbNewLine + vbNewLine + "error message: " + ex.ToString + vbNewLine + ex.StackTrace.ToString + vbNewLine + vbNewLine + "softsubs enabled?: " + SoftSubs.ToString + vbNewLine + vbNewLine + "Crunchyroll Downloader Version: " + Application.ProductVersion + vbNewLine + vbNewLine + "detected location from Crunchyroll: " + CCC1(0)
-        '            'MsgBox(SaveString)
-        '            File.WriteAllText("Error " + DateTime.Now.ToString("dd.MM.yyyy HH.mm") + ".txt", SaveString)
-        '            Dim Request As HttpWebRequest = CType(WebRequest.Create("https://docs.google.com/forms/d/e/1FAIpQLSdR1QI19Lh-c-XO_iXNkDwsTUZhCMEu84boQkgW5AOBUxyiyA/formResponse"), HttpWebRequest)
-        '            Request.Method = "POST"
-        '            Request.ContentType = "application/x-www-form-urlencoded"
-        '            Dim Post As String = "entry.240217066=" + My.Computer.Info.OSFullName + "&entry.358200455=" + WebbrowserURL + "&entry.618751432=" + SubSprache + "&entry.924054550=" + Resu.ToString + "&entry.679000538=" + ex.ToString + "&entry.1789515979=" + SoftSubsString + "&entry.683247287=" + Application.ProductVersion + "&entry.377264428=" + CCC1(0) + "&fvv=1&draftResponse=[null,null," + Chr(34) + "-3005021683493723280" + Chr(34) + "] &pageHistory=0&fbzx=-3005021683493723280"
-        '            Dim byteArray() As Byte = Encoding.UTF8.GetBytes(Post)
-        '            Request.ContentLength = byteArray.Length
-        '            Dim DataStream As Stream = Request.GetRequestStream()
-        '            DataStream.Write(byteArray, 0, byteArray.Length)
-        '            DataStream.Close()
-        '            Dim Response As HttpWebResponse = Request.GetResponse()
-        '            DataStream = Response.GetResponseStream()
-        '            Dim reader As New StreamReader(DataStream)
-        '            Dim ServerResponse As String = reader.ReadToEnd()
-        '            reader.Close()
-        '            DataStream.Close()
-        '            Response.Close()
-        '            Dim Version_Check As String() = ServerResponse.Split(New String() {"<div class=" + Chr(34) + "freebirdFormviewerViewResponseConfirmationMessage" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
-        '            Dim Version_Check2 As String() = Version_Check(1).Split(New String() {"</div>"}, System.StringSplitOptions.RemoveEmptyEntries)
-        '            If Application.ProductVersion = Version_Check2(0) Then
-        '            Else
-        '                'MsgBox("A newer version is available: v" + Version_Check2(0))
-        '            End If
-        '        End If
-        '    End If
-
-        'End Try
     End Sub
 End Class

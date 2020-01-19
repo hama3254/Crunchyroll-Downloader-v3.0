@@ -5,6 +5,7 @@ Imports Microsoft.Win32
 Imports System.ComponentModel
 Public Class Main
     Public LoggingBrowser As Boolean = False
+    Public Thumbnail As String = Nothing
     Public NonCR_Timeout As Integer = 5
     Public NonCR_URL As String = Nothing
     Public gIndexH As Integer = -1
@@ -436,8 +437,32 @@ Public Class Main
         Next
 
     End Sub
+    Public Sub AOD_Epsidoes()
+
+        Anime_Add.groupBox2.Visible = True
+        Anime_Add.PictureBox1.Enabled = True
+        Anime_Add.PictureBox1.Visible = True
+        Anime_Add.groupBox1.Visible = False
+        Anime_Add.ComboBox1.Items.Clear()
+        Anime_Add.comboBox3.Items.Clear()
+        Anime_Add.comboBox4.Items.Clear()
+        Anime_Add.ComboBox1.Enabled = True
+        Anime_Add.comboBox3.Enabled = True
+        Anime_Add.comboBox4.Enabled = True
+        Dim Anzahl As String() = WebbrowserText.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
+        Array.Reverse(Anzahl)
+        For i As Integer = 0 To Anzahl.Count - 2
+            Dim Titel As String() = Anzahl(i).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim Titel2 As String() = Titel(0).Split(New String() {">"}, System.StringSplitOptions.RemoveEmptyEntries)
+            'MsgBox(Titel2(0))
+            Anime_Add.ComboBox1.Items.Add(Titel2(1))
+        Next
+
+    End Sub
+    Public Async Sub AOD_DL()
 
 
+    End Sub
     Public Async Sub MassDL()
         If Anime_Add.comboBox3.Text = Nothing Then
             Exit Sub
@@ -891,7 +916,7 @@ Public Class Main
                                          Return Nothing
                                      End Function))
             Else
-                Throw New System.Exception("Premnium Episode")
+                Throw New System.Exception("Premium Episode")
             End If
 #End Region
 
@@ -1031,7 +1056,7 @@ Public Class Main
                 MsgBox(Sub_language_NotFound + SubSprache)
             ElseIf CBool(InStr(ex.ToString, "RESOLUTION Not Found")) Then
                 MsgBox(Resolution_NotFound)
-            ElseIf CBool(InStr(ex.ToString, "Premnium Episode")) Then
+            ElseIf CBool(InStr(ex.ToString, "Premium Episode")) Then
                 MsgBox(Premium_Stream, MsgBoxStyle.Information)
             ElseIf CBool(InStr(ex.ToString, "System.UnauthorizedAccessException")) Then
                 MsgBox(ErrorNoPermisson + vbNewLine + ex.ToString, MsgBoxStyle.Information)
@@ -1065,7 +1090,7 @@ Public Class Main
                     Dim Version_Check2 As String() = Version_Check(1).Split(New String() {"</div>"}, System.StringSplitOptions.RemoveEmptyEntries)
                     'If Application.ProductVersion = Version_Check2(0) Then
                     'Else
-                    '    MsgBox("A newer version is available: v" + Version_Check2(0))
+                    'MsgBox("A newer version is available: v" + Version_Check2(0))
                     'End If
                 End If
             End If
@@ -1144,9 +1169,9 @@ Public Class Main
                                              ListView1.Items.Item(i).Text = ZeitGesamtInteger
 
 
-                                         ElseIf InStr(e.Data, "time=") Then
-
-                                             Dim ZeitFertig As String() = e.Data.Split(New String() {"time="}, System.StringSplitOptions.RemoveEmptyEntries)
+                                         ElseIf InStr(e.Data, " time=") Then
+                                             'MsgBox(e.Data)
+                                             Dim ZeitFertig As String() = e.Data.Split(New String() {" time="}, System.StringSplitOptions.RemoveEmptyEntries)
                                              Dim ZeitFertig2 As String() = ZeitFertig(1).Split(New [Char]() {System.Convert.ToChar(".")})
                                              Dim ZeitFertigSplit() As String = ZeitFertig2(0).Split(New [Char]() {System.Convert.ToChar(":")})
                                              Dim ZeitFertigInteger As Integer = CInt(ZeitFertigSplit(0)) * 3600 + CInt(ZeitFertigSplit(1)) * 60 + CInt(ZeitFertigSplit(2))

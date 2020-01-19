@@ -10,8 +10,11 @@ Public Class GeckoFX
     Public keks As String = Nothing
     Public c As Boolean = True
     Dim t As Thread
-
+    Dim ScanTrue As Boolean = False
     Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
+        If ScanTrue = False Then
+            Button2.Enabled = True
+        End If
         If Main.LoginOnly = "US_UnBlock" Then
             Main.LoginOnly = "US_UnBlocck_Wait2nd"
             Try
@@ -114,6 +117,9 @@ Public Class GeckoFX
                     Main.WebbrowserTitle = WebBrowser1.DocumentTitle
                     Me.Close()
                 End If
+                'ElseIf CBool(InStr(WebBrowser1.Url.ToString, "https://www.anime-on-demand.de/anime/")) Then
+
+
             Else
                 If Main.b = False Then
                     Main.WebbrowserURL = WebBrowser1.Url.ToString
@@ -178,6 +184,7 @@ Public Class GeckoFX
                                 t.Priority = ThreadPriority.Normal
                                 t.IsBackground = True
                                 t.Start()
+                                Main.UserBowser = False
                                 Exit For
                                 Me.Close()
                             End If
@@ -297,4 +304,97 @@ Public Class GeckoFX
         Catch ex As Exception
         End Try
     End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Try
+
+
+            Button2.Enabled = False
+            ScanTrue = True
+            GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+            GeckoPreferences.Default("logging.nsHttp") = 3
+            Main.LoggingBrowser = True
+            Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
+            Dim CurrentFile As String = Nothing
+            For Each File In FileLocation.GetFiles()
+                If InStr(File.FullName, "log.txt") Then
+                    CurrentFile = File.FullName
+                    Exit For
+                End If
+            Next
+            Dim logFileStream As FileStream = New FileStream(CurrentFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
+            Dim logFileReader As StreamReader = New StreamReader(logFileStream)
+            logFileStream.SetLength(0)
+            'WebBrowser1.Navigate(TextBox1.Text)
+            Main.WebbrowserURL = WebBrowser1.Url.ToString
+            Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+            Main.b = True
+            Main.UserBowser = True
+            For i As Integer = 20 To 0 Step -1
+                Main.Pause(1)
+                Button2.Text = "network scan is in progess " + Math.Abs(i).ToString
+            Next
+            If InStr(Main.WebbrowserURL, "https://www.anime-on-demand.de/anime/") Then
+                Main.WebbrowserTitle = WebBrowser1.Document.GetElementsByClassName("jw-title-primary").First.TextContent
+                'Main.Thumbnail = WebBrowser1.Document.GetElementsByClassName("fullwidth-image anime-top-image").First.TextContent
+
+            Else
+                Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+            End If
+            Dim line As String = Nothing
+            Dim HTMLString As String = Nothing
+            line = logFileReader.ReadLine
+
+            While (line IsNot Nothing)
+                line = logFileReader.ReadLine
+                If InStr(line, ".m3u8?") Then
+                    If HTMLString = Nothing Then
+                        HTMLString = line
+                    Else
+                        HTMLString = HTMLString + vbNewLine + line
+                    End If
+                    For i As Integer = 0 To 10
+                        line = logFileReader.ReadLine
+                        If InStr(line, " Host: ") Then
+                            HTMLString = HTMLString + vbNewLine + line
+                        End If
+                    Next
+                End If
+            End While
+            logFileReader.Close()
+            logFileStream.Close()
+            'MsgBox(HTMLString)
+            If InStr(HTMLString, ".m3u8?") Then
+                Button2.Text = "found m3u8"
+                Main.LoggingBrowser = False
+                GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                GeckoPreferences.Default("logging.nsHttp") = 0
+                Dim URL As String = Nothing
+                Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
+                For i As Integer = 0 To HTMLSplit.Count - 1
+                    If InStr(HTMLSplit(i), ".m3u8?") Then
+                        Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim URLPart1() As String = HTMLSplit(i + 1).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Main.NonCR_URL = "https://" + URLPart1(1) + URLPart2Split2(0)
+                        'MsgBox(Main.NonCR_URL)
+                        'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
+                        t = New Thread(AddressOf Main.Grapp_non_CR)
+                        t.Priority = ThreadPriority.Normal
+                        t.IsBackground = True
+                        t.Start()
+                        Button2.Text = "Start network scan"
+                        Exit For
+                    End If
+                Next
+            End If
+            ScanTrue = False
+            Button2.Enabled = True
+        Catch ex As Exception
+            MsgBox(ex.ToString, MsgBoxStyle.OkOnly)
+            Button2.Enabled = True
+            ScanTrue = False
+        End Try
+    End Sub
+
 End Class

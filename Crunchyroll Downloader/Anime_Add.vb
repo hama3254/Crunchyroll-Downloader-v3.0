@@ -23,6 +23,7 @@ Public Class Anime_Add
     End Sub
 
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Icon = My.Resources.icon
         Try
             Main.waveOutSetVolume(0, 0)
         Catch ex As Exception
@@ -239,7 +240,7 @@ Public Class Anime_Add
                     'MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
                 End If
             Catch ex As Exception
-                MsgBox(ex.ToString)
+                'MsgBox(ex.ToString)
                 Main.b = True
                 MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
             End Try

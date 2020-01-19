@@ -38,7 +38,6 @@ Partial Class einstellungen
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
-        Me.pictureBox3 = New System.Windows.Forms.PictureBox()
         Me.DL_Count_simultaneous = New System.Windows.Forms.GroupBox()
         Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
         Me.pictureBox1 = New System.Windows.Forms.PictureBox()
@@ -57,7 +56,6 @@ Partial Class einstellungen
         Me.GB_Sub_Path.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.DL_Count_simultaneous.SuspendLayout()
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -237,7 +235,6 @@ Partial Class einstellungen
         '
         Me.GroupBox4.BackColor = System.Drawing.Color.Transparent
         Me.GroupBox4.Controls.Add(Me.PictureBox2)
-        Me.GroupBox4.Controls.Add(Me.pictureBox3)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox4.ForeColor = System.Drawing.Color.Black
         Me.GroupBox4.Location = New System.Drawing.Point(6, 173)
@@ -251,21 +248,11 @@ Partial Class einstellungen
         '
         Me.PictureBox2.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox2.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.crdsettings_setUScookie_button
-        Me.PictureBox2.Location = New System.Drawing.Point(189, 35)
+        Me.PictureBox2.Location = New System.Drawing.Point(94, 32)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(150, 30)
         Me.PictureBox2.TabIndex = 4
         Me.PictureBox2.TabStop = False
-        '
-        'pictureBox3
-        '
-        Me.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pictureBox3.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.crdsettings_setowncookie_button
-        Me.pictureBox3.Location = New System.Drawing.Point(9, 35)
-        Me.pictureBox3.Name = "pictureBox3"
-        Me.pictureBox3.Size = New System.Drawing.Size(150, 30)
-        Me.pictureBox3.TabIndex = 3
-        Me.pictureBox3.TabStop = False
         '
         'DL_Count_simultaneous
         '
@@ -427,7 +414,6 @@ Partial Class einstellungen
         Me.GB_Sub_Path.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.DL_Count_simultaneous.ResumeLayout(False)
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -459,7 +445,6 @@ Partial Class einstellungen
     Friend WithEvents NumericUpDown1 As NumericUpDown
     Friend WithEvents ComboBox1 As ComboBox
     Private WithEvents pictureBox1 As PictureBox
-    Private WithEvents pictureBox3 As PictureBox
     Private WithEvents pictureBox4 As PictureBox
     Private WithEvents PictureBox2 As PictureBox
     Friend WithEvents GroupBox1 As GroupBox

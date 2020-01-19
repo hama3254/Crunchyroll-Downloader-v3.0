@@ -194,9 +194,10 @@ Public Class einstellungen
         Next
         Return C
     End Function
-    Private Sub pictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
+    Private Sub pictureBox3_Click(sender As Object, e As EventArgs)
         Main.LoginOnly = "US_UnBlock"
         GeckoFX.keks = InputBox("Please insert the cookie below.")
+        If GeckoFX.keks = Nothing Then Exit Sub
         GeckoFX.Show()
         GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
     End Sub
@@ -260,12 +261,12 @@ Public Class einstellungen
         pictureBox1.BackColor = Color.Transparent
     End Sub
 
-    Private Sub pictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
-        pictureBox3.Image = My.Resources.crdsettings_setowncookie_button_hover
+    Private Sub pictureBox3_MouseEnter(sender As Object, e As EventArgs)
+        'pictureBox3.Image = My.Resources.crdsettings_setowncookie_button_hover
     End Sub
 
-    Private Sub pictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
-        pictureBox3.Image = My.Resources.crdsettings_setowncookie_button
+    Private Sub pictureBox3_MouseLeave(sender As Object, e As EventArgs)
+        'pictureBox3.Image = My.Resources.crdsettings_setowncookie_button
     End Sub
 
     Private Sub pictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter

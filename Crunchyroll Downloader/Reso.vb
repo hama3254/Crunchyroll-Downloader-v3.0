@@ -41,6 +41,7 @@
 
     Private Sub Reso_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'ButtonResoNotFound.Text = Main.ButtonResoNotFoundText
+        Me.Icon = My.Resources.icon
         Me.Location = New Point(Main.Location.X + Main.Width / 2 - Me.Width / 2, Main.Location.Y + Main.Height / 2 - Me.Height / 2)
         ComboBox1.Items.Clear()
         If Main.DialogTaskString = "Language" Then

@@ -23,7 +23,6 @@ Partial Class Anime_Add
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Anime_Add))
         Me.groupBox1 = New System.Windows.Forms.GroupBox()
         Me.StatusLabel = New System.Windows.Forms.Label()
         Me.ComboBox2 = New System.Windows.Forms.ComboBox()
@@ -278,7 +277,6 @@ Partial Class Anime_Add
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.groupBox2)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Anime_Add"
         Me.Text = "Add"
         Me.groupBox1.ResumeLayout(False)

@@ -54,33 +54,33 @@ Public Class SoftSub
     Private Sub PictureBox2_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox2.MouseLeave
         PictureBox2.Image = My.Resources.download_subs
     End Sub
-    Private Sub pictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
+    Private Sub PictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
         pictureBox4.Image = My.Resources.crdSettings_Button_SafeExit_hover
     End Sub
 
-    Private Sub pictureBox4_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox4.MouseLeave
+    Private Sub PictureBox4_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox4.MouseLeave
         pictureBox4.Image = My.Resources.crdSettings_Button_SafeExit
     End Sub
-    Private Sub pictureBox1_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox1.MouseEnter
+    Private Sub PictureBox1_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox1.MouseEnter
         pictureBox1.BackColor = SystemColors.Control
     End Sub
 
-    Private Sub pictureBox1_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox1.MouseLeave
+    Private Sub PictureBox1_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox1.MouseLeave
         pictureBox1.BackColor = Color.Transparent
     End Sub
 
-    Private Sub textBox1_Click(sender As Object, e As EventArgs) Handles textBox1.Click
+    Private Sub TextBox1_Click(sender As Object, e As EventArgs) Handles textBox1.Click
         If textBox1.Text = "URL" Then
             textBox1.Text = Nothing
         End If
     End Sub
 #End Region
     Dim LocalSoftSubs As New List(Of String)
-    Private Sub pictureBox1_Click(sender As Object, e As EventArgs) Handles pictureBox1.Click
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles pictureBox1.Click
         Me.Close()
     End Sub
 
-    Private Sub pictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
+    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
         Main.SoftSubs.Clear()
         If CBdeDE.Checked = True Then
             Main.SoftSubs.Add("deDE")

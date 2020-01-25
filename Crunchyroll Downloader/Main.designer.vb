@@ -103,10 +103,10 @@ Partial Class Main
         'FontLabel
         '
         Me.FontLabel.AutoSize = True
-        Me.FontLabel.Font = New System.Drawing.Font("Consolas", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FontLabel.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FontLabel.Location = New System.Drawing.Point(587, 31)
         Me.FontLabel.Name = "FontLabel"
-        Me.FontLabel.Size = New System.Drawing.Size(110, 22)
+        Me.FontLabel.Size = New System.Drawing.Size(99, 19)
         Me.FontLabel.TabIndex = 66
         Me.FontLabel.Text = "Demo Label"
         Me.FontLabel.Visible = False

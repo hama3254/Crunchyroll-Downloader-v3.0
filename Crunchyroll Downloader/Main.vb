@@ -6,6 +6,7 @@ Imports System.ComponentModel
 Public Class Main
     Public LoggingBrowser As Boolean = False
     Public Thumbnail As String = Nothing
+    Dim ListOfStreams As New List(Of String)
     Public NonCR_Timeout As Integer = 5
     Public NonCR_URL As String = Nothing
     Public gIndexH As Integer = -1
@@ -437,32 +438,7 @@ Public Class Main
         Next
 
     End Sub
-    Public Sub AOD_Epsidoes()
 
-        Anime_Add.groupBox2.Visible = True
-        Anime_Add.PictureBox1.Enabled = True
-        Anime_Add.PictureBox1.Visible = True
-        Anime_Add.groupBox1.Visible = False
-        Anime_Add.ComboBox1.Items.Clear()
-        Anime_Add.comboBox3.Items.Clear()
-        Anime_Add.comboBox4.Items.Clear()
-        Anime_Add.ComboBox1.Enabled = True
-        Anime_Add.comboBox3.Enabled = True
-        Anime_Add.comboBox4.Enabled = True
-        Dim Anzahl As String() = WebbrowserText.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
-        Array.Reverse(Anzahl)
-        For i As Integer = 0 To Anzahl.Count - 2
-            Dim Titel As String() = Anzahl(i).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim Titel2 As String() = Titel(0).Split(New String() {">"}, System.StringSplitOptions.RemoveEmptyEntries)
-            'MsgBox(Titel2(0))
-            Anime_Add.ComboBox1.Items.Add(Titel2(1))
-        Next
-
-    End Sub
-    Public Async Sub AOD_DL()
-
-
-    End Sub
     Public Async Sub MassDL()
         If Anime_Add.comboBox3.Text = Nothing Then
             Exit Sub
@@ -1130,8 +1106,9 @@ Public Class Main
         startinfo.FileName = exepath
         startinfo.Arguments = cmd
         startinfo.UseShellExecute = False
-        startinfo.WindowStyle = ProcessWindowStyle.Hidden
+        startinfo.WindowStyle = ProcessWindowStyle.Normal
         startinfo.RedirectStandardError = True
+        startinfo.RedirectStandardInput = True
         startinfo.RedirectStandardOutput = True
         startinfo.CreateNoWindow = True
         AddHandler proc.ErrorDataReceived, AddressOf TestOutput
@@ -1144,15 +1121,65 @@ Public Class Main
         Return Nothing
     End Function
 
+    Private Sub Main_DoubleClick(sender As Object, e As EventArgs) Handles Me.DoubleClick
+        For i As Integer = 0 To ListOfStreams.Count - 1
+            MsgBox(ListOfStreams(i))
+        Next
+    End Sub
+
     Sub TestOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
+        If Thumbnail = Nothing Then
+            Thumbnail = e.Data
+        Else
+            Thumbnail = Thumbnail + vbNewLine + e.Data
+        End If
+
         Dim pr As Process = sender
         Dim FileNameSplit As String() = pr.StartInfo.Arguments.ToString().Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim FileName As String = Chr(34) + FileNameSplit(FileNameSplit.Count - 1) + Chr(34)
+        If CBool(InStr(e.Data, "Stream #")) And CBool(InStr(e.Data, "Video")) = True Then
+            'MsgBox(True.ToString + vbNewLine + e.Data)
+            ListOfStreams.Add(e.Data)
+        End If
+        If InStr(e.Data, "Stream #") And InStr(e.Data, " -> ") Then
+            'UsesStreams.Add(e.Data)
+            'MsgBox(e.Data)
+            Dim StreamSearch() As String = e.Data.Split(New String() {" -> "}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim StreamSearch2 As String = StreamSearch(0) + ":"
+            For i As Integer = 0 To ListOfStreams.Count - 1
+                If CBool(InStr(ListOfStreams(i), StreamSearch2)) Then 'And CBool(InStr(ListOfStreams(i), " Video:")) Then
+                    'MsgBox(ListOfStreams(i))
+                    Dim ResoSearch() As String = ListOfStreams(i).Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    'MsgBox(ResoSearch(1))
+                    If CBool(InStr(ResoSearch(2), " [")) = True Then
+                        Dim ResoSearch2() As String = ResoSearch(2).Split(New String() {" ["}, System.StringSplitOptions.RemoveEmptyEntries)
+                        For ii As Integer = 0 To PB_list.Count - 1
+                            If PB_list(ii).Name = FileName Then
+                                Dim p As PictureBox = PB_list(ii)
+                                p.Image = p.BackgroundImage
+                                Dim g As Graphics = Graphics.FromImage(p.Image)
+                                Dim TextPointL4 As Point = New Point(195, 101)
+                                Dim Weiß As Brush = New SolidBrush(Color.FromArgb(242, 242, 242))
+                                g.FillRectangle(Weiß, TextPointL4.X - 3, TextPointL4.Y - 3, 70, 30)
+                                g.DrawString(ResoSearch2(0) + "p", FontLabel.Font, Brushes.Black, TextPointL4)
+                                Dim brGradient As Brush = New SolidBrush(Color.FromArgb(125, 0, 0))
+                                g.Dispose()
+                                Exit For
+                            End If
+                        Next
+                    End If
+
+                End If
+            Next
+        End If
+
+
         If Me.Visible = False Or AbourtList.Contains(FileName) Then
-            Try
-                pr.Kill()
-            Catch ex As Exception
-            End Try
+            ' Try
+            pr.Kill()
+            pr.WaitForExit(500)
+            'Catch ex As Exception
+            'End Try
             RaiseEvent UpdateUI(FileName, 200, 0, 0)
         End If
         Me.Invoke(New Action(Function()
@@ -1207,7 +1234,7 @@ Public Class Main
     Private Sub Main_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         Try
             Me.Visible = False
-            Pause(2)
+            'Pause(2)
         Catch ex As Exception
         End Try
 
@@ -1239,10 +1266,10 @@ Public Class Main
                     p.Image = p.BackgroundImage
                     Dim g As Graphics = Graphics.FromImage(p.Image)
                     Dim ProgressbarPoint As Point = New Point(195, 70)
-                    Dim WeißeBox As Point = New Point(450, 93)
+                    Dim WeißeBox As Point = New Point(525, 93)
                     Dim ProzentText As Point = New Point(795, 113)
                     Dim Weiß As Brush = New SolidBrush(Color.FromArgb(242, 242, 242))
-                    g.FillRectangle(Weiß, WeißeBox.X + 1, WeißeBox.Y + 1, 350, 30)
+                    g.FillRectangle(Weiß, WeißeBox.X + 1, WeißeBox.Y + 1, 275, 30)
                     g.DrawString(Size.ToString + "MB/" + Finished.ToString + "MB " + int.ToString + "%", FontLabel2.Font, Brushes.Black, ProzentText, stringFormat)
                     Dim brGradient As Brush = New SolidBrush(Color.FromArgb(247, 140, 37))
                     g.FillRectangle(brGradient, ProgressbarPoint.X + 1, ProgressbarPoint.Y + 1, int * 6, 19)
@@ -1257,6 +1284,12 @@ Public Class Main
         Pause(1)
         If PR_List.Count > 0 Then
             If MessageBox.Show("Are you sure you want close the program and end all active downloads?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                For i As Integer = 0 To PR_List.Count - 1
+                    Dim pr As Process = PR_List.Item(i)
+                    pr.Kill()
+                    pr.WaitForExit(100)
+                Next
+
                 Me.Close()
             End If
         Else
@@ -1537,4 +1570,6 @@ Public Class Main
                              End Function))
 
     End Sub
+
+
 End Class

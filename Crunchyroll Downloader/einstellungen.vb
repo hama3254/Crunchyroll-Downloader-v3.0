@@ -206,21 +206,20 @@ Public Class einstellungen
 
         Main.LoginOnly = "US_UnBlock"
         Dim wb As New WebClient
-
-        Dim Session As String = wb.DownloadString("http://api-manga.crunchyroll.com/cr_start_session?api_ver=1.0&device_type=com.crunchyroll.windows.desktop&access_token=LNDJgOit5yaRIWN&device_id=" + GeräteID())
-
+        Dim Session As String = wb.DownloadString("https://api1.cr-unblocker.com/getsession.php?version=1.1&device_type=com.crunchyroll.windows.desktop&access_token=LNDJgOit5yaRIWN&device_id=" + GeräteID())
+        'MsgBox(Session)
         If CBool(InStr(Session, "bad_request")) Then
-            Session = wb.DownloadString("http://api-manga.crunchyroll.com/cr_start_session?api_ver=1.0&device_type=com.crunchyroll.iphone&access_token=QWjz212GspMHH9h&device_id=" + GeräteID())
+            Session = wb.DownloadString("https://api2.cr-unblocker.com/start_session?version=1.1&device_type=com.crunchyroll.iphone&access_token=QWjz212GspMHH9h&device_id=" + GeräteID())
 
-        End If
-        If CBool(InStr(Session, "bad_request")) Then
-            Session = wb.DownloadString("http://api-manga.crunchyroll.com/cr_start_session?api_ver=1.0&device_type=com.crunchyroll.manga.android&access_token=FLpcfZH4CbW4muO&device_id=" + GeräteID())
         End If
 
         If CBool(InStr(Session, "bad_request")) Then
             MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
             Exit Sub
         ElseIf CBool(InStr(Session, "Unauthenticated request")) Then
+            MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
+            Exit Sub
+        ElseIf CBool(InStr(Session, chr(34) + "country_code" + chr(34) + ":" + chr(34) + "US" + chr(34))) = False Then
             MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
             Exit Sub
         Else

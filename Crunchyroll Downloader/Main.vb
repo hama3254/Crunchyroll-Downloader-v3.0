@@ -1128,105 +1128,103 @@ Public Class Main
     End Sub
 
     Sub TestOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
-        If Thumbnail = Nothing Then
-            Thumbnail = e.Data
-        Else
-            Thumbnail = Thumbnail + vbNewLine + e.Data
-        End If
+        Try
+            Dim pr As Process = sender
+            Dim FileNameSplit As String() = pr.StartInfo.Arguments.ToString().Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim FileName As String = Chr(34) + FileNameSplit(FileNameSplit.Count - 1) + Chr(34)
+            If CBool(InStr(e.Data, "Stream #")) And CBool(InStr(e.Data, "Video")) = True Then
+                'MsgBox(True.ToString + vbNewLine + e.Data)
+                ListOfStreams.Add(e.Data)
+            End If
+            If InStr(e.Data, "Stream #") And InStr(e.Data, " -> ") Then
+                'UsesStreams.Add(e.Data)
+                'MsgBox(e.Data)
+                Dim StreamSearch() As String = e.Data.Split(New String() {" -> "}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim StreamSearch2 As String = StreamSearch(0) + ":"
+                For i As Integer = 0 To ListOfStreams.Count - 1
+                    If CBool(InStr(ListOfStreams(i), StreamSearch2)) Then 'And CBool(InStr(ListOfStreams(i), " Video:")) Then
+                        'MsgBox(ListOfStreams(i))
+                        Dim ResoSearch() As String = ListOfStreams(i).Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        'MsgBox(ResoSearch(1))
+                        If CBool(InStr(ResoSearch(2), " [")) = True Then
+                            Dim ResoSearch2() As String = ResoSearch(2).Split(New String() {" ["}, System.StringSplitOptions.RemoveEmptyEntries)
+                            For ii As Integer = 0 To PB_list.Count - 1
+                                If PB_list(ii).Name = FileName Then
+                                    Dim p As PictureBox = PB_list(ii)
+                                    p.Image = p.BackgroundImage
+                                    Dim g As Graphics = Graphics.FromImage(p.Image)
+                                    Dim TextPointL4 As Point = New Point(195, 101)
+                                    Dim Weiß As Brush = New SolidBrush(Color.FromArgb(242, 242, 242))
+                                    g.FillRectangle(Weiß, TextPointL4.X - 3, TextPointL4.Y - 3, 70, 30)
+                                    g.DrawString(ResoSearch2(0) + "p", FontLabel.Font, Brushes.Black, TextPointL4)
+                                    Dim brGradient As Brush = New SolidBrush(Color.FromArgb(125, 0, 0))
+                                    g.Dispose()
+                                    Exit For
+                                End If
+                            Next
+                        End If
 
-        Dim pr As Process = sender
-        Dim FileNameSplit As String() = pr.StartInfo.Arguments.ToString().Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-        Dim FileName As String = Chr(34) + FileNameSplit(FileNameSplit.Count - 1) + Chr(34)
-        If CBool(InStr(e.Data, "Stream #")) And CBool(InStr(e.Data, "Video")) = True Then
-            'MsgBox(True.ToString + vbNewLine + e.Data)
-            ListOfStreams.Add(e.Data)
-        End If
-        If InStr(e.Data, "Stream #") And InStr(e.Data, " -> ") Then
-            'UsesStreams.Add(e.Data)
-            'MsgBox(e.Data)
-            Dim StreamSearch() As String = e.Data.Split(New String() {" -> "}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim StreamSearch2 As String = StreamSearch(0) + ":"
-            For i As Integer = 0 To ListOfStreams.Count - 1
-                If CBool(InStr(ListOfStreams(i), StreamSearch2)) Then 'And CBool(InStr(ListOfStreams(i), " Video:")) Then
-                    'MsgBox(ListOfStreams(i))
-                    Dim ResoSearch() As String = ListOfStreams(i).Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    'MsgBox(ResoSearch(1))
-                    If CBool(InStr(ResoSearch(2), " [")) = True Then
-                        Dim ResoSearch2() As String = ResoSearch(2).Split(New String() {" ["}, System.StringSplitOptions.RemoveEmptyEntries)
-                        For ii As Integer = 0 To PB_list.Count - 1
-                            If PB_list(ii).Name = FileName Then
-                                Dim p As PictureBox = PB_list(ii)
-                                p.Image = p.BackgroundImage
-                                Dim g As Graphics = Graphics.FromImage(p.Image)
-                                Dim TextPointL4 As Point = New Point(195, 101)
-                                Dim Weiß As Brush = New SolidBrush(Color.FromArgb(242, 242, 242))
-                                g.FillRectangle(Weiß, TextPointL4.X - 3, TextPointL4.Y - 3, 70, 30)
-                                g.DrawString(ResoSearch2(0) + "p", FontLabel.Font, Brushes.Black, TextPointL4)
-                                Dim brGradient As Brush = New SolidBrush(Color.FromArgb(125, 0, 0))
-                                g.Dispose()
-                                Exit For
-                            End If
-                        Next
                     End If
-
-                End If
-            Next
-        End If
+                Next
+            End If
 
 
-        If Me.Visible = False Or AbourtList.Contains(FileName) Then
-            ' Try
-            pr.Kill()
-            pr.WaitForExit(500)
-            'Catch ex As Exception
-            'End Try
-            RaiseEvent UpdateUI(FileName, 200, 0, 0)
-        End If
-        Me.Invoke(New Action(Function()
-                                 For i As Integer = 0 To PB_list.Count - 1
+            If Me.Visible = False Or AbourtList.Contains(FileName) Then
+                ' Try
+                pr.Kill()
+                pr.WaitForExit(500)
+                'Catch ex As Exception
+                'End Try
+                RaiseEvent UpdateUI(FileName, 200, 0, 0)
+            End If
+            Me.Invoke(New Action(Function()
+                                     For i As Integer = 0 To PB_list.Count - 1
 
-                                     If PB_list(i).Name = FileName Then
+                                         If PB_list(i).Name = FileName Then
 
-                                         If InStr(e.Data, "Duration: ") Then
-                                             Dim ZeitGesamt As String() = e.Data.Split(New String() {"Duration: "}, System.StringSplitOptions.RemoveEmptyEntries)
-                                             Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
-                                             Dim ZeitGesamtSplit() As String = ZeitGesamt2(0).Split(New [Char]() {System.Convert.ToChar(":")})
-                                             Dim ZeitGesamtInteger As Integer = CInt(ZeitGesamtSplit(0)) * 3600 + CInt(ZeitGesamtSplit(1)) * 60 + CInt(ZeitGesamtSplit(2))
+                                             If InStr(e.Data, "Duration: ") Then
+                                                 Dim ZeitGesamt As String() = e.Data.Split(New String() {"Duration: "}, System.StringSplitOptions.RemoveEmptyEntries)
+                                                 Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
+                                                 Dim ZeitGesamtSplit() As String = ZeitGesamt2(0).Split(New [Char]() {System.Convert.ToChar(":")})
+                                                 Dim ZeitGesamtInteger As Integer = CInt(ZeitGesamtSplit(0)) * 3600 + CInt(ZeitGesamtSplit(1)) * 60 + CInt(ZeitGesamtSplit(2))
 
-                                             ListView1.Items.Item(i).Text = ZeitGesamtInteger
+                                                 ListView1.Items.Item(i).Text = ZeitGesamtInteger
 
 
-                                         ElseIf InStr(e.Data, " time=") Then
-                                             'MsgBox(e.Data)
-                                             Dim ZeitFertig As String() = e.Data.Split(New String() {" time="}, System.StringSplitOptions.RemoveEmptyEntries)
-                                             Dim ZeitFertig2 As String() = ZeitFertig(1).Split(New [Char]() {System.Convert.ToChar(".")})
-                                             Dim ZeitFertigSplit() As String = ZeitFertig2(0).Split(New [Char]() {System.Convert.ToChar(":")})
-                                             Dim ZeitFertigInteger As Integer = CInt(ZeitFertigSplit(0)) * 3600 + CInt(ZeitFertigSplit(1)) * 60 + CInt(ZeitFertigSplit(2))
-                                             Dim bitrate3 As String = 0
-                                             If InStr(e.Data, "bitrate=") Then
-                                                 Dim bitrate As String() = e.Data.Split(New String() {"bitrate="}, System.StringSplitOptions.RemoveEmptyEntries)
-                                                 Dim bitrate2 As String() = bitrate(1).Split(New String() {"kbits/s"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                             ElseIf InStr(e.Data, " time=") Then
+                                                 'MsgBox(e.Data)
+                                                 Dim ZeitFertig As String() = e.Data.Split(New String() {" time="}, System.StringSplitOptions.RemoveEmptyEntries)
+                                                 Dim ZeitFertig2 As String() = ZeitFertig(1).Split(New [Char]() {System.Convert.ToChar(".")})
+                                                 Dim ZeitFertigSplit() As String = ZeitFertig2(0).Split(New [Char]() {System.Convert.ToChar(":")})
+                                                 Dim ZeitFertigInteger As Integer = CInt(ZeitFertigSplit(0)) * 3600 + CInt(ZeitFertigSplit(1)) * 60 + CInt(ZeitFertigSplit(2))
+                                                 Dim bitrate3 As String = 0
+                                                 If InStr(e.Data, "bitrate=") Then
+                                                     Dim bitrate As String() = e.Data.Split(New String() {"bitrate="}, System.StringSplitOptions.RemoveEmptyEntries)
+                                                     Dim bitrate2 As String() = bitrate(1).Split(New String() {"kbits/s"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                                                 If InStr(bitrate2(0), ".") Then
-                                                     Dim bitrateTemo As String() = bitrate2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
-                                                     bitrate3 = bitrateTemo(0)
-                                                 ElseIf InStr(bitrate2(0), ",") Then
-                                                     Dim bitrateTemo As String() = bitrate2(0).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-                                                     bitrate3 = bitrateTemo(0)
+                                                     If InStr(bitrate2(0), ".") Then
+                                                         Dim bitrateTemo As String() = bitrate2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+                                                         bitrate3 = bitrateTemo(0)
+                                                     ElseIf InStr(bitrate2(0), ",") Then
+                                                         Dim bitrateTemo As String() = bitrate2(0).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                                                         bitrate3 = bitrateTemo(0)
+                                                     End If
                                                  End If
+                                                 Dim bitrateInt As Double = CInt(bitrate3) / 1024
+                                                 Dim FileSize As Double = CInt(ListView1.Items.Item(i).Text) * bitrateInt / 8
+                                                 Dim DownloadFinished As Double = ZeitFertigInteger * bitrateInt / 8
+                                                 Dim percent As Integer = ZeitFertigInteger / CInt(ListView1.Items.Item(i).Text) * 100
+                                                 RaiseEvent UpdateUI(FileName, percent, Math.Round(DownloadFinished, 2, MidpointRounding.AwayFromZero), Math.Round(FileSize, 2, MidpointRounding.AwayFromZero))
                                              End If
-                                             Dim bitrateInt As Double = CInt(bitrate3) / 1024
-                                             Dim FileSize As Double = CInt(ListView1.Items.Item(i).Text) * bitrateInt / 8
-                                             Dim DownloadFinished As Double = ZeitFertigInteger * bitrateInt / 8
-                                             Dim percent As Integer = ZeitFertigInteger / CInt(ListView1.Items.Item(i).Text) * 100
-                                             RaiseEvent UpdateUI(FileName, percent, Math.Round(DownloadFinished, 2, MidpointRounding.AwayFromZero), Math.Round(FileSize, 2, MidpointRounding.AwayFromZero))
                                          End If
-                                     End If
 
-                                 Next
+                                     Next
 
-                                 Return Nothing
-                             End Function))
+                                     Return Nothing
+                                 End Function))
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 

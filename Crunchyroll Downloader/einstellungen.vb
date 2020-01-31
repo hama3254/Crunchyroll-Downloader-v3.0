@@ -206,31 +206,29 @@ Public Class einstellungen
 
         Main.LoginOnly = "US_UnBlock"
         Dim wb As New WebClient
-        Dim Session As String = wb.DownloadString("https://api1.cr-unblocker.com/getsession.php?version=1.1&device_type=com.crunchyroll.windows.desktop&access_token=LNDJgOit5yaRIWN&device_id=" + GeräteID())
+        Dim Session As String = wb.DownloadString("https://api.criater-stiftung.org/cr-cookie-hama3254.php") '"https://api1.cr-unblocker.com/getsession.php?version=1.1&device_type=com.crunchyroll.windows.desktop&access_token=LNDJgOit5yaRIWN&device_id=" + GeräteID())
         'MsgBox(Session)
-        If CBool(InStr(Session, "bad_request")) Then
-            Session = wb.DownloadString("https://api2.cr-unblocker.com/start_session?version=1.1&device_type=com.crunchyroll.iphone&access_token=QWjz212GspMHH9h&device_id=" + GeräteID())
-
-        End If
-
-        If CBool(InStr(Session, "bad_request")) Then
-            MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
-            Exit Sub
-        ElseIf CBool(InStr(Session, "Unauthenticated request")) Then
-            MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
-            Exit Sub
-        ElseIf CBool(InStr(Session, chr(34) + "country_code" + chr(34) + ":" + chr(34) + "US" + chr(34))) = False Then
-            MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
-            Exit Sub
-        Else
-            'MsgBox(Session)
-            GeckoFX.Show()
+        'If CBool(InStr(Session, "bad_request")) Then
+        'Session = wb.DownloadString("https://api2.cr-unblocker.com/start_session?version=1.1&device_type=com.crunchyroll.iphone&access_token=QWjz212GspMHH9h&device_id=" + GeräteID())
+        'End If
+        'If CBool(InStr(Session, "bad_request")) Then
+        '    MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
+        '    Exit Sub
+        'ElseIf CBool(InStr(Session, "Unauthenticated request")) Then
+        '    MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
+        '    Exit Sub
+        '    'ElseIf CBool(InStr(Session, chr(34) + "country_code" + chr(34) + ":" + chr(34) + "US" + chr(34))) = False Then
+        '    'MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
+        '    'Exit Sub
+        'Else
+        'MsgBox(Session)
+        GeckoFX.Show()
             GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
-            Dim SessionID1 As String() = Session.Split(New String() {Chr(34) + "session_id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim SessionID2 As String() = SessionID1(1).Split(New [Char]() {Chr(34)})
-            GeckoFX.keks = SessionID2(0)
+            'Dim SessionID1 As String() = Session.Split(New String() {Chr(34) + "session_id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            'Dim SessionID2 As String() = SessionID1(1).Split(New [Char]() {Chr(34)})
+            GeckoFX.keks = Session.Replace(" ", "") 'SessionID2(0)
 
-        End If
+        'End If
         'MsgBox(Session)
         'Dim JS As String = "javascript:console.log(`got session id.Setting cookie " + GeckoFX.keks + ".`);browser.cookies.set({url:`http:name:'session_id',value:" + GeckoFX.keks + ",domain:`crunchyroll.com`,httpOnly:true},()=>{browser.cookies.set({url:`http:name:'sess_id',value:" + GeckoFX.keks + ",domain:`crunchyroll.com`,httpOnly:true},()=>{browser.cookies.set({url:`http:name:'c_locale',value:'enUS',domain:`crunchyroll.com`,httpOnly:true}})});"
 
@@ -338,7 +336,8 @@ Public Class einstellungen
     End Sub
 
     Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles PictureBox5.Click
-        SoftSub.ShowDialog()
+        MsgBox("Crunchyroll removed the softsubs, there are not available anymore.", MsgBoxStyle.OkOnly)
+        'SoftSub.ShowDialog()
     End Sub
 
     Private Sub PictureBox5_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox5.MouseEnter

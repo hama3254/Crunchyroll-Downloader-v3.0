@@ -209,25 +209,23 @@ Public Class Main
         Catch ex As Exception
             MaxDL = 1
         End Try
+#Region "removed softsubtitle"
 
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            SoftSubsString = rkg.GetValue("AddedSubs").ToString
-            If SoftSubsString = "none" Then
+        'Try
+        'Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+        'SoftSubsString = rkg.GetValue("AddedSubs").ToString
+        'If SoftSubsString = "none" Then
 
-            Else
-                Dim SoftSubsStringSplit() As String = SoftSubsString.Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-                For i As Integer = 0 To SoftSubsStringSplit.Count - 1
-                    SoftSubs.Add(SoftSubsStringSplit(i))
-                Next
-            End If
+        'Else
+        '    Dim SoftSubsStringSplit() As String = SoftSubsString.Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+        '    For i As Integer = 0 To SoftSubsStringSplit.Count - 1
+        '        SoftSubs.Add(SoftSubsStringSplit(i))
+        '    Next
+        'End If
+        'Catch ex As Exception
+        'End Try
 
-        Catch ex As Exception
-        End Try
-        'Label10.TextAlign = ContentAlignment.MiddleCenter
-
-
-
+#End Region
 
         If Resu = Nothing Then
             Resu = 1080
@@ -293,8 +291,8 @@ Public Class Main
             gIndexH = gIndexH + 1
 
             With ListView1.Items.Add(0)
-                LVPictureBox(ListView1, gIndexH, b, "Softsubs: " + SoftSubs, NameKomplett)
-                bt_del(ListView1, gIndexH, NameKomplett)
+                LVPictureBox(ListView1, gIndexH, b, "", NameKomplett) ' removed softsubs LVPictureBox(ListView1, gIndexH, b, "Softsubs: " + SoftSubs, NameKomplett)
+                Bt_del(ListView1, gIndexH, NameKomplett)
             End With
         End If
     End Sub
@@ -791,17 +789,17 @@ Public Class Main
 
 #End Region
 #Region "Subs"
-            Dim SoftSubs2 As New List(Of String)
-            If SoftSubs.Count > 0 Then
-                For i As Integer = 0 To SoftSubs.Count - 1
-                    If CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs(i) + Chr(34) + ",")) Then
-                        SoftSubs2.Add(SoftSubs(i))
-                    Else
-                        'MsgBox("Softsubtitle for " + SoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
-                    End If
-                Next
+            'Dim SoftSubs2 As New List(Of String)
+            'If SoftSubs.Count > 0 Then
+            '    For i As Integer = 0 To SoftSubs.Count - 1
+            '        If CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs(i) + Chr(34) + ",")) Then
+            '            SoftSubs2.Add(SoftSubs(i))
+            '        Else
+            '            'MsgBox("Softsubtitle for " + SoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
+            '        End If
+            '    Next
 
-            End If
+            'End If
             If SubSprache = "None" Then
                 If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":null")) Then
                     SubSprache2 = "null"
@@ -828,13 +826,13 @@ Public Class Main
                 If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
                     SubSprache2 = Chr(34) + SubSprache + Chr(34)
 
-                ElseIf CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
-                    If MessageBox.Show("It look like only Softsubtitle are avalibe." + vbNewLine + "Are you want to use Softsubtitle this time instead?", "No Hardsubtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                        SubSprache2 = "null"
-                        SoftSubs2.Add(SubSprache)
-                    Else
-                        Throw New System.Exception("Could not find the sub language")
-                    End If
+                    'ElseIf CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
+                    '    If MessageBox.Show("It look like only Softsubtitle are avalibe." + vbNewLine + "Are you want to use Softsubtitle this time instead?", "No Hardsubtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+                    '        SubSprache2 = "null"
+                    '        SoftSubs2.Add(SubSprache)
+                    '    Else
+                    '        Throw New System.Exception("Could not find the sub language")
+                    '    End If
 
 
                 Else
@@ -897,31 +895,31 @@ Public Class Main
 #End Region
 
 #Region "Download softsub file"
-            If SoftSubs2.Count > 0 Then
-                For i As Integer = 0 To SoftSubs2.Count - 1
-                    'EpisodeLabel.Text = SoftSubs2(i)
-                    'StatusLabel.Text = "Status: downloading subtitle file"
-                    LabelUpdate = "Status: downloading subtitle file"
-                    LabelEpisode = SoftSubs2(i)
-                    Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
-                    Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
-                    Dim client0 As New WebClient
-                    client0.Encoding = Encoding.UTF8
-                    Dim str0 As String = client0.DownloadString(SoftSub_3)
-                    Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
-                    Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + " " + SoftSubs2(i) + Path.GetExtension(Pfad3)), "ass")
-                    'MsgBox(FN)
-                    If i = 0 Then
-                        FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
-                        'MsgBox(FN)
-                    End If
-                    Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
-                    'MsgBox(Pfad4)
-                    File.WriteAllText(Pfad4, str0, Encoding.UTF8)
-                    Pause(1)
-                Next
-            End If
+            'If SoftSubs2.Count > 0 Then
+            '    For i As Integer = 0 To SoftSubs2.Count - 1
+            '        'EpisodeLabel.Text = SoftSubs2(i)
+            '        'StatusLabel.Text = "Status: downloading subtitle file"
+            '        LabelUpdate = "Status: downloading subtitle file"
+            '        LabelEpisode = SoftSubs2(i)
+            '        Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            '        Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
+            '        Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
+            '        Dim client0 As New WebClient
+            '        client0.Encoding = Encoding.UTF8
+            '        Dim str0 As String = client0.DownloadString(SoftSub_3)
+            '        Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
+            '        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + " " + SoftSubs2(i) + Path.GetExtension(Pfad3)), "ass")
+            '        'MsgBox(FN)
+            '        If i = 0 Then
+            '            FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
+            '            'MsgBox(FN)
+            '        End If
+            '        Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
+            '        'MsgBox(Pfad4)
+            '        File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+            '        Pause(1)
+            '    Next
+            'End If
 #End Region
 
 #Region "lösche doppel download"

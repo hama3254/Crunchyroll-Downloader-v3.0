@@ -336,8 +336,8 @@ Public Class einstellungen
     End Sub
 
     Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles PictureBox5.Click
-        MsgBox("Crunchyroll removed the softsubs, there are not available anymore.", MsgBoxStyle.OkOnly)
-        'SoftSub.ShowDialog()
+        'MsgBox("Crunchyroll removed the softsubs, there are not available anymore.", MsgBoxStyle.OkOnly)
+        SoftSub.ShowDialog()
     End Sub
 
     Private Sub PictureBox5_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox5.MouseEnter
@@ -367,6 +367,10 @@ Public Class einstellungen
     End Sub
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles AAuto.CheckedChanged
+
+    End Sub
+
+    Private Sub GB_SubLanguage_Enter(sender As Object, e As EventArgs) Handles GB_SubLanguage.Enter
 
     End Sub
 

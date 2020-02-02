@@ -269,10 +269,12 @@ Public Class einstellungen
         Return C
     End Function
 
-    Private Sub PictureBox2_Click(sender As Object, e As EventArgs)
+    Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
         Main.LoginOnly = "US_UnBlock"
         Dim wb As New WebClient
-        Dim Session As String = wb.DownloadString("https://api.criater-stiftung.org/cr-cookie-hama3254.php") '"https://api1.cr-unblocker.com/getsession.php?version=1.1&device_type=com.crunchyroll.windows.desktop&access_token=LNDJgOit5yaRIWN&device_id=" + GeräteID())
+        Dim Session As String = wb.DownloadString("https://api.criater-stiftung.org/cr-cookie-hama3254.php")
+        'MsgBox(Session)
+        GeckoFX.keks = Session
         GeckoFX.Show()
         GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
     End Sub
@@ -468,6 +470,8 @@ Public Class einstellungen
             comboBox4.Items.Add(URLGrapp2(0))
         Next
     End Sub
+
+
 
 
 #End Region

@@ -148,12 +148,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SoftSub.Designer.vb">
-      <DependentUpon>SoftSub.vb</DependentUpon>
-    </Compile>
-    <Compile Include="SoftSub.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Startup.Designer.vb">
       <DependentUpon>Startup.vb</DependentUpon>
     </Compile>
@@ -192,9 +186,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GeckoFX.resx">
       <DependentUpon>GeckoFX.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SoftSub.resx">
-      <DependentUpon>SoftSub.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Startup.resx">
       <DependentUpon>Startup.vb</DependentUpon>
@@ -248,6 +239,9 @@
     <Content Include="Firefox\softokn3.dll" />
     <Content Include="Firefox\xul.dll" />
     <Content Include="icon.ico" />
+    <None Include="Resources\softsubs_download_hover.png" />
+    <None Include="Resources\softsubs_download_gray.png" />
+    <None Include="Resources\softsubs_download.png" />
     <None Include="packages.config" />
     <None Include="Resources\main-del-hover.png" />
     <None Include="Resources\main-del.png" />

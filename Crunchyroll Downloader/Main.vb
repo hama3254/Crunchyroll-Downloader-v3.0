@@ -6,9 +6,11 @@ Imports System.ComponentModel
 Public Class Main
     Public LoggingBrowser As Boolean = False
     Public Thumbnail As String = Nothing
+    Public MergeSubstoMP4 As Boolean = False
     Dim ListOfStreams As New List(Of String)
     Public NonCR_Timeout As Integer = 5
     Public NonCR_URL As String = Nothing
+    Public DlSoftSubsRDY As Boolean = True
     Public gIndexH As Integer = -1
     Public DialogTaskString As String
     Public UserCloseDialog As Boolean = False
@@ -17,10 +19,12 @@ Public Class Main
     Public LabelUpdate As String = "Status: idle"
     Public LabelEpisode As String = "..."
     Public b As Boolean = True
+    Public c As Boolean = True
+    Public d As Boolean = True
     Public LoginOnly As String = "False"
     Public CreditsOnly As Boolean = False
     Public Pfad As String = My.Computer.FileSystem.CurrentDirectory
-    Dim ffmpeg_command As String
+    Dim ffmpeg_command As String = " -c copy -bsf:a aac_adtstoasc"
     Public Resu As Integer
     Dim Resu2 As String
     Public ResuSave As String = "6666x6666"
@@ -175,12 +179,12 @@ Public Class Main
 
 
 
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            ffmpeg_command = rkg.GetValue("ffmpeg_command").ToString
-        Catch ex As Exception
-            ffmpeg_command = "-c copy -bsf:a aac_adtstoasc -movflags +faststart"
-        End Try
+        'Try
+        '    Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+        '    ffmpeg_command = rkg.GetValue("ffmpeg_command").ToString
+        'Catch ex As Exception
+        '    ffmpeg_command = " -c copy -bsf:a aac_adtstoasc"
+        'End Try
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             Resu = Integer.Parse(rkg.GetValue("Resu").ToString)
@@ -208,6 +212,12 @@ Public Class Main
 
         Catch ex As Exception
             MaxDL = 1
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            MergeSubstoMP4 = CBool(Integer.Parse(rkg.GetValue("MergeMP4").ToString))
+        Catch ex As Exception
+
         End Try
 #Region "removed softsubtitle"
 
@@ -237,7 +247,7 @@ Public Class Main
 
     End Sub
 
-    Public Sub ListAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal VideoURL As String)
+    Public Sub ListAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String)
         'MsgBox(NameKomplett)
         Dim ReDl As Boolean = False
         Dim index As Integer = 0
@@ -500,17 +510,6 @@ Public Class Main
                     Aktuell = d.ToString
                     '  AnzahlFertig.Text = d.ToString
                     Anime_Add.Add_Display.Text = Aktuell + " / " + Gesamt
-                    If CBool(InStr(WebbrowserText, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "premium" + Chr(34))) Then
-                    ElseIf CBool(InStr(WebbrowserText, Chr(34) + "premium_status" + Chr(34) + ":" + Chr(34) + "free_trial" + Chr(34))) Then
-                        'Else
-                        '    'MsgBox(CR_Premium_Failed, MsgBoxStyle.Information)
-                        '    Anime_Add.groupBox1.Visible = True
-                        '    Anime_Add.groupBox2.Visible = False
-                        '    Anime_Add.GroupBox3.Visible = False
-                        '    Anime_Add.Mass_DL_Cancel = False
-                        '    Anime_Add.pictureBox4.Image = My.Resources.main_button_download_default
-                        '    Exit Sub
-                    End If
                 Next
 
 
@@ -538,6 +537,314 @@ Public Class Main
         Anime_Add.pictureBox4.Image = My.Resources.main_button_download_default
     End Sub
 #End Region
+
+#Region "SubsOnly"
+
+    Public Sub MassGrappSubs()
+        einstellungen.MultiDLSoftSubs.Enabled = True
+        einstellungen.PictureBox3.Image = My.Resources.softsubs_download
+        einstellungen.ComboBox1.Items.Clear()
+        einstellungen.comboBox3.Items.Clear()
+        einstellungen.comboBox4.Items.Clear()
+        einstellungen.ComboBox2.Enabled = False
+        Dim Anzahl As String() = WebbrowserText.Split(New String() {"wrapper container-shadow hover-classes"}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim Titel As String() = Anzahl(0).Split(New String() {"<meta content=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim Titel2 As String() = Titel(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim c As Integer = Anzahl.Count - 1
+        Array.Reverse(Anzahl)
+        For i As Integer = 0 To Anzahl.Count - 2
+            Dim URLGrapp As String() = Anzahl(i).Split(New String() {"title=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim URLGrapp2 As String() = URLGrapp(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            einstellungen.comboBox3.Items.Add(URLGrapp2(0))
+            einstellungen.comboBox4.Items.Add(URLGrapp2(0))
+        Next
+
+    End Sub
+
+    Public Sub SeasonDropdownGrappSubs()
+        einstellungen.MultiDLSoftSubs.Enabled = True
+        einstellungen.PictureBox3.Image = My.Resources.softsubs_download
+        einstellungen.ComboBox1.Items.Clear()
+        einstellungen.comboBox3.Items.Clear()
+        einstellungen.comboBox4.Items.Clear()
+        einstellungen.ComboBox2.Enabled = True
+        einstellungen.comboBox3.Enabled = True
+        einstellungen.comboBox4.Enabled = True
+        Dim Anzahl As String() = WebbrowserText.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
+        Array.Reverse(Anzahl)
+        For i As Integer = 0 To Anzahl.Count - 2
+            Dim Titel As String() = Anzahl(i).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim Titel2 As String() = Titel(0).Split(New String() {">"}, System.StringSplitOptions.RemoveEmptyEntries)
+            'MsgBox(Titel2(0))
+            einstellungen.ComboBox2.Items.Add(Titel2(1))
+        Next
+
+    End Sub
+
+    Public Sub DownloadSubsOnly()
+        'Try
+        'Throw New System.Exception("Test")
+        DlSoftSubsRDY = False
+        Dim CR_Anime_Titel As String = Nothing
+        Dim CR_Anime_Staffel As String = Nothing
+        Dim CR_Anime_Folge As String = Nothing
+#Region "Name + Pfad"
+        Dim Pfad2 As String
+        Dim CR_FilenName As String = Nothing
+        Dim SubfolderValue As String = Nothing
+        Dim CR_FilenName_Backup As String = Nothing
+
+
+#Region "Name von Crunchyroll"
+
+        Dim Bug_Deutsch As String = "-"
+        If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
+            Bug_Deutsch = ":"
+        End If
+        Dim CR_Name_by_Titel_2 As String() = WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
+        CR_FilenName = CR_Name_by_Titel_2(0).Trim()
+
+        If CBool(InStr(WebbrowserText, "<h4>")) Then ' false on movie true on series
+            Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {"<h4>"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {"</h4>"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+            Dim CR_Name_Staffel0_Folge1 As String()
+            If CBool(InStr(CR_Name_2(0), ",")) Then
+                CR_Name_Staffel0_Folge1 = CR_Name_2(0).Split(New [Char]() {System.Convert.ToChar(",")}, System.StringSplitOptions.RemoveEmptyEntries)
+                CR_Anime_Staffel = CR_Name_Staffel0_Folge1(0).Trim()
+                CR_Anime_Folge = CR_Name_Staffel0_Folge1(1).Trim()
+                CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
+            Else
+                CR_Anime_Staffel = Nothing
+                CR_Anime_Folge = CR_Name_2(0).Trim()
+                CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
+            End If
+
+
+            Dim CR_Name_4 As String() = CR_Name_1(0).Split(New String() {"class=" + Chr(34) + "text-link" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+            Dim CR_Name_Anime0 As String() = CR_Name_4(CR_Name_4.Length - 1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
+            CR_Name_Anime0(0) = System.Text.RegularExpressions.Regex.Replace(CR_Name_Anime0(0), "[^\w\\-]", " ")
+            CR_Anime_Titel = CR_Name_Anime0(0).Trim
+            If CR_Anime_Staffel = Nothing Then
+                CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Folge
+            Else
+                CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Staffel + " " + CR_Anime_Folge
+            End If
+
+            CR_FilenName_Backup = RemoveExtraSpaces(CR_FilenName)
+
+
+        End If
+#End Region
+        CR_FilenName = System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
+        CR_FilenName = RemoveExtraSpaces(CR_FilenName)
+
+        If SubfolderValue = Nothing Then
+            Pfad2 = Pfad + "\" + CR_FilenName + ".mp4"
+        Else
+            Pfad2 = Pfad + "\" + SubfolderValue + CR_FilenName + ".mp4"
+        End If
+        If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
+            ' Nein! Jetzt erstellen...
+            Try
+                Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
+            Catch ex As Exception
+                ' Ordner wurde nich erstellt
+                Pfad2 = Pfad + "\" + CR_FilenName_Backup + ".mp4"
+            End Try
+        End If
+        Pfad2 = Chr(34) + Pfad2 + Chr(34)
+
+#End Region
+#Region "Subs"
+        Dim SoftSubs2 As New List(Of String)
+        If SoftSubs.Count > 0 Then
+            For i As Integer = 0 To SoftSubs.Count - 1
+                If CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs(i) + Chr(34) + ",")) Then
+                    SoftSubs2.Add(SoftSubs(i))
+                Else
+                    'MsgBox("Softsubtitle for " + SoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
+                End If
+            Next
+
+        End If
+        If SubSprache = "None" Then
+            If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":null")) Then
+                SubSprache2 = "null"
+            Else
+                Me.Invoke(New Action(Function()
+                                         ResoNotFoundString = WebbrowserText
+                                         DialogTaskString = "Language"
+                                         Reso.ShowDialog()
+                                         Return Nothing
+                                     End Function))
+                If UserCloseDialog = True Then
+                    Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
+                Else
+                    If ResoBackString = Nothing Then
+                    Else
+                        SubSprache2 = ResoBackString
+                    End If
+                End If
+                'Throw New System.Exception("Could not find the sub language")
+            End If
+
+
+        Else
+            If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
+                SubSprache2 = Chr(34) + SubSprache + Chr(34)
+
+            ElseIf CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
+                If MessageBox.Show("It look like only Softsubtitle are avalibe." + vbNewLine + "Are you want to use Softsubtitle this time instead?", "No Hardsubtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+                    SubSprache2 = "null"
+                    SoftSubs2.Add(SubSprache)
+                Else
+                    Throw New System.Exception("Could not find the sub language")
+                End If
+
+
+            Else
+                Me.Invoke(New Action(Function()
+                                         ResoNotFoundString = WebbrowserText
+                                         DialogTaskString = "Language"
+                                         Reso.ShowDialog()
+                                         Return Nothing
+                                     End Function))
+                If UserCloseDialog = True Then
+                    Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
+                Else
+                    If ResoBackString = Nothing Then
+                    Else
+                        SubSprache2 = ResoBackString
+                    End If
+                End If
+            End If
+        End If
+
+
+#End Region
+        If Grapp_Abord = True Then
+            Grapp_RDY = True
+            Grapp_Abord = False
+            'MsgBox("grapp_abourd")
+            Exit Sub
+
+        End If
+
+
+#Region "Download softsub file"
+
+        If SoftSubs2.Count > 0 Then
+            For i As Integer = 0 To SoftSubs2.Count - 1
+                LabelUpdate = "Status: downloading subtitle file"
+                LabelEpisode = SoftSubs2(i)
+                Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
+                Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
+                Dim client0 As New WebClient
+                client0.Encoding = Encoding.UTF8
+                Dim str0 As String = client0.DownloadString(SoftSub_3)
+                Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
+                Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + " " + SoftSubs2(i) + Path.GetExtension(Pfad3)), "ass")
+                'MsgBox(FN)
+                If i = 0 Then
+                    FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
+                    'MsgBox(FN)
+                End If
+                Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
+                'MsgBox(Pfad4)
+                File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                Pause(1)
+            Next
+
+
+        End If
+#End Region
+
+        DlSoftSubsRDY = True
+
+        'Catch ex As Exception
+        'End Try
+    End Sub
+
+    Public Async Sub MassSubsDL()
+        If einstellungen.comboBox3.Text = Nothing Then
+            Exit Sub
+        ElseIf einstellungen.comboBox4.Text = Nothing Then
+            Exit Sub
+        End If
+        einstellungen.SoftSubsMass.Text = "preparing ..."
+        Dim Website As String = WebbrowserText
+
+        If einstellungen.ComboBox2.Enabled = True Then
+            Dim SeasonDropdownAnzahl As String() = Website.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Array.Reverse(SeasonDropdownAnzahl)
+            Dim SDV As Integer = 0
+            For i As Integer = 0 To SeasonDropdownAnzahl.Count - 1
+                If InStr(SeasonDropdownAnzahl(i), Chr(34) + ">" + einstellungen.ComboBox2.SelectedItem.ToString + "</a>") Then
+                    SDV = i
+                End If
+            Next
+            Website = SeasonDropdownAnzahl(SDV)
+        End If
+        Try
+            Dim Anzahl As String() = Website.Split(New String() {"wrapper container-shadow hover-classes"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Array.Reverse(Anzahl)
+            Dim c As Integer = einstellungen.comboBox4.SelectedIndex - einstellungen.comboBox3.SelectedIndex + 1
+            'AnzahlGesamt.Text = c.ToString
+            Gesamt = c.ToString
+            Aktuell = "0"
+            If einstellungen.comboBox4.SelectedIndex > einstellungen.comboBox3.SelectedIndex Then
+
+                For i As Integer = einstellungen.comboBox3.SelectedIndex To einstellungen.comboBox4.SelectedIndex
+
+                    For e As Integer = 0 To Integer.MaxValue
+
+                        If DlSoftSubsRDY = True Then
+                            Exit For
+                        Else
+                            Await Task.Delay(2000)
+                        End If
+                    Next
+
+                    Dim dd As Integer = i - einstellungen.comboBox3.SelectedIndex + 1
+                    Dim URLGrapp As String() = Anzahl(i).Split(New String() {"<a href=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim URLGrapp2 As String() = URLGrapp(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    'MsgBox("https://www.crunchyroll.com" + URLGrapp2(0))
+                    DlSoftSubsRDY = False
+                    b = False
+                    d = False
+                    GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com" + URLGrapp2(0))
+                    Aktuell = dd.ToString
+                    einstellungen.SoftSubsMass.Text = Aktuell + " / " + Gesamt
+                Next
+
+
+
+            End If
+        Catch ex As Exception
+            Anime_Add.comboBox4.Items.Clear()
+            Anime_Add.comboBox3.Items.Clear()
+            ' MsgBox(Error_Mass_DL, MsgBoxStyle.Information)
+            'MsgBox(ex.ToString)
+            Aktuell = 0.ToString
+            Gesamt = 0.ToString
+
+            Anime_Add.groupBox1.Visible = True
+            Anime_Add.groupBox2.Visible = False
+            Anime_Add.GroupBox3.Visible = False
+            Anime_Add.Mass_DL_Cancel = False
+            Anime_Add.pictureBox4.Image = My.Resources.main_button_download_default
+        End Try
+        Pause(5)
+        Anime_Add.groupBox1.Visible = True
+        Anime_Add.groupBox2.Visible = False
+        Anime_Add.GroupBox3.Visible = False
+        Anime_Add.Mass_DL_Cancel = False
+        Anime_Add.pictureBox4.Image = My.Resources.main_button_download_default
+    End Sub
+#End Region
+
 #Region "Sub to display"
 
     Public Function SubValuesToDisplay() As String
@@ -673,6 +980,36 @@ Public Class Main
             End If
 
             Return CB_SuB_Nothing
+
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+    End Function
+
+    Public Function CCtoMP4CC(ByVal HardSub As String) As String
+        Try
+            If HardSub = "deDE" Then
+                Return "ger"
+            ElseIf HardSub = "enUS" Then
+                Return "eng"
+            ElseIf HardSub = "ptBR" Then
+                Return "por"
+            ElseIf HardSub = "esLA" Then
+                Return "spa"
+            ElseIf HardSub = "frFR" Then
+                Return "fre"
+            ElseIf HardSub = "arME" Then
+                Return "ara"
+            ElseIf HardSub = "ruRU" Then
+                Return "rus"
+            ElseIf HardSub = "itIT" Then
+                Return "ita"
+            ElseIf HardSub = "esES" Then
+                Return "spa"
+            End If
+
+            Return "chi"
 
         Catch ex As Exception
             Return Nothing
@@ -895,31 +1232,55 @@ Public Class Main
             End If
 #End Region
 
-#Region "Download softsub file"
+#Region "Download softsub file or build ffmpeg cmd"
+            Dim SoftSubMergeURLs As String = Nothing
+            Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a"
+            Dim SoftSubMergeMetatata As String = Nothing
+
             If SoftSubs2.Count > 0 Then
-                For i As Integer = 0 To SoftSubs2.Count - 1
-                    'EpisodeLabel.Text = SoftSubs2(i)
-                    'StatusLabel.Text = "Status: downloading subtitle file"
-                    LabelUpdate = "Status: downloading subtitle file"
-                    LabelEpisode = SoftSubs2(i)
-                    Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
-                    Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
-                    Dim client0 As New WebClient
-                    client0.Encoding = Encoding.UTF8
-                    Dim str0 As String = client0.DownloadString(SoftSub_3)
-                    Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
-                    Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + " " + SoftSubs2(i) + Path.GetExtension(Pfad3)), "ass")
-                    'MsgBox(FN)
-                    If i = 0 Then
-                        FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
+                If MergeSubstoMP4 = True Then
+                    For i As Integer = 0 To SoftSubs2.Count - 1
+                        Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
+                        Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
+                        If SoftSubMergeURLs = Nothing Then
+                            SoftSubMergeURLs = " -i " + Chr(34) + SoftSub_3 + Chr(34)
+                        Else
+                            SoftSubMergeURLs = SoftSubMergeURLs + " -i " + Chr(34) + SoftSub_3 + Chr(34)
+                        End If
+                        SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + 1).ToString
+                        If SoftSubMergeMetatata = Nothing Then
+                            SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i))
+                        Else
+                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i))
+                        End If
+
+                    Next
+
+                Else
+                    For i As Integer = 0 To SoftSubs2.Count - 1
+                        LabelUpdate = "Status: downloading subtitle file"
+                        LabelEpisode = SoftSubs2(i)
+                        Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
+                        Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
+                        Dim client0 As New WebClient
+                        client0.Encoding = Encoding.UTF8
+                        Dim str0 As String = client0.DownloadString(SoftSub_3)
+                        Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
+                        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + " " + SoftSubs2(i) + Path.GetExtension(Pfad3)), "ass")
                         'MsgBox(FN)
-                    End If
-                    Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
-                    'MsgBox(Pfad4)
-                    File.WriteAllText(Pfad4, str0, Encoding.UTF8)
-                    Pause(1)
-                Next
+                        If i = 0 Then
+                            FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
+                            'MsgBox(FN)
+                        End If
+                        Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
+                        'MsgBox(Pfad4)
+                        File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                        Pause(1)
+                    Next
+
+                End If
             End If
 #End Region
 
@@ -940,7 +1301,12 @@ Public Class Main
             End If
 #End Region
             If Resu = 42 Then
-                URL_DL = CR_URI_Master
+                If MergeSubstoMP4 = True Then
+                    URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+                Else
+                    URL_DL = CR_URI_Master
+                End If
+                MsgBox(URL_DL)
             Else
 
 
@@ -977,7 +1343,12 @@ Public Class Main
                 Dim VLC_URI_1 As String() = str.Split(New String() {Resu2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim VLC_URI_2 As String() = VLC_URI_1(1).Split(New [Char]() {Chr(34)})
                 Dim VLC_URI_3 As String() = VLC_URI_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
-                URL_DL = VLC_URI_3(0).Trim()
+                If MergeSubstoMP4 = True Then
+                    URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+                Else
+                    URL_DL = VLC_URI_3(0).Trim()
+                End If
+                MsgBox(URL_DL)
             End If
 #Region "thumbnail"
             Dim thumbnail As String() = WebbrowserText.Split(New String() {My.Resources.thumbnailString}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1008,10 +1379,11 @@ Public Class Main
             Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim L1Name As String = L1Name_Split(1).Replace("www.", "")
             Me.Invoke(New Action(Function()
-                                     ListAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL)
+                                     ListAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3)
                                      Return Nothing
                                  End Function))
 #End Region
+
             AsyncWorkerX.RunAsync(AddressOf DownloadFFMPEG, URL_DL, Pfad_DL, Pfad_DL)
             Grapp_RDY = True
             Me.Invoke(New Action(Function()
@@ -1100,6 +1472,10 @@ Public Class Main
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
         'Dim cmd As String = "-i " + Chr(34) + URL_DL + Chr(34) + " -c copy -bsf:a aac_adtstoasc " + Pfad_DL 'start ffmpeg with command strFFCMD string
         Dim cmd As String = "-i " + Chr(34) + URL_DL + Chr(34) + " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        If MergeSubstoMP4 = True Then
+            cmd = DL_URL + " " + DL_Pfad
+        End If
+
         'MsgBox(cmd)
         'all parameters required to run the process
         startinfo.FileName = exepath
@@ -1131,42 +1507,43 @@ Public Class Main
             Dim pr As Process = sender
             Dim FileNameSplit As String() = pr.StartInfo.Arguments.ToString().Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim FileName As String = Chr(34) + FileNameSplit(FileNameSplit.Count - 1) + Chr(34)
-            If CBool(InStr(e.Data, "Stream #")) And CBool(InStr(e.Data, "Video")) = True Then
-                'MsgBox(True.ToString + vbNewLine + e.Data)
-                ListOfStreams.Add(e.Data)
-            End If
-            If InStr(e.Data, "Stream #") And InStr(e.Data, " -> ") Then
-                'UsesStreams.Add(e.Data)
-                'MsgBox(e.Data)
-                Dim StreamSearch() As String = e.Data.Split(New String() {" -> "}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim StreamSearch2 As String = StreamSearch(0) + ":"
-                For i As Integer = 0 To ListOfStreams.Count - 1
-                    If CBool(InStr(ListOfStreams(i), StreamSearch2)) Then 'And CBool(InStr(ListOfStreams(i), " Video:")) Then
-                        'MsgBox(ListOfStreams(i))
-                        Dim ResoSearch() As String = ListOfStreams(i).Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        'MsgBox(ResoSearch(1))
-                        If CBool(InStr(ResoSearch(2), " [")) = True Then
-                            Dim ResoSearch2() As String = ResoSearch(2).Split(New String() {" ["}, System.StringSplitOptions.RemoveEmptyEntries)
-                            For ii As Integer = 0 To PB_list.Count - 1
-                                If PB_list(ii).Name = FileName Then
-                                    Dim p As PictureBox = PB_list(ii)
-                                    p.Image = p.BackgroundImage
-                                    Dim g As Graphics = Graphics.FromImage(p.Image)
-                                    Dim TextPointL4 As Point = New Point(195, 101)
-                                    Dim Weiß As Brush = New SolidBrush(Color.FromArgb(242, 242, 242))
-                                    g.FillRectangle(Weiß, TextPointL4.X - 3, TextPointL4.Y - 3, 70, 30)
-                                    g.DrawString(ResoSearch2(0) + "p", FontLabel.Font, Brushes.Black, TextPointL4)
-                                    Dim brGradient As Brush = New SolidBrush(Color.FromArgb(125, 0, 0))
-                                    g.Dispose()
-                                    Exit For
-                                End If
-                            Next
+            If MergeSubstoMP4 = False Then
+                If CBool(InStr(e.Data, "Stream #")) And CBool(InStr(e.Data, "Video")) = True Then
+                    'MsgBox(True.ToString + vbNewLine + e.Data)
+                    ListOfStreams.Add(e.Data)
+                End If
+                If InStr(e.Data, "Stream #") And InStr(e.Data, " -> ") Then
+                    'UsesStreams.Add(e.Data)
+                    'MsgBox(e.Data)
+                    Dim StreamSearch() As String = e.Data.Split(New String() {" -> "}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim StreamSearch2 As String = StreamSearch(0) + ":"
+                    For i As Integer = 0 To ListOfStreams.Count - 1
+                        If CBool(InStr(ListOfStreams(i), StreamSearch2)) Then 'And CBool(InStr(ListOfStreams(i), " Video:")) Then
+                            'MsgBox(ListOfStreams(i))
+                            Dim ResoSearch() As String = ListOfStreams(i).Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            'MsgBox(ResoSearch(1))
+                            If CBool(InStr(ResoSearch(2), " [")) = True Then
+                                Dim ResoSearch2() As String = ResoSearch(2).Split(New String() {" ["}, System.StringSplitOptions.RemoveEmptyEntries)
+                                For ii As Integer = 0 To PB_list.Count - 1
+                                    If PB_list(ii).Name = FileName Then
+                                        Dim p As PictureBox = PB_list(ii)
+                                        p.Image = p.BackgroundImage
+                                        Dim g As Graphics = Graphics.FromImage(p.Image)
+                                        Dim TextPointL4 As Point = New Point(195, 101)
+                                        Dim Weiß As Brush = New SolidBrush(Color.FromArgb(242, 242, 242))
+                                        g.FillRectangle(Weiß, TextPointL4.X - 3, TextPointL4.Y - 3, 70, 30)
+                                        g.DrawString(ResoSearch2(0) + "p", FontLabel.Font, Brushes.Black, TextPointL4)
+                                        Dim brGradient As Brush = New SolidBrush(Color.FromArgb(125, 0, 0))
+                                        g.Dispose()
+                                        Exit For
+                                    End If
+                                Next
+                            End If
+
                         End If
-
-                    End If
-                Next
+                    Next
+                End If
             End If
-
 
             If Me.Visible = False Or AbourtList.Contains(FileName) Then
                 ' Try
@@ -1180,11 +1557,13 @@ Public Class Main
                                      For i As Integer = 0 To PB_list.Count - 1
 
                                          If PB_list(i).Name = FileName Then
+                                             If InStr(e.Data, "Duration: N/A, bitrate: N/A") Then
 
-                                             If InStr(e.Data, "Duration: ") Then
+                                             ElseIf InStr(e.Data, "Duration: ") Then
                                                  Dim ZeitGesamt As String() = e.Data.Split(New String() {"Duration: "}, System.StringSplitOptions.RemoveEmptyEntries)
                                                  Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
                                                  Dim ZeitGesamtSplit() As String = ZeitGesamt2(0).Split(New [Char]() {System.Convert.ToChar(":")})
+                                                 MsgBox(ZeitGesamt2(0))
                                                  Dim ZeitGesamtInteger As Integer = CInt(ZeitGesamtSplit(0)) * 3600 + CInt(ZeitGesamtSplit(1)) * 60 + CInt(ZeitGesamtSplit(2))
 
                                                  ListView1.Items.Item(i).Text = ZeitGesamtInteger
@@ -1554,7 +1933,7 @@ Public Class Main
         Dim L1Name As String = L1Name_Split(1)
         Pfad_DL = Chr(34) + Pfad + "\" + Video_FilenName + Chr(34)
         Me.Invoke(New Action(Function()
-                                 ListAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail4, URL_DL)
+                                 ListAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail4)
                                  Return Nothing
                              End Function))
 #End Region

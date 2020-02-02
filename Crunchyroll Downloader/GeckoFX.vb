@@ -8,7 +8,7 @@ Imports System.Net
 Imports System.Net.WebUtility
 Public Class GeckoFX
     Public keks As String = Nothing
-    Public c As Boolean = True
+    'Public c As Boolean = True
     Dim t As Thread
     Dim ScanTrue As Boolean = False
     Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
@@ -76,10 +76,20 @@ Public Class GeckoFX
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
                             Main.b = True
-                            t = New Thread(AddressOf Main.GrappURL)
-                            t.Priority = ThreadPriority.Normal
-                            t.IsBackground = True
-                            t.Start()
+                            If Main.d = False Then
+                                Main.d = True
+                                t = New Thread(AddressOf Main.DownloadSubsOnly)
+                                t.Priority = ThreadPriority.Normal
+                                t.IsBackground = True
+                                t.Start()
+                            Else
+                                t = New Thread(AddressOf Main.GrappURL)
+                                t.Priority = ThreadPriority.Normal
+                                t.IsBackground = True
+                                t.Start()
+                            End If
+
+
 
                         ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "season-dropdown content-menu block")) Then
                             Main.b = True
@@ -87,29 +97,45 @@ Public Class GeckoFX
                             Main.WebbrowserURL = WebBrowser1.Url.ToString
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
-                            Main.SeasonDropdownGrapp()
+                            If Main.d = False Then
+                                Main.d = True
+                                Main.SeasonDropdownGrappSubs()
+                                einstellungen.StatusLabel.Text = "Status: Multi Download detected!"
+                            Else
+                                Main.SeasonDropdownGrapp()
+                            End If
                         ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "wrapper container-shadow hover-classes")) Then
                             Main.b = True
                             Anime_Add.textBox2.Text = "Name of the Anime"
                             Main.WebbrowserURL = WebBrowser1.Url.ToString
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
-                            Main.MassGrapp()
+                            If Main.d = False Then
+                                Main.d = True
+                                Main.MassGrappSubs()
+                                einstellungen.StatusLabel.Text = "Status: Multi Download detected!"
+
+                            Else
+                                Main.MassGrapp()
+                            End If
                         Else
                             MsgBox(Main.No_Stream, MsgBoxStyle.OkOnly)
                         End If
                     Catch ex As Exception
+                        MsgBox(ex.ToString)
                         Main.LabelUpdate = "Status: idle"
                     End Try
-                ElseIf c = False Then
+                ElseIf main.c = False Then
                     If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "hardsub_lang")) Then
-                        c = True
+                        Main.c = True
                         Main.WebbrowserURL = WebBrowser1.Url.ToString
                         Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                         Main.WebbrowserTitle = WebBrowser1.DocumentTitle
-                        SoftSub.DownloadSubs()
+                        'SoftSub.DownloadSubs()
                         Me.Close()
                     End If
+
+
                 End If
                 If Main.UserBowser = False Then
                     Main.WebbrowserURL = WebBrowser1.Url.ToString

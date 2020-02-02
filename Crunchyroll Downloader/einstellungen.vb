@@ -6,8 +6,32 @@ Imports System.Net
 
 Public Class einstellungen
     Private Sub einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        For i As Integer = 0 To Main.SoftSubs.Count - 1
+            If Main.SoftSubs(i) = "deDE" Then
+                CBdeDE.Checked = True
+            ElseIf Main.SoftSubs(i) = "enUS" Then
+                CBenUS.Checked = True
+            ElseIf Main.SoftSubs(i) = "ptBR" Then
+                CBptBR.Checked = True
+            ElseIf Main.SoftSubs(i) = "esLA" Then
+                CBesLA.Checked = True
+            ElseIf Main.SoftSubs(i) = "frFR" Then
+                CBfrFR.Checked = True
+            ElseIf Main.SoftSubs(i) = "arME" Then
+                CBarME.Checked = True
+            ElseIf Main.SoftSubs(i) = "ruRU" Then
+                CBruRU.Checked = True
+            ElseIf Main.SoftSubs(i) = "itIT" Then
+                CBitIT.Checked = True
+            ElseIf Main.SoftSubs(i) = "esES" Then
+                CBesES.Checked = True
+            End If
+        Next
         Me.Location = New Point(Main.Location.X + Main.Width / 2 - Me.Width / 2, Main.Location.Y + Main.Height / 2 - Me.Height / 2)
         Me.Icon = My.Resources.icon
+        If Main.MergeSubstoMP4 = True Then
+            MergeMP4.Checked = True
+        End If
         Try
             GB_Resolution.Text = Main.GB_Resolution_Text
             GB_SubLanguage.Text = Main.GB_SubLanguage_Text
@@ -155,6 +179,13 @@ Public Class einstellungen
             rk.SetValue("Sub", "None", RegistryValueKind.String)
 
         End If
+        If MergeMP4.Checked = True Then
+            Main.MergeSubstoMP4 = True
+            rk.SetValue("MergeMP4", "1", RegistryValueKind.String)
+        Else
+            Main.MergeSubstoMP4 = False
+            rk.SetValue("MergeMP4", "0", RegistryValueKind.String)
+        End If
         'If RawVideo.Checked = True Then
         '    Main.SoftSubs = True
         '    rk.SetValue("RawVideo", 1, RegistryValueKind.String)
@@ -177,6 +208,49 @@ Public Class einstellungen
         ElseIf Firefox_True.Checked = False Then
             rk.SetValue("NoUse", 0, RegistryValueKind.String)
         End If
+#Region "sof subs"
+        Main.SoftSubs.Clear()
+        If CBdeDE.Checked = True Then
+            Main.SoftSubs.Add("deDE")
+        End If
+        If CBenUS.Checked = True Then
+            Main.SoftSubs.Add("enUS")
+        End If
+        If CBptBR.Checked = True Then
+            Main.SoftSubs.Add("ptBR")
+        End If
+        If CBesLA.Checked = True Then
+            Main.SoftSubs.Add("esLA")
+        End If
+        If CBfrFR.Checked = True Then
+            Main.SoftSubs.Add("frFR")
+        End If
+        If CBarME.Checked = True Then
+            Main.SoftSubs.Add("arME")
+        End If
+        If CBruRU.Checked = True Then
+            Main.SoftSubs.Add("ruRU")
+        End If
+        If CBitIT.Checked = True Then
+            Main.SoftSubs.Add("itIT")
+        End If
+        If CBesES.Checked = True Then
+            Main.SoftSubs.Add("esES")
+        End If
+
+        Dim SaveString As String = Nothing
+        For ii As Integer = 0 To Main.SoftSubs.Count - 1
+            If SaveString = Nothing Then
+                SaveString = Main.SoftSubs(ii)
+            Else
+                SaveString = SaveString + "," + Main.SoftSubs(ii)
+            End If
+        Next
+        If SaveString = Nothing Then
+            SaveString = "none"
+        End If
+        rk.SetValue("AddedSubs", SaveString, RegistryValueKind.String)
+#End Region
         Me.Close()
     End Sub
 
@@ -194,44 +268,13 @@ Public Class einstellungen
         Next
         Return C
     End Function
-    Private Sub pictureBox3_Click(sender As Object, e As EventArgs)
-        Main.LoginOnly = "US_UnBlock"
-        GeckoFX.keks = InputBox("Please insert the cookie below.")
-        If GeckoFX.keks = Nothing Then Exit Sub
-        GeckoFX.Show()
-        GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
-    End Sub
 
-    Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
-
+    Private Sub PictureBox2_Click(sender As Object, e As EventArgs)
         Main.LoginOnly = "US_UnBlock"
         Dim wb As New WebClient
         Dim Session As String = wb.DownloadString("https://api.criater-stiftung.org/cr-cookie-hama3254.php") '"https://api1.cr-unblocker.com/getsession.php?version=1.1&device_type=com.crunchyroll.windows.desktop&access_token=LNDJgOit5yaRIWN&device_id=" + GeräteID())
-        'MsgBox(Session)
-        'If CBool(InStr(Session, "bad_request")) Then
-        'Session = wb.DownloadString("https://api2.cr-unblocker.com/start_session?version=1.1&device_type=com.crunchyroll.iphone&access_token=QWjz212GspMHH9h&device_id=" + GeräteID())
-        'End If
-        'If CBool(InStr(Session, "bad_request")) Then
-        '    MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
-        '    Exit Sub
-        'ElseIf CBool(InStr(Session, "Unauthenticated request")) Then
-        '    MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
-        '    Exit Sub
-        '    'ElseIf CBool(InStr(Session, chr(34) + "country_code" + chr(34) + ":" + chr(34) + "US" + chr(34))) = False Then
-        '    'MsgBox(Main.CR_Unlock_Error_String, MsgBoxStyle.OkOnly)
-        '    'Exit Sub
-        'Else
-        'MsgBox(Session)
         GeckoFX.Show()
-            GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
-            'Dim SessionID1 As String() = Session.Split(New String() {Chr(34) + "session_id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            'Dim SessionID2 As String() = SessionID1(1).Split(New [Char]() {Chr(34)})
-            GeckoFX.keks = Session.Replace(" ", "") 'SessionID2(0)
-
-        'End If
-        'MsgBox(Session)
-        'Dim JS As String = "javascript:console.log(`got session id.Setting cookie " + GeckoFX.keks + ".`);browser.cookies.set({url:`http:name:'session_id',value:" + GeckoFX.keks + ",domain:`crunchyroll.com`,httpOnly:true},()=>{browser.cookies.set({url:`http:name:'sess_id',value:" + GeckoFX.keks + ",domain:`crunchyroll.com`,httpOnly:true},()=>{browser.cookies.set({url:`http:name:'c_locale',value:'enUS',domain:`crunchyroll.com`,httpOnly:true}})});"
-
+        GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
     End Sub
 
     Private Function GeräteID() As String
@@ -256,14 +299,6 @@ Public Class einstellungen
 
     Private Sub pictureBox1_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox1.MouseLeave
         pictureBox1.BackColor = Color.Transparent
-    End Sub
-
-    Private Sub pictureBox3_MouseEnter(sender As Object, e As EventArgs)
-        'pictureBox3.Image = My.Resources.crdsettings_setowncookie_button_hover
-    End Sub
-
-    Private Sub pictureBox3_MouseLeave(sender As Object, e As EventArgs)
-        'pictureBox3.Image = My.Resources.crdsettings_setowncookie_button
     End Sub
 
     Private Sub pictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
@@ -322,7 +357,7 @@ Public Class einstellungen
 
 
 
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem
+    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem
         sender.BackColor = Color.White
         If e.Index >= 0 Then
             Using st As New StringFormat With {.Alignment = StringAlignment.Center}
@@ -335,18 +370,6 @@ Public Class einstellungen
         End If
     End Sub
 
-    Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles PictureBox5.Click
-        'MsgBox("Crunchyroll removed the softsubs, there are not available anymore.", MsgBoxStyle.OkOnly)
-        SoftSub.ShowDialog()
-    End Sub
-
-    Private Sub PictureBox5_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox5.MouseEnter
-        PictureBox5.Image = My.Resources.settings_add_softsubs_hover
-    End Sub
-
-    Private Sub PictureBox5_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox5.MouseLeave
-        PictureBox5.Image = My.Resources.settings_add_softsubs
-    End Sub
 
     Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles PictureBox6.Click
         Startup.ShowDialog()
@@ -354,27 +377,97 @@ Public Class einstellungen
 
 
 #End Region
-    Private Sub PictureBox6_MouseEnter(sender As Object, e As EventArgs)
+    Private Sub PictureBox6_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox6.MouseEnter
         PictureBox6.Image = My.Resources.main_credits_hover
     End Sub
 
-    Private Sub PictureBox6_MouseLeave(sender As Object, e As EventArgs)
+    Private Sub PictureBox6_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox6.MouseLeave
         PictureBox6.Image = My.Resources.main_credits_default
     End Sub
 
-    Private Sub Button1_Click_1(sender As Object, e As EventArgs)
-        GeckoFX.WebBrowser1.Navigate("about:config")
+    Private Sub AAuto_Click(sender As Object, e As EventArgs) Handles AAuto.Click
+        If MergeMP4.Checked = True Then
+            If AAuto.Checked = True Then
+                If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+
+                Else
+                    MergeMP4.Checked = False
+                End If
+            End If
+        End If
     End Sub
 
-    Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles AAuto.CheckedChanged
+    Private Sub MergeMP4_Click(sender As Object, e As EventArgs) Handles MergeMP4.Click
+        If MergeMP4.Checked = True Then
+            If AAuto.Checked = True Then
+                If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+
+                Else
+                    MergeMP4.Checked = False
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles PictureBox5.Click
+        If CBool(InStr(TextBox2.Text, "crunchyroll.com")) Then
+            GeckoFX.WebBrowser1.Navigate(TextBox2.Text)
+            StatusLabel.Text = "Status: looking for subtitles"
+            Main.d = False
+            Main.b = False
+        End If
 
     End Sub
 
-    Private Sub GB_SubLanguage_Enter(sender As Object, e As EventArgs) Handles GB_SubLanguage.Enter
-
+    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
+        Main.MassSubsDL()
     End Sub
 
+    Private Sub PictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox3.MouseEnter
+        PictureBox3.Image = My.Resources.softsubs_download_hover
+    End Sub
 
+    Private Sub PictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox3.MouseLeave
+        PictureBox3.Image = My.Resources.softsubs_download
+    End Sub
+    Private Sub PictureBox5_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox5.MouseEnter
+        PictureBox5.Image = My.Resources.softsubs_download_hover
+    End Sub
+
+    Private Sub PictureBox5_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox5.MouseLeave
+        PictureBox5.Image = My.Resources.softsubs_download
+    End Sub
+
+    Private Sub TextBox2_Click(sender As Object, e As EventArgs) Handles TextBox2.Click
+        If TextBox2.Text = "URL" Then
+            TextBox2.Text = Nothing
+        End If
+    End Sub
+
+    Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
+
+        comboBox3.Items.Clear()
+        comboBox4.Items.Clear()
+        Dim SeasonDropdownAnzahl As String() = Main.WebbrowserText.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
+        Array.Reverse(SeasonDropdownAnzahl)
+        Dim SDV As Integer = 0
+        For i As Integer = 0 To SeasonDropdownAnzahl.Count - 1
+            If InStr(SeasonDropdownAnzahl(i), Chr(34) + ">" + ComboBox2.SelectedItem.ToString + "</a>") Then
+                SDV = i
+            End If
+        Next
+        Dim Anzahl As String() = SeasonDropdownAnzahl(SDV).Split(New String() {"wrapper container-shadow hover-classes"}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim c As Integer = Anzahl.Count - 1
+        Array.Reverse(Anzahl)
+        For i As Integer = 0 To Anzahl.Count - 2
+            Dim URLGrapp As String() = Anzahl(i).Split(New String() {"title=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            Dim URLGrapp2 As String() = URLGrapp(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            comboBox3.Items.Add(URLGrapp2(0))
+            comboBox4.Items.Add(URLGrapp2(0))
+        Next
+    End Sub
 
 
 #End Region

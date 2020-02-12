@@ -4,6 +4,8 @@ Imports System.IO
 Imports Microsoft.Win32
 Imports System.ComponentModel
 Public Class Main
+    Dim Debug1 As Boolean = False
+    Dim Debug2 As Boolean = False
     Public LoggingBrowser As Boolean = False
     Public Thumbnail As String = Nothing
     Public MergeSubstoMP4 As Boolean = False
@@ -24,7 +26,7 @@ Public Class Main
     Public LoginOnly As String = "False"
     Public CreditsOnly As Boolean = False
     Public Pfad As String = My.Computer.FileSystem.CurrentDirectory
-    Dim ffmpeg_command As String = " -c copy -bsf:a aac_adtstoasc"
+    Public ffmpeg_command As String = " -c copy -bsf:a aac_adtstoasc" '" -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " 
     Public Resu As Integer
     Dim Resu2 As String
     Public ResuSave As String = "6666x6666"
@@ -179,12 +181,18 @@ Public Class Main
 
 
 
-        'Try
-        '    Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-        '    ffmpeg_command = rkg.GetValue("ffmpeg_command").ToString
-        'Catch ex As Exception
-        '    ffmpeg_command = " -c copy -bsf:a aac_adtstoasc"
-        'End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            ffmpeg_command = rkg.GetValue("ffmpeg_command").ToString
+        Catch ex As Exception
+            ffmpeg_command = " -c copy -bsf:a aac_adtstoasc "
+        End Try
+
+        If ffmpeg_command = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+            MaxDL = 4
+        ElseIf ffmpeg_command = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+            MaxDL = 1
+        End If
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             Resu = Integer.Parse(rkg.GetValue("Resu").ToString)
@@ -1306,7 +1314,7 @@ Public Class Main
                 Else
                     URL_DL = CR_URI_Master
                 End If
-                MsgBox(URL_DL)
+                'MsgBox(URL_DL)
             Else
 
 
@@ -1348,7 +1356,7 @@ Public Class Main
                 Else
                     URL_DL = VLC_URI_3(0).Trim()
                 End If
-                MsgBox(URL_DL)
+                'MsgBox(URL_DL)
             End If
 #Region "thumbnail"
             Dim thumbnail As String() = WebbrowserText.Split(New String() {My.Resources.thumbnailString}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1473,10 +1481,16 @@ Public Class Main
         'Dim cmd As String = "-i " + Chr(34) + URL_DL + Chr(34) + " -c copy -bsf:a aac_adtstoasc " + Pfad_DL 'start ffmpeg with command strFFCMD string
         Dim cmd As String = "-i " + Chr(34) + URL_DL + Chr(34) + " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
         If MergeSubstoMP4 = True Then
-            cmd = DL_URL + " " + DL_Pfad
+            If CBool(InStr(DL_URL, "-i " + Chr(34))) = True Then
+                cmd = DL_URL + " " + DL_Pfad
+            End If
         End If
 
-        'MsgBox(cmd)
+        If Debug1 = True Then
+            MsgBox(cmd)
+        End If
+
+
         'all parameters required to run the process
         startinfo.FileName = exepath
         startinfo.Arguments = cmd
@@ -1497,9 +1511,9 @@ Public Class Main
     End Function
 
     Private Sub Main_DoubleClick(sender As Object, e As EventArgs) Handles Me.DoubleClick
-        For i As Integer = 0 To ListOfStreams.Count - 1
-            MsgBox(ListOfStreams(i))
-        Next
+        'For i As Integer = 0 To ListOfStreams.Count - 1
+        'MsgBox(ListOfStreams(i))
+        'Next
     End Sub
 
     Sub TestOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
@@ -1510,6 +1524,10 @@ Public Class Main
             If MergeSubstoMP4 = False Then
                 If CBool(InStr(e.Data, "Stream #")) And CBool(InStr(e.Data, "Video")) = True Then
                     'MsgBox(True.ToString + vbNewLine + e.Data)
+                    'MsgBox(InStr(e.Data, "Stream #").ToString + vbNewLine + InStr(e.Data, "Video").ToString)
+
+                    'MsgBox("with CBool" + vbNewLine + CBool(InStr(e.Data, "Stream #")).ToString + vbNewLine + CBool(InStr(e.Data, "Video")).ToString)
+
                     ListOfStreams.Add(e.Data)
                 End If
                 If InStr(e.Data, "Stream #") And InStr(e.Data, " -> ") Then
@@ -1563,7 +1581,7 @@ Public Class Main
                                                  Dim ZeitGesamt As String() = e.Data.Split(New String() {"Duration: "}, System.StringSplitOptions.RemoveEmptyEntries)
                                                  Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
                                                  Dim ZeitGesamtSplit() As String = ZeitGesamt2(0).Split(New [Char]() {System.Convert.ToChar(":")})
-                                                 MsgBox(ZeitGesamt2(0))
+                                                 'MsgBox(ZeitGesamt2(0))
                                                  Dim ZeitGesamtInteger As Integer = CInt(ZeitGesamtSplit(0)) * 3600 + CInt(ZeitGesamtSplit(1)) * 60 + CInt(ZeitGesamtSplit(2))
 
                                                  ListView1.Items.Item(i).Text = ZeitGesamtInteger
@@ -1947,5 +1965,16 @@ Public Class Main
 
     End Sub
 
+    Private Sub pictureBox2_DoubleClick(sender As Object, e As EventArgs) Handles pictureBox2.DoubleClick
+        If Debug1 = True Then
+            Debug2 = True
+            MsgBox("Debug activated")
+        ElseIf Debug2 = True Then
+            My.Computer.Clipboard.SetText(WebbrowserText)
+            MsgBox("webbrowser text copyed to the clipboard")
+        Else
+            Debug1 = True
+        End If
 
+    End Sub
 End Class

@@ -103,6 +103,14 @@ Public Class einstellungen
         End If
         NumericUpDown1.Value = Main.MaxDL
         TextBox1.Text = Main.Startseite
+
+        If Main.ffmpeg_command = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+            FFMPEG_Command.SelectedIndex = 1
+        ElseIf Main.FFMPEG_Command = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+            FFMPEG_Command.SelectedIndex = 2
+        Else
+            FFMPEG_Command.SelectedIndex = 0
+        End If
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             Firefox_True.Checked = CBool(Integer.Parse(rkg.GetValue("NoUse").ToString))
@@ -186,20 +194,23 @@ Public Class einstellungen
             Main.MergeSubstoMP4 = False
             rk.SetValue("MergeMP4", "0", RegistryValueKind.String)
         End If
-        'If RawVideo.Checked = True Then
-        '    Main.SoftSubs = True
-        '    rk.SetValue("RawVideo", 1, RegistryValueKind.String)
-        '    'MsgBox("Diese Einstellung benötigt einen Neustart des Programmes!", MsgBoxStyle.OkOnly)
-        'Else
-        '    Main.SoftSubs = False
-        '    rk.SetValue("RawVideo", 0, RegistryValueKind.String)
-        'End If
         If RBAnime.Checked = True Then
             Main.SubFolder = 1
             rk.SetValue("SubFolder", 1, RegistryValueKind.String)
         ElseIf RBStaffel.Checked = True Then
             Main.SubFolder = 2
             rk.SetValue("SubFolder", 2, RegistryValueKind.String)
+        End If
+        If FFMPEG_Command.SelectedText = "" Then
+        Else
+            rk.SetValue("ffmpeg_command", FFMPEG_Command.SelectedText, RegistryValueKind.String)
+
+        End If
+
+        If FFMPEG_Command.SelectedText = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+            NumericUpDown1.Value = 4
+        ElseIf FFMPEG_Command.SelectedText = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+            NumericUpDown1.Value = 1
         End If
         rk.SetValue("SL_DL", NumericUpDown1.Value, RegistryValueKind.String)
         Main.MaxDL = NumericUpDown1.Value
@@ -208,6 +219,7 @@ Public Class einstellungen
         ElseIf Firefox_True.Checked = False Then
             rk.SetValue("NoUse", 0, RegistryValueKind.String)
         End If
+
 #Region "sof subs"
         Main.SoftSubs.Clear()
         If CBdeDE.Checked = True Then
@@ -359,7 +371,7 @@ Public Class einstellungen
 
 
 
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem
+    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem, FFMPEG_Command.DrawItem
         sender.BackColor = Color.White
         If e.Index >= 0 Then
             Using st As New StringFormat With {.Alignment = StringAlignment.Center}
@@ -399,7 +411,7 @@ Public Class einstellungen
         End If
     End Sub
 
-    Private Sub MergeMP4_Click(sender As Object, e As EventArgs) Handles MergeMP4.Click
+    Private Sub MergeMP4_Click(sender As Object, e As EventArgs) Handles MergeMP4.Click, CheckBox1.Click
         If MergeMP4.Checked = True Then
             If AAuto.Checked = True Then
                 If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
@@ -470,6 +482,23 @@ Public Class einstellungen
             comboBox4.Items.Add(URLGrapp2(0))
         Next
     End Sub
+
+    Private Sub FFMPEG_Command_SelectedIndexChanged(sender As Object, e As EventArgs) Handles FFMPEG_Command.SelectedIndexChanged
+        If CheckBox1.Checked = True Then
+            MsgBox("Other commands than " + Chr(34) + " -c copy -bsf:a aac_adtstoasc " + Chr(34) + "convert the Video into h265/hevc!", MsgBoxStyle.Information)
+            If FFMPEG_Command.SelectedText = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+                MsgBox("This command requires a Nvidia GTX 6xx/7xx (Kepler generation) or higher.", MsgBoxStyle.Information)
+            ElseIf FFMPEG_Command.SelectedText = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+                MsgBox("CPU encoding is low and uses all resources of the computer.", MsgBoxStyle.Information)  ' -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc 
+            End If
+        End If
+    End Sub
+
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+        GroupBox2.Enabled = CheckBox1.CheckState
+    End Sub
+
+
 
 
 

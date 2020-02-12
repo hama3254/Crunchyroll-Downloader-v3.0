@@ -41,6 +41,8 @@ Partial Class einstellungen
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.FFMPEG_Command = New System.Windows.Forms.ComboBox()
         Me.SoftSubs = New System.Windows.Forms.GroupBox()
         Me.MergeMP4 = New System.Windows.Forms.CheckBox()
         Me.CBesES = New System.Windows.Forms.CheckBox()
@@ -71,6 +73,7 @@ Partial Class einstellungen
         Me.comboBox4 = New System.Windows.Forms.ComboBox()
         Me.ComboBox2 = New System.Windows.Forms.ComboBox()
         Me.comboBox3 = New System.Windows.Forms.ComboBox()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.GB_Sub_Path.SuspendLayout()
         Me.DL_Count_simultaneous.SuspendLayout()
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -83,6 +86,7 @@ Partial Class einstellungen
         Me.GroupBox4.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
         Me.GB_SubLanguage.SuspendLayout()
         Me.GB_Resolution.SuspendLayout()
@@ -289,6 +293,8 @@ Partial Class einstellungen
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
+        Me.TabPage2.Controls.Add(Me.CheckBox1)
+        Me.TabPage2.Controls.Add(Me.GroupBox2)
         Me.TabPage2.Controls.Add(Me.SoftSubs)
         Me.TabPage2.Controls.Add(Me.GB_SubLanguage)
         Me.TabPage2.Controls.Add(Me.GB_Resolution)
@@ -298,6 +304,36 @@ Partial Class einstellungen
         Me.TabPage2.Size = New System.Drawing.Size(468, 415)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output Settings"
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox2.Controls.Add(Me.FFMPEG_Command)
+        Me.GroupBox2.Enabled = False
+        Me.GroupBox2.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox2.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 346)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(449, 63)
+        Me.GroupBox2.TabIndex = 40
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "ffmpeg command"
+        '
+        'FFMPEG_Command
+        '
+        Me.FFMPEG_Command.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.FFMPEG_Command.DropDownHeight = 250
+        Me.FFMPEG_Command.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.FFMPEG_Command.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FFMPEG_Command.FormattingEnabled = True
+        Me.FFMPEG_Command.IntegralHeight = False
+        Me.FFMPEG_Command.ItemHeight = 16
+        Me.FFMPEG_Command.Items.AddRange(New Object() {" -c copy -bsf:a aac_adtstoasc ", " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc ", " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc "})
+        Me.FFMPEG_Command.Location = New System.Drawing.Point(6, 25)
+        Me.FFMPEG_Command.Name = "FFMPEG_Command"
+        Me.FFMPEG_Command.Size = New System.Drawing.Size(437, 22)
+        Me.FFMPEG_Command.Sorted = True
+        Me.FFMPEG_Command.TabIndex = 33
         '
         'SoftSubs
         '
@@ -315,7 +351,7 @@ Partial Class einstellungen
         Me.SoftSubs.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SoftSubs.Location = New System.Drawing.Point(6, 134)
         Me.SoftSubs.Name = "SoftSubs"
-        Me.SoftSubs.Size = New System.Drawing.Size(449, 203)
+        Me.SoftSubs.Size = New System.Drawing.Size(449, 186)
         Me.SoftSubs.TabIndex = 49
         Me.SoftSubs.TabStop = False
         Me.SoftSubs.Text = "SoftSubs"
@@ -324,7 +360,7 @@ Partial Class einstellungen
         '
         Me.MergeMP4.AutoSize = True
         Me.MergeMP4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MergeMP4.Location = New System.Drawing.Point(129, 165)
+        Me.MergeMP4.Location = New System.Drawing.Point(128, 155)
         Me.MergeMP4.Name = "MergeMP4"
         Me.MergeMP4.Size = New System.Drawing.Size(194, 20)
         Me.MergeMP4.TabIndex = 6
@@ -685,6 +721,17 @@ Partial Class einstellungen
         Me.comboBox3.Size = New System.Drawing.Size(441, 23)
         Me.comboBox3.TabIndex = 1
         '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox1.Location = New System.Drawing.Point(67, 326)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(351, 20)
+        Me.CheckBox1.TabIndex = 6
+        Me.CheckBox1.Text = "i know that re-encoding the video takes time and power"
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
         'einstellungen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -714,6 +761,8 @@ Partial Class einstellungen
         Me.GroupBox4.ResumeLayout(False)
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
+        Me.TabPage2.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
         Me.SoftSubs.ResumeLayout(False)
         Me.SoftSubs.PerformLayout()
         Me.GB_SubLanguage.ResumeLayout(False)
@@ -777,4 +826,7 @@ Partial Class einstellungen
     Public WithEvents comboBox4 As ComboBox
     Public WithEvents ComboBox2 As ComboBox
     Public WithEvents comboBox3 As ComboBox
+    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents FFMPEG_Command As ComboBox
+    Friend WithEvents CheckBox1 As CheckBox
 End Class

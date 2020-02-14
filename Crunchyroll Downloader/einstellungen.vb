@@ -201,15 +201,16 @@ Public Class einstellungen
             Main.SubFolder = 2
             rk.SetValue("SubFolder", 2, RegistryValueKind.String)
         End If
-        If FFMPEG_Command.SelectedText = "" Then
-        Else
-            rk.SetValue("ffmpeg_command", FFMPEG_Command.SelectedText, RegistryValueKind.String)
+        If FFMPEG_Command.Text = "" Then
 
+        Else
+            rk.SetValue("ffmpeg_command", FFMPEG_Command.Text, RegistryValueKind.String)
+            Main.ffmpeg_command = FFMPEG_Command.Text
         End If
 
-        If FFMPEG_Command.SelectedText = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
-            NumericUpDown1.Value = 4
-        ElseIf FFMPEG_Command.SelectedText = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+        If FFMPEG_Command.Text = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+            NumericUpDown1.Value = 2
+        ElseIf FFMPEG_Command.Text = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
             NumericUpDown1.Value = 1
         End If
         rk.SetValue("SL_DL", NumericUpDown1.Value, RegistryValueKind.String)
@@ -486,9 +487,9 @@ Public Class einstellungen
     Private Sub FFMPEG_Command_SelectedIndexChanged(sender As Object, e As EventArgs) Handles FFMPEG_Command.SelectedIndexChanged
         If CheckBox1.Checked = True Then
             MsgBox("Other commands than " + Chr(34) + " -c copy -bsf:a aac_adtstoasc " + Chr(34) + "convert the Video into h265/hevc!", MsgBoxStyle.Information)
-            If FFMPEG_Command.SelectedText = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+            If FFMPEG_Command.Text = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
                 MsgBox("This command requires a Nvidia GTX 6xx/7xx (Kepler generation) or higher.", MsgBoxStyle.Information)
-            ElseIf FFMPEG_Command.SelectedText = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+            ElseIf FFMPEG_Command.Text = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
                 MsgBox("CPU encoding is low and uses all resources of the computer.", MsgBoxStyle.Information)  ' -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc 
             End If
         End If

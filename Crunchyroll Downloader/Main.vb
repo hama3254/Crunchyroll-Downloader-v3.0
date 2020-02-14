@@ -4,8 +4,8 @@ Imports System.IO
 Imports Microsoft.Win32
 Imports System.ComponentModel
 Public Class Main
-    Dim Debug1 As Boolean = False
-    Dim Debug2 As Boolean = False
+    Public Debug1 As Boolean = False
+    Public Debug2 As Boolean = False
     Public LoggingBrowser As Boolean = False
     Public Thumbnail As String = Nothing
     Public MergeSubstoMP4 As Boolean = False
@@ -477,13 +477,19 @@ Public Class Main
         Try
             Dim Anzahl As String() = Website.Split(New String() {"wrapper container-shadow hover-classes"}, System.StringSplitOptions.RemoveEmptyEntries)
             Array.Reverse(Anzahl)
-            Dim c As Integer = Anime_Add.comboBox4.SelectedIndex - Anime_Add.comboBox3.SelectedIndex + 1
-            'AnzahlGesamt.Text = c.ToString
-            Gesamt = c.ToString
+            Dim c As Integer = 0
             Aktuell = "0"
-            If Anime_Add.comboBox4.SelectedIndex > Anime_Add.comboBox3.SelectedIndex Then
-
-                For i As Integer = Anime_Add.comboBox3.SelectedIndex To Anime_Add.comboBox4.SelectedIndex
+            If Anime_Add.comboBox4.SelectedIndex > Anime_Add.comboBox3.SelectedIndex Or Anime_Add.comboBox4.SelectedIndex = Anime_Add.comboBox3.SelectedIndex Then
+                c = Anime_Add.comboBox4.SelectedIndex - Anime_Add.comboBox3.SelectedIndex + 1
+            Else
+                Dim TempCB3 As Integer = Anime_Add.comboBox3.SelectedIndex
+                Dim TempCB4 As Integer = Anime_Add.comboBox4.SelectedIndex
+                Anime_Add.comboBox3.SelectedIndex = TempCB4
+                Anime_Add.comboBox4.SelectedIndex = TempCB3
+                c = Anime_Add.comboBox4.SelectedIndex - Anime_Add.comboBox3.SelectedIndex + 1
+            End If
+            Gesamt = c.ToString
+            For i As Integer = Anime_Add.comboBox3.SelectedIndex To Anime_Add.comboBox4.SelectedIndex
 
                     For e As Integer = 0 To Integer.MaxValue
 
@@ -509,25 +515,24 @@ Public Class Main
                     Dim d As Integer = i - Anime_Add.comboBox3.SelectedIndex + 1
                     Dim URLGrapp As String() = Anzahl(i).Split(New String() {"<a href=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim URLGrapp2 As String() = URLGrapp(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    'MsgBox("https://www.crunchyroll.com" + URLGrapp2(0))
+                    If Debug2 = True Then
+                        MsgBox("https://www.crunchyroll.com" + URLGrapp2(0))
+                    End If
                     Grapp_RDY = False
                     b = False
                     GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com" + URLGrapp2(0))
-                    'Await Task.Delay(500)
-                    'GrappURL()
+
                     Aktuell = d.ToString
-                    '  AnzahlFertig.Text = d.ToString
                     Anime_Add.Add_Display.Text = Aktuell + " / " + Gesamt
                 Next
 
 
-
-            End If
         Catch ex As Exception
+            If Debug2 = True Then
+                MsgBox(ex.ToString)
+            End If
             Anime_Add.comboBox4.Items.Clear()
             Anime_Add.comboBox3.Items.Clear()
-            ' MsgBox(Error_Mass_DL, MsgBoxStyle.Information)
-            'MsgBox(ex.ToString)
             Aktuell = 0.ToString
             Gesamt = 0.ToString
 
@@ -1486,7 +1491,7 @@ Public Class Main
             End If
         End If
 
-        If Debug1 = True Then
+        If Debug2 = True Then
             MsgBox(cmd)
         End If
 
@@ -1967,14 +1972,25 @@ Public Class Main
 
     Private Sub pictureBox2_DoubleClick(sender As Object, e As EventArgs) Handles pictureBox2.DoubleClick
         If Debug1 = True Then
-            Debug2 = True
-            MsgBox("Debug activated")
-        ElseIf Debug2 = True Then
-            My.Computer.Clipboard.SetText(WebbrowserText)
-            MsgBox("webbrowser text copyed to the clipboard")
+            If Debug2 = True Then
+                einstellungen.Close()
+                Try
+                    My.Computer.Clipboard.SetText(WebbrowserText)
+
+                    MsgBox("webbrowser text copyed to the clipboard")
+                Catch ex As Exception
+                End Try
+            Else
+                Debug2 = True
+                einstellungen.Close()
+                MsgBox("Debug activated")
+            End If
         Else
             Debug1 = True
+            einstellungen.Close()
+            'MsgBox("Debug activated")
         End If
+
 
     End Sub
 End Class

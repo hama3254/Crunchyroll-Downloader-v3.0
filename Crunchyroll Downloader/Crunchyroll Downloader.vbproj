@@ -239,13 +239,13 @@
     <Content Include="Firefox\softokn3.dll" />
     <Content Include="Firefox\xul.dll" />
     <Content Include="icon.ico" />
+    <None Include="Resources\Help_Background.PNG" />
     <None Include="Resources\softsubs_download_hover.png" />
     <None Include="Resources\softsubs_download_gray.png" />
     <None Include="Resources\softsubs_download.png" />
     <None Include="packages.config" />
     <None Include="Resources\main-del-hover.png" />
     <None Include="Resources\main-del.png" />
-    <None Include="Resources\mainb-del.png" />
     <None Include="Resources\balken.png" />
     <None Include="Resources\backgroud.png" />
     <None Include="Resources\credits-background.png" />

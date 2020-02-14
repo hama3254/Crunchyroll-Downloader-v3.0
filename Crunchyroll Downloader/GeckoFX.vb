@@ -360,11 +360,14 @@ Public Class GeckoFX
                 Main.Pause(1)
                 Button2.Text = "network scan is in progess " + Math.Abs(i).ToString
             Next
-            If InStr(Main.WebbrowserURL, "https://www.anime-on-demand.de/anime/") Then
+            If InStr(Main.WebbrowserURL, "anime-on-demand.de/anime/") Then
                 Main.WebbrowserTitle = WebBrowser1.Document.GetElementsByClassName("jw-title-primary").First.TextContent
+                If Main.Debug2 = True Then
+                    MsgBox(Main.WebbrowserTitle)
+                End If
                 'Main.Thumbnail = WebBrowser1.Document.GetElementsByClassName("fullwidth-image anime-top-image").First.TextContent
-
             Else
+
                 Main.WebbrowserTitle = WebBrowser1.DocumentTitle
             End If
             Dim line As String = Nothing

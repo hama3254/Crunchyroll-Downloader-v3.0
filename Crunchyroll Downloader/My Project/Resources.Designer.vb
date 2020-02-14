@@ -288,6 +288,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Help_Background() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Help_Background", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &quot;,&quot;resolution&quot;:&quot;adaptive&quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property hls_endString() As String

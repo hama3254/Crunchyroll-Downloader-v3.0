@@ -288,6 +288,11 @@ Public Class GeckoFX
     End Sub
 
     Private Sub GeckoFX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If Main.Debug2 = True Then
+            Debug_Mode.Show()
+            Debug_Mode.Location = New Point(Me.Location.X + Me.Width - 15, Me.Location.Y)
+        End If
+
         If WebBrowser1.Url.ToString = "about:blank" Then
             If Main.LoginOnly = "US_UnBlock" Then
                 WebBrowser1.Navigate("https://www.crunchyroll.com/login")
@@ -377,6 +382,8 @@ Public Class GeckoFX
             While (line IsNot Nothing)
                 line = logFileReader.ReadLine
                 If InStr(line, ".m3u8?") Then
+                    Dim Temp_String As String = Nothing
+                    Temp_String = line
                     If HTMLString = Nothing Then
                         HTMLString = line
                     Else
@@ -386,6 +393,25 @@ Public Class GeckoFX
                         line = logFileReader.ReadLine
                         If InStr(line, " Host: ") Then
                             HTMLString = HTMLString + vbNewLine + line
+                            Main.m3u8List.Add(Temp_String + vbNewLine.ToString + line.ToString)
+                        End If
+                    Next
+                ElseIf InStr(line, ".txt") Then
+                    Dim Temp_String As String = Nothing
+                    Temp_String = line
+                    For i As Integer = 0 To 10
+                        line = logFileReader.ReadLine
+                        If InStr(line, " Host: ") Then
+                            Main.txtList.Add(Temp_String + vbNewLine + line)
+                        End If
+                    Next
+                ElseIf InStr(line, ".mpd") Then
+                    Dim Temp_String As String = Nothing
+                    Temp_String = line
+                    For i As Integer = 0 To 10
+                        line = logFileReader.ReadLine
+                        If InStr(line, " Host: ") Then
+                            Main.mpdList.Add(Temp_String + vbNewLine + line)
                         End If
                     Next
                 End If
@@ -416,6 +442,31 @@ Public Class GeckoFX
                         Exit For
                     End If
                 Next
+            ElseIf Main.mpdList.Count > 0 Then                'InStr(HTMLString, ".mpd?") Then
+                HTMLString = Main.mpdList.Item(0)
+                Button2.Text = "found mpd!"
+                Main.LoggingBrowser = False
+                GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                GeckoPreferences.Default("logging.nsHttp") = 0
+                Dim URL As String = Nothing
+                Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
+                For i As Integer = 0 To HTMLSplit.Count - 1
+                    If InStr(HTMLSplit(i), ".mpd?") Then
+                        Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim URLPart1() As String = HTMLSplit(i + 1).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Main.NonCR_URL = "https://" + URLPart1(1) + URLPart2Split2(0)
+                        'MsgBox(Main.NonCR_URL)
+                        'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
+                        t = New Thread(AddressOf Main.Grapp_non_CR)
+                        t.Priority = ThreadPriority.Normal
+                        t.IsBackground = True
+                        t.Start()
+                        Button2.Text = "Start network scan"
+                        Exit For
+                    End If
+                Next
+
             End If
             ScanTrue = False
             Button2.Enabled = True
@@ -426,4 +477,9 @@ Public Class GeckoFX
         End Try
     End Sub
 
+    Private Sub GeckoFX_LocationChanged(sender As Object, e As EventArgs) Handles Me.LocationChanged
+        If Main.Debug2 = True Then
+            Debug_Mode.Location = New Point(Me.Location.X + Me.Width - 15, Me.Location.Y)
+        End If
+    End Sub
 End Class

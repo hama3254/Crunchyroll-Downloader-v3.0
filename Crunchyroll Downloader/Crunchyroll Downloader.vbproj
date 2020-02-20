@@ -137,6 +137,12 @@
     <Compile Include="einstellungen.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Debug_Mode.Designer.vb">
+      <DependentUpon>Debug_Mode.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Debug_Mode.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GeckoFX.Designer.vb">
       <DependentUpon>GeckoFX.vb</DependentUpon>
     </Compile>
@@ -183,6 +189,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="einstellungen.resx">
       <DependentUpon>einstellungen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Debug_Mode.resx">
+      <DependentUpon>Debug_Mode.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GeckoFX.resx">
       <DependentUpon>GeckoFX.vb</DependentUpon>

@@ -4,6 +4,9 @@ Imports System.IO
 Imports Microsoft.Win32
 Imports System.ComponentModel
 Public Class Main
+    Public m3u8List As New List(Of String)
+    Public txtList As New List(Of String)
+    Public mpdList As New List(Of String)
     Public Debug1 As Boolean = False
     Public Debug2 As Boolean = False
     Public LoggingBrowser As Boolean = False
@@ -189,7 +192,7 @@ Public Class Main
         End Try
 
         If ffmpeg_command = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
-            MaxDL = 4
+            MaxDL = 2
         ElseIf ffmpeg_command = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
             MaxDL = 1
         End If
@@ -491,40 +494,40 @@ Public Class Main
             Gesamt = c.ToString
             For i As Integer = Anime_Add.comboBox3.SelectedIndex To Anime_Add.comboBox4.SelectedIndex
 
-                    For e As Integer = 0 To Integer.MaxValue
+                For e As Integer = 0 To Integer.MaxValue
 
-                        If Grapp_RDY = True Then
-                            RemoveFinishedTask()
-                            Pause(1)
-                            If PR_List.Count < MaxDL Then
-                                Exit For
-                            Else
-                                'MsgBox(e)
-                                Await Task.Delay(2000)
-                            End If
+                    If Grapp_RDY = True Then
+                        RemoveFinishedTask()
+                        Pause(1)
+                        If PR_List.Count < MaxDL Then
+                            Exit For
                         Else
+                            'MsgBox(e)
                             Await Task.Delay(2000)
                         End If
-                    Next
-                    If Anime_Add.Mass_DL_Cancel = False Then
-                        b = True
-                        Exit For
-                        Grapp_Abord = True
-                        'MsgBox("dl_abourd")
+                    Else
+                        Await Task.Delay(2000)
                     End If
-                    Dim d As Integer = i - Anime_Add.comboBox3.SelectedIndex + 1
-                    Dim URLGrapp As String() = Anzahl(i).Split(New String() {"<a href=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim URLGrapp2 As String() = URLGrapp(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    If Debug2 = True Then
-                        MsgBox("https://www.crunchyroll.com" + URLGrapp2(0))
-                    End If
-                    Grapp_RDY = False
-                    b = False
-                    GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com" + URLGrapp2(0))
-
-                    Aktuell = d.ToString
-                    Anime_Add.Add_Display.Text = Aktuell + " / " + Gesamt
                 Next
+                If Anime_Add.Mass_DL_Cancel = False Then
+                    b = True
+                    Exit For
+                    Grapp_Abord = True
+                    'MsgBox("dl_abourd")
+                End If
+                Dim d As Integer = i - Anime_Add.comboBox3.SelectedIndex + 1
+                Dim URLGrapp As String() = Anzahl(i).Split(New String() {"<a href=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim URLGrapp2 As String() = URLGrapp(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                If Debug2 = True Then
+                    MsgBox("https://www.crunchyroll.com" + URLGrapp2(0))
+                End If
+                Grapp_RDY = False
+                b = False
+                GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com" + URLGrapp2(0))
+
+                Aktuell = d.ToString
+                Anime_Add.Add_Display.Text = Aktuell + " / " + Gesamt
+            Next
 
 
         Catch ex As Exception

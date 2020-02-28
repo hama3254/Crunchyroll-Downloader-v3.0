@@ -339,7 +339,9 @@ Public Class GeckoFX
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Try
 
-
+            Main.m3u8List.Clear()
+            Main.mpdList.Clear()
+            Main.txtList.Clear()
             Button2.Enabled = False
             ScanTrue = True
             GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
@@ -434,6 +436,7 @@ Public Class GeckoFX
                         Main.NonCR_URL = "https://" + URLPart1(1) + URLPart2Split2(0)
                         'MsgBox(Main.NonCR_URL)
                         'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
+                        Main.FFMPEG_Reso(Main.NonCR_URL)
                         t = New Thread(AddressOf Main.Grapp_non_CR)
                         t.Priority = ThreadPriority.Normal
                         t.IsBackground = True
@@ -458,6 +461,7 @@ Public Class GeckoFX
                         Main.NonCR_URL = "https://" + URLPart1(1) + URLPart2Split2(0)
                         'MsgBox(Main.NonCR_URL)
                         'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
+                        Main.FFMPEG_Reso(Main.NonCR_URL)
                         t = New Thread(AddressOf Main.Grapp_non_CR)
                         t.Priority = ThreadPriority.Normal
                         t.IsBackground = True
@@ -481,5 +485,13 @@ Public Class GeckoFX
         If Main.Debug2 = True Then
             Debug_Mode.Location = New Point(Me.Location.X + Me.Width - 15, Me.Location.Y)
         End If
+    End Sub
+
+    Private Sub WebBrowser1_GotFocus(sender As Object, e As EventArgs) Handles WebBrowser1.GotFocus
+        'Debug_Mode.ActiveForm = True
+    End Sub
+
+    Private Sub WebBrowser1_LostFocus(sender As Object, e As EventArgs) Handles WebBrowser1.LostFocus
+        'Debug_Mode.TopMost = False
     End Sub
 End Class

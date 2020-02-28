@@ -33,6 +33,8 @@ Partial Class einstellungen
         Me.pictureBox4 = New System.Windows.Forms.PictureBox()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.ListViewAdd_True = New System.Windows.Forms.CheckBox()
         Me.PictureBox6 = New System.Windows.Forms.PictureBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -41,6 +43,7 @@ Partial Class einstellungen
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.FFMPEG_Command = New System.Windows.Forms.ComboBox()
         Me.SoftSubs = New System.Windows.Forms.GroupBox()
@@ -73,7 +76,6 @@ Partial Class einstellungen
         Me.comboBox4 = New System.Windows.Forms.ComboBox()
         Me.ComboBox2 = New System.Windows.Forms.ComboBox()
         Me.comboBox3 = New System.Windows.Forms.ComboBox()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.GB_Sub_Path.SuspendLayout()
         Me.DL_Count_simultaneous.SuspendLayout()
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -81,6 +83,7 @@ Partial Class einstellungen
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -104,9 +107,9 @@ Partial Class einstellungen
         Me.GB_Sub_Path.Controls.Add(Me.RBAnime)
         Me.GB_Sub_Path.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Sub_Path.ForeColor = System.Drawing.Color.Black
-        Me.GB_Sub_Path.Location = New System.Drawing.Point(6, 85)
+        Me.GB_Sub_Path.Location = New System.Drawing.Point(205, 85)
         Me.GB_Sub_Path.Name = "GB_Sub_Path"
-        Me.GB_Sub_Path.Size = New System.Drawing.Size(456, 51)
+        Me.GB_Sub_Path.Size = New System.Drawing.Size(257, 77)
         Me.GB_Sub_Path.TabIndex = 3
         Me.GB_Sub_Path.TabStop = False
         Me.GB_Sub_Path.Text = "Unterordner "
@@ -116,7 +119,7 @@ Partial Class einstellungen
         Me.RBStaffel.AutoSize = True
         Me.RBStaffel.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RBStaffel.ForeColor = System.Drawing.Color.Black
-        Me.RBStaffel.Location = New System.Drawing.Point(251, 21)
+        Me.RBStaffel.Location = New System.Drawing.Point(27, 49)
         Me.RBStaffel.Name = "RBStaffel"
         Me.RBStaffel.Size = New System.Drawing.Size(174, 22)
         Me.RBStaffel.TabIndex = 1
@@ -130,7 +133,7 @@ Partial Class einstellungen
         Me.RBAnime.AutoSize = True
         Me.RBAnime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RBAnime.ForeColor = System.Drawing.Color.Black
-        Me.RBAnime.Location = New System.Drawing.Point(30, 21)
+        Me.RBAnime.Location = New System.Drawing.Point(27, 21)
         Me.RBAnime.Name = "RBAnime"
         Me.RBAnime.Size = New System.Drawing.Size(113, 22)
         Me.RBAnime.TabIndex = 1
@@ -199,6 +202,7 @@ Partial Class einstellungen
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
+        Me.TabPage1.Controls.Add(Me.GroupBox5)
         Me.TabPage1.Controls.Add(Me.PictureBox6)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.GroupBox4)
@@ -211,11 +215,34 @@ Partial Class einstellungen
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Settings"
         '
+        'GroupBox5
+        '
+        Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
+        Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox5.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox5.Location = New System.Drawing.Point(12, 301)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(444, 55)
+        Me.GroupBox5.TabIndex = 7
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "Multi-Download"
+        '
+        'ListViewAdd_True
+        '
+        Me.ListViewAdd_True.AutoSize = True
+        Me.ListViewAdd_True.Location = New System.Drawing.Point(104, 21)
+        Me.ListViewAdd_True.Name = "ListViewAdd_True"
+        Me.ListViewAdd_True.Size = New System.Drawing.Size(236, 20)
+        Me.ListViewAdd_True.TabIndex = 0
+        Me.ListViewAdd_True.Text = "redirect multi-download to the queue"
+        Me.ListViewAdd_True.UseVisualStyleBackColor = True
+        '
         'PictureBox6
         '
         Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox6.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_credits_default
-        Me.PictureBox6.Location = New System.Drawing.Point(195, 359)
+        Me.PictureBox6.Location = New System.Drawing.Point(195, 373)
         Me.PictureBox6.Name = "PictureBox6"
         Me.PictureBox6.Size = New System.Drawing.Size(76, 39)
         Me.PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -230,9 +257,9 @@ Partial Class einstellungen
         Me.GroupBox1.Controls.Add(Me.Firefox_True)
         Me.GroupBox1.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox1.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox1.Location = New System.Drawing.Point(6, 215)
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 168)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(456, 138)
+        Me.GroupBox1.Size = New System.Drawing.Size(456, 127)
         Me.GroupBox1.TabIndex = 7
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Browser Settings"
@@ -248,7 +275,7 @@ Partial Class einstellungen
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(6, 57)
+        Me.TextBox1.Location = New System.Drawing.Point(6, 54)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(444, 22)
         Me.TextBox1.TabIndex = 1
@@ -260,7 +287,7 @@ Partial Class einstellungen
         Me.Firefox_True.AutoSize = True
         Me.Firefox_True.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Firefox_True.ForeColor = System.Drawing.Color.Black
-        Me.Firefox_True.Location = New System.Drawing.Point(141, 99)
+        Me.Firefox_True.Location = New System.Drawing.Point(148, 92)
         Me.Firefox_True.Name = "Firefox_True"
         Me.Firefox_True.Size = New System.Drawing.Size(166, 20)
         Me.Firefox_True.TabIndex = 0
@@ -273,9 +300,9 @@ Partial Class einstellungen
         Me.GroupBox4.Controls.Add(Me.PictureBox2)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox4.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox4.Location = New System.Drawing.Point(6, 142)
+        Me.GroupBox4.Location = New System.Drawing.Point(6, 85)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(456, 67)
+        Me.GroupBox4.Size = New System.Drawing.Size(193, 77)
         Me.GroupBox4.TabIndex = 6
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Crunchyroll US"
@@ -284,7 +311,7 @@ Partial Class einstellungen
         '
         Me.PictureBox2.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox2.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.crdsettings_setUScookie_button
-        Me.PictureBox2.Location = New System.Drawing.Point(154, 21)
+        Me.PictureBox2.Location = New System.Drawing.Point(20, 21)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(150, 30)
         Me.PictureBox2.TabIndex = 4
@@ -304,6 +331,17 @@ Partial Class einstellungen
         Me.TabPage2.Size = New System.Drawing.Size(468, 415)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output Settings"
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox1.Location = New System.Drawing.Point(67, 326)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(351, 20)
+        Me.CheckBox1.TabIndex = 6
+        Me.CheckBox1.Text = "i know that re-encoding the video takes time and power"
+        Me.CheckBox1.UseVisualStyleBackColor = True
         '
         'GroupBox2
         '
@@ -721,17 +759,6 @@ Partial Class einstellungen
         Me.comboBox3.Size = New System.Drawing.Size(441, 23)
         Me.comboBox3.TabIndex = 1
         '
-        'CheckBox1
-        '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CheckBox1.Location = New System.Drawing.Point(67, 326)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(351, 20)
-        Me.CheckBox1.TabIndex = 6
-        Me.CheckBox1.Text = "i know that re-encoding the video takes time and power"
-        Me.CheckBox1.UseVisualStyleBackColor = True
-        '
         'einstellungen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -755,6 +782,8 @@ Partial Class einstellungen
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -829,4 +858,6 @@ Partial Class einstellungen
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents FFMPEG_Command As ComboBox
     Friend WithEvents CheckBox1 As CheckBox
+    Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents ListViewAdd_True As CheckBox
 End Class

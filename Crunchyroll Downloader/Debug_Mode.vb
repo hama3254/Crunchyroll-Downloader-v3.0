@@ -42,7 +42,44 @@
         End If
     End Sub
 
-    Private Sub RichTextBox1_TextChanged(sender As Object, e As EventArgs) Handles RichTextBox1.TextChanged
 
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim HTMLString As String = RichTextBox1.Text
+        Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
+        For i As Integer = 0 To HTMLSplit.Count - 1
+            If InStr(HTMLSplit(i), ".mpd?") Then
+                Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim URLPart1() As String = HTMLSplit(i).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
+                RichTextBox2.Text = "https://" + URLPart1(1) + URLPart2Split2(0)
+                'MsgBox(Main.NonCR_URL)
+                'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
+                Exit For
+            ElseIf InStr(HTMLSplit(i), ".m3u8?") Then
+                Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim URLPart1() As String = HTMLSplit(i).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
+                RichTextBox2.Text = "https://" + URLPart1(1) + URLPart2Split2(0)
+                'MsgBox(Main.NonCR_URL)
+                'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
+                Exit For
+            ElseIf InStr(HTMLSplit(i), ".txt?") Then
+                Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim URLPart1() As String = HTMLSplit(i).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
+                RichTextBox2.Text = "https://" + URLPart1(1) + URLPart2Split2(0)
+                'MsgBox(Main.NonCR_URL)
+                'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
+                Exit For
+            End If
+        Next
+    End Sub
+
+    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
+        Main.FFMPEG_Reso(RichTextBox2.Text)
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        MsgBox(Main.ResoAvalibe)
     End Sub
 End Class

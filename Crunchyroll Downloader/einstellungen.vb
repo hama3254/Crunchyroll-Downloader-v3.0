@@ -117,6 +117,11 @@ Public Class einstellungen
             'MsgBox(Resu)
         Catch ex As Exception
         End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            ListViewAdd_True.Checked = CBool(Integer.Parse(rkg.GetValue("QueueMode").ToString))
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
@@ -219,6 +224,14 @@ Public Class einstellungen
             rk.SetValue("NoUse", 1, RegistryValueKind.String)
         ElseIf Firefox_True.Checked = False Then
             rk.SetValue("NoUse", 0, RegistryValueKind.String)
+        End If
+
+        If ListViewAdd_True.Checked = True Then
+            rk.SetValue("QueueMode", 1, RegistryValueKind.String)
+
+        ElseIf ListViewAdd_True.Checked = False Then
+            rk.SetValue("QueueMode", 0, RegistryValueKind.String)
+            Main.UseQueue = False
         End If
 
 #Region "sof subs"
@@ -498,9 +511,6 @@ Public Class einstellungen
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
         GroupBox2.Enabled = CheckBox1.CheckState
     End Sub
-
-
-
 
 
 

@@ -2003,7 +2003,76 @@ Public Class Main
             einstellungen.Close()
             'MsgBox("Debug activated")
         End If
+    End Sub
+    Public Sub DownloadMangaPages(ByVal BaseURL As String, ByVal SiteList As List(Of String), ByVal FolderName As String)
+        Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim L1Name As String = L1Name_Split(1).Replace("www.", "")
+        Pfad_DL = Pfad + "\" + FolderName
+        If Debug2 = True Then
+            MsgBox(BaseURL + SiteList(0))
+        End If
+        Me.Invoke(New Action(Function()
 
+                                 ListAdd(Pfad_DL, L1Name, FolderName, "Manga", "Manga", "", BaseURL + SiteList(0))
+
+                                 Return Nothing
+                             End Function))
+
+        Dim CurrentIndex As Integer = 0
+        For i As Integer = 0 To PB_list.Count - 1
+            If PB_list.Item(i).Name = Pfad_DL Then
+                CurrentIndex = i
+            End If
+        Next
+
+
+        Try
+            Directory.CreateDirectory(Pfad_DL)
+            'MsgBox(True.ToString)
+        Catch ex As Exception
+        End Try
+
+        'If Not Directory.Exists(Path.GetDirectoryName(Pfad_DL)) Then
+        '    ' Nein! Jetzt erstellen...
+        '    Try
+        '        Directory.CreateDirectory(Path.GetDirectoryName(Pfad_DL))
+        '        MsgBox(True.ToString)
+        '    Catch ex As Exception
+        '        MsgBox(False.ToString)
+        '        ' Ordner wurde nich erstellt
+        '        Exit Sub
+        '        'Pfad_DL = Pfad + "\" + CR_FilenName_Backup + ".mp4"
+        '    End Try
+        'End If
+
+        For i As Integer = 0 To SiteList.Count - 1
+            Using client As New WebClient()
+                client.DownloadFile(BaseURL + SiteList(i), Pfad_DL + "\" + SiteList(i))
+                Pause(1)
+            End Using
+            Me.Invoke(New Action(Function()
+                                     Dim stringFormat As New StringFormat()
+                                     stringFormat.Alignment = StringAlignment.Far
+            stringFormat.LineAlignment = StringAlignment.Center
+            Dim p As PictureBox = PB_list(CurrentIndex)
+            p.Image = p.BackgroundImage
+            Dim g As Graphics = Graphics.FromImage(p.Image)
+            Dim ProgressbarPoint As Point = New Point(195, 70)
+            Dim WeißeBox As Point = New Point(525, 93)
+            Dim ProzentText As Point = New Point(795, 113)
+            Dim Weiß As Brush = New SolidBrush(Color.FromArgb(242, 242, 242))
+            g.FillRectangle(Weiß, WeißeBox.X + 1, WeißeBox.Y + 1, 275, 30)
+                                     g.DrawString((i + 1).ToString + "/" + SiteList.Count.ToString + " " + Math.Round(i / (SiteList.Count - 1) * 100, 2, MidpointRounding.AwayFromZero).ToString + "%", FontLabel2.Font, Brushes.Black, ProzentText, stringFormat)
+                                     Dim brGradient As Brush = New SolidBrush(Color.FromArgb(247, 140, 37))
+                                     g.FillRectangle(brGradient, ProgressbarPoint.X + 1, ProgressbarPoint.Y + 1, CInt((i / (SiteList.Count - 1)) * 600), 19)
+                                     g.Dispose()
+                                     Return Nothing
+                                 End Function))
+
+        Next
 
     End Sub
+
+
+
 End Class

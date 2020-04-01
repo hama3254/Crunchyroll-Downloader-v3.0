@@ -45,7 +45,26 @@ Partial Class einstellungen
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.FFMPEG_Command = New System.Windows.Forms.ComboBox()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.FFMPEG_CommandP1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListC1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListC2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListC3 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListC4 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListC5 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FFMPEG_CommandP2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListP1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListP2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FFMPEG_CommandP3 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit3 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit4 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit5 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit6 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit7 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FFMPEG_CommandP4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.SoftSubs = New System.Windows.Forms.GroupBox()
         Me.MergeMP4 = New System.Windows.Forms.CheckBox()
         Me.CBesES = New System.Windows.Forms.CheckBox()
@@ -90,6 +109,8 @@ Partial Class einstellungen
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.Panel1.SuspendLayout()
+        Me.MenuStrip1.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
         Me.GB_SubLanguage.SuspendLayout()
         Me.GB_Resolution.SuspendLayout()
@@ -221,9 +242,9 @@ Partial Class einstellungen
         Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
         Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox5.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox5.Location = New System.Drawing.Point(12, 301)
+        Me.GroupBox5.Location = New System.Drawing.Point(6, 301)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(444, 55)
+        Me.GroupBox5.Size = New System.Drawing.Size(456, 55)
         Me.GroupBox5.TabIndex = 7
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Multi-Download"
@@ -346,7 +367,7 @@ Partial Class einstellungen
         'GroupBox2
         '
         Me.GroupBox2.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox2.Controls.Add(Me.FFMPEG_Command)
+        Me.GroupBox2.Controls.Add(Me.Panel1)
         Me.GroupBox2.Enabled = False
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox2.ForeColor = System.Drawing.Color.Black
@@ -357,21 +378,140 @@ Partial Class einstellungen
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "ffmpeg command"
         '
-        'FFMPEG_Command
+        'Panel1
         '
-        Me.FFMPEG_Command.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.FFMPEG_Command.DropDownHeight = 250
-        Me.FFMPEG_Command.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.FFMPEG_Command.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FFMPEG_Command.FormattingEnabled = True
-        Me.FFMPEG_Command.IntegralHeight = False
-        Me.FFMPEG_Command.ItemHeight = 16
-        Me.FFMPEG_Command.Items.AddRange(New Object() {" -c copy -bsf:a aac_adtstoasc ", " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc ", " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc "})
-        Me.FFMPEG_Command.Location = New System.Drawing.Point(6, 25)
-        Me.FFMPEG_Command.Name = "FFMPEG_Command"
-        Me.FFMPEG_Command.Size = New System.Drawing.Size(437, 22)
-        Me.FFMPEG_Command.Sorted = True
-        Me.FFMPEG_Command.TabIndex = 33
+        Me.Panel1.Controls.Add(Me.MenuStrip1)
+        Me.Panel1.Location = New System.Drawing.Point(1, 21)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(446, 32)
+        Me.Panel1.TabIndex = 37
+        '
+        'MenuStrip1
+        '
+        Me.MenuStrip1.BackColor = System.Drawing.SystemColors.Control
+        Me.MenuStrip1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FFMPEG_CommandP1, Me.FFMPEG_CommandP2, Me.FFMPEG_CommandP3, Me.FFMPEG_CommandP4})
+        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.MenuStrip1.Name = "MenuStrip1"
+        Me.MenuStrip1.Size = New System.Drawing.Size(446, 24)
+        Me.MenuStrip1.TabIndex = 37
+        Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'FFMPEG_CommandP1
+        '
+        Me.FFMPEG_CommandP1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListC1, Me.ListC2, Me.ListC3, Me.ListC4, Me.ListC5})
+        Me.FFMPEG_CommandP1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FFMPEG_CommandP1.Name = "FFMPEG_CommandP1"
+        Me.FFMPEG_CommandP1.Size = New System.Drawing.Size(64, 20)
+        Me.FFMPEG_CommandP1.Text = "-c copy"
+        '
+        'ListC1
+        '
+        Me.ListC1.Name = "ListC1"
+        Me.ListC1.Size = New System.Drawing.Size(180, 22)
+        Me.ListC1.Text = "-c copy"
+        '
+        'ListC2
+        '
+        Me.ListC2.Name = "ListC2"
+        Me.ListC2.Size = New System.Drawing.Size(180, 22)
+        Me.ListC2.Text = "-c:v h264_nvenc "
+        '
+        'ListC3
+        '
+        Me.ListC3.Name = "ListC3"
+        Me.ListC3.Size = New System.Drawing.Size(180, 22)
+        Me.ListC3.Text = "-c:v hevc_nvenc"
+        '
+        'ListC4
+        '
+        Me.ListC4.Name = "ListC4"
+        Me.ListC4.Size = New System.Drawing.Size(180, 22)
+        Me.ListC4.Text = "-c:v libx264"
+        '
+        'ListC5
+        '
+        Me.ListC5.Name = "ListC5"
+        Me.ListC5.Size = New System.Drawing.Size(180, 22)
+        Me.ListC5.Text = "-c:v libx265"
+        '
+        'FFMPEG_CommandP2
+        '
+        Me.FFMPEG_CommandP2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListP1, Me.ListP2})
+        Me.FFMPEG_CommandP2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FFMPEG_CommandP2.Name = "FFMPEG_CommandP2"
+        Me.FFMPEG_CommandP2.Size = New System.Drawing.Size(86, 20)
+        Me.FFMPEG_CommandP2.Text = "-preset fast"
+        '
+        'ListP1
+        '
+        Me.ListP1.Name = "ListP1"
+        Me.ListP1.Size = New System.Drawing.Size(180, 22)
+        Me.ListP1.Text = "-preset fast"
+        '
+        'ListP2
+        '
+        Me.ListP2.Name = "ListP2"
+        Me.ListP2.Size = New System.Drawing.Size(180, 22)
+        Me.ListP2.Text = "-preset slow"
+        '
+        'FFMPEG_CommandP3
+        '
+        Me.FFMPEG_CommandP3.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListBit1, Me.ListBit2, Me.ListBit3, Me.ListBit4, Me.ListBit5, Me.ListBit6, Me.ListBit7})
+        Me.FFMPEG_CommandP3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FFMPEG_CommandP3.Name = "FFMPEG_CommandP3"
+        Me.FFMPEG_CommandP3.Size = New System.Drawing.Size(80, 20)
+        Me.FFMPEG_CommandP3.Text = "-b:v 7000k"
+        '
+        'ListBit1
+        '
+        Me.ListBit1.Name = "ListBit1"
+        Me.ListBit1.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit1.Text = "-b:v 7000k"
+        '
+        'ListBit2
+        '
+        Me.ListBit2.Name = "ListBit2"
+        Me.ListBit2.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit2.Text = "-b:v 6000k"
+        '
+        'ListBit3
+        '
+        Me.ListBit3.Name = "ListBit3"
+        Me.ListBit3.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit3.Text = "-b:v 5000k"
+        '
+        'ListBit4
+        '
+        Me.ListBit4.Name = "ListBit4"
+        Me.ListBit4.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit4.Text = "-b:v 4000k"
+        '
+        'ListBit5
+        '
+        Me.ListBit5.Name = "ListBit5"
+        Me.ListBit5.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit5.Text = "-b:v 3000k"
+        '
+        'ListBit6
+        '
+        Me.ListBit6.Name = "ListBit6"
+        Me.ListBit6.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit6.Text = "-b:v 2000k"
+        '
+        'ListBit7
+        '
+        Me.ListBit7.Name = "ListBit7"
+        Me.ListBit7.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit7.Text = "-b:v 1000k"
+        '
+        'FFMPEG_CommandP4
+        '
+        Me.FFMPEG_CommandP4.Enabled = False
+        Me.FFMPEG_CommandP4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FFMPEG_CommandP4.Name = "FFMPEG_CommandP4"
+        Me.FFMPEG_CommandP4.Size = New System.Drawing.Size(145, 20)
+        Me.FFMPEG_CommandP4.Text = "-bsf:a aac_adtstoasc"
         '
         'SoftSubs
         '
@@ -398,7 +538,7 @@ Partial Class einstellungen
         '
         Me.MergeMP4.AutoSize = True
         Me.MergeMP4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MergeMP4.Location = New System.Drawing.Point(128, 155)
+        Me.MergeMP4.Location = New System.Drawing.Point(119, 148)
         Me.MergeMP4.Name = "MergeMP4"
         Me.MergeMP4.Size = New System.Drawing.Size(194, 20)
         Me.MergeMP4.TabIndex = 6
@@ -792,6 +932,10 @@ Partial Class einstellungen
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
+        Me.MenuStrip1.ResumeLayout(False)
+        Me.MenuStrip1.PerformLayout()
         Me.SoftSubs.ResumeLayout(False)
         Me.SoftSubs.PerformLayout()
         Me.GB_SubLanguage.ResumeLayout(False)
@@ -856,8 +1000,27 @@ Partial Class einstellungen
     Public WithEvents ComboBox2 As ComboBox
     Public WithEvents comboBox3 As ComboBox
     Friend WithEvents GroupBox2 As GroupBox
-    Friend WithEvents FFMPEG_Command As ComboBox
     Friend WithEvents CheckBox1 As CheckBox
     Friend WithEvents GroupBox5 As GroupBox
     Friend WithEvents ListViewAdd_True As CheckBox
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents MenuStrip1 As MenuStrip
+    Friend WithEvents FFMPEG_CommandP1 As ToolStripMenuItem
+    Friend WithEvents ListC1 As ToolStripMenuItem
+    Friend WithEvents ListC2 As ToolStripMenuItem
+    Friend WithEvents ListC3 As ToolStripMenuItem
+    Friend WithEvents ListC4 As ToolStripMenuItem
+    Friend WithEvents ListC5 As ToolStripMenuItem
+    Friend WithEvents FFMPEG_CommandP2 As ToolStripMenuItem
+    Friend WithEvents ListP1 As ToolStripMenuItem
+    Friend WithEvents ListP2 As ToolStripMenuItem
+    Friend WithEvents FFMPEG_CommandP3 As ToolStripMenuItem
+    Friend WithEvents ListBit1 As ToolStripMenuItem
+    Friend WithEvents ListBit2 As ToolStripMenuItem
+    Friend WithEvents ListBit3 As ToolStripMenuItem
+    Friend WithEvents ListBit4 As ToolStripMenuItem
+    Friend WithEvents ListBit5 As ToolStripMenuItem
+    Friend WithEvents ListBit6 As ToolStripMenuItem
+    Friend WithEvents ListBit7 As ToolStripMenuItem
+    Friend WithEvents FFMPEG_CommandP4 As ToolStripMenuItem
 End Class

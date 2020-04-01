@@ -104,13 +104,26 @@ Public Class einstellungen
         NumericUpDown1.Value = Main.MaxDL
         TextBox1.Text = Main.Startseite
 
-        If Main.ffmpeg_command = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
-            FFMPEG_Command.SelectedIndex = 1
-        ElseIf Main.FFMPEG_Command = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
-            FFMPEG_Command.SelectedIndex = 2
+        If InStr(Main.ffmpeg_command, "-c copy") Then
+            FFMPEG_CommandP1.Text = "-c copy"
+            FFMPEG_CommandP4.Text = "-bsf:a aac_adtstoasc"
         Else
-            FFMPEG_Command.SelectedIndex = 0
+            Dim ffmpegDisplayCurrent As String() = Main.ffmpeg_command.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
+            FFMPEG_CommandP1.Text = ffmpegDisplayCurrent(0) + " " + ffmpegDisplayCurrent(1)
+            FFMPEG_CommandP2.Text = ffmpegDisplayCurrent(2) + " " + ffmpegDisplayCurrent(3)
+            FFMPEG_CommandP3.Text = ffmpegDisplayCurrent(4) + " " + ffmpegDisplayCurrent(5)
+            'FFMPEG_CommandP4.Text = ffmpegDisplayCurrent(6) + " " + ffmpegDisplayCurrent(7)
         End If
+
+        'Dim ffmpegDisplayCurrent As String() = Main.ffmpeg_command.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
+
+        'If Main.ffmpeg_command = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+        '    FFMPEG_CommandP10.SelectedIndex = 1
+        'ElseIf Main.ffmpeg_command = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+        '    FFMPEG_CommandP10.SelectedIndex = 2
+        'Else
+        '    FFMPEG_CommandP10.SelectedIndex = 0
+        'End If
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             Firefox_True.Checked = CBool(Integer.Parse(rkg.GetValue("NoUse").ToString))
@@ -206,16 +219,24 @@ Public Class einstellungen
             Main.SubFolder = 2
             rk.SetValue("SubFolder", 2, RegistryValueKind.String)
         End If
-        If FFMPEG_Command.Text = "" Then
+        If CheckBox1.Enabled = False Then
 
         Else
-            rk.SetValue("ffmpeg_command", FFMPEG_Command.Text, RegistryValueKind.String)
-            Main.ffmpeg_command = FFMPEG_Command.Text
+            Dim ffpmeg_cmd As String = Nothing
+            If FFMPEG_CommandP1.Text = "-c copy" Then
+                ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP4.Text
+            Else
+
+                ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP2.Text + " " + FFMPEG_CommandP3.Text + " " + FFMPEG_CommandP4.Text
+
+            End If
+            rk.SetValue("ffmpeg_command", ffpmeg_cmd, RegistryValueKind.String)
+            Main.ffmpeg_command = ffpmeg_cmd
         End If
 
-        If FFMPEG_Command.Text = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+        If InStr(FFMPEG_CommandP1.Text, "nvenc") Then
             NumericUpDown1.Value = 2
-        ElseIf FFMPEG_Command.Text = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+        ElseIf inStr(FFMPEG_CommandP1.Text, "libx26") Then
             NumericUpDown1.Value = 1
         End If
         rk.SetValue("SL_DL", NumericUpDown1.Value, RegistryValueKind.String)
@@ -385,7 +406,7 @@ Public Class einstellungen
 
 
 
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem, FFMPEG_Command.DrawItem
+    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem
         sender.BackColor = Color.White
         If e.Index >= 0 Then
             Using st As New StringFormat With {.Alignment = StringAlignment.Center}
@@ -497,20 +518,56 @@ Public Class einstellungen
         Next
     End Sub
 
-    Private Sub FFMPEG_Command_SelectedIndexChanged(sender As Object, e As EventArgs) Handles FFMPEG_Command.SelectedIndexChanged
-        If CheckBox1.Checked = True Then
-            MsgBox("Other commands than " + Chr(34) + " -c copy -bsf:a aac_adtstoasc " + Chr(34) + "convert the Video into h265/hevc!", MsgBoxStyle.Information)
-            If FFMPEG_Command.Text = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
-                MsgBox("This command requires a Nvidia GTX 6xx/7xx (Kepler generation) or higher.", MsgBoxStyle.Information)
-            ElseIf FFMPEG_Command.Text = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
-                MsgBox("CPU encoding is low and uses all resources of the computer.", MsgBoxStyle.Information)  ' -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc 
-            End If
-        End If
-    End Sub
+    'Private Sub FFMPEG_Command_SelectedIndexChanged(sender As Object, e As EventArgs)
+    '    If CheckBox1.Checked = True Then
+    '        MsgBox("Other commands than " + Chr(34) + " -c copy -bsf:a aac_adtstoasc " + Chr(34) + "convert the Video into h265/hevc!", MsgBoxStyle.Information)
+    '        If FFMPEG_CommandP10.Text = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+    '            MsgBox("This command requires a Nvidia GTX 6xx/7xx (Kepler generation) or higher.", MsgBoxStyle.Information)
+    '        ElseIf FFMPEG_CommandP10.Text = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+    '            MsgBox("CPU encoding is low and uses all resources of the computer.", MsgBoxStyle.Information)  ' -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc 
+    '        End If
+    '    End If
+    'End Sub
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
         GroupBox2.Enabled = CheckBox1.CheckState
+        If FFMPEG_CommandP1.Text = "-c copy" Then
+            FFMPEG_CommandP2.Enabled = False
+            FFMPEG_CommandP3.Enabled = False
+        Else
+            FFMPEG_CommandP2.Enabled = True
+            FFMPEG_CommandP3.Enabled = True
+        End If
     End Sub
+
+    Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles ListC1.Click, ListC2.Click, ListC3.Click, ListC4.Click, ListC5.Click
+        Dim Button As ToolStripMenuItem = sender
+        If Button.Text = "-c copy" Then
+            FFMPEG_CommandP1.Text = "-c copy"
+            FFMPEG_CommandP2.Enabled = False
+            FFMPEG_CommandP3.Enabled = False
+        Else
+            FFMPEG_CommandP1.Text = Button.Text
+            FFMPEG_CommandP2.Enabled = True
+            FFMPEG_CommandP3.Enabled = True
+        End If
+
+    End Sub
+
+    Private Sub ListP1_Click(sender As Object, e As EventArgs) Handles ListP1.Click, ListP2.Click
+        Dim Button As ToolStripMenuItem = sender
+        FFMPEG_CommandP2.Text = Button.Text
+        FFMPEG_CommandP2.Enabled = True
+        FFMPEG_CommandP3.Enabled = True
+    End Sub
+
+    Private Sub ListBit1_Click(sender As Object, e As EventArgs) Handles ListBit1.Click, ListBit2.Click, ListBit3.Click, ListBit4.Click, ListBit5.Click, ListBit6.Click, ListBit7.Click
+        Dim Button As ToolStripMenuItem = sender
+        FFMPEG_CommandP3.Text = Button.Text
+        FFMPEG_CommandP2.Enabled = True
+        FFMPEG_CommandP3.Enabled = True
+    End Sub
+
 
 
 

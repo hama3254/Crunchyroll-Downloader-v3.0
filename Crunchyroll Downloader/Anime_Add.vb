@@ -5,6 +5,7 @@ Imports System.IO
 Public Class Anime_Add
     Public Mass_DL_Cancel As Boolean = False
     Public List_DL_Cancel As Boolean = False
+
     Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
         Try
             If ComboBox2.Text = Main.SubFolder_Nothing Then
@@ -24,6 +25,14 @@ Public Class Anime_Add
 
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Icon = My.Resources.icon
+        Try
+            For i As Integer = 0 To Main.ListBoxList.Count - 1
+                ListBox1.Items.Add(Main.ListBoxList.Item(i))
+
+            Next
+        Catch ex As Exception
+
+        End Try
         Try
             Main.waveOutSetVolume(0, 0)
         Catch ex As Exception
@@ -171,12 +180,19 @@ Public Class Anime_Add
     End Sub
 
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
+        If ListBox1.Items.Count > 0 Then
+            Main.ListBoxList.Clear()
+            For i As Integer = 0 To ListBox1.Items.Count - 1
+                Main.ListBoxList.Add(ListBox1.Items.Item(i))
+            Next
+        End If
         Me.Close()
     End Sub
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
         'pictureBox4.Enabled = False
         Main.RemoveFinishedTask()
+        Main.LoginOnly = "Download Mode!"
         If groupBox1.Visible = True Then
             Try
                 If CBool(InStr(textBox1.Text, "crunchyroll.com")) Then
@@ -271,7 +287,10 @@ Public Class Anime_Add
             List_DL_Cancel = False
             pictureBox4.Image = My.Resources.main_button_download_default
         End If
-
+        If InStr(My.Computer.Info.OSFullName, "Server") Then
+            MsgBox("Windows Server is not supported!", MsgBoxStyle.Critical)
+            Me.Close()
+        End If
         pictureBox4.Enabled = True
     End Sub
 
@@ -371,10 +390,6 @@ Public Class Anime_Add
 
 #Region "Listbox"
 
-    Private Sub ListBox1_DoubleClick(sender As Object, e As EventArgs)
-        ListBox1.Items.Remove(ListBox1.SelectedItem)
-    End Sub
-
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         If GroupBox3.Visible = True Then
             If ListBox1.Items.Count = 0 Then
@@ -417,6 +432,11 @@ Public Class Anime_Add
         If textBox2.Text = "Name of the Anime" Then
             textBox2.Text = Nothing
         End If
+    End Sub
+
+
+    Private Sub ListBox1_DoubleClick(sender As Object, e As EventArgs) Handles ListBox1.DoubleClick
+        ListBox1.Items.Remove(ListBox1.SelectedItem)
     End Sub
 
 

@@ -317,13 +317,10 @@ Public Class einstellungen
     End Function
 
     Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
-        Main.LoginOnly = "US_UnBlock"
-        Dim wb As New WebClient
-        Dim Session As String = wb.DownloadString("https://api.criater-stiftung.org/cr-cookie-hama3254.php")
-        'MsgBox(Session)
-        GeckoFX.keks = Session
         GeckoFX.Show()
-        GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
+        Main.LoginOnly = "US_UnBlock"
+
+        GeckoFX.WebBrowser1.Navigate("https://api.criater-stiftung.org/cr-cookie-ui.php")
     End Sub
 
     Private Function GeräteID() As String

@@ -4,6 +4,7 @@ Imports System.IO
 Imports Microsoft.Win32
 Imports System.ComponentModel
 Public Class Main
+    Public ListBoxList As New List(Of String)
     Public UseQueue As Boolean = False
     Public m3u8List As New List(Of String)
     Public txtList As New List(Of String)
@@ -147,6 +148,11 @@ Public Class Main
     Public Declare Function waveOutSetVolume Lib "winmm.dll" (ByVal uDeviceID As Integer, ByVal dwVolume As Integer) As Integer
 
     Private Sub Form8_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If InStr(My.Computer.Info.OSFullName, "Server") Then
+            MsgBox("Windows Server is not supported!", MsgBoxStyle.Critical)
+            Me.Close()
+        End If
+
         waveOutSetVolume(0, 0)
         Try
             Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
@@ -504,7 +510,8 @@ Public Class Main
             For i As Integer = Anime_Add.comboBox3.SelectedIndex To Anime_Add.comboBox4.SelectedIndex
 
                 For e As Integer = 0 To Integer.MaxValue
-
+                    'FontLabel.Visible = True
+                    'FontLabel.Text = PR_List.Count.ToString
                     If Grapp_RDY = True Then
                         RemoveFinishedTask()
                         Pause(1)
@@ -1053,6 +1060,7 @@ Public Class Main
 #End Region
 
     Public Sub GrappURL()
+
         Try
             'Throw New System.Exception("Test")
             Grapp_RDY = False
@@ -1550,6 +1558,23 @@ Public Class Main
             Dim pr As Process = sender
             Dim FileNameSplit As String() = pr.StartInfo.Arguments.ToString().Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim FileName As String = Chr(34) + FileNameSplit(FileNameSplit.Count - 1) + Chr(34)
+            'If CBool(InStr(e.Data, "[Parsed_cropdetect_0")) And CBool(InStr(e.Data, "crop=")) = True Then
+            '    If Debug2 = True Then
+            '        MsgBox(True.ToString)
+            '    End If
+
+            '    Dim CropSearch() As String = e.Data.Split(New String() {"crop="}, System.StringSplitOptions.RemoveEmptyEntries)
+            '    Dim CropSearch2 As String = "crop=" + CropSearch(1)
+            '    Dim newProcess As String = pr.StartInfo.Arguments.ToString().Replace("cropdetect=24:16:0", CropSearch2)
+            '    pr.Kill()
+
+            '    If Debug2 = True Then
+            '        MsgBox(newProcess)
+            '    End If
+
+            'End If
+
+
             If MergeSubstoMP4 = False Then
                 If CBool(InStr(e.Data, "Stream #")) And CBool(InStr(e.Data, "Video")) = True Then
                     'MsgBox(True.ToString + vbNewLine + e.Data)
@@ -1983,7 +2008,7 @@ Public Class Main
 
     End Sub
 
-    Private Sub pictureBox2_DoubleClick(sender As Object, e As EventArgs) Handles pictureBox2.DoubleClick
+    Private Sub PictureBox2_DoubleClick(sender As Object, e As EventArgs) Handles pictureBox2.DoubleClick
         If Debug1 = True Then
             If Debug2 = True Then
                 einstellungen.Close()
@@ -2046,6 +2071,7 @@ Public Class Main
         'End If
 
         For i As Integer = 0 To SiteList.Count - 1
+            Dim iWert As Integer = i
             Using client As New WebClient()
                 client.DownloadFile(BaseURL + SiteList(i), Pfad_DL + "\" + SiteList(i))
                 Pause(1)
@@ -2053,18 +2079,18 @@ Public Class Main
             Me.Invoke(New Action(Function()
                                      Dim stringFormat As New StringFormat()
                                      stringFormat.Alignment = StringAlignment.Far
-            stringFormat.LineAlignment = StringAlignment.Center
-            Dim p As PictureBox = PB_list(CurrentIndex)
-            p.Image = p.BackgroundImage
-            Dim g As Graphics = Graphics.FromImage(p.Image)
-            Dim ProgressbarPoint As Point = New Point(195, 70)
-            Dim WeißeBox As Point = New Point(525, 93)
-            Dim ProzentText As Point = New Point(795, 113)
-            Dim Weiß As Brush = New SolidBrush(Color.FromArgb(242, 242, 242))
-            g.FillRectangle(Weiß, WeißeBox.X + 1, WeißeBox.Y + 1, 275, 30)
-                                     g.DrawString((i + 1).ToString + "/" + SiteList.Count.ToString + " " + Math.Round(i / (SiteList.Count - 1) * 100, 2, MidpointRounding.AwayFromZero).ToString + "%", FontLabel2.Font, Brushes.Black, ProzentText, stringFormat)
+                                     stringFormat.LineAlignment = StringAlignment.Center
+                                     Dim p As PictureBox = PB_list(CurrentIndex)
+                                     p.Image = p.BackgroundImage
+                                     Dim g As Graphics = Graphics.FromImage(p.Image)
+                                     Dim ProgressbarPoint As Point = New Point(195, 70)
+                                     Dim WeißeBox As Point = New Point(525, 93)
+                                     Dim ProzentText As Point = New Point(795, 113)
+                                     Dim Weiß As Brush = New SolidBrush(Color.FromArgb(242, 242, 242))
+                                     g.FillRectangle(Weiß, WeißeBox.X + 1, WeißeBox.Y + 1, 275, 30)
+                                     g.DrawString((iWert + 1).ToString + "/" + SiteList.Count.ToString + " " + Math.Round(iWert / (SiteList.Count - 1) * 100, 2, MidpointRounding.AwayFromZero).ToString + "%", FontLabel2.Font, Brushes.Black, ProzentText, stringFormat)
                                      Dim brGradient As Brush = New SolidBrush(Color.FromArgb(247, 140, 37))
-                                     g.FillRectangle(brGradient, ProgressbarPoint.X + 1, ProgressbarPoint.Y + 1, CInt((i / (SiteList.Count - 1)) * 600), 19)
+                                     g.FillRectangle(brGradient, ProgressbarPoint.X + 1, ProgressbarPoint.Y + 1, CInt((iWert / (SiteList.Count - 1)) * 600), 19)
                                      g.Dispose()
                                      Return Nothing
                                  End Function))

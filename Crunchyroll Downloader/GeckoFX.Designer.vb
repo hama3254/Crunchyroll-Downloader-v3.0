@@ -48,7 +48,7 @@ Partial Class GeckoFX
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(187, 2)
+        Me.Button1.Location = New System.Drawing.Point(187, 1)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(96, 26)
         Me.Button1.TabIndex = 2
@@ -60,7 +60,7 @@ Partial Class GeckoFX
         Me.Button2.Enabled = False
         Me.Button2.Location = New System.Drawing.Point(3, 2)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(181, 26)
+        Me.Button2.Size = New System.Drawing.Size(178, 26)
         Me.Button2.TabIndex = 3
         Me.Button2.Text = "Start network scan"
         Me.Button2.UseVisualStyleBackColor = True

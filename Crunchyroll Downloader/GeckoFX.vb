@@ -7,6 +7,7 @@ Imports System.Threading
 Imports System.Net
 Imports System.Net.WebUtility
 Imports System.IO.Compression
+Imports System.Text
 
 Public Class GeckoFX
     Public keks As String = Nothing
@@ -14,12 +15,36 @@ Public Class GeckoFX
     Dim t As Thread
     Dim ScanTrue As Boolean = False
     Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
+        If InStr(My.Computer.Info.OSFullName, "Server") Then
+            MsgBox("Windows Server is not supported!", MsgBoxStyle.Critical)
+            Me.Close()
+        End If
+
         If ScanTrue = False Then
             Button2.Enabled = True
         End If
         If Main.LoginOnly = "US_UnBlock" Then
-            Main.LoginOnly = "US_UnBlocck_Wait2nd"
-            Try
+            Main.LoginOnly = "US_UnBlock_Wait"
+            If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "waiting for reCAPTCHA . . .")) Then
+                Main.Pause(4)
+                Main.LoginOnly = "US_UnBlock"
+            Else
+
+                Dim cookieGrapp As String = WebBrowser1.Document.Body.OuterHtml '.Replace(vbTab, "").Replace(" ", "")
+                If Main.Debug2 = True Then
+                    MsgBox(cookieGrapp)
+                End If
+                Dim cookieGrapp2() As String = cookieGrapp.Split(New String() {"<a class=" + Chr(34) + "cookie" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim cookieGrapp3() As String = cookieGrapp2(1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
+                keks = cookieGrapp3(0)
+                If Main.Debug2 = True Then
+                    MsgBox(keks)
+                End If
+
+                WebBrowser1.Navigate("https://www.crunchyroll.com/")
+                Main.Pause(5)
+                WebBrowser1.Document.Cookie = Nothing
+                Main.Pause(1)
                 WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
                 WebBrowser1.Navigate("javascript:document.cookie = " + Chr(34) + "sess_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
@@ -27,23 +52,8 @@ Public Class GeckoFX
                 WebBrowser1.Navigate("javascript:document.cookie = " + Chr(34) + "c_locale=enUS; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
                 WebBrowser1.Navigate("https://www.crunchyroll.com/")
-                Main.LoginOnly = "US_UnBlock_Check"
-            Catch ex As Exception
-            End Try
-        ElseIf Main.LoginOnly = "US_UnBlock_Wait" Then
-            Main.LoginOnly = "US_UnBlocck_Wait2nd"
-            Main.Pause(2)
-            Main.LoginOnly = "US_UnBlock_Check"
-            WebBrowser1.Navigate("https://www.crunchyroll.com/")
-        ElseIf Main.LoginOnly = "US_UnBlock_Check" Then
-            Main.LoginOnly = "false"
-            If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "Your detected location is United States of America.")) Then
-                MsgBox("unlock successful", MsgBoxStyle.Information)
-                Me.Close()
-            Else
-                MsgBox("unlock failes", MsgBoxStyle.Exclamation)
-                Me.Close()
             End If
+
         Else
 
 
@@ -127,7 +137,7 @@ Public Class GeckoFX
                         MsgBox(ex.ToString)
                         Main.LabelUpdate = "Status: idle"
                     End Try
-                ElseIf main.c = False Then
+                ElseIf Main.c = False Then
                     If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "hardsub_lang")) Then
                         Main.c = True
                         Main.WebbrowserURL = WebBrowser1.Url.ToString
@@ -176,7 +186,7 @@ Public Class GeckoFX
 
                     While (line IsNot Nothing)
                         line = logFileReader.ReadLine
-                        If InStr(line, ".m3u8?") Then
+                        If InStr(line, ".m3u8") Then 'm3u8?
                             If HTMLString = Nothing Then
                                 HTMLString = line
                             Else
@@ -188,12 +198,13 @@ Public Class GeckoFX
                                     HTMLString = HTMLString + vbNewLine + line
                                 End If
                             Next
+
                         End If
                     End While
                     logFileReader.Close()
                     logFileStream.Close()
                     'MsgBox(HTMLString)
-                    If InStr(HTMLString, ".m3u8?") Then
+                    If InStr(HTMLString, ".m3u8") Then 'm3u8?
                         Anime_Add.StatusLabel.Text = "Status: m3u8 found, trying to start the download"
                         Main.LoggingBrowser = False
                         GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
@@ -201,7 +212,7 @@ Public Class GeckoFX
                         Dim URL As String = Nothing
                         Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
                         For i As Integer = 0 To HTMLSplit.Count - 1
-                            If InStr(HTMLSplit(i), ".m3u8?") Then
+                            If InStr(HTMLSplit(i), ".m3u8") Then 'm3u8?
                                 Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
                                 Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
                                 Dim URLPart1() As String = HTMLSplit(i + 1).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -224,7 +235,7 @@ Public Class GeckoFX
                         If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, ".m3u8")) Then
 #Region "m3u8 suche"
                             Main.WebbrowserText = UrlDecode(WebBrowser1.Document.Body.OuterHtml)
-                            If InStr(Main.WebbrowserText, ".m3u8?") Then
+                            If InStr(Main.WebbrowserText, ".m3u8") Then 'm3u8?
                             Else
                                 Anime_Add.StatusLabel.Text = "Status: no m3u8 found"
                                 Main.UserBowser = False
@@ -233,12 +244,12 @@ Public Class GeckoFX
                             End If
                             Dim ii As Integer = 0
                             Dim Video_URI_Master As String = Nothing
-                            Dim Video_URI_Master_Split1 As String() = Main.WebbrowserText.Split(New String() {".m3u8?"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim Video_URI_Master_Split1 As String() = Main.WebbrowserText.Split(New String() {".m3u8"}, System.StringSplitOptions.RemoveEmptyEntries) 'm3u8?
                             Dim m3u8Link As String = Nothing
                             For i As Integer = 0 To Video_URI_Master_Split1.Count - 2
                                 Dim Video_URI_Master_Split_Top As String() = Video_URI_Master_Split1(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                                 Dim Video_URI_Master_Split_Bottom As String() = Video_URI_Master_Split1(i + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                                m3u8Link = Video_URI_Master_Split_Top(Video_URI_Master_Split_Top.Count - 1) + ".m3u8?" + Video_URI_Master_Split_Bottom(0)
+                                m3u8Link = Video_URI_Master_Split_Top(Video_URI_Master_Split_Top.Count - 1) + ".m3u8" + Video_URI_Master_Split_Bottom(0) 'm3u8?
                                 Exit For
                             Next
                             m3u8Link = m3u8Link.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/")
@@ -359,6 +370,7 @@ Public Class GeckoFX
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
         Try
             My.Computer.Clipboard.SetText(WebBrowser1.Url.ToString)
             MsgBox("copied: " + Chr(34) + WebBrowser1.Url.ToString + Chr(34))
@@ -431,6 +443,9 @@ Public Class GeckoFX
                 MsgBox(BaseURL3)
             End If
             AsyncWorkerX.RunAsync(AddressOf Main.DownloadMangaPages, BaseURL3, ImageList, Main.RemoveExtraSpaces(NameDLFinal))
+        ElseIf InStr(WebBrowser1.Url.ToString, "cr-cookie-ui.php") Then
+            MsgBox(WebBrowser1.Document.Body.InnerHtml)
+
         Else
             Try
 
@@ -439,6 +454,7 @@ Public Class GeckoFX
                 Main.txtList.Clear()
                 Button2.Enabled = False
                 ScanTrue = True
+
                 GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
                 GeckoPreferences.Default("logging.nsHttp") = 3
                 Main.LoggingBrowser = True
@@ -478,7 +494,7 @@ Public Class GeckoFX
 
                 While (line IsNot Nothing)
                     line = logFileReader.ReadLine
-                    If InStr(line, ".m3u8?") Then
+                    If InStr(line, ".m3u8") Then 'm3u8?
                         Dim Temp_String As String = Nothing
                         Temp_String = line
                         If HTMLString = Nothing Then
@@ -502,6 +518,15 @@ Public Class GeckoFX
                                 Main.txtList.Add(Temp_String + vbNewLine + line)
                             End If
                         Next
+                    ElseIf InStr(line, ".vtt") Then
+                        Dim Temp_String As String = Nothing
+                        Temp_String = line
+                        For i As Integer = 0 To 10
+                            line = logFileReader.ReadLine
+                            If InStr(line, " Host: ") Then
+                                Main.txtList.Add(Temp_String + vbNewLine + line)
+                            End If
+                        Next
                     ElseIf InStr(line, ".mpd") Then
                         Dim Temp_String As String = Nothing
                         Temp_String = line
@@ -516,7 +541,7 @@ Public Class GeckoFX
                 logFileReader.Close()
                 logFileStream.Close()
                 'MsgBox(HTMLString)
-                If InStr(HTMLString, ".m3u8?") Then
+                If InStr(HTMLString, ".m3u8") Then 'm3u8?
                     Button2.Text = "found m3u8"
                     Main.LoggingBrowser = False
                     GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
@@ -524,7 +549,7 @@ Public Class GeckoFX
                     Dim URL As String = Nothing
                     Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
                     For i As Integer = 0 To HTMLSplit.Count - 1
-                        If InStr(HTMLSplit(i), ".m3u8?") Then
+                        If InStr(HTMLSplit(i), ".m3u8") Then 'm3u8?
                             Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
                             Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
                             Dim URLPart1() As String = HTMLSplit(i + 1).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -544,6 +569,34 @@ Public Class GeckoFX
                     HTMLString = Main.mpdList.Item(0)
                     Button2.Text = "found mpd!"
                     Main.LoggingBrowser = False
+                    GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                    GeckoPreferences.Default("logging.nsHttp") = 0
+                    Dim URL As String = Nothing
+                    Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
+                    For i As Integer = 0 To HTMLSplit.Count - 1
+                        If InStr(HTMLSplit(i), ".mpd?") Then
+                            Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim URLPart1() As String = HTMLSplit(i + 1).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Main.NonCR_URL = "https://" + URLPart1(1) + URLPart2Split2(0)
+                            'MsgBox(Main.NonCR_URL)
+                            'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
+                            Main.FFMPEG_Reso(Main.NonCR_URL)
+                            t = New Thread(AddressOf Main.Grapp_non_CR)
+                            t.Priority = ThreadPriority.Normal
+                            t.IsBackground = True
+                            t.Start()
+                            Button2.Text = "Start network scan"
+                            Exit For
+                        End If
+                    Next
+
+                End If
+                If Main.txtList.Count > 0 Then                'InStr(HTMLString, ".mpd?") Then
+                    HTMLString = Main.mpdList.Item(0)
+                    'Button2.Text = "found mpd!"
+                    Main.LoggingBrowser = False
+
                     GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
                     GeckoPreferences.Default("logging.nsHttp") = 0
                     Dim URL As String = Nothing
@@ -590,4 +643,6 @@ Public Class GeckoFX
     Private Sub WebBrowser1_LostFocus(sender As Object, e As EventArgs) Handles WebBrowser1.LostFocus
         'Debug_Mode.TopMost = False
     End Sub
+
+
 End Class

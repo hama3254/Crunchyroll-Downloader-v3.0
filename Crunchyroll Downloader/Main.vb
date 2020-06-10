@@ -18,6 +18,7 @@ Public Class Main
     Public Thumbnail As String = Nothing
     Public MergeSubstoMP4 As Boolean = False
     Public LoginDialog As Boolean = False
+    Public SaveLog As Boolean = False
     Dim ListOfStreams As New List(Of String)
     Public NonCR_Timeout As Integer = 5
     Public NonCR_URL As String = Nothing
@@ -248,7 +249,13 @@ Public Class Main
         End Try
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            LoginDialog = CBool(Integer.Parse(rkg.GetValue("LoginDialog").ToString))
+            SaveLog = CBool(Integer.Parse(rkg.GetValue("SaveLog").ToString))
+        Catch ex As Exception
+
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            SaveLog = CBool(Integer.Parse(rkg.GetValue("SaveLog").ToString))
         Catch ex As Exception
 
         End Try
@@ -1565,6 +1572,18 @@ Public Class Main
             Dim pr As Process = sender
             Dim FileNameSplit As String() = pr.StartInfo.Arguments.ToString().Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim FileName As String = Chr(34) + FileNameSplit(FileNameSplit.Count - 1) + Chr(34)
+            Dim logfile As String = FileName.Replace(".mp4", ".log").Replace(Chr(34), "")
+            If SaveLog = True Then
+                If File.Exists(logfile) Then
+                    Using sw As StreamWriter = File.AppendText(logfile)
+                        sw.Write(vbNewLine)
+                        sw.Write(Date.Now + e.Data)
+                    End Using
+                Else
+                    File.WriteAllText(logfile, Date.Now + e.Data)
+                End If
+            End If
+            'MsgBox(FileName)
             'If CBool(InStr(e.Data, "[Parsed_cropdetect_0")) And CBool(InStr(e.Data, "crop=")) = True Then
             '    If Debug2 = True Then
             '        MsgBox(True.ToString)

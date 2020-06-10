@@ -36,6 +36,9 @@ Public Class einstellungen
         If Main.LoginDialog = True Then
             CB_Login.Checked = True
         End If
+        If Main.SaveLog = True Then
+            CB_Log.Checked = True
+        End If
         Try
             GB_Resolution.Text = Main.GB_Resolution_Text
             GB_SubLanguage.Text = Main.GB_SubLanguage_Text
@@ -196,6 +199,13 @@ Public Class einstellungen
         Else
             Main.LoginDialog = False
             rk.SetValue("LoginDialog", "0", RegistryValueKind.String)
+        End If
+        If CB_Log.Checked = True Then
+            Main.SaveLog = True
+            rk.SetValue("SaveLog", "1", RegistryValueKind.String)
+        Else
+            Main.SaveLog = False
+            rk.SetValue("SaveLog", "0", RegistryValueKind.String)
         End If
         If RBAnime.Checked = True Then
             Main.SubFolder = 1
@@ -569,6 +579,9 @@ Public Class einstellungen
         End If
 
     End Sub
+
+
+
 
 #End Region
 End Class

@@ -87,6 +87,7 @@ Partial Class einstellungen
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.PictureBox6 = New System.Windows.Forms.PictureBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.CB_Log = New System.Windows.Forms.CheckBox()
         Me.ListViewAdd_True = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -807,6 +808,7 @@ Partial Class einstellungen
         'GroupBox5
         '
         Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox5.Controls.Add(Me.CB_Log)
         Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
         Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox5.ForeColor = System.Drawing.Color.Black
@@ -815,12 +817,22 @@ Partial Class einstellungen
         Me.GroupBox5.Size = New System.Drawing.Size(456, 55)
         Me.GroupBox5.TabIndex = 7
         Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "Multi-Download"
+        Me.GroupBox5.Text = "Other"
+        '
+        'CB_Log
+        '
+        Me.CB_Log.AutoSize = True
+        Me.CB_Log.Location = New System.Drawing.Point(316, 21)
+        Me.CB_Log.Name = "CB_Log"
+        Me.CB_Log.Size = New System.Drawing.Size(84, 20)
+        Me.CB_Log.TabIndex = 1
+        Me.CB_Log.Text = "create log"
+        Me.CB_Log.UseVisualStyleBackColor = True
         '
         'ListViewAdd_True
         '
         Me.ListViewAdd_True.AutoSize = True
-        Me.ListViewAdd_True.Location = New System.Drawing.Point(104, 21)
+        Me.ListViewAdd_True.Location = New System.Drawing.Point(30, 21)
         Me.ListViewAdd_True.Name = "ListViewAdd_True"
         Me.ListViewAdd_True.Size = New System.Drawing.Size(236, 20)
         Me.ListViewAdd_True.TabIndex = 0
@@ -1047,4 +1059,5 @@ Partial Class einstellungen
     Friend WithEvents TabControl1 As TabControl
     Friend WithEvents CB_Login As CheckBox
     Friend WithEvents ToolTip2 As ToolTip
+    Friend WithEvents CB_Log As CheckBox
 End Class

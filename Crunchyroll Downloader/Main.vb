@@ -14,9 +14,10 @@ Public Class Main
     Public UsedMap As String = Nothing
     Public Debug1 As Boolean = False
     Public Debug2 As Boolean = False
-    Public LoggingBrowser As Boolean = False
+    Public LogBrowserData As Boolean = False
     Public Thumbnail As String = Nothing
     Public MergeSubstoMP4 As Boolean = False
+    Public LoginDialog As Boolean = False
     Dim ListOfStreams As New List(Of String)
     Public NonCR_Timeout As Integer = 5
     Public NonCR_URL As String = Nothing
@@ -39,8 +40,8 @@ Public Class Main
     Dim Resu2 As String
     Public ResuSave As String = "6666x6666"
     Public SubSprache As String
-    Public Unlock As Integer = 0
-    Public Unlock2 As Integer
+    'Public Unlock As Integer = 0
+    'Public Unlock2 As Integer
     Public SubFolder As Integer
     Public SoftSubs As New List(Of String)
     Public AbourtList As New List(Of String)
@@ -242,6 +243,12 @@ Public Class Main
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             MergeSubstoMP4 = CBool(Integer.Parse(rkg.GetValue("MergeMP4").ToString))
+        Catch ex As Exception
+
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            LoginDialog = CBool(Integer.Parse(rkg.GetValue("LoginDialog").ToString))
         Catch ex As Exception
 
         End Try
@@ -2099,6 +2106,7 @@ Public Class Main
 
     End Sub
 
-
-
+    Private Sub Main_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Me.MouseDoubleClick
+        Login.Show()
+    End Sub
 End Class

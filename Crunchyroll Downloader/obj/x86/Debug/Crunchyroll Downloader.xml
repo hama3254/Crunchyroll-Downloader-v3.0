@@ -236,6 +236,21 @@ Crunchyroll Downloader
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.LoginSkip">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.LoginSkipHover">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.LoginSuccess">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &quot;error&quot;:false,&quot;code&quot;:&quot;ok&quot; ähnelt.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_add">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -343,6 +358,12 @@ Crunchyroll Downloader
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.thumbnailString">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die &quot;thumbnail&quot;:{&quot;url&quot;:&quot; ähnelt.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.US_ToolTip">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die US cookies can&apos;t be used as long you are logged in.
+I delete the curremt session with the unlock, if you want to be logged in with the US cookie you need to enter you data on the left. ähnelt.
 </summary>
 </member>
 </members>

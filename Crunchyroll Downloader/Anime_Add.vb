@@ -241,7 +241,7 @@ Public Class Anime_Add
                             logFileReader.Close()
                             logFileStream.Close()
                         End If
-                        Main.LoggingBrowser = True
+                        Main.LogBrowserData = True
                         GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
                         GeckoPreferences.Default("logging.nsHttp") = 3
                         GeckoFX.WebBrowser1.Navigate(textBox1.Text)

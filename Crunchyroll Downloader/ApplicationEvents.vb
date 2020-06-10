@@ -36,27 +36,33 @@ Namespace My
             If Not Directory.Exists(ProfileDirectory) Then
                 Directory.CreateDirectory(ProfileDirectory)
             End If
+            Try
 
-            Dim sUserAgent As String = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0"
-            'sUserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
 
-            'MsgBox(Xpcom.XulRunnerVersion)
-            Xpcom.ProfileDirectory = ProfileDirectory
-            Xpcom.Initialize("Firefox")
-            GeckoPreferences.User("general.useragent.override") = sUserAgent
-            'Xpcom.Initialize("C:\Program Files\Mozilla Firefox")
-            GeckoPreferences.Default("browser.cache.disk.enable") = False
-            GeckoPreferences.Default("network.cookie.thirdparty.sessionOnly") = False
-            GeckoPreferences.Default("extensions.blocklist.enabled") = False
-            GeckoPreferences.Default("Services.sync.prefs.sync.privacy.clearOnShutdown.cookies") = False
-            GeckoPreferences.Default("plugin.state.flash") = 0
-            GeckoPreferences.Default("zoom.maxPercent") = 100
-            GeckoPreferences.Default("zoom.minPercent") = 100
-            ' GeckoPreferences.Default("media.autoplay.default") = 2
-            'GeckoPreferences.Default("media.autoplay.block-webaudio") = False
-            'GeckoPreferences.Default("javascript.enabled") = False
+                Dim sUserAgent As String = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0"
+                'sUserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
 
-            Return True
+                'MsgBox(Xpcom.XulRunnerVersion)
+                Xpcom.ProfileDirectory = ProfileDirectory
+                Xpcom.Initialize("Firefox")
+
+                GeckoPreferences.User("general.useragent.override") = sUserAgent
+                'Xpcom.Initialize("C:\Program Files\Mozilla Firefox")
+                GeckoPreferences.Default("browser.cache.disk.enable") = False
+                GeckoPreferences.Default("network.cookie.thirdparty.sessionOnly") = False
+                GeckoPreferences.Default("extensions.blocklist.enabled") = False
+                GeckoPreferences.Default("Services.sync.prefs.sync.privacy.clearOnShutdown.cookies") = False
+                GeckoPreferences.Default("plugin.state.flash") = 0
+                GeckoPreferences.Default("zoom.maxPercent") = 100
+                GeckoPreferences.Default("zoom.minPercent") = 100
+                ' GeckoPreferences.Default("media.autoplay.default") = 2
+                'GeckoPreferences.Default("media.autoplay.block-webaudio") = False
+                'GeckoPreferences.Default("javascript.enabled") = False
+                Return True
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            End Try
+
         End Function
     End Class
 End Namespace

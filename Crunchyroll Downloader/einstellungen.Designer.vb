@@ -23,25 +23,22 @@ Partial Class einstellungen
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.GB_Sub_Path = New System.Windows.Forms.GroupBox()
-        Me.RBStaffel = New System.Windows.Forms.RadioButton()
-        Me.RBAnime = New System.Windows.Forms.RadioButton()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.DL_Count_simultaneous = New System.Windows.Forms.GroupBox()
-        Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
+        Me.RBAnime = New System.Windows.Forms.RadioButton()
+        Me.RBStaffel = New System.Windows.Forms.RadioButton()
         Me.pictureBox1 = New System.Windows.Forms.PictureBox()
         Me.pictureBox4 = New System.Windows.Forms.PictureBox()
-        Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.ListViewAdd_True = New System.Windows.Forms.CheckBox()
-        Me.PictureBox6 = New System.Windows.Forms.PictureBox()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.Firefox_True = New System.Windows.Forms.CheckBox()
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.PictureBox5 = New System.Windows.Forms.PictureBox()
+        Me.StatusLabel = New System.Windows.Forms.Label()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.MultiDLSoftSubs = New System.Windows.Forms.GroupBox()
+        Me.SoftSubsMass = New System.Windows.Forms.Label()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.comboBox4 = New System.Windows.Forms.ComboBox()
+        Me.ComboBox2 = New System.Windows.Forms.ComboBox()
+        Me.comboBox3 = New System.Windows.Forms.ComboBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
@@ -84,29 +81,29 @@ Partial Class einstellungen
         Me.A360p = New System.Windows.Forms.RadioButton()
         Me.A720p = New System.Windows.Forms.RadioButton()
         Me.A1080p = New System.Windows.Forms.RadioButton()
-        Me.TabPage3 = New System.Windows.Forms.TabPage()
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.PictureBox5 = New System.Windows.Forms.PictureBox()
-        Me.StatusLabel = New System.Windows.Forms.Label()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.MultiDLSoftSubs = New System.Windows.Forms.GroupBox()
-        Me.SoftSubsMass = New System.Windows.Forms.Label()
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
-        Me.comboBox4 = New System.Windows.Forms.ComboBox()
-        Me.ComboBox2 = New System.Windows.Forms.ComboBox()
-        Me.comboBox3 = New System.Windows.Forms.ComboBox()
-        Me.GB_Sub_Path.SuspendLayout()
-        Me.DL_Count_simultaneous.SuspendLayout()
-        CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.CB_Login = New System.Windows.Forms.CheckBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox6 = New System.Windows.Forms.PictureBox()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.ListViewAdd_True = New System.Windows.Forms.CheckBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Firefox_True = New System.Windows.Forms.CheckBox()
+        Me.DL_Count_simultaneous = New System.Windows.Forms.GroupBox()
+        Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
+        Me.GB_Sub_Path = New System.Windows.Forms.GroupBox()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.ToolTip2 = New System.Windows.Forms.ToolTip(Me.components)
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabControl1.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
-        Me.GroupBox5.SuspendLayout()
-        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox1.SuspendLayout()
-        Me.GroupBox4.SuspendLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage3.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.MultiDLSoftSubs.SuspendLayout()
+        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -114,47 +111,31 @@ Partial Class einstellungen
         Me.SoftSubs.SuspendLayout()
         Me.GB_SubLanguage.SuspendLayout()
         Me.GB_Resolution.SuspendLayout()
-        Me.TabPage3.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
-        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.MultiDLSoftSubs.SuspendLayout()
-        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage1.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox5.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        Me.DL_Count_simultaneous.SuspendLayout()
+        CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GB_Sub_Path.SuspendLayout()
+        Me.TabControl1.SuspendLayout()
         Me.SuspendLayout()
         '
-        'GB_Sub_Path
+        'ToolTip1
         '
-        Me.GB_Sub_Path.BackColor = System.Drawing.Color.Transparent
-        Me.GB_Sub_Path.Controls.Add(Me.RBStaffel)
-        Me.GB_Sub_Path.Controls.Add(Me.RBAnime)
-        Me.GB_Sub_Path.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GB_Sub_Path.ForeColor = System.Drawing.Color.Black
-        Me.GB_Sub_Path.Location = New System.Drawing.Point(205, 85)
-        Me.GB_Sub_Path.Name = "GB_Sub_Path"
-        Me.GB_Sub_Path.Size = New System.Drawing.Size(257, 77)
-        Me.GB_Sub_Path.TabIndex = 3
-        Me.GB_Sub_Path.TabStop = False
-        Me.GB_Sub_Path.Text = "Unterordner "
-        '
-        'RBStaffel
-        '
-        Me.RBStaffel.AutoSize = True
-        Me.RBStaffel.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RBStaffel.ForeColor = System.Drawing.Color.Black
-        Me.RBStaffel.Location = New System.Drawing.Point(27, 49)
-        Me.RBStaffel.Name = "RBStaffel"
-        Me.RBStaffel.Size = New System.Drawing.Size(174, 22)
-        Me.RBStaffel.TabIndex = 1
-        Me.RBStaffel.TabStop = True
-        Me.RBStaffel.Text = "Anime Serie + Staffel"
-        Me.ToolTip1.SetToolTip(Me.RBStaffel, "Erstelle je einen Ordner für den Anime und darin einen für die Staffel")
-        Me.RBStaffel.UseVisualStyleBackColor = True
+        Me.ToolTip1.AutoPopDelay = 8000
+        Me.ToolTip1.InitialDelay = 500
+        Me.ToolTip1.IsBalloon = True
+        Me.ToolTip1.ReshowDelay = 100
         '
         'RBAnime
         '
         Me.RBAnime.AutoSize = True
         Me.RBAnime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RBAnime.ForeColor = System.Drawing.Color.Black
-        Me.RBAnime.Location = New System.Drawing.Point(27, 21)
+        Me.RBAnime.Location = New System.Drawing.Point(6, 49)
         Me.RBAnime.Name = "RBAnime"
         Me.RBAnime.Size = New System.Drawing.Size(113, 22)
         Me.RBAnime.TabIndex = 1
@@ -163,28 +144,19 @@ Partial Class einstellungen
         Me.ToolTip1.SetToolTip(Me.RBAnime, "Erstelle einen Ordner für den Anime, unabhänig der Staffeln")
         Me.RBAnime.UseVisualStyleBackColor = True
         '
-        'DL_Count_simultaneous
+        'RBStaffel
         '
-        Me.DL_Count_simultaneous.BackColor = System.Drawing.Color.Transparent
-        Me.DL_Count_simultaneous.Controls.Add(Me.NumericUpDown1)
-        Me.DL_Count_simultaneous.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.DL_Count_simultaneous.ForeColor = System.Drawing.Color.Black
-        Me.DL_Count_simultaneous.Location = New System.Drawing.Point(6, 11)
-        Me.DL_Count_simultaneous.Name = "DL_Count_simultaneous"
-        Me.DL_Count_simultaneous.Size = New System.Drawing.Size(456, 68)
-        Me.DL_Count_simultaneous.TabIndex = 5
-        Me.DL_Count_simultaneous.TabStop = False
-        Me.DL_Count_simultaneous.Text = "simultaneous downloads"
-        '
-        'NumericUpDown1
-        '
-        Me.NumericUpDown1.Location = New System.Drawing.Point(98, 30)
-        Me.NumericUpDown1.Maximum = New Decimal(New Integer() {12, 0, 0, 0})
-        Me.NumericUpDown1.Name = "NumericUpDown1"
-        Me.NumericUpDown1.Size = New System.Drawing.Size(265, 22)
-        Me.NumericUpDown1.TabIndex = 0
-        Me.NumericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.NumericUpDown1.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.RBStaffel.AutoSize = True
+        Me.RBStaffel.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RBStaffel.ForeColor = System.Drawing.Color.Black
+        Me.RBStaffel.Location = New System.Drawing.Point(6, 21)
+        Me.RBStaffel.Name = "RBStaffel"
+        Me.RBStaffel.Size = New System.Drawing.Size(174, 22)
+        Me.RBStaffel.TabIndex = 1
+        Me.RBStaffel.TabStop = True
+        Me.RBStaffel.Text = "Anime Serie + Staffel"
+        Me.ToolTip1.SetToolTip(Me.RBStaffel, "Erstelle je einen Ordner für den Anime und darin einen für die Staffel")
+        Me.RBStaffel.UseVisualStyleBackColor = True
         '
         'pictureBox1
         '
@@ -209,134 +181,149 @@ Partial Class einstellungen
         Me.pictureBox4.TabIndex = 8
         Me.pictureBox4.TabStop = False
         '
-        'TabControl1
+        'TabPage3
         '
-        Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Controls.Add(Me.TabPage3)
-        Me.TabControl1.Location = New System.Drawing.Point(12, 47)
-        Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(476, 441)
-        Me.TabControl1.TabIndex = 38
+        Me.TabPage3.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
+        Me.TabPage3.Controls.Add(Me.GroupBox3)
+        Me.TabPage3.Controls.Add(Me.MultiDLSoftSubs)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage3.Size = New System.Drawing.Size(468, 415)
+        Me.TabPage3.TabIndex = 2
+        Me.TabPage3.Text = "Subtile Download"
         '
-        'TabPage1
+        'GroupBox3
         '
-        Me.TabPage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
-        Me.TabPage1.Controls.Add(Me.GroupBox5)
-        Me.TabPage1.Controls.Add(Me.PictureBox6)
-        Me.TabPage1.Controls.Add(Me.GroupBox1)
-        Me.TabPage1.Controls.Add(Me.GroupBox4)
-        Me.TabPage1.Controls.Add(Me.DL_Count_simultaneous)
-        Me.TabPage1.Controls.Add(Me.GB_Sub_Path)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(468, 415)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Settings"
+        Me.GroupBox3.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox3.Controls.Add(Me.PictureBox5)
+        Me.GroupBox3.Controls.Add(Me.StatusLabel)
+        Me.GroupBox3.Controls.Add(Me.TextBox2)
+        Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox3.Location = New System.Drawing.Point(9, 6)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(450, 162)
+        Me.GroupBox3.TabIndex = 46
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Single Download "
         '
-        'GroupBox5
+        'PictureBox5
         '
-        Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
-        Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox5.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox5.Location = New System.Drawing.Point(6, 301)
-        Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(456, 55)
-        Me.GroupBox5.TabIndex = 7
-        Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "Multi-Download"
+        Me.PictureBox5.BackColor = System.Drawing.Color.Transparent
+        Me.PictureBox5.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureBox5.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.softsubs_download
+        Me.PictureBox5.Location = New System.Drawing.Point(24, 116)
+        Me.PictureBox5.Name = "PictureBox5"
+        Me.PictureBox5.Size = New System.Drawing.Size(403, 36)
+        Me.PictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox5.TabIndex = 46
+        Me.PictureBox5.TabStop = False
         '
-        'ListViewAdd_True
+        'StatusLabel
         '
-        Me.ListViewAdd_True.AutoSize = True
-        Me.ListViewAdd_True.Location = New System.Drawing.Point(104, 21)
-        Me.ListViewAdd_True.Name = "ListViewAdd_True"
-        Me.ListViewAdd_True.Size = New System.Drawing.Size(236, 20)
-        Me.ListViewAdd_True.TabIndex = 0
-        Me.ListViewAdd_True.Text = "redirect multi-download to the queue"
-        Me.ListViewAdd_True.UseVisualStyleBackColor = True
+        Me.StatusLabel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.StatusLabel.BackColor = System.Drawing.Color.Transparent
+        Me.StatusLabel.Font = New System.Drawing.Font("Arial", 12.0!)
+        Me.StatusLabel.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.StatusLabel.Location = New System.Drawing.Point(8, 71)
+        Me.StatusLabel.Name = "StatusLabel"
+        Me.StatusLabel.Size = New System.Drawing.Size(433, 29)
+        Me.StatusLabel.TabIndex = 38
+        Me.StatusLabel.Text = "Status: idle"
+        Me.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'PictureBox6
+        'TextBox2
         '
-        Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox6.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_credits_default
-        Me.PictureBox6.Location = New System.Drawing.Point(195, 373)
-        Me.PictureBox6.Name = "PictureBox6"
-        Me.PictureBox6.Size = New System.Drawing.Size(76, 39)
-        Me.PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.PictureBox6.TabIndex = 41
-        Me.PictureBox6.TabStop = False
+        Me.TextBox2.BackColor = System.Drawing.Color.White
+        Me.TextBox2.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.TextBox2.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.TextBox2.Location = New System.Drawing.Point(6, 35)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(435, 22)
+        Me.TextBox2.TabIndex = 4
+        Me.TextBox2.TabStop = False
+        Me.TextBox2.Text = "URL"
+        Me.TextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'GroupBox1
+        'MultiDLSoftSubs
         '
-        Me.GroupBox1.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Controls.Add(Me.TextBox1)
-        Me.GroupBox1.Controls.Add(Me.Firefox_True)
-        Me.GroupBox1.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox1.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox1.Location = New System.Drawing.Point(6, 168)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(456, 127)
-        Me.GroupBox1.TabIndex = 7
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Browser Settings"
+        Me.MultiDLSoftSubs.BackColor = System.Drawing.Color.Transparent
+        Me.MultiDLSoftSubs.Controls.Add(Me.SoftSubsMass)
+        Me.MultiDLSoftSubs.Controls.Add(Me.PictureBox3)
+        Me.MultiDLSoftSubs.Controls.Add(Me.comboBox4)
+        Me.MultiDLSoftSubs.Controls.Add(Me.ComboBox2)
+        Me.MultiDLSoftSubs.Controls.Add(Me.comboBox3)
+        Me.MultiDLSoftSubs.Enabled = False
+        Me.MultiDLSoftSubs.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MultiDLSoftSubs.Location = New System.Drawing.Point(9, 174)
+        Me.MultiDLSoftSubs.Name = "MultiDLSoftSubs"
+        Me.MultiDLSoftSubs.Size = New System.Drawing.Size(450, 223)
+        Me.MultiDLSoftSubs.TabIndex = 45
+        Me.MultiDLSoftSubs.TabStop = False
+        Me.MultiDLSoftSubs.Text = "Multi Download"
         '
-        'Label1
+        'SoftSubsMass
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(186, 29)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(100, 16)
-        Me.Label1.TabIndex = 2
-        Me.Label1.Text = "Default Website"
+        Me.SoftSubsMass.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SoftSubsMass.BackColor = System.Drawing.Color.Transparent
+        Me.SoftSubsMass.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SoftSubsMass.ForeColor = System.Drawing.Color.Black
+        Me.SoftSubsMass.Location = New System.Drawing.Point(6, 130)
+        Me.SoftSubsMass.Name = "SoftSubsMass"
+        Me.SoftSubsMass.Size = New System.Drawing.Size(438, 26)
+        Me.SoftSubsMass.TabIndex = 46
+        Me.SoftSubsMass.Text = "Status: idle"
+        Me.SoftSubsMass.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'TextBox1
+        'PictureBox3
         '
-        Me.TextBox1.Location = New System.Drawing.Point(6, 54)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(444, 22)
-        Me.TextBox1.TabIndex = 1
-        Me.TextBox1.Text = "https://www.crunchyroll.com/"
-        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.PictureBox3.BackColor = System.Drawing.Color.Transparent
+        Me.PictureBox3.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureBox3.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.softsubs_download_gray
+        Me.PictureBox3.Location = New System.Drawing.Point(24, 169)
+        Me.PictureBox3.Name = "PictureBox3"
+        Me.PictureBox3.Size = New System.Drawing.Size(403, 36)
+        Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox3.TabIndex = 45
+        Me.PictureBox3.TabStop = False
         '
-        'Firefox_True
+        'comboBox4
         '
-        Me.Firefox_True.AutoSize = True
-        Me.Firefox_True.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Firefox_True.ForeColor = System.Drawing.Color.Black
-        Me.Firefox_True.Location = New System.Drawing.Point(148, 92)
-        Me.Firefox_True.Name = "Firefox_True"
-        Me.Firefox_True.Size = New System.Drawing.Size(166, 20)
-        Me.Firefox_True.TabIndex = 0
-        Me.Firefox_True.Text = "Use Firefox Profil Folder"
-        Me.Firefox_True.UseVisualStyleBackColor = True
+        Me.comboBox4.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.comboBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.comboBox4.FormattingEnabled = True
+        Me.comboBox4.Location = New System.Drawing.Point(6, 97)
+        Me.comboBox4.Name = "comboBox4"
+        Me.comboBox4.Size = New System.Drawing.Size(441, 23)
+        Me.comboBox4.TabIndex = 2
         '
-        'GroupBox4
+        'ComboBox2
         '
-        Me.GroupBox4.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox4.Controls.Add(Me.PictureBox2)
-        Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox4.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox4.Location = New System.Drawing.Point(6, 85)
-        Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(193, 77)
-        Me.GroupBox4.TabIndex = 6
-        Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "Crunchyroll US"
+        Me.ComboBox2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboBox2.FormattingEnabled = True
+        Me.ComboBox2.Location = New System.Drawing.Point(6, 25)
+        Me.ComboBox2.Name = "ComboBox2"
+        Me.ComboBox2.Size = New System.Drawing.Size(441, 23)
+        Me.ComboBox2.TabIndex = 1
         '
-        'PictureBox2
+        'comboBox3
         '
-        Me.PictureBox2.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox2.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.crdsettings_setUScookie_button
-        Me.PictureBox2.Location = New System.Drawing.Point(20, 21)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(150, 30)
-        Me.PictureBox2.TabIndex = 4
-        Me.PictureBox2.TabStop = False
+        Me.comboBox3.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.comboBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.comboBox3.FormattingEnabled = True
+        Me.comboBox3.Location = New System.Drawing.Point(6, 62)
+        Me.comboBox3.Name = "comboBox3"
+        Me.comboBox3.Size = New System.Drawing.Size(441, 23)
+        Me.comboBox3.TabIndex = 1
         '
         'TabPage2
         '
@@ -408,31 +395,31 @@ Partial Class einstellungen
         'ListC1
         '
         Me.ListC1.Name = "ListC1"
-        Me.ListC1.Size = New System.Drawing.Size(180, 22)
+        Me.ListC1.Size = New System.Drawing.Size(174, 22)
         Me.ListC1.Text = "-c copy"
         '
         'ListC2
         '
         Me.ListC2.Name = "ListC2"
-        Me.ListC2.Size = New System.Drawing.Size(180, 22)
+        Me.ListC2.Size = New System.Drawing.Size(174, 22)
         Me.ListC2.Text = "-c:v h264_nvenc "
         '
         'ListC3
         '
         Me.ListC3.Name = "ListC3"
-        Me.ListC3.Size = New System.Drawing.Size(180, 22)
+        Me.ListC3.Size = New System.Drawing.Size(174, 22)
         Me.ListC3.Text = "-c:v hevc_nvenc"
         '
         'ListC4
         '
         Me.ListC4.Name = "ListC4"
-        Me.ListC4.Size = New System.Drawing.Size(180, 22)
+        Me.ListC4.Size = New System.Drawing.Size(174, 22)
         Me.ListC4.Text = "-c:v libx264"
         '
         'ListC5
         '
         Me.ListC5.Name = "ListC5"
-        Me.ListC5.Size = New System.Drawing.Size(180, 22)
+        Me.ListC5.Size = New System.Drawing.Size(174, 22)
         Me.ListC5.Text = "-c:v libx265"
         '
         'FFMPEG_CommandP2
@@ -446,13 +433,13 @@ Partial Class einstellungen
         'ListP1
         '
         Me.ListP1.Name = "ListP1"
-        Me.ListP1.Size = New System.Drawing.Size(180, 22)
+        Me.ListP1.Size = New System.Drawing.Size(148, 22)
         Me.ListP1.Text = "-preset fast"
         '
         'ListP2
         '
         Me.ListP2.Name = "ListP2"
-        Me.ListP2.Size = New System.Drawing.Size(180, 22)
+        Me.ListP2.Size = New System.Drawing.Size(148, 22)
         Me.ListP2.Text = "-preset slow"
         '
         'FFMPEG_CommandP3
@@ -466,43 +453,43 @@ Partial Class einstellungen
         'ListBit1
         '
         Me.ListBit1.Name = "ListBit1"
-        Me.ListBit1.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit1.Size = New System.Drawing.Size(136, 22)
         Me.ListBit1.Text = "-b:v 7000k"
         '
         'ListBit2
         '
         Me.ListBit2.Name = "ListBit2"
-        Me.ListBit2.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit2.Size = New System.Drawing.Size(136, 22)
         Me.ListBit2.Text = "-b:v 6000k"
         '
         'ListBit3
         '
         Me.ListBit3.Name = "ListBit3"
-        Me.ListBit3.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit3.Size = New System.Drawing.Size(136, 22)
         Me.ListBit3.Text = "-b:v 5000k"
         '
         'ListBit4
         '
         Me.ListBit4.Name = "ListBit4"
-        Me.ListBit4.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit4.Size = New System.Drawing.Size(136, 22)
         Me.ListBit4.Text = "-b:v 4000k"
         '
         'ListBit5
         '
         Me.ListBit5.Name = "ListBit5"
-        Me.ListBit5.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit5.Size = New System.Drawing.Size(136, 22)
         Me.ListBit5.Text = "-b:v 3000k"
         '
         'ListBit6
         '
         Me.ListBit6.Name = "ListBit6"
-        Me.ListBit6.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit6.Size = New System.Drawing.Size(136, 22)
         Me.ListBit6.Text = "-b:v 2000k"
         '
         'ListBit7
         '
         Me.ListBit7.Name = "ListBit7"
-        Me.ListBit7.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit7.Size = New System.Drawing.Size(136, 22)
         Me.ListBit7.Text = "-b:v 1000k"
         '
         'FFMPEG_CommandP4
@@ -755,149 +742,183 @@ Partial Class einstellungen
         Me.A1080p.Text = "1080p"
         Me.A1080p.UseVisualStyleBackColor = True
         '
-        'TabPage3
+        'TabPage1
         '
-        Me.TabPage3.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
-        Me.TabPage3.Controls.Add(Me.GroupBox3)
-        Me.TabPage3.Controls.Add(Me.MultiDLSoftSubs)
-        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(468, 415)
-        Me.TabPage3.TabIndex = 2
-        Me.TabPage3.Text = "Subtile Download"
+        Me.TabPage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
+        Me.TabPage1.Controls.Add(Me.GroupBox4)
+        Me.TabPage1.Controls.Add(Me.PictureBox6)
+        Me.TabPage1.Controls.Add(Me.GroupBox5)
+        Me.TabPage1.Controls.Add(Me.GroupBox1)
+        Me.TabPage1.Controls.Add(Me.DL_Count_simultaneous)
+        Me.TabPage1.Controls.Add(Me.GB_Sub_Path)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(468, 415)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Settings"
         '
-        'GroupBox3
+        'GroupBox4
         '
-        Me.GroupBox3.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox3.Controls.Add(Me.PictureBox5)
-        Me.GroupBox3.Controls.Add(Me.StatusLabel)
-        Me.GroupBox3.Controls.Add(Me.TextBox2)
-        Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox3.Location = New System.Drawing.Point(9, 6)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(450, 162)
-        Me.GroupBox3.TabIndex = 46
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Single Download "
+        Me.GroupBox4.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox4.Controls.Add(Me.CB_Login)
+        Me.GroupBox4.Controls.Add(Me.PictureBox2)
+        Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox4.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox4.Location = New System.Drawing.Point(9, 85)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(224, 85)
+        Me.GroupBox4.TabIndex = 42
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "US Unlock"
         '
-        'PictureBox5
+        'CB_Login
         '
-        Me.PictureBox5.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox5.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox5.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.softsubs_download
-        Me.PictureBox5.Location = New System.Drawing.Point(24, 116)
-        Me.PictureBox5.Name = "PictureBox5"
-        Me.PictureBox5.Size = New System.Drawing.Size(403, 36)
-        Me.PictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox5.TabIndex = 46
-        Me.PictureBox5.TabStop = False
+        Me.CB_Login.AutoSize = True
+        Me.CB_Login.Location = New System.Drawing.Point(55, 57)
+        Me.CB_Login.Name = "CB_Login"
+        Me.CB_Login.Size = New System.Drawing.Size(105, 20)
+        Me.CB_Login.TabIndex = 43
+        Me.CB_Login.Text = "Display Login"
+        Me.CB_Login.UseVisualStyleBackColor = True
         '
-        'StatusLabel
+        'PictureBox2
         '
-        Me.StatusLabel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.StatusLabel.BackColor = System.Drawing.Color.Transparent
-        Me.StatusLabel.Font = New System.Drawing.Font("Arial", 12.0!)
-        Me.StatusLabel.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.StatusLabel.Location = New System.Drawing.Point(8, 71)
-        Me.StatusLabel.Name = "StatusLabel"
-        Me.StatusLabel.Size = New System.Drawing.Size(433, 29)
-        Me.StatusLabel.TabIndex = 38
-        Me.StatusLabel.Text = "Status: idle"
-        Me.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.PictureBox2.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureBox2.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.crdsettings_setUScookie_button
+        Me.PictureBox2.Location = New System.Drawing.Point(27, 21)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(150, 30)
+        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.PictureBox2.TabIndex = 42
+        Me.PictureBox2.TabStop = False
         '
-        'TextBox2
+        'PictureBox6
         '
-        Me.TextBox2.BackColor = System.Drawing.Color.White
-        Me.TextBox2.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.TextBox2.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.TextBox2.Location = New System.Drawing.Point(6, 35)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(435, 22)
-        Me.TextBox2.TabIndex = 4
-        Me.TextBox2.TabStop = False
-        Me.TextBox2.Text = "URL"
-        Me.TextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureBox6.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_credits_default
+        Me.PictureBox6.Location = New System.Drawing.Point(188, 370)
+        Me.PictureBox6.Name = "PictureBox6"
+        Me.PictureBox6.Size = New System.Drawing.Size(76, 39)
+        Me.PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.PictureBox6.TabIndex = 41
+        Me.PictureBox6.TabStop = False
         '
-        'MultiDLSoftSubs
+        'GroupBox5
         '
-        Me.MultiDLSoftSubs.BackColor = System.Drawing.Color.Transparent
-        Me.MultiDLSoftSubs.Controls.Add(Me.SoftSubsMass)
-        Me.MultiDLSoftSubs.Controls.Add(Me.PictureBox3)
-        Me.MultiDLSoftSubs.Controls.Add(Me.comboBox4)
-        Me.MultiDLSoftSubs.Controls.Add(Me.ComboBox2)
-        Me.MultiDLSoftSubs.Controls.Add(Me.comboBox3)
-        Me.MultiDLSoftSubs.Enabled = False
-        Me.MultiDLSoftSubs.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MultiDLSoftSubs.Location = New System.Drawing.Point(9, 174)
-        Me.MultiDLSoftSubs.Name = "MultiDLSoftSubs"
-        Me.MultiDLSoftSubs.Size = New System.Drawing.Size(450, 223)
-        Me.MultiDLSoftSubs.TabIndex = 45
-        Me.MultiDLSoftSubs.TabStop = False
-        Me.MultiDLSoftSubs.Text = "Multi Download"
+        Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
+        Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox5.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox5.Location = New System.Drawing.Point(6, 309)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(456, 55)
+        Me.GroupBox5.TabIndex = 7
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "Multi-Download"
         '
-        'SoftSubsMass
+        'ListViewAdd_True
         '
-        Me.SoftSubsMass.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SoftSubsMass.BackColor = System.Drawing.Color.Transparent
-        Me.SoftSubsMass.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SoftSubsMass.ForeColor = System.Drawing.Color.Black
-        Me.SoftSubsMass.Location = New System.Drawing.Point(6, 130)
-        Me.SoftSubsMass.Name = "SoftSubsMass"
-        Me.SoftSubsMass.Size = New System.Drawing.Size(438, 26)
-        Me.SoftSubsMass.TabIndex = 46
-        Me.SoftSubsMass.Text = "Status: idle"
-        Me.SoftSubsMass.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.ListViewAdd_True.AutoSize = True
+        Me.ListViewAdd_True.Location = New System.Drawing.Point(104, 21)
+        Me.ListViewAdd_True.Name = "ListViewAdd_True"
+        Me.ListViewAdd_True.Size = New System.Drawing.Size(236, 20)
+        Me.ListViewAdd_True.TabIndex = 0
+        Me.ListViewAdd_True.Text = "redirect multi-download to the queue"
+        Me.ListViewAdd_True.UseVisualStyleBackColor = True
         '
-        'PictureBox3
+        'GroupBox1
         '
-        Me.PictureBox3.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox3.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox3.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.softsubs_download_gray
-        Me.PictureBox3.Location = New System.Drawing.Point(24, 169)
-        Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(403, 36)
-        Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox3.TabIndex = 45
-        Me.PictureBox3.TabStop = False
+        Me.GroupBox1.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox1.Controls.Add(Me.Label1)
+        Me.GroupBox1.Controls.Add(Me.TextBox1)
+        Me.GroupBox1.Controls.Add(Me.Firefox_True)
+        Me.GroupBox1.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox1.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox1.Location = New System.Drawing.Point(9, 176)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(456, 127)
+        Me.GroupBox1.TabIndex = 7
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Browser Settings"
         '
-        'comboBox4
+        'Label1
         '
-        Me.comboBox4.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.comboBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.comboBox4.FormattingEnabled = True
-        Me.comboBox4.Location = New System.Drawing.Point(6, 97)
-        Me.comboBox4.Name = "comboBox4"
-        Me.comboBox4.Size = New System.Drawing.Size(441, 23)
-        Me.comboBox4.TabIndex = 2
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(186, 29)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(100, 16)
+        Me.Label1.TabIndex = 2
+        Me.Label1.Text = "Default Website"
         '
-        'ComboBox2
+        'TextBox1
         '
-        Me.ComboBox2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Location = New System.Drawing.Point(6, 25)
-        Me.ComboBox2.Name = "ComboBox2"
-        Me.ComboBox2.Size = New System.Drawing.Size(441, 23)
-        Me.ComboBox2.TabIndex = 1
+        Me.TextBox1.Location = New System.Drawing.Point(6, 54)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(444, 22)
+        Me.TextBox1.TabIndex = 1
+        Me.TextBox1.Text = "https://www.crunchyroll.com/"
+        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'comboBox3
+        'Firefox_True
         '
-        Me.comboBox3.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.comboBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.comboBox3.FormattingEnabled = True
-        Me.comboBox3.Location = New System.Drawing.Point(6, 62)
-        Me.comboBox3.Name = "comboBox3"
-        Me.comboBox3.Size = New System.Drawing.Size(441, 23)
-        Me.comboBox3.TabIndex = 1
+        Me.Firefox_True.AutoSize = True
+        Me.Firefox_True.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Firefox_True.ForeColor = System.Drawing.Color.Black
+        Me.Firefox_True.Location = New System.Drawing.Point(148, 92)
+        Me.Firefox_True.Name = "Firefox_True"
+        Me.Firefox_True.Size = New System.Drawing.Size(166, 20)
+        Me.Firefox_True.TabIndex = 0
+        Me.Firefox_True.Text = "Use Firefox Profil Folder"
+        Me.Firefox_True.UseVisualStyleBackColor = True
+        '
+        'DL_Count_simultaneous
+        '
+        Me.DL_Count_simultaneous.BackColor = System.Drawing.Color.Transparent
+        Me.DL_Count_simultaneous.Controls.Add(Me.NumericUpDown1)
+        Me.DL_Count_simultaneous.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.DL_Count_simultaneous.ForeColor = System.Drawing.Color.Black
+        Me.DL_Count_simultaneous.Location = New System.Drawing.Point(6, 11)
+        Me.DL_Count_simultaneous.Name = "DL_Count_simultaneous"
+        Me.DL_Count_simultaneous.Size = New System.Drawing.Size(456, 68)
+        Me.DL_Count_simultaneous.TabIndex = 5
+        Me.DL_Count_simultaneous.TabStop = False
+        Me.DL_Count_simultaneous.Text = "simultaneous downloads"
+        '
+        'NumericUpDown1
+        '
+        Me.NumericUpDown1.Location = New System.Drawing.Point(98, 30)
+        Me.NumericUpDown1.Maximum = New Decimal(New Integer() {12, 0, 0, 0})
+        Me.NumericUpDown1.Name = "NumericUpDown1"
+        Me.NumericUpDown1.Size = New System.Drawing.Size(265, 22)
+        Me.NumericUpDown1.TabIndex = 0
+        Me.NumericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.NumericUpDown1.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'GB_Sub_Path
+        '
+        Me.GB_Sub_Path.BackColor = System.Drawing.Color.Transparent
+        Me.GB_Sub_Path.Controls.Add(Me.RBStaffel)
+        Me.GB_Sub_Path.Controls.Add(Me.RBAnime)
+        Me.GB_Sub_Path.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GB_Sub_Path.ForeColor = System.Drawing.Color.Black
+        Me.GB_Sub_Path.Location = New System.Drawing.Point(244, 85)
+        Me.GB_Sub_Path.Name = "GB_Sub_Path"
+        Me.GB_Sub_Path.Size = New System.Drawing.Size(218, 85)
+        Me.GB_Sub_Path.TabIndex = 3
+        Me.GB_Sub_Path.TabStop = False
+        Me.GB_Sub_Path.Text = "Unterordner "
+        '
+        'TabControl1
+        '
+        Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Controls.Add(Me.TabPage3)
+        Me.TabControl1.Location = New System.Drawing.Point(12, 47)
+        Me.TabControl1.Name = "TabControl1"
+        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.Size = New System.Drawing.Size(476, 441)
+        Me.TabControl1.TabIndex = 38
         '
         'einstellungen
         '
@@ -913,22 +934,14 @@ Partial Class einstellungen
         Me.MinimizeBox = False
         Me.Name = "einstellungen"
         Me.Text = "crunchyroll downloader"
-        Me.GB_Sub_Path.ResumeLayout(False)
-        Me.GB_Sub_Path.PerformLayout()
-        Me.DL_Count_simultaneous.ResumeLayout(False)
-        CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabControl1.ResumeLayout(False)
-        Me.TabPage1.ResumeLayout(False)
-        Me.TabPage1.PerformLayout()
-        Me.GroupBox5.ResumeLayout(False)
-        Me.GroupBox5.PerformLayout()
-        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        Me.GroupBox4.ResumeLayout(False)
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage3.ResumeLayout(False)
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.MultiDLSoftSubs.ResumeLayout(False)
+        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
@@ -941,53 +954,28 @@ Partial Class einstellungen
         Me.GB_SubLanguage.ResumeLayout(False)
         Me.GB_Resolution.ResumeLayout(False)
         Me.GB_Resolution.PerformLayout()
-        Me.TabPage3.ResumeLayout(False)
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
-        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.MultiDLSoftSubs.ResumeLayout(False)
-        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage1.ResumeLayout(False)
+        Me.TabPage1.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.DL_Count_simultaneous.ResumeLayout(False)
+        CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GB_Sub_Path.ResumeLayout(False)
+        Me.GB_Sub_Path.PerformLayout()
+        Me.TabControl1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents GB_Sub_Path As GroupBox
-    Friend WithEvents RBStaffel As RadioButton
-    Friend WithEvents RBAnime As RadioButton
     Friend WithEvents ToolTip1 As ToolTip
-    Friend WithEvents DL_Count_simultaneous As GroupBox
-    Friend WithEvents NumericUpDown1 As NumericUpDown
     Private WithEvents pictureBox1 As PictureBox
     Private WithEvents pictureBox4 As PictureBox
-    Friend WithEvents TabControl1 As TabControl
-    Friend WithEvents TabPage1 As TabPage
-    Friend WithEvents TabPage2 As TabPage
-    Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents Label1 As Label
-    Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents Firefox_True As CheckBox
-    Friend WithEvents GroupBox4 As GroupBox
-    Private WithEvents PictureBox2 As PictureBox
-    Friend WithEvents GB_SubLanguage As GroupBox
-    Friend WithEvents ComboBox1 As ComboBox
-    Friend WithEvents GB_Resolution As GroupBox
-    Friend WithEvents AAuto As RadioButton
-    Friend WithEvents A480p As RadioButton
-    Friend WithEvents A360p As RadioButton
-    Friend WithEvents A720p As RadioButton
-    Friend WithEvents A1080p As RadioButton
-    Friend WithEvents SoftSubs As GroupBox
-    Friend WithEvents CBesES As CheckBox
-    Friend WithEvents CBitIT As CheckBox
-    Friend WithEvents CBruRU As CheckBox
-    Friend WithEvents CBarME As CheckBox
-    Friend WithEvents CBfrFR As CheckBox
-    Friend WithEvents CBesLA As CheckBox
-    Friend WithEvents CBptBR As CheckBox
-    Friend WithEvents CBdeDE As CheckBox
-    Friend WithEvents CBenUS As CheckBox
-    Private WithEvents PictureBox6 As PictureBox
-    Friend WithEvents MergeMP4 As CheckBox
     Friend WithEvents TabPage3 As TabPage
     Public WithEvents GroupBox3 As GroupBox
     Public WithEvents PictureBox5 As PictureBox
@@ -999,10 +987,9 @@ Partial Class einstellungen
     Public WithEvents comboBox4 As ComboBox
     Public WithEvents ComboBox2 As ComboBox
     Public WithEvents comboBox3 As ComboBox
-    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents TabPage2 As TabPage
     Friend WithEvents CheckBox1 As CheckBox
-    Friend WithEvents GroupBox5 As GroupBox
-    Friend WithEvents ListViewAdd_True As CheckBox
+    Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents Panel1 As Panel
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents FFMPEG_CommandP1 As ToolStripMenuItem
@@ -1023,4 +1010,41 @@ Partial Class einstellungen
     Friend WithEvents ListBit6 As ToolStripMenuItem
     Friend WithEvents ListBit7 As ToolStripMenuItem
     Friend WithEvents FFMPEG_CommandP4 As ToolStripMenuItem
+    Friend WithEvents SoftSubs As GroupBox
+    Friend WithEvents MergeMP4 As CheckBox
+    Friend WithEvents CBesES As CheckBox
+    Friend WithEvents CBitIT As CheckBox
+    Friend WithEvents CBruRU As CheckBox
+    Friend WithEvents CBarME As CheckBox
+    Friend WithEvents CBfrFR As CheckBox
+    Friend WithEvents CBesLA As CheckBox
+    Friend WithEvents CBptBR As CheckBox
+    Friend WithEvents CBdeDE As CheckBox
+    Friend WithEvents CBenUS As CheckBox
+    Friend WithEvents GB_SubLanguage As GroupBox
+    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents GB_Resolution As GroupBox
+    Friend WithEvents AAuto As RadioButton
+    Friend WithEvents A480p As RadioButton
+    Friend WithEvents A360p As RadioButton
+    Friend WithEvents A720p As RadioButton
+    Friend WithEvents A1080p As RadioButton
+    Friend WithEvents TabPage1 As TabPage
+    Friend WithEvents GroupBox4 As GroupBox
+    Private WithEvents PictureBox2 As PictureBox
+    Private WithEvents PictureBox6 As PictureBox
+    Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents ListViewAdd_True As CheckBox
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents Firefox_True As CheckBox
+    Friend WithEvents DL_Count_simultaneous As GroupBox
+    Friend WithEvents NumericUpDown1 As NumericUpDown
+    Friend WithEvents GB_Sub_Path As GroupBox
+    Friend WithEvents RBStaffel As RadioButton
+    Friend WithEvents RBAnime As RadioButton
+    Friend WithEvents TabControl1 As TabControl
+    Friend WithEvents CB_Login As CheckBox
+    Friend WithEvents ToolTip2 As ToolTip
 End Class

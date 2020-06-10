@@ -41,17 +41,16 @@ Public Class GeckoFX
                     MsgBox(keks)
                 End If
 
-                WebBrowser1.Navigate("https://www.crunchyroll.com/")
+                WebBrowser1.Navigate("https://www.crunchyroll.com/logout")
                 Main.Pause(5)
-                WebBrowser1.Document.Cookie = Nothing
-                Main.Pause(1)
                 WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
-                WebBrowser1.Navigate("javascript:document.cookie = " + Chr(34) + "sess_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "sess_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
-                WebBrowser1.Navigate("javascript:document.cookie = " + Chr(34) + "c_locale=enUS; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
-                Main.Pause(1)
-                WebBrowser1.Navigate("https://www.crunchyroll.com/")
+                If Main.LoginDialog = True Then
+                    Login.ShowDialog()
+                End If
+
             End If
 
         Else
@@ -206,7 +205,7 @@ Public Class GeckoFX
                     'MsgBox(HTMLString)
                     If InStr(HTMLString, ".m3u8") Then 'm3u8?
                         Anime_Add.StatusLabel.Text = "Status: m3u8 found, trying to start the download"
-                        Main.LoggingBrowser = False
+                        Main.LogBrowserData = False
                         GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
                         GeckoPreferences.Default("logging.nsHttp") = 0
                         Dim URL As String = Nothing
@@ -376,7 +375,7 @@ Public Class GeckoFX
             MsgBox("copied: " + Chr(34) + WebBrowser1.Url.ToString + Chr(34))
         Catch ex As Exception
         End Try
-
+        'MsgBox(WebBrowser1.Document.Cookie)
     End Sub
 
     Private Sub TextBox1_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBox1.KeyDown
@@ -457,7 +456,7 @@ Public Class GeckoFX
 
                 GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
                 GeckoPreferences.Default("logging.nsHttp") = 3
-                Main.LoggingBrowser = True
+                Main.LogBrowserData = True
                 Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
                 Dim CurrentFile As String = Nothing
                 For Each File In FileLocation.GetFiles()
@@ -543,7 +542,7 @@ Public Class GeckoFX
                 'MsgBox(HTMLString)
                 If InStr(HTMLString, ".m3u8") Then 'm3u8?
                     Button2.Text = "found m3u8"
-                    Main.LoggingBrowser = False
+                    Main.LogBrowserData = False
                     GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
                     GeckoPreferences.Default("logging.nsHttp") = 0
                     Dim URL As String = Nothing
@@ -568,7 +567,7 @@ Public Class GeckoFX
                 ElseIf Main.mpdList.Count > 0 Then                'InStr(HTMLString, ".mpd?") Then
                     HTMLString = Main.mpdList.Item(0)
                     Button2.Text = "found mpd!"
-                    Main.LoggingBrowser = False
+                    Main.LogBrowserData = False
                     GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
                     GeckoPreferences.Default("logging.nsHttp") = 0
                     Dim URL As String = Nothing
@@ -595,7 +594,7 @@ Public Class GeckoFX
                 If Main.txtList.Count > 0 Then                'InStr(HTMLString, ".mpd?") Then
                     HTMLString = Main.mpdList.Item(0)
                     'Button2.Text = "found mpd!"
-                    Main.LoggingBrowser = False
+                    Main.LogBrowserData = False
 
                     GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
                     GeckoPreferences.Default("logging.nsHttp") = 0
@@ -643,6 +642,5 @@ Public Class GeckoFX
     Private Sub WebBrowser1_LostFocus(sender As Object, e As EventArgs) Handles WebBrowser1.LostFocus
         'Debug_Mode.TopMost = False
     End Sub
-
 
 End Class

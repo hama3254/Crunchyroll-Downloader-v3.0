@@ -439,6 +439,35 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property LoginSkip() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("LoginSkip", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property LoginSkipHover() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("LoginSkipHover", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;error&quot;:false,&quot;code&quot;:&quot;ok&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property LoginSuccess() As String
+            Get
+                Return ResourceManager.GetString("LoginSuccess", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property main_add() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("main_add", resourceCulture)
@@ -640,6 +669,16 @@ Namespace My.Resources
         Friend ReadOnly Property thumbnailString() As String
             Get
                 Return ResourceManager.GetString("thumbnailString", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die US cookies can&apos;t be used as long you are logged in.
+        '''I delete the curremt session with the unlock, if you want to be logged in with the US cookie you need to enter you data on the left. ähnelt.
+        '''</summary>
+        Friend ReadOnly Property US_ToolTip() As String
+            Get
+                Return ResourceManager.GetString("US_ToolTip", resourceCulture)
             End Get
         End Property
     End Module

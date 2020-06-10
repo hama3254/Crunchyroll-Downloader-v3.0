@@ -1,0 +1,114 @@
+20/05/2020 2:07:28 AM ffmpeg version git-2020-04-24-a501947 Copyright (c) 2000-2020 the FFmpeg developers
+20/05/2020 2:07:28 AM   built with gcc 9.3.1 (GCC) 20200328
+20/05/2020 2:07:28 AM   configuration: --enable-gpl --enable-version3 --enable-sdl2 --enable-fontconfig --enable-gnutls --enable-iconv --enable-libass --enable-libdav1d --enable-libbluray --enable-libfreetype --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libopus --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libsrt --enable-libtheora --enable-libtwolame --enable-libvpx --enable-libwavpack --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libzimg --enable-lzma --enable-zlib --enable-gmp --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvo-amrwbenc --enable-libmysofa --enable-libspeex --enable-libxvid --enable-libaom --disable-w32threads --enable-libmfx --enable-ffnvcodec --enable-cuda-llvm --enable-cuvid --enable-d3d11va --enable-nvenc --enable-nvdec --enable-dxva2 --enable-avisynth --enable-libopenmpt --enable-amf
+20/05/2020 2:07:28 AM   libavutil      56. 42.102 / 56. 42.102
+20/05/2020 2:07:28 AM   libavcodec     58. 81.100 / 58. 81.100
+20/05/2020 2:07:28 AM   libavformat    58. 42.101 / 58. 42.101
+20/05/2020 2:07:28 AM   libavdevice    58.  9.103 / 58.  9.103
+20/05/2020 2:07:28 AM   libavfilter     7. 79.100 /  7. 79.100
+20/05/2020 2:07:28 AM   libswscale      5.  6.101 /  5.  6.101
+20/05/2020 2:07:28 AM   libswresample   3.  6.100 /  3.  6.100
+20/05/2020 2:07:28 AM   libpostproc    55.  6.100 / 55.  6.100
+20/05/2020 2:07:44 AM [hls @ 0772dac0] Skip ('#EXT-X-ALLOW-CACHE:YES')
+20/05/2020 2:07:44 AM [hls @ 0772dac0] Skip ('#EXT-X-VERSION:3')
+20/05/2020 2:07:44 AM [hls @ 0772dac0] Opening 'https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/encryption.key?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading
+20/05/2020 2:08:11 AM [hls @ 0772dac0] Opening 'crypto+https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/seg-1-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading
+20/05/2020 2:08:31 AM Input #0, hls, from 'https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/index-v1-a1.m3u8?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTA0MzR9fX1dfQ__&Signature=U~hC0O6TbHFhmvY~ZAM36SfIWUgjucU5Rq4nrt2krBl4wTgGWzVvrVrTov7gYYDRQDDGtaygSvQDOpKwHNLPp8uaoGfeUZt3A-UqnJH16UATZtsRdgl-oQo92zb-7cyRor5tC1NTpZ0~UOMczsl3WOlexv0BMjwTjPErT5taDhNnoxABMnKr6MA2pQtKkvK~ZZ1nGcS7O87oQ30kpAf-6~~Qi~sUDEaUIV3iO1PCk6EUnZbOsDTlmXQ7la6QfSXqurMISOpn2paoeIPyLv2pdmpr~wlh~c4L3nA7rdKB~zHKd-ngxnkRtNGs-syBB5Dt5IudxNBBQbg9f~Ue~WamYg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA':
+20/05/2020 2:08:31 AM   Duration: 00:25:00.04, start: 0.101000, bitrate: N/A
+20/05/2020 2:08:31 AM   Program 0 
+20/05/2020 2:08:31 AM     Metadata:
+20/05/2020 2:08:31 AM       variant_bitrate : 0
+20/05/2020 2:08:31 AM     Stream #0:0: Video: h264 (High) ([27][0][0][0] / 0x001B), yuv420p, 1920x1080 [SAR 1:1 DAR 16:9], 23.98 fps, 23.98 tbr, 90k tbn, 47.95 tbc
+20/05/2020 2:08:31 AM     Metadata:
+20/05/2020 2:08:31 AM       variant_bitrate : 0
+20/05/2020 2:08:31 AM     Stream #0:1: Audio: aac (LC) ([15][0][0][0] / 0x000F), 44100 Hz, stereo, fltp
+20/05/2020 2:08:32 AM     Metadata:
+20/05/2020 2:08:32 AM       variant_bitrate : 0
+20/05/2020 2:08:32 AM     Stream #0:2: Data: timed_id3 (ID3  / 0x20334449)
+20/05/2020 2:08:32 AM     Metadata:
+20/05/2020 2:08:32 AM       variant_bitrate : 0
+20/05/2020 2:08:32 AM Output #0, mp4, to 'TestDL.mp4':
+20/05/2020 2:08:32 AM   Metadata:
+20/05/2020 2:08:32 AM     encoder         : Lavf58.42.101
+20/05/2020 2:08:32 AM     Stream #0:0: Video: h264 (High) (avc1 / 0x31637661), yuv420p, 1920x1080 [SAR 1:1 DAR 16:9], q=2-31, 23.98 fps, 23.98 tbr, 90k tbn, 90k tbc
+20/05/2020 2:08:32 AM     Metadata:
+20/05/2020 2:08:32 AM       variant_bitrate : 0
+20/05/2020 2:08:32 AM     Stream #0:1: Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp
+20/05/2020 2:08:32 AM     Metadata:
+20/05/2020 2:08:32 AM       variant_bitrate : 0
+20/05/2020 2:08:32 AM Stream mapping:
+20/05/2020 2:08:32 AM   Stream #0:0 -> #0:0 (copy)
+20/05/2020 2:08:32 AM   Stream #0:1 -> #0:1 (copy)
+20/05/2020 2:08:32 AM Press [q] to stop, [?] for help
+20/05/2020 2:08:32 AM frame=   53 fps=0.0 q=-1.0 size=       0kB time=00:00:02.16 bitrate=   0.2kbits/s speed=4.17x    
+20/05/2020 2:08:32 AM frame=   66 fps= 64 q=-1.0 size=     256kB time=00:00:02.71 bitrate= 773.7kbits/s speed=2.64x    
+20/05/2020 2:08:33 AM frame=   86 fps= 56 q=-1.0 size=    1024kB time=00:00:03.54 bitrate=2366.3kbits/s speed= 2.3x    
+20/05/2020 2:08:34 AM frame=  123 fps= 55 q=-1.0 size=    3072kB time=00:00:05.08 bitrate=4945.8kbits/s speed=2.26x    
+20/05/2020 2:08:34 AM [hls @ 0772dac0] Opening 'crypto+https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/seg-2-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading
+20/05/2020 2:08:54 AM frame=  145 fps=6.4 q=-1.0 size=    4352kB time=00:00:06.00 bitrate=5936.0kbits/s speed=0.265x    
+20/05/2020 2:08:55 AM frame=  157 fps=6.8 q=-1.0 size=    4864kB time=00:00:06.50 bitrate=6124.1kbits/s speed=0.281x    
+20/05/2020 2:08:55 AM frame=  178 fps=7.5 q=-1.0 size=    5376kB time=00:00:07.38 bitrate=5965.6kbits/s speed=0.312x    
+20/05/2020 2:08:56 AM [hls @ 0772dac0] Opening 'crypto+https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/seg-3-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading
+20/05/2020 2:09:15 AM frame=  241 fps=5.6 q=-1.0 size=    7424kB time=00:00:10.01 bitrate=6075.7kbits/s speed=0.231x    
+20/05/2020 2:09:15 AM frame=  256 fps=5.8 q=-1.0 size=    7680kB time=00:00:10.63 bitrate=5915.5kbits/s speed=0.243x    
+20/05/2020 2:09:16 AM frame=  289 fps=6.5 q=-1.0 size=    8704kB time=00:00:12.01 bitrate=5936.0kbits/s speed=0.271x    
+20/05/2020 2:09:16 AM frame=  377 fps=8.4 q=-1.0 size=   11264kB time=00:00:15.68 bitrate=5884.0kbits/s speed=0.35x    
+20/05/2020 2:09:17 AM frame=  405 fps=8.9 q=-1.0 size=   12032kB time=00:00:16.85 bitrate=5849.6kbits/s speed=0.371x    
+20/05/2020 2:09:19 AM frame=  467 fps=9.8 q=-1.0 size=   14080kB time=00:00:19.43 bitrate=5934.5kbits/s speed=0.41x    
+20/05/2020 2:09:19 AM [hls @ 0772dac0] Opening 'crypto+https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/seg-4-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading
+20/05/2020 2:09:36 AM frame=  481 fps=7.4 q=-1.0 size=   14336kB time=00:00:20.02 bitrate=5866.2kbits/s speed=0.308x    
+20/05/2020 2:09:37 AM frame=  494 fps=7.5 q=-1.0 size=   14848kB time=00:00:20.56 bitrate=5915.5kbits/s speed=0.314x    
+20/05/2020 2:09:37 AM frame=  519 fps=7.9 q=-1.0 size=   15616kB time=00:00:21.60 bitrate=5921.2kbits/s speed=0.327x    
+20/05/2020 2:09:38 AM frame=  590 fps=8.9 q=-1.0 size=   18176kB time=00:00:24.56 bitrate=6061.1kbits/s speed=0.369x    
+20/05/2020 2:09:39 AM frame=  608 fps=9.0 q=-1.0 size=   18688kB time=00:00:25.31 bitrate=6047.0kbits/s speed=0.376x    
+20/05/2020 2:09:39 AM frame=  637 fps=9.4 q=-1.0 size=   20224kB time=00:00:26.52 bitrate=6245.6kbits/s speed=0.391x    
+20/05/2020 2:09:40 AM frame=  674 fps=9.9 q=-1.0 size=   22016kB time=00:00:28.06 bitrate=6425.3kbits/s speed=0.411x    
+20/05/2020 2:09:40 AM [hls @ 0772dac0] Opening 'crypto+https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/seg-5-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading
+20/05/2020 2:09:57 AM frame=  721 fps=8.4 q=-1.0 size=   24832kB time=00:00:30.03 bitrate=6774.0kbits/s speed=0.351x    
+20/05/2020 2:09:58 AM frame=  734 fps=8.5 q=-1.0 size=   25344kB time=00:00:30.57 bitrate=6791.1kbits/s speed=0.355x    
+20/05/2020 2:09:58 AM frame=  769 fps=8.9 q=-1.0 size=   26368kB time=00:00:32.03 bitrate=6743.5kbits/s speed=0.37x    
+20/05/2020 2:09:59 AM frame=  840 fps=9.6 q=-1.0 size=   29184kB time=00:00:34.99 bitrate=6832.0kbits/s speed= 0.4x    
+20/05/2020 2:10:00 AM frame=  856 fps=9.7 q=-1.0 size=   29696kB time=00:00:35.66 bitrate=6821.8kbits/s speed=0.404x    
+20/05/2020 2:10:00 AM frame=  920 fps= 10 q=-1.0 size=   32000kB time=00:00:38.33 bitrate=6839.1kbits/s speed=0.432x    
+20/05/2020 2:10:00 AM [hls @ 0772dac0] Opening 'crypto+https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/seg-6-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading
+20/05/2020 2:10:18 AM frame=  961 fps=9.1 q=-1.0 size=   33536kB time=00:00:40.04 bitrate=6861.3kbits/s speed=0.378x    
+20/05/2020 2:10:18 AM frame=  971 fps=9.1 q=-1.0 size=   34048kB time=00:00:40.45 bitrate=6894.3kbits/s speed=0.38x    
+20/05/2020 2:10:18 AM frame=  995 fps=9.3 q=-1.0 size=   34816kB time=00:00:41.45 bitrate=6879.5kbits/s speed=0.388x    
+20/05/2020 2:10:19 AM frame= 1052 fps=9.8 q=-1.0 size=   37632kB time=00:00:43.83 bitrate=7032.7kbits/s speed=0.408x    
+20/05/2020 2:10:20 AM frame= 1057 fps=9.8 q=-1.0 size=   37632kB time=00:00:44.04 bitrate=6999.4kbits/s speed=0.406x    
+20/05/2020 2:10:20 AM frame= 1115 fps= 10 q=-1.0 size=   39936kB time=00:00:46.46 bitrate=7041.2kbits/s speed=0.426x    
+20/05/2020 2:10:21 AM frame= 1178 fps= 11 q=-1.0 size=   42752kB time=00:00:49.09 bitrate=7134.2kbits/s speed=0.448x    
+20/05/2020 2:10:21 AM [hls @ 0772dac0] Opening 'crypto+https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/seg-7-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading
+20/05/2020 2:10:40 AM frame= 1201 fps=9.4 q=-1.0 size=   44032kB time=00:00:50.05 bitrate=7207.0kbits/s speed=0.391x    
+20/05/2020 2:10:40 AM frame= 1208 fps=9.4 q=-1.0 size=   44288kB time=00:00:50.34 bitrate=7206.9kbits/s speed=0.391x    
+20/05/2020 2:10:41 AM frame= 1227 fps=9.5 q=-1.0 size=   45312kB time=00:00:51.13 bitrate=7259.2kbits/s speed=0.396x    
+20/05/2020 2:10:41 AM frame= 1296 fps= 10 q=-1.0 size=   47616kB time=00:00:54.01 bitrate=7221.9kbits/s speed=0.417x    
+20/05/2020 2:10:42 AM frame= 1315 fps= 10 q=-1.0 size=   48640kB time=00:00:54.80 bitrate=7270.5kbits/s speed=0.421x    
+20/05/2020 2:10:42 AM frame= 1328 fps= 10 q=-1.0 size=   48896kB time=00:00:55.34 bitrate=7237.2kbits/s speed=0.424x    
+20/05/2020 2:10:43 AM frame= 1387 fps= 11 q=-1.0 size=   50944kB time=00:00:57.80 bitrate=7219.3kbits/s speed=0.441x    
+20/05/2020 2:10:43 AM [hls @ 0772dac0] Opening 'crypto+https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/seg-8-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading
+20/05/2020 2:11:01 AM frame= 1441 fps=9.6 q=-1.0 size=   52480kB time=00:01:00.06 bitrate=7158.1kbits/s speed=0.401x    
+20/05/2020 2:11:02 AM frame= 1448 fps=9.6 q=-1.0 size=   52736kB time=00:01:00.35 bitrate=7158.2kbits/s speed=0.401x    
+20/05/2020 2:11:02 AM frame= 1525 fps= 10 q=-1.0 size=   53504kB time=00:01:03.56 bitrate=6895.5kbits/s speed=0.421x    
+20/05/2020 2:11:03 AM frame= 1560 fps= 10 q=-1.0 size=   55040kB time=00:01:05.02 bitrate=6934.2kbits/s speed=0.429x    
+20/05/2020 2:11:03 AM frame= 1588 fps= 10 q=-1.0 size=   56576kB time=00:01:06.19 bitrate=7002.0kbits/s speed=0.435x    
+20/05/2020 2:11:04 AM frame= 1631 fps= 11 q=-1.0 size=   58112kB time=00:01:07.98 bitrate=7002.4kbits/s speed=0.445x    
+20/05/2020 2:11:05 AM [hls @ 0772dac0] Opening 'crypto+https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/seg-9-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading
+20/05/2020 2:11:24 AM frame= 1681 fps=9.8 q=-1.0 size=   60672kB time=00:01:10.07 bitrate=7093.3kbits/s speed=0.407x    
+20/05/2020 2:11:24 AM frame= 1690 fps=9.8 q=-1.0 size=   61184kB time=00:01:10.44 bitrate=7115.0kbits/s speed=0.408x    
+20/05/2020 2:11:25 AM frame= 1711 fps=9.9 q=-1.0 size=   62208kB time=00:01:11.32 bitrate=7145.2kbits/s speed=0.412x    
+20/05/2020 2:11:25 AM frame= 1763 fps= 10 q=-1.0 size=   64768kB time=00:01:13.49 bitrate=7219.7kbits/s speed=0.423x    
+20/05/2020 2:11:26 AM frame= 1770 fps= 10 q=-1.0 size=   65280kB time=00:01:13.78 bitrate=7248.0kbits/s speed=0.423x    
+20/05/2020 2:11:26 AM frame= 1786 fps= 10 q=-1.0 size=   66048kB time=00:01:14.44 bitrate=7267.6kbits/s speed=0.426x    
+20/05/2020 2:11:27 AM frame= 1829 fps= 10 q=-1.0 size=   68608kB time=00:01:16.24 bitrate=7371.7kbits/s speed=0.435x    
+20/05/2020 2:11:27 AM frame= 1887 fps= 11 q=-1.0 size=   71424kB time=00:01:18.66 bitrate=7438.2kbits/s speed=0.447x    
+20/05/2020 2:11:28 AM [hls @ 0772dac0] Opening 'crypto+https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/seg-10-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading
+20/05/2020 2:11:50 AM frame= 1921 fps=9.7 q=-1.0 size=   72960kB time=00:01:20.08 bitrate=7463.6kbits/s speed=0.404x    
+20/05/2020 2:11:50 AM frame= 1930 fps=9.7 q=-1.0 size=   73472kB time=00:01:20.45 bitrate=7480.9kbits/s speed=0.405x    
+20/05/2020 2:11:50 AM frame= 1949 fps=9.8 q=-1.0 size=   74496kB time=00:01:21.24 bitrate=7511.2kbits/s speed=0.408x    
+20/05/2020 2:11:51 AM frame= 1990 fps= 10 q=-1.0 size=   76544kB time=00:01:22.95 bitrate=7558.6kbits/s speed=0.416x    
+20/05/2020 2:11:52 AM frame= 2005 fps= 10 q=-1.0 size=   77568kB time=00:01:23.58 bitrate=7602.4kbits/s speed=0.417x    
+20/05/2020 2:11:53 AM frame= 2052 fps= 10 q=-1.0 size=   80128kB time=00:01:25.54 bitrate=7673.4kbits/s speed=0.425x    
+20/05/2020 2:11:53 AM frame= 2082 fps= 10 q=-1.0 size=   82688kB time=00:01:26.79 bitrate=7804.4kbits/s speed=0.43x    
+20/05/2020 2:11:54 AM frame= 2129 fps= 11 q=-1.0 size=   85760kB time=00:01:28.75 bitrate=7915.5kbits/s speed=0.439x    
+20/05/2020 2:11:54 AM [hls @ 0772dac0] Opening 'crypto+https://v.vrv.co/evs/e2604f4090844cd12507c429eb8eba1f/assets/998c80efc85987194093277e7aecdce7_3441874.mp4/seg-11-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly92LnZydi5jby9ldnMvZTI2MDRmNDA5MDg0NGNkMTI1MDdjNDI5ZWI4ZWJhMWYvYXNzZXRzLzk5OGM4MGVmYzg1OTg3MTk0MDkzMjc3ZTdhZWNkY2U3XzM0NDE4NzQubXA0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODk5OTgwNjN9fX1dfQ__&Signature=gYibdDe~d5Gg2rZEbQRxJMTYIjcFwaHp-A6k0EnFASXA1HMK7D0DSMOpnNCOaVSotTUD0ofIvyPlDvq0pfx4JCgxiPrvwAhWmp02n5JSJjfYlKiPLrYo-fj2wcJxvJ~D4fsnR21K2nVyYiBLT~YzOq4E545s4Pt1daD7ghG0j2ZrwK1v-YV5r-qHx4zr2sfaFVtSz--ZpUXyP5ZjiK4j3Y-7~wnSHWxPc7yb3VlKJ8jj9v~jrwrGQdHdk2NyynDcFD7-mYsHzROcrCiy~wsFG-m9XBbEpFWY~fdy9dPrUDfMCwFEEuCe~q3ehuFBfgV3IFontgjU3PQ6ge9Ss6kSAg__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA' for reading

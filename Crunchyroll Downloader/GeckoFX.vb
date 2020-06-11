@@ -49,6 +49,8 @@ Public Class GeckoFX
                 Main.Pause(1)
                 If Main.LoginDialog = True Then
                     Login.ShowDialog()
+                Else
+                    WebBrowser1.Navigate("https://www.crunchyroll.com/")
                 End If
 
             End If
@@ -375,6 +377,7 @@ Public Class GeckoFX
             MsgBox("copied: " + Chr(34) + WebBrowser1.Url.ToString + Chr(34))
         Catch ex As Exception
         End Try
+
         'MsgBox(WebBrowser1.Document.Cookie)
     End Sub
 

@@ -652,13 +652,32 @@ Public Class Main
 
 #Region "Name von Crunchyroll"
 
+        'Dim Bug_Deutsch As String = "-"
+        'If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
+        '    Bug_Deutsch = ":"
+        'End If
+        'Dim CR_Name_by_Titel_2 As String() = WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
+        'CR_FilenName = CR_Name_by_Titel_2(0).Trim()
+
         Dim Bug_Deutsch As String = "-"
         If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
             Bug_Deutsch = ":"
         End If
         Dim CR_Name_by_Titel_2 As String() = WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
-        CR_FilenName = CR_Name_by_Titel_2(0).Trim()
+        Dim CR_Title As String = Nothing
+        If CR_Name_by_Titel_2.Count > 2 Then
+            For i As Integer = 0 To CR_Name_by_Titel_2.Count - 2
+                If CR_Title = Nothing Then
+                    CR_Title = CR_Name_by_Titel_2(i).Trim()
+                Else
+                    CR_Title = CR_Title + " " + CR_Name_by_Titel_2(i).Trim()
+                End If
 
+            Next
+        End If
+        CR_FilenName = CR_Title
+        CR_FilenName_Backup = CR_Title
+        'MsgBox(CR_FilenName)
         If CBool(InStr(WebbrowserText, "<h4>")) Then ' false on movie true on series
             Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {"<h4>"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {"</h4>"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
@@ -1095,12 +1114,32 @@ Public Class Main
 #Region "Name von Crunchyroll"
             If TextBox2_Text = Nothing Or TextBox2_Text = "Name of the Anime" Then
                 'MsgBox("True")
+                'Dim Bug_Deutsch As String = "-"
+                'If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
+                '    Bug_Deutsch = ":"
+                'End If
+                'Dim CR_Name_by_Titel_2 As String() = WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
+                'CR_FilenName = CR_Name_by_Titel_2(0).Trim() '+ " " + CR_Name_by_Script2(0).Trim
+
                 Dim Bug_Deutsch As String = "-"
                 If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
                     Bug_Deutsch = ":"
                 End If
                 Dim CR_Name_by_Titel_2 As String() = WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
-                CR_FilenName = CR_Name_by_Titel_2(0).Trim() '+ " " + CR_Name_by_Script2(0).Trim
+                Dim CR_Title As String = Nothing
+                If CR_Name_by_Titel_2.Count > 2 Then
+                    For i As Integer = 0 To CR_Name_by_Titel_2.Count - 2
+                        If CR_Title = Nothing Then
+                            CR_Title = CR_Name_by_Titel_2(i).Trim()
+                        Else
+                            CR_Title = CR_Title + " " + CR_Name_by_Titel_2(i).Trim()
+                        End If
+
+                    Next
+                End If
+                CR_FilenName = CR_Title
+                CR_FilenName_Backup = CR_Title
+                'MsgBox(CR_FilenName)
 
                 If CBool(InStr(WebbrowserText, "<h4>")) Then ' false on movie true on series
                     Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {"<h4>"}, System.StringSplitOptions.RemoveEmptyEntries)

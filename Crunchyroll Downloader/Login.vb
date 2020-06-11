@@ -90,7 +90,8 @@ Public Class Login
     End Sub
 
     Private Sub pictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
-        Main.UserCloseDialog = True
+        'Main.UserCloseDialog = True
+        GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
         Me.Close()
     End Sub
 
@@ -111,6 +112,7 @@ Public Class Login
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+        GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
         Me.Close()
     End Sub
 End Class

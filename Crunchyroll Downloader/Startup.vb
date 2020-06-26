@@ -1,6 +1,9 @@
 ﻿Public Class Startup
 
     Private Sub Startup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+
+
         Me.Icon = My.Resources.icon
         Me.Location = New Point(Main.Location.X + Main.Width / 2 - Me.Width / 2, Main.Location.Y + Main.Height / 2 - Me.Height / 2)
 
@@ -43,7 +46,7 @@
         fadeout()
     End Sub
 
-    Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
+    Private Sub Label2_Click(sender As Object, e As EventArgs)
         Process.Start("https://www.codeproject.com/Articles/60382/AsyncWorker-A-Typesafe-BackgroundWorker-and-about")
     End Sub
 

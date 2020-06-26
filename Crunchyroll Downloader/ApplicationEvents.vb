@@ -61,6 +61,7 @@ Namespace My
                 Return True
             Catch ex As Exception
                 MsgBox(ex.ToString)
+                Return False
             End Try
 
         End Function

@@ -174,7 +174,7 @@ Public Class GeckoFX
                     Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
                     Dim CurrentFile As String = Nothing
                     For Each File In FileLocation.GetFiles()
-                        If InStr(File.FullName, "log.txt") Then
+                        If InStr(File.FullName, "gecko-network.txt") Then
                             CurrentFile = File.FullName
                             Exit For
                         End If
@@ -208,7 +208,7 @@ Public Class GeckoFX
                     If InStr(HTMLString, ".m3u8") Then 'm3u8?
                         Anime_Add.StatusLabel.Text = "Status: m3u8 found, trying to start the download"
                         Main.LogBrowserData = False
-                        GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                        GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
                         GeckoPreferences.Default("logging.nsHttp") = 0
                         Dim URL As String = Nothing
                         Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -444,7 +444,10 @@ Public Class GeckoFX
             If Main.Debug2 = True Then
                 MsgBox(BaseURL3)
             End If
-            AsyncWorkerX.RunAsync(AddressOf Main.DownloadMangaPages, BaseURL3, ImageList, Main.RemoveExtraSpaces(NameDLFinal))
+            'AsyncWorkerX.RunAsync(AddressOf Main.DownloadMangaPages, BaseURL3, ImageList, Main.RemoveExtraSpaces(NameDLFinal))
+            Dim Thumbnail As String = BaseURL3 + ImageList(0)
+            Main.MangaListItemAdd(Main.RemoveExtraSpaces(NameDLFinal), Thumbnail, BaseURL3, ImageList)
+
         ElseIf InStr(WebBrowser1.Url.ToString, "cr-cookie-ui.php") Then
             MsgBox(WebBrowser1.Document.Body.InnerHtml)
 
@@ -457,13 +460,13 @@ Public Class GeckoFX
                 Button2.Enabled = False
                 ScanTrue = True
 
-                GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
                 GeckoPreferences.Default("logging.nsHttp") = 3
                 Main.LogBrowserData = True
                 Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
                 Dim CurrentFile As String = Nothing
                 For Each File In FileLocation.GetFiles()
-                    If InStr(File.FullName, "log.txt") Then
+                    If InStr(File.FullName, "gecko-network.txt") Then
                         CurrentFile = File.FullName
                         Exit For
                     End If
@@ -546,7 +549,7 @@ Public Class GeckoFX
                 If InStr(HTMLString, ".m3u8") Then 'm3u8?
                     Button2.Text = "found m3u8"
                     Main.LogBrowserData = False
-                    GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
                     GeckoPreferences.Default("logging.nsHttp") = 0
                     Dim URL As String = Nothing
                     Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -571,7 +574,7 @@ Public Class GeckoFX
                     HTMLString = Main.mpdList.Item(0)
                     Button2.Text = "found mpd!"
                     Main.LogBrowserData = False
-                    GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
                     GeckoPreferences.Default("logging.nsHttp") = 0
                     Dim URL As String = Nothing
                     Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -599,7 +602,7 @@ Public Class GeckoFX
                     'Button2.Text = "found mpd!"
                     Main.LogBrowserData = False
 
-                    GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
                     GeckoPreferences.Default("logging.nsHttp") = 0
                     Dim URL As String = Nothing
                     Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)

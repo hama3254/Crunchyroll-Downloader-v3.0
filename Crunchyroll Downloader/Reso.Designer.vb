@@ -72,7 +72,7 @@ Partial Class Reso
         '
         'PictureBox9
         '
-        Me.PictureBox9.BackColor = System.Drawing.Color.Gray
+        Me.PictureBox9.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox9.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox9.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.DialogNotFound_Submit
         Me.PictureBox9.Location = New System.Drawing.Point(100, 146)

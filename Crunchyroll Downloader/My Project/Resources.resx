@@ -167,9 +167,6 @@
   <data name="crdsettings_setUScookie_button_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\crdsettings_setUScookie_button_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="add_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\add-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="htmlEnd" xml:space="preserve">
     <value>&lt;/body&gt;
 &lt;/html&gt;</value>
@@ -182,9 +179,6 @@
   </data>
   <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="crdsettings_setowncookie_button_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\crdsettings_setowncookie_button_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="main_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -245,14 +239,8 @@
   <data name="main_button_download_deactivate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main_button_download-deactivate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="settings_add_softsubs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\settings_add_softsubs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="main_button_download_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main_button_download_default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="settings_add_softsubs_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\settings_add_softsubs_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="htmlvorHardSubs" xml:space="preserve">
     <value>"&gt; &lt;img alt="image error" src="cc1.png" class="class-cc"&gt;</value>
@@ -267,9 +255,6 @@
 &lt;/div&gt;
 
 &lt;img alt="image error" src="balken1.png" class="class-balken"&gt;</value>
-  </data>
-  <data name="SoftSubs_Baclground" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SoftSubs_Baclground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="main_credits_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main_credits_default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -296,9 +281,6 @@
   </data>
   <data name="add_mass_running_cancel_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\add_mass_running_cancel_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="crdsettings_setowncookie_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\crdsettings_setowncookie_button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="main_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -354,9 +336,6 @@
   <data name="softsubs_download_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\softsubs_download_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Help_Background" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Help_Background.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="LoginSkip" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LoginSkip.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -369,5 +348,26 @@
   <data name="US_ToolTip" xml:space="preserve">
     <value>US cookies can't be used as long you are logged in.
 I delete the curremt session with the unlock, if you want to be logged in with the US cookie you need to enter you data on the left.</value>
+  </data>
+  <data name="main_pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_pause_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-pause-hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_pause_play" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-pause-play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_pause_play_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-pause-play-hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="add_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\add-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_browser_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-browser_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_settings_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-settings_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

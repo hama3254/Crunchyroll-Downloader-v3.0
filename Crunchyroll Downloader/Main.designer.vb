@@ -34,6 +34,7 @@ Partial Class Main
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -48,7 +49,7 @@ Partial Class Main
         Me.pictureBox4.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_add
         Me.pictureBox4.Location = New System.Drawing.Point(23, 18)
         Me.pictureBox4.Name = "pictureBox4"
-        Me.pictureBox4.Size = New System.Drawing.Size(63, 30)
+        Me.pictureBox4.Size = New System.Drawing.Size(60, 24)
         Me.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.pictureBox4.TabIndex = 24
         Me.pictureBox4.TabStop = False
@@ -70,9 +71,9 @@ Partial Class Main
         Me.pictureBox2.BackColor = System.Drawing.Color.Transparent
         Me.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pictureBox2.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_settings
-        Me.pictureBox2.Location = New System.Drawing.Point(714, 12)
+        Me.pictureBox2.Location = New System.Drawing.Point(702, 18)
         Me.pictureBox2.Name = "pictureBox2"
-        Me.pictureBox2.Size = New System.Drawing.Size(36, 36)
+        Me.pictureBox2.Size = New System.Drawing.Size(60, 24)
         Me.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.pictureBox2.TabIndex = 22
         Me.pictureBox2.TabStop = False
@@ -84,7 +85,7 @@ Partial Class Main
         Me.pictureBox1.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_browser
         Me.pictureBox1.Location = New System.Drawing.Point(116, 18)
         Me.pictureBox1.Name = "pictureBox1"
-        Me.pictureBox1.Size = New System.Drawing.Size(65, 32)
+        Me.pictureBox1.Size = New System.Drawing.Size(60, 24)
         Me.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.pictureBox1.TabIndex = 21
         Me.pictureBox1.TabStop = False
@@ -146,6 +147,11 @@ Partial Class Main
         '
         Me.Timer1.Enabled = True
         '
+        'Timer2
+        '
+        Me.Timer2.Enabled = True
+        Me.Timer2.Interval = 1000
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -186,4 +192,5 @@ Partial Class Main
     Friend WithEvents PictureBox5 As PictureBox
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents Timer1 As Timer
+    Friend WithEvents Timer2 As Timer
 End Class

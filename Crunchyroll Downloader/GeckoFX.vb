@@ -371,7 +371,10 @@ Public Class GeckoFX
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
+        'Main.WebbrowserURL = WebBrowser1.Url.ToString
+        'Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+        'Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+        'Main.GrappURL()
         Try
             My.Computer.Clipboard.SetText(WebBrowser1.Url.ToString)
             MsgBox("copied: " + Chr(34) + WebBrowser1.Url.ToString + Chr(34))

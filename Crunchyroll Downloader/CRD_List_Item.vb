@@ -16,6 +16,21 @@ Public Class CRD_List_Item
     Dim MergeSubstoMP4 As Boolean = False
     Dim SaveLog As Boolean = False
     Dim DownloadPfad As String = Nothing
+    Dim ToDispose As Boolean = False
+    Dim HistoryDL_URL As String
+    Dim HistoryDL_Pfad As String
+    Dim HistoryFilename As String
+    Dim Retry As Boolean = False
+#Region "Remove from list"
+    Public Sub DisposeItem(ByVal Dispose As Boolean)
+        If Dispose = True Then
+            Me.Dispose()
+        End If
+    End Sub
+    Public Function GetToDispose() As Boolean
+        Return ToDispose
+    End Function
+#End Region
 #Region "Set UI"
     Public Sub SetLabelWebsite(ByVal Text As String)
         Label_website.Text = Text
@@ -100,6 +115,32 @@ Public Class CRD_List_Item
     End Sub
 
     Private Sub bt_pause_Click(sender As Object, e As EventArgs) Handles bt_pause.Click
+        If proc.HasExited = True Then
+            If ProgressBar1.Value < 100 Then
+                MsgBox("Something is wrong here, the download process seems to have crashed", MsgBoxStyle.Exclamation)
+                Label_percent.Text = "Press the play button again to retry."
+                ProgressBar1.Value = 100
+                Retry = True
+                StatusRunning = False
+            ElseIf Retry = True Then
+                If Main.RunningDownloads < Main.MaxDL Then
+
+                Else
+                    If MessageBox.Show("You have currtenly on your set Download limit." + vbNewLine + " You can Press OK to ignore it.", "Download maximum reached", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
+                        Exit Sub
+                    End If
+                End If
+                If My.Computer.FileSystem.FileExists(HistoryDL_Pfad.Replace(Chr(34), "")) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
+                    Try
+                        My.Computer.FileSystem.DeleteFile(HistoryDL_Pfad.Replace(Chr(34), ""))
+                    Catch ex As Exception
+                    End Try
+                End If
+                DownloadFFMPEG(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename)
+                StatusRunning = True
+            End If
+            Exit Sub
+        End If
         If StatusRunning = True Then
             StatusRunning = False
             bt_pause.BackgroundImage = My.Resources.main_pause_play
@@ -149,6 +190,9 @@ Public Class CRD_List_Item
 
     Public Function DownloadFFMPEG(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
         DownloadPfad = DL_Pfad
+        HistoryDL_URL = DL_URL
+        HistoryDL_Pfad = DL_Pfad
+        HistoryFilename = Filename
 
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
@@ -321,8 +365,14 @@ Public Class CRD_List_Item
 
     Private Sub bt_del_Click(sender As Object, e As EventArgs) Handles bt_del.Click
         If proc.HasExited Then
-
+            If MessageBox.Show("The Download is not running anymore, press ok to remove it from the list.", "Remove from list!", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
+                Exit Sub
+            End If
+            ToDispose = True
         Else
+            If MessageBox.Show("Are you sure you want to cancel the Download?", "Cancel Download!", MessageBoxButtons.YesNo) = DialogResult.No Then
+                Exit Sub
+            End If
             KillRunningTask()
         End If
 

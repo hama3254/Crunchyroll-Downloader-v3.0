@@ -1070,22 +1070,14 @@ Public Class Main
                                  End Function))
 #Region "Name von Crunchyroll"
             If TextBox2_Text = Nothing Or TextBox2_Text = "Name of the Anime" Then
-                'MsgBox("True")
-                'Dim Bug_Deutsch As String = "-"
-                'If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
-                '    Bug_Deutsch = ":"
-                'End If
-                'Dim CR_Name_by_Titel_2 As String() = WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
-                'CR_FilenName = CR_Name_by_Titel_2(0).Trim() '+ " " + CR_Name_by_Script2(0).Trim
-
                 Dim Bug_Deutsch As String = "-"
                 If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
                     Bug_Deutsch = ":"
                 End If
                 Dim CR_Name_by_Titel_2 As String() = WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim CR_Title As String = Nothing
-                If CR_Name_by_Titel_2.Count > 2 Then
-                    For i As Integer = 0 To CR_Name_by_Titel_2.Count - 2
+                'If CR_Name_by_Titel_2.Count > 2 Then
+                For i As Integer = 0 To CR_Name_by_Titel_2.Count - 2
                         If CR_Title = Nothing Then
                             CR_Title = CR_Name_by_Titel_2(i).Trim()
                         Else
@@ -1093,7 +1085,9 @@ Public Class Main
                         End If
 
                     Next
-                End If
+                'Else
+
+                'End If
                 CR_FilenName = CR_Title
                 CR_FilenName_Backup = CR_Title
                 'MsgBox(CR_FilenName)
@@ -1157,9 +1151,10 @@ Public Class Main
                                      End If
                                      Return Nothing
                                  End Function))
-            'MsgBox(CR_FilenName)
+
             CR_FilenName = System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = RemoveExtraSpaces(CR_FilenName)
+            'MsgBox(CR_FilenName)
             If SubfolderValue = Nothing Then
                 Pfad2 = Pfad + "\" + CR_FilenName + ".mp4"
             Else
@@ -1588,13 +1583,17 @@ Public Class Main
     End Function
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-
         Try
-            Dim ItemDownloadingTrue As Integer = 0
             For s As Integer = 0 To ListView1.Items.Count - 1
-
                 Dim r As Rectangle = ListView1.Items.Item(s).Bounds
                 ItemList(s).SetBounds(r.X, r.Y, r.Width, r.Height)
+
+                If ItemList(s).GetToDispose() = True Then
+                    ItemList(s).DisposeItem(ItemList(s).GetToDispose())
+                    ItemList.RemoveAt(s)
+                    ListView1.Items.RemoveAt(s)
+                End If
+
             Next
         Catch ex As Exception
 
@@ -1808,7 +1807,7 @@ Public Class Main
 
 
     Private Sub Main_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Me.MouseDoubleClick
-        'Login.Show()
+        Login.Show()
     End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick

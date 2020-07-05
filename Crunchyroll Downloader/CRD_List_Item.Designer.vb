@@ -51,7 +51,7 @@ Partial Class CRD_List_Item
         '
         'bt_pause
         '
-        Me.bt_pause.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.main_pause
+        Me.bt_pause.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.main_pause
         Me.bt_pause.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.bt_pause.Location = New System.Drawing.Point(740, 15)
         Me.bt_pause.Name = "bt_pause"
@@ -128,7 +128,7 @@ Partial Class CRD_List_Item
         Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.ProgressBar1.TabIndex = 8
         '
-        'Item
+        'CRD_List_Item
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -142,7 +142,7 @@ Partial Class CRD_List_Item
         Me.Controls.Add(Me.bt_del)
         Me.Controls.Add(Me.bt_pause)
         Me.Controls.Add(Me.PB_Thumbnail)
-        Me.Name = "Item"
+        Me.Name = "CRD_List_Item"
         Me.Size = New System.Drawing.Size(838, 142)
         CType(Me.PB_Thumbnail, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.bt_pause, System.ComponentModel.ISupportInitialize).EndInit()

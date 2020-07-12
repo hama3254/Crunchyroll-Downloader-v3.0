@@ -51,11 +51,14 @@ Public Class Main
     Dim URL_DL As String
     Dim Pfad_DL As String
     Public Grapp_RDY As Boolean = True
+    Public Funimation_Grapp_RDY As Boolean = True
     Public Grapp_non_cr_RDY As Boolean = True
     Public Grapp_Abord As Boolean = False
     Public MaxDL As Integer
     Public ResoNotFoundString As String
     Public ResoBackString As String
+    Public WebbrowserHeadText As String = Nothing
+    Public WebbrowserSoftSubURL As String = Nothing
     Public WebbrowserURL As String = Nothing
     Public WebbrowserText As String = Nothing
     Public WebbrowserTitle As String = Nothing
@@ -67,7 +70,7 @@ Public Class Main
 
     Dim DL_Path_String As String = "Please choose download directory."
     Public CR_Premium_Failed As String = "Can not verify the active premium membership."
-    Public No_Stream As String = "Please make sure that the URL is correct."
+    Public No_Stream As String = "Please make sure that the URL is correct or check if the Anime is available in your country."
     Dim TaskNotCompleed As String = "Please wait until the current task is completed."
     Dim Premium_Stream As String = "Please make sure that you logged in for this premium episode."
     Dim Error_Mass_DL As String = "We run into a problem here." + vbNewLine + "You can try to download every episode individually."
@@ -1823,5 +1826,84 @@ Public Class Main
 
         End Try
         FontLabel2.Text = RunningDownloads.ToString
+    End Sub
+
+    Public Sub Funitmation_Grapp()
+        Try
+
+
+            Funimation_Grapp_RDY = False
+#Region "Name"
+            Dim FunimationName() As String = WebbrowserText.Split(New String() {"</h1>"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim FunimationName2() As String = FunimationName(0).Split(New String() {Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim FunimationName3 As String = FunimationName2(FunimationName2.Count - 1).Replace("</a>", "")
+#End Region
+
+#Region "m3u8 URL"
+            Dim Player_ID() As String = WebbrowserText.Split(New String() {My.Resources.Funimation_Player_ID}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim Player_ID2() As String = Player_ID(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim iFrameURL As String = "https://www.funimation.com/player/" + Player_ID2(0) + "/?bdub=0&qid="
+            WebbrowserSoftSubURL = Nothing
+            Me.Invoke(New Action(Function()
+                                     Anime_Add.StatusLabel.Text = iFrameURL
+                                     GeckoFX.WebBrowser1.Navigate(iFrameURL)
+                                     Return Nothing
+                                 End Function))
+
+            Dim client0 As New WebClient
+            client0.Encoding = Encoding.UTF8
+            Dim str0 As String = client0.DownloadString("https://www.funimation.com/api/showexperience/" + Player_ID2(0) + "/?pinst_id=fzQc9p9f")
+            Dim Funimation_m3u8() As String = str0.Split(New String() {My.Resources.Funimation_src_string}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim Funimation_m3u8_final As String = Nothing
+            Dim Funimation_m3u8_Main As String = Nothing
+            For i As Integer = 0 To Funimation_m3u8.Count - 1
+                If InStr(Funimation_m3u8(i), "m3u8?") Then
+                    Dim Funimation_m3u8_split() As String = Funimation_m3u8(i).Split(New String() {", "}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Funimation_m3u8_Main = Funimation_m3u8_split(0)
+                    Exit For
+                End If
+            Next
+            Dim str1 As String = client0.DownloadString(Funimation_m3u8_Main.Replace(Chr(34), ""))
+            Dim textLenght() As String = str1.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            For i As Integer = 0 To textLenght.Length - 1
+                If InStr(textLenght(i), "https") Then
+                    If InStr(textLenght(i - 1), "x" + Resu.ToString) Then
+                        Funimation_m3u8_final = textLenght(i)
+                        Exit For
+                    End If
+                End If
+            Next
+
+            ' 
+            'MsgBox(FunimationName3)
+            'MsgBox(Funimation_m3u8_final)
+#Region "thumbnail"
+            Dim thumbnail As String() = WebbrowserHeadText.Split(New String() {My.Resources.Funimation_thumbnail}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim thumbnail2 As String() = thumbnail(1).Split(New String() {Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+            Dim thumbnail3 As String = thumbnail2(0) '.Replace("\/", "/")
+#End Region
+            Dim ResoHTMLDisplay As String = Resu.ToString + "p"
+
+            Dim DownloadPfad As String = Chr(34) + Pfad + "\" + FunimationName3 + ".mp4" + Chr(34)
+            Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim L1Name As String = L1Name_Split(1).Replace("www.", "")
+            Me.Invoke(New Action(Function()
+                                     ListItemAdd(Pfad_DL, L1Name, FunimationName3, ResoHTMLDisplay, "Unknown", SubValuesToDisplay(), thumbnail3, Funimation_m3u8_final, DownloadPfad)
+                                     Return Nothing
+                                 End Function))
+#End Region
+            If WebbrowserSoftSubURL = Nothing Then
+            Else
+                Dim str2 As String = client0.DownloadString(WebbrowserSoftSubURL)
+                Dim Pfad3 As String = DownloadPfad.Replace(Chr(34), "")
+                Dim Pfad4 As String = Pfad3.Replace(".mp4", ".srt")
+                File.WriteAllText(Pfad4, str2, Encoding.UTF8)
+            End If
+        Catch ex As Exception
+
+            MsgBox(ex.ToString)
+        End Try
+        Funimation_Grapp_RDY = True
     End Sub
 End Class

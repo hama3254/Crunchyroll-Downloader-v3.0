@@ -127,6 +127,31 @@ Crunchyroll Downloader
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_Player_ID">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die src=&quot;/player/ ähnelt.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_Split_1">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &lt;a class=&quot;trackVideo ng-binding&quot; href=&quot; ähnelt.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_Split_2">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &quot;&gt; ähnelt.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_src_string">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &quot;src&quot;: ähnelt.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_thumbnail">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &lt;meta property=&quot;og:image&quot; content=&quot; ähnelt.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.hls_endString">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die &quot;,&quot;resolution&quot;:&quot;adaptive&quot; ähnelt.

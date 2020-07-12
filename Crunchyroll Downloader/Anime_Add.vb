@@ -194,7 +194,7 @@ Public Class Anime_Add
         Main.LoginOnly = "Download Mode!"
         If groupBox1.Visible = True Then
             Try
-                If CBool(InStr(textBox1.Text, "crunchyroll.com")) Then
+                If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then
                     If StatusLabel.Text = "Status: waiting for episode selection" Then
                         If MessageBox.Show("Are you sure you want cancel the advanced download?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                             StatusLabel.Text = "Status: idle"
@@ -402,13 +402,25 @@ Public Class Anime_Add
         If Main.RunningDownloads < Main.MaxDL Then
             If ListBox1.Items.Count > 0 Then
                 If GroupBox3.Visible = True Then
-                    If Main.Grapp_RDY = True Then
-                        GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
-                        ListBox1.Items.Remove(ListBox1.Items(0))
-                        Main.Grapp_RDY = False
-                        Main.b = False
+                    If InStr(ListBox1.GetItemText(ListBox1.Items(0)), "funimation.com") Then
+                        If Main.Funimation_Grapp_RDY = True Then
+                            GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
+                            ListBox1.Items.Remove(ListBox1.Items(0))
+                            Main.Funimation_Grapp_RDY = False
+                            Main.b = False
+                        End If
+
+                    Else
+                        If Main.Grapp_RDY = True Then
+                            GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
+                            ListBox1.Items.Remove(ListBox1.Items(0))
+                            Main.Grapp_RDY = False
+                            Main.b = False
+                        End If
                     End If
                 End If
+
+
             End If
         End If
 

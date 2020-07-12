@@ -268,6 +268,51 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die src=&quot;/player/ ähnelt.
+        '''</summary>
+        Friend ReadOnly Property Funimation_Player_ID() As String
+            Get
+                Return ResourceManager.GetString("Funimation_Player_ID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;a class=&quot;trackVideo ng-binding&quot; href=&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property Funimation_Split_1() As String
+            Get
+                Return ResourceManager.GetString("Funimation_Split_1", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;&gt; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property Funimation_Split_2() As String
+            Get
+                Return ResourceManager.GetString("Funimation_Split_2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;src&quot;: ähnelt.
+        '''</summary>
+        Friend ReadOnly Property Funimation_src_string() As String
+            Get
+                Return ResourceManager.GetString("Funimation_src_string", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;meta property=&quot;og:image&quot; content=&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property Funimation_thumbnail() As String
+            Get
+                Return ResourceManager.GetString("Funimation_thumbnail", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &quot;,&quot;resolution&quot;:&quot;adaptive&quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property hls_endString() As String

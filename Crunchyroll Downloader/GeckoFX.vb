@@ -132,11 +132,13 @@ Public Class GeckoFX
                                 Main.MassGrapp()
                             End If
                         Else
+                            Main.b = True
                             MsgBox(Main.No_Stream, MsgBoxStyle.OkOnly)
+                            Anime_Add.StatusLabel.Text = "Status: idle"
                         End If
                     Catch ex As Exception
                         MsgBox(ex.ToString)
-                        Main.LabelUpdate = "Status: idle"
+                        Anime_Add.StatusLabel.Text = "Status: idle"
                     End Try
                 ElseIf Main.c = False Then
                     If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "hardsub_lang")) Then
@@ -157,7 +159,32 @@ Public Class GeckoFX
                     Me.Close()
                 End If
                 'ElseIf CBool(InStr(WebBrowser1.Url.ToString, "https://www.anime-on-demand.de/anime/")) Then
+            ElseIf CBool(InStr(WebBrowser1.Url.ToString, "funimation.com/player")) Then
+                'todo softsub download
+                Dim SubTitle1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {".srt"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Main.WebbrowserSoftSubURL = SubTitle2(SubTitle2.Count - 1) + ".srt"
+                'MsgBox(Main.WebbrowserSoftSubURL)
+                ' Anime_Add.StatusLabel.Text = 
+            ElseIf CBool(InStr(WebBrowser1.Url.ToString, "funimation.com")) Then
+                If Main.b = False Then
 
+                    If InStr(WebBrowser1.Document.Body.OuterHtml, My.Resources.Funimation_Player_ID) Then
+                        Main.WebbrowserURL = WebBrowser1.Url.ToString
+                        Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+                        Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                        Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
+                        Main.b = True
+
+                        t = New Thread(AddressOf Main.Funitmation_Grapp)
+                        t.Priority = ThreadPriority.Normal
+                        t.IsBackground = True
+                        t.Start()
+
+                    Else
+                        Anime_Add.StatusLabel.Text = "fail?"
+                    End If
+                End If
 
             Else
                 If Main.b = False Then
@@ -377,6 +404,8 @@ Public Class GeckoFX
         'Main.GrappURL()
         Try
             My.Computer.Clipboard.SetText(WebBrowser1.Url.ToString)
+            'My.Computer.Clipboard.SetText(WebBrowser1.Document.Head.InnerHtml)
+
             MsgBox("copied: " + Chr(34) + WebBrowser1.Url.ToString + Chr(34))
         Catch ex As Exception
         End Try
@@ -652,4 +681,20 @@ Public Class GeckoFX
         'Debug_Mode.TopMost = False
     End Sub
 
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        If InStr(WebBrowser1.Url.ToString, "funimation.com") Then
+            Dim Funimation_List As New List(Of String)
+            Dim Funimation_list1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {My.Resources.Funimation_Split_1}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            For i As Integer = 1 To Funimation_list1.Count - 1
+                Dim Funimation_list2() As String = Funimation_list1(i).Split(New String() {My.Resources.Funimation_Split_2}, System.StringSplitOptions.RemoveEmptyEntries)
+                Funimation_List.Add("https://www.funimation.com" + Funimation_list2(0))
+                Main.ListBoxList.Add("https://www.funimation.com" + Funimation_list2(0))
+            Next
+            MsgBox(Funimation_List.Count.ToString + " episodes added to Download queue")
+            'For ii As Integer = 0 To Funimation_List.Count - 1
+            '    MsgBox(Funimation_List.Item(ii))
+            'Next
+        End If
+    End Sub
 End Class

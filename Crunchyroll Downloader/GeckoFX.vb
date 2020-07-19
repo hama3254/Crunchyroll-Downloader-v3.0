@@ -166,6 +166,14 @@ Public Class GeckoFX
                     Dim SubTitle1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {".srt"}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     Main.WebbrowserSoftSubURL = SubTitle2(SubTitle2.Count - 1) + ".srt"
+                ElseIf InStr(WebBrowser1.Document.Body.OuterHtml, ".vtt") Then
+                    Dim SubTitle1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {".vtt"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Main.WebbrowserSoftSubURL = SubTitle2(SubTitle2.Count - 1) + ".vtt"
+                ElseIf InStr(WebBrowser1.Document.Body.OuterHtml, ".dfxp") Then
+                    Dim SubTitle1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {".dfxp"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Main.WebbrowserSoftSubURL = SubTitle2(SubTitle2.Count - 1) + ".dfxp"
                 Else
                     Main.WebbrowserSoftSubURL = Nothing
                 End If

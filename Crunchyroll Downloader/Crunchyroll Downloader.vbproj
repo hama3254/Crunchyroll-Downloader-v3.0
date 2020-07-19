@@ -140,6 +140,12 @@
     <Compile Include="Debug_Mode.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GeckoFX.Designer.vb">
       <DependentUpon>GeckoFX.vb</DependentUpon>
     </Compile>
@@ -202,6 +208,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Debug_Mode.resx">
       <DependentUpon>Debug_Mode.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GeckoFX.resx">
       <DependentUpon>GeckoFX.vb</DependentUpon>

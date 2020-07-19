@@ -65,3 +65,4 @@ D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Ko
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Core.dll
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Winforms.dll
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CopyComplete
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Form1.resources

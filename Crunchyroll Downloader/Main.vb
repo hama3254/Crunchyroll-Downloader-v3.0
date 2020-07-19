@@ -1838,6 +1838,8 @@ Public Class Main
             Dim FunimationName() As String = WebbrowserText.Split(New String() {"</h1>"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim FunimationName2() As String = FunimationName(0).Split(New String() {Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim FunimationName3 As String = FunimationName2(FunimationName2.Count - 1).Replace("</a>", "")
+            FunimationName3 = System.Text.RegularExpressions.Regex.Replace(FunimationName3, "[^\w\\-]", " ")
+            FunimationName3 = RemoveExtraSpaces(FunimationName3)
 #End Region
 
 #Region "m3u8 URL"
@@ -1917,7 +1919,7 @@ Public Class Main
                 Next
 
             End If
-            ' 
+
             'MsgBox(FunimationName3)
             'MsgBox(Funimation_m3u8_final)
 #Region "thumbnail"
@@ -1939,8 +1941,14 @@ Public Class Main
             Else
                 'MsgBox(WebbrowserSoftSubURL)
                 Dim str2 As String = client0.DownloadString(WebbrowserSoftSubURL)
+                Dim SubtitelFormat As String = ".srt"
+                If InStr(WebbrowserSoftSubURL, ".vtt") Then
+                    SubtitelFormat = ".vtt"
+                ElseIf InStr(WebbrowserSoftSubURL, ".dfxp") Then
+                    SubtitelFormat = ".dfxp"
+                End If
                 Dim Pfad3 As String = DownloadPfad.Replace(Chr(34), "")
-                Dim Pfad4 As String = Pfad3.Replace(".mp4", ".srt")
+                Dim Pfad4 As String = Pfad3.Replace(".mp4", SubtitelFormat)
                 File.WriteAllText(Pfad4, str2, Encoding.UTF8)
             End If
         Catch ex As Exception
@@ -1948,5 +1956,9 @@ Public Class Main
             MsgBox(ex.ToString)
         End Try
         Funimation_Grapp_RDY = True
+    End Sub
+
+    Private Sub Main_Click(sender As Object, e As EventArgs) Handles Me.Click
+        'Form1.Show()
     End Sub
 End Class

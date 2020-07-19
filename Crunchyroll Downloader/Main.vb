@@ -62,6 +62,7 @@ Public Class Main
     Public WebbrowserURL As String = Nothing
     Public WebbrowserText As String = Nothing
     Public WebbrowserTitle As String = Nothing
+    Public WebbrowserCookie As String = Nothing
     Public UserBowser As Boolean = False
 #Region "Sprachen Vairablen"
     Public URL_Invaild As String = "invalid URL, this Downloader is only for crunchyroll.com"
@@ -1852,6 +1853,10 @@ Public Class Main
 
             Dim client0 As New WebClient
             client0.Encoding = Encoding.UTF8
+            If WebbrowserCookie = Nothing Then
+            Else
+                client0.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+            End If
             Dim str0 As String = client0.DownloadString("https://www.funimation.com/api/showexperience/" + Player_ID2(0) + "/?pinst_id=fzQc9p9f")
             Dim Funimation_m3u8() As String = str0.Split(New String() {My.Resources.Funimation_src_string}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim Funimation_m3u8_final As String = Nothing
@@ -1863,6 +1868,25 @@ Public Class Main
                     Exit For
                 End If
             Next
+            If Funimation_m3u8_Main = Nothing Then
+
+                If MessageBox.Show("No media found in:" + vbNewLine + str0, "No media", MessageBoxButtons.RetryCancel) = DialogResult.Retry Then
+                    Me.Invoke(New Action(Function()
+                                             GeckoFX.WebBrowser1.Navigate(WebbrowserURL)
+                                             Try
+                                                 Anime_Add.StatusLabel.Text = "retrying Funimation"
+                                             Catch ex As Exception
+                                             End Try
+                                             Return Nothing
+                                         End Function))
+                    Exit Sub
+                Else
+                    Funimation_Grapp_RDY = True
+                    Exit Sub
+                End If
+            Else
+                'MsgBox(Funimation_m3u8_Main)
+            End If
             Dim str1 As String = client0.DownloadString(Funimation_m3u8_Main.Replace(Chr(34), ""))
             Dim textLenght() As String = str1.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
 
@@ -1875,6 +1899,24 @@ Public Class Main
                 End If
             Next
 
+            If Funimation_m3u8_final = Nothing Then
+                Me.Invoke(New Action(Function()
+                                         DialogTaskString = "Funimation_Resolution"
+                                         ResoNotFoundString = str1
+                                         Reso.ShowDialog()
+                                         Return Nothing
+                                     End Function))
+
+                For i As Integer = 0 To textLenght.Length - 1
+                    If InStr(textLenght(i), "https") Then
+                        If InStr(textLenght(i - 1), ResoBackString) Then
+                            Funimation_m3u8_final = textLenght(i)
+                            Exit For
+                        End If
+                    End If
+                Next
+
+            End If
             ' 
             'MsgBox(FunimationName3)
             'MsgBox(Funimation_m3u8_final)
@@ -1895,6 +1937,7 @@ Public Class Main
 #End Region
             If WebbrowserSoftSubURL = Nothing Then
             Else
+                'MsgBox(WebbrowserSoftSubURL)
                 Dim str2 As String = client0.DownloadString(WebbrowserSoftSubURL)
                 Dim Pfad3 As String = DownloadPfad.Replace(Chr(34), "")
                 Dim Pfad4 As String = Pfad3.Replace(".mp4", ".srt")

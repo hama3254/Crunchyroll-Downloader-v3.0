@@ -161,9 +161,15 @@ Public Class GeckoFX
                 'ElseIf CBool(InStr(WebBrowser1.Url.ToString, "https://www.anime-on-demand.de/anime/")) Then
             ElseIf CBool(InStr(WebBrowser1.Url.ToString, "funimation.com/player")) Then
                 'todo softsub download
-                Dim SubTitle1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {".srt"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                Main.WebbrowserSoftSubURL = SubTitle2(SubTitle2.Count - 1) + ".srt"
+                'MsgBox(WebBrowser1.Document.Body.OuterHtml)
+                If InStr(WebBrowser1.Document.Body.OuterHtml, ".srt") Then
+                    Dim SubTitle1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {".srt"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Main.WebbrowserSoftSubURL = SubTitle2(SubTitle2.Count - 1) + ".srt"
+                Else
+                    Main.WebbrowserSoftSubURL = Nothing
+                End If
+
                 'MsgBox(Main.WebbrowserSoftSubURL)
                 ' Anime_Add.StatusLabel.Text = 
             ElseIf CBool(InStr(WebBrowser1.Url.ToString, "funimation.com")) Then
@@ -174,6 +180,7 @@ Public Class GeckoFX
                         Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                         Main.WebbrowserTitle = WebBrowser1.DocumentTitle
                         Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
+                        Main.WebbrowserCookie = WebBrowser1.Document.Cookie
                         Main.b = True
 
                         t = New Thread(AddressOf Main.Funitmation_Grapp)
@@ -404,7 +411,7 @@ Public Class GeckoFX
         'Main.GrappURL()
         Try
             My.Computer.Clipboard.SetText(WebBrowser1.Url.ToString)
-            'My.Computer.Clipboard.SetText(WebBrowser1.Document.Head.InnerHtml)
+            'My.Computer.Clipboard.SetText(WebBrowser1.Document.Cookie)
 
             MsgBox("copied: " + Chr(34) + WebBrowser1.Url.ToString + Chr(34))
         Catch ex As Exception
@@ -629,34 +636,34 @@ Public Class GeckoFX
                     Next
 
                 End If
-                If Main.txtList.Count > 0 Then                'InStr(HTMLString, ".mpd?") Then
-                    HTMLString = Main.mpdList.Item(0)
-                    'Button2.Text = "found mpd!"
-                    Main.LogBrowserData = False
+                'If Main.txtList.Count > 0 Then                'InStr(HTMLString, ".mpd?") Then
+                '    HTMLString = Main.mpdList.Item(0)
+                '    'Button2.Text = "found mpd!"
+                '    Main.LogBrowserData = False
 
-                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
-                    GeckoPreferences.Default("logging.nsHttp") = 0
-                    Dim URL As String = Nothing
-                    Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
-                    For i As Integer = 0 To HTMLSplit.Count - 1
-                        If InStr(HTMLSplit(i), ".mpd?") Then
-                            Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim URLPart1() As String = HTMLSplit(i + 1).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Main.NonCR_URL = "https://" + URLPart1(1) + URLPart2Split2(0)
-                            'MsgBox(Main.NonCR_URL)
-                            'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
-                            Main.FFMPEG_Reso(Main.NonCR_URL)
-                            t = New Thread(AddressOf Main.Grapp_non_CR)
-                            t.Priority = ThreadPriority.Normal
-                            t.IsBackground = True
-                            t.Start()
-                            Button2.Text = "Start network scan"
-                            Exit For
-                        End If
-                    Next
+                '    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
+                '    GeckoPreferences.Default("logging.nsHttp") = 0
+                '    Dim URL As String = Nothing
+                '    Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
+                '    For i As Integer = 0 To HTMLSplit.Count - 1
+                '        If InStr(HTMLSplit(i), ".mpd?") Then
+                '            Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
+                '            Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                '            Dim URLPart1() As String = HTMLSplit(i + 1).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
+                '            Main.NonCR_URL = "https://" + URLPart1(1) + URLPart2Split2(0)
+                '            'MsgBox(Main.NonCR_URL)
+                '            'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
+                '            Main.FFMPEG_Reso(Main.NonCR_URL)
+                '            t = New Thread(AddressOf Main.Grapp_non_CR)
+                '            t.Priority = ThreadPriority.Normal
+                '            t.IsBackground = True
+                '            t.Start()
+                '            Button2.Text = "Start network scan"
+                '            Exit For
+                '        End If
+                '    Next
 
-                End If
+                'End If
                 ScanTrue = False
                 Button2.Enabled = True
             Catch ex As Exception

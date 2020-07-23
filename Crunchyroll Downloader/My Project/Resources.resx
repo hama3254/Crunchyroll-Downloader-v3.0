@@ -385,4 +385,10 @@ I delete the curremt session with the unlock, if you want to be logged in with t
   <data name="Funimation_thumbnail" xml:space="preserve">
     <value>&lt;meta property="og:image" content="</value>
   </data>
+  <data name="Funimation_Subtitle_String" xml:space="preserve">
+    <value>", "kind": "subtitle", "type": "CC", "language": "en"</value>
+  </data>
+  <data name="Funimation_Subtitle_String2" xml:space="preserve">
+    <value>", "kind": "subtitle", "type": "Full", "language": "en"</value>
+  </data>
 </root>

@@ -94,7 +94,7 @@ Public Class Main
     Public LabelResoNotFoundText As String = "resolution not found" + vbNewLine + "Select another one below"
     Public LabelLangNotFoundText As String = "language not found" + vbNewLine + "Select another one below"
     Public ButtonResoNotFoundText As String = "Submit"
-    Public CB_SuB_Nothing As String = "[ without  (none) ]"
+    Public CB_SuB_Nothing As String = "[ null ]"
     Dim StatusToolTip As ToolTip = New ToolTip()
     Dim StatusToolTipText As String
     Public RunGecko As String = "Startup"
@@ -1840,16 +1840,15 @@ Public Class Main
             Dim FunimationName3 As String = FunimationName2(FunimationName2.Count - 1).Replace("</a>", "")
             FunimationName3 = System.Text.RegularExpressions.Regex.Replace(FunimationName3, "[^\w\\-]", " ")
             FunimationName3 = RemoveExtraSpaces(FunimationName3)
+            Dim DownloadPfad As String = Chr(34) + Pfad + "\" + FunimationName3 + ".mp4" + Chr(34)
 #End Region
 
 #Region "m3u8 URL"
             Dim Player_ID() As String = WebbrowserText.Split(New String() {My.Resources.Funimation_Player_ID}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim Player_ID2() As String = Player_ID(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim iFrameURL As String = "https://www.funimation.com/player/" + Player_ID2(0) + "/?bdub=0&qid="
-            WebbrowserSoftSubURL = Nothing
             Me.Invoke(New Action(Function()
-                                     Anime_Add.StatusLabel.Text = iFrameURL
-                                     GeckoFX.WebBrowser1.Navigate(iFrameURL)
+                                     '    Anime_Add.StatusLabel.Text = iFrameURL
+
                                      Return Nothing
                                  End Function))
 
@@ -1929,7 +1928,101 @@ Public Class Main
 #End Region
             Dim ResoHTMLDisplay As String = Resu.ToString + "p"
 
-            Dim DownloadPfad As String = Chr(34) + Pfad + "\" + FunimationName3 + ".mp4" + Chr(34)
+#Region "Subs"
+            Dim SubsClient As New WebClient
+            SubsClient.Encoding = Encoding.UTF8
+            If WebbrowserCookie = Nothing Then
+            Else
+                SubsClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+            End If
+            Dim PlayerPage As String = SubsClient.DownloadString("https://www.funimation.com/player/" + Player_ID2(0) + "/?bdub=0&qid=")
+            Dim SplittString As String = Nothing
+            If InStr(PlayerPage, My.Resources.Funimation_Subtitle_String) Then
+                SplittString = My.Resources.Funimation_Subtitle_String
+            ElseIf InStr(PlayerPage, My.Resources.Funimation_Subtitle_String2) Then
+                SplittString = My.Resources.Funimation_Subtitle_String2
+
+            End If
+            Dim UsedSub As String = Nothing
+            If SplittString = Nothing Then
+                If InStr(PlayerPage, ".srt") Then
+                    Dim SubTitle1() As String = PlayerPage.Split(New String() {".srt"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    UsedSub = SubTitle2(SubTitle2.Count - 1) + ".srt"
+                ElseIf InStr(PlayerPage, ".vtt") Then
+                    Dim SubTitle1() As String = PlayerPage.Split(New String() {".vtt"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    UsedSub = SubTitle2(SubTitle2.Count - 1) + ".vtt"
+                ElseIf InStr(PlayerPage, ".dfxp") Then
+                    Dim SubTitle1() As String = PlayerPage.Split(New String() {".dfxp"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    UsedSub = SubTitle2(SubTitle2.Count - 1) + ".dfxp"
+                Else
+                    MsgBox("No Subtitle found in the website, a logfile was created.", "No Subtitle", MsgBoxStyle.Exclamation)
+                    File.WriteAllText(Path.Combine(Application.StartupPath + "No Subtitle for" + FunimationName3 + ".log"), PlayerPage, Encoding.UTF8)
+                End If
+            Else
+
+
+                Dim SubTitle1() As String = PlayerPage.Split(New String() {SplittString}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Subs_in_srt As New List(Of String)
+                Dim Subs_in_vtt As New List(Of String)
+                Dim Subs_in_dfxp As New List(Of String)
+
+                For i As Integer = 0 To SubTitle1.Count - 1
+                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                    If InStr(SubTitle2(SubTitle2.Count - 1), ".srt") Then
+                        Subs_in_srt.Add(SubTitle2(SubTitle2.Count - 1))
+                    ElseIf InStr(SubTitle2(SubTitle2.Count - 1), ".vtt") Then
+                        Subs_in_vtt.Add(SubTitle2(SubTitle2.Count - 1))
+                    ElseIf InStr(SubTitle2(SubTitle2.Count - 1), ".dfxp") Then
+                        Subs_in_dfxp.Add(SubTitle2(SubTitle2.Count - 1))
+                    End If
+                Next
+
+                If Subs_in_srt.Count > 0 Then
+                    UsedSub = Subs_in_srt.Item(0)
+                ElseIf Subs_in_vtt.Count > 0 Then
+                    UsedSub = Subs_in_vtt.Item(0)
+                ElseIf Subs_in_dfxp.Count > 0 Then
+                    UsedSub = Subs_in_dfxp.Item(0)
+                End If
+
+                If MergeSubstoMP4 = True Then
+                Else
+                    'MsgBox(WebbrowserSoftSubURL)
+                    Dim str2 As String = client0.DownloadString(WebbrowserSoftSubURL)
+                    Dim SubtitelFormat As String = ".srt"
+                    If InStr(WebbrowserSoftSubURL, ".vtt") Then
+                        SubtitelFormat = ".vtt"
+                    ElseIf InStr(WebbrowserSoftSubURL, ".dfxp") Then
+                        SubtitelFormat = ".dfxp"
+                    End If
+                    Dim Pfad3 As String = DownloadPfad.Replace(Chr(34), "")
+                    Dim Pfad4 As String = Pfad3.Replace(".mp4", SubtitelFormat)
+                    File.WriteAllText(Pfad4, str2, Encoding.UTF8)
+                End If
+
+            End If
+#End Region
+
+#Region "SubsToMP4"
+            If MergeSubstoMP4 = True Then
+                If UsedSub = Nothing Then
+                Else
+                    Dim SoftSubMergeURLs As String = " -i " + Chr(34) + UsedSub + Chr(34)
+                    Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a -map 1"
+                    Dim SoftSubMergeMetatata As String = " -metadata:s:s:0 language=eng"
+                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+                End If
+            End If
+
+#End Region
+
+
+
             Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim L1Name As String = L1Name_Split(1).Replace("www.", "")
             Me.Invoke(New Action(Function()
@@ -1937,20 +2030,7 @@ Public Class Main
                                      Return Nothing
                                  End Function))
 #End Region
-            If WebbrowserSoftSubURL = Nothing Then
-            Else
-                'MsgBox(WebbrowserSoftSubURL)
-                Dim str2 As String = client0.DownloadString(WebbrowserSoftSubURL)
-                Dim SubtitelFormat As String = ".srt"
-                If InStr(WebbrowserSoftSubURL, ".vtt") Then
-                    SubtitelFormat = ".vtt"
-                ElseIf InStr(WebbrowserSoftSubURL, ".dfxp") Then
-                    SubtitelFormat = ".dfxp"
-                End If
-                Dim Pfad3 As String = DownloadPfad.Replace(Chr(34), "")
-                Dim Pfad4 As String = Pfad3.Replace(".mp4", SubtitelFormat)
-                File.WriteAllText(Pfad4, str2, Encoding.UTF8)
-            End If
+
         Catch ex As Exception
 
             MsgBox(ex.ToString)

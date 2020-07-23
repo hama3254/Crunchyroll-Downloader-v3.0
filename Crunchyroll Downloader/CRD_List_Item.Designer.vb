@@ -33,6 +33,7 @@ Partial Class CRD_List_Item
         Me.Label_percent = New System.Windows.Forms.Label()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         CType(Me.PB_Thumbnail, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_pause, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_del, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -51,7 +52,7 @@ Partial Class CRD_List_Item
         '
         'bt_pause
         '
-        Me.bt_pause.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.main_pause
+        Me.bt_pause.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.main_pause
         Me.bt_pause.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.bt_pause.Location = New System.Drawing.Point(740, 15)
         Me.bt_pause.Name = "bt_pause"
@@ -113,9 +114,9 @@ Partial Class CRD_List_Item
         '
         Me.Label_percent.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label_percent.Font = New System.Drawing.Font("Consolas", 12.0!)
-        Me.Label_percent.Location = New System.Drawing.Point(456, 101)
+        Me.Label_percent.Location = New System.Drawing.Point(455, 101)
         Me.Label_percent.Name = "Label_percent"
-        Me.Label_percent.Size = New System.Drawing.Size(340, 19)
+        Me.Label_percent.Size = New System.Drawing.Size(355, 19)
         Me.Label_percent.TabIndex = 7
         Me.Label_percent.Text = "Status Label : speed, size and percent"
         Me.Label_percent.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -124,9 +125,13 @@ Partial Class CRD_List_Item
         '
         Me.ProgressBar1.Location = New System.Drawing.Point(195, 70)
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(601, 20)
+        Me.ProgressBar1.Size = New System.Drawing.Size(615, 20)
         Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.ProgressBar1.TabIndex = 8
+        '
+        'Timer1
+        '
+        Me.Timer1.Interval = 1000
         '
         'CRD_List_Item
         '
@@ -162,4 +167,5 @@ Partial Class CRD_List_Item
     Friend WithEvents Label_percent As Label
     Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents Timer1 As Timer
 End Class

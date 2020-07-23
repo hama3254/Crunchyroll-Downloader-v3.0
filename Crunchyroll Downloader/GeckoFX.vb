@@ -159,24 +159,6 @@ Public Class GeckoFX
                     Me.Close()
                 End If
                 'ElseIf CBool(InStr(WebBrowser1.Url.ToString, "https://www.anime-on-demand.de/anime/")) Then
-            ElseIf CBool(InStr(WebBrowser1.Url.ToString, "funimation.com/player")) Then
-                'todo softsub download
-                'MsgBox(WebBrowser1.Document.Body.OuterHtml)
-                If InStr(WebBrowser1.Document.Body.OuterHtml, ".srt") Then
-                    Dim SubTitle1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {".srt"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Main.WebbrowserSoftSubURL = SubTitle2(SubTitle2.Count - 1) + ".srt"
-                ElseIf InStr(WebBrowser1.Document.Body.OuterHtml, ".vtt") Then
-                    Dim SubTitle1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {".vtt"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Main.WebbrowserSoftSubURL = SubTitle2(SubTitle2.Count - 1) + ".vtt"
-                ElseIf InStr(WebBrowser1.Document.Body.OuterHtml, ".dfxp") Then
-                    Dim SubTitle1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {".dfxp"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Main.WebbrowserSoftSubURL = SubTitle2(SubTitle2.Count - 1) + ".dfxp"
-                Else
-                    Main.WebbrowserSoftSubURL = Nothing
-                End If
 
                 'MsgBox(Main.WebbrowserSoftSubURL)
                 ' Anime_Add.StatusLabel.Text = 

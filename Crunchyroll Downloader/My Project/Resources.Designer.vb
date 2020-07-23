@@ -304,6 +304,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;, &quot;kind&quot;: &quot;subtitle&quot;, &quot;type&quot;: &quot;CC&quot;, &quot;language&quot;: &quot;en&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property Funimation_Subtitle_String() As String
+            Get
+                Return ResourceManager.GetString("Funimation_Subtitle_String", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;, &quot;kind&quot;: &quot;subtitle&quot;, &quot;type&quot;: &quot;Full&quot;, &quot;language&quot;: &quot;en&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property Funimation_Subtitle_String2() As String
+            Get
+                Return ResourceManager.GetString("Funimation_Subtitle_String2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;meta property=&quot;og:image&quot; content=&quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property Funimation_thumbnail() As String
@@ -700,7 +718,7 @@ Namespace My.Resources
         '''	.imagestyle{width:156px;height:88px;display:block;margin-bottom:4px}	.ulStyle{margin:0 0 0 -10px;display:block;position:relative;margin-top:8px}
         '''	.ulStyle li{margin-left:12px;float:left;display:block;position:relative}
         '''	.listyle{width:156px;display:block;background:#fff;padding:16px;margin-bottom:14px;position:relative;background-color:#b5b3b3}
-        '''	.progressbar{height:14px;backgro [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''	.progressbar{height:14p [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Friend ReadOnly Property Startuphtml() As String
             Get

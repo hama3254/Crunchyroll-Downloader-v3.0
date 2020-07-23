@@ -7,8 +7,10 @@ Imports System.ComponentModel
 Public Class CRD_List_Item
     Dim ZeitGesamtInteger As Integer = 0
     Dim ListOfStreams As New List(Of String)
-    Dim proc As New Process
+    Dim proc As Process
+    Dim Canceld As Boolean = False
 
+    Dim Label_website_Text As String = Nothing
     Dim StatusRunning As Boolean = True
     Dim UsedMap As String = Nothing
     Dim ffmpeg_command As String = Nothing
@@ -34,6 +36,7 @@ Public Class CRD_List_Item
 #Region "Set UI"
     Public Sub SetLabelWebsite(ByVal Text As String)
         Label_website.Text = Text
+        Label_website_Text = Text
     End Sub
     Public Sub SetLabelAnimeTitel(ByVal Text As String)
         Label_Anime.Text = Text
@@ -117,7 +120,7 @@ Public Class CRD_List_Item
     Private Sub bt_pause_Click(sender As Object, e As EventArgs) Handles bt_pause.Click
         If proc.HasExited = True Then
             If ProgressBar1.Value < 100 Then
-                MsgBox("Something is wrong here, the download process seems to have crashed", MsgBoxStyle.Exclamation)
+                MsgBox("The download process seems to have crashed", MsgBoxStyle.Exclamation)
                 Label_percent.Text = "Press the play button again to retry."
                 ProgressBar1.Value = 100
                 Retry = True
@@ -138,6 +141,7 @@ Public Class CRD_List_Item
                 End If
                 DownloadFFMPEG(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename)
                 StatusRunning = True
+                Label_website.Text = Label_website_Text
             End If
             Exit Sub
         End If
@@ -155,6 +159,7 @@ Public Class CRD_List_Item
         ToolTip1.SetToolTip(Me, Text)
     End Sub
     Private Sub Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Timer1.Enabled = True
         Dim locationY As Integer = 0
         bt_del.SetBounds(775, locationY + 10, 35, 29)
         bt_pause.SetBounds(740, locationY + 15, 25, 20)
@@ -164,7 +169,7 @@ Public Class CRD_List_Item
         Label_Anime.Location = New Point(195, locationY + 42)
         Label_Reso.Location = New Point(195, locationY + 101)
         Label_Hardsub.Location = New Point(300, locationY + 101)
-        Label_percent.SetBounds(480, locationY + 101, 340, 19)
+        Label_percent.SetBounds(455, locationY + 101, 355, 19)
         Label_percent.AutoSize = False
         ProgressBar1.SetBounds(195, locationY + 70, 601, 20)
     End Sub
@@ -181,7 +186,7 @@ Public Class CRD_List_Item
         Label_Anime.Location = New Point(195, locationY + 42)
         Label_Reso.Location = New Point(195, locationY + 101)
         Label_Hardsub.Location = New Point(300, locationY + 101)
-        Label_percent.SetBounds(456, locationY + 101, 340, 19)
+        Label_percent.SetBounds(455, locationY + 101, 355, 19)
         Label_percent.AutoSize = False
         ProgressBar1.SetBounds(195, locationY + 70, 601, 20)
     End Sub
@@ -222,6 +227,7 @@ Public Class CRD_List_Item
         startinfo.RedirectStandardInput = True
         startinfo.RedirectStandardOutput = True
         startinfo.CreateNoWindow = True
+        proc = New Process
         AddHandler proc.ErrorDataReceived, AddressOf TestOutput
         AddHandler proc.OutputDataReceived, AddressOf TestOutput
         proc.StartInfo = startinfo
@@ -373,6 +379,7 @@ Public Class CRD_List_Item
             If MessageBox.Show("Are you sure you want to cancel the Download?", "Cancel Download!", MessageBoxButtons.YesNo) = DialogResult.No Then
                 Exit Sub
             End If
+            Canceld = True
             KillRunningTask()
         End If
 
@@ -404,5 +411,19 @@ Public Class CRD_List_Item
         Next
     End Sub
 
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        If proc.HasExited = True Then
+            If ProgressBar1.Value < 100 Then
+                If Canceld = False Then
+                    Label_website.Text = "The download process seems to have crashed"
+                    Label_percent.Text = "Press the play button again to retry."
+                    ProgressBar1.Value = 100
+                    Retry = True
+                    StatusRunning = False
+                End If
+            End If
+
+        End If
+    End Sub
 End Class
 

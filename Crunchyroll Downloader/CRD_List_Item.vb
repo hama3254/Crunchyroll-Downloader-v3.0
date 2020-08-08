@@ -412,18 +412,24 @@ Public Class CRD_List_Item
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        If proc.HasExited = True Then
-            If ProgressBar1.Value < 100 Then
-                If Canceld = False Then
-                    Label_website.Text = "The download process seems to have crashed"
-                    Label_percent.Text = "Press the play button again to retry."
-                    ProgressBar1.Value = 100
-                    Retry = True
-                    StatusRunning = False
-                End If
-            End If
+        Try
 
-        End If
+
+            If proc.HasExited = True Then
+                If ProgressBar1.Value < 100 Then
+                    If Canceld = False Then
+                        Label_website.Text = "The download process seems to have crashed"
+                        Label_percent.Text = "Press the play button again to retry."
+                        ProgressBar1.Value = 100
+                        Retry = True
+                        StatusRunning = False
+                    End If
+                End If
+
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 End Class
 

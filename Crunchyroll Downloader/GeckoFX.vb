@@ -43,9 +43,9 @@ Public Class GeckoFX
 
                 WebBrowser1.Navigate("https://www.crunchyroll.com/logout")
                 Main.Pause(5)
-                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
-                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "sess_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "sess_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
                 If Main.LoginDialog = True Then
                     Login.ShowDialog()
@@ -326,6 +326,20 @@ Public Class GeckoFX
     End Sub
 
     Private Sub GeckoFX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If Me.Width > My.Computer.Screen.Bounds.Width Then
+            Me.Width = My.Computer.Screen.Bounds.Width
+            WebBrowser1.Width = Me.Size.Width - 15 ', Me.Size.Height - 69)
+            WebBrowser1.Location = New Point(0, 30)
+            TextBox1.Width = My.Computer.Screen.Bounds.Width - 435
+
+        End If
+
+        If Me.Size.Height > My.Computer.Screen.Bounds.Height Then
+            Me.Height = My.Computer.Screen.Bounds.Height
+            WebBrowser1.Height = Me.Size.Height - 69
+            WebBrowser1.Location = New Point(0, 30)
+        End If
+
         If Main.Debug2 = True Then
             Debug_Mode.Show()
             Debug_Mode.Location = New Point(Me.Location.X + Me.Width - 15, Me.Location.Y)

@@ -146,6 +146,12 @@
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Funimation.Designer.vb">
+      <DependentUpon>Funimation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Funimation.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GeckoFX.Designer.vb">
       <DependentUpon>GeckoFX.vb</DependentUpon>
     </Compile>
@@ -212,6 +218,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Funimation.resx">
+      <DependentUpon>Funimation.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GeckoFX.resx">
       <DependentUpon>GeckoFX.vb</DependentUpon>
     </EmbeddedResource>
@@ -273,6 +282,7 @@
     <Content Include="Firefox\softokn3.dll" />
     <Content Include="Firefox\xul.dll" />
     <Content Include="icon.ico" />
+    <None Include="Resources\Funimation.png" />
     <None Include="Resources\main-browser_hover.png" />
     <None Include="Resources\main-settings_hover.png" />
     <None Include="Resources\main-pause-play-hover.png" />

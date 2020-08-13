@@ -1958,8 +1958,13 @@ Public Class Main
                     Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     UsedSub = SubTitle2(SubTitle2.Count - 1) + ".dfxp"
                 Else
-                    MsgBox("No Subtitle found in the website, a logfile was created.", "No Subtitle", MsgBoxStyle.Exclamation)
-                    File.WriteAllText(Path.Combine(Application.StartupPath + "No Subtitle for" + FunimationName3 + ".log"), PlayerPage, Encoding.UTF8)
+                    If MessageBox.Show("No Subtitle found in the website, a logfile was created." + vbNewLine + "Press 'Yes' to download the video without subtitle", "No Subtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+                        File.WriteAllText(Path.Combine(Application.StartupPath + "No Subtitle for" + FunimationName3 + ".log"), PlayerPage, Encoding.UTF8)
+                    Else
+                        File.WriteAllText(Path.Combine(Application.StartupPath + "No Subtitle for" + FunimationName3 + ".log"), PlayerPage, Encoding.UTF8)
+                        Exit Sub
+                    End If
+                    'MsgBox("No Subtitle found in the website, a logfile was created.", MsgBoxStyle.OkCancel, "No Subtitle")
                 End If
             Else
 
@@ -2041,4 +2046,6 @@ Public Class Main
     Private Sub Main_Click(sender As Object, e As EventArgs) Handles Me.Click
         'Form1.Show()
     End Sub
+
+
 End Class

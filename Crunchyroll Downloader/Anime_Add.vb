@@ -286,10 +286,6 @@ Public Class Anime_Add
             List_DL_Cancel = False
             pictureBox4.Image = My.Resources.main_button_download_default
         End If
-        If InStr(My.Computer.Info.OSFullName, "Server") Then
-            MsgBox("Windows Server is not supported!", MsgBoxStyle.Critical)
-            Me.Close()
-        End If
         pictureBox4.Enabled = True
     End Sub
 

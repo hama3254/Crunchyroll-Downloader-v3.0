@@ -144,11 +144,6 @@ Public Class Main
     Public Declare Function waveOutSetVolume Lib "winmm.dll" (ByVal uDeviceID As Integer, ByVal dwVolume As Integer) As Integer
 
     Private Sub Form8_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If InStr(My.Computer.Info.OSFullName, "Server") Then
-            MsgBox("Windows Server is not supported!", MsgBoxStyle.Critical)
-            Me.Close()
-        End If
-
         waveOutSetVolume(0, 0)
         Try
             Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)

@@ -15,11 +15,6 @@ Public Class GeckoFX
     Dim t As Thread
     Dim ScanTrue As Boolean = False
     Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
-        If InStr(My.Computer.Info.OSFullName, "Server") Then
-            MsgBox("Windows Server is not supported!", MsgBoxStyle.Critical)
-            Me.Close()
-        End If
-
         If ScanTrue = False Then
             Button2.Enabled = True
         End If

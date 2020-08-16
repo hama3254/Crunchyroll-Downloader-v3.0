@@ -3,6 +3,7 @@ Imports Microsoft.Win32
 Imports System.Net
 Imports System.IO
 Imports System.Text
+Imports System.Threading
 
 Public Class einstellungen
     Private Sub einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -114,6 +115,11 @@ Public Class einstellungen
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             ListViewAdd_True.Checked = CBool(Integer.Parse(rkg.GetValue("QueueMode").ToString))
+        Catch ex As Exception
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            Server.Checked = CBool(Integer.Parse(rkg.GetValue("StartServer").ToString))
         Catch ex As Exception
         End Try
     End Sub
@@ -248,6 +254,17 @@ Public Class einstellungen
         ElseIf ListViewAdd_True.Checked = False Then
             rk.SetValue("QueueMode", 0, RegistryValueKind.String)
             Main.UseQueue = False
+        End If
+        If Server.Checked = True Then
+            rk.SetValue("StartServer", 1, RegistryValueKind.String)
+            Main.StartServer = True
+            'Dim t As New Thread(AddressOf Main.ServerStart)
+            't.Priority = ThreadPriority.Normal
+            't.IsBackground = True
+            't.Start()
+        ElseIf Server.Checked = False Then
+            rk.SetValue("StartServer", 0, RegistryValueKind.String)
+            Main.StartServer = False
         End If
 
 #Region "sof subs"
@@ -579,6 +596,7 @@ Public Class einstellungen
         End If
 
     End Sub
+
 
 
 

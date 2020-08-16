@@ -110,7 +110,7 @@ Partial Class Login
         '
         'PictureBox1
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.Gray
+        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox1.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.LoginSkip
         Me.PictureBox1.Location = New System.Drawing.Point(20, 144)
@@ -122,7 +122,7 @@ Partial Class Login
         '
         'PictureBox9
         '
-        Me.PictureBox9.BackColor = System.Drawing.Color.Gray
+        Me.PictureBox9.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox9.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox9.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.DialogNotFound_Submit
         Me.PictureBox9.Location = New System.Drawing.Point(186, 144)

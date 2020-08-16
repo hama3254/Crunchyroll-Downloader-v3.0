@@ -59,6 +59,24 @@ Public Class Login
         Dim Request0 As HttpWebRequest = CType(WebRequest.Create("https://api.crunchyroll.com/login.0.json"), HttpWebRequest)
         Request0.Method = "POST"
         Request0.ContentType = "application/x-www-form-urlencoded"
+        If GeckoFX.keks = Nothing Then
+            MsgBox("No active Cookie found!", MsgBoxStyle.Exclamation)
+            Me.Close()
+            Exit Sub
+#Region ""
+
+
+            'GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
+            'Pause(2)
+            'Dim c As String = GeckoFX.WebBrowser1.Document.Cookie.ToString
+            'MsgBox(c)
+            'Dim cookieGrapp7() As String = c.Split(New String() {"session_id="}, System.StringSplitOptions.RemoveEmptyEntries)
+            'Dim cookieGrapp8() As String = cookieGrapp7(1).Split(New String() {";"}, System.StringSplitOptions.RemoveEmptyEntries)
+            'MsgBox(cookieGrapp8(0))
+            'GeckoFX.keks = cookieGrapp8(0)
+            ''Console.WriteLine()
+#End Region
+        End If
         Dim Post0 As String = "account=" + LoginID.Text + "&password=" + Password.Text + "&session_id=" + GeckoFX.keks
         Dim byteArray0() As Byte = Encoding.UTF8.GetBytes(Post0)
         Request0.ContentLength = byteArray0.Length
@@ -71,6 +89,7 @@ Public Class Login
         Dim ServerResponse0 As String = reader0.ReadToEnd()
         If InStr(ServerResponse0, My.Resources.LoginSuccess) Then
         Else
+            MsgBox(Post0)
             MsgBox(ServerResponse0)
         End If
         reader0.Close()

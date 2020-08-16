@@ -15,10 +15,6 @@ Public Class GeckoFX
     Dim t As Thread
     Dim ScanTrue As Boolean = False
     Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
-        If InStr(My.Computer.Info.OSFullName, "Server") Then
-            MsgBox("Windows Server is not supported!", MsgBoxStyle.Critical)
-            Me.Close()
-        End If
 
         If ScanTrue = False Then
             Button2.Enabled = True
@@ -43,9 +39,9 @@ Public Class GeckoFX
 
                 WebBrowser1.Navigate("https://www.crunchyroll.com/logout")
                 Main.Pause(5)
-                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
-                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "sess_id=" + keks + "; expires=Thu, 05 Jan 2021 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "sess_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
                 If Main.LoginDialog = True Then
                     Login.ShowDialog()
@@ -132,11 +128,13 @@ Public Class GeckoFX
                                 Main.MassGrapp()
                             End If
                         Else
+                            Main.b = True
                             MsgBox(Main.No_Stream, MsgBoxStyle.OkOnly)
+                            Anime_Add.StatusLabel.Text = "Status: idle"
                         End If
                     Catch ex As Exception
                         MsgBox(ex.ToString)
-                        Main.LabelUpdate = "Status: idle"
+                        Anime_Add.StatusLabel.Text = "Status: idle"
                     End Try
                 ElseIf Main.c = False Then
                     If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "hardsub_lang")) Then
@@ -158,6 +156,28 @@ Public Class GeckoFX
                 End If
                 'ElseIf CBool(InStr(WebBrowser1.Url.ToString, "https://www.anime-on-demand.de/anime/")) Then
 
+                'MsgBox(Main.WebbrowserSoftSubURL)
+                ' Anime_Add.StatusLabel.Text = 
+            ElseIf CBool(InStr(WebBrowser1.Url.ToString, "funimation.com")) Then
+                If Main.b = False Then
+
+                    If InStr(WebBrowser1.Document.Body.OuterHtml, My.Resources.Funimation_Player_ID) Then
+                        Main.WebbrowserURL = WebBrowser1.Url.ToString
+                        Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+                        Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                        Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
+                        Main.WebbrowserCookie = WebBrowser1.Document.Cookie
+                        Main.b = True
+
+                        t = New Thread(AddressOf Main.Funitmation_Grapp)
+                        t.Priority = ThreadPriority.Normal
+                        t.IsBackground = True
+                        t.Start()
+
+                    Else
+                        Anime_Add.StatusLabel.Text = "fail?"
+                    End If
+                End If
 
             Else
                 If Main.b = False Then
@@ -174,7 +194,7 @@ Public Class GeckoFX
                     Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
                     Dim CurrentFile As String = Nothing
                     For Each File In FileLocation.GetFiles()
-                        If InStr(File.FullName, "log.txt") Then
+                        If InStr(File.FullName, "gecko-network.txt") Then
                             CurrentFile = File.FullName
                             Exit For
                         End If
@@ -208,7 +228,7 @@ Public Class GeckoFX
                     If InStr(HTMLString, ".m3u8") Then 'm3u8?
                         Anime_Add.StatusLabel.Text = "Status: m3u8 found, trying to start the download"
                         Main.LogBrowserData = False
-                        GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                        GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
                         GeckoPreferences.Default("logging.nsHttp") = 0
                         Dim URL As String = Nothing
                         Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -302,6 +322,20 @@ Public Class GeckoFX
     End Sub
 
     Private Sub GeckoFX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If Me.Width > My.Computer.Screen.Bounds.Width Then
+            Me.Width = My.Computer.Screen.Bounds.Width
+            WebBrowser1.Width = Me.Size.Width - 15 ', Me.Size.Height - 69)
+            WebBrowser1.Location = New Point(0, 30)
+            TextBox1.Width = My.Computer.Screen.Bounds.Width - 435
+
+        End If
+
+        If Me.Size.Height > My.Computer.Screen.Bounds.Height Then
+            Me.Height = My.Computer.Screen.Bounds.Height
+            WebBrowser1.Height = Me.Size.Height - 69
+            WebBrowser1.Location = New Point(0, 30)
+        End If
+
         If Main.Debug2 = True Then
             Debug_Mode.Show()
             Debug_Mode.Location = New Point(Me.Location.X + Me.Width - 15, Me.Location.Y)
@@ -371,9 +405,14 @@ Public Class GeckoFX
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
+        'Main.WebbrowserURL = WebBrowser1.Url.ToString
+        'Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+        'Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+        'Main.GrappURL()
         Try
             My.Computer.Clipboard.SetText(WebBrowser1.Url.ToString)
+            'My.Computer.Clipboard.SetText(WebBrowser1.Document.Cookie)
+
             MsgBox("copied: " + Chr(34) + WebBrowser1.Url.ToString + Chr(34))
         Catch ex As Exception
         End Try
@@ -444,7 +483,10 @@ Public Class GeckoFX
             If Main.Debug2 = True Then
                 MsgBox(BaseURL3)
             End If
-            AsyncWorkerX.RunAsync(AddressOf Main.DownloadMangaPages, BaseURL3, ImageList, Main.RemoveExtraSpaces(NameDLFinal))
+            'AsyncWorkerX.RunAsync(AddressOf Main.DownloadMangaPages, BaseURL3, ImageList, Main.RemoveExtraSpaces(NameDLFinal))
+            Dim Thumbnail As String = BaseURL3 + ImageList(0)
+            Main.MangaListItemAdd(Main.RemoveExtraSpaces(NameDLFinal), Thumbnail, BaseURL3, ImageList)
+
         ElseIf InStr(WebBrowser1.Url.ToString, "cr-cookie-ui.php") Then
             MsgBox(WebBrowser1.Document.Body.InnerHtml)
 
@@ -457,13 +499,13 @@ Public Class GeckoFX
                 Button2.Enabled = False
                 ScanTrue = True
 
-                GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
                 GeckoPreferences.Default("logging.nsHttp") = 3
                 Main.LogBrowserData = True
                 Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
                 Dim CurrentFile As String = Nothing
                 For Each File In FileLocation.GetFiles()
-                    If InStr(File.FullName, "log.txt") Then
+                    If InStr(File.FullName, "gecko-network.txt") Then
                         CurrentFile = File.FullName
                         Exit For
                     End If
@@ -546,7 +588,7 @@ Public Class GeckoFX
                 If InStr(HTMLString, ".m3u8") Then 'm3u8?
                     Button2.Text = "found m3u8"
                     Main.LogBrowserData = False
-                    GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
                     GeckoPreferences.Default("logging.nsHttp") = 0
                     Dim URL As String = Nothing
                     Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -571,7 +613,7 @@ Public Class GeckoFX
                     HTMLString = Main.mpdList.Item(0)
                     Button2.Text = "found mpd!"
                     Main.LogBrowserData = False
-                    GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
                     GeckoPreferences.Default("logging.nsHttp") = 0
                     Dim URL As String = Nothing
                     Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -594,34 +636,34 @@ Public Class GeckoFX
                     Next
 
                 End If
-                If Main.txtList.Count > 0 Then                'InStr(HTMLString, ".mpd?") Then
-                    HTMLString = Main.mpdList.Item(0)
-                    'Button2.Text = "found mpd!"
-                    Main.LogBrowserData = False
+                'If Main.txtList.Count > 0 Then                'InStr(HTMLString, ".mpd?") Then
+                '    HTMLString = Main.mpdList.Item(0)
+                '    'Button2.Text = "found mpd!"
+                '    Main.LogBrowserData = False
 
-                    GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
-                    GeckoPreferences.Default("logging.nsHttp") = 0
-                    Dim URL As String = Nothing
-                    Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
-                    For i As Integer = 0 To HTMLSplit.Count - 1
-                        If InStr(HTMLSplit(i), ".mpd?") Then
-                            Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim URLPart1() As String = HTMLSplit(i + 1).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Main.NonCR_URL = "https://" + URLPart1(1) + URLPart2Split2(0)
-                            'MsgBox(Main.NonCR_URL)
-                            'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
-                            Main.FFMPEG_Reso(Main.NonCR_URL)
-                            t = New Thread(AddressOf Main.Grapp_non_CR)
-                            t.Priority = ThreadPriority.Normal
-                            t.IsBackground = True
-                            t.Start()
-                            Button2.Text = "Start network scan"
-                            Exit For
-                        End If
-                    Next
+                '    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
+                '    GeckoPreferences.Default("logging.nsHttp") = 0
+                '    Dim URL As String = Nothing
+                '    Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
+                '    For i As Integer = 0 To HTMLSplit.Count - 1
+                '        If InStr(HTMLSplit(i), ".mpd?") Then
+                '            Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
+                '            Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                '            Dim URLPart1() As String = HTMLSplit(i + 1).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
+                '            Main.NonCR_URL = "https://" + URLPart1(1) + URLPart2Split2(0)
+                '            'MsgBox(Main.NonCR_URL)
+                '            'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
+                '            Main.FFMPEG_Reso(Main.NonCR_URL)
+                '            t = New Thread(AddressOf Main.Grapp_non_CR)
+                '            t.Priority = ThreadPriority.Normal
+                '            t.IsBackground = True
+                '            t.Start()
+                '            Button2.Text = "Start network scan"
+                '            Exit For
+                '        End If
+                '    Next
 
-                End If
+                'End If
                 ScanTrue = False
                 Button2.Enabled = True
             Catch ex As Exception
@@ -646,4 +688,20 @@ Public Class GeckoFX
         'Debug_Mode.TopMost = False
     End Sub
 
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        If InStr(WebBrowser1.Url.ToString, "funimation.com") Then
+            Dim Funimation_List As New List(Of String)
+            Dim Funimation_list1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {My.Resources.Funimation_Split_1}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            For i As Integer = 1 To Funimation_list1.Count - 1
+                Dim Funimation_list2() As String = Funimation_list1(i).Split(New String() {My.Resources.Funimation_Split_2}, System.StringSplitOptions.RemoveEmptyEntries)
+                Funimation_List.Add("https://www.funimation.com" + Funimation_list2(0))
+                Main.ListBoxList.Add("https://www.funimation.com" + Funimation_list2(0))
+            Next
+            MsgBox(Funimation_List.Count.ToString + " episodes added to Download queue")
+            'For ii As Integer = 0 To Funimation_List.Count - 1
+            '    MsgBox(Funimation_List.Item(ii))
+            'Next
+        End If
+    End Sub
 End Class

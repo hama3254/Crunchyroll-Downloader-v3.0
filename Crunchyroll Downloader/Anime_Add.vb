@@ -191,11 +191,10 @@ Public Class Anime_Add
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
         'pictureBox4.Enabled = False
-        Main.RemoveFinishedTask()
         Main.LoginOnly = "Download Mode!"
         If groupBox1.Visible = True Then
             Try
-                If CBool(InStr(textBox1.Text, "crunchyroll.com")) Then
+                If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then
                     If StatusLabel.Text = "Status: waiting for episode selection" Then
                         If MessageBox.Show("Are you sure you want cancel the advanced download?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                             StatusLabel.Text = "Status: idle"
@@ -207,7 +206,7 @@ Public Class Anime_Add
                         '    Exit Sub
                         '    pictureBox4.Enabled = True
                     Else
-                        If Main.PR_List.Count >= Main.MaxDL Then
+                        If Main.RunningDownloads >= Main.MaxDL Then
                             ListBox1.Items.Add(textBox1.Text)
                             textBox1.ForeColor = Color.FromArgb(9248044)
                             Main.Pause(1)
@@ -228,7 +227,7 @@ Public Class Anime_Add
                         Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
                         Dim CurrentFile As String = Nothing
                         For Each File In FileLocation.GetFiles()
-                            If InStr(File.FullName, "log.txt") Then
+                            If InStr(File.FullName, "gecko-network.txt") Then
                                 CurrentFile = File.FullName
                                 Exit For
                             End If
@@ -242,7 +241,7 @@ Public Class Anime_Add
                             logFileStream.Close()
                         End If
                         Main.LogBrowserData = True
-                        GeckoPreferences.Default("logging.config.LOG_FILE") = "log.txt"
+                        GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
                         GeckoPreferences.Default("logging.nsHttp") = 3
                         GeckoFX.WebBrowser1.Navigate(textBox1.Text)
                         StatusLabel.Text = "Status: looking for non CR video file"
@@ -287,10 +286,7 @@ Public Class Anime_Add
             List_DL_Cancel = False
             pictureBox4.Image = My.Resources.main_button_download_default
         End If
-        If InStr(My.Computer.Info.OSFullName, "Server") Then
-            MsgBox("Windows Server is not supported!", MsgBoxStyle.Critical)
-            Me.Close()
-        End If
+
         pictureBox4.Enabled = True
     End Sub
 
@@ -400,18 +396,28 @@ Public Class Anime_Add
                 pictureBox4.Image = My.Resources.main_button_download_default
             End If
         End If
-        If Main.PR_List.Count >= Main.MaxDL Then
-            Main.RemoveFinishedTask()
-        Else
+        If Main.RunningDownloads < Main.MaxDL Then
             If ListBox1.Items.Count > 0 Then
                 If GroupBox3.Visible = True Then
-                    If Main.Grapp_RDY = True Then
-                        GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
-                        ListBox1.Items.Remove(ListBox1.Items(0))
-                        Main.Grapp_RDY = False
-                        Main.b = False
+                    If InStr(ListBox1.GetItemText(ListBox1.Items(0)), "funimation.com") Then
+                        If Main.Funimation_Grapp_RDY = True Then
+                            GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
+                            ListBox1.Items.Remove(ListBox1.Items(0))
+                            Main.Funimation_Grapp_RDY = False
+                            Main.b = False
+                        End If
+
+                    Else
+                        If Main.Grapp_RDY = True Then
+                            GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
+                            ListBox1.Items.Remove(ListBox1.Items(0))
+                            Main.Grapp_RDY = False
+                            Main.b = False
+                        End If
                     End If
                 End If
+
+
             End If
         End If
 

@@ -111,24 +111,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;type&quot;:&quot;midroll&quot; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property ads_midroll() As String
-            Get
-                Return ResourceManager.GetString("ads_midroll", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die {&quot;type&quot;:&quot;preroll&quot;,&quot;offset&quot;:0}, ähnelt.
-        '''</summary>
-        Friend ReadOnly Property ads_preroll() As String
-            Get
-                Return ResourceManager.GetString("ads_preroll", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property backgroud() As System.Drawing.Bitmap

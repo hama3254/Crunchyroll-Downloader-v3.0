@@ -1801,6 +1801,7 @@ Public Class Main
                                  ListItemAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail4, URL_DL, Pfad_DL)
                                  Return Nothing
                              End Function))
+
 #End Region
         'AsyncWorkerX.RunAsync(AddressOf DownloadFFMPEG, URL_DL, Pfad_DL, Pfad_DL)
         Grapp_non_cr_RDY = True
@@ -2145,6 +2146,8 @@ Public Class Main
                                      ListItemAdd(Pfad_DL, L1Name, DefaultName, ResoHTMLDisplay, "Unknown", SubValuesToDisplay(), thumbnail3, Funimation_m3u8_final, Chr(34) + DownloadPfad + Chr(34))
                                      Return Nothing
                                  End Function))
+            liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + FunimationTitle + " <br> " + FunimationSeason + " " + FunimationEpisode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + DefaultName + "-->")
+
 #End Region
 
         Catch ex As Exception
@@ -2333,7 +2336,7 @@ Public Class Main
 
                         Dim html() As String = htmlReq.Split(New String() {"FunimationHTML="}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim DecodedHTML As String = UrlDecode(html(1))
-                        My.Computer.FileSystem.WriteAllText(Application.StartupPath + "/log.txt", DecodedHTML, True)
+                        'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "/log.txt", DecodedHTML, True)
                         Dim URLSplit() As String = DecodedHTML.Split(New String() {"FunimationURL="}, System.StringSplitOptions.RemoveEmptyEntries)
                         WebbrowserURL = URLSplit(1)
                         Dim BodySplit() As String = DecodedHTML.Split(New String() {"<body"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -2479,6 +2482,14 @@ Public Class Main
         End If
     End Function
 
+    Private Sub Main_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Me.MouseDoubleClick
+        'Try
+        '    For i As Integer = 0 To ListBoxList.Count - 1
+        '        MsgBox(ListBoxList.Item(i))
+        '    Next
+        'Catch ex As Exception
+        '    MsgBox(ex.ToString)
+        'End Try
+    End Sub
 #End Region
-
 End Class

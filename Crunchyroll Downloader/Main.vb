@@ -295,7 +295,7 @@ Public Class Main
 
     End Sub
 
-    Public Sub ListItemAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String)
+    Public Sub ListItemAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String) ', ByVal AudioLang As String)
         Dim Thumbnail As Image = My.Resources.main_del
         Try
             Dim wc As New WebClient()
@@ -320,7 +320,7 @@ Public Class Main
         Item.Width = 838
         Item.Height = 142
 #Region "Set Variables"
-        Item.SetUsedMap(UsedMap)
+        'Item.SetUsedMap(UsedMap)
         Item.Setffmpeg_command(ffmpeg_command)
         Item.SetMergeSubstoMP4(MergeSubstoMP4)
         Item.SetDebug2(Debug2)
@@ -1079,6 +1079,7 @@ Public Class Main
             'Throw New System.Exception("Test")
             Grapp_RDY = False
             Dim CR_Anime_Titel As String = Nothing
+            Dim CR_Anime_Dub As String = Nothing
             Dim CR_Anime_Staffel As String = Nothing
             Dim CR_Anime_Folge As String = Nothing
 #Region "Name + Pfad"
@@ -1289,6 +1290,10 @@ Public Class Main
 
                     Dim s() As String = hls_List(i).Split(New String() {Chr(34) + "hardsub_lang" + Chr(34) + ":" + SubSprache2 + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     CR_URI_Master = s(1).Replace("\/", "/")
+                    Dim dub() As String = hls_List(i).Split(New String() {Chr(34) + "audio_lang" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim dub2() As String = dub(0).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+                    CR_Anime_Dub = dub2(0)
                     'MsgBox(CR_URI_Master)
                 End If
             Next
@@ -1372,9 +1377,9 @@ Public Class Main
 #End Region
             If Resu = 42 Then
                 If MergeSubstoMP4 = True Then
-                    URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+                    URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
                 Else
-                    URL_DL = CR_URI_Master
+                    URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + " " + ffmpeg_command
                 End If
                 'MsgBox(URL_DL)
             Else
@@ -1414,9 +1419,12 @@ Public Class Main
                 Dim VLC_URI_2 As String() = VLC_URI_1(1).Split(New [Char]() {Chr(34)})
                 Dim VLC_URI_3 As String() = VLC_URI_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
                 If MergeSubstoMP4 = True Then
-                    URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+                    URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+
+                    'URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
                 Else
-                    URL_DL = VLC_URI_3(0).Trim()
+                    URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + " " + ffmpeg_command
+                    'URL_DL = VLC_URI_3(0).Trim()
                 End If
                 'MsgBox(URL_DL)
             End If
@@ -1780,25 +1788,25 @@ Public Class Main
 #Region "<li> constructor"
         Dim Subsprache3 As String = "undefined" 'HardSubValuesToDisplay(SubSprache2)
         Dim ResoHTMLDisplay As String = "[Auto]"
-        If InStr(ResoAvalibe, Resu.ToString) Then
-            Dim ResoUse As String() = ResoAvalibe.Split(New String() {Resu.ToString + ":--:"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ResoUse2 As String() = ResoUse(1).Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
-
-            UsedMap = ResoUse2(0)
-            If Debug2 = True Then
-                MsgBox(UsedMap)
-            End If
-            ResoHTMLDisplay = Resu.ToString + "p"
-        Else
-            ResoHTMLDisplay = "[Auto]"
-        End If
-
         Dim L2Name As String = Video_Title
         Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim L1Name As String = L1Name_Split(1)
         Pfad_DL = Chr(34) + Pfad + "\" + Video_FilenName + Chr(34)
+
+        'If InStr(ResoAvalibe, Resu.ToString) Then
+        '    Dim ResoUse As String() = ResoAvalibe.Split(New String() {Resu.ToString + ":--:"}, System.StringSplitOptions.RemoveEmptyEntries)
+        '    Dim ResoUse2 As String() = ResoUse(1).Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
+        '    UsedMap = ResoUse2(0)
+        '    If Debug2 = True Then
+        '        MsgBox(UsedMap)
+        '    End If
+        '    ResoHTMLDisplay = Resu.ToString + "p"
+        'Else
+        ResoHTMLDisplay = "[Auto]"
+        'End If
+        Dim cmd As String = "-i " + Chr(34) + URL_DL + Chr(34) + " " + ffmpeg_command
         Me.Invoke(New Action(Function()
-                                 ListItemAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail4, URL_DL, Pfad_DL)
+                                 ListItemAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail4, cmd, Pfad_DL)
                                  Return Nothing
                              End Function))
 
@@ -1890,9 +1898,9 @@ Public Class Main
             FunimationDub = FunimationDub2(0)
 
 
-            Dim DefaultName As String = RemoveExtraSpaces(FunimationTitle + " " + FunimationSeason + " " + FunimationEpisode + ".mp4")
+            Dim DefaultName As String = RemoveExtraSpaces(FunimationTitle + " " + FunimationSeason + " " + FunimationEpisode)
 
-            Dim DefaultPath As String = Pfad + "\" + DefaultName
+            Dim DefaultPath As String = Pfad + "\" + DefaultName + ".mp4"
 #End Region
 
 #Region "Pfad"
@@ -1932,9 +1940,9 @@ Public Class Main
                                  End Function))
 
             If SubfolderValue = Nothing Then
-                DownloadPfad = Pfad + "\" + DefaultName
+                DownloadPfad = Pfad + "\" + DefaultName + ".mp4"
             Else
-                DownloadPfad = Pfad + "\" + SubfolderValue + DefaultName
+                DownloadPfad = Pfad + "\" + SubfolderValue + DefaultName + ".mp4"
             End If
             If Not Directory.Exists(Path.GetDirectoryName(DownloadPfad)) Then
                 ' Nein! Jetzt erstellen...
@@ -1942,7 +1950,7 @@ Public Class Main
                     Directory.CreateDirectory(Path.GetDirectoryName(DownloadPfad))
                 Catch ex As Exception
                     ' Ordner wurde nich erstellt
-                    DownloadPfad = Pfad + "\" + DefaultName
+                    DownloadPfad = Pfad + "\" + DefaultName + ".mp4"
                 End Try
             End If
 
@@ -2129,11 +2137,29 @@ Public Class Main
             If MergeSubstoMP4 = True Then
                 If UsedSub = Nothing Then
                 Else
+                    Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
+                    If FunimationDub = "japanese" Then
+                        DubMetatata = " -metadata:s:a:0 language=jpn"
+                        'Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+                    Else
+                        DubMetatata = " -metadata:s:a:0 language=eng"
+                        'Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+                    End If
+
                     Dim SoftSubMergeURLs As String = " -i " + Chr(34) + UsedSub + Chr(34)
                     Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a -map 1"
                     Dim SoftSubMergeMetatata As String = " -metadata:s:s:0 language=eng"
-                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
                 End If
+            Else
+                If FunimationDub = "japanese" Then
+                    Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
+                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+                Else
+                    Dim DubMetatata As String = " -metadata:s:a:0 language=eng"
+                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+                End If
+
             End If
 
 #End Region
@@ -2349,12 +2375,25 @@ Public Class Main
                         WebbrowserHeadText = HeadSplit2(0)
 
                         If Funimation_Grapp_RDY = True Then
-                            Dim t As Thread
-                            t = New Thread(AddressOf Funitmation_Grapp)
-                            t.Priority = ThreadPriority.Normal
-                            t.IsBackground = True
-                            t.Start()
-                        Else
+                            'Dim t As Thread
+                            't = New Thread(AddressOf Funitmation_Grapp)
+                            't.Priority = ThreadPriority.Normal
+                            't.IsBackground = True
+                            't.Start()
+
+
+                            If RunningDownloads >= MaxDL Then
+                                Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                            Else
+                                Me.Invoke(New Action(Function()
+                                                         GeckoFX.WebBrowser1.Navigate(WebbrowserURL)
+                                                         Return Nothing
+                                                     End Function))
+
+                                b = False
+                            End If
+
+                            Else
                             If Anime_Add.Visible = True Then
                                 Anime_Add.ListBox1.Items.Add(WebbrowserURL)
                             Else

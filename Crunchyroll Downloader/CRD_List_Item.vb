@@ -12,7 +12,7 @@ Public Class CRD_List_Item
 
     Dim Label_website_Text As String = Nothing
     Dim StatusRunning As Boolean = True
-    Dim UsedMap As String = Nothing
+    'Dim UsedMap As String = Nothing
     Dim ffmpeg_command As String = Nothing
     Dim Debug2 As Boolean = False
     Dim MergeSubstoMP4 As Boolean = False
@@ -92,9 +92,9 @@ Public Class CRD_List_Item
     End Function
 #End Region
 #Region "Set Variables"
-    Public Sub SetUsedMap(ByVal Value As String)
-        UsedMap = Value
-    End Sub
+    'Public Sub SetUsedMap(ByVal Value As String)
+    '    UsedMap = Value
+    'End Sub
     Public Sub Setffmpeg_command(ByVal Value As String)
         ffmpeg_command = Value
     End Sub
@@ -220,26 +220,28 @@ Public Class CRD_List_Item
 
 #Region "Download + Update UI"
 
-    Public Function DownloadFFMPEG(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
+    Public Function DownloadFFMPEG(ByVal DLCommand As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
         DownloadPfad = DL_Pfad
-        HistoryDL_URL = DL_URL
+        HistoryDL_URL = DLCommand
         HistoryDL_Pfad = DL_Pfad
         HistoryFilename = Filename
 
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
         'Dim cmd As String = "-i " + Chr(34) + URL_DL + Chr(34) + " -c copy -bsf:a aac_adtstoasc " + Pfad_DL 'start ffmpeg with command strFFCMD string
-        Dim cmd As String = "-i " + Chr(34) + DL_URL + Chr(34) + " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
-        If MergeSubstoMP4 = True Then
-            If CBool(InStr(DL_URL, "-i " + Chr(34))) = True Then
-                cmd = DL_URL + " " + DL_Pfad
-            End If
-        End If
-        If UsedMap = Nothing Then
-        Else
-            cmd = "-i " + Chr(34) + DL_URL + Chr(34) + " -map 0:a " + "-map " + UsedMap + " " + ffmpeg_command + " " + DL_Pfad
-            UsedMap = Nothing
-        End If
+        Dim cmd As String = DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+
+        'If MergeSubstoMP4 = True Then
+        '    If CBool(InStr(DL_URL, "-i " + Chr(34))) = True Then
+        '        cmd = DL_URL + " " + DL_Pfad
+        '    End If
+        'End If
+
+        'If UsedMap = Nothing Then
+        'Else
+
+        '    UsedMap = Nothing
+        'End If
         If Debug2 = True Then
             MsgBox(cmd)
         End If
@@ -351,6 +353,13 @@ Public Class CRD_List_Item
             Me.Invoke(New Action(Function()
                                      ProgressBar1.Value = percent
                                      Label_percent.Text = Math.Round(DownloadFinished, 2, MidpointRounding.AwayFromZero).ToString + "MB/" + Math.Round(FileSize, 2, MidpointRounding.AwayFromZero).ToString + "MB " + percent.ToString + "%"
+                                     Return Nothing
+                                 End Function))
+
+        ElseIf InStr(e.Data, "muxing overhead:") Then
+            Me.Invoke(New Action(Function()
+                                     Dim Done As String() = Label_percent.Text.Split(New String() {"MB"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                     Label_percent.Text = "Finsihed - " + Done(0) + "MB"
                                      Return Nothing
                                  End Function))
         End If

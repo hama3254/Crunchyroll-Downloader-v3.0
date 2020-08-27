@@ -76,10 +76,10 @@
     End Sub
 
     Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
-        Main.FFMPEG_Reso(RichTextBox2.Text)
+        'Main.FFMPEG_Reso(RichTextBox2.Text)
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        MsgBox(Main.ResoAvalibe)
+        'MsgBox(Main.ResoAvalibe)
     End Sub
 End Class

@@ -362,7 +362,7 @@ Public Class CRD_List_Item
         ElseIf InStr(e.Data, "muxing overhead:") Then
             Me.Invoke(New Action(Function()
                                      Dim Done As String() = Label_percent.Text.Split(New String() {"MB"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                     Label_percent.Text = "Finsihed - " + Done(0) + "MB"
+                                     Label_percent.Text = "Finished - " + Done(0) + "MB"
                                      Return Nothing
                                  End Function))
         End If

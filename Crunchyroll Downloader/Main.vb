@@ -1061,6 +1061,8 @@ Public Class Main
                 Return "ita"
             ElseIf HardSub = "esES" Then
                 Return "spa"
+            ElseIf HardSub = "jaJP" Then
+                Return "jpn"
             End If
 
             Return "chi"

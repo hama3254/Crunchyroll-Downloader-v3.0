@@ -351,6 +351,9 @@ Public Class CRD_List_Item
             Dim DownloadFinished As Double = ZeitFertigInteger * bitrateInt / 8
             Dim percent As Integer = ZeitFertigInteger / ZeitGesamtInteger * 100
             Me.Invoke(New Action(Function()
+                                     If percent > 100 Then
+                                         percent = 100
+                                     End If
                                      ProgressBar1.Value = percent
                                      Label_percent.Text = Math.Round(DownloadFinished, 2, MidpointRounding.AwayFromZero).ToString + "MB/" + Math.Round(FileSize, 2, MidpointRounding.AwayFromZero).ToString + "MB " + percent.ToString + "%"
                                      Return Nothing

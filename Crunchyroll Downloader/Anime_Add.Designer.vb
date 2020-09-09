@@ -273,9 +273,9 @@ Partial Class Anime_Add
         Me.ClientSize = New System.Drawing.Size(630, 275)
         Me.Controls.Add(Me.pictureBox3)
         Me.Controls.Add(Me.pictureBox4)
-        Me.Controls.Add(Me.groupBox1)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.groupBox2)
+        Me.Controls.Add(Me.groupBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "Anime_Add"
         Me.Text = "Add"

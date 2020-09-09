@@ -313,7 +313,7 @@ Public Class einstellungen
 
 
 
-    Public Function GeräteID() As String
+    Private Function GeräteID() As String
         Dim rnd As New Random
         Dim possible As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         Dim HWID As String = Nothing

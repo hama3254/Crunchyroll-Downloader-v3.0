@@ -3,8 +3,6 @@ Imports System.Text
 Imports System.IO
 Imports Microsoft.Win32
 Imports System.ComponentModel
-Imports System.Threading
-
 Public Class Main
     Public ListBoxList As New List(Of String)
     Dim ItemList As New List(Of CRD_List_Item)
@@ -69,7 +67,7 @@ Public Class Main
 
     Dim DL_Path_String As String = "Please choose download directory."
     Public CR_Premium_Failed As String = "Can not verify the active premium membership."
-    Public No_Stream As String = "Please make sure that the URL is correct or check if the Anime is available in your country."
+    Public No_Stream As String = "Please make sure that the URL is correct."
     Dim TaskNotCompleed As String = "Please wait until the current task is completed."
     Dim Premium_Stream As String = "Please make sure that you logged in for this premium episode."
     Dim Error_Mass_DL As String = "We run into a problem here." + vbNewLine + "You can try to download every episode individually."
@@ -324,9 +322,7 @@ Public Class Main
         'Item.SetLocations(r.Y)
         'MsgBox("test " + r.Y.ToString)
         Item.Visible = True
-        Dim Evaluator = New Thread(Sub() Item.DownloadFFMPEG(URL_DL, Pfad_DL, Pfad_DL))
-        Evaluator.Start()
-
+        Item.DownloadFFMPEG(URL_DL, Pfad_DL, Pfad_DL)
     End Sub
 #Region "Manga DL"
     Public Sub MangaListItemAdd(ByVal NameP2 As String, ByVal ThumbnialURL As String, ByVal BaseURL As String, ByVal SiteList As List(Of String))
@@ -1082,13 +1078,13 @@ Public Class Main
                 Dim CR_Title As String = Nothing
                 'If CR_Name_by_Titel_2.Count > 2 Then
                 For i As Integer = 0 To CR_Name_by_Titel_2.Count - 2
-                    If CR_Title = Nothing Then
-                        CR_Title = CR_Name_by_Titel_2(i).Trim()
-                    Else
-                        CR_Title = CR_Title + " " + CR_Name_by_Titel_2(i).Trim()
-                    End If
+                        If CR_Title = Nothing Then
+                            CR_Title = CR_Name_by_Titel_2(i).Trim()
+                        Else
+                            CR_Title = CR_Title + " " + CR_Name_by_Titel_2(i).Trim()
+                        End If
 
-                Next
+                    Next
                 'Else
 
                 'End If

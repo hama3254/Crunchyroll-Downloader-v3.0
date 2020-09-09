@@ -132,13 +132,11 @@ Public Class GeckoFX
                                 Main.MassGrapp()
                             End If
                         Else
-                            Main.b = True
                             MsgBox(Main.No_Stream, MsgBoxStyle.OkOnly)
-                            Anime_Add.StatusLabel.Text = "Status: idle"
                         End If
                     Catch ex As Exception
                         MsgBox(ex.ToString)
-                        Anime_Add.StatusLabel.Text = "Status: idle"
+                        Main.LabelUpdate = "Status: idle"
                     End Try
                 ElseIf Main.c = False Then
                     If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "hardsub_lang")) Then

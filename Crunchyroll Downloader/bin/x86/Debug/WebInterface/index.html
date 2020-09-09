@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<html>
+       <title>CRD</title>
+              
+  <style>
+	.main-bg {margin:0 0 0 0;background-color:#F2F2F2;font-family:Consolas;font-size:16px;}
+	.div-spacer{width:16px;height:110px;display:block;margin-bottom:14px;position:relative}
+	.div-episode{width:730px;height:110px;display:block;margin-bottom:14px;position:relative}
+	.class-balken{width:735px;height:8px;display:block;margin-bottom:4px;margin-top:6px}	
+	.class-cc{width:36px;height:36px;display:block;margin-bottom:4px;margin-top:-6px;float: left;margin-left:-20px;}	
+	.imagestyle{width:156px;height:105px;display:block;margin-bottom:8px;margin-top:5px;margin-right: 10px;margin-left: 10px;float: left;}	
+	.spacediv{width:620px;height:175px;display:block;margin-bottom:4px}
+	.ulStyle li{margin-left:12px;float:left;display:block;position:relative}
+	.liOld{margin-left:12px;display:block}
+	.ulStyle{margin:0 0 0 -10px;display:block;position:relative;margin-top:8px}
+	.listyle{width:156px;display:block;background:#fff;padding:16px;margin-bottom:14px;position:relative;background-color:#b5b3b3}
+	.progressbar{width:540px;height:20px;background:#dedede;margin-left: 170px;margin-top:8px;}
+	.progressbar-value{background:#F78C25;height:20px;font-weight:bold;}
+	.percenttext{float:right;text-align:right;font-size:16px;display:inline-block;margin-right:25px}
+	.resotext{text-align: left;font-size:18px;margin-left:0px;font-weight:550;}
+	.titel{font-size:18px;font-weight:550;display:block;margin-top:5px}
+	.cc-wert{font-size:18px;font-weight:550;display:block;margin-top:-20px;margin-left:250px;text-decoration: none;color:black;}
+	.liClass{margin-bottom:8px}
+  </style>
+<body id="bodypage" class="main-bg" >
+<img alt="image error" src="balken.png" class="class-balken">
+
+		<div class="div-episode">
+
+<img alt="image error" src="https://img1.ak.crunchyroll.com/i/spire1-tmb/81d99ae7d61c73d9c443b963424740621475364399_fwide.jpg" class="imagestyle">
+
+<div>
+
+<span class="titel" dir="auto">Aooni The Blue Monster <br>  Folge 1</span>
+
+<div class="progressbar">
+
+<div class="progressbar-value" style="width:100%"></div>
+
+</div>
+<span  dir="auto" class='percenttext'>Finsihed - 80,84MB</span>
+<div>
+<br>
+<span dir="auto" class="resotext">1080p</span>
+
+<a href="#" class="cc-wert" title="Softsubs:
+"> <img alt="image error" src="cc.png" class="class-cc">English</a>
+
+</div>
+
+</div>
+
+</div>
+
+<img alt="image error" src="balken.png" class="class-balken"><!-- Aooni The Blue Monster Folge 1-->
+<script>
+
+setInterval(function loadXMLDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("bodypage").innerHTML = this.responseText;
+	  //console.log(this.responseText);
+    }
+  };
+  xhttp.open("GET", "/", true);
+  xhttp.send();
+}, 1000);
+</script>
+</body></html>

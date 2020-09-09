@@ -28,6 +28,7 @@ Partial Class einstellungen
         Me.RBStaffel = New System.Windows.Forms.RadioButton()
         Me.pictureBox1 = New System.Windows.Forms.PictureBox()
         Me.pictureBox4 = New System.Windows.Forms.PictureBox()
+        Me.ToolTip2 = New System.Windows.Forms.ToolTip(Me.components)
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
@@ -97,7 +98,7 @@ Partial Class einstellungen
         Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
         Me.GB_Sub_Path = New System.Windows.Forms.GroupBox()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.ToolTip2 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.Server = New System.Windows.Forms.CheckBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
@@ -747,7 +748,6 @@ Partial Class einstellungen
         '
         Me.TabPage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
         Me.TabPage1.Controls.Add(Me.GroupBox4)
-        Me.TabPage1.Controls.Add(Me.PictureBox6)
         Me.TabPage1.Controls.Add(Me.GroupBox5)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.DL_Count_simultaneous)
@@ -798,7 +798,7 @@ Partial Class einstellungen
         '
         Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox6.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_credits_default
-        Me.PictureBox6.Location = New System.Drawing.Point(188, 370)
+        Me.PictureBox6.Location = New System.Drawing.Point(330, 35)
         Me.PictureBox6.Name = "PictureBox6"
         Me.PictureBox6.Size = New System.Drawing.Size(76, 39)
         Me.PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -808,13 +808,15 @@ Partial Class einstellungen
         'GroupBox5
         '
         Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox5.Controls.Add(Me.Server)
         Me.GroupBox5.Controls.Add(Me.CB_Log)
+        Me.GroupBox5.Controls.Add(Me.PictureBox6)
         Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
         Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox5.ForeColor = System.Drawing.Color.Black
         Me.GroupBox5.Location = New System.Drawing.Point(6, 309)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(456, 55)
+        Me.GroupBox5.Size = New System.Drawing.Size(456, 100)
         Me.GroupBox5.TabIndex = 7
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Other"
@@ -822,7 +824,7 @@ Partial Class einstellungen
         'CB_Log
         '
         Me.CB_Log.AutoSize = True
-        Me.CB_Log.Location = New System.Drawing.Point(316, 21)
+        Me.CB_Log.Location = New System.Drawing.Point(30, 64)
         Me.CB_Log.Name = "CB_Log"
         Me.CB_Log.Size = New System.Drawing.Size(84, 20)
         Me.CB_Log.TabIndex = 1
@@ -832,7 +834,7 @@ Partial Class einstellungen
         'ListViewAdd_True
         '
         Me.ListViewAdd_True.AutoSize = True
-        Me.ListViewAdd_True.Location = New System.Drawing.Point(30, 21)
+        Me.ListViewAdd_True.Location = New System.Drawing.Point(30, 29)
         Me.ListViewAdd_True.Name = "ListViewAdd_True"
         Me.ListViewAdd_True.Size = New System.Drawing.Size(236, 20)
         Me.ListViewAdd_True.TabIndex = 0
@@ -932,6 +934,16 @@ Partial Class einstellungen
         Me.TabControl1.Size = New System.Drawing.Size(476, 441)
         Me.TabControl1.TabIndex = 38
         '
+        'Server
+        '
+        Me.Server.AutoSize = True
+        Me.Server.Location = New System.Drawing.Point(151, 64)
+        Me.Server.Name = "Server"
+        Me.Server.Size = New System.Drawing.Size(129, 20)
+        Me.Server.TabIndex = 42
+        Me.Server.Text = "enable http server"
+        Me.Server.UseVisualStyleBackColor = True
+        '
         'einstellungen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -967,7 +979,6 @@ Partial Class einstellungen
         Me.GB_Resolution.ResumeLayout(False)
         Me.GB_Resolution.PerformLayout()
         Me.TabPage1.ResumeLayout(False)
-        Me.TabPage1.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -988,6 +999,7 @@ Partial Class einstellungen
     Friend WithEvents ToolTip1 As ToolTip
     Private WithEvents pictureBox1 As PictureBox
     Private WithEvents pictureBox4 As PictureBox
+    Friend WithEvents ToolTip2 As ToolTip
     Friend WithEvents TabPage3 As TabPage
     Public WithEvents GroupBox3 As GroupBox
     Public WithEvents PictureBox5 As PictureBox
@@ -1043,9 +1055,11 @@ Partial Class einstellungen
     Friend WithEvents A1080p As RadioButton
     Friend WithEvents TabPage1 As TabPage
     Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents CB_Login As CheckBox
     Private WithEvents PictureBox2 As PictureBox
     Private WithEvents PictureBox6 As PictureBox
     Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents CB_Log As CheckBox
     Friend WithEvents ListViewAdd_True As CheckBox
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Label1 As Label
@@ -1057,7 +1071,5 @@ Partial Class einstellungen
     Friend WithEvents RBStaffel As RadioButton
     Friend WithEvents RBAnime As RadioButton
     Friend WithEvents TabControl1 As TabControl
-    Friend WithEvents CB_Login As CheckBox
-    Friend WithEvents ToolTip2 As ToolTip
-    Friend WithEvents CB_Log As CheckBox
+    Friend WithEvents Server As CheckBox
 End Class

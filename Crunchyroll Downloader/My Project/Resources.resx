@@ -136,10 +136,10 @@
        &lt;title&gt;CRD&lt;/title&gt;
               
   &lt;style&gt;
-	.main-bg {margin:0 0 0 0;background-color:#F2F2F2;font-family:Consolas;font-size:16px;}
+	.main-bg {margin:0 0 0 0;background-color:#F2F2F2;}
 	.div-spacer{width:16px;height:110px;display:block;margin-bottom:14px;position:relative}
-	.div-episode{width:730px;height:110px;display:block;margin-bottom:14px;position:relative}
-	.class-balken{width:735px;height:8px;display:block;margin-bottom:4px;margin-top:6px}	
+	.div-episode{width:804px;height:110px;display:block;margin-bottom:14px;position:relative}
+	.class-balken{width:820px;height:8px;display:block;margin-bottom:4px;margin-top:6px}	
 	.class-cc{width:36px;height:36px;display:block;margin-bottom:4px;margin-top:-6px;float: left;margin-left:-20px;}	
 	.imagestyle{width:156px;height:105px;display:block;margin-bottom:8px;margin-top:5px;margin-right: 10px;margin-left: 10px;float: left;}	
 	.spacediv{width:620px;height:175px;display:block;margin-bottom:4px}
@@ -147,15 +147,15 @@
 	.liOld{margin-left:12px;display:block}
 	.ulStyle{margin:0 0 0 -10px;display:block;position:relative;margin-top:8px}
 	.listyle{width:156px;display:block;background:#fff;padding:16px;margin-bottom:14px;position:relative;background-color:#b5b3b3}
-	.progressbar{width:540px;height:20px;background:#dedede;margin-left: 170px;margin-top:8px;}
-	.progressbar-value{background:#F78C25;height:20px;font-weight:bold;}
-	.percenttext{float:right;text-align:right;font-size:16px;display:inline-block;margin-right:25px}
+	.progressbar{width:620px;height:14px;background:#dedede;margin-left: 170px;margin-top:8px;}
+	.progressbar-value{background:#F78C25;height:14px;font-weight:bold;}
+	.percenttext{text-align: right;font-size:13px;margin-left: 590px;}
 	.resotext{text-align: left;font-size:18px;margin-left:0px;font-weight:550;}
 	.titel{font-size:18px;font-weight:550;display:block;margin-top:5px}
 	.cc-wert{font-size:18px;font-weight:550;display:block;margin-top:-20px;margin-left:250px;text-decoration: none;color:black;}
 	.liClass{margin-bottom:8px}
   &lt;/style&gt;
-&lt;body id="bodypage" class="main-bg" &gt;
+ &lt;body class="main-bg"&gt;
 &lt;img alt="image error" src="balken1.png" class="class-balken"&gt;</value>
   </data>
   <data name="main_browser" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -168,21 +168,8 @@
     <value>..\Resources\crdsettings_setUScookie_button_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="htmlEnd" xml:space="preserve">
-    <value>&lt;script&gt;
-
-setInterval(function loadXMLDoc() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 &amp;&amp; this.status == 200) {
-      document.getElementById("bodypage").innerHTML = this.responseText;
-	  //console.log(this.responseText);
-    }
-  };
-  xhttp.open("GET", "/", true);
-  xhttp.send();
-}, 1000);
-&lt;/script&gt;
-&lt;/body&gt;&lt;/html&gt;</value>
+    <value>&lt;/body&gt;
+&lt;/html&gt;</value>
   </data>
   <data name="add_mass_cancel_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\add_mass_cancel_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -227,7 +214,7 @@ setInterval(function loadXMLDoc() {
 	.percenttext{text-align: right;font-size:13px;}
 	.titel{font-size:13px;font-weight:600;line-height:1.5;display:block;margin-top:10px}
   &lt;/style&gt;
- &lt;body class="main-bg" onload="location.reload();"&gt;          
+ &lt;body class="main-bg"&gt;          
 	&lt;ul class="ulStyle"&gt;
 				
 	&lt;/ul&gt;
@@ -244,7 +231,6 @@ setInterval(function loadXMLDoc() {
 &lt;/div&gt;
 &lt;span  dir="auto" class='percenttext'&gt;0%&lt;/span&gt;
 &lt;div&gt;
-&lt;br&gt;
 &lt;span dir="auto" class="resotext"&gt;</value>
   </data>
   <data name="thumbnailString" xml:space="preserve">
@@ -383,93 +369,5 @@ I delete the curremt session with the unlock, if you want to be logged in with t
   </data>
   <data name="main_settings_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-settings_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Funimation_Player_ID" xml:space="preserve">
-    <value>src="/player/</value>
-  </data>
-  <data name="Funimation_Split_1" xml:space="preserve">
-    <value>&lt;a class="trackVideo ng-binding" href="</value>
-  </data>
-  <data name="Funimation_Split_2" xml:space="preserve">
-    <value>"&gt;</value>
-  </data>
-  <data name="Funimation_src_string" xml:space="preserve">
-    <value>"src":</value>
-  </data>
-  <data name="Funimation_thumbnail" xml:space="preserve">
-    <value>&lt;meta property="og:image" content="</value>
-  </data>
-  <data name="Funimation_Subtitle_String" xml:space="preserve">
-    <value>", "kind": "subtitle", "type": "CC", "language": "en"</value>
-  </data>
-  <data name="Funimation_Subtitle_String2" xml:space="preserve">
-    <value>", "kind": "subtitle", "type": "Full", "language": "en"</value>
-  </data>
-  <data name="Error_404" xml:space="preserve">
-    <value>&lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;
-&lt;html&gt;&lt;head&gt;
-&lt;title&gt;404 Not Found&lt;/title&gt;
-&lt;/head&gt;&lt;body&gt;
-&lt;h1&gt;Not Found&lt;/h1&gt;
-&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
-&lt;hr&gt;
-&lt;address&gt;Server at Crunchyroll Downloader Port 8080&lt;/address&gt;
-&lt;/body&gt;&lt;/html&gt;</value>
-  </data>
-  <data name="CR_Head_Url_Split" xml:space="preserve">
-    <value>&lt;meta property="og:url" content="</value>
-  </data>
-  <data name="Post_error_Bottom" xml:space="preserve">
-    <value>&lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/body&gt;
-&lt;/html&gt;</value>
-  </data>
-  <data name="Post_error_Top" xml:space="preserve">
-    <value>&lt;html&gt;
-  &lt;head&gt;
-    
-  &lt;/head&gt;
-    &lt;style&gt;
-      body {
-        text-align: center;
-        padding: 40px 0;
-        background: #EBF0F5;
-      }
-        h1 {
-          color: #ad3f26;
-          font-family: sans-serif;
-          font-weight: 900;
-          font-size: 40px;
-          margin-bottom: 10px;
-        }
-        p {
-          color: #404F5E;
-          font-family: sans-serif;
-          font-size:20px;
-          margin: 0;
-        }
-      i {
-        color: #ad3f26;
-        font-size: 100px;
-        line-height: 200px;
-        margin-left:-15px;
-      }
-      .card {
-        background: white;
-        padding: 60px;
-        border-radius: 4px;
-        box-shadow: 0 2px 3px #C8D0D8;
-        display: inline-block;
-        margin: 0 auto;
-      }
-    &lt;/style&gt;
-    &lt;body&gt;
-      &lt;div class="card"&gt;
-      &lt;div style="border-radius:200px; height:200px; width:200px; background: #f7ebeb; margin:0 auto;"&gt;
-        &lt;i class="checkmark"&gt;✘&lt;/i&gt;
-      &lt;/div&gt;
-        &lt;h1&gt;Failed!&lt;/h1&gt; 
-        &lt;p&gt;</value>
   </data>
 </root>

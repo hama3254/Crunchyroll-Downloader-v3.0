@@ -63,8 +63,6 @@ Public Class Login
             MsgBox("No active Cookie found!", MsgBoxStyle.Exclamation)
             Me.Close()
             Exit Sub
-#Region ""
-
 
             'GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com/")
             'Pause(2)
@@ -75,7 +73,6 @@ Public Class Login
             'MsgBox(cookieGrapp8(0))
             'GeckoFX.keks = cookieGrapp8(0)
             ''Console.WriteLine()
-#End Region
         End If
         Dim Post0 As String = "account=" + LoginID.Text + "&password=" + Password.Text + "&session_id=" + GeckoFX.keks
         Dim byteArray0() As Byte = Encoding.UTF8.GetBytes(Post0)

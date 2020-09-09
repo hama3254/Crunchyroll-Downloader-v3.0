@@ -33,6 +33,7 @@ Partial Class CRD_List_Item
         Me.Label_percent = New System.Windows.Forms.Label()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         CType(Me.PB_Thumbnail, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_pause, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_del, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -51,7 +52,7 @@ Partial Class CRD_List_Item
         '
         'bt_pause
         '
-        Me.bt_pause.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.main_pause
+        Me.bt_pause.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.main_pause
         Me.bt_pause.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.bt_pause.Location = New System.Drawing.Point(740, 15)
         Me.bt_pause.Name = "bt_pause"
@@ -128,6 +129,10 @@ Partial Class CRD_List_Item
         Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.ProgressBar1.TabIndex = 8
         '
+        'Timer1
+        '
+        Me.Timer1.Enabled = True
+        '
         'CRD_List_Item
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -162,4 +167,5 @@ Partial Class CRD_List_Item
     Friend WithEvents Label_percent As Label
     Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents Timer1 As Timer
 End Class

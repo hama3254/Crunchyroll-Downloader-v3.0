@@ -40,7 +40,6 @@ D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crun
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.xml
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.pdb
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Debug_Mode.resources
-D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Login.resources
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.CRD_List_Item.resources
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbprojAssemblyReference.cache
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Anime_Add.resources

@@ -2154,7 +2154,7 @@ Public Class Main
                                 CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
                             End If
                             Dim m3u8String As String = CheckClient.DownloadString(textLenght(i))
-                            MsgBox(textLenght(i))
+                            'MsgBox(textLenght(i))
                             Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                             Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
                             Dim keyfileurl3 As String = keyfileurl2(0)

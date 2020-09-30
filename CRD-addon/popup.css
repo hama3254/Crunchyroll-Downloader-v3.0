@@ -1,0 +1,15 @@
+.btn_class {
+  background-color: #ff8000;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin-left:12px;
+  margin-right:12px;
+  margin-Top:12px;
+  margin-Bottom:12px;
+  border-radius: 12px;
+   cursor:pointer;
+}

@@ -180,8 +180,8 @@ Public Class Anime_Add
     End Sub
 
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
-        Main.ListBoxList.Clear()
         If ListBox1.Items.Count > 0 Then
+            Main.ListBoxList.Clear()
             For i As Integer = 0 To ListBox1.Items.Count - 1
                 Main.ListBoxList.Add(ListBox1.Items.Item(i))
             Next
@@ -194,7 +194,7 @@ Public Class Anime_Add
         Main.LoginOnly = "Download Mode!"
         If groupBox1.Visible = True Then
             Try
-                If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then
+                If CBool(InStr(textBox1.Text, "crunchyroll.com")) Then
                     If StatusLabel.Text = "Status: waiting for episode selection" Then
                         If MessageBox.Show("Are you sure you want cancel the advanced download?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                             StatusLabel.Text = "Status: idle"
@@ -286,7 +286,10 @@ Public Class Anime_Add
             List_DL_Cancel = False
             pictureBox4.Image = My.Resources.main_button_download_default
         End If
-
+        If InStr(My.Computer.Info.OSFullName, "Server") Then
+            MsgBox("Windows Server is not supported!", MsgBoxStyle.Critical)
+            Me.Close()
+        End If
         pictureBox4.Enabled = True
     End Sub
 
@@ -399,25 +402,13 @@ Public Class Anime_Add
         If Main.RunningDownloads < Main.MaxDL Then
             If ListBox1.Items.Count > 0 Then
                 If GroupBox3.Visible = True Then
-                    If InStr(ListBox1.GetItemText(ListBox1.Items(0)), "funimation.com") Then
-                        If Main.Funimation_Grapp_RDY = True Then
-                            GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
-                            ListBox1.Items.Remove(ListBox1.Items(0))
-                            Main.Funimation_Grapp_RDY = False
-                            Main.b = False
-                        End If
-
-                    Else
-                        If Main.Grapp_RDY = True Then
-                            GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
-                            ListBox1.Items.Remove(ListBox1.Items(0))
-                            Main.Grapp_RDY = False
-                            Main.b = False
-                        End If
+                    If Main.Grapp_RDY = True Then
+                        GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
+                        ListBox1.Items.Remove(ListBox1.Items(0))
+                        Main.Grapp_RDY = False
+                        Main.b = False
                     End If
                 End If
-
-
             End If
         End If
 

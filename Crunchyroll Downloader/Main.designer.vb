@@ -23,12 +23,11 @@ Partial Class Main
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.pictureBox4 = New System.Windows.Forms.PictureBox()
-        Me.pictureBox3 = New System.Windows.Forms.PictureBox()
-        Me.pictureBox2 = New System.Windows.Forms.PictureBox()
-        Me.pictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.FontLabel2 = New System.Windows.Forms.Label()
-        Me.FontLabel = New System.Windows.Forms.Label()
+        Me.Btn_add = New System.Windows.Forms.PictureBox()
+        Me.Btn_Close = New System.Windows.Forms.PictureBox()
+        Me.Btn_Settings = New System.Windows.Forms.PictureBox()
+        Me.Btn_Browser = New System.Windows.Forms.PictureBox()
+        Me.StatusMainForm = New System.Windows.Forms.Label()
         Me.ListView1 = New System.Windows.Forms.ListView()
         Me.Link = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
@@ -36,82 +35,75 @@ Partial Class Main
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
-        CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TheTextBox = New System.Windows.Forms.RichTextBox()
+        Me.PictureBox6 = New System.Windows.Forms.PictureBox()
+        CType(Me.Btn_add, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Btn_Settings, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Btn_Browser, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'pictureBox4
+        'Btn_add
         '
-        Me.pictureBox4.BackColor = System.Drawing.Color.Transparent
-        Me.pictureBox4.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pictureBox4.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_add
-        Me.pictureBox4.Location = New System.Drawing.Point(23, 18)
-        Me.pictureBox4.Name = "pictureBox4"
-        Me.pictureBox4.Size = New System.Drawing.Size(60, 24)
-        Me.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pictureBox4.TabIndex = 24
-        Me.pictureBox4.TabStop = False
+        Me.Btn_add.BackColor = System.Drawing.Color.Transparent
+        Me.Btn_add.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_add.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_add
+        Me.Btn_add.Location = New System.Drawing.Point(12, 5)
+        Me.Btn_add.Name = "Btn_add"
+        Me.Btn_add.Size = New System.Drawing.Size(100, 48)
+        Me.Btn_add.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.Btn_add.TabIndex = 24
+        Me.Btn_add.TabStop = False
         '
-        'pictureBox3
+        'Btn_Close
         '
-        Me.pictureBox3.BackColor = System.Drawing.Color.Transparent
-        Me.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pictureBox3.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_close
-        Me.pictureBox3.Location = New System.Drawing.Point(789, 1)
-        Me.pictureBox3.Name = "pictureBox3"
-        Me.pictureBox3.Size = New System.Drawing.Size(50, 40)
-        Me.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.pictureBox3.TabIndex = 23
-        Me.pictureBox3.TabStop = False
+        Me.Btn_Close.BackColor = System.Drawing.Color.Transparent
+        Me.Btn_Close.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_Close.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_close
+        Me.Btn_Close.Location = New System.Drawing.Point(789, 1)
+        Me.Btn_Close.Name = "Btn_Close"
+        Me.Btn_Close.Size = New System.Drawing.Size(50, 40)
+        Me.Btn_Close.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.Btn_Close.TabIndex = 23
+        Me.Btn_Close.TabStop = False
         '
-        'pictureBox2
+        'Btn_Settings
         '
-        Me.pictureBox2.BackColor = System.Drawing.Color.Transparent
-        Me.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pictureBox2.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_settings
-        Me.pictureBox2.Location = New System.Drawing.Point(702, 18)
-        Me.pictureBox2.Name = "pictureBox2"
-        Me.pictureBox2.Size = New System.Drawing.Size(60, 24)
-        Me.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.pictureBox2.TabIndex = 22
-        Me.pictureBox2.TabStop = False
+        Me.Btn_Settings.BackColor = System.Drawing.Color.Transparent
+        Me.Btn_Settings.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_Settings.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_settings
+        Me.Btn_Settings.Location = New System.Drawing.Point(656, 10)
+        Me.Btn_Settings.Name = "Btn_Settings"
+        Me.Btn_Settings.Size = New System.Drawing.Size(100, 40)
+        Me.Btn_Settings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.Btn_Settings.TabIndex = 22
+        Me.Btn_Settings.TabStop = False
         '
-        'pictureBox1
+        'Btn_Browser
         '
-        Me.pictureBox1.BackColor = System.Drawing.Color.Transparent
-        Me.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pictureBox1.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_browser
-        Me.pictureBox1.Location = New System.Drawing.Point(116, 18)
-        Me.pictureBox1.Name = "pictureBox1"
-        Me.pictureBox1.Size = New System.Drawing.Size(60, 24)
-        Me.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.pictureBox1.TabIndex = 21
-        Me.pictureBox1.TabStop = False
+        Me.Btn_Browser.BackColor = System.Drawing.Color.Transparent
+        Me.Btn_Browser.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_Browser.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_browser
+        Me.Btn_Browser.Location = New System.Drawing.Point(145, 10)
+        Me.Btn_Browser.Name = "Btn_Browser"
+        Me.Btn_Browser.Size = New System.Drawing.Size(100, 40)
+        Me.Btn_Browser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.Btn_Browser.TabIndex = 21
+        Me.Btn_Browser.TabStop = False
         '
-        'FontLabel2
+        'StatusMainForm
         '
-        Me.FontLabel2.AutoSize = True
-        Me.FontLabel2.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FontLabel2.Location = New System.Drawing.Point(587, 1)
-        Me.FontLabel2.Name = "FontLabel2"
-        Me.FontLabel2.Size = New System.Drawing.Size(99, 19)
-        Me.FontLabel2.TabIndex = 65
-        Me.FontLabel2.Text = "Demo Label"
-        Me.FontLabel2.Visible = False
-        '
-        'FontLabel
-        '
-        Me.FontLabel.AutoSize = True
-        Me.FontLabel.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FontLabel.Location = New System.Drawing.Point(587, 31)
-        Me.FontLabel.Name = "FontLabel"
-        Me.FontLabel.Size = New System.Drawing.Size(99, 19)
-        Me.FontLabel.TabIndex = 66
-        Me.FontLabel.Text = "Demo Label"
-        Me.FontLabel.Visible = False
+        Me.StatusMainForm.BackColor = System.Drawing.Color.Transparent
+        Me.StatusMainForm.Font = New System.Drawing.Font("Consolas", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.StatusMainForm.ForeColor = System.Drawing.SystemColors.WindowFrame
+        Me.StatusMainForm.Location = New System.Drawing.Point(251, 17)
+        Me.StatusMainForm.Name = "StatusMainForm"
+        Me.StatusMainForm.Size = New System.Drawing.Size(370, 24)
+        Me.StatusMainForm.TabIndex = 66
+        Me.StatusMainForm.Text = "Crunchyroll Downloader"
+        Me.StatusMainForm.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'ListView1
         '
@@ -158,41 +150,62 @@ Partial Class Main
         Me.Timer3.Enabled = True
         Me.Timer3.Interval = 1000
         '
+        'TheTextBox
+        '
+        Me.TheTextBox.BackColor = System.Drawing.SystemColors.ScrollBar
+        Me.TheTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TheTextBox.Location = New System.Drawing.Point(1, 558)
+        Me.TheTextBox.Name = "TheTextBox"
+        Me.TheTextBox.Size = New System.Drawing.Size(838, 111)
+        Me.TheTextBox.TabIndex = 69
+        Me.TheTextBox.Text = ""
+        '
+        'PictureBox6
+        '
+        Me.PictureBox6.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.balken
+        Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureBox6.Location = New System.Drawing.Point(1, 549)
+        Me.PictureBox6.Name = "PictureBox6"
+        Me.PictureBox6.Size = New System.Drawing.Size(838, 8)
+        Me.PictureBox6.TabIndex = 68
+        Me.PictureBox6.TabStop = False
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.main_background
-        Me.ClientSize = New System.Drawing.Size(840, 552)
+        Me.ClientSize = New System.Drawing.Size(840, 558)
+        Me.Controls.Add(Me.TheTextBox)
+        Me.Controls.Add(Me.PictureBox6)
         Me.Controls.Add(Me.PictureBox5)
         Me.Controls.Add(Me.ListView1)
-        Me.Controls.Add(Me.FontLabel)
-        Me.Controls.Add(Me.FontLabel2)
-        Me.Controls.Add(Me.pictureBox4)
-        Me.Controls.Add(Me.pictureBox3)
-        Me.Controls.Add(Me.pictureBox2)
-        Me.Controls.Add(Me.pictureBox1)
+        Me.Controls.Add(Me.StatusMainForm)
+        Me.Controls.Add(Me.Btn_add)
+        Me.Controls.Add(Me.Btn_Close)
+        Me.Controls.Add(Me.Btn_Settings)
+        Me.Controls.Add(Me.Btn_Browser)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "Main"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "crunchyroll downloader"
-        CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Btn_add, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Btn_Settings, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Btn_Browser, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents pictureBox4 As PictureBox
-    Private WithEvents pictureBox3 As PictureBox
-    Private WithEvents pictureBox2 As PictureBox
-    Private WithEvents pictureBox1 As PictureBox
-    Friend WithEvents FontLabel2 As Label
-    Friend WithEvents FontLabel As Label
+    Private WithEvents Btn_add As PictureBox
+    Private WithEvents Btn_Close As PictureBox
+    Private WithEvents Btn_Settings As PictureBox
+    Private WithEvents Btn_Browser As PictureBox
+    Friend WithEvents StatusMainForm As Label
     Friend WithEvents ListView1 As ListView
     Friend WithEvents Link As ColumnHeader
     Friend WithEvents PictureBox5 As PictureBox
@@ -200,4 +213,6 @@ Partial Class Main
     Friend WithEvents Timer1 As Timer
     Friend WithEvents Timer2 As Timer
     Friend WithEvents Timer3 As Timer
+    Friend WithEvents TheTextBox As RichTextBox
+    Friend WithEvents PictureBox6 As PictureBox
 End Class

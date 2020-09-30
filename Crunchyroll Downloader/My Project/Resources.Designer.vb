@@ -111,6 +111,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;type&quot;:&quot;midroll&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property ads_midroll() As String
+            Get
+                Return ResourceManager.GetString("ads_midroll", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die {&quot;type&quot;:&quot;preroll&quot;,&quot;offset&quot;:0}, ähnelt.
+        '''</summary>
+        Friend ReadOnly Property ads_preroll() As String
+            Get
+                Return ResourceManager.GetString("ads_preroll", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property backgroud() As System.Drawing.Bitmap
@@ -126,6 +144,16 @@ Namespace My.Resources
         Friend ReadOnly Property balken() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("balken", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property balken_console() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("balken_console", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -552,16 +580,6 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property main_browser_hover() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("main_browser_hover", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
         Friend ReadOnly Property main_button_download_deactivate() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("main_button_download_deactivate", resourceCulture)
@@ -690,16 +708,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property main_settings_hover() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("main_settings_hover", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;/p&gt;
         '''      &lt;/div&gt;
         '''    &lt;/body&gt;
@@ -714,7 +722,7 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;html&gt;
         '''  &lt;head&gt;
-        '''    
+        '''    &lt;meta charset=&quot;UTF-8&quot;&gt;
         '''  &lt;/head&gt;
         '''    &lt;style&gt;
         '''      body {
@@ -736,8 +744,7 @@ Namespace My.Resources
         '''          margin: 0;
         '''        }
         '''      i {
-        '''        color: #ad3f26;
-        '''        [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''        co [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Friend ReadOnly Property Post_error_Top() As String
             Get

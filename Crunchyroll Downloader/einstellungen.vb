@@ -7,7 +7,7 @@ Imports System.Threading
 
 Public Class einstellungen
     Private Sub einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ToolTip1.SetToolTip(CB_Login, My.Resources.US_ToolTip)
+
         For i As Integer = 0 To Main.SoftSubs.Count - 1
             If Main.SoftSubs(i) = "deDE" Then
                 CBdeDE.Checked = True
@@ -34,9 +34,14 @@ Public Class einstellungen
         If Main.MergeSubstoMP4 = True Then
             MergeMP4.Checked = True
         End If
-        If Main.LoginDialog = True Then
-            CB_Login.Checked = True
+        If Main.HybridMode = True Then
+            HybridMode_CB.Checked = True
         End If
+
+        If Main.HardSubFunimation = True Then
+            FunimationHardsub.Checked = True
+        End If
+
         If Main.SaveLog = True Then
             CB_Log.Checked = True
         End If
@@ -106,12 +111,7 @@ Public Class einstellungen
             FFMPEG_CommandP3.Text = ffmpegDisplayCurrent(4) + " " + ffmpegDisplayCurrent(5)
         End If
 
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Firefox_True.Checked = CBool(Integer.Parse(rkg.GetValue("NoUse").ToString))
-            'MsgBox(Resu)
-        Catch ex As Exception
-        End Try
+
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             ListViewAdd_True.Checked = CBool(Integer.Parse(rkg.GetValue("QueueMode").ToString))
@@ -199,13 +199,22 @@ Public Class einstellungen
             Main.MergeSubstoMP4 = False
             rk.SetValue("MergeMP4", "0", RegistryValueKind.String)
         End If
-        If CB_Login.Checked = True Then
-            Main.LoginDialog = True
-            rk.SetValue("LoginDialog", "1", RegistryValueKind.String)
+        If HybridMode_CB.Checked = True Then
+            Main.HybridMode = True
+            rk.SetValue("HybridMode", "1", RegistryValueKind.String)
         Else
-            Main.LoginDialog = False
-            rk.SetValue("LoginDialog", "0", RegistryValueKind.String)
+            Main.HybridMode = False
+            rk.SetValue("HybridMode", "0", RegistryValueKind.String)
         End If
+
+        If FunimationHardsub.Checked = True Then
+            Main.HardSubFunimation = True
+            rk.SetValue("FunimationHardsub", "1", RegistryValueKind.String)
+        Else
+            Main.HardSubFunimation = False
+            rk.SetValue("FunimationHardsub", "0", RegistryValueKind.String)
+        End If
+
         If CB_Log.Checked = True Then
             Main.SaveLog = True
             rk.SetValue("SaveLog", "1", RegistryValueKind.String)
@@ -242,11 +251,6 @@ Public Class einstellungen
         End If
         rk.SetValue("SL_DL", NumericUpDown1.Value, RegistryValueKind.String)
         Main.MaxDL = NumericUpDown1.Value
-        If Firefox_True.Checked = True Then
-            rk.SetValue("NoUse", 1, RegistryValueKind.String)
-        ElseIf Firefox_True.Checked = False Then
-            rk.SetValue("NoUse", 0, RegistryValueKind.String)
-        End If
 
         If ListViewAdd_True.Checked = True Then
             rk.SetValue("QueueMode", 1, RegistryValueKind.String)
@@ -313,10 +317,6 @@ Public Class einstellungen
         Me.Close()
     End Sub
 
-    Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
-        System.Diagnostics.Process.Start("https://www.youtube.com/user/hama3254")
-    End Sub
-
     Private Function Check_CB() As Boolean
         Dim C As Boolean = False
         For i As Integer = 0 To ComboBox1.Items.Count - 1
@@ -330,16 +330,16 @@ Public Class einstellungen
 
 
 
-    Private Function GeräteID() As String
+    Public Function GeräteID() As String
         Dim rnd As New Random
         Dim possible As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         Dim HWID As String = Nothing
 
-        For i As Integer = 0 To 31
+        For i As Integer = 0 To 15
             Dim ZufallsZahl As Integer = rnd.Next(1, 33)
             HWID = HWID + possible(ZufallsZahl)
         Next
-        Return HWID
+        Return "CRD-Temp-File-" + HWID
     End Function
 
     Private Sub pictureBox1_Click(sender As Object, e As EventArgs) Handles pictureBox1.Click
@@ -400,17 +400,10 @@ Public Class einstellungen
 
     End Sub
 
-    Private Sub PictureBox2_MouseEnter(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub PictureBox2_MouseLeave(sender As Object, e As EventArgs)
-
-    End Sub
 
 
 
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem
+    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem
         sender.BackColor = Color.White
         If e.Index >= 0 Then
             Using st As New StringFormat With {.Alignment = StringAlignment.Center}
@@ -450,7 +443,7 @@ Public Class einstellungen
         End If
     End Sub
 
-    Private Sub MergeMP4_Click(sender As Object, e As EventArgs) Handles MergeMP4.Click, CheckBox1.Click
+    Private Sub MergeMP4_Click(sender As Object, e As EventArgs) Handles CheckBox1.Click
         If MergeMP4.Checked = True Then
             If AAuto.Checked = True Then
                 If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
@@ -487,7 +480,7 @@ Public Class einstellungen
         PictureBox5.Image = My.Resources.softsubs_download_hover
     End Sub
 
-    Private Sub PictureBox5_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox5.MouseLeave
+    Private Sub PictureBox5_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox5.Leave
         PictureBox5.Image = My.Resources.softsubs_download
     End Sub
 
@@ -522,16 +515,6 @@ Public Class einstellungen
         Next
     End Sub
 
-    'Private Sub FFMPEG_Command_SelectedIndexChanged(sender As Object, e As EventArgs)
-    '    If CheckBox1.Checked = True Then
-    '        MsgBox("Other commands than " + Chr(34) + " -c copy -bsf:a aac_adtstoasc " + Chr(34) + "convert the Video into h265/hevc!", MsgBoxStyle.Information)
-    '        If FFMPEG_CommandP10.Text = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
-    '            MsgBox("This command requires a Nvidia GTX 6xx/7xx (Kepler generation) or higher.", MsgBoxStyle.Information)
-    '        ElseIf FFMPEG_CommandP10.Text = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
-    '            MsgBox("CPU encoding is low and uses all resources of the computer.", MsgBoxStyle.Information)  ' -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc 
-    '        End If
-    '    End If
-    'End Sub
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
         GroupBox2.Enabled = CheckBox1.CheckState
@@ -577,7 +560,7 @@ Public Class einstellungen
         GeckoFX.Show()
         Main.LoginOnly = "US_UnBlock"
 
-        GeckoFX.WebBrowser1.Navigate("https://api.criater-stiftung.org/cr-cookie-ui.php")
+        GeckoFX.WebBrowser1.Navigate("https://api.criater-stiftung.org/us-unlock.php")
     End Sub
 
     Private Sub PictureBox2_Enter(sender As Object, e As EventArgs) Handles PictureBox2.MouseEnter
@@ -589,16 +572,19 @@ Public Class einstellungen
 
     End Sub
 
-    Private Sub CB_Login_DoubleClick(sender As Object, e As EventArgs) Handles CB_Login.DoubleClick
-        If GeckoFX.keks = Nothing Then
+    Private Sub FunimationHardsub_Click(sender As Object, e As EventArgs) Handles FunimationHardsub.Click
+
+        If FFMPEG_CommandP1.Text = "-c copy" Then
+            If FunimationHardsub.Checked = True Then
+                If MessageBox.Show("This feature does not work with the current output setting." + vbNewLine + "Do you want to ignore the output settings?", "Settings incompatible", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+                    FunimationHardsub.Checked = True
+                Else
+                    FunimationHardsub.Checked = False
+                End If
+            End If
         Else
-            Login.ShowDialog()
         End If
-
     End Sub
-
-
-
 
 
 #End Region

@@ -104,7 +104,7 @@ document.getElementById('btn_add').addEventListener('click', () => {
 
 document.getElementById('btn_add_funimation').addEventListener('click', () => {
     var add_fun = browser.tabs.executeScript({
-        code: "document.getElementsByClassName('no-touchevents')[0].innerHTML;"
+        code: "javascript:void(0);" //"document.getElementsByClassName('show-details')[0].innerHTML;"
     });
     add_fun.then(add_fun_ok, add_one_error);
 
@@ -166,13 +166,13 @@ function add_fun_ok(result) {
 
         const form = document.createElement('form');
         form.method = 'post';
-        form.action = "http://127.0.0.1";
+        form.action = "http://127.0.0.1/post";
 
-        const hiddenField = document.createElement('input');
-        hiddenField.type = 'hidden';
-        hiddenField.name = "FunimationHTML";
-        hiddenField.value = result;
-        form.appendChild(hiddenField);
+        //const hiddenField = document.createElement('input');
+        //hiddenField.type = 'hidden';
+        //hiddenField.name = "FunimationHTML";
+        //hiddenField.value = result;
+        //form.appendChild(hiddenField);
 
         const hiddenField2 = document.createElement('input');
         hiddenField2.type = 'hidden';
@@ -189,7 +189,7 @@ function add_one_ok(result) {
 
     const form = document.createElement('form');
     form.method = 'post';
-    form.action = "http://127.0.0.1";
+    form.action = "http://127.0.0.1/post";
 
     const hiddenField = document.createElement('input');
     hiddenField.type = 'hidden';
@@ -209,7 +209,7 @@ function add_mass_ok(result) {
 
     const form = document.createElement('form');
     form.method = 'post';
-    form.action = "http://127.0.0.1";
+    form.action = "http://127.0.0.1/post";
 
     const hiddenField = document.createElement('input');
     hiddenField.type = 'hidden';

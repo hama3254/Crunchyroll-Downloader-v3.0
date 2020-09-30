@@ -44,7 +44,7 @@ Public Class GeckoFX
                 WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "sess_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
                 Main.Pause(1)
                 If Main.LoginDialog = True Then
-                    Login.ShowDialog()
+                    'Login.ShowDialog()
                 Else
                     WebBrowser1.Navigate("https://www.crunchyroll.com/")
                 End If

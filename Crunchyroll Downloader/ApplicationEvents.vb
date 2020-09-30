@@ -16,11 +16,6 @@ Namespace My
     Partial Friend Class MyApplication
         Dim UseFirefoxProfile As Boolean = False
         Protected Overrides Function OnStartup(ByVal eventArgs As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) As Boolean
-            Try
-                Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-                UseFirefoxProfile = CBool(Integer.Parse(rkg.GetValue("NoUse").ToString))
-            Catch ex As Exception
-            End Try
             Dim ProfileDirectory As String = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Mozilla", "Firefox", "Profiles", "CRD")
             If UseFirefoxProfile = True Then
                 Dim di As New System.IO.DirectoryInfo(Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Mozilla", "Firefox", "Profiles"))

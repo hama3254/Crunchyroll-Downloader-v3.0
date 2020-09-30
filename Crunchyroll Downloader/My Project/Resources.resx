@@ -118,8 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="crdSettings_Button_SafeExit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\crdSettings_Button_SafeExit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="balken" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\balken.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="htmlvorThumbnail" xml:space="preserve">
     <value>
@@ -127,280 +127,38 @@
 
 &lt;img alt="image error" src="</value>
   </data>
-  <data name="htmlTop" xml:space="preserve">
-    <value>&lt;!DOCTYPE html&gt;
-&lt;head&gt;
-&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"/&gt;
-&lt;/head&gt;
-&lt;html&gt;
-       &lt;title&gt;CRD&lt;/title&gt;
-              
-  &lt;style&gt;
-	.main-bg {margin:0 0 0 0;background-color:#F2F2F2;font-family:Consolas;font-size:16px;}
-	.div-spacer{width:16px;height:110px;display:block;margin-bottom:14px;position:relative}
-	.div-episode{width:730px;height:110px;display:block;margin-bottom:14px;position:relative}
-	.class-balken{width:735px;height:8px;display:block;margin-bottom:4px;margin-top:6px}	
-	.class-cc{width:36px;height:36px;display:block;margin-bottom:4px;margin-top:-6px;float: left;margin-left:-20px;}	
-	.imagestyle{width:156px;height:105px;display:block;margin-bottom:8px;margin-top:5px;margin-right: 10px;margin-left: 10px;float: left;}	
-	.spacediv{width:620px;height:175px;display:block;margin-bottom:4px}
-	.ulStyle li{margin-left:12px;float:left;display:block;position:relative}
-	.liOld{margin-left:12px;display:block}
-	.ulStyle{margin:0 0 0 -10px;display:block;position:relative;margin-top:8px}
-	.listyle{width:156px;display:block;background:#fff;padding:16px;margin-bottom:14px;position:relative;background-color:#b5b3b3}
-	.progressbar{width:540px;height:20px;background:#dedede;margin-left: 170px;margin-top:8px;}
-	.progressbar-value{background:#F78C25;height:20px;font-weight:bold;}
-	.percenttext{float:right;text-align:right;font-size:16px;display:inline-block;margin-right:25px}
-	.resotext{text-align: left;font-size:18px;margin-left:0px;font-weight:550;}
-	.titel{font-size:18px;font-weight:550;display:block;margin-top:5px}
-	.cc-wert{font-size:18px;font-weight:550;display:block;margin-top:-20px;margin-left:250px;text-decoration: none;color:black;}
-	.liClass{margin-bottom:8px}
-  &lt;/style&gt;
-&lt;body id="bodypage" class="main-bg" &gt;
-&lt;img alt="image error" src="balken1.png" class="class-balken"&gt;</value>
-  </data>
-  <data name="main_browser" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-browser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="download_subs_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\download_subs_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="crdsettings_setUScookie_button_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\crdsettings_setUScookie_button_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="htmlEnd" xml:space="preserve">
-    <value>&lt;script&gt;
-
-setInterval(function loadXMLDoc() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 &amp;&amp; this.status == 200) {
-      document.getElementById("bodypage").innerHTML = this.responseText;
-	  //console.log(this.responseText);
-    }
-  };
-  xhttp.open("GET", "/", true);
-  xhttp.send();
-}, 1000);
-&lt;/script&gt;
-&lt;/body&gt;&lt;/html&gt;</value>
-  </data>
-  <data name="add_mass_cancel_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\add_mass_cancel_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DialogNotFound_Background" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DialogNotFound_Background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_credits_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main_credits_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DialogNotFound_Submit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DialogNotFound_Submit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-settings.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="htmlnachTumbnail" xml:space="preserve">
-    <value>" class="imagestyle"&gt;
-
-&lt;div&gt;
-
-&lt;span class="titel" dir="auto"&gt;</value>
-  </data>
-  <data name="Startuphtml" xml:space="preserve">
-    <value>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-       &lt;title&gt;CRD&lt;/title&gt;
-              
-  &lt;style&gt;
-	.main-bg {margin:0 0 0 -36px;background-color:#757575;}
-	.imagestyle{width:156px;height:88px;display:block;margin-bottom:4px}	.ulStyle{margin:0 0 0 -10px;display:block;position:relative;margin-top:8px}
-	.ulStyle li{margin-left:12px;float:left;display:block;position:relative}
-	.listyle{width:156px;display:block;background:#fff;padding:16px;margin-bottom:14px;position:relative;background-color:#b5b3b3}
-	.progressbar{height:14px;background:#dedede;}
-	.progressbar-value{background:#42d1f5;height:14px;font-weight:bold;}
-	.percenttext{text-align: right;font-size:13px;}
-	.titel{font-size:13px;font-weight:600;line-height:1.5;display:block;margin-top:10px}
-  &lt;/style&gt;
- &lt;body class="main-bg" onload="location.reload();"&gt;          
-	&lt;ul class="ulStyle"&gt;
-				
-	&lt;/ul&gt;
- &lt;/body&gt;
-&lt;/html&gt;</value>
-  </data>
-  <data name="htmlvorAufloesung" xml:space="preserve">
-    <value>&lt;/span&gt;
-
-&lt;div class="progressbar"&gt;
-
-&lt;div class="progressbar-value" style="width: 0%"&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;span  dir="auto" class='percenttext'&gt;0%&lt;/span&gt;
-&lt;div&gt;
-&lt;br&gt;
-&lt;span dir="auto" class="resotext"&gt;</value>
-  </data>
-  <data name="thumbnailString" xml:space="preserve">
-    <value>"thumbnail":{"url":"</value>
-  </data>
-  <data name="main_button_download_deactivate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main_button_download-deactivate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_button_download_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main_button_download_default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="htmlvorHardSubs" xml:space="preserve">
-    <value>"&gt; &lt;img alt="image error" src="cc1.png" class="class-cc"&gt;</value>
-  </data>
-  <data name="htmlnachHardSubs" xml:space="preserve">
-    <value>&lt;/a&gt;
-
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;img alt="image error" src="balken1.png" class="class-balken"&gt;</value>
-  </data>
-  <data name="main_credits_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main_credits_default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="add_mass_running_cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\add_mass_running_cancel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="crdSettings_Button_SafeExit_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\crdSettings_Button_SafeExit_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="htmlvorSoftSubs" xml:space="preserve">
-    <value>&lt;/span&gt;
-
-&lt;a href="#" class="cc-wert" title="Softsubs:</value>
-  </data>
-  <data name="DialogNotFound_Submit_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DialogNotFound_Submit_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="download_subs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\download_subs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="add_mass_cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\add_mass_cancel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="add_mass_running_cancel_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\add_mass_running_cancel_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="backgroud" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\backgroud.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="main_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="main_button_download_hovert" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main_button_download_hovert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_close" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="crdSettings_Background" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\crdSettings_Background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="crdsettings_setUScookie_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\crdsettings_setUScookie_button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="credits_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\credits-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ads_midroll" xml:space="preserve">
-    <value>"type":"midroll"</value>
-  </data>
-  <data name="ads_preroll" xml:space="preserve">
-    <value>{"type":"preroll","offset":0},</value>
-  </data>
-  <data name="backgroud" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\backgroud.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="balken" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\balken.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_del" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-del.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_del_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-del-hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="hls_endString" xml:space="preserve">
-    <value>","resolution":"adaptive"</value>
-  </data>
-  <data name="hls_Value" xml:space="preserve">
-    <value>"format":"adaptive_hls",</value>
-  </data>
-  <data name="CC_String" xml:space="preserve">
-    <value>&lt;img id="footer_country_flag" src="https://www.crunchyroll.com/i/country_flags/</value>
-  </data>
-  <data name="softsubs_download" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\softsubs_download.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="softsubs_download_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\softsubs_download_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="softsubs_download_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\softsubs_download_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LoginSkip" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LoginSkip.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LoginSkipHover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LoginSkipHover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LoginSuccess" xml:space="preserve">
-    <value>"error":false,"code":"ok"</value>
-  </data>
-  <data name="US_ToolTip" xml:space="preserve">
-    <value>US cookies can't be used as long you are logged in.
-I delete the curremt session with the unlock, if you want to be logged in with the US cookie you need to enter you data on the left.</value>
-  </data>
-  <data name="main_pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_pause_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-pause-hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_pause_play" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-pause-play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_pause_play_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-pause-play-hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="add_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\add-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_browser_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-browser_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_settings_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-settings_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Funimation_Player_ID" xml:space="preserve">
-    <value>src="/player/</value>
-  </data>
-  <data name="Funimation_Split_1" xml:space="preserve">
-    <value>&lt;a class="trackVideo ng-binding" href="</value>
+  <data name="DialogNotFound_Background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DialogNotFound_Background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Funimation_Split_2" xml:space="preserve">
     <value>"&gt;</value>
   </data>
-  <data name="Funimation_src_string" xml:space="preserve">
-    <value>"src":</value>
+  <data name="main_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Funimation_thumbnail" xml:space="preserve">
-    <value>&lt;meta property="og:image" content="</value>
+  <data name="Funimation_Split_1" xml:space="preserve">
+    <value>&lt;a class="trackVideo ng-binding" href="</value>
   </data>
-  <data name="Funimation_Subtitle_String" xml:space="preserve">
-    <value>", "kind": "subtitle", "type": "CC", "language": "en"</value>
+  <data name="add_mass_cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\add_mass_cancel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ads_midroll" xml:space="preserve">
+    <value>"type":"midroll"</value>
+  </data>
+  <data name="main_del_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-del-hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_button_download_deactivate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main_button_download-deactivate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="credits_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\credits-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Funimation_Subtitle_String2" xml:space="preserve">
     <value>", "kind": "subtitle", "type": "Full", "language": "en"</value>
@@ -416,19 +174,16 @@ I delete the curremt session with the unlock, if you want to be logged in with t
 &lt;address&gt;Server at Crunchyroll Downloader Port 8080&lt;/address&gt;
 &lt;/body&gt;&lt;/html&gt;</value>
   </data>
-  <data name="CR_Head_Url_Split" xml:space="preserve">
-    <value>&lt;meta property="og:url" content="</value>
+  <data name="crdSettings_Background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\crdSettings_Background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Post_error_Bottom" xml:space="preserve">
-    <value>&lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/body&gt;
-&lt;/html&gt;</value>
+  <data name="Funimation_Player_ID" xml:space="preserve">
+    <value>src="/player/</value>
   </data>
   <data name="Post_error_Top" xml:space="preserve">
     <value>&lt;html&gt;
   &lt;head&gt;
-    
+    &lt;meta charset="UTF-8"&gt;
   &lt;/head&gt;
     &lt;style&gt;
       body {
@@ -471,5 +226,247 @@ I delete the curremt session with the unlock, if you want to be logged in with t
       &lt;/div&gt;
         &lt;h1&gt;Failed!&lt;/h1&gt; 
         &lt;p&gt;</value>
+  </data>
+  <data name="main_pause_play" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-pause-play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LoginSkip" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LoginSkip.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LoginSuccess" xml:space="preserve">
+    <value>"error":false,"code":"ok"</value>
+  </data>
+  <data name="ads_preroll" xml:space="preserve">
+    <value>{"type":"preroll","offset":0},</value>
+  </data>
+  <data name="Funimation_Subtitle_String" xml:space="preserve">
+    <value>", "kind": "subtitle", "type": "CC", "language": "en"</value>
+  </data>
+  <data name="htmlEnd" xml:space="preserve">
+    <value>&lt;script&gt;
+
+setInterval(function loadXMLDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 &amp;&amp; this.status == 200) {
+      document.getElementById("bodypage").innerHTML = this.responseText;
+	  //console.log(this.responseText);
+    }
+  };
+  xhttp.open("GET", "/", true);
+  xhttp.send();
+}, 1000);
+&lt;/script&gt;
+&lt;/body&gt;&lt;/html&gt;</value>
+  </data>
+  <data name="Post_error_Bottom" xml:space="preserve">
+    <value>&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="Funimation_src_string" xml:space="preserve">
+    <value>"src":</value>
+  </data>
+  <data name="US_ToolTip" xml:space="preserve">
+    <value>US cookies can't be used as long you are logged in.
+I delete the curremt session with the unlock, if you want to be logged in with the US cookie you need to enter you data on the left.</value>
+  </data>
+  <data name="hls_endString" xml:space="preserve">
+    <value>","resolution":"adaptive"</value>
+  </data>
+  <data name="hls_Value" xml:space="preserve">
+    <value>"format":"adaptive_hls",</value>
+  </data>
+  <data name="main_settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-settings.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="htmlnachTumbnail" xml:space="preserve">
+    <value>" class="imagestyle"&gt;
+
+&lt;div&gt;
+
+&lt;span class="titel" dir="auto"&gt;</value>
+  </data>
+  <data name="main_del" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-del.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="htmlvorAufloesung" xml:space="preserve">
+    <value>&lt;/span&gt;
+
+&lt;div class="progressbar"&gt;
+
+&lt;div class="progressbar-value" style="width: 0%"&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;span  dir="auto" class='percenttext'&gt;0%&lt;/span&gt;
+&lt;div&gt;
+&lt;br&gt;
+&lt;span dir="auto" class="resotext"&gt;</value>
+  </data>
+  <data name="crdsettings_setUScookie_button_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\crdsettings_setUScookie_button_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="softsubs_download_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\softsubs_download_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Startuphtml" xml:space="preserve">
+    <value>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+       &lt;title&gt;CRD&lt;/title&gt;
+              
+  &lt;style&gt;
+	.main-bg {margin:0 0 0 -36px;background-color:#757575;}
+	.imagestyle{width:156px;height:88px;display:block;margin-bottom:4px}	.ulStyle{margin:0 0 0 -10px;display:block;position:relative;margin-top:8px}
+	.ulStyle li{margin-left:12px;float:left;display:block;position:relative}
+	.listyle{width:156px;display:block;background:#fff;padding:16px;margin-bottom:14px;position:relative;background-color:#b5b3b3}
+	.progressbar{height:14px;background:#dedede;}
+	.progressbar-value{background:#42d1f5;height:14px;font-weight:bold;}
+	.percenttext{text-align: right;font-size:13px;}
+	.titel{font-size:13px;font-weight:600;line-height:1.5;display:block;margin-top:10px}
+  &lt;/style&gt;
+ &lt;body class="main-bg" onload="location.reload();"&gt;          
+	&lt;ul class="ulStyle"&gt;
+				
+	&lt;/ul&gt;
+ &lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="main_browser" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-browser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="add_mass_running_cancel_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\add_mass_running_cancel_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_button_download_hovert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main_button_download_hovert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CC_String" xml:space="preserve">
+    <value>&lt;img id="footer_country_flag" src="https://www.crunchyroll.com/i/country_flags/</value>
+  </data>
+  <data name="add_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\add-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="add_mass_cancel_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\add_mass_cancel_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DialogNotFound_Submit_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DialogNotFound_Submit_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LoginSkipHover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LoginSkipHover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DialogNotFound_Submit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DialogNotFound_Submit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_button_download_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main_button_download_default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_credits_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main_credits_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="htmlvorHardSubs" xml:space="preserve">
+    <value>"&gt; &lt;img alt="image error" src="cc1.png" class="class-cc"&gt;</value>
+  </data>
+  <data name="download_subs_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\download_subs_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="softsubs_download_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\softsubs_download_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_close" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="download_subs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\download_subs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="htmlnachHardSubs" xml:space="preserve">
+    <value>&lt;/a&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;img alt="image error" src="balken1.png" class="class-balken"&gt;</value>
+  </data>
+  <data name="main_pause_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-pause-hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="add_mass_running_cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\add_mass_running_cancel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="thumbnailString" xml:space="preserve">
+    <value>"thumbnail":{"url":"</value>
+  </data>
+  <data name="main_pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="crdsettings_setUScookie_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\crdsettings_setUScookie_button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="crdSettings_Button_SafeExit_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\crdSettings_Button_SafeExit_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="crdSettings_Button_SafeExit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\crdSettings_Button_SafeExit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Funimation_thumbnail" xml:space="preserve">
+    <value>&lt;meta property="og:image" content="</value>
+  </data>
+  <data name="main_pause_play_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-pause-play-hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="htmlvorSoftSubs" xml:space="preserve">
+    <value>&lt;/span&gt;
+
+&lt;a href="#" class="cc-wert" title="Softsubs:</value>
+  </data>
+  <data name="softsubs_download" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\softsubs_download.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CR_Head_Url_Split" xml:space="preserve">
+    <value>&lt;meta property="og:url" content="</value>
+  </data>
+  <data name="htmlTop" xml:space="preserve">
+    <value>&lt;!DOCTYPE html&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"/&gt;
+&lt;/head&gt;
+&lt;html&gt;
+       &lt;title&gt;CRD&lt;/title&gt;
+              
+  &lt;style&gt;
+	.main-bg {margin:0 0 0 0;background-color:#F2F2F2;font-family:Consolas;font-size:16px;}
+	.div-spacer{width:16px;height:110px;display:block;margin-bottom:14px;position:relative}
+	.div-episode{width:730px;height:110px;display:block;margin-bottom:14px;position:relative}
+	.class-balken{width:735px;height:8px;display:block;margin-bottom:4px;margin-top:6px}	
+	.class-cc{width:36px;height:36px;display:block;margin-bottom:4px;margin-top:-6px;float: left;margin-left:-20px;}	
+	.imagestyle{width:156px;height:105px;display:block;margin-bottom:8px;margin-top:5px;margin-right: 10px;margin-left: 10px;float: left;}	
+	.spacediv{width:620px;height:175px;display:block;margin-bottom:4px}
+	.ulStyle li{margin-left:12px;float:left;display:block;position:relative}
+	.liOld{margin-left:12px;display:block}
+	.ulStyle{margin:0 0 0 -10px;display:block;position:relative;margin-top:8px}
+	.listyle{width:156px;display:block;background:#fff;padding:16px;margin-bottom:14px;position:relative;background-color:#b5b3b3}
+	.progressbar{width:540px;height:20px;background:#dedede;margin-left: 170px;margin-top:8px;}
+	.progressbar-value{background:#F78C25;height:20px;font-weight:bold;}
+	.percenttext{float:right;text-align:right;font-size:16px;display:inline-block;margin-right:25px}
+	.resotext{text-align: left;font-size:18px;margin-left:0px;font-weight:550;}
+	.titel{font-size:18px;font-weight:550;display:block;margin-top:5px}
+	.cc-wert{font-size:18px;font-weight:550;display:block;margin-top:-20px;margin-left:250px;text-decoration: none;color:black;}
+	.liClass{margin-bottom:8px}
+  &lt;/style&gt;
+&lt;body id="bodypage" class="main-bg" &gt;
+&lt;img alt="image error" src="balken1.png" class="class-balken"&gt;</value>
+  </data>
+  <data name="main_credits_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main_credits_default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="balken_console" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\balken_console.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

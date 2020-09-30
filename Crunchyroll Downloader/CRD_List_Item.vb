@@ -1,6 +1,7 @@
 ﻿Imports System.Net
 Imports System.Text
 Imports System.IO
+Imports System.Threading
 Imports Microsoft.Win32
 Imports System.ComponentModel
 
@@ -8,6 +9,8 @@ Public Class CRD_List_Item
     Dim ZeitGesamtInteger As Integer = 0
     Dim ListOfStreams As New List(Of String)
     Dim proc As Process
+    Dim ThreadList As New List(Of Thread)
+
     Dim Canceld As Boolean = False
 
     Dim Label_website_Text As String = Nothing
@@ -23,6 +26,8 @@ Public Class CRD_List_Item
     Dim HistoryDL_Pfad As String
     Dim HistoryFilename As String
     Dim Retry As Boolean = False
+    Dim HybridMode As Boolean = False
+    Dim HybridRunning As Boolean = False
 #Region "Remove from list"
     Public Sub DisposeItem(ByVal Dispose As Boolean)
         If Dispose = True Then
@@ -59,11 +64,16 @@ Public Class CRD_List_Item
         Return StatusRunning
     End Function
     Public Function GetIsStatusFinished() As Boolean
-        If proc.HasExited = True Then
-            Return True
-        Else
+        If HybridRunning = True Then
             Return False
+        Else
+            If proc.HasExited = True Then
+                Return True
+            Else
+                Return False
+            End If
         End If
+
     End Function
     Public Function GetLabelPercent()
         Try
@@ -220,28 +230,177 @@ Public Class CRD_List_Item
 
 #Region "Download + Update UI"
 
-    Public Function DownloadFFMPEG(ByVal DLCommand As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
+    Public Sub StartDownload(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String, ByVal DownloadHybridMode As Boolean)
+        If DownloadHybridMode = True Then
+            Dim Evaluator = New Thread(Sub() DownloadHybrid(DL_URL, DL_Pfad, Filename))
+            Evaluator.Start()
+            HybridMode = True
+            HybridRunning = True
+        Else
+            DownloadFFMPEG(DL_URL, DL_Pfad, Filename)
+        End If
+
+    End Sub
+
+#Region "Download Cache"
+    Private Sub tsDownloadAsync(ByVal DL_URL As String, ByVal DL_Pfad As String)
+        Try
+            Dim wc_ts As New WebClient
+            wc_ts.DownloadFile(New Uri(DL_URL), DL_Pfad)
+        Catch ex As Exception
+            Debug.WriteLine(ex.ToString + vbNewLine + DL_Pfad + vbNewLine + DL_URL)
+        End Try
+
+    End Sub
+    Private Function tsStatusAsync(ByVal prozent As Integer, ByVal di As IO.DirectoryInfo, ByVal Filename As String, ByVal pausetime As Integer)
+        Dim Now As Date = Date.Now
+
+        Dim FinishedSize As Double = 0
+        Dim AproxFinalSize As Double = 0
+
+        Try
+
+            Dim aryFi As IO.FileInfo() = di.GetFiles("*.ts")
+            Dim fi As IO.FileInfo
+            For Each fi In aryFi
+                FinishedSize = FinishedSize + Math.Round(fi.Length / 1048576, 2, MidpointRounding.AwayFromZero).ToString()
+            Next
+        Catch ex As Exception
+        End Try
+        'Thread.Sleep(1000)
+        'Pause(1)
+
+        If prozent > 0 Then
+            AproxFinalSize = Math.Round(FinishedSize * 100 / prozent, 2, MidpointRounding.AwayFromZero).ToString() ' Math.Round( / 1048576, 2, MidpointRounding.AwayFromZero).ToString()
+        End If
+        Dim duration As TimeSpan = Date.Now - di.CreationTime
+        Dim TimeinSeconds As Integer = duration.Hours * 3600 + duration.Minutes * 60 + duration.Seconds
+        TimeinSeconds = TimeinSeconds - pausetime
+        Dim DataRate As Double = FinishedSize / TimeinSeconds
+        Dim DataRateString As String = Math.Round(DataRate, 2, MidpointRounding.AwayFromZero).ToString()
+        If prozent > 100 Then
+            prozent = 100
+        End If
+        Me.Invoke(New Action(Function()
+                                 ProgressBar1.Value = prozent
+                                 Label_percent.Text = DataRateString + "MB\s " + Math.Round(FinishedSize, 2, MidpointRounding.AwayFromZero).ToString + "MB/" + Math.Round(AproxFinalSize, 2, MidpointRounding.AwayFromZero).ToString + "MB " + prozent.ToString + "%"
+                                 Return Nothing
+                             End Function))
+        'RaiseEvent UpdateUI(Filename, prozent, FinishedSize, AproxFinalSize, Color.FromArgb(247, 140, 37), DataRateString + "MB\s")
+
+        Return Nothing
+
+    End Function
+
+    Public Function DownloadHybrid(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
         DownloadPfad = DL_Pfad
-        HistoryDL_URL = DLCommand
+        HistoryDL_URL = DL_URL
         HistoryDL_Pfad = DL_Pfad
         HistoryFilename = Filename
 
+
+        Dim m3u8_url As String() = DL_URL.Split(New [Char]() {Chr(34)})
+
+
+        If Debug2 = True Then
+            MsgBox(m3u8_url(1) + vbNewLine + DL_Pfad + vbNewLine + Filename)
+        End If
+        Dim client0 As New WebClient
+        client0.Encoding = Encoding.UTF8
+        Dim text As String = client0.DownloadString(m3u8_url(1))
+        Dim textLenght() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim Fragments() As String = text.Split(New String() {"https:"}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim FragmentsInt As Integer = Fragments.Count - 2
+        Dim nummerint As Integer = 0 '-1
+        Dim m3u8FFmpeg As String = Nothing
+        Dim ts_dl As String = Nothing
+        Dim Folder As String = einstellungen.GeräteID()
+        Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
+        If Debug2 = True Then
+            MsgBox(Pfad2)
+        End If
+        Dim PauseTime As Integer = 0
+        If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
+            ' Nein! Jetzt erstellen...
+            Try
+                Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
+            Catch ex As Exception
+                MsgBox("Temp folder creation failed")
+                Return Nothing
+                Exit Function
+                ' Ordner wurde nich erstellt
+                'Pfad2 = Pfad + "\" + CR_FilenName_Backup + ".mp4"
+            End Try
+        End If
+        Dim di As New IO.DirectoryInfo(Pfad2)
+        For i As Integer = 0 To textLenght.Length - 1
+            If InStr(textLenght(i), ".ts") Then
+                For w As Integer = 0 To Integer.MaxValue
+
+                    If StatusRunning = False Then
+                        'MsgBox(True.ToString)
+                        Thread.Sleep(5000)
+                        PauseTime = PauseTime + 5
+                    ElseIf ThreadList.Count > 7 Then
+                        Thread.Sleep(125)
+                    Else
+                        'Thread.Sleep(250)
+                        Exit For
+                    End If
+                Next
+
+                nummerint = nummerint + 1
+                Dim nummer4D As String = String.Format("{0:0000}", nummerint)
+                Dim curi As String = textLenght(i)
+                If InStr(curi, "https://") Then
+                Else
+                    Dim c() As String = New Uri(m3u8_url(1)).Segments
+                    Dim path As String = "https://" + New Uri(m3u8_url(1)).Host
+                    For i3 As Integer = 0 To c.Count - 2
+                        path = path + c(i3)
+                    Next
+                    curi = path
+                End If
+
+                Dim Evaluator = New Thread(Sub() Me.tsDownloadAsync(curi, Pfad2 + nummer4D + ".ts"))
+                    Evaluator.Start()
+                    ThreadList.Add(Evaluator)
+                    m3u8FFmpeg = m3u8FFmpeg + Pfad2 + nummer4D + ".ts" + vbLf
+                    Dim FragmentsFinised = (ThreadList.Count + nummerint) / FragmentsInt * 100
+                    tsStatusAsync(FragmentsFinised, di, Filename, PauseTime)
+
+                ElseIf textLenght(i) = "#EXT-X-KEY" Then
+                    m3u8FFmpeg = m3u8FFmpeg + textLenght(i) + vbLf
+
+                ElseIf textLenght(i) = "#EXT-X-PLAYLIST-TYPE:VOD" Then
+
+                Else
+                    m3u8FFmpeg = m3u8FFmpeg + textLenght(i) + vbLf
+            End If
+        Next
+        Dim utf8WithoutBom As New System.Text.UTF8Encoding(False)
+        Using sink As New StreamWriter(Pfad2 + "\index" + Folder + ".m3u8", False, utf8WithoutBom)
+            sink.WriteLine(m3u8FFmpeg)
+        End Using
+        For w As Integer = 0 To Integer.MaxValue
+            If ThreadList.Count > 0 Then
+                Thread.Sleep(250)
+            Else
+                Thread.Sleep(250)
+                Exit For
+            End If
+        Next
+        tsStatusAsync(100, di, Filename, PauseTime)
+
+        DL_URL = DL_URL.Replace(m3u8_url(1), Pfad2 + "index" + Folder + ".m3u8")
+
+
+        'MsgBox(DL_URL)
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
-        'Dim cmd As String = "-i " + Chr(34) + URL_DL + Chr(34) + " -c copy -bsf:a aac_adtstoasc " + Pfad_DL 'start ffmpeg with command strFFCMD string
-        Dim cmd As String = DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
 
-        'If MergeSubstoMP4 = True Then
-        '    If CBool(InStr(DL_URL, "-i " + Chr(34))) = True Then
-        '        cmd = DL_URL + " " + DL_Pfad
-        '    End If
-        'End If
+        Dim cmd As String = "-protocol_whitelist file,crypto,http,https,tcp,tls " + DL_URL + " " + DL_Pfad '+ " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
 
-        'If UsedMap = Nothing Then
-        'Else
-
-        '    UsedMap = Nothing
-        'End If
         If Debug2 = True Then
             MsgBox(cmd)
         End If
@@ -260,7 +419,45 @@ Public Class CRD_List_Item
         AddHandler proc.ErrorDataReceived, AddressOf TestOutput
         AddHandler proc.OutputDataReceived, AddressOf TestOutput
         proc.StartInfo = startinfo
-        'PR_List.Add(proc)
+        proc.Start() ' start the process
+        proc.BeginOutputReadLine()
+        proc.BeginErrorReadLine()
+        HybridRunning = False
+        Return Nothing
+    End Function
+
+
+
+#End Region
+
+
+
+    Public Function DownloadFFMPEG(ByVal DLCommand As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
+        DownloadPfad = DL_Pfad
+        HistoryDL_URL = DLCommand
+        HistoryDL_Pfad = DL_Pfad
+        HistoryFilename = Filename
+
+        Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
+        Dim startinfo As New System.Diagnostics.ProcessStartInfo
+        Dim cmd As String = DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+
+        If Debug2 = True Then
+            MsgBox(cmd)
+        End If
+        'all parameters required to run the process
+        startinfo.FileName = exepath
+        startinfo.Arguments = cmd
+        startinfo.UseShellExecute = False
+        startinfo.WindowStyle = ProcessWindowStyle.Normal
+        startinfo.RedirectStandardError = True
+        startinfo.RedirectStandardInput = True
+        startinfo.RedirectStandardOutput = True
+        startinfo.CreateNoWindow = True
+        proc = New Process
+        AddHandler proc.ErrorDataReceived, AddressOf TestOutput
+        AddHandler proc.OutputDataReceived, AddressOf TestOutput
+        proc.StartInfo = startinfo
         proc.Start() ' start the process
         proc.BeginOutputReadLine()
         proc.BeginErrorReadLine()
@@ -451,6 +648,8 @@ Public Class CRD_List_Item
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+
+
         Try
 
 
@@ -471,6 +670,17 @@ Public Class CRD_List_Item
         End Try
     End Sub
 
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
+        Try
+            For tlc As Integer = 0 To ThreadList.Count - 1
+                If ThreadList.Item(tlc).IsAlive Then
+                Else
+                    ThreadList.Remove(ThreadList.Item(tlc))
+                End If
+            Next
+        Catch ex As Exception
 
+        End Try
+    End Sub
 End Class
 

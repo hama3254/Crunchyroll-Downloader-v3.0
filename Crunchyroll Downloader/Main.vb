@@ -6,6 +6,8 @@ Imports System.Threading
 Imports System.ComponentModel
 Imports System.Net.WebUtility
 Imports System.Net.Sockets
+Imports System.Drawing.Drawing2D
+
 Public Class Main
     Dim liList As New List(Of String)
     Public HTMLString As String = My.Resources.Startuphtml
@@ -71,7 +73,8 @@ Public Class Main
     Public WebbrowserTitle As String = Nothing
     Public WebbrowserCookie As String = Nothing
     Public UserBowser As Boolean = False
-
+    Public HybridMode As Boolean = False
+    Public HardSubFunimation As Boolean = False
 #Region "Sprachen Vairablen"
     Public URL_Invaild As String = "invalid URL, this Downloader is only for crunchyroll.com"
     Public SubFolder_automatic As String = "[automatic : Series/Season]"
@@ -106,45 +109,20 @@ Public Class Main
     Dim StatusToolTip As ToolTip = New ToolTip()
     Dim StatusToolTipText As String
     Public RunGecko As String = "Startup"
+
 #End Region
 
 #Region "UI"
 
-    Private Sub PictureBox1_MouseHover(sender As Object, e As EventArgs) Handles pictureBox1.MouseEnter
-        pictureBox1.BackgroundImage = My.Resources.main_browser
+    Private Sub PictureBox1_MouseHover(sender As Object, e As EventArgs) Handles Btn_Browser.MouseEnter, Btn_Settings.MouseEnter, Btn_Close.MouseEnter, Btn_add.MouseEnter
+        Dim PB As PictureBox = sender
+        PB.BackColor = Color.LightGray
     End Sub
 
-    Private Sub PictureBox1_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox1.MouseLeave
-        pictureBox1.BackgroundImage = My.Resources.main_browser_hover
+    Private Sub PictureBox1_MouseLeave(sender As Object, e As EventArgs) Handles Btn_Browser.MouseLeave, Btn_Settings.MouseLeave, Btn_Close.MouseLeave, Btn_add.MouseLeave
+        Dim PB As PictureBox = sender
+        PB.BackColor = Color.Transparent
     End Sub
-
-
-    Private Sub PictureBox2_MouseHover(sender As Object, e As EventArgs) Handles pictureBox2.MouseEnter
-        pictureBox2.BackgroundImage = My.Resources.main_settings
-    End Sub
-
-    Private Sub PictureBox2_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox2.MouseLeave
-        pictureBox2.BackgroundImage = My.Resources.main_settings_hover
-    End Sub
-
-
-
-    Private Sub PictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
-        pictureBox3.BackColor = SystemColors.Control
-    End Sub
-
-    Private Sub PictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
-        pictureBox3.BackColor = Color.Transparent
-    End Sub
-
-    Private Sub PictureBox4_MouseHover(sender As Object, e As EventArgs) Handles pictureBox4.MouseMove
-        pictureBox4.BackColor = SystemColors.Control
-    End Sub
-
-    Private Sub PictureBox4_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox4.MouseLeave
-        pictureBox4.BackColor = Color.Transparent
-    End Sub
-
 
 
 
@@ -257,6 +235,18 @@ Public Class Main
         End Try
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            HybridMode = CBool(Integer.Parse(rkg.GetValue("HybridMode").ToString))
+        Catch ex As Exception
+
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            HardSubFunimation = CBool(Integer.Parse(rkg.GetValue("FunimationHardsub").ToString))
+        Catch ex As Exception
+
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             SaveLog = CBool(Integer.Parse(rkg.GetValue("SaveLog").ToString))
         Catch ex As Exception
 
@@ -346,7 +336,7 @@ Public Class Main
         'Item.SetLocations(r.Y)
         'MsgBox("test " + r.Y.ToString)
         Item.Visible = True
-        Item.DownloadFFMPEG(URL_DL, Pfad_DL, Pfad_DL)
+        Item.StartDownload(URL_DL, Pfad_DL, Pfad_DL, HybridMode)
     End Sub
 #Region "Manga DL"
     Public Sub MangaListItemAdd(ByVal NameP2 As String, ByVal ThumbnialURL As String, ByVal BaseURL As String, ByVal SiteList As List(Of String))
@@ -1181,11 +1171,16 @@ Public Class Main
 
             CR_FilenName = System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = RemoveExtraSpaces(CR_FilenName)
-            'MsgBox(CR_FilenName)
+            'MsgBox(Pfad)
             If SubfolderValue = Nothing Then
                 Pfad2 = Pfad + "\" + CR_FilenName + ".mp4"
+                'MsgBox(Pfad + vbNewLine + Pfad2)
+            ElseIf SubfolderValue = "\" Then
+                Pfad2 = Pfad + "\" + CR_FilenName + ".mp4"
+                'MsgBox(Pfad + vbNewLine + Pfad2)
             Else
                 Pfad2 = Pfad + "\" + SubfolderValue + CR_FilenName + ".mp4"
+                'MsgBox(Pfad + vbNewLine + Pfad2 + vbNewLine + SubfolderValue)
             End If
             If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
                 ' Nein! Jetzt erstellen...
@@ -1302,6 +1297,7 @@ Public Class Main
             If CBool(InStr(CR_URI_Master, "master.m3u8")) Then
                 Me.Invoke(New Action(Function()
                                          Anime_Add.StatusLabel.Text = "Status: m3u8 found, looking for resolution"
+                                         StatusMainForm.Text = "Status: m3u8 found, looking for resolution"
                                          Return Nothing
                                      End Function))
             Else
@@ -1379,7 +1375,7 @@ Public Class Main
 #End Region
             If Resu = 42 Then
                 If MergeSubstoMP4 = True Then
-                    URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+                    URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
                 Else
                     URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + " " + ffmpeg_command
                 End If
@@ -1416,20 +1412,54 @@ Public Class Main
                         End If
                     End If
                 End If
+#Region "old non gzip fix"
                 'MsgBox(Resu2)
-                Dim VLC_URI_1 As String() = str.Split(New String() {Resu2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim VLC_URI_2 As String() = VLC_URI_1(1).Split(New [Char]() {Chr(34)})
-                Dim VLC_URI_3 As String() = VLC_URI_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+                '    Dim VLC_URI_1 As String() = str.Split(New String() {Resu2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+                '    Dim VLC_URI_2 As String() = VLC_URI_1(1).Split(New [Char]() {Chr(34)})
+                '    Dim VLC_URI_3 As String() = VLC_URI_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+                '    If MergeSubstoMP4 = True Then
+                '        URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
+
+                '        'URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+                '    Else
+                '        URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + " " + ffmpeg_command
+                '        'URL_DL = VLC_URI_3(0).Trim()
+                '    End If
+                '    'MsgBox(URL_DL)
+                'End If
+#End Region
+
+#Region "gzip fix - no cloudfront cdn"
+
+
+                Dim ffmpeg_url_1 As String() = str.Split(New String() {Resu2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ffmpeg_url_3 As String() = Nothing
+                'MsgBox(ffmpeg_url_1.Count.ToString)
+                If ffmpeg_url_1.Count > 2 Then
+                    If InStr(ffmpeg_url_1(1), "&cdn=cloudfront-prod") Then
+                        Dim ffmpeg_url_2 As String() = ffmpeg_url_1(2).Split(New [Char]() {Chr(34)})
+                        ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+                    Else
+                        Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
+                        ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+                    End If
+
+
+                Else
+                    Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
+                    ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+                End If
                 If MergeSubstoMP4 = True Then
-                    URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+                    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
 
                     'URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
                 Else
-                    URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + " " + ffmpeg_command
+                    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + " " + ffmpeg_command
                     'URL_DL = VLC_URI_3(0).Trim()
                 End If
                 'MsgBox(URL_DL)
             End If
+#End Region
 #Region "thumbnail"
             Dim thumbnail As String() = WebbrowserText.Split(New String() {My.Resources.thumbnailString}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim thumbnail2 As String() = thumbnail(1).Split(New String() {Chr(34) + "}"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
@@ -1470,12 +1500,14 @@ Public Class Main
             Me.Invoke(New Action(Function()
 
                                      Anime_Add.StatusLabel.Text = "Status: idle"
+                                     StatusMainForm.Text = "Crunchyroll Downloader"
                                      Return Nothing
                                  End Function))
         Catch ex As Exception
             Me.Invoke(New Action(Function()
 
                                      Anime_Add.StatusLabel.Text = "Status: idle"
+                                     StatusMainForm.Text = "Crunchyroll Downloader"
                                      Return Nothing
                                  End Function))
             Grapp_RDY = True
@@ -1527,43 +1559,58 @@ Public Class Main
     End Sub
 
 
-    Private Sub Main_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-        Try
-            Me.Visible = False
-            'Pause(2)
-        Catch ex As Exception
-        End Try
 
-    End Sub
-
-
-    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
+    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles Btn_Close.Click
         If RunningDownloads > 0 Then
             If MessageBox.Show("Are you sure you want close the program and end all active downloads?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 For i As Integer = 0 To ListView1.Items.Count - 1
                     ItemList(i).KillRunningTask()
                 Next
                 RunServer = False
-
+                RemoveTempFiles()
                 Me.Close()
             End If
         Else
             RunServer = False
+            RemoveTempFiles()
             Me.Close()
         End If
     End Sub
+    Private Sub RemoveTempFiles()
+        Try
+            Dim files() As String = IO.Directory.GetFiles(Application.StartupPath)
+            For Each file As String In files
+                If InStr(file, "CRD-Temp-File-") Then
+                    IO.File.Delete(file)
+                End If
 
+            Next
+        Catch ex As Exception
+        End Try
+        Try
+            Dim di As New System.IO.DirectoryInfo(Pfad)
+            For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
+                If fi.Attributes.HasFlag(System.IO.FileAttributes.Hidden) Then
+                Else
+                    If InStr(fi.Name, "CRD-Temp-File-") Then
+                        System.IO.Directory.Delete(fi.FullName, True)
+                    End If
+                End If
+            Next
+        Catch ex As Exception
+        End Try
+    End Sub
 
-    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
+    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles Btn_add.Click
         Anime_Add.Show()
 
     End Sub
 
-    Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles pictureBox2.Click
+    Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles Btn_Settings.Click
         einstellungen.Show()
     End Sub
 
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles pictureBox1.Click
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles Btn_Browser.Click
         UserBowser = True
         GeckoFX.Show()
     End Sub
@@ -1578,7 +1625,7 @@ Public Class Main
     Public MoveForm_MousePosition As Point
 
     Public Sub MoveForm_MouseDown(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseDown ' Add more handles here (Example: PictureBox1.MouseDown)
+    MyBase.MouseDown, StatusMainForm.MouseDown ' Add more handles here (Example: PictureBox1.MouseDown)
 
         If e.Button = MouseButtons.Left Then
             MoveForm = True
@@ -1589,7 +1636,7 @@ Public Class Main
     End Sub
 
     Public Sub MoveForm_MouseMove(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseMove ' Add more handles here (Example: PictureBox1.MouseMove)
+    MyBase.MouseMove, StatusMainForm.MouseMove ' Add more handles here (Example: PictureBox1.MouseMove)
 
         If MoveForm Then
             Me.Location = Me.Location + (e.Location - MoveForm_MousePosition)
@@ -1598,7 +1645,7 @@ Public Class Main
     End Sub
 
     Public Sub MoveForm_MouseUp(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseUp ' Add more handles here (Example: PictureBox1.MouseUp)
+    MyBase.MouseUp, StatusMainForm.MouseUp ' Add more handles here (Example: PictureBox1.MouseUp)
 
         If e.Button = MouseButtons.Left Then
             MoveForm = False
@@ -1721,6 +1768,7 @@ Public Class Main
         If NonCR_URL = Nothing Then Exit Sub
         Me.Invoke(New Action(Function()
                                  Anime_Add.StatusLabel.Text = "Status: m3u8 found, trying to start the download"
+                                 StatusMainForm.Text = "Status: m3u8 found, trying to start the download"
                                  Return Nothing
                              End Function))
         Grapp_non_cr_RDY = False
@@ -1818,12 +1866,13 @@ Public Class Main
         Me.Invoke(New Action(Function()
 
                                  Anime_Add.StatusLabel.Text = "Status: idle"
+                                 StatusMainForm.Text = "Crunchyroll Downloader"
                                  Return Nothing
                              End Function))
 
     End Sub
 
-    Private Sub PictureBox2_DoubleClick(sender As Object, e As EventArgs) Handles pictureBox2.DoubleClick
+    Private Sub PictureBox2_DoubleClick(sender As Object, e As EventArgs) Handles Btn_Settings.DoubleClick
         If Debug1 = True Then
             If Debug2 = True Then
                 einstellungen.Close()
@@ -1863,20 +1912,14 @@ Public Class Main
 
     Public Sub Funitmation_Grapp()
         Try
-
+            Me.Invoke(New Action(Function()
+                                     StatusMainForm.Text = "Status: looking for video file"
+                                     Return Nothing
+                                 End Function))
 
             Funimation_Grapp_RDY = False
 #Region "Name"
-#Region "old version"
 
-
-            'Dim FunimationName() As String = WebbrowserText.Split(New String() {"</h1>"}, System.StringSplitOptions.RemoveEmptyEntries)
-            'Dim FunimationName2() As String = FunimationName(0).Split(New String() {Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
-            'Dim FunimationName3 As String = FunimationName2(FunimationName2.Count - 1).Replace("</a>", "")
-            'FunimationName3 = System.Text.RegularExpressions.Regex.Replace(FunimationName3, "[^\w\\-]", " ")
-            'FunimationName3 = RemoveExtraSpaces(FunimationName3)
-            'Dim DownloadPfad As String = Chr(34) + Pfad + "\" + FunimationName3 + ".mp4" + Chr(34)
-#End Region
             Dim DownloadPfad As String = Nothing
             Dim FunimationSeason As String = Nothing
             Dim FunimationEpisode As String = Nothing
@@ -1956,6 +1999,37 @@ Public Class Main
                 End Try
             End If
 
+#Region "lösche doppel download"
+
+            Dim Pfad5 As String = DownloadPfad.Replace(Chr(34), "")
+            If My.Computer.FileSystem.FileExists(Pfad5) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
+                Me.Invoke(New Action(Function()
+                                         StatusMainForm.Text = "Status: File already exists."
+                                         Return Nothing
+                                     End Function))
+
+                If MessageBox.Show("The file " + Pfad5 + " already exists." + vbNewLine + "You want to override it?", "File exists!", MessageBoxButtons.OKCancel) = DialogResult.OK Then
+                    Try
+                        My.Computer.FileSystem.DeleteFile(Pfad5)
+                        Me.Invoke(New Action(Function()
+                                                 StatusMainForm.Text = "Status: Old file overwritten."
+                                                 Return Nothing
+                                             End Function))
+
+                    Catch ex As Exception
+                    End Try
+                Else
+                    Me.Invoke(New Action(Function()
+                                             StatusMainForm.Text = "Crunchyroll Downloader"
+                                             Return Nothing
+                                         End Function))
+
+                    Funimation_Grapp_RDY = True
+                    Exit Sub
+                End If
+
+            End If
+#End Region
 
 #End Region
 #Region "m3u8 URL"
@@ -1991,6 +2065,7 @@ Public Class Main
                                              GeckoFX.WebBrowser1.Navigate(WebbrowserURL)
                                              Try
                                                  Anime_Add.StatusLabel.Text = "retrying Funimation"
+                                                 StatusMainForm.Text = "retrying Funimation"
                                              Catch ex As Exception
                                              End Try
                                              Return Nothing
@@ -2000,29 +2075,67 @@ Public Class Main
                     Funimation_Grapp_RDY = True
                     Exit Sub
                 End If
-            Else
-                'MsgBox(Funimation_m3u8_Main)
-            End If
-            Dim str1 As String = client0.DownloadString(Funimation_m3u8_Main.Replace(Chr(34), ""))
-            Dim textLenght() As String = str1.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
 
+            End If
             Me.Invoke(New Action(Function()
-                                     FontLabel2.Text = textLenght.Count
+                                     StatusMainForm.Text = "Status: Video found!"
                                      Return Nothing
                                  End Function))
 
+            Dim str1 As String = client0.DownloadString(Funimation_m3u8_Main.Replace(Chr(34), ""))
+            Dim textLenght() As String = str1.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+            'MsgBox(Funimation_m3u8_Main)
 
             For i As Integer = 0 To textLenght.Length - 1
                 If InStr(textLenght(i), "https") Then
                     If InStr(textLenght(i - 1), "x" + Resu.ToString) Then
-                        Funimation_m3u8_final = textLenght(i)
-                        Exit For
+
+                        Dim CheckClient As New WebClient
+                        CheckClient.Encoding = Encoding.UTF8
+                        If WebbrowserCookie = Nothing Then
+                        Else
+                            CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                        End If
+                        Dim m3u8String As String = CheckClient.DownloadString(textLenght(i))
+                        Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim keyfileurl3 As String = keyfileurl2(0)
+
+                        If InStr(keyfileurl2(0), "https://") Then
+
+                        Else
+                            Dim c() As String = New Uri(textLenght(i)).Segments
+                            Dim path As String = "https://" + New Uri(textLenght(i)).Host
+
+                            For i3 As Integer = 0 To c.Count - 2
+                                path = path + c(i3)
+                            Next
+                            keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
+                        End If
+
+                        'MsgBox(keyfileurl3)
+                        Try
+                            Dim CheckClient2 As New WebClient
+                            CheckClient2.Encoding = System.Text.Encoding.UTF8
+                            Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
+                            Funimation_m3u8_final = textLenght(i)
+                            Exit For
+                        Catch ex As Exception
+                            Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
+                        End Try
+
+
                     End If
                 End If
             Next
 
+
             If Funimation_m3u8_final = Nothing Then
+
                 Me.Invoke(New Action(Function()
+                                         StatusMainForm.Text = "Status: Resolution not found!"
                                          DialogTaskString = "Funimation_Resolution"
                                          ResoNotFoundString = str1
                                          Reso.ShowDialog()
@@ -2032,11 +2145,50 @@ Public Class Main
                 For i As Integer = 0 To textLenght.Length - 1
                     If InStr(textLenght(i), "https") Then
                         If InStr(textLenght(i - 1), ResoBackString) Then
-                            Funimation_m3u8_final = textLenght(i)
-                            Exit For
+
+
+                            Dim CheckClient As New WebClient
+                            CheckClient.Encoding = Encoding.UTF8
+                            If WebbrowserCookie = Nothing Then
+                            Else
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                            End If
+                            Dim m3u8String As String = CheckClient.DownloadString(textLenght(i))
+                            MsgBox(textLenght(i))
+                            Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl3 As String = keyfileurl2(0)
+                            If InStr(keyfileurl2(0), "https://") Then
+                            Else
+                                Dim c() As String = New Uri(textLenght(i)).Segments
+                                Dim path As String = "https://" + New Uri(textLenght(i)).Host
+
+                                For i3 As Integer = 0 To c.Count - 2
+                                    path = path + c(i3)
+                                Next
+                                keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
+                            End If
+                            Try
+                                Dim CheckClient2 As New WebClient
+                                CheckClient2.Encoding = System.Text.Encoding.UTF8
+                                Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
+                                Funimation_m3u8_final = textLenght(i)
+                                Exit For
+                            Catch ex As Exception
+                                Debug.WriteLine(keyfileurl3 + vbNewLine + ex.ToString)
+                            End Try
+
+
+                            'Funimation_m3u8_final = textLenght(i)
+                            'Exit For
                         End If
                     End If
                 Next
+            Else
+                Me.Invoke(New Action(Function()
+                                         StatusMainForm.Text = "Status: Resolution found!"
+                                         Return Nothing
+                                     End Function))
 
             End If
 
@@ -2068,16 +2220,16 @@ Public Class Main
             Dim UsedSub As String = Nothing
             If SplittString = Nothing Then
                 If InStr(PlayerPage, ".srt") Then
-                    Dim SubTitle1() As String = PlayerPage.Split(New String() {".srt"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle() As String = PlayerPage.Split(New String() {".srt"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle2() As String = SubTitle(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     UsedSub = SubTitle2(SubTitle2.Count - 1) + ".srt"
                 ElseIf InStr(PlayerPage, ".vtt") Then
-                    Dim SubTitle1() As String = PlayerPage.Split(New String() {".vtt"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle() As String = PlayerPage.Split(New String() {".vtt"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle2() As String = SubTitle(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     UsedSub = SubTitle2(SubTitle2.Count - 1) + ".vtt"
                 ElseIf InStr(PlayerPage, ".dfxp") Then
-                    Dim SubTitle1() As String = PlayerPage.Split(New String() {".dfxp"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle() As String = PlayerPage.Split(New String() {".dfxp"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SubTitle2() As String = SubTitle(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     UsedSub = SubTitle2(SubTitle2.Count - 1) + ".dfxp"
                 Else
                     If MessageBox.Show("No Subtitle found in the website, a logfile was created." + vbNewLine + "Press 'Yes' to download the video without subtitle", "No Subtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
@@ -2088,9 +2240,8 @@ Public Class Main
                     End If
                     'MsgBox("No Subtitle found in the website, a logfile was created.", MsgBoxStyle.OkCancel, "No Subtitle")
                 End If
+
             Else
-
-
                 Dim SubTitle1() As String = PlayerPage.Split(New String() {SplittString}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim Subs_in_srt As New List(Of String)
                 Dim Subs_in_vtt As New List(Of String)
@@ -2116,10 +2267,32 @@ Public Class Main
                 ElseIf Subs_in_dfxp.Count > 0 Then
                     UsedSub = Subs_in_dfxp.Item(0)
                 End If
+            End If
 
-                If MergeSubstoMP4 = True Then
+            If MergeSubstoMP4 = True Then
+                    If HardSubFunimation = True Then
+                    Dim SubText As String = client0.DownloadString(UsedSub)
+                    Dim SubtitelFormat As String = ".srt"
+                    If InStr(UsedSub, ".vtt") Then
+                        SubtitelFormat = ".vtt"
+                    ElseIf InStr(UsedSub, ".dfxp") Then
+                        SubtitelFormat = ".dfxp"
+                    End If
+                    UsedSub = einstellungen.GeräteID() + SubtitelFormat
+                    File.WriteAllText(Application.StartupPath + "\" + UsedSub, SubText, Encoding.UTF8)
+                End If
                 Else
-                    'MsgBox(WebbrowserSoftSubURL)
+                If HardSubFunimation = True Then
+                    Dim SubText As String = client0.DownloadString(UsedSub)
+                    Dim SubtitelFormat As String = ".srt"
+                    If InStr(UsedSub, ".vtt") Then
+                        SubtitelFormat = ".vtt"
+                    ElseIf InStr(UsedSub, ".dfxp") Then
+                        SubtitelFormat = ".dfxp"
+                    End If
+                    UsedSub = einstellungen.GeräteID() + SubtitelFormat
+                    File.WriteAllText(Application.StartupPath + "\" + UsedSub, SubText, Encoding.UTF8)
+                Else
                     Dim str2 As String = client0.DownloadString(UsedSub)
                     Dim SubtitelFormat As String = ".srt"
                     If InStr(UsedSub, ".vtt") Then
@@ -2131,12 +2304,31 @@ Public Class Main
                     Dim Pfad4 As String = Pfad3.Replace(".mp4", SubtitelFormat)
                     File.WriteAllText(Pfad4, str2, Encoding.UTF8)
                 End If
-
             End If
+
+            ' End If
 #End Region
 
 #Region "SubsToMP4"
-            If MergeSubstoMP4 = True Then
+            If HardSubFunimation = True Then
+                Dim ffmpeg_hardsub As String = Nothing
+                If InStr(ffmpeg_command, "-c copy") Then
+                    ffmpeg_hardsub = "-bsf:a aac_adtstoasc"
+                Else
+                    ffmpeg_hardsub = ffmpeg_command
+                End If
+                If UsedSub = Nothing Then
+                Else
+                    If FunimationDub = "japanese" Then
+                        Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
+                        Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + " -vf subtitles=" + Chr(34) + UsedSub + Chr(34) + " " + ffmpeg_hardsub
+                    Else
+                        Dim DubMetatata As String = " -metadata:s:a:0 language=eng"
+                        Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + " -vf subtitles=" + Chr(34) + UsedSub + Chr(34) + " " + ffmpeg_hardsub
+                    End If
+                End If
+                'MsgBox(Funimation_m3u8_final)
+            ElseIf MergeSubstoMP4 = True Then
                 If UsedSub = Nothing Then
                 Else
                     Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
@@ -2165,7 +2357,7 @@ Public Class Main
             End If
 
 #End Region
-
+            'MsgBox(Funimation_m3u8_final)
             'DownloadPfad = DownloadPfad.Replace(" \", "\")
             DownloadPfad = RemoveExtraSpaces(DownloadPfad)
             Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -2179,32 +2371,72 @@ Public Class Main
 #End Region
 
         Catch ex As Exception
+            Me.Invoke(New Action(Function()
+                                     StatusMainForm.Text = "Crunchyroll Downloader!"
+                                     Return Nothing
+                                 End Function))
+
             MsgBox(ex.ToString)
         End Try
         Funimation_Grapp_RDY = True
     End Sub
 
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
+        'Try
+        '    If Anime_Add.Visible = True Then
+        '        num.Visible = False
+        '    Else
+        '        If ListBoxList.Count > 9 Then
+
+        '            num.Location = New Point(69, 0)
+        '            num.Text = ListBoxList.Count.ToString
+        '            Btn_add.Controls.Add(num)
+        '            num.Visible = True
+
+        '            num2.Location = New Point(69, 0)
+        '            num2.Text = ListBoxList.Count.ToString
+        '            Btn_add.Controls.Add(num2)
+        '            num2.Visible = True
+
+        '        ElseIf ListBoxList.Count > 0 Then
+        '            num.Location = New Point(74, 0)
+        '            num.Text = ListBoxList.Count.ToString
+        '            num.Visible = True
+        '            Btn_add.Controls.Add(num)
+        '        Else
+        '            num.Visible = False
+        '        End If
+        '    End If
+        'Catch ex As Exception
+        '    Debug.WriteLine(ex.ToString)
+        'End Try
+
         Try
             Dim GeckoHTML As String = My.Resources.htmlTop
             Dim LiAdd As String = Nothing
             For ii As Integer = 0 To ItemList.Count - 1
-
                 For i As Integer = 0 To liList.Count - 1
                     If InStr(liList(i), "<!-- " + ItemList.Item(ii).GetNameAnime + "-->") Then
-
-                        Dim ProzentBalken As String() = liList(i).Split(New String() {"width:"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim ProzentBalken2 As String() = ProzentBalken(1).Split(New String() {"%" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim ProzentZahl As String() = ProzentBalken2(1).Split(New String() {"'percenttext'>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim ProzentZahl2 As String() = ProzentZahl(1).Split(New String() {"%<"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                        liList(i) = ProzentBalken(0) + "width:" + ItemList.Item(ii).GetPercentValue.ToString + "%" + Chr(34) + ProzentZahl(0) + "'percenttext'>" + ItemList.Item(ii).GetLabelPercent.ToString + "<" + ProzentZahl2(1)
-                        If LiAdd = Nothing Then
-                            LiAdd = liList(i)
+                        If InStr(liList(i), "Finished - ") Then
+                            If LiAdd = Nothing Then
+                                LiAdd = liList(i)
+                            Else
+                                LiAdd = LiAdd + vbNewLine + liList(i)
+                            End If
                         Else
-                            LiAdd = LiAdd + vbNewLine + liList(i)
+                            Dim ProzentBalken As String() = liList(i).Split(New String() {"width:"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim ProzentBalken2 As String() = ProzentBalken(1).Split(New String() {"%" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim ProzentZahl As String() = ProzentBalken2(1).Split(New String() {"'percenttext'>"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim ProzentZahl2 As String() = ProzentZahl(1).Split(New String() {"%<"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                            liList(i) = ProzentBalken(0) + "width:" + ItemList.Item(ii).GetPercentValue.ToString + "%" + Chr(34) + ProzentZahl(0) + "'percenttext'>" + ItemList.Item(ii).GetLabelPercent.ToString + "<" + ProzentZahl2(1)
+                            If LiAdd = Nothing Then
+                                LiAdd = liList(i)
+                            Else
+                                LiAdd = LiAdd + vbNewLine + liList(i)
+                            End If
+                            Exit For
                         End If
-                        Exit For
                     End If
                 Next
             Next
@@ -2217,7 +2449,7 @@ Public Class Main
             My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\index.html", c, False)
 
         Catch ex As Exception
-
+            Debug.WriteLine(ex.ToString)
             'MsgBox(ex.ToString)
         End Try
     End Sub
@@ -2241,7 +2473,7 @@ Public Class Main
             Dim Port As String = "80"
             tcpListener = New TcpListener(serverIP, Int32.Parse(Port))
             tcpListener.Start()
-            Console.WriteLine("Web server started at: " & serverIP.ToString() & ":" & Port)
+            Debug.WriteLine("Web server started at: " & serverIP.ToString() & ":" & Port)
 
             ProcessThread()
         Catch ex As Exception
@@ -2260,12 +2492,12 @@ Public Class Main
                 clientSocket.ReceiveBufferSize = 1048576
                 ' Socket Information
                 Dim clientInfo As IPEndPoint = CType(clientSocket.RemoteEndPoint, IPEndPoint)
-                Console.WriteLine("Client: " + clientInfo.Address.ToString() + ":" + clientInfo.Port.ToString())
+                'Debug.WriteLine("Client: " + clientInfo.Address.ToString() + ":" + clientInfo.Port.ToString())
                 ' Set Thread for each Web Browser Connection
                 Dim clientThread As New Thread(Sub() Me.ProcessRequest(clientSocket))
                 clientThread.Start()
             Catch ex As Exception
-                Console.WriteLine(ex.ToString())
+                Debug.WriteLine(ex.ToString())
                 'If clientSocket.Connected Then
                 '    clientSocket.Close()
                 'End If
@@ -2281,7 +2513,8 @@ Public Class Main
             ' Receive HTTP Request from Web Browser
             bytes = clientSocket.Receive(recvBytes, 0, clientSocket.Available, SocketFlags.None)
             htmlReq = Encoding.UTF8.GetString(recvBytes, 0, bytes)
-
+            'MsgBox(htmlReq)
+            'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", htmlReq + vbNewLine, True)
             Dim rootPath As String = Directory.GetCurrentDirectory() & "\WebInterface\"
             ' Set default page
             Dim defaultPage As String = "index.html"
@@ -2290,20 +2523,18 @@ Public Class Main
             Dim strRequest As String
             strArray = htmlReq.Trim.Split(" ")
             'MsgBox(htmlReq)
-            If strArray(0).Trim().ToUpper.Equals("GET") Then
-                strRequest = strArray(1).Trim
 
-                If strRequest.StartsWith("/") Then
-                    strRequest = strRequest.Substring(1)
-                End If
-                If strRequest.EndsWith("/") Or strRequest.Equals("") Then
-                    strRequest = strRequest & defaultPage '"HTMLString" 'strRequest & defaultPage
-                End If
+            If strArray(0).Trim().ToUpper.Equals("POST") Then
+                Debug.WriteLine("receiving data from the add-on")
 
-                strRequest = rootPath & strRequest
-                sendHTMLResponse(strRequest, clientSocket)
-            ElseIf strArray(0).Trim().ToUpper.Equals("POST") Then
+#Region "CR Einzeln"
+
                 If InStr(htmlReq, "HTMLSingle=") Then
+                    Debug.WriteLine("Single episode mode - Crunchyroll")
+                    Me.Invoke(New Action(Function()
+                                             StatusMainForm.Text = "Status: Download added from plugin"
+                                             Return Nothing
+                                         End Function))
                     Try
                         Dim html() As String = htmlReq.Split(New String() {"HTMLSingle="}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim DecodedHTML As String = UrlDecode(html(1))
@@ -2322,8 +2553,12 @@ Public Class Main
                             t.IsBackground = True
                             t.Start()
                         Else
-                            If Anime_Add.Visible = True Then
-                                Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                                Me.Invoke(New Action(Function()
+                                                         Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                                                         Return Nothing
+                                                     End Function))
+
                             Else
                                 ListBoxList.Add(WebbrowserURL)
                             End If
@@ -2336,19 +2571,33 @@ Public Class Main
                         strRequest = rootPath & "error_Page.html" 'PostPage
                         sendHTMLResponse(strRequest, clientSocket)
                     End Try
+#End Region
+#Region "mass-dl"
+
+
                 ElseIf InStr(htmlReq, "HTMLMass=") Then
+                    Debug.WriteLine("multi episode mode")
+
                     Try
                         Dim html() As String = htmlReq.Split(New String() {"HTMLMass="}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim DecodedHTML As String = UrlDecode(html(1))
                         Dim URLSplit() As String = DecodedHTML.Split(New String() {"javascript:"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        If Anime_Add.Visible = True Then
+                        If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
                             For i As Integer = 0 To URLSplit.Count - 1
-                                Anime_Add.ListBox1.Items.Add(URLSplit(i))
+                                Me.Invoke(New Action(Function()
+                                                         Anime_Add.ListBox1.Items.Add(URLSplit(i))
+                                                         Return Nothing
+                                                     End Function))
                             Next
                         Else
+
                             For i As Integer = 0 To URLSplit.Count - 1
                                 ListBoxList.Add(URLSplit(i))
                             Next
+                            Me.Invoke(New Action(Function()
+                                                     StatusMainForm.Text = "Status: " + ListBoxList.Count.ToString + " Downloads in queue"
+                                                     Return Nothing
+                                                 End Function))
                         End If
                         strRequest = rootPath & "Post_Mass_Sucess.html" 'PostPage
                         sendHTMLResponse(strRequest, clientSocket)
@@ -2358,34 +2607,22 @@ Public Class Main
                         strRequest = rootPath & "error_Page.html" 'PostPage
                         sendHTMLResponse(strRequest, clientSocket)
                     End Try
-                ElseIf InStr(htmlReq, "FunimationHTML=") Then
+#End Region
+#Region "funimation Einzeln"
+                ElseIf InStr(htmlReq, "FunimationURL=") Then
+                    Debug.WriteLine("single episode mode - Funimation")
+                    'Debug.WriteLine(htmlReq)
+                    Me.Invoke(New Action(Function()
+                                             StatusMainForm.Text = "Status: Download added from plugin"
+                                             Return Nothing
+                                         End Function))
                     Try
-
-
-                        Dim html() As String = htmlReq.Split(New String() {"FunimationHTML="}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim DecodedHTML As String = UrlDecode(html(1))
-                        'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "/log.txt", DecodedHTML, True)
-                        Dim URLSplit() As String = DecodedHTML.Split(New String() {"FunimationURL="}, System.StringSplitOptions.RemoveEmptyEntries)
-                        WebbrowserURL = URLSplit(1)
-                        Dim BodySplit() As String = DecodedHTML.Split(New String() {"<body"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        WebbrowserText = BodySplit(1)
-                        Dim TitleSplit() As String = DecodedHTML.Split(New String() {"<title>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim TitleSplit2() As String = TitleSplit(1).Split(New String() {"</title>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        WebbrowserTitle = TitleSplit2(0)
-                        Dim HeadSplit() As String = DecodedHTML.Split(New String() {"<head"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim HeadSplit2() As String = HeadSplit(0).Split(New String() {"</head>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        WebbrowserHeadText = HeadSplit2(0)
+                        Dim URLSplit() As String = htmlReq.Split(New String() {"FunimationURL="}, System.StringSplitOptions.RemoveEmptyEntries)
+                        WebbrowserURL = UrlDecode(URLSplit(1))
 
                         If Funimation_Grapp_RDY = True Then
-                            'Dim t As Thread
-                            't = New Thread(AddressOf Funitmation_Grapp)
-                            't.Priority = ThreadPriority.Normal
-                            't.IsBackground = True
-                            't.Start()
-
-
                             If RunningDownloads >= MaxDL Then
-                                Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                                ListBoxList.Add(WebbrowserURL)
                             Else
                                 Me.Invoke(New Action(Function()
                                                          GeckoFX.WebBrowser1.Navigate(WebbrowserURL)
@@ -2395,9 +2632,13 @@ Public Class Main
                                 b = False
                             End If
 
-                            Else
-                            If Anime_Add.Visible = True Then
-                                Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                        Else
+                            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                                Me.Invoke(New Action(Function()
+                                                         Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                                                         Return Nothing
+                                                     End Function))
+
                             Else
                                 ListBoxList.Add(WebbrowserURL)
                             End If
@@ -2410,11 +2651,27 @@ Public Class Main
                         strRequest = rootPath & "error_Page.html" 'PostPage
                         sendHTMLResponse(strRequest, clientSocket)
                     End Try
+
+#End Region
                 Else
 
                     strRequest = rootPath & "error_Page_default.html" 'PostPage
                     sendHTMLResponse(strRequest, clientSocket)
                 End If
+
+
+            ElseIf strArray(0).Trim().ToUpper.Equals("GET") Then
+                strRequest = strArray(1).Trim
+
+                If strRequest.StartsWith("/") Then
+                    strRequest = strRequest.Substring(1)
+                End If
+                If strRequest.EndsWith("/") Or strRequest.Equals("") Then
+                    strRequest = strRequest & defaultPage '"HTMLString" 'strRequest & defaultPage
+                End If
+
+                strRequest = rootPath & strRequest
+                sendHTMLResponse(strRequest, clientSocket)
 
             Else ' Not HTTP GET method
                 strRequest = rootPath & defaultPage
@@ -2422,10 +2679,14 @@ Public Class Main
 
             End If
         Catch ex As Exception
-            Console.WriteLine(ex.ToString())
-            If clientSocket.Connected Then
-                clientSocket.Close()
-            End If
+            Debug.WriteLine(ex.ToString())
+            Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
+            My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
+            'strRequest = rootPath & "error_Page.html" 'PostPage
+            sendHTMLResponse(Application.StartupPath + "\WebInterface\error_Page.html", clientSocket)
+            'If clientSocket.Connected Then
+            '    clientSocket.Close()
+            'End If
         End Try
     End Sub
     ' Send HTTP Response
@@ -2436,7 +2697,7 @@ Public Class Main
 
             Dim respByte() As Byte
             If File.Exists(httpRequest) Then
-                'Console.WriteLine(httpRequest)
+                Debug.WriteLine(httpRequest)
                 respByte = File.ReadAllBytes(httpRequest)
 
                 ' Set HTML Header
@@ -2448,7 +2709,7 @@ Public Class Main
                     ControlChars.CrLf & ControlChars.CrLf
                 ' The content Length of HTML Header
                 Dim headerByte() As Byte = Encoding.UTF8.GetBytes(htmlHeader)
-                'Console.WriteLine("HTML Header: " & ControlChars.CrLf & htmlHeader)
+                'Debug.WriteLine("HTML Header: " & ControlChars.CrLf & htmlHeader)
                 ' Send HTML Header back to Web Browser
                 clientSocket.Send(headerByte, 0, headerByte.Length, SocketFlags.None)
                 ' Send HTML Content back to Web Browser
@@ -2459,7 +2720,7 @@ Public Class Main
             Else
 
                 respByte = Encoding.UTF8.GetBytes(My.Resources.Error_404) 'File.ReadAllBytes(httpRequest)
-
+                Debug.WriteLine("404 Not Found : " + httpRequest)
                 ' Set HTML Header
                 Dim htmlHeader As String =
                 "HTTP/1.0 404 Not Found" & ControlChars.CrLf &
@@ -2467,7 +2728,7 @@ Public Class Main
                  ControlChars.CrLf & ControlChars.CrLf
                 ' The content Length of HTML Header
                 Dim headerByte() As Byte = Encoding.UTF8.GetBytes(htmlHeader)
-                Console.WriteLine("HTML Header: " & ControlChars.CrLf & htmlHeader)
+
                 ' Send HTML Header back to Web Browser
                 clientSocket.Send(headerByte, 0, headerByte.Length, SocketFlags.None)
                 ' Send HTML Content back to Web Browser
@@ -2478,7 +2739,7 @@ Public Class Main
             End If
 
         Catch ex As Exception
-            Console.WriteLine(ex.ToString())
+            'Debug.WriteLine(ex.ToString())
             If clientSocket.Connected Then
                 clientSocket.Close()
             End If
@@ -2524,13 +2785,58 @@ Public Class Main
     End Function
 
     Private Sub Main_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Me.MouseDoubleClick
-        'Try
-        '    For i As Integer = 0 To ListBoxList.Count - 1
-        '        MsgBox(ListBoxList.Item(i))
-        '    Next
-        'Catch ex As Exception
-        '    MsgBox(ex.ToString)
-        'End Try
+
     End Sub
 #End Region
+    Protected Overrides Sub OnHandleCreated(ByVal e As EventArgs)
+        Dim tbtl As TextBoxTraceListener = New TextBoxTraceListener(TheTextBox)
+        Debug.Listeners.Add(tbtl)
+        'Debug.WriteLine("Testing Testing 123")
+    End Sub
+
+    Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles PictureBox6.Click
+        If Me.Height = 670 Then
+            Me.Height = 558
+        Else
+            Me.Height = 670
+        End If
+    End Sub
+
+    Private Sub PictureBox6_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox6.MouseEnter
+        PictureBox6.BackgroundImage = My.Resources.balken_console
+    End Sub
+
+    Private Sub PictureBox6_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox6.MouseLeave
+        PictureBox6.BackgroundImage = My.Resources.balken
+    End Sub
+
+End Class
+
+
+
+Class TextBoxTraceListener
+    Inherits TraceListener
+
+    Private tBox As RichTextBox
+    Dim lastmsg As String = Nothing
+    Public Sub New(ByVal box As RichTextBox)
+        Me.tBox = box
+    End Sub
+
+    Public Overrides Sub Write(ByVal msg As String)
+        Try
+            tBox.Parent.Invoke(New MethodInvoker(Function()
+                                                     If msg <> lastmsg Then
+                                                         lastmsg = msg
+                                                         tBox.AppendText(msg)
+                                                     End If
+                                                     Return Nothing
+                                                 End Function))
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Public Overrides Sub WriteLine(ByVal msg As String)
+        Write(msg & vbCrLf)
+    End Sub
 End Class

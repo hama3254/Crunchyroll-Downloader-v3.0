@@ -146,12 +146,6 @@
     <Compile Include="GeckoFX.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login.Designer.vb">
-      <DependentUpon>Login.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Login.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -209,9 +203,6 @@
     <EmbeddedResource Include="CRD_List_Item.resx">
       <DependentUpon>CRD_List_Item.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.resx">
-      <DependentUpon>Login.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Startup.resx">
       <DependentUpon>Startup.vb</DependentUpon>
     </EmbeddedResource>
@@ -264,6 +255,9 @@
     <Content Include="Firefox\softokn3.dll" />
     <Content Include="Firefox\xul.dll" />
     <Content Include="icon.ico" />
+    <None Include="Resources\balken_console.png" />
+    <None Include="Resources\drop_down_reverse.png" />
+    <None Include="Resources\drop_down.png" />
     <None Include="packages.config" />
     <None Include="Resources\main-browser_hover.png" />
     <None Include="Resources\main-settings_hover.png" />

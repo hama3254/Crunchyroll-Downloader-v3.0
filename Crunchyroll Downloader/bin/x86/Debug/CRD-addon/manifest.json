@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "Crunchyroll Downloader Addon",
+  "version": "0.1.1",
+
+  "description": "A Firefox Addon for my Crunchyroll Downloader",
+
+  "icons": {
+   "48": "icons/icon-48.png"
+  },
+   "permissions": [
+		"activeTab",
+		"tabs"
+  ],
+
+   "browser_action": {
+    "default_icon": {
+      "128": "icons/icon-128.png",
+      "48": "icons/icon-48.png",
+      "20": "icons/icon-20.png"
+    },
+    "default_title": "CR-Downloader",
+    "default_popup": "popup.html"
+  }
+
+}

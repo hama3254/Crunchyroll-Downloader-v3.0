@@ -305,7 +305,7 @@ Partial Class Anime_Add
     Public WithEvents PictureBox1 As PictureBox
     Public WithEvents groupBox1 As GroupBox
     Public WithEvents GroupBox3 As GroupBox
-    Friend WithEvents ListBox1 As ListBox
     Friend WithEvents Timer1 As Timer
     Private WithEvents Timer2 As Timer
+    Public WithEvents ListBox1 As ListBox
 End Class

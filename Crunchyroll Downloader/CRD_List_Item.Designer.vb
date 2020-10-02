@@ -35,9 +35,13 @@ Partial Class CRD_List_Item
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ViewInExplorerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PlaybackVideoFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PB_Thumbnail, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_pause, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_del, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'PB_Thumbnail
@@ -138,6 +142,24 @@ Partial Class CRD_List_Item
         '
         Me.Timer2.Enabled = True
         '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewInExplorerToolStripMenuItem, Me.PlaybackVideoFileToolStripMenuItem})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(181, 70)
+        '
+        'ViewInExplorerToolStripMenuItem
+        '
+        Me.ViewInExplorerToolStripMenuItem.Name = "ViewInExplorerToolStripMenuItem"
+        Me.ViewInExplorerToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ViewInExplorerToolStripMenuItem.Text = "View in explorer"
+        '
+        'PlaybackVideoFileToolStripMenuItem
+        '
+        Me.PlaybackVideoFileToolStripMenuItem.Name = "PlaybackVideoFileToolStripMenuItem"
+        Me.PlaybackVideoFileToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.PlaybackVideoFileToolStripMenuItem.Text = "playback video file"
+        '
         'CRD_List_Item
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -157,6 +179,7 @@ Partial Class CRD_List_Item
         CType(Me.PB_Thumbnail, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.bt_pause, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.bt_del, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -174,4 +197,7 @@ Partial Class CRD_List_Item
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents Timer1 As Timer
     Friend WithEvents Timer2 As Timer
+    Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
+    Friend WithEvents ViewInExplorerToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents PlaybackVideoFileToolStripMenuItem As ToolStripMenuItem
 End Class

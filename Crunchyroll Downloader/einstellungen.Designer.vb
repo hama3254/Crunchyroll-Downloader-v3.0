@@ -857,7 +857,7 @@ Partial Class einstellungen
         '
         Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox6.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_credits_default
-        Me.PictureBox6.Location = New System.Drawing.Point(173, 354)
+        Me.PictureBox6.Location = New System.Drawing.Point(192, 338)
         Me.PictureBox6.Name = "PictureBox6"
         Me.PictureBox6.Size = New System.Drawing.Size(76, 39)
         Me.PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -872,7 +872,7 @@ Partial Class einstellungen
         Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
         Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox5.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox5.Location = New System.Drawing.Point(6, 228)
+        Me.GroupBox5.Location = New System.Drawing.Point(6, 205)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(456, 100)
         Me.GroupBox5.TabIndex = 7
@@ -882,7 +882,7 @@ Partial Class einstellungen
         'Server
         '
         Me.Server.AutoSize = True
-        Me.Server.Location = New System.Drawing.Point(234, 29)
+        Me.Server.Location = New System.Drawing.Point(271, 29)
         Me.Server.Name = "Server"
         Me.Server.Size = New System.Drawing.Size(129, 20)
         Me.Server.TabIndex = 42
@@ -892,7 +892,7 @@ Partial Class einstellungen
         'CB_Log
         '
         Me.CB_Log.AutoSize = True
-        Me.CB_Log.Location = New System.Drawing.Point(45, 29)
+        Me.CB_Log.Location = New System.Drawing.Point(64, 29)
         Me.CB_Log.Name = "CB_Log"
         Me.CB_Log.Size = New System.Drawing.Size(84, 20)
         Me.CB_Log.TabIndex = 1
@@ -902,7 +902,7 @@ Partial Class einstellungen
         'ListViewAdd_True
         '
         Me.ListViewAdd_True.AutoSize = True
-        Me.ListViewAdd_True.Location = New System.Drawing.Point(98, 74)
+        Me.ListViewAdd_True.Location = New System.Drawing.Point(108, 74)
         Me.ListViewAdd_True.Name = "ListViewAdd_True"
         Me.ListViewAdd_True.Size = New System.Drawing.Size(236, 20)
         Me.ListViewAdd_True.TabIndex = 0
@@ -918,19 +918,19 @@ Partial Class einstellungen
         Me.GroupBox1.ForeColor = System.Drawing.Color.Black
         Me.GroupBox1.Location = New System.Drawing.Point(6, 85)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(456, 127)
+        Me.GroupBox1.Size = New System.Drawing.Size(456, 114)
         Me.GroupBox1.TabIndex = 7
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Browser Settings"
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(186, 29)
+        Me.Label1.Location = New System.Drawing.Point(6, 29)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(100, 16)
+        Me.Label1.Size = New System.Drawing.Size(444, 22)
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "Default Website"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'TextBox1
         '

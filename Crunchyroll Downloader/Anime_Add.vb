@@ -343,7 +343,8 @@ Public Class Anime_Add
         'MsgBox("Test")
         comboBox3.Items.Clear()
         comboBox4.Items.Clear()
-        'comboBox3.Items.Add("Test")
+        'comboBox3.Items.Add("[First Episode]")
+        'comboBox4.Items.Add("[Last Episode]")
         Dim SeasonDropdownAnzahl As String() = Main.WebbrowserText.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
         Array.Reverse(SeasonDropdownAnzahl)
         Dim SDV As Integer = 0
@@ -365,6 +366,8 @@ Public Class Anime_Add
             comboBox3.Items.Add(URLGrapp2(0))
             comboBox4.Items.Add(URLGrapp2(0))
         Next
+        'comboBox3.SelectedIndex = 0
+        'comboBox4.SelectedIndex = 0
     End Sub
 
     Private Sub PictureBox1_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox1.MouseEnter

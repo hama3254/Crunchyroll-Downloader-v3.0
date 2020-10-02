@@ -323,6 +323,7 @@ Public Class Main
         r = ListView1.Items(c).Bounds()
         r.Width = 838
         r.Height = 142
+        Item.SetTargetReso(Resu)
         Item.SetLabelWebsite(NameP1)
         Item.SetLabelAnimeTitel(NameP2)
         Item.SetLabelResolution(Reso)
@@ -2343,7 +2344,7 @@ Public Class Main
                     Dim SoftSubMergeURLs As String = " -i " + Chr(34) + UsedSub + Chr(34)
                     Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a -map 1"
                     Dim SoftSubMergeMetatata As String = " -metadata:s:s:0 language=eng"
-                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + DubMetatata
                 End If
             Else
                 If FunimationDub = "japanese" Then

@@ -28,6 +28,7 @@ Public Class CRD_List_Item
     Dim Retry As Boolean = False
     Dim HybridMode As Boolean = False
     Dim HybridRunning As Boolean = False
+    Dim TargetReso As Integer = 1080
 #Region "Remove from list"
     Public Sub DisposeItem(ByVal Dispose As Boolean)
         If Dispose = True Then
@@ -117,6 +118,9 @@ Public Class CRD_List_Item
     Public Sub SetSaveLog(ByVal Value As Boolean)
         SaveLog = Value
     End Sub
+    Public Sub SetTargetReso(ByVal Value As Integer)
+        TargetReso = Value
+    End Sub
 #End Region
     Public Sub KillRunningTask()
         If proc.HasExited Then
@@ -196,6 +200,7 @@ Public Class CRD_List_Item
         ToolTip1.SetToolTip(Me, Text)
     End Sub
     Private Sub Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.ContextMenuStrip = ContextMenuStrip1 '.ContextMenu
         Timer1.Enabled = True
         Dim locationY As Integer = 0
         bt_del.SetBounds(775, locationY + 10, 35, 29)
@@ -280,6 +285,8 @@ Public Class CRD_List_Item
         Dim DataRateString As String = Math.Round(DataRate, 2, MidpointRounding.AwayFromZero).ToString()
         If prozent > 100 Then
             prozent = 100
+        ElseIf prozent < 0 Then
+            prozent = 0
         End If
         Me.Invoke(New Action(Function()
                                  ProgressBar1.Value = prozent
@@ -300,16 +307,45 @@ Public Class CRD_List_Item
 
 
         Dim m3u8_url As String() = DL_URL.Split(New [Char]() {Chr(34)})
-
-
+        Dim m3u8_url_1 As String = Nothing
+        Dim m3u8_url_3 As String = m3u8_url(1)
         If Debug2 = True Then
             MsgBox(m3u8_url(1) + vbNewLine + DL_Pfad + vbNewLine + Filename)
         End If
         Dim client0 As New WebClient
         client0.Encoding = Encoding.UTF8
         Dim text As String = client0.DownloadString(m3u8_url(1))
+        If InStr(text, "RESOLUTION=") Then 'master m3u8 no fragments 
+            Dim new_m3u8_2() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+            If TargetReso = 42 Then
+
+            Else
+                For i As Integer = 0 To new_m3u8_2.Count - 1
+                    'MsgBox("x" + Main.Resu.ToString)
+                    If CBool(InStr(new_m3u8_2(i), "x" + TargetReso.ToString)) = True Then
+                        m3u8_url_1 = new_m3u8_2(i + 1)
+                        Exit For
+                    End If
+                Next
+                If InStr(m3u8_url_1, "https://") Then
+                    text = client0.DownloadString(m3u8_url_1)
+                Else
+                    Dim c() As String = New Uri(m3u8_url_3).Segments
+                    Dim path As String = "https://" + New Uri(m3u8_url_3).Host
+                    For i3 As Integer = 0 To c.Count - 2
+                        path = path + c(i3)
+                    Next
+                    m3u8_url_3 = path + m3u8_url_1
+                    'MsgBox(m3u8_url_1)
+                    text = client0.DownloadString(m3u8_url_3)
+                End If
+
+            End If
+
+
+        End If
         Dim textLenght() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
-        Dim Fragments() As String = text.Split(New String() {"https:"}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim Fragments() As String = text.Split(New String() {".ts"}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim FragmentsInt As Integer = Fragments.Count - 2
         Dim nummerint As Integer = 0 '-1
         Dim m3u8FFmpeg As String = Nothing
@@ -353,9 +389,18 @@ Public Class CRD_List_Item
                 Dim nummer4D As String = String.Format("{0:0000}", nummerint)
                 Dim curi As String = textLenght(i)
                 If InStr(curi, "https://") Then
+                ElseIf InStr(curi, "../") Then
+                    Dim countDot() As String = curi.Split(New String() {"./"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim c() As String = New Uri(m3u8_url_3).Segments
+                    Dim path As String = "https://" + New Uri(m3u8_url_3).Host
+                    For i3 As Integer = 0 To c.Count - (2 + countDot.Count - 1)
+                        path = path + c(i3)
+                    Next
+                    curi = path + countDot(countDot.Count - 1)
                 Else
-                    Dim c() As String = New Uri(m3u8_url(1)).Segments
-                    Dim path As String = "https://" + New Uri(m3u8_url(1)).Host
+                    Dim c() As String = New Uri(m3u8_url_3).Segments
+                    Dim path As String = "https://" + New Uri(m3u8_url_3).Host
                     For i3 As Integer = 0 To c.Count - 2
                         path = path + c(i3)
                     Next
@@ -681,6 +726,27 @@ Public Class CRD_List_Item
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Private Sub Label_Anime_Click(sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Label_Anime.Click, PB_Thumbnail.Click, Label_Reso.Click, Label_percent.Click, ProgressBar1.Click, Label_website.Click, Me.Click
+        If e.Button = MouseButtons.Right Then
+            ' MsgBox("Right Button Clicked")
+
+            ContextMenuStrip1.ContextMenu.Show(Me, MousePosition)
+        End If
+    End Sub
+
+    Private Sub ViewInExplorerToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ViewInExplorerToolStripMenuItem.Click
+        Process.Start(Path.GetDirectoryName(DownloadPfad.Replace(Chr(34), "")))
+    End Sub
+
+    Private Sub PlaybackVideoFileToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PlaybackVideoFileToolStripMenuItem.Click
+        If GetIsStatusFinished() = True Then
+            PlaybackVideoFileToolStripMenuItem.Enabled = True
+        Else
+            PlaybackVideoFileToolStripMenuItem.Enabled = False
+        End If
+        Process.Start(DownloadPfad.Replace(Chr(34), ""))
     End Sub
 End Class
 

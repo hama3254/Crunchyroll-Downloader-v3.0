@@ -51,6 +51,7 @@ Public Class Main
     Public SubSprache As String
     Public SubFolder As Integer
     Public SoftSubs As New List(Of String)
+    Public TempSoftSubs As New List(Of String)
     Public AbourtList As New List(Of String)
     Public watingList As New List(Of String)
     Dim SoftSubsString As String
@@ -702,72 +703,98 @@ Public Class Main
 
 #End Region
 #Region "Subs"
+        'MsgBox(TempSoftSubs.Count.ToString)
         Dim SoftSubs2 As New List(Of String)
         If SoftSubs.Count > 0 Then
             For i As Integer = 0 To SoftSubs.Count - 1
+                Dim ii As Integer = i
                 If CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs(i) + Chr(34) + ",")) Then
                     SoftSubs2.Add(SoftSubs(i))
                 Else
+                    Me.Invoke(New Action(Function()
+                                             einstellungen.StatusLabel.Text = "Status: language " + HardSubValuesToDisplay(Chr(34) + SoftSubs(ii) + Chr(34)) + " not found."
+                                             Pause(10)
+                                             Return Nothing
+                                         End Function))
+
+                End If
+            Next
+        ElseIf TempSoftSubs.Count > 0 Then
+            For i As Integer = 0 To TempSoftSubs.Count - 1
+                Dim ii As Integer = i
+                If CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + TempSoftSubs(i) + Chr(34) + ",")) Then
+                    SoftSubs2.Add(TempSoftSubs(i))
+                Else
+                    Me.Invoke(New Action(Function()
+                                             einstellungen.StatusLabel.Text = "Status: language " + HardSubValuesToDisplay(Chr(34) + TempSoftSubs(ii) + Chr(34)) + " not found."
+                                             Pause(10)
+                                             Return Nothing
+                                         End Function))
+
                     'MsgBox("Softsubtitle for " + SoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
                 End If
             Next
-
-        End If
-        If SubSprache = "None" Then
-            If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":null")) Then
-                SubSprache2 = "null"
-            Else
-                Me.Invoke(New Action(Function()
-                                         ResoNotFoundString = WebbrowserText
-                                         DialogTaskString = "Language"
-                                         Reso.ShowDialog()
-                                         Return Nothing
-                                     End Function))
-                If UserCloseDialog = True Then
-                    Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
-                Else
-                    If ResoBackString = Nothing Then
-                    Else
-                        SubSprache2 = ResoBackString
-                    End If
-                End If
-                'Throw New System.Exception("Could not find the sub language")
-            End If
-
-
-        Else
-            If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
-                SubSprache2 = Chr(34) + SubSprache + Chr(34)
-
-            ElseIf CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
-                If MessageBox.Show("It look like only Softsubtitle are avalibe." + vbNewLine + "Are you want to use Softsubtitle this time instead?", "No Hardsubtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                    SubSprache2 = "null"
-                    SoftSubs2.Add(SubSprache)
-                Else
-                    Throw New System.Exception("Could not find the sub language")
-                End If
-
-
-            Else
-                Me.Invoke(New Action(Function()
-                                         ResoNotFoundString = WebbrowserText
-                                         DialogTaskString = "Language"
-                                         Reso.ShowDialog()
-                                         Return Nothing
-                                     End Function))
-                If UserCloseDialog = True Then
-                    Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
-                Else
-                    If ResoBackString = Nothing Then
-                    Else
-                        SubSprache2 = ResoBackString
-                    End If
-                End If
-            End If
         End If
 
+#Region "copy paste trash"
+
+
+        'If SubSprache = "None" Then
+        '    If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":null")) Then
+        '        SubSprache2 = "null"
+        '    Else
+        '        Me.Invoke(New Action(Function()
+        '                                 ResoNotFoundString = WebbrowserText
+        '                                 DialogTaskString = "Language"
+        '                                 Reso.ShowDialog()
+        '                                 Return Nothing
+        '                             End Function))
+        '        If UserCloseDialog = True Then
+        '            Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
+        '        Else
+        '            If ResoBackString = Nothing Then
+        '            Else
+        '                SubSprache2 = ResoBackString
+        '            End If
+        '        End If
+        '        'Throw New System.Exception("Could not find the sub language")
+        '    End If
+
+
+        'Else
+        '    If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
+        '        SubSprache2 = Chr(34) + SubSprache + Chr(34)
+
+        '    ElseIf CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
+        '        If MessageBox.Show("It look like only Softsubtitle are avalibe." + vbNewLine + "Are you want to use Softsubtitle this time instead?", "No Hardsubtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+        '            SubSprache2 = "null"
+        '            SoftSubs2.Add(SubSprache)
+        '        Else
+        '            Throw New System.Exception("Could not find the sub language")
+        '        End If
+
+
+        '    Else
+        '        Me.Invoke(New Action(Function()
+        '                                 ResoNotFoundString = WebbrowserText
+        '                                 DialogTaskString = "Language"
+        '                                 Reso.ShowDialog()
+        '                                 Return Nothing
+        '                             End Function))
+        '        If UserCloseDialog = True Then
+        '            Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
+        '        Else
+        '            If ResoBackString = Nothing Then
+        '            Else
+        '                SubSprache2 = ResoBackString
+        '            End If
+        '        End If
+        '    End If
+        'End If
 
 #End Region
+#End Region
+
         If Grapp_Abord = True Then
             Grapp_RDY = True
             Grapp_Abord = False
@@ -781,7 +808,13 @@ Public Class Main
 
         If SoftSubs2.Count > 0 Then
             For i As Integer = 0 To SoftSubs2.Count - 1
-                LabelUpdate = "Status: downloading subtitle file"
+                Dim ii As Integer = i
+                Me.Invoke(New Action(Function()
+                                         einstellungen.StatusLabel.Text = "Status: downloading - " + HardSubValuesToDisplay(Chr(34) + SoftSubs2(ii) + Chr(34))
+                                         Pause(1)
+                                         Return Nothing
+                                     End Function))
+
                 LabelEpisode = SoftSubs2(i)
                 Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
@@ -801,12 +834,22 @@ Public Class Main
                 File.WriteAllText(Pfad4, str0, Encoding.UTF8)
                 Pause(1)
             Next
+        Else
 
-
+            Me.Invoke(New Action(Function()
+                                     einstellungen.StatusLabel.Text = "Status: No language selected"
+                                     Pause(10)
+                                     Return Nothing
+                                 End Function))
         End If
 #End Region
 
         DlSoftSubsRDY = True
+        Me.Invoke(New Action(Function()
+                                 einstellungen.StatusLabel.Text = "Status: idle"
+                                 Return Nothing
+                             End Function))
+
 
         'Catch ex As Exception
         'End Try
@@ -868,25 +911,18 @@ Public Class Main
 
             End If
         Catch ex As Exception
-            Anime_Add.comboBox4.Items.Clear()
-            Anime_Add.comboBox3.Items.Clear()
-            ' MsgBox(Error_Mass_DL, MsgBoxStyle.Information)
-            'MsgBox(ex.ToString)
+            einstellungen.ComboBox2.Items.Clear()
+            einstellungen.comboBox3.Items.Clear()
+            einstellungen.comboBox4.Items.Clear()
+            einstellungen.MultiDLSoftSubs.Enabled = False
             Aktuell = 0.ToString
             Gesamt = 0.ToString
-
-            Anime_Add.groupBox1.Visible = True
-            Anime_Add.groupBox2.Visible = False
-            Anime_Add.GroupBox3.Visible = False
-            Anime_Add.Mass_DL_Cancel = False
-            Anime_Add.pictureBox4.Image = My.Resources.main_button_download_default
         End Try
-        Pause(5)
-        Anime_Add.groupBox1.Visible = True
-        Anime_Add.groupBox2.Visible = False
-        Anime_Add.GroupBox3.Visible = False
-        Anime_Add.Mass_DL_Cancel = False
-        Anime_Add.pictureBox4.Image = My.Resources.main_button_download_default
+        einstellungen.ComboBox2.Items.Clear()
+        einstellungen.comboBox3.Items.Clear()
+        einstellungen.comboBox4.Items.Clear()
+        einstellungen.MultiDLSoftSubs.Enabled = False
+
     End Sub
 #End Region
 
@@ -1022,9 +1058,9 @@ Public Class Main
                 Return "Italiano (Italian)"
             ElseIf HardSub = Chr(34) + "esES" + Chr(34) Then
                 Return "Español (España)"
+            Else
+                Return CB_SuB_Nothing
             End If
-
-            Return CB_SuB_Nothing
 
         Catch ex As Exception
             Return Nothing
@@ -2090,46 +2126,49 @@ Public Class Main
             'MsgBox(Funimation_m3u8_Main)
 
             For i As Integer = 0 To textLenght.Length - 1
-                If InStr(textLenght(i), "https") Then
-                    If InStr(textLenght(i - 1), "x" + Resu.ToString) Then
+                Try
+                    If InStr(textLenght(i), "https") Then
+                        If InStr(textLenght(i - 1), "x" + Resu.ToString) Then
 
-                        Dim CheckClient As New WebClient
-                        CheckClient.Encoding = Encoding.UTF8
-                        If WebbrowserCookie = Nothing Then
-                        Else
-                            CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                            Dim CheckClient As New WebClient
+                            CheckClient.Encoding = Encoding.UTF8
+                            If WebbrowserCookie = Nothing Then
+                            Else
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                            End If
+                            Dim m3u8String As String = CheckClient.DownloadString(textLenght(i))
+                            Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl3 As String = keyfileurl2(0)
+
+                            If InStr(keyfileurl2(0), "https://") Then
+
+                            Else
+                                Dim c() As String = New Uri(textLenght(i)).Segments
+                                Dim path As String = "https://" + New Uri(textLenght(i)).Host
+
+                                For i3 As Integer = 0 To c.Count - 2
+                                    path = path + c(i3)
+                                Next
+                                keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
+                            End If
+
+                            'MsgBox(keyfileurl3)
+                            Try
+                                Dim CheckClient2 As New WebClient
+                                CheckClient2.Encoding = System.Text.Encoding.UTF8
+                                Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
+                                Funimation_m3u8_final = textLenght(i)
+                                Exit For
+                            Catch ex As Exception
+                                Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
+                            End Try
+
                         End If
-                        Dim m3u8String As String = CheckClient.DownloadString(textLenght(i))
-                        Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim keyfileurl3 As String = keyfileurl2(0)
-
-                        If InStr(keyfileurl2(0), "https://") Then
-
-                        Else
-                            Dim c() As String = New Uri(textLenght(i)).Segments
-                            Dim path As String = "https://" + New Uri(textLenght(i)).Host
-
-                            For i3 As Integer = 0 To c.Count - 2
-                                path = path + c(i3)
-                            Next
-                            keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
-                        End If
-
-                        'MsgBox(keyfileurl3)
-                        Try
-                            Dim CheckClient2 As New WebClient
-                            CheckClient2.Encoding = System.Text.Encoding.UTF8
-                            Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
-                            Funimation_m3u8_final = textLenght(i)
-                            Exit For
-                        Catch ex As Exception
-                            Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
-                        End Try
-
-
                     End If
-                End If
+                Catch ex As Exception
+
+                End Try
             Next
 
 
@@ -2585,8 +2624,9 @@ Public Class Main
                         Dim URLSplit() As String = DecodedHTML.Split(New String() {"javascript:"}, System.StringSplitOptions.RemoveEmptyEntries)
                         If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
                             For i As Integer = 0 To URLSplit.Count - 1
+                                Dim ii As Integer = i
                                 Me.Invoke(New Action(Function()
-                                                         Anime_Add.ListBox1.Items.Add(URLSplit(i))
+                                                         Anime_Add.ListBox1.Items.Add(URLSplit(ii))
                                                          Return Nothing
                                                      End Function))
                             Next

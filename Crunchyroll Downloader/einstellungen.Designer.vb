@@ -434,9 +434,9 @@ Partial Class einstellungen
         Me.StatusLabel.BackColor = System.Drawing.Color.Transparent
         Me.StatusLabel.Font = New System.Drawing.Font("Arial", 12.0!)
         Me.StatusLabel.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.StatusLabel.Location = New System.Drawing.Point(8, 71)
+        Me.StatusLabel.Location = New System.Drawing.Point(11, 65)
         Me.StatusLabel.Name = "StatusLabel"
-        Me.StatusLabel.Size = New System.Drawing.Size(423, 15)
+        Me.StatusLabel.Size = New System.Drawing.Size(423, 29)
         Me.StatusLabel.TabIndex = 38
         Me.StatusLabel.Text = "Status: idle"
         Me.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1145,15 +1145,6 @@ Partial Class einstellungen
     Friend WithEvents TabControl1 As TabControl
     Private WithEvents PictureBox2 As PictureBox
     Friend WithEvents SoftSubs As GroupBox
-    Friend WithEvents CBesES As CheckBox
-    Friend WithEvents CBitIT As CheckBox
-    Friend WithEvents CBruRU As CheckBox
-    Friend WithEvents CBarME As CheckBox
-    Friend WithEvents CBfrFR As CheckBox
-    Friend WithEvents CBesLA As CheckBox
-    Friend WithEvents CBptBR As CheckBox
-    Friend WithEvents CBdeDE As CheckBox
-    Friend WithEvents CBenUS As CheckBox
     Friend WithEvents GB_SubLanguage As GroupBox
     Friend WithEvents ComboBox1 As ComboBox
     Friend WithEvents TabPage6 As TabPage
@@ -1167,4 +1158,13 @@ Partial Class einstellungen
     Friend WithEvents GroupBox7 As GroupBox
     Friend WithEvents CheckBox10 As CheckBox
     Friend WithEvents FunimationHardsub As CheckBox
+    Public WithEvents CBesES As CheckBox
+    Public WithEvents CBitIT As CheckBox
+    Public WithEvents CBruRU As CheckBox
+    Public WithEvents CBarME As CheckBox
+    Public WithEvents CBfrFR As CheckBox
+    Public WithEvents CBesLA As CheckBox
+    Public WithEvents CBptBR As CheckBox
+    Public WithEvents CBdeDE As CheckBox
+    Public WithEvents CBenUS As CheckBox
 End Class

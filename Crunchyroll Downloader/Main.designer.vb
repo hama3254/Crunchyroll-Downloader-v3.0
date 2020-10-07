@@ -50,7 +50,7 @@ Partial Class Main
         Me.Btn_add.BackColor = System.Drawing.Color.Transparent
         Me.Btn_add.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_add.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_add
-        Me.Btn_add.Location = New System.Drawing.Point(12, 5)
+        Me.Btn_add.Location = New System.Drawing.Point(5, 5)
         Me.Btn_add.Name = "Btn_add"
         Me.Btn_add.Size = New System.Drawing.Size(100, 48)
         Me.Btn_add.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -74,7 +74,7 @@ Partial Class Main
         Me.Btn_Settings.BackColor = System.Drawing.Color.Transparent
         Me.Btn_Settings.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_Settings.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_settings
-        Me.Btn_Settings.Location = New System.Drawing.Point(656, 10)
+        Me.Btn_Settings.Location = New System.Drawing.Point(676, 10)
         Me.Btn_Settings.Name = "Btn_Settings"
         Me.Btn_Settings.Size = New System.Drawing.Size(100, 40)
         Me.Btn_Settings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -86,7 +86,7 @@ Partial Class Main
         Me.Btn_Browser.BackColor = System.Drawing.Color.Transparent
         Me.Btn_Browser.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_Browser.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_browser
-        Me.Btn_Browser.Location = New System.Drawing.Point(145, 10)
+        Me.Btn_Browser.Location = New System.Drawing.Point(110, 10)
         Me.Btn_Browser.Name = "Btn_Browser"
         Me.Btn_Browser.Size = New System.Drawing.Size(100, 40)
         Me.Btn_Browser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -98,9 +98,9 @@ Partial Class Main
         Me.StatusMainForm.BackColor = System.Drawing.Color.Transparent
         Me.StatusMainForm.Font = New System.Drawing.Font("Consolas", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.StatusMainForm.ForeColor = System.Drawing.SystemColors.WindowFrame
-        Me.StatusMainForm.Location = New System.Drawing.Point(251, 17)
+        Me.StatusMainForm.Location = New System.Drawing.Point(212, 17)
         Me.StatusMainForm.Name = "StatusMainForm"
-        Me.StatusMainForm.Size = New System.Drawing.Size(370, 24)
+        Me.StatusMainForm.Size = New System.Drawing.Size(416, 24)
         Me.StatusMainForm.TabIndex = 66
         Me.StatusMainForm.Text = "Crunchyroll Downloader"
         Me.StatusMainForm.TextAlign = System.Drawing.ContentAlignment.TopCenter

@@ -15,7 +15,7 @@ Public Class GeckoFX
     Dim t As Thread
     Dim ScanTrue As Boolean = False
     Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
-
+        'MsgBox("loaded!")
         If ScanTrue = False Then
             Button2.Enabled = True
         End If
@@ -25,29 +25,32 @@ Public Class GeckoFX
                 Main.Pause(4)
                 Main.LoginOnly = "US_UnBlock"
             Else
+                Try
+                    Dim cookieGrapp As String = WebBrowser1.Document.Body.OuterHtml '.Replace(vbTab, "").Replace(" ", "")
+                    If Main.Debug2 = True Then
+                        MsgBox(cookieGrapp)
+                    End If
+                    Dim cookieGrapp2() As String = cookieGrapp.Split(New String() {"<a class=" + Chr(34) + "cookie" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim cookieGrapp3() As String = cookieGrapp2(1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    keks = cookieGrapp3(0)
+                    If Main.Debug2 = True Then
+                        MsgBox(keks)
+                    End If
 
-                Dim cookieGrapp As String = WebBrowser1.Document.Body.OuterHtml '.Replace(vbTab, "").Replace(" ", "")
-                If Main.Debug2 = True Then
-                    MsgBox(cookieGrapp)
-                End If
-                Dim cookieGrapp2() As String = cookieGrapp.Split(New String() {"<a class=" + Chr(34) + "cookie" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim cookieGrapp3() As String = cookieGrapp2(1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                keks = cookieGrapp3(0)
-                If Main.Debug2 = True Then
-                    MsgBox(keks)
-                End If
-
-                WebBrowser1.Navigate("https://www.crunchyroll.com/logout")
-                Main.Pause(5)
-                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
-                Main.Pause(1)
-                WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "sess_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
-                Main.Pause(1)
-                If Main.LoginDialog = True Then
-                    'Login.ShowDialog()
-                Else
-                    WebBrowser1.Navigate("https://www.crunchyroll.com/")
-                End If
+                    WebBrowser1.Navigate("https://www.crunchyroll.com/logout")
+                    Main.Pause(5)
+                    WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                    Main.Pause(1)
+                    WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "sess_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                    Main.Pause(1)
+                    If Main.LoginDialog = True Then
+                        'Login.ShowDialog()
+                    Else
+                        WebBrowser1.Navigate("https://www.crunchyroll.com/")
+                    End If
+                Catch ex As Exception
+                    MsgBox(ex.ToString)
+                End Try
 
             End If
 
@@ -149,9 +152,13 @@ Public Class GeckoFX
 
                 End If
                 If Main.UserBowser = False Then
-                    Main.WebbrowserURL = WebBrowser1.Url.ToString
-                    Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
-                    Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                    Try
+                        Main.WebbrowserURL = WebBrowser1.Url.ToString
+                        Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+                        Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                    Catch ex As Exception
+                    End Try
+
                     Me.Close()
                 End If
                 'ElseIf CBool(InStr(WebBrowser1.Url.ToString, "https://www.anime-on-demand.de/anime/")) Then

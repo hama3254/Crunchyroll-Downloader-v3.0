@@ -6,6 +6,7 @@ Imports System.Text
 Imports System.Threading
 
 Public Class einstellungen
+
     Private Sub einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         For i As Integer = 0 To Main.SoftSubs.Count - 1
@@ -401,9 +402,7 @@ Public Class einstellungen
     End Sub
 
 
-
-
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem
+    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem
         sender.BackColor = Color.White
         If e.Index >= 0 Then
             Using st As New StringFormat With {.Alignment = StringAlignment.Center}
@@ -437,7 +436,7 @@ Public Class einstellungen
                 If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
 
                 Else
-                    MergeMP4.Checked = False
+                    AAuto.Checked = False
                 End If
             End If
         End If
@@ -456,13 +455,57 @@ Public Class einstellungen
     End Sub
 
     Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles PictureBox5.Click
-        If CBool(InStr(TextBox2.Text, "crunchyroll.com")) Then
-            GeckoFX.WebBrowser1.Navigate(TextBox2.Text)
-            StatusLabel.Text = "Status: looking for subtitles"
-            Main.d = False
-            Main.b = False
-        End If
+        If Main.SoftSubs.Count > 0 Then
+            If CBool(InStr(TextBox2.Text, "crunchyroll.com")) Then
+                GeckoFX.WebBrowser1.Navigate(TextBox2.Text)
+                StatusLabel.Text = "Status: looking for subtitles"
+                Main.d = False
+                Main.b = False
+            End If
+        Else
+            Main.TempSoftSubs.Clear()
+            If CBdeDE.Checked = True Then
+                Main.TempSoftSubs.Add("deDE")
+            End If
+            If CBenUS.Checked = True Then
+                Main.TempSoftSubs.Add("enUS")
+            End If
+            If CBptBR.Checked = True Then
+                Main.TempSoftSubs.Add("ptBR")
+            End If
+            If CBesLA.Checked = True Then
+                Main.TempSoftSubs.Add("esLA")
+            End If
+            If CBfrFR.Checked = True Then
+                Main.TempSoftSubs.Add("frFR")
+            End If
+            If CBarME.Checked = True Then
+                Main.TempSoftSubs.Add("arME")
+            End If
+            If CBruRU.Checked = True Then
+                Main.TempSoftSubs.Add("ruRU")
+            End If
+            If CBitIT.Checked = True Then
+                Main.TempSoftSubs.Add("itIT")
+            End If
+            If CBesES.Checked = True Then
+                Main.TempSoftSubs.Add("esES")
+            End If
+            If Main.TempSoftSubs.Count > 0 Then
 
+                If CBool(InStr(TextBox2.Text, "crunchyroll.com")) Then
+                    GeckoFX.WebBrowser1.Navigate(TextBox2.Text)
+                    StatusLabel.Text = "Status: looking for subtitles"
+                    Main.d = False
+                    Main.b = False
+                End If
+            Else
+                StatusLabel.Text = "Status: No language selected"
+                Main.Pause(3)
+                StatusLabel.Text = "Status: idle"
+            End If
+
+        End If
     End Sub
 
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
@@ -480,7 +523,7 @@ Public Class einstellungen
         PictureBox5.Image = My.Resources.softsubs_download_hover
     End Sub
 
-    Private Sub PictureBox5_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox5.Leave
+    Private Sub PictureBox5_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox5.MouseLeave
         PictureBox5.Image = My.Resources.softsubs_download
     End Sub
 

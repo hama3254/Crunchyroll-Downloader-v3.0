@@ -27,6 +27,7 @@ Public Class CRD_List_Item
     Dim HistoryFilename As String
     Dim Retry As Boolean = False
     Dim HybridMode As Boolean = False
+    Dim HybridModePath As String = Nothing
     Dim HybridRunning As Boolean = False
     Dim TargetReso As Integer = 1080
 #Region "Remove from list"
@@ -159,42 +160,54 @@ Public Class CRD_List_Item
     End Sub
 
     Private Sub bt_pause_Click(sender As Object, e As EventArgs) Handles bt_pause.Click
-        If proc.HasExited = True Then
-            If ProgressBar1.Value < 100 Then
-                MsgBox("The download process seems to have crashed", MsgBoxStyle.Exclamation)
-                Label_percent.Text = "Press the play button again to retry."
-                ProgressBar1.Value = 100
-                Retry = True
+        If HybridRunning = True Then
+            If StatusRunning = True Then
                 StatusRunning = False
-            ElseIf Retry = True Then
-                If Main.RunningDownloads < Main.MaxDL Then
+                bt_pause.BackgroundImage = My.Resources.main_pause_play
 
-                Else
-                    If MessageBox.Show("You have currtenly on your set Download limit." + vbNewLine + " You can Press OK to ignore it.", "Download maximum reached", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
-                        Exit Sub
-                    End If
-                End If
-                If My.Computer.FileSystem.FileExists(HistoryDL_Pfad.Replace(Chr(34), "")) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
-                    Try
-                        My.Computer.FileSystem.DeleteFile(HistoryDL_Pfad.Replace(Chr(34), ""))
-                    Catch ex As Exception
-                    End Try
-                End If
-                DownloadFFMPEG(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename)
+            Else
                 StatusRunning = True
-                Label_website.Text = Label_website_Text
+                bt_pause.BackgroundImage = My.Resources.main_pause
             End If
-            Exit Sub
-        End If
-        If StatusRunning = True Then
-            StatusRunning = False
-            bt_pause.BackgroundImage = My.Resources.main_pause_play
-            SuspendProcess(proc)
         Else
-            StatusRunning = True
-            bt_pause.BackgroundImage = My.Resources.main_pause
-            ResumeProcess(proc)
+            If proc.HasExited = True Then
+                If ProgressBar1.Value < 100 Then
+                    MsgBox("The download process seems to have crashed", MsgBoxStyle.Exclamation)
+                    Label_percent.Text = "Press the play button again to retry."
+                    ProgressBar1.Value = 100
+                    Retry = True
+                    StatusRunning = False
+                ElseIf Retry = True Then
+                    If Main.RunningDownloads < Main.MaxDL Then
+
+                    Else
+                        If MessageBox.Show("You have currtenly on your set Download limit." + vbNewLine + " You can Press OK to ignore it.", "Download maximum reached", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
+                            Exit Sub
+                        End If
+                    End If
+                    If My.Computer.FileSystem.FileExists(HistoryDL_Pfad.Replace(Chr(34), "")) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
+                        Try
+                            My.Computer.FileSystem.DeleteFile(HistoryDL_Pfad.Replace(Chr(34), ""))
+                        Catch ex As Exception
+                        End Try
+                    End If
+                    DownloadFFMPEG(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename)
+                    StatusRunning = True
+                    Label_website.Text = Label_website_Text
+                End If
+                Exit Sub
+            End If
+            If StatusRunning = True Then
+                StatusRunning = False
+                bt_pause.BackgroundImage = My.Resources.main_pause_play
+                SuspendProcess(proc)
+            Else
+                StatusRunning = True
+                bt_pause.BackgroundImage = My.Resources.main_pause
+                ResumeProcess(proc)
+            End If
         End If
+
     End Sub
     Public Sub SetToolTip(ByVal Text As String)
         ToolTip1.SetToolTip(Me, Text)
@@ -352,6 +365,8 @@ Public Class CRD_List_Item
         Dim ts_dl As String = Nothing
         Dim Folder As String = einstellungen.GeräteID()
         Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
+        HybridModePath = Pfad2
+        'MsgBox(HybridModePath)
         If Debug2 = True Then
             MsgBox(Pfad2)
         End If
@@ -379,8 +394,22 @@ Public Class CRD_List_Item
                         PauseTime = PauseTime + 5
                     ElseIf ThreadList.Count > 7 Then
                         Thread.Sleep(125)
+                    ElseIf Canceld = True Then
+                        For www As Integer = 0 To Integer.MaxValue
+                            If ThreadList.Count > 0 Then
+                                Thread.Sleep(250)
+                            Else
+                                Try
+                                    System.IO.Directory.Delete(HybridModePath, True)
+                                Catch ex As Exception
+                                End Try
+                                Exit For
+                            End If
+                        Next
+                        Return Nothing
+                        Exit Function
                     Else
-                        'Thread.Sleep(250)
+
                         Exit For
                     End If
                 Next
@@ -404,23 +433,42 @@ Public Class CRD_List_Item
                     For i3 As Integer = 0 To c.Count - 2
                         path = path + c(i3)
                     Next
-                    curi = path
+                    curi = path + textLenght(i)
                 End If
 
                 Dim Evaluator = New Thread(Sub() Me.tsDownloadAsync(curi, Pfad2 + nummer4D + ".ts"))
-                    Evaluator.Start()
-                    ThreadList.Add(Evaluator)
-                    m3u8FFmpeg = m3u8FFmpeg + Pfad2 + nummer4D + ".ts" + vbLf
-                    Dim FragmentsFinised = (ThreadList.Count + nummerint) / FragmentsInt * 100
-                    tsStatusAsync(FragmentsFinised, di, Filename, PauseTime)
+                Evaluator.Start()
+                ThreadList.Add(Evaluator)
+                m3u8FFmpeg = m3u8FFmpeg + Pfad2 + nummer4D + ".ts" + vbLf
+                Dim FragmentsFinised = (ThreadList.Count + nummerint) / FragmentsInt * 100
+                tsStatusAsync(FragmentsFinised, di, Filename, PauseTime)
 
-                ElseIf textLenght(i) = "#EXT-X-KEY" Then
-                    m3u8FFmpeg = m3u8FFmpeg + textLenght(i) + vbLf
 
-                ElseIf textLenght(i) = "#EXT-X-PLAYLIST-TYPE:VOD" Then
+            ElseIf textLenght(i) = "#EXT-X-PLAYLIST-TYPE:VOD" Then
+            ElseIf InStr(textLenght(i), "URI=" + Chr(34)) Then
+                Dim KeyLine As String = textLenght(i)
+                If InStr(KeyLine, "https://") Then
+                    'ElseIf InStr(KeyLine, "../") Then
+                    '    Dim countDot() As String = KeyLine.Split(New String() {"./"}, System.StringSplitOptions.RemoveEmptyEntries)
 
+                    '    Dim c() As String = New Uri(m3u8_url_3).Segments
+                    '    Dim path As String = "https://" + New Uri(m3u8_url_3).Host
+                    '    For i3 As Integer = 0 To c.Count - (2 + countDot.Count - 1)
+                    '        path = path + c(i3)
+                    '    Next
+                    '    KeyLine = path + countDot(countDot.Count - 1)
                 Else
-                    m3u8FFmpeg = m3u8FFmpeg + textLenght(i) + vbLf
+                    Dim c() As String = New Uri(m3u8_url_3).Segments
+                    Dim path As String = "https://" + New Uri(m3u8_url_3).Host
+                    For i3 As Integer = 0 To c.Count - 2
+                        path = path + c(i3)
+                    Next
+                    KeyLine = KeyLine.Replace("URI=" + Chr(34), "URI=" + Chr(34) + path) 'path + textLenght(i)
+                    Debug.WriteLine(vbNewLine + KeyLine)
+                End If
+                m3u8FFmpeg = m3u8FFmpeg + KeyLine + vbLf
+            Else
+                m3u8FFmpeg = m3u8FFmpeg + textLenght(i) + vbLf
             End If
         Next
         Dim utf8WithoutBom As New System.Text.UTF8Encoding(False)
@@ -607,6 +655,9 @@ Public Class CRD_List_Item
                                      Label_percent.Text = "Finished - " + Done(0) + "MB"
                                      Return Nothing
                                  End Function))
+            If HybridMode = True Then
+                System.IO.Directory.Delete(HybridModePath, True)
+            End If
         End If
 
 
@@ -651,17 +702,25 @@ Public Class CRD_List_Item
 #End Region
 
     Private Sub bt_del_Click(sender As Object, e As EventArgs) Handles bt_del.Click
-        If proc.HasExited Then
-            If MessageBox.Show("The Download is not running anymore, press ok to remove it from the list.", "Remove from list!", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
-                Exit Sub
-            End If
-            ToDispose = True
-        Else
+        If HybridRunning = True Then
             If MessageBox.Show("Are you sure you want to cancel the Download?", "Cancel Download!", MessageBoxButtons.YesNo) = DialogResult.No Then
                 Exit Sub
             End If
             Canceld = True
-            KillRunningTask()
+            'KillRunningTask()
+        Else
+            If proc.HasExited Then
+                If MessageBox.Show("The Download is not running anymore, press ok to remove it from the list.", "Remove from list!", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
+                    Exit Sub
+                End If
+                ToDispose = True
+            Else
+                If MessageBox.Show("Are you sure you want to cancel the Download?", "Cancel Download!", MessageBoxButtons.YesNo) = DialogResult.No Then
+                    Exit Sub
+                End If
+                Canceld = True
+                KillRunningTask()
+            End If
         End If
 
     End Sub

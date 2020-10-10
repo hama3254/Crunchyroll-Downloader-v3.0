@@ -266,7 +266,13 @@ Public Class CRD_List_Item
             Dim wc_ts As New WebClient
             wc_ts.DownloadFile(New Uri(DL_URL), DL_Pfad)
         Catch ex As Exception
-            Debug.WriteLine(ex.ToString + vbNewLine + DL_Pfad + vbNewLine + DL_URL)
+            Try
+                Dim wc_ts As New WebClient
+                wc_ts.DownloadFile(New Uri(DL_URL), DL_Pfad)
+            Catch ex2 As Exception
+                Debug.WriteLine("Download error #2: " + DL_Pfad + vbNewLine + ex.ToString + vbNewLine + DL_URL)
+            End Try
+            Debug.WriteLine("Download error #1: " + DL_Pfad)
         End Try
 
     End Sub
@@ -357,6 +363,9 @@ Public Class CRD_List_Item
 
 
         End If
+        Dim LoadedKeys As New List(Of String)
+        LoadedKeys.Add("Nothing")
+        Dim KeyFileCache As String = Nothing
         Dim textLenght() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim Fragments() As String = text.Split(New String() {".ts"}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim FragmentsInt As Integer = Fragments.Count - 2
@@ -448,6 +457,27 @@ Public Class CRD_List_Item
             ElseIf InStr(textLenght(i), "URI=" + Chr(34)) Then
                 Dim KeyLine As String = textLenght(i)
                 If InStr(KeyLine, "https://") Then
+
+                    Dim KeyFile() As String = KeyLine.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim KeyFile2() As String = KeyFile(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    If LoadedKeys.Item(LoadedKeys.Count - 1) = KeyFile2(0) Then
+                    Else
+                        Dim KeyClient As New WebClient
+                        KeyClient.Encoding = Encoding.UTF8
+                        If Main.WebbrowserCookie = Nothing Then
+                        Else
+                            KeyClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
+                        End If
+                        Dim KeyFile3 As String = einstellungen.GeräteID() + ".key"
+                        KeyFileCache = KeyFile3
+                        KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
+                        LoadedKeys.Add(KeyFile2(0))
+                    End If
+                    If KeyFile2.Count > 1 Then
+                        KeyLine = KeyFile(0) + "URI=" + Chr(34) + KeyFileCache + Chr(34) + KeyFile2(1)
+                    Else
+                        KeyLine = KeyFile(0) + "URI=" + Chr(34) + KeyFileCache + Chr(34)
+                    End If
                     'ElseIf InStr(KeyLine, "../") Then
                     '    Dim countDot() As String = KeyLine.Split(New String() {"./"}, System.StringSplitOptions.RemoveEmptyEntries)
 
@@ -457,6 +487,7 @@ Public Class CRD_List_Item
                     '        path = path + c(i3)
                     '    Next
                     '    KeyLine = path + countDot(countDot.Count - 1)
+
                 Else
                     Dim c() As String = New Uri(m3u8_url_3).Segments
                     Dim path As String = "https://" + New Uri(m3u8_url_3).Host
@@ -464,7 +495,26 @@ Public Class CRD_List_Item
                         path = path + c(i3)
                     Next
                     KeyLine = KeyLine.Replace("URI=" + Chr(34), "URI=" + Chr(34) + path) 'path + textLenght(i)
-                    Debug.WriteLine(vbNewLine + KeyLine)
+                    Dim KeyFile() As String = KeyLine.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim KeyFile2() As String = KeyFile(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    If LoadedKeys.Item(LoadedKeys.Count - 1) = KeyFile2(0) Then
+                    Else
+                        Dim KeyClient As New WebClient
+                        KeyClient.Encoding = Encoding.UTF8
+                        If Main.WebbrowserCookie = Nothing Then
+                        Else
+                            KeyClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
+                        End If
+                        Dim KeyFile3 As String = einstellungen.GeräteID() + ".key"
+                        KeyFileCache = KeyFile3
+                        KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
+                        LoadedKeys.Add(KeyFile2(0))
+                    End If
+                    If KeyFile2.Count > 1 Then
+                        KeyLine = KeyFile(0) + "URI=" + Chr(34) + KeyFileCache + Chr(34) + KeyFile2(1)
+                    Else
+                        KeyLine = KeyFile(0) + "URI=" + Chr(34) + KeyFileCache + Chr(34)
+                    End If
                 End If
                 m3u8FFmpeg = m3u8FFmpeg + KeyLine + vbLf
             Else
@@ -492,7 +542,7 @@ Public Class CRD_List_Item
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
 
-        Dim cmd As String = "-protocol_whitelist file,crypto,http,https,tcp,tls " + DL_URL + " " + DL_Pfad '+ " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        Dim cmd As String = "-allowed_extensions ALL " + DL_URL + " " + DL_Pfad '+ " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
 
         If Debug2 = True Then
             MsgBox(cmd)
@@ -656,6 +706,7 @@ Public Class CRD_List_Item
                                      Return Nothing
                                  End Function))
             If HybridMode = True Then
+                Thread.Sleep(1000)
                 System.IO.Directory.Delete(HybridModePath, True)
             End If
         End If

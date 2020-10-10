@@ -2273,12 +2273,12 @@ Public Class Main
                     UsedSub = SubTitle2(SubTitle2.Count - 1) + ".dfxp"
                 Else
                     If MessageBox.Show("No Subtitle found in the website, a logfile was created." + vbNewLine + "Press 'Yes' to download the video without subtitle", "No Subtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                        File.WriteAllText(Path.Combine(Application.StartupPath + "No Subtitle for" + DownloadPfad.Replace(".mp4", ".log")), PlayerPage, Encoding.UTF8)
+                        File.WriteAllText(DownloadPfad.Replace(".mp4", "-no subtitle.log"), PlayerPage, Encoding.UTF8)
                     Else
-                        File.WriteAllText(Path.Combine(Application.StartupPath + "No Subtitle for" + DownloadPfad.Replace(".mp4", ".log")), PlayerPage, Encoding.UTF8)
+                        File.WriteAllText(DownloadPfad.Replace(".mp4", "-no subtitle.log"), PlayerPage, Encoding.UTF8)
                         Exit Sub
                     End If
-                    'MsgBox("No Subtitle found in the website, a logfile was created.", MsgBoxStyle.OkCancel, "No Subtitle")
+                    'MsgBox("No Subtitle found In the website, a logfile was created.", MsgBoxStyle.OkCancel, "No Subtitle")
                 End If
 
             Else
@@ -2308,9 +2308,9 @@ Public Class Main
                     UsedSub = Subs_in_dfxp.Item(0)
                 End If
             End If
-
-            If MergeSubstoMP4 = True Then
-                    If HardSubFunimation = True Then
+            If UsedSub = Nothing Then
+            ElseIf MergeSubstoMP4 = True Then
+                If HardSubFunimation = True Then
                     Dim SubText As String = client0.DownloadString(UsedSub)
                     Dim SubtitelFormat As String = ".srt"
                     If InStr(UsedSub, ".vtt") Then
@@ -2350,7 +2350,15 @@ Public Class Main
 #End Region
 
 #Region "SubsToMP4"
-            If HardSubFunimation = True Then
+            If UsedSub = Nothing Then
+                If FunimationDub = "japanese" Then
+                    Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
+                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+                Else
+                    Dim DubMetatata As String = " -metadata:s:a:0 language=eng"
+                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+                End If
+            ElseIf HardSubFunimation = True Then
                 Dim ffmpeg_hardsub As String = Nothing
                 If InStr(ffmpeg_command, "-c copy") Then
                     ffmpeg_hardsub = "-bsf:a aac_adtstoasc"

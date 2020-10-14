@@ -249,6 +249,7 @@ Public Class CRD_List_Item
 #Region "Download + Update UI"
 
     Public Sub StartDownload(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String, ByVal DownloadHybridMode As Boolean)
+        'MsgBox(DL_URL)
         If DownloadHybridMode = True Then
             Dim Evaluator = New Thread(Sub() DownloadHybrid(DL_URL, DL_Pfad, Filename))
             Evaluator.Start()

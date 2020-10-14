@@ -438,6 +438,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;a class=&quot;main_titel&quot;&gt;Placeholder&lt;/a&gt;
+        '''&lt;img alt=&quot;image error&quot; src=&quot;balken.png&quot; class=&quot;class-balken&quot;&gt; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property htmlTitlel() As String
+            Get
+                Return ResourceManager.GetString("htmlTitlel", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;!DOCTYPE html&gt;
         '''&lt;head&gt;
         '''&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt;

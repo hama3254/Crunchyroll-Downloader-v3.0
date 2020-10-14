@@ -457,16 +457,20 @@ I delete the curremt session with the unlock, if you want to be logged in with t
 	.percenttext{float:right;text-align:right;font-size:16px;display:inline-block;margin-right:25px}
 	.resotext{text-align: left;font-size:18px;margin-left:0px;font-weight:550;}
 	.titel{font-size:18px;font-weight:550;display:block;margin-top:5px}
+	.main_titel{font-size:18px;font-weight:550;display:block;text-align:center;margin-top:5px}
 	.cc-wert{font-size:18px;font-weight:550;display:block;margin-top:-20px;margin-left:250px;text-decoration: none;color:black;}
 	.liClass{margin-bottom:8px}
   &lt;/style&gt;
-&lt;body id="bodypage" class="main-bg" &gt;
-&lt;img alt="image error" src="balken1.png" class="class-balken"&gt;</value>
+&lt;body id="bodypage" class="main-bg" &gt;</value>
   </data>
   <data name="main_credits_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main_credits_default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="balken_console" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\balken_console.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="htmlTitlel" xml:space="preserve">
+    <value>&lt;a class="main_titel"&gt;Placeholder&lt;/a&gt;
+&lt;img alt="image error" src="balken.png" class="class-balken"&gt;</value>
   </data>
 </root>

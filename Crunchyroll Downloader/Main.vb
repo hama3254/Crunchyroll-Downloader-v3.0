@@ -1497,6 +1497,7 @@ Public Class Main
                 'MsgBox(URL_DL)
             End If
 #End Region
+
 #Region "thumbnail"
             Dim thumbnail As String() = WebbrowserText.Split(New String() {My.Resources.thumbnailString}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim thumbnail2 As String() = thumbnail(1).Split(New String() {Chr(34) + "}"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
@@ -2460,7 +2461,7 @@ Public Class Main
         'End Try
 
         Try
-            Dim GeckoHTML As String = My.Resources.htmlTop
+            Dim GeckoHTML As String = My.Resources.htmlTop + vbNewLine + My.Resources.htmlTitlel.Replace("Placeholder", StatusMainForm.Text)
             Dim LiAdd As String = Nothing
             For ii As Integer = 0 To ItemList.Count - 1
                 For i As Integer = 0 To liList.Count - 1
@@ -2574,7 +2575,10 @@ Public Class Main
 
             If strArray(0).Trim().ToUpper.Equals("POST") Then
                 Debug.WriteLine("receiving data from the add-on")
-
+                Me.Invoke(New Action(Function()
+                                         StatusMainForm.Text = "Status: receiving data from the add-on"
+                                         Return Nothing
+                                     End Function))
 #Region "CR Einzeln"
 
                 If InStr(htmlReq, "HTMLSingle=") Then
@@ -2828,6 +2832,8 @@ Public Class Main
             Return "application/vnd.ms-powerpoint"
         ElseIf (httpRequest.EndsWith("js")) Then
             Return "application/javascript"
+        ElseIf (httpRequest.EndsWith("ass")) Then
+            Return "application/octet-stream"
         Else
             Return "text/plain"
         End If

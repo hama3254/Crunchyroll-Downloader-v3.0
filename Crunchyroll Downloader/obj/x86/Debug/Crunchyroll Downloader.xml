@@ -236,6 +236,12 @@ setInterval(function loadXMLDoc() {
 &lt;span class=&quot;titel&quot; dir=&quot;auto&quot;&gt; ähnelt.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.htmlTitlel">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &lt;a class=&quot;main_titel&quot;&gt;Placeholder&lt;/a&gt;
+&lt;img alt=&quot;image error&quot; src=&quot;balken.png&quot; class=&quot;class-balken&quot;&gt; ähnelt.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.htmlTop">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die &lt;!DOCTYPE html&gt;

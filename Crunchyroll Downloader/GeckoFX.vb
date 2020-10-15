@@ -182,6 +182,7 @@ Public Class GeckoFX
                         t.Start()
 
                     Else
+                        Main.StatusMainForm.Text = "Status: no video found"
                         Anime_Add.StatusLabel.Text = "fail?"
                     End If
                 End If

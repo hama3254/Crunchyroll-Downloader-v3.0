@@ -1398,6 +1398,12 @@ Public Class Main
 
             Dim Pfad5 As String = Pfad2.Replace(Chr(34), "")
             If My.Computer.FileSystem.FileExists(Pfad5) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
+                Me.Invoke(New Action(Function()
+
+                                         Anime_Add.StatusLabel.Text = "Status: The file video already exists."
+                                         StatusMainForm.Text = "Status: The file video already exists."
+                                         Return Nothing
+                                     End Function))
                 If MessageBox.Show("The file " + Pfad5 + " already exists." + vbNewLine + "You want to override it?", "File exists!", MessageBoxButtons.OKCancel) = DialogResult.OK Then
                     Try
                         My.Computer.FileSystem.DeleteFile(Pfad5)
@@ -2583,10 +2589,7 @@ Public Class Main
 
                 If InStr(htmlReq, "HTMLSingle=") Then
                     Debug.WriteLine("Single episode mode - Crunchyroll")
-                    Me.Invoke(New Action(Function()
-                                             StatusMainForm.Text = "Status: Download added from plugin"
-                                             Return Nothing
-                                         End Function))
+
                     Try
                         Dim html() As String = htmlReq.Split(New String() {"HTMLSingle="}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim DecodedHTML As String = UrlDecode(html(1))
@@ -2598,25 +2601,41 @@ Public Class Main
                         Dim TitleSplit() As String = DecodedHTML.Split(New String() {"<title>"}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim TitleSplit2() As String = TitleSplit(1).Split(New String() {"</title>"}, System.StringSplitOptions.RemoveEmptyEntries)
                         WebbrowserTitle = TitleSplit2(0)
-                        If Grapp_RDY = True Then
-                            Dim t As Thread
-                            t = New Thread(AddressOf GrappURL)
-                            t.Priority = ThreadPriority.Normal
-                            t.IsBackground = True
-                            t.Start()
-                        Else
-                            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                                Me.Invoke(New Action(Function()
-                                                         Anime_Add.ListBox1.Items.Add(WebbrowserURL)
-                                                         Return Nothing
-                                                     End Function))
-
+                        If CBool(InStr(WebbrowserText, "hardsub_lang")) Then
+                            Me.Invoke(New Action(Function()
+                                                     StatusMainForm.Text = "Status: Download added from add-on"
+                                                     Return Nothing
+                                                 End Function))
+                            If Grapp_RDY = True Then
+                                Dim t As Thread
+                                t = New Thread(AddressOf GrappURL)
+                                t.Priority = ThreadPriority.Normal
+                                t.IsBackground = True
+                                t.Start()
                             Else
-                                ListBoxList.Add(WebbrowserURL)
+                                If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                                    Me.Invoke(New Action(Function()
+                                                             Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                                                             Return Nothing
+                                                         End Function))
+
+                                Else
+                                    ListBoxList.Add(WebbrowserURL)
+                                End If
                             End If
+                            strRequest = rootPath & "Post_Single_Sucess.html" 'PostPage
+                            sendHTMLResponse(strRequest, clientSocket)
+                        Else
+                            Me.Invoke(New Action(Function()
+                                                     StatusMainForm.Text = "Status: no video found"
+                                                     Return Nothing
+                                                 End Function))
+                            Dim ErrorPage As String = My.Resources.Post_error_Top + "no video found" + My.Resources.Post_error_Bottom
+                            My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
+                            strRequest = rootPath & "error_Page.html" 'PostPage
+                            sendHTMLResponse(strRequest, clientSocket)
                         End If
-                        strRequest = rootPath & "Post_Single_Sucess.html" 'PostPage
-                        sendHTMLResponse(strRequest, clientSocket)
+
                     Catch ex As Exception
                         Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
                         My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
@@ -2666,7 +2685,7 @@ Public Class Main
                     Debug.WriteLine("single episode mode - Funimation")
                     'Debug.WriteLine(htmlReq)
                     Me.Invoke(New Action(Function()
-                                             StatusMainForm.Text = "Status: Download added from plugin"
+                                             StatusMainForm.Text = "Status: Download added from add-on"
                                              Return Nothing
                                          End Function))
                     Try
@@ -2694,6 +2713,10 @@ Public Class Main
 
                             Else
                                 ListBoxList.Add(WebbrowserURL)
+                                Me.Invoke(New Action(Function()
+                                                         StatusMainForm.Text = "Status: " + ListBoxList.Count.ToString + " Downloads in queue"
+                                                         Return Nothing
+                                                     End Function))
                             End If
                         End If
                         strRequest = rootPath & "Post_Single_Sucess.html" 'PostPage

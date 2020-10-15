@@ -15,26 +15,27 @@ chrome.tabs.query({
 
         chrome.tabs.executeScript(null, {
             //code: 'document.getElementsByClassName("episode")[0].href;'
-			code: 'document.getElementsByClassName("episode").length;'
+            code: 'document.getElementsByClassName("episode").length;'
         },
             function (results) {
 
-            if (results > 0 )
-			{ 
-              onExecuted(results);
-			} else {
-				   onError("error")
+            if (results > 0) {
+
+                onExecuted(results);
+            } else {
+                onError("error")
             }
 
         });
 
     } else if (tab.url.includes('funimation.com')) {
         chrome.tabs.executeScript(null, {
-            code: 'document.getElementsByClassName("trackVideo")[0].href'
+            //code: 'document.getElementsByClassName("trackVideo")[0].href'
+            code: 'document.getElementsByClassName("trackVideo").length;'
         },
             function (results) {
 
-            if (results !== null) {
+            if (results > 0) {
                 FunimationSuccess(results);
 
             } else {
@@ -152,10 +153,10 @@ document.getElementById('btn_add').addEventListener('click', () => {
 
             setTimeout(function () {
                 document.getElementById("btn_add").style.background = "#ff8000"
-            }, 4000);
+            }, 10000);
             setTimeout(function () {
                 document.getElementById("btn_add").disabled = false;
-            }, 4000);
+            }, 10000);
 
         } else {
             add_one_error(results);
@@ -173,7 +174,10 @@ document.getElementById('btn_add_funimation').addEventListener('click', () => {
         currentWindow: true
     },
         function (tabs) {
-        console.log(tabs.length);
+        document.getElementById("btn_add_funimation").disabled = true;
+        document.getElementById("btn_add_funimation").style.background = "#c9c9c9"
+
+            console.log(tabs.length);
         let tab = tabs[0]; // Safe to assume there will only be one resultconsole.log(tab.url);
         console.log(tab.url);
         const form = document.createElement('form');
@@ -188,6 +192,12 @@ document.getElementById('btn_add_funimation').addEventListener('click', () => {
 
         document.body.appendChild(form);
         form.submit();
+        setTimeout(function () {
+            document.getElementById("btn_add_funimation").style.background = "#ff8000"
+        }, 10000);
+        setTimeout(function () {
+            document.getElementById("btn_add_funimation").disabled = false;
+        }, 10000);
     });
 });
 
@@ -231,28 +241,32 @@ document.getElementById('btn_add_mass').addEventListener('click', () => {
 });
 
 function onExecuted(result) {
-    console.log(result[0]);
+    chrome.tabs.executeScript(null, {
+        code: "document.getElementsByClassName('episode')[0].href.includes('javascript:');"
+    },
+        function (result) {
+        //alert(result);
+        if (result == 'true') {
+            document.getElementById("btn_add").hidden = true;
+            document.getElementById("btn_add_mass").hidden = false;
+            document.getElementById("btn_select_all").hidden = false;
+            document.getElementById("btn_select_none").hidden = false;
+            document.getElementById("btn_enable_select").hidden = true;
+            document.getElementById("btn_add_funimation").hidden = true;
+            document.getElementById("btn_enable_funimation_select").hidden = true;
+            console.log(true);
+        } else {
+            document.getElementById("btn_add").hidden = true;
+            document.getElementById("btn_enable_select").hidden = false;
+            document.getElementById("btn_add_mass").hidden = true;
+            document.getElementById("btn_select_all").hidden = true;
+            document.getElementById("btn_select_none").hidden = true;
+            document.getElementById("btn_add_funimation").hidden = true;
+            document.getElementById("btn_enable_funimation_select").hidden = true;
+            console.log(false);
+        }
+    });
 
-    if (result[0].includes('javascript:')) {
-        document.getElementById("btn_add").hidden = true;
-        document.getElementById("btn_add_mass").hidden = false;
-        document.getElementById("btn_select_all").hidden = false;
-        document.getElementById("btn_select_none").hidden = false;
-        document.getElementById("btn_enable_select").hidden = true;
-        document.getElementById("btn_add_funimation").hidden = true;
-        document.getElementById("btn_enable_funimation_select").hidden = true;
-        console.log(true);
-    } else {
-        document.getElementById("btn_add").hidden = true;
-        document.getElementById("btn_enable_select").hidden = false;
-        document.getElementById("btn_add_mass").hidden = true;
-        document.getElementById("btn_select_all").hidden = true;
-        document.getElementById("btn_select_none").hidden = true;
-        document.getElementById("btn_add_funimation").hidden = true;
-        document.getElementById("btn_enable_funimation_select").hidden = true;
-
-        console.log(false);
-    }
 }
 
 function onError(error) {
@@ -296,29 +310,32 @@ document.getElementById('btn_enable_funimation_select').addEventListener('click'
 });
 
 function FunimationSuccess(result) {
-    console.log(result[0]);
+    chrome.tabs.executeScript(null, {
+        code: "document.getElementsByClassName('trackVideo')[0].href.includes('javascript:');"
+    },
+        function (result) {
+        if (result == 'true') {
+            document.getElementById("btn_add").hidden = true;
+            document.getElementById("btn_add_mass").hidden = false;
+            document.getElementById("btn_select_all").hidden = false;
+            document.getElementById("btn_select_none").hidden = false;
+            document.getElementById("btn_enable_select").hidden = true;
 
-    if (result[0].includes('javascript:')) {
-        document.getElementById("btn_add").hidden = true;
-        document.getElementById("btn_add_mass").hidden = false;
-        document.getElementById("btn_select_all").hidden = false;
-        document.getElementById("btn_select_none").hidden = false;
-        document.getElementById("btn_enable_select").hidden = true;
+            document.getElementById("btn_enable_funimation_select").hidden = true;
+            document.getElementById("btn_add_funimation").hidden = true;
+            console.log(true);
+        } else {
+            document.getElementById("btn_add").hidden = true;
+            document.getElementById("btn_add_funimation").hidden = true;
+            document.getElementById("btn_enable_select").hidden = true;
+            document.getElementById("btn_add_mass").hidden = true;
+            document.getElementById("btn_select_all").hidden = true;
+            document.getElementById("btn_select_none").hidden = true;
+            document.getElementById("btn_enable_funimation_select").hidden = false;
 
-        document.getElementById("btn_enable_funimation_select").hidden = true;
-        document.getElementById("btn_add_funimation").hidden = true;
-        console.log(true);
-    } else {
-        document.getElementById("btn_add").hidden = true;
-        document.getElementById("btn_add_funimation").hidden = true;
-        document.getElementById("btn_enable_select").hidden = true;
-        document.getElementById("btn_add_mass").hidden = true;
-        document.getElementById("btn_select_all").hidden = true;
-        document.getElementById("btn_select_none").hidden = true;
-        document.getElementById("btn_enable_funimation_select").hidden = false;
-
-        console.log(false);
-    }
+            console.log(false);
+        }
+    });
 }
 
 function FunimationError(error) {

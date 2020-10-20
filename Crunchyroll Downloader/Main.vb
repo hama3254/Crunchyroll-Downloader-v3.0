@@ -346,7 +346,7 @@ Public Class Main
         Dim Thumbnail As Image = My.Resources.main_del
         Try
             Dim wc As New WebClient()
-            wc.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/79.0")
+            wc.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0")
             Dim bytes As Byte() = wc.DownloadData(ThumbnialURL)
             Dim ms As New MemoryStream(bytes)
             Thumbnail = System.Drawing.Image.FromStream(ms)

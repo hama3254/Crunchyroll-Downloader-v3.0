@@ -338,9 +338,10 @@ Public Class CRD_List_Item
         If InStr(text, "RESOLUTION=") Then 'master m3u8 no fragments 
             Dim new_m3u8_2() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
             If TargetReso = 42 Then
+                TargetReso = 1080
+            End If
 
-            Else
-                For i As Integer = 0 To new_m3u8_2.Count - 1
+            For i As Integer = 0 To new_m3u8_2.Count - 1
                     'MsgBox("x" + Main.Resu.ToString)
                     If CBool(InStr(new_m3u8_2(i), "x" + TargetReso.ToString)) = True Then
                         m3u8_url_1 = new_m3u8_2(i + 1)
@@ -360,10 +361,9 @@ Public Class CRD_List_Item
                     text = client0.DownloadString(m3u8_url_3)
                 End If
 
+
+
             End If
-
-
-        End If
         Dim LoadedKeys As New List(Of String)
         LoadedKeys.Add("Nothing")
         Dim KeyFileCache As String = Nothing
@@ -543,7 +543,7 @@ Public Class CRD_List_Item
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
 
-        Dim cmd As String = "-allowed_extensions ALL " + DL_URL + " " + DL_Pfad '+ " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        Dim cmd As String = "-headers " + Chr(34) + "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0" + Chr(34) + " -allowed_extensions ALL " + DL_URL + " " + DL_Pfad '+ " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
 
         If Debug2 = True Then
             MsgBox(cmd)
@@ -584,7 +584,7 @@ Public Class CRD_List_Item
 
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
-        Dim cmd As String = DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        Dim cmd As String = "-headers " + Chr(34) + "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
 
         If Debug2 = True Then
             MsgBox(cmd)
@@ -736,7 +736,7 @@ Public Class CRD_List_Item
             'MsgBox(BaseURL + SiteList(i) + vbNewLine + Pfad_DL + "\" + SiteList(i))
             Dim iWert As Integer = i
             Using client As New WebClient()
-                client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/79.0")
+                client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0")
                 client.DownloadFile(BaseURL + SiteList(i), Pfad_DL + "\" + SiteList(i))
                 Pause(1)
             End Using

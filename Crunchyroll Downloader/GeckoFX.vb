@@ -26,28 +26,31 @@ Public Class GeckoFX
                 Main.LoginOnly = "US_UnBlock"
             Else
                 Try
-                    Dim cookieGrapp As String = WebBrowser1.Document.Body.OuterHtml '.Replace(vbTab, "").Replace(" ", "")
-                    If Main.Debug2 = True Then
-                        MsgBox(cookieGrapp)
-                    End If
-                    Dim cookieGrapp2() As String = cookieGrapp.Split(New String() {"<a class=" + Chr(34) + "cookie" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim cookieGrapp3() As String = cookieGrapp2(1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    keks = cookieGrapp3(0)
-                    If Main.Debug2 = True Then
-                        MsgBox(keks)
+
+                    If CBool(InStr(WebBrowser1.Document.Uri, "https://api.crunchyroll.com/login.0.json")) Then
+                        Main.LoginOnly = "US_UnBlock_Finsihed"
+                    Else
+                        Dim cookieGrapp As String = WebBrowser1.Document.Body.OuterHtml '.Replace(vbTab, "").Replace(" ", "")
+                        If Main.Debug2 = True Then
+                            MsgBox(cookieGrapp)
+                        End If
+                        Dim cookieGrapp2() As String = cookieGrapp.Split(New String() {"<a class=" + Chr(34) + "cookie" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim cookieGrapp3() As String = cookieGrapp2(1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        keks = cookieGrapp3(0)
+                        If Main.Debug2 = True Then
+                            MsgBox(keks)
+                        End If
+
+                        WebBrowser1.Navigate("https://www.crunchyroll.com/logout")
+                        Main.Pause(5)
+                        WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                        Main.Pause(1)
+                        WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "sess_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
+                        Main.Pause(1)
+                        WebBrowser1.Navigate("https://www.crunchyroll.com/")
+                        Main.LoginOnly = "US_UnBlock_Finsihed"
                     End If
 
-                    WebBrowser1.Navigate("https://www.crunchyroll.com/logout")
-                    Main.Pause(5)
-                    WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
-                    Main.Pause(1)
-                    WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "sess_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
-                    Main.Pause(1)
-                    If Main.LoginDialog = True Then
-                        'Login.ShowDialog()
-                    Else
-                        WebBrowser1.Navigate("https://www.crunchyroll.com/")
-                    End If
                 Catch ex As Exception
                     MsgBox(ex.ToString)
                 End Try

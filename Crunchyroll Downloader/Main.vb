@@ -1531,7 +1531,7 @@ Public Class Main
             End If
             Pfad_DL = Pfad2
             Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim L1Name As String = L1Name_Split(1).Replace("www.", "")
+            Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + HardSubValuesToDisplay(Chr(34) + CR_Anime_Dub + Chr(34))
             Me.Invoke(New Action(Function()
                                      ListItemAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL, Pfad_DL)
                                      Return Nothing
@@ -2395,7 +2395,7 @@ Public Class Main
                         'Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
                     End If
 
-                    Dim SoftSubMergeURLs As String = " -i " + Chr(34) + UsedSub + Chr(34)
+                    Dim SoftSubMergeURLs As String = " -headers  " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + UsedSub + Chr(34)
                     Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a -map 1"
                     Dim SoftSubMergeMetatata As String = " -metadata:s:s:0 language=eng"
                     Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + DubMetatata

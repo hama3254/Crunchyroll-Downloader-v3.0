@@ -124,11 +124,18 @@ Public Class CRD_List_Item
     End Sub
 #End Region
     Public Sub KillRunningTask()
-        If proc.HasExited Then
+        If HybridRunning = True Then
+            Canceld = True
         Else
-            proc.Kill()
-            proc.WaitForExit(500)
-            Label_percent.Text = "canceled -%"
+            Try
+                If proc.HasExited Then
+                Else
+                    proc.Kill()
+                    proc.WaitForExit(500)
+                    Label_percent.Text = "canceled -%"
+                End If
+            Catch ex As Exception
+            End Try
         End If
     End Sub
 
@@ -324,7 +331,37 @@ Public Class CRD_List_Item
         HistoryDL_URL = DL_URL
         HistoryDL_Pfad = DL_Pfad
         HistoryFilename = Filename
+        'MsgBox(DL_URL)
+        Dim Folder As String = einstellungen.GeräteID()
+        Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
+        If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
+            ' Nein! Jetzt erstellen...
+            Try
+                Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
+            Catch ex As Exception
+                MsgBox("Temp folder creation failed")
+                Return Nothing
+                Exit Function
+                ' Ordner wurde nich erstellt
+                'Pfad2 = Pfad + "\" + CR_FilenName_Backup + ".mp4"
+            End Try
+        End If
+        Dim MergeSub As String() = DL_URL.Split(New String() {"-i " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
+        If MergeSub.Count > 1 Then
+            For i As Integer = 1 To MergeSub.Count - 1
+                Dim SubsURL As String() = MergeSub(i).Split(New [Char]() {Chr(34)})
+                Dim SubsClient As New WebClient
+                SubsClient.Encoding = Encoding.UTF8
+                If Main.WebbrowserCookie = Nothing Then
+                Else
+                    SubsClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
+                End If
+                Dim SubsFile As String = einstellungen.GeräteID() + ".txt"
+                SubsClient.DownloadFile(SubsURL(0), Pfad2 + "\" + SubsFile)
+                DL_URL = DL_URL.Replace(SubsURL(0), Pfad2 + "\" + SubsFile)
+            Next
+        End If
 
         Dim m3u8_url As String() = DL_URL.Split(New [Char]() {Chr(34)})
         Dim m3u8_url_1 As String = Nothing
@@ -373,26 +410,14 @@ Public Class CRD_List_Item
         Dim nummerint As Integer = 0 '-1
         Dim m3u8FFmpeg As String = Nothing
         Dim ts_dl As String = Nothing
-        Dim Folder As String = einstellungen.GeräteID()
-        Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
+
         HybridModePath = Pfad2
         'MsgBox(HybridModePath)
         If Debug2 = True Then
             MsgBox(Pfad2)
         End If
         Dim PauseTime As Integer = 0
-        If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
-            ' Nein! Jetzt erstellen...
-            Try
-                Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
-            Catch ex As Exception
-                MsgBox("Temp folder creation failed")
-                Return Nothing
-                Exit Function
-                ' Ordner wurde nich erstellt
-                'Pfad2 = Pfad + "\" + CR_FilenName_Backup + ".mp4"
-            End Try
-        End If
+
         Dim di As New IO.DirectoryInfo(Pfad2)
         For i As Integer = 0 To textLenght.Length - 1
             If InStr(textLenght(i), ".ts") Then
@@ -543,8 +568,8 @@ Public Class CRD_List_Item
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
 
-        Dim cmd As String = "-headers " + Chr(34) + "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0" + Chr(34) + " -allowed_extensions ALL " + DL_URL + " " + DL_Pfad '+ " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
-
+        Dim cmd As String = "-allowed_extensions ALL " + DL_URL + " " + DL_Pfad '+ " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        ' MsgBox(cmd) -headers " + Chr(34) + "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0" + Chr(34) + 
         If Debug2 = True Then
             MsgBox(cmd)
         End If

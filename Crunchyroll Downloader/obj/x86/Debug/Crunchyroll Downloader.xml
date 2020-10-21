@@ -150,6 +150,11 @@ Crunchyroll Downloader
 &lt;/body&gt;&lt;/html&gt; ähnelt.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.ffmpeg_user_agend">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &quot;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0&quot; ähnelt.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_Player_ID">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die src=&quot;/player/ ähnelt.

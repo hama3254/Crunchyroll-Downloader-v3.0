@@ -8,7 +8,6 @@ Imports System.Threading
 Public Class einstellungen
 
     Private Sub einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
         For i As Integer = 0 To Main.SoftSubs.Count - 1
             If Main.SoftSubs(i) = "deDE" Then
                 CBdeDE.Checked = True
@@ -628,6 +627,8 @@ Public Class einstellungen
         Else
         End If
     End Sub
+
+
 
 
 #End Region

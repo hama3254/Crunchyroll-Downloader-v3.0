@@ -90,6 +90,7 @@ Partial Class einstellungen
         Me.A720p = New System.Windows.Forms.RadioButton()
         Me.A1080p = New System.Windows.Forms.RadioButton()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.PictureBox6 = New System.Windows.Forms.PictureBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.Server = New System.Windows.Forms.CheckBox()
@@ -126,6 +127,7 @@ Partial Class einstellungen
         Me.MenuStrip1.SuspendLayout()
         Me.GB_Resolution.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.GroupBox8.SuspendLayout()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -842,7 +844,7 @@ Partial Class einstellungen
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
-        Me.TabPage1.Controls.Add(Me.PictureBox6)
+        Me.TabPage1.Controls.Add(Me.GroupBox8)
         Me.TabPage1.Controls.Add(Me.GroupBox5)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.DL_Count_simultaneous)
@@ -853,11 +855,23 @@ Partial Class einstellungen
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Settings"
         '
+        'GroupBox8
+        '
+        Me.GroupBox8.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox8.Controls.Add(Me.PictureBox6)
+        Me.GroupBox8.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox8.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox8.Location = New System.Drawing.Point(6, 311)
+        Me.GroupBox8.Name = "GroupBox8"
+        Me.GroupBox8.Size = New System.Drawing.Size(456, 94)
+        Me.GroupBox8.TabIndex = 44
+        Me.GroupBox8.TabStop = False
+        '
         'PictureBox6
         '
         Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox6.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_credits_default
-        Me.PictureBox6.Location = New System.Drawing.Point(192, 338)
+        Me.PictureBox6.Location = New System.Drawing.Point(182, 30)
         Me.PictureBox6.Name = "PictureBox6"
         Me.PictureBox6.Size = New System.Drawing.Size(76, 39)
         Me.PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -882,7 +896,7 @@ Partial Class einstellungen
         'Server
         '
         Me.Server.AutoSize = True
-        Me.Server.Location = New System.Drawing.Point(271, 29)
+        Me.Server.Location = New System.Drawing.Point(285, 29)
         Me.Server.Name = "Server"
         Me.Server.Size = New System.Drawing.Size(129, 20)
         Me.Server.TabIndex = 42
@@ -1069,7 +1083,8 @@ Partial Class einstellungen
         Me.GB_Resolution.ResumeLayout(False)
         Me.GB_Resolution.PerformLayout()
         Me.TabPage1.ResumeLayout(False)
-        Me.TabPage1.PerformLayout()
+        Me.GroupBox8.ResumeLayout(False)
+        Me.GroupBox8.PerformLayout()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
@@ -1167,4 +1182,5 @@ Partial Class einstellungen
     Public WithEvents CBptBR As CheckBox
     Public WithEvents CBdeDE As CheckBox
     Public WithEvents CBenUS As CheckBox
+    Friend WithEvents GroupBox8 As GroupBox
 End Class

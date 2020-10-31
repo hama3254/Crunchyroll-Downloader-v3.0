@@ -10,18 +10,20 @@ Public Class CRD_List_Item
     Dim ListOfStreams As New List(Of String)
     Dim proc As Process
     Dim ThreadList As New List(Of Thread)
+    Dim timeout As DateTime
 
     Dim Canceld As Boolean = False
 
     Dim Label_website_Text As String = Nothing
     Dim StatusRunning As Boolean = True
-    'Dim UsedMap As String = Nothing
     Dim ffmpeg_command As String = Nothing
     Dim Debug2 As Boolean = False
     Dim MergeSubstoMP4 As Boolean = False
     Dim SaveLog As Boolean = False
     Dim DownloadPfad As String = Nothing
     Dim ToDispose As Boolean = False
+    Dim Failed As Boolean = False
+    Dim FailedCount As Integer = 0
     Dim HistoryDL_URL As String
     Dim HistoryDL_Pfad As String
     Dim HistoryFilename As String
@@ -42,8 +44,9 @@ Public Class CRD_List_Item
 #End Region
 #Region "Set UI"
     Public Sub SetLabelWebsite(ByVal Text As String)
-        Label_website.Text = Text
 
+        Label_website.Text = Text
+        Label_website_Text = Text
     End Sub
     Public Sub SetLabelAnimeTitel(ByVal Text As String)
         Label_Anime.Text = Text
@@ -179,28 +182,32 @@ Public Class CRD_List_Item
         Else
             If proc.HasExited = True Then
                 If ProgressBar1.Value < 100 Then
-                    MsgBox("The download process seems to have crashed", MsgBoxStyle.Exclamation)
-                    Label_percent.Text = "Press the play button again to retry."
-                    ProgressBar1.Value = 100
-                    Retry = True
-                    StatusRunning = False
-                ElseIf Retry = True Then
-                    If Main.RunningDownloads < Main.MaxDL Then
+                    If Retry = True Then
+                        If Main.RunningDownloads < Main.MaxDL Then
 
-                    Else
-                        If MessageBox.Show("You have currtenly on your set Download limit." + vbNewLine + " You can Press OK to ignore it.", "Download maximum reached", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
-                            Exit Sub
+                        Else
+                            If MessageBox.Show("You have currtenly on your set Download limit." + vbNewLine + " You can Press OK to ignore it.", "Download maximum reached", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
+                                Exit Sub
+                            End If
                         End If
+                        If My.Computer.FileSystem.FileExists(HistoryDL_Pfad.Replace(Chr(34), "")) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
+                            Try
+                                My.Computer.FileSystem.DeleteFile(HistoryDL_Pfad.Replace(Chr(34), ""))
+                            Catch ex As Exception
+                            End Try
+                        End If
+                        StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode)
+                        StatusRunning = True
+                        Label_website.Text = Label_website_Text
+                    Else
+                        MsgBox("The download process seems to have crashed", MsgBoxStyle.Exclamation)
+                        Label_percent.Text = "Press the play button again to retry."
+                        ProgressBar1.Value = 0
+                        Retry = True
+                        StatusRunning = False
                     End If
-                    If My.Computer.FileSystem.FileExists(HistoryDL_Pfad.Replace(Chr(34), "")) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
-                        Try
-                            My.Computer.FileSystem.DeleteFile(HistoryDL_Pfad.Replace(Chr(34), ""))
-                        Catch ex As Exception
-                        End Try
-                    End If
-                    DownloadFFMPEG(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename)
-                    StatusRunning = True
-                    Label_website.Text = Label_website_Text
+
+                Else
                 End If
                 Exit Sub
             End If
@@ -209,9 +216,50 @@ Public Class CRD_List_Item
                 bt_pause.BackgroundImage = My.Resources.main_pause_play
                 SuspendProcess(proc)
             Else
-                StatusRunning = True
-                bt_pause.BackgroundImage = My.Resources.main_pause
-                ResumeProcess(proc)
+                If Failed = True Then
+                    Dim Result As DialogResult = MessageBox.Show("The download has " + FailedCount.ToString + " failded segments" + vbNewLine + "Press 'Ignore' to continue", "Download Error", MessageBoxButtons.AbortRetryIgnore) '= DialogResult.Ignore Then
+
+                    If Result = DialogResult.Ignore Then
+                        Failed = False
+                        StatusRunning = True
+                        bt_pause.BackgroundImage = My.Resources.main_pause
+                        ResumeProcess(proc)
+                    ElseIf Result = DialogResult.Retry Then
+                        Try
+                            proc.Kill()
+                            proc.WaitForExit(500)
+                            Label_percent.Text = "retrying -%"
+                            Label_website.Text = Label_website_Text
+                        Catch ex As Exception
+                        End Try
+
+                        If proc.HasExited Then
+                            StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode)
+                            StatusRunning = True
+                            Label_website.Text = Label_website_Text
+                            bt_pause.BackgroundImage = My.Resources.main_pause
+                        End If
+                    ElseIf Result = DialogResult.Abort Then
+                        Try
+                            proc.Kill()
+                            proc.WaitForExit(500)
+                            Label_percent.Text = "canceled -%"
+                            Label_website.Text = Label_website_Text
+                        Catch ex As Exception
+                        End Try
+                    End If
+                Else
+                    If StatusRunning = True Then
+                        StatusRunning = False
+                        bt_pause.BackgroundImage = My.Resources.main_pause_play
+                        SuspendProcess(proc)
+                    Else
+                        StatusRunning = True
+                        bt_pause.BackgroundImage = My.Resources.main_pause
+                        ResumeProcess(proc)
+                    End If
+                End If
+
             End If
         End If
 
@@ -231,9 +279,10 @@ Public Class CRD_List_Item
         Label_Anime.Location = New Point(195, locationY + 42)
         Label_Reso.Location = New Point(195, locationY + 101)
         Label_Hardsub.Location = New Point(300, locationY + 101)
-        Label_percent.SetBounds(455, locationY + 101, 355, 19)
+        Label_percent.SetBounds(432, locationY + 101, 378, 19)
         Label_percent.AutoSize = False
         ProgressBar1.SetBounds(195, locationY + 70, 601, 20)
+        'ProgressBar1.ForeColor = Color.Red
     End Sub
 
     Public Function GetTextBound()
@@ -257,6 +306,11 @@ Public Class CRD_List_Item
 
     Public Sub StartDownload(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String, ByVal DownloadHybridMode As Boolean)
         'MsgBox(DL_URL)
+        DownloadPfad = DL_Pfad
+        HistoryDL_URL = DL_URL
+        HistoryDL_Pfad = DL_Pfad
+        HistoryFilename = Filename
+
         If DownloadHybridMode = True Then
             Dim Evaluator = New Thread(Sub() DownloadHybrid(DL_URL, DL_Pfad, Filename))
             Evaluator.Start()
@@ -327,10 +381,6 @@ Public Class CRD_List_Item
     End Function
 
     Public Function DownloadHybrid(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
-        DownloadPfad = DL_Pfad
-        HistoryDL_URL = DL_URL
-        HistoryDL_Pfad = DL_Pfad
-        HistoryFilename = Filename
         'MsgBox(DL_URL)
         Dim Folder As String = einstellungen.GeräteID()
         Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
@@ -347,8 +397,12 @@ Public Class CRD_List_Item
             End Try
         End If
         Dim MergeSub As String() = DL_URL.Split(New String() {"-i " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
         If MergeSub.Count > 1 Then
+            Me.Invoke(New Action(Function()
+                                     Label_percent.Text = "Downloading Subtitles..."
+                                     Return Nothing
+                                 End Function))
+
             For i As Integer = 1 To MergeSub.Count - 1
                 Dim SubsURL As String() = MergeSub(i).Split(New [Char]() {Chr(34)})
                 Dim SubsClient As New WebClient
@@ -358,11 +412,33 @@ Public Class CRD_List_Item
                     SubsClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
                 End If
                 Dim SubsFile As String = einstellungen.GeräteID() + ".txt"
-                SubsClient.DownloadFile(SubsURL(0), Pfad2 + "\" + SubsFile)
+
+                Dim retry As Boolean = True
+                Dim retryCount As Integer = 3
+                While retry
+                    Try
+                        SubsClient.DownloadFile(SubsURL(0), Pfad2 + "\" + SubsFile)
+                        retry = False
+                    Catch ex As Exception
+                        If retryCount > 0 Then
+                            retryCount = retryCount - 1
+                            Me.Invoke(New Action(Function()
+                                                     Label_percent.Text = "Error Downloading Subtitles - retrying"
+                                                     Return Nothing
+                                                 End Function))
+
+                        Else
+                            Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                            Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
+                                sink.WriteLine(My.Resources.ass_template)
+                            End Using
+                            retry = False
+                        End If
+                    End Try
+                End While
                 DL_URL = DL_URL.Replace(SubsURL(0), Pfad2 + "\" + SubsFile)
             Next
         End If
-
         Dim m3u8_url As String() = DL_URL.Split(New [Char]() {Chr(34)})
         Dim m3u8_url_1 As String = Nothing
         Dim m3u8_url_3 As String = m3u8_url(1)
@@ -417,7 +493,10 @@ Public Class CRD_List_Item
             MsgBox(Pfad2)
         End If
         Dim PauseTime As Integer = 0
-
+        Dim Threads As Integer = Environment.ProcessorCount / 2 - 1
+        If Threads < 2 Then
+            Threads = 2
+        End If
         Dim di As New IO.DirectoryInfo(Pfad2)
         For i As Integer = 0 To textLenght.Length - 1
             If InStr(textLenght(i), ".ts") Then
@@ -427,7 +506,7 @@ Public Class CRD_List_Item
                         'MsgBox(True.ToString)
                         Thread.Sleep(5000)
                         PauseTime = PauseTime + 5
-                    ElseIf ThreadList.Count > 7 Then
+                    ElseIf ThreadList.Count > Threads Then
                         Thread.Sleep(125)
                     ElseIf Canceld = True Then
                         For www As Integer = 0 To Integer.MaxValue
@@ -585,8 +664,10 @@ Public Class CRD_List_Item
         startinfo.RedirectStandardOutput = True
         startinfo.CreateNoWindow = True
         proc = New Process
-        AddHandler proc.ErrorDataReceived, AddressOf TestOutput
-        AddHandler proc.OutputDataReceived, AddressOf TestOutput
+        proc.EnableRaisingEvents = True
+        AddHandler proc.ErrorDataReceived, AddressOf ffmpegOutput
+        AddHandler proc.OutputDataReceived, AddressOf ffmpegOutput
+        AddHandler proc.Exited, AddressOf ProcessClosed
         proc.StartInfo = startinfo
         proc.Start() ' start the process
         proc.BeginOutputReadLine()
@@ -602,10 +683,7 @@ Public Class CRD_List_Item
 
 
     Public Function DownloadFFMPEG(ByVal DLCommand As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
-        DownloadPfad = DL_Pfad
-        HistoryDL_URL = DLCommand
-        HistoryDL_Pfad = DL_Pfad
-        HistoryFilename = Filename
+
 
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
@@ -624,8 +702,10 @@ Public Class CRD_List_Item
         startinfo.RedirectStandardOutput = True
         startinfo.CreateNoWindow = True
         proc = New Process
-        AddHandler proc.ErrorDataReceived, AddressOf TestOutput
-        AddHandler proc.OutputDataReceived, AddressOf TestOutput
+        proc.EnableRaisingEvents = True
+        AddHandler proc.ErrorDataReceived, AddressOf ffmpegOutput
+        AddHandler proc.OutputDataReceived, AddressOf ffmpegOutput
+        AddHandler proc.Exited, AddressOf ProcessClosed
         proc.StartInfo = startinfo
         proc.Start() ' start the process
         proc.BeginOutputReadLine()
@@ -633,7 +713,27 @@ Public Class CRD_List_Item
         Return Nothing
     End Function
 
-    Sub TestOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
+    Sub ProcessClosed(ByVal sender As Object, ByVal e As System.EventArgs)
+
+        If ProgressBar1.Value < 100 Then
+            If Canceld = False Then
+                Label_website.Text = "The download process seems to have crashed"
+                Label_percent.Text = "Press the play button again to retry."
+                ProgressBar1.Value = 100
+                Retry = True
+                StatusRunning = False
+            End If
+        End If
+
+        'Me.Invoke(New Action(Function()
+        '                         Label_percent.Text = "Finished - event"
+        '                         Return Nothing
+        '                     End Function))
+    End Sub
+
+    Sub ffmpegOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
+        'timeout = DateTime.Now
+        'MsgBox(timeout)
         Try
             Dim logfile As String = DownloadPfad.Replace(".mp4", ".log").Replace(Chr(34), "")
             If SaveLog = True Then
@@ -724,7 +824,17 @@ Public Class CRD_List_Item
                                      Label_percent.Text = Math.Round(DownloadFinished, 2, MidpointRounding.AwayFromZero).ToString + "MB/" + Math.Round(FileSize, 2, MidpointRounding.AwayFromZero).ToString + "MB " + percent.ToString + "%"
                                      Return Nothing
                                  End Function))
+        ElseIf InStr(e.Data, "Failed to open segment") Then
+            Failed = True
+            FailedCount = FailedCount + 1
+            StatusRunning = False
+            bt_pause.BackgroundImage = My.Resources.main_pause_play
+            SuspendProcess(proc)
+            Me.Invoke(New Action(Function()
 
+                                     Label_percent.Text = "Missing segment detected, retry or resume with the play button"
+                                     Return Nothing
+                                 End Function))
         ElseIf InStr(e.Data, "muxing overhead:") Then
             Me.Invoke(New Action(Function()
                                      Dim Done As String() = Label_percent.Text.Split(New String() {"MB"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -732,8 +842,11 @@ Public Class CRD_List_Item
                                      Return Nothing
                                  End Function))
             If HybridMode = True Then
-                Thread.Sleep(1000)
-                System.IO.Directory.Delete(HybridModePath, True)
+                Thread.Sleep(5000)
+                Try
+                    System.IO.Directory.Delete(HybridModePath, True)
+                Catch ex As Exception
+                End Try
             End If
         End If
 
@@ -829,26 +942,20 @@ Public Class CRD_List_Item
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-
-
-        Try
-
-
-            If proc.HasExited = True Then
-                If ProgressBar1.Value < 100 Then
-                    If Canceld = False Then
-                        Label_website.Text = "The download process seems to have crashed"
-                        Label_percent.Text = "Press the play button again to retry."
-                        ProgressBar1.Value = 100
-                        Retry = True
-                        StatusRunning = False
-                    End If
-                End If
-
-            End If
-        Catch ex As Exception
-
-        End Try
+        'Try
+        '    If proc.HasExited = True Then
+        '        If ProgressBar1.Value < 100 Then
+        '            If Canceld = False Then
+        '                Label_website.Text = "The download process seems to have crashed"
+        '                Label_percent.Text = "Press the play button again to retry."
+        '                ProgressBar1.Value = 100
+        '                Retry = True
+        '                StatusRunning = False
+        '            End If
+        '        End If
+        '    End If
+        'Catch ex As Exception
+        'End Try
     End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick

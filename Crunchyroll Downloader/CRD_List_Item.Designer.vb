@@ -119,9 +119,9 @@ Partial Class CRD_List_Item
         '
         Me.Label_percent.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label_percent.Font = New System.Drawing.Font("Consolas", 12.0!)
-        Me.Label_percent.Location = New System.Drawing.Point(455, 101)
+        Me.Label_percent.Location = New System.Drawing.Point(432, 101)
         Me.Label_percent.Name = "Label_percent"
-        Me.Label_percent.Size = New System.Drawing.Size(355, 19)
+        Me.Label_percent.Size = New System.Drawing.Size(378, 19)
         Me.Label_percent.TabIndex = 7
         Me.Label_percent.Text = "Status Label : speed, size and percent"
         Me.Label_percent.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -146,18 +146,18 @@ Partial Class CRD_List_Item
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewInExplorerToolStripMenuItem, Me.PlaybackVideoFileToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(181, 70)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(173, 48)
         '
         'ViewInExplorerToolStripMenuItem
         '
         Me.ViewInExplorerToolStripMenuItem.Name = "ViewInExplorerToolStripMenuItem"
-        Me.ViewInExplorerToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ViewInExplorerToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.ViewInExplorerToolStripMenuItem.Text = "View in explorer"
         '
         'PlaybackVideoFileToolStripMenuItem
         '
         Me.PlaybackVideoFileToolStripMenuItem.Name = "PlaybackVideoFileToolStripMenuItem"
-        Me.PlaybackVideoFileToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.PlaybackVideoFileToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.PlaybackVideoFileToolStripMenuItem.Text = "playback video file"
         '
         'CRD_List_Item

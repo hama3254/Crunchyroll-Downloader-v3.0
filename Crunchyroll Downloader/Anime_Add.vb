@@ -26,10 +26,22 @@ Public Class Anime_Add
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Icon = My.Resources.icon
         Try
-            For i As Integer = 0 To Main.ListBoxList.Count - 1
-                ListBox1.Items.Add(Main.ListBoxList.Item(i))
-
+            Dim ListBox1List As New List(Of String)
+            'Jeder Eintrag in der Combobox durchgehen
+            For Each item As String In Main.ListBoxList
+                'Wenn der Combobox-Eintrag noch nicht in der Result-List vorhanden ist, Eintrag der Result-List hinzufügen
+                If ListBox1List.Contains(item) = False Then
+                    ListBox1List.Add(item)
+                End If
             Next
+            ListBox1.Items.Clear()
+            'Die Result-List der Combobox hinzufügen
+            ListBox1.Items.AddRange(ListBox1List.ToArray)
+
+
+            'For i As Integer = 0 To Main.ListBoxList.Count - 1
+            '    ListBox1.Items.Add(Main.ListBoxList.Item(i))
+            'Next
         Catch ex As Exception
 
         End Try
@@ -215,7 +227,7 @@ Public Class Anime_Add
                         Else
                             If Main.Grapp_RDY = True Then
                                 GeckoFX.WebBrowser1.Navigate(textBox1.Text)
-                                StatusLabel.Text = "Status: looking for video file"
+                                StatusLabel.Text = "Status: loading ..."
                                 Main.b = False
                             End If
                         End If
@@ -408,6 +420,8 @@ Public Class Anime_Add
                             ListBox1.Items.Remove(ListBox1.Items(0))
                             Main.Funimation_Grapp_RDY = False
                             Main.b = False
+                            StatusLabel.Text = "Status: loading ..."
+                            Main.StatusMainForm.Text = "Status: loading ..."
                         End If
 
                     Else
@@ -416,6 +430,9 @@ Public Class Anime_Add
                             ListBox1.Items.Remove(ListBox1.Items(0))
                             Main.Grapp_RDY = False
                             Main.b = False
+                            StatusLabel.Text = "Status: loading ..."
+                            Main.StatusMainForm.Text = "Status: loading ..."
+
                         End If
                     End If
                 End If

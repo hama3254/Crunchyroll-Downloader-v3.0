@@ -809,30 +809,38 @@ Public Class Main
         If SoftSubs2.Count > 0 Then
             For i As Integer = 0 To SoftSubs2.Count - 1
                 Dim ii As Integer = i
-                Me.Invoke(New Action(Function()
-                                         einstellungen.StatusLabel.Text = "Status: downloading - " + HardSubValuesToDisplay(Chr(34) + SoftSubs2(ii) + Chr(34))
-                                         Pause(1)
-                                         Return Nothing
-                                     End Function))
+                Try
+                    Me.Invoke(New Action(Function()
+                                             einstellungen.StatusLabel.Text = "Status: downloading - " + HardSubValuesToDisplay(Chr(34) + SoftSubs2(ii) + Chr(34))
+                                             Pause(1)
+                                             Return Nothing
+                                         End Function))
 
-                LabelEpisode = SoftSubs2(i)
-                Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
-                Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
-                Dim client0 As New WebClient
-                client0.Encoding = Encoding.UTF8
-                Dim str0 As String = client0.DownloadString(SoftSub_3)
-                Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
-                Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + " " + SoftSubs2(i) + Path.GetExtension(Pfad3)), "ass")
-                'MsgBox(FN)
-                If i = 0 Then
-                    FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
+                    LabelEpisode = SoftSubs2(i)
+                    Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
+                    Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
+                    Dim client0 As New WebClient
+                    client0.Encoding = Encoding.UTF8
+                    Dim str0 As String = client0.DownloadString(SoftSub_3)
+                    Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
+                    Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + " " + SoftSubs2(i) + Path.GetExtension(Pfad3)), "ass")
                     'MsgBox(FN)
-                End If
-                Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
-                'MsgBox(Pfad4)
-                File.WriteAllText(Pfad4, str0, Encoding.UTF8)
-                Pause(1)
+                    If i = 0 Then
+                        FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
+                        'MsgBox(FN)
+                    End If
+                    Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
+                    'MsgBox(Pfad4)
+                    File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                    Pause(1)
+                Catch ex As Exception
+                    Me.Invoke(New Action(Function()
+                                             einstellungen.StatusLabel.Text = "Status: failed - " + HardSubValuesToDisplay(Chr(34) + SoftSubs2(ii) + Chr(34))
+                                             Pause(3)
+                                             Return Nothing
+                                         End Function))
+                End Try
             Next
         Else
 
@@ -2437,37 +2445,9 @@ Public Class Main
     End Sub
 
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
-        'Try
-        '    If Anime_Add.Visible = True Then
-        '        num.Visible = False
-        '    Else
-        '        If ListBoxList.Count > 9 Then
-
-        '            num.Location = New Point(69, 0)
-        '            num.Text = ListBoxList.Count.ToString
-        '            Btn_add.Controls.Add(num)
-        '            num.Visible = True
-
-        '            num2.Location = New Point(69, 0)
-        '            num2.Text = ListBoxList.Count.ToString
-        '            Btn_add.Controls.Add(num2)
-        '            num2.Visible = True
-
-        '        ElseIf ListBoxList.Count > 0 Then
-        '            num.Location = New Point(74, 0)
-        '            num.Text = ListBoxList.Count.ToString
-        '            num.Visible = True
-        '            Btn_add.Controls.Add(num)
-        '        Else
-        '            num.Visible = False
-        '        End If
-        '    End If
-        'Catch ex As Exception
-        '    Debug.WriteLine(ex.ToString)
-        'End Try
 
         Try
-            Dim GeckoHTML As String = My.Resources.htmlTop + vbNewLine + My.Resources.htmlTitlel.Replace("Placeholder", StatusMainForm.Text)
+            Dim GeckoHTML As String = My.Resources.htmlTop + vbNewLine + My.Resources.htmlTitlel.Replace("Placeholder", StatusMainForm.Text.Replace("open the add window to continue", ""))
             Dim LiAdd As String = Nothing
             For ii As Integer = 0 To ItemList.Count - 1
                 For i As Integer = 0 To liList.Count - 1
@@ -2615,12 +2595,18 @@ Public Class Main
                             Else
                                 If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
                                     Me.Invoke(New Action(Function()
-                                                             Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                                                             If Anime_Add.ListBox1.Items.Contains(WebbrowserURL) = False Then
+                                                                 Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                                                             End If
+                                                             'Anime_Add.ListBox1.Items.Add(WebbrowserURL)
                                                              Return Nothing
                                                          End Function))
 
                                 Else
-                                    ListBoxList.Add(WebbrowserURL)
+                                    If ListBoxList.Contains(WebbrowserURL) = False Then
+                                        ListBoxList.Add(WebbrowserURL)
+                                    End If
+                                    'ListBoxList.Add(WebbrowserURL)
                                 End If
                             End If
                             strRequest = rootPath & "Post_Single_Sucess.html" 'PostPage
@@ -2657,17 +2643,23 @@ Public Class Main
                             For i As Integer = 0 To URLSplit.Count - 1
                                 Dim ii As Integer = i
                                 Me.Invoke(New Action(Function()
-                                                         Anime_Add.ListBox1.Items.Add(URLSplit(ii))
+                                                         If Anime_Add.ListBox1.Items.Contains(URLSplit(ii)) = False Then
+                                                             Anime_Add.ListBox1.Items.Add(URLSplit(ii))
+                                                         End If
+                                                         'Anime_Add.ListBox1.Items.Add(URLSplit(ii))
                                                          Return Nothing
                                                      End Function))
                             Next
                         Else
 
                             For i As Integer = 0 To URLSplit.Count - 1
-                                ListBoxList.Add(URLSplit(i))
+                                If ListBoxList.Contains(URLSplit(i)) = False Then
+                                    ListBoxList.Add(URLSplit(i))
+                                End If
+
                             Next
                             Me.Invoke(New Action(Function()
-                                                     StatusMainForm.Text = "Status: " + ListBoxList.Count.ToString + " Downloads in queue"
+                                                     StatusMainForm.Text = "Status: " + ListBoxList.Count.ToString + " Downloads in queue" + vbNewLine + "open the add window to continue"
                                                      Return Nothing
                                                  End Function))
                         End If
@@ -2694,7 +2686,10 @@ Public Class Main
 
                         If Funimation_Grapp_RDY = True Then
                             If RunningDownloads >= MaxDL Then
-                                ListBoxList.Add(WebbrowserURL)
+                                If ListBoxList.Contains(WebbrowserURL) = False Then
+                                    ListBoxList.Add(WebbrowserURL)
+                                End If
+                                'ListBoxList.Add(WebbrowserURL)
                             Else
                                 Me.Invoke(New Action(Function()
                                                          GeckoFX.WebBrowser1.Navigate(WebbrowserURL)
@@ -2707,12 +2702,17 @@ Public Class Main
                         Else
                             If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
                                 Me.Invoke(New Action(Function()
-                                                         Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                                                         If Anime_Add.ListBox1.Items.Contains(WebbrowserURL) = False Then
+                                                             Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                                                         End If
+
                                                          Return Nothing
                                                      End Function))
 
                             Else
-                                ListBoxList.Add(WebbrowserURL)
+                                If ListBoxList.Contains(WebbrowserURL) = False Then
+                                    ListBoxList.Add(WebbrowserURL)
+                                End If
                                 Me.Invoke(New Action(Function()
                                                          StatusMainForm.Text = "Status: " + ListBoxList.Count.ToString + " Downloads in queue"
                                                          Return Nothing
@@ -2873,10 +2873,10 @@ Public Class Main
     End Sub
 
     Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles PictureBox6.Click
-        If Me.Height = 670 Then
-            Me.Height = 558
+        If Me.Height = 741 Then
+            Me.Height = 629
         Else
-            Me.Height = 670
+            Me.Height = 741
         End If
     End Sub
 

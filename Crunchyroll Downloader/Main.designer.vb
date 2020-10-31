@@ -50,7 +50,7 @@ Partial Class Main
         Me.Btn_add.BackColor = System.Drawing.Color.Transparent
         Me.Btn_add.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_add.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_add
-        Me.Btn_add.Location = New System.Drawing.Point(5, 5)
+        Me.Btn_add.Location = New System.Drawing.Point(5, 7)
         Me.Btn_add.Name = "Btn_add"
         Me.Btn_add.Size = New System.Drawing.Size(100, 48)
         Me.Btn_add.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -74,7 +74,7 @@ Partial Class Main
         Me.Btn_Settings.BackColor = System.Drawing.Color.Transparent
         Me.Btn_Settings.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_Settings.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_settings
-        Me.Btn_Settings.Location = New System.Drawing.Point(676, 10)
+        Me.Btn_Settings.Location = New System.Drawing.Point(676, 12)
         Me.Btn_Settings.Name = "Btn_Settings"
         Me.Btn_Settings.Size = New System.Drawing.Size(100, 40)
         Me.Btn_Settings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -86,7 +86,7 @@ Partial Class Main
         Me.Btn_Browser.BackColor = System.Drawing.Color.Transparent
         Me.Btn_Browser.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_Browser.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_browser
-        Me.Btn_Browser.Location = New System.Drawing.Point(110, 10)
+        Me.Btn_Browser.Location = New System.Drawing.Point(110, 12)
         Me.Btn_Browser.Name = "Btn_Browser"
         Me.Btn_Browser.Size = New System.Drawing.Size(100, 40)
         Me.Btn_Browser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -96,14 +96,14 @@ Partial Class Main
         'StatusMainForm
         '
         Me.StatusMainForm.BackColor = System.Drawing.Color.Transparent
-        Me.StatusMainForm.Font = New System.Drawing.Font("Consolas", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.StatusMainForm.Font = New System.Drawing.Font("Consolas", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.StatusMainForm.ForeColor = System.Drawing.SystemColors.WindowFrame
-        Me.StatusMainForm.Location = New System.Drawing.Point(212, 17)
+        Me.StatusMainForm.Location = New System.Drawing.Point(212, 15)
         Me.StatusMainForm.Name = "StatusMainForm"
-        Me.StatusMainForm.Size = New System.Drawing.Size(416, 24)
+        Me.StatusMainForm.Size = New System.Drawing.Size(431, 35)
         Me.StatusMainForm.TabIndex = 66
         Me.StatusMainForm.Text = "Crunchyroll Downloader"
-        Me.StatusMainForm.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.StatusMainForm.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'ListView1
         '
@@ -114,10 +114,10 @@ Partial Class Main
         Me.ListView1.ForeColor = System.Drawing.Color.Black
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.ListView1.HideSelection = False
-        Me.ListView1.Location = New System.Drawing.Point(1, 64)
+        Me.ListView1.Location = New System.Drawing.Point(1, 73)
         Me.ListView1.MinimumSize = New System.Drawing.Size(800, 400)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(838, 487)
+        Me.ListView1.Size = New System.Drawing.Size(838, 547)
         Me.ListView1.TabIndex = 57
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
@@ -130,7 +130,7 @@ Partial Class Main
         'PictureBox5
         '
         Me.PictureBox5.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.balken
-        Me.PictureBox5.Location = New System.Drawing.Point(1, 56)
+        Me.PictureBox5.Location = New System.Drawing.Point(1, 65)
         Me.PictureBox5.Name = "PictureBox5"
         Me.PictureBox5.Size = New System.Drawing.Size(838, 8)
         Me.PictureBox5.TabIndex = 67
@@ -154,7 +154,7 @@ Partial Class Main
         '
         Me.TheTextBox.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.TheTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TheTextBox.Location = New System.Drawing.Point(1, 558)
+        Me.TheTextBox.Location = New System.Drawing.Point(1, 630)
         Me.TheTextBox.Name = "TheTextBox"
         Me.TheTextBox.Size = New System.Drawing.Size(838, 111)
         Me.TheTextBox.TabIndex = 69
@@ -164,7 +164,7 @@ Partial Class Main
         '
         Me.PictureBox6.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.balken
         Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox6.Location = New System.Drawing.Point(1, 549)
+        Me.PictureBox6.Location = New System.Drawing.Point(1, 620)
         Me.PictureBox6.Name = "PictureBox6"
         Me.PictureBox6.Size = New System.Drawing.Size(838, 8)
         Me.PictureBox6.TabIndex = 68
@@ -175,7 +175,7 @@ Partial Class Main
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.main_background
-        Me.ClientSize = New System.Drawing.Size(840, 558)
+        Me.ClientSize = New System.Drawing.Size(840, 629)
         Me.Controls.Add(Me.TheTextBox)
         Me.Controls.Add(Me.PictureBox6)
         Me.Controls.Add(Me.PictureBox5)

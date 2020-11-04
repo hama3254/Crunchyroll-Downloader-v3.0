@@ -2,10 +2,15 @@
 Imports System.Net
 Imports Gecko
 Imports System.IO
+Imports System.Threading
+
 Public Class Anime_Add
     Public Mass_DL_Cancel As Boolean = False
     Public List_DL_Cancel As Boolean = False
-
+    Dim AoD_OmUList As New List(Of String)
+    Dim AoD_DubList As New List(Of String)
+    Dim AoD_Mode As Boolean = False
+    Dim AoD_DL_running As Boolean = False
     Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
         Try
             If ComboBox2.Text = Main.SubFolder_Nothing Then
@@ -24,6 +29,7 @@ Public Class Anime_Add
     End Sub
 
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         Me.Icon = My.Resources.icon
         Try
             Dim ListBox1List As New List(Of String)
@@ -206,7 +212,7 @@ Public Class Anime_Add
         Main.LoginOnly = "Download Mode!"
         If groupBox1.Visible = True Then
             Try
-                If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then
+                If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then 'Or CBool(InStr(textBox1.Text, "anime-on-demand.de")) Then
                     If StatusLabel.Text = "Status: waiting for episode selection" Then
                         If MessageBox.Show("Are you sure you want cancel the advanced download?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                             StatusLabel.Text = "Status: idle"
@@ -232,6 +238,160 @@ Public Class Anime_Add
                             End If
                         End If
                     End If
+                ElseIf CBool(InStr(textBox1.Text, "anime-on-demand.de")) Then
+                    Main.b = False
+                    AoD_DubList.Clear()
+                    AoD_OmUList.Clear()
+                    Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
+                    Dim CurrentFile As String = Nothing
+                    For Each File In FileLocation.GetFiles()
+                        If InStr(File.FullName, "gecko-network.txt") Then
+                            CurrentFile = File.FullName
+                            Exit For
+                        End If
+                    Next
+                    If CurrentFile = Nothing Then
+                    Else
+                        Dim logFileStream As FileStream = New FileStream(CurrentFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
+                        Dim logFileReader As StreamReader = New StreamReader(logFileStream)
+                        logFileStream.SetLength(0)
+                        logFileReader.Close()
+                        logFileStream.Close()
+                    End If
+                    Main.LogBrowserData = True
+                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
+                    GeckoPreferences.Default("logging.nsHttp") = 3
+                    GeckoFX.WebBrowser1.Navigate(textBox1.Text)
+
+                    Do Until Main.b = True
+                        Main.StatusMainForm.Text = "Status: loading ..."
+                        StatusLabel.Text = "Status: loading ..."
+                        Pause(1)
+                    Loop
+
+                    Main.LogBrowserData = False
+                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
+                    GeckoPreferences.Default("logging.nsHttp") = 0
+
+                    Dim AoD_Cookie As String = Nothing
+                    Dim AoDhttpLog As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
+                    Dim AoDhttpLogFile As String = Nothing
+                    For Each File In AoDhttpLog.GetFiles()
+                        If InStr(File.FullName, "gecko-network.txt") Then
+                            AoDhttpLogFile = File.FullName
+                            Exit For
+                        End If
+                    Next
+                    Dim AoDlogFileStream As FileStream = New FileStream(AoDhttpLogFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
+                    Dim AoDlogFileReader As StreamReader = New StreamReader(AoDlogFileStream)
+                    Dim line As String = Nothing
+                    Dim HTMLString As String = Nothing
+                    line = AoDlogFileReader.ReadLine
+
+                    While (line IsNot Nothing)
+                        line = AoDlogFileReader.ReadLine
+                        If CBool(InStr(line, "Cookie: ")) And CBool(InStr(line, "remember_user_token=")) Then
+                            AoD_Cookie = "Cookie: " + line.Split(New String() {"Cookie: "}, System.StringSplitOptions.RemoveEmptyEntries)(1)
+                            Exit While
+                        End If
+                    End While
+                    AoDlogFileReader.Close()
+                    AoDlogFileStream.Close()
+                    If AoD_Cookie = Nothing Then
+                        MsgBox(Main.LoginReminder)
+                        Main.StatusMainForm.Text = "Crunchyroll Downloader"
+                        StatusLabel.Text = "Status: idle"
+                        Exit Sub
+                    End If
+                    'MsgBox(AoD_Cookie)
+                    'Main.WebbrowserCookie = AoD_Cookie
+                    If CBool(InStr(Main.WebbrowserText, "/OmU/1080/hlsfirst/")) Then
+                        Dim OmUStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/OmU/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim OmUStreamSplitToken() As String = OmUStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim OmUStreamSplitEpisodeIndex() As String = OmUStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim OmUStreamSplitEpisodeIndex2() As String = OmUStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim m3u8Strings As String = Nothing
+                        'I/nsHttp   Cookie: 
+                        Try
+                            Using client As New WebClient()
+                                client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
+                                client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
+                                client.Headers.Add("Accept-Encoding: gzip, deflate, br")
+                                client.Headers.Add("X-Requested-With: XMLHttpRequest")
+                                client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
+                                'MsgBox(OmUStreamSplitEpisodeIndex(1))
+                                m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
+
+                            End Using
+                        Catch ex As Exception
+                            MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
+                        End Try
+                        If m3u8Strings = Nothing Then
+                        Else
+
+                            Dim OmUStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
+                            For i As Integer = 1 To OmUStreams.Count - 1
+                                AoD_OmuList.Add(OmUStreams(i))
+                            Next
+                        End If
+
+                    End If
+
+                    If CBool(InStr(Main.WebbrowserText, "/Dub/1080/hlsfirst/")) Then
+                        Dim DubStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/Dub/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim DubStreamSplitToken() As String = DubStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim DubStreamSplitEpisodeIndex() As String = DubStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim DubStreamSplitEpisodeIndex2() As String = DubStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim m3u8Strings As String = Nothing
+                        'I/nsHttp   Cookie: 
+                        Try
+                            Using client As New WebClient()
+                                client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
+                                client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
+                                client.Headers.Add("Accept-Encoding: gzip, deflate, br")
+                                client.Headers.Add("X-Requested-With: XMLHttpRequest")
+                                client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
+                                'MsgBox(DubStreamSplitEpisodeIndex(1))
+                                m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
+
+                            End Using
+                        Catch ex As Exception
+                            MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
+                        End Try
+                        If m3u8Strings = Nothing Then
+                        Else
+
+                            Dim DubStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
+                            For i As Integer = 1 To DubStreams.Count - 1
+                                AoD_DubList.Add(DubStreams(i))
+                            Next
+                        End If
+
+
+                    End If
+                    AoD_Mode = True
+                    If AoD_DubList.Count And AoD_OmuList.Count > 1 Then
+
+                        GroupBox3.Visible = False
+                        groupBox2.Visible = True
+                        groupBox1.Visible = False
+                        ComboBox1.Enabled = True
+                        comboBox3.Enabled = True
+                        comboBox4.Enabled = True
+                        ComboBox1.Items.Add("Dub")
+                        ComboBox1.Items.Add("OmU")
+                        FillAoDDropDown()
+                    ElseIf AoD_DubList.Count Or AoD_OmuList.Count > 1 Then
+
+                        GroupBox3.Visible = False
+                        groupBox2.Visible = True
+                        groupBox1.Visible = False
+                        ComboBox1.Enabled = False
+                        comboBox3.Enabled = True
+                        comboBox4.Enabled = True
+                        FillAoDDropDown()
+                    End If
+
                 ElseIf CBool(InStr(textBox1.Text, "Test=true")) Then
                     GeckoFX.WebBrowser1.Navigate(textBox1.Text)
                 Else 'If CBool(InStr(textBox1.Text, "vrv.co")) Then
@@ -280,7 +440,20 @@ Public Class Anime_Add
                 Main.b = True
                 groupBox1.Visible = True
                 pictureBox4.Image = My.Resources.main_button_download_default
+            ElseIf AoD_Mode = True Then
+                If AoD_DL_running = False Then
+                    AoD_DL_running = True
+                    ComboBox1.Enabled = False
+                    comboBox3.Enabled = False
+                    comboBox4.Enabled = False
+                    Dim Evaluator = New Thread(Sub() Me.Add_AoD())
+                    Evaluator.Start()
+                    PictureBox1.Enabled = False
+                    PictureBox1.Visible = False
+                End If
+                'Add_AoD()
             Else
+
                 StatusLabel.Text = "Status: idle"
                 pictureBox4.Image = My.Resources.add_mass_running_cancel
                 Mass_DL_Cancel = True
@@ -352,34 +525,37 @@ Public Class Anime_Add
     End Sub
 
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
-        'MsgBox("Test")
-        comboBox3.Items.Clear()
-        comboBox4.Items.Clear()
-        'comboBox3.Items.Add("[First Episode]")
-        'comboBox4.Items.Add("[Last Episode]")
-        Dim SeasonDropdownAnzahl As String() = Main.WebbrowserText.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
-        Array.Reverse(SeasonDropdownAnzahl)
-        Dim SDV As Integer = 0
-        For i As Integer = 0 To SeasonDropdownAnzahl.Count - 1
-            If InStr(SeasonDropdownAnzahl(i), Chr(34) + ">" + ComboBox1.SelectedItem.ToString + "</a>") Then
-                SDV = i
-            End If
-        Next
-        'MsgBox(SDV)
-        Dim Anzahl As String() = SeasonDropdownAnzahl(SDV).Split(New String() {"wrapper container-shadow hover-classes"}, System.StringSplitOptions.RemoveEmptyEntries)
-        'MsgBox(Anzahl(0))
-        Dim c As Integer = Anzahl.Count - 1
-        Array.Reverse(Anzahl)
-        For i As Integer = 0 To Anzahl.Count - 2
-            Dim URLGrapp As String() = Anzahl(i).Split(New String() {"title=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        If AoD_Mode = False Then
 
-            Dim URLGrapp2 As String() = URLGrapp(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            'MsgBox("Test")
+            comboBox3.Items.Clear()
+            comboBox4.Items.Clear()
+            'comboBox3.Items.Add("[First Episode]")
+            'comboBox4.Items.Add("[Last Episode]")
+            Dim SeasonDropdownAnzahl As String() = Main.WebbrowserText.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Array.Reverse(SeasonDropdownAnzahl)
+            Dim SDV As Integer = 0
+            For i As Integer = 0 To SeasonDropdownAnzahl.Count - 1
+                If InStr(SeasonDropdownAnzahl(i), Chr(34) + ">" + ComboBox1.SelectedItem.ToString + "</a>") Then
+                    SDV = i
+                End If
+            Next
+            'MsgBox(SDV)
+            Dim Anzahl As String() = SeasonDropdownAnzahl(SDV).Split(New String() {"wrapper container-shadow hover-classes"}, System.StringSplitOptions.RemoveEmptyEntries)
+            'MsgBox(Anzahl(0))
+            Dim c As Integer = Anzahl.Count - 1
+            Array.Reverse(Anzahl)
+            For i As Integer = 0 To Anzahl.Count - 2
+                Dim URLGrapp As String() = Anzahl(i).Split(New String() {"title=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-            comboBox3.Items.Add(URLGrapp2(0))
-            comboBox4.Items.Add(URLGrapp2(0))
-        Next
-        'comboBox3.SelectedIndex = 0
-        'comboBox4.SelectedIndex = 0
+                Dim URLGrapp2 As String() = URLGrapp(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                comboBox3.Items.Add(URLGrapp2(0))
+                comboBox4.Items.Add(URLGrapp2(0))
+            Next
+            'comboBox3.SelectedIndex = 0
+            'comboBox4.SelectedIndex = 0
+        End If
     End Sub
 
     Private Sub PictureBox1_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox1.MouseEnter
@@ -470,4 +646,251 @@ Public Class Anime_Add
 
 #End Region
 
+    Private Sub FillAoDDropDown()
+        For i As Integer = 0 To AoD_OmuList.Count - 1
+            Dim DropDownTitle As String() = AoD_OmuList(i).Split(New String() {My.Resources.AoD_Titel}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim DropDownTitle2 As String() = DropDownTitle(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            comboBox3.Items.Add(DropDownTitle2(0))
+            comboBox4.Items.Add(DropDownTitle2(0))
+        Next
+    End Sub
+
+    Public Sub Add_AoD()
+        Dim ProcessList As New List(Of String)
+        Dim RDY As Boolean = True
+        Dim Running As Integer = Main.RunningDownloads
+        Dim DlMax As Integer = Main.MaxDL
+        Dim Pfad2 As String = Main.Pfad
+        Dim c As Integer = 0
+        Dim SubExit As Boolean = False
+        Dim CB3 As Integer = 0
+        Dim CB4 As Integer = 0
+        Me.Invoke(New Action(Function()
+                                 'Main.StatusMainForm.Text = "Crunchyroll Downloader"
+                                 Pfad2 = Main.Pfad
+                                 If ComboBox1.Enabled = False Then
+
+                                     If AoD_DubList.Count > 1 Then
+                                         For i As Integer = 0 To AoD_DubList.Count - 1
+                                             ProcessList.Add(AoD_DubList(i))
+                                         Next
+                                     ElseIf AoD_OmuList.Count > 1 Then
+                                         For i As Integer = 0 To AoD_OmuList.Count - 1
+                                             ProcessList.Add(AoD_OmuList(i))
+                                         Next
+                                     Else
+                                         MsgBox("error")
+                                         SubExit = True
+                                     End If
+
+                                 ElseIf ComboBox1.Text = "Dub" Then
+                                     For i As Integer = 0 To AoD_DubList.Count - 1
+                                         ProcessList.Add(AoD_DubList(i))
+                                     Next
+
+                                 ElseIf ComboBox1.Text = "OmU" Then
+                                     For i As Integer = 0 To AoD_OmuList.Count - 1
+                                         ProcessList.Add(AoD_OmuList(i))
+                                     Next
+                                 Else
+                                     MsgBox("error")
+                                     SubExit = True
+
+
+                                 End If
+
+
+                                 If comboBox4.SelectedIndex > comboBox3.SelectedIndex Or comboBox4.SelectedIndex = comboBox3.SelectedIndex Then
+                                     c = comboBox4.SelectedIndex - comboBox3.SelectedIndex + 1
+                                 Else
+                                     Dim TempCB3 As Integer = comboBox3.SelectedIndex
+                                     Dim TempCB4 As Integer = comboBox4.SelectedIndex
+                                     comboBox3.SelectedIndex = TempCB4
+                                     comboBox4.SelectedIndex = TempCB3
+                                     c = comboBox4.SelectedIndex - comboBox3.SelectedIndex + 1
+                                 End If
+
+                                 'MsgBox("00")
+
+                                 CB3 = comboBox3.SelectedIndex
+                                 CB4 = comboBox4.SelectedIndex
+                                 Return Nothing
+                             End Function))
+        If SubExit = True Then
+            Exit Sub
+        End If
+
+        For i As Integer = CB3 To CB4
+            Dim ii As Integer = i
+
+            If Mass_DL_Cancel = True Then
+                Exit For
+            End If
+            For e As Integer = 0 To Integer.MaxValue
+                Thread.Sleep(2000)
+
+                If RDY = True Then
+                    Me.Invoke(New Action(Function()
+                                             Running = Main.RunningDownloads
+                                             DlMax = Main.MaxDL
+                                             Return Nothing
+                                         End Function))
+                    If DlMax > Running Then
+                        RDY = False
+
+                        Exit For
+
+                    End If
+                End If
+
+            Next
+
+            Me.Invoke(New Action(Function()
+                                     Running = Main.RunningDownloads
+                                     DlMax = Main.MaxDL
+                                     Dim d As Integer = ii - CB3 + 1
+                                     Add_Display.Text = d.ToString + " / " + c.ToString
+                                     Main.StatusMainForm.Text = "Status: " + d.ToString + " / " + c.ToString '  looking for video file"
+                                     Return Nothing
+                                 End Function))
+
+
+
+            Dim AoDTitle1() As String = ProcessList.Item(i).Split(New String() {My.Resources.AoD_Titel}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim AoDTitle2() As String = AoDTitle1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim AoDTitle As String = AoDTitle2(0)
+            AoDTitle = System.Text.RegularExpressions.Regex.Replace(AoDTitle, "[^\w\\-]", " ").Trim(" ")
+            AoDTitle = Main.RemoveExtraSpaces(AoDTitle)
+            Dim DownloadPfad As String = Chr(34) + Pfad2 + "\" + AoDTitle + ".mp4" + Chr(34)
+#Region "lösche doppel download"
+
+            Dim Pfad5 As String = DownloadPfad.Replace(Chr(34), "")
+            If My.Computer.FileSystem.FileExists(Pfad5) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
+                Me.Invoke(New Action(Function()
+                                         Main.StatusMainForm.Text = "Status: File already exists."
+                                         Return Nothing
+                                     End Function))
+
+                If MessageBox.Show("The file " + Pfad5 + " already exists." + vbNewLine + "You want to override it?", "File exists!", MessageBoxButtons.OKCancel) = DialogResult.OK Then
+                    Try
+                        My.Computer.FileSystem.DeleteFile(Pfad5)
+                        Me.Invoke(New Action(Function()
+                                                 Main.StatusMainForm.Text = "Status: Old file overwritten."
+                                                 Return Nothing
+                                             End Function))
+
+                    Catch ex As Exception
+                    End Try
+                Else
+                    Me.Invoke(New Action(Function()
+                                             Main.StatusMainForm.Text = "Crunchyroll Downloader"
+                                             Return Nothing
+                                         End Function))
+
+                    Continue For
+                    Exit Sub
+                End If
+
+            End If
+#End Region
+            Dim AoDThumbnail1() As String = ProcessList.Item(i).Split(New String() {My.Resources.AoD_Image}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim AoDThumbnail2() As String = AoDThumbnail1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim AoDThumbnail As String = AoDThumbnail2(0)
+            Dim AoDTm3u8() As String = ProcessList.Item(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim AoDm3u8Final As String = "-i " + Chr(34) + AoDTm3u8(0).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&") + Chr(34) + " " + Main.ffmpeg_command
+
+
+            Dim L1Name As String = "anime-on-demand.de" 'L1Name_Split(1).Replace("www.", "") + " | Dub : " + FunimationDub
+            Me.Invoke(New Action(Function()
+                                     Main.ListItemAdd(Pfad2, L1Name, AoDTitle, "[Auto]", "Unknown", "None", AoDThumbnail, AoDm3u8Final, DownloadPfad)
+                                     Return Nothing
+                                 End Function))
+            Main.liList.Add(My.Resources.htmlvorThumbnail + AoDThumbnail + My.Resources.htmlnachTumbnail + "<br>" + AoDTitle + My.Resources.htmlvorAufloesung + "[Auto]" + My.Resources.htmlvorSoftSubs + vbNewLine + "None" + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + AoDTitle + "-->")
+
+
+
+
+            RDY = True
+
+        Next
+
+        '#Region "SubsToMP4"
+        '            If UsedSub = Nothing Then
+        '                If FunimationDub = "japanese" Then
+        '                    Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
+        '                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+        '                Else
+        '                    Dim DubMetatata As String = " -metadata:s:a:0 language=eng"
+        '                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+        '                End If
+        '            ElseIf HardSubFunimation = True Then
+        '                Dim ffmpeg_hardsub As String = Nothing
+        '                If InStr(ffmpeg_command, "-c copy") Then
+        '                    ffmpeg_hardsub = "-bsf:a aac_adtstoasc"
+        '                Else
+        '                    ffmpeg_hardsub = ffmpeg_command
+        '                End If
+        '                If UsedSub = Nothing Then
+        '                Else
+        '                    If FunimationDub = "japanese" Then
+        '                        Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
+        '                        Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + " -vf subtitles=" + Chr(34) + UsedSub + Chr(34) + " " + ffmpeg_hardsub
+        '                    Else
+        '                        Dim DubMetatata As String = " -metadata:s:a:0 language=eng"
+        '                        Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + " -vf subtitles=" + Chr(34) + UsedSub + Chr(34) + " " + ffmpeg_hardsub
+        '                    End If
+        '                End If
+        '                'MsgBox(Funimation_m3u8_final)
+        '            ElseIf MergeSubstoMP4 = True Then
+        '                If UsedSub = Nothing Then
+        '                Else
+        '                    Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
+        '                    If FunimationDub = "japanese" Then
+        '                        DubMetatata = " -metadata:s:a:0 language=jpn"
+        '                        'Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+        '                    Else
+        '                        DubMetatata = " -metadata:s:a:0 language=eng"
+        '                        'Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+        '                    End If
+
+        '                    Dim SoftSubMergeURLs As String = " -headers  " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + UsedSub + Chr(34)
+        '                    Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a -map 1"
+        '                    Dim SoftSubMergeMetatata As String = " -metadata:s:s:0 language=eng"
+        '                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + DubMetatata
+        '                End If
+        '            Else
+        '                If FunimationDub = "japanese" Then
+        '                    Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
+        '                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+        '                Else
+        '                    Dim DubMetatata As String = " -metadata:s:a:0 language=eng"
+        '                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+        '                End If
+
+        '            End If
+
+        '#End Region
+        '            'MsgBox(Funimation_m3u8_final)
+        '            'DownloadPfad = DownloadPfad.Replace(" \", "\")
+        '            DownloadPfad = RemoveExtraSpaces(DownloadPfad)
+        '            Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+        '            Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + FunimationDub
+        '            Me.Invoke(New Action(Function()
+        '                                     ListItemAdd(Pfad_DL, L1Name, DefaultName, ResoHTMLDisplay, "Unknown", SubValuesToDisplay(), thumbnail3, Funimation_m3u8_final, Chr(34) + DownloadPfad + Chr(34))
+        '                                     Return Nothing
+        '                                 End Function))
+        '            liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + FunimationTitle + " <br> " + FunimationSeason + " " + FunimationEpisode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + DefaultName + "-->")
+
+        '#End Region
+
+        '        Catch ex As Exception
+        '            Me.Invoke(New Action(Function()
+        '                                     StatusMainForm.Text = "Crunchyroll Downloader!"
+        '                                     Return Nothing
+        '                                 End Function))
+
+        '            MsgBox(ex.ToString)
+        '        End Try
+        '        Funimation_Grapp_RDY = True
+    End Sub
 End Class

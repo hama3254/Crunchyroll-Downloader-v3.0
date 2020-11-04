@@ -33,7 +33,6 @@ Partial Class CRD_List_Item
         Me.Label_percent = New System.Windows.Forms.Label()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ViewInExplorerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -134,10 +133,6 @@ Partial Class CRD_List_Item
         Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.ProgressBar1.TabIndex = 8
         '
-        'Timer1
-        '
-        Me.Timer1.Interval = 1000
-        '
         'Timer2
         '
         Me.Timer2.Enabled = True
@@ -146,18 +141,18 @@ Partial Class CRD_List_Item
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewInExplorerToolStripMenuItem, Me.PlaybackVideoFileToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(173, 48)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(181, 70)
         '
         'ViewInExplorerToolStripMenuItem
         '
         Me.ViewInExplorerToolStripMenuItem.Name = "ViewInExplorerToolStripMenuItem"
-        Me.ViewInExplorerToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.ViewInExplorerToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.ViewInExplorerToolStripMenuItem.Text = "View in explorer"
         '
         'PlaybackVideoFileToolStripMenuItem
         '
         Me.PlaybackVideoFileToolStripMenuItem.Name = "PlaybackVideoFileToolStripMenuItem"
-        Me.PlaybackVideoFileToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.PlaybackVideoFileToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.PlaybackVideoFileToolStripMenuItem.Text = "playback video file"
         '
         'CRD_List_Item
@@ -195,7 +190,6 @@ Partial Class CRD_List_Item
     Friend WithEvents Label_percent As Label
     Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents ToolTip1 As ToolTip
-    Friend WithEvents Timer1 As Timer
     Friend WithEvents Timer2 As Timer
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
     Friend WithEvents ViewInExplorerToolStripMenuItem As ToolStripMenuItem

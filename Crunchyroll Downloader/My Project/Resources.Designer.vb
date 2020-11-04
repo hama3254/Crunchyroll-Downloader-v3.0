@@ -111,6 +111,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die {&quot;sources&quot;:[{&quot;file&quot;:&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property AoD_files() As String
+            Get
+                Return ResourceManager.GetString("AoD_files", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;image&quot;:&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property AoD_Image() As String
+            Get
+                Return ResourceManager.GetString("AoD_Image", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;title&quot;:&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property AoD_Titel() As String
+            Get
+                Return ResourceManager.GetString("AoD_Titel", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die [Script Info]
         '''; Template for error handling in the Crunchyrol Downloader by hama3254 https://github.com/hama3254/Crunchyroll-Downloader-v3.0
         '''; ass file from https://github.com/Aegisub/Aegisub/blob/master/automation/v4-docs/template-scripting-ideas.ass 

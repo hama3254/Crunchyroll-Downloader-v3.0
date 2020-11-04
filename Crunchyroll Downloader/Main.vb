@@ -7,9 +7,10 @@ Imports System.ComponentModel
 Imports System.Net.WebUtility
 Imports System.Net.Sockets
 Imports System.Drawing.Drawing2D
+Imports Gecko
 
 Public Class Main
-    Dim liList As New List(Of String)
+    Public liList As New List(Of String)
     Public HTMLString As String = My.Resources.Startuphtml
     Public RunServer As Boolean = True
     Public ListBoxList As New List(Of String)
@@ -77,15 +78,16 @@ Public Class Main
     Public HybridMode As Boolean = False
     Public HardSubFunimation As Boolean = False
 #Region "Sprachen Vairablen"
-    Public URL_Invaild As String = "invalid URL, this Downloader is only for crunchyroll.com"
+    Public URL_Invaild As String = "something is wrong here..."
     Public SubFolder_automatic As String = "[automatic : Series/Season]"
     Public SubFolder_Nothing As String = "[ ignore subfolder ]"
 
     Dim DL_Path_String As String = "Please choose download directory."
-    Public CR_Premium_Failed As String = "Can not verify the active premium membership."
     Public No_Stream As String = "Please make sure that the URL is correct or check if the Anime is available in your country."
     Dim TaskNotCompleed As String = "Please wait until the current task is completed."
     Dim Premium_Stream As String = "Please make sure that you logged in for this premium episode."
+    Public LoginReminder As String = "Please make sure that you logged in."
+
     Dim Error_Mass_DL As String = "We run into a problem here." + vbNewLine + "You can try to download every episode individually."
     Dim User_Fault_NoName As String = "no name, fallback solution : "
     Dim Sub_language_NotFound As String = "Could not find the sub language" + vbNewLine + "please make sure the language is available: "
@@ -1630,10 +1632,10 @@ Public Class Main
     End Sub
     Private Sub RemoveTempFiles()
         Try
-            Dim files() As String = IO.Directory.GetFiles(Application.StartupPath)
+            Dim files() As String = System.IO.Directory.GetFiles(Application.StartupPath)
             For Each file As String In files
                 If InStr(file, "CRD-Temp-File-") Then
-                    IO.File.Delete(file)
+                    System.IO.File.Delete(file)
                 End If
 
             Next
@@ -1956,6 +1958,7 @@ Public Class Main
                 End If
             Next
             RunningDownloads = ItemDownloadingCount
+
         Catch ex As Exception
 
         End Try
@@ -2336,7 +2339,7 @@ Public Class Main
                     UsedSub = einstellungen.GeräteID() + SubtitelFormat
                     File.WriteAllText(Application.StartupPath + "\" + UsedSub, SubText, Encoding.UTF8)
                 End If
-                Else
+            Else
                 If HardSubFunimation = True Then
                     Dim SubText As String = client0.DownloadString(UsedSub)
                     Dim SubtitelFormat As String = ".srt"
@@ -2560,7 +2563,9 @@ Public Class Main
             'MsgBox(htmlReq)
 
             If strArray(0).Trim().ToUpper.Equals("POST") Then
+
                 Debug.WriteLine("receiving data from the add-on")
+                Debug.WriteLine(UrlDecode(htmlReq))
                 Me.Invoke(New Action(Function()
                                          StatusMainForm.Text = "Status: receiving data from the add-on"
                                          Return Nothing
@@ -2918,3 +2923,7 @@ Class TextBoxTraceListener
         Write(msg & vbCrLf)
     End Sub
 End Class
+
+
+
+

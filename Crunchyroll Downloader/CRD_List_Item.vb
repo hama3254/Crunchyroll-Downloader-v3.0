@@ -13,7 +13,7 @@ Public Class CRD_List_Item
     Dim timeout As DateTime
 
     Dim Canceld As Boolean = False
-
+    Dim Finished As Boolean = False
     Dim Label_website_Text As String = Nothing
     Dim StatusRunning As Boolean = True
     Dim ffmpeg_command As String = Nothing
@@ -44,7 +44,6 @@ Public Class CRD_List_Item
 #End Region
 #Region "Set UI"
     Public Sub SetLabelWebsite(ByVal Text As String)
-
         Label_website.Text = Text
         Label_website_Text = Text
     End Sub
@@ -107,9 +106,6 @@ Public Class CRD_List_Item
     End Function
 #End Region
 #Region "Set Variables"
-    'Public Sub SetUsedMap(ByVal Value As String)
-    '    UsedMap = Value
-    'End Sub
     Public Sub Setffmpeg_command(ByVal Value As String)
         ffmpeg_command = Value
     End Sub
@@ -269,7 +265,6 @@ Public Class CRD_List_Item
     End Sub
     Private Sub Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.ContextMenuStrip = ContextMenuStrip1 '.ContextMenu
-        Timer1.Enabled = True
         Dim locationY As Integer = 0
         bt_del.SetBounds(775, locationY + 10, 35, 29)
         bt_pause.SetBounds(740, locationY + 15, 25, 20)
@@ -447,6 +442,12 @@ Public Class CRD_List_Item
         End If
         Dim client0 As New WebClient
         client0.Encoding = Encoding.UTF8
+        'MsgBox(m3u8_url(1))
+        'client0.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
+        'client0.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
+        'client0.Headers.Add("Accept-Encoding: gzip, deflate, br")
+        'client0.Headers.Add("X-Requested-With: XMLHttpRequest")
+        'client0.Headers.Add(Main.WebbrowserCookie)
         Dim text As String = client0.DownloadString(m3u8_url(1))
         If InStr(text, "RESOLUTION=") Then 'master m3u8 no fragments 
             Dim new_m3u8_2() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -714,17 +715,20 @@ Public Class CRD_List_Item
     End Function
 
     Sub ProcessClosed(ByVal sender As Object, ByVal e As System.EventArgs)
+        Try
 
-        If ProgressBar1.Value < 100 Then
-            If Canceld = False Then
-                Label_website.Text = "The download process seems to have crashed"
-                Label_percent.Text = "Press the play button again to retry."
-                ProgressBar1.Value = 100
-                Retry = True
-                StatusRunning = False
+            If Finished = False Then
+                If Canceld = False Then
+                    Label_website.Text = "The download process seems to have crashed"
+                    Label_percent.Text = "Press the play button again to retry."
+                    ProgressBar1.Value = 100
+                    Retry = True
+                    StatusRunning = False
+                End If
             End If
-        End If
+        Catch ex As Exception
 
+        End Try
         'Me.Invoke(New Action(Function()
         '                         Label_percent.Text = "Finished - event"
         '                         Return Nothing
@@ -836,6 +840,7 @@ Public Class CRD_List_Item
                                      Return Nothing
                                  End Function))
         ElseIf InStr(e.Data, "muxing overhead:") Then
+            Finished = True
             Me.Invoke(New Action(Function()
                                      Dim Done As String() = Label_percent.Text.Split(New String() {"MB"}, System.StringSplitOptions.RemoveEmptyEntries)
                                      Label_percent.Text = "Finished - " + Done(0) + "MB"
@@ -941,22 +946,7 @@ Public Class CRD_List_Item
         Next
     End Sub
 
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        'Try
-        '    If proc.HasExited = True Then
-        '        If ProgressBar1.Value < 100 Then
-        '            If Canceld = False Then
-        '                Label_website.Text = "The download process seems to have crashed"
-        '                Label_percent.Text = "Press the play button again to retry."
-        '                ProgressBar1.Value = 100
-        '                Retry = True
-        '                StatusRunning = False
-        '            End If
-        '        End If
-        '    End If
-        'Catch ex As Exception
-        'End Try
-    End Sub
+
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         Try
@@ -991,5 +981,6 @@ Public Class CRD_List_Item
         End If
         Process.Start(DownloadPfad.Replace(Chr(34), ""))
     End Sub
+
 End Class
 

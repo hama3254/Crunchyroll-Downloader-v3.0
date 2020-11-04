@@ -47,6 +47,21 @@ Crunchyroll Downloader
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.AoD_files">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die {&quot;sources&quot;:[{&quot;file&quot;:&quot; ähnelt.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.AoD_Image">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &quot;image&quot;:&quot; ähnelt.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.AoD_Titel">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &quot;title&quot;:&quot; ähnelt.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.ass_template">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die [Script Info]

@@ -493,4 +493,13 @@ Style: Default,Arial,20,&amp;H00FFFFFF,&amp;H0000FFFF,&amp;H00000000,&amp;H00000
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how templated karaoke could work in auto4/lua</value>
   </data>
+  <data name="AoD_files" xml:space="preserve">
+    <value>{"sources":[{"file":"</value>
+  </data>
+  <data name="AoD_Image" xml:space="preserve">
+    <value>"image":"</value>
+  </data>
+  <data name="AoD_Titel" xml:space="preserve">
+    <value>"title":"</value>
+  </data>
 </root>

@@ -9,7 +9,10 @@
    "48": "icons/icon-48.png"
   },
    "permissions": [
+		"*://anime-on-demand.de/*",
+		"*://www.anime-on-demand.de/*",
 		"activeTab",
+		"cookies",
 		"tabs"
   ],
 

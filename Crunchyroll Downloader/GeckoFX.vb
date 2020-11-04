@@ -189,9 +189,19 @@ Public Class GeckoFX
                         Anime_Add.StatusLabel.Text = "fail?"
                     End If
                 End If
+            ElseIf CBool(InStr(WebBrowser1.Url.ToString, "anime-on-demand.de")) Then
+                If Main.b = False Then
+                    Main.b = True
+                    Main.WebbrowserURL = WebBrowser1.Url.ToString
+                    Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
+                    Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                    Exit Sub
+
+
+                End If
 
             Else
-                If Main.b = False Then
+                    If Main.b = False Then
                     Main.WebbrowserURL = WebBrowser1.Url.ToString
                     Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                     Main.WebbrowserTitle = WebBrowser1.DocumentTitle

@@ -19,7 +19,17 @@ browser.tabs.query({
             code: 'document.getElementsByClassName("trackVideo")[0].href'
         });
         funimation.then(FunimationSuccess, FunimationError);
+	} else if (tab.url.includes('anime-on-demand.de/anime/')) {
 
+		document.getElementById("btn_add").hidden = true;
+        document.getElementById("btn_enable_select").hidden = true;
+        document.getElementById("btn_add_mass").hidden = true;
+        document.getElementById("btn_select_all").hidden = true;
+        document.getElementById("btn_select_none").hidden = true;
+        document.getElementById("btn_enable_funimation_select").hidden = true;
+        document.getElementById("btn_add_funimation").hidden = true;
+		document.getElementById("btn_add_AoD").hidden = false;
+       
     } else {
 
         document.getElementById("btn_add").hidden = true;
@@ -29,8 +39,27 @@ browser.tabs.query({
         document.getElementById("btn_select_none").hidden = true;
         document.getElementById("btn_enable_funimation_select").hidden = true;
         document.getElementById("btn_add_funimation").hidden = true;
+		document.getElementById("btn_add_AoD").hidden = true;
     }
 }, console.error)
+
+document.getElementById('btn_add_AoD').addEventListener('click', () => {
+   //browser.cookies.getAllCookieStores().then((cookie) => {
+	//   browser.cookies.getAll({
+	//	name: "_aod_session"
+	//	}).then((cookie) => {
+	//console.log(cookie)
+        
+   //}, console.error)
+   
+   var cookies = {};
+   
+   cookies.all = url => new Promise(resolve => chrome.cookies.getAll({
+  url
+}, resolve));
+   
+   console.log(cookies)
+});
 
 document.getElementById('btn_enable_select').addEventListener('click', () => {
     browser.tabs.executeScript({
@@ -44,6 +73,7 @@ document.getElementById('btn_enable_select').addEventListener('click', () => {
     document.getElementById("btn_add").hidden = true;
     document.getElementById("btn_enable_funimation_select").hidden = true;
     document.getElementById("btn_add_funimation").hidden = true;
+	document.getElementById("btn_add_AoD").hidden = true;
 });
 
 document.getElementById('btn_select_all').addEventListener('click', () => {
@@ -130,6 +160,7 @@ function onExecuted(result) {
         document.getElementById("btn_enable_select").hidden = true;
         document.getElementById("btn_add_funimation").hidden = true;
         document.getElementById("btn_enable_funimation_select").hidden = true;
+		document.getElementById("btn_add_AoD").hidden = true;
         console.log(true);
     } else {
         document.getElementById("btn_add").hidden = true;
@@ -139,6 +170,7 @@ function onExecuted(result) {
         document.getElementById("btn_select_none").hidden = true;
         document.getElementById("btn_add_funimation").hidden = true;
         document.getElementById("btn_enable_funimation_select").hidden = true;
+		document.getElementById("btn_add_AoD").hidden = true;
 
         console.log(false);
     }
@@ -154,6 +186,7 @@ function onError(error) {
     document.getElementById("btn_enable_select").hidden = true;
     document.getElementById("btn_add_funimation").hidden = true;
     document.getElementById("btn_enable_funimation_select").hidden = true;
+	document.getElementById("btn_add_AoD").hidden = true;
 
 }
 function add_fun_ok(result) {
@@ -239,6 +272,7 @@ document.getElementById('btn_enable_funimation_select').addEventListener('click'
     document.getElementById("btn_enable_select").hidden = true;
     document.getElementById("btn_add").hidden = true;
     document.getElementById("btn_add_funimation").hidden = true;
+	document.getElementById("btn_add_AoD").hidden = true;
 
 });
 
@@ -251,9 +285,11 @@ function FunimationSuccess(result) {
         document.getElementById("btn_select_all").hidden = false;
         document.getElementById("btn_select_none").hidden = false;
         document.getElementById("btn_enable_select").hidden = true;
+		document.getElementById("btn_add_AoD").hidden = true;
 
         document.getElementById("btn_enable_funimation_select").hidden = true;
         document.getElementById("btn_add_funimation").hidden = true;
+		document.getElementById("btn_add_AoD").hidden = true;
         console.log(true);
     } else {
         document.getElementById("btn_add").hidden = true;
@@ -263,6 +299,7 @@ function FunimationSuccess(result) {
         document.getElementById("btn_select_all").hidden = true;
         document.getElementById("btn_select_none").hidden = true;
         document.getElementById("btn_enable_funimation_select").hidden = false;
+		document.getElementById("btn_add_AoD").hidden = true;
 
         console.log(false);
     }
@@ -278,5 +315,6 @@ function FunimationError(error) {
     document.getElementById("btn_enable_select").hidden = true;
     document.getElementById("btn_add_funimation").hidden = false;
     document.getElementById("btn_enable_funimation_select").hidden = true;
+	document.getElementById("btn_add_AoD").hidden = true;
 
 }

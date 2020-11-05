@@ -98,6 +98,7 @@ Public Class einstellungen
         ElseIf Main.SubFolder = 2 Then
             RBStaffel.Checked = True
         End If
+        NumericUpDown2.Value = Main.ErrorTolerance
         NumericUpDown1.Value = Main.MaxDL
         TextBox1.Text = Main.Startseite
 
@@ -245,12 +246,20 @@ Public Class einstellungen
         End If
 
         If InStr(FFMPEG_CommandP1.Text, "nvenc") Then
-            NumericUpDown1.Value = 2
+            If NumericUpDown1.Value > 2 Then
+                NumericUpDown1.Value = 2
+            End If
+
         ElseIf InStr(FFMPEG_CommandP1.Text, "libx26") Then
-            NumericUpDown1.Value = 1
+            If NumericUpDown1.Value > 1 Then
+                NumericUpDown1.Value = 1
+            End If
         End If
         rk.SetValue("SL_DL", NumericUpDown1.Value, RegistryValueKind.String)
         Main.MaxDL = NumericUpDown1.Value
+
+        rk.SetValue("ErrorTolerance", NumericUpDown2.Value, RegistryValueKind.String)
+        Main.ErrorTolerance = NumericUpDown2.Value
 
         If ListViewAdd_True.Checked = True Then
             rk.SetValue("QueueMode", 1, RegistryValueKind.String)
@@ -627,6 +636,8 @@ Public Class einstellungen
         Else
         End If
     End Sub
+
+
 
 
 

@@ -11,7 +11,7 @@ Public Class CRD_List_Item
     Dim proc As Process
     Dim ThreadList As New List(Of Thread)
     Dim timeout As DateTime
-
+    Dim Item_ErrorTolerance As Integer
     Dim Canceld As Boolean = False
     Dim Finished As Boolean = False
     Dim Label_website_Text As String = Nothing
@@ -46,6 +46,9 @@ Public Class CRD_List_Item
     Public Sub SetLabelWebsite(ByVal Text As String)
         Label_website.Text = Text
         Label_website_Text = Text
+    End Sub
+    Public Sub SetTolerance(ByVal value As Integer)
+        Item_ErrorTolerance = value
     End Sub
     Public Sub SetLabelAnimeTitel(ByVal Text As String)
         Label_Anime.Text = Text
@@ -829,16 +832,21 @@ Public Class CRD_List_Item
                                      Return Nothing
                                  End Function))
         ElseIf InStr(e.Data, "Failed to open segment") Then
-            Failed = True
             FailedCount = FailedCount + 1
-            StatusRunning = False
-            bt_pause.BackgroundImage = My.Resources.main_pause_play
-            SuspendProcess(proc)
-            Me.Invoke(New Action(Function()
+            If Item_ErrorTolerance = 0 Then
 
-                                     Label_percent.Text = "Missing segment detected, retry or resume with the play button"
-                                     Return Nothing
-                                 End Function))
+            ElseIf FailedCount >= Item_ErrorTolerance Then
+                Failed = True
+                StatusRunning = False
+                bt_pause.BackgroundImage = My.Resources.main_pause_play
+                SuspendProcess(proc)
+                Me.Invoke(New Action(Function()
+
+                                         Label_percent.Text = "Missing segment detected, retry or resume with the play button"
+                                         Return Nothing
+                                     End Function))
+            End If
+
         ElseIf InStr(e.Data, "muxing overhead:") Then
             Finished = True
             Me.Invoke(New Action(Function()

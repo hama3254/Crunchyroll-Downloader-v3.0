@@ -90,10 +90,12 @@ Partial Class einstellungen
         Me.A720p = New System.Windows.Forms.RadioButton()
         Me.A1080p = New System.Windows.Forms.RadioButton()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.NumericUpDown2 = New System.Windows.Forms.NumericUpDown()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        Me.PictureBox6 = New System.Windows.Forms.PictureBox()
-        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.Server = New System.Windows.Forms.CheckBox()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.CB_Log = New System.Windows.Forms.CheckBox()
         Me.ListViewAdd_True = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -101,6 +103,7 @@ Partial Class einstellungen
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.DL_Count_simultaneous = New System.Windows.Forms.GroupBox()
         Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
+        Me.PictureBox6 = New System.Windows.Forms.PictureBox()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage6 = New System.Windows.Forms.TabPage()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
@@ -127,12 +130,14 @@ Partial Class einstellungen
         Me.MenuStrip1.SuspendLayout()
         Me.GB_Resolution.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
+        CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox8.SuspendLayout()
-        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.DL_Count_simultaneous.SuspendLayout()
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.TabPage6.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -844,6 +849,7 @@ Partial Class einstellungen
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
+        Me.TabPage1.Controls.Add(Me.GroupBox6)
         Me.TabPage1.Controls.Add(Me.GroupBox8)
         Me.TabPage1.Controls.Add(Me.GroupBox5)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
@@ -855,58 +861,78 @@ Partial Class einstellungen
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Settings"
         '
+        'GroupBox6
+        '
+        Me.GroupBox6.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox6.Controls.Add(Me.Label2)
+        Me.GroupBox6.Controls.Add(Me.NumericUpDown2)
+        Me.GroupBox6.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox6.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox6.Location = New System.Drawing.Point(202, 276)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(260, 128)
+        Me.GroupBox6.TabIndex = 45
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Error Handling"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(18, 23)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(186, 48)
+        Me.Label2.TabIndex = 2
+        Me.Label2.Text = "The amout of error(s) until the" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Download process get paused " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(0 = deactivated)"
+        '
+        'NumericUpDown2
+        '
+        Me.NumericUpDown2.Location = New System.Drawing.Point(18, 80)
+        Me.NumericUpDown2.Name = "NumericUpDown2"
+        Me.NumericUpDown2.Size = New System.Drawing.Size(225, 22)
+        Me.NumericUpDown2.TabIndex = 1
+        Me.NumericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
         'GroupBox8
         '
         Me.GroupBox8.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox8.Controls.Add(Me.PictureBox6)
+        Me.GroupBox8.Controls.Add(Me.Server)
         Me.GroupBox8.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox8.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox8.Location = New System.Drawing.Point(6, 311)
+        Me.GroupBox8.Location = New System.Drawing.Point(6, 276)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(456, 94)
+        Me.GroupBox8.Size = New System.Drawing.Size(190, 128)
         Me.GroupBox8.TabIndex = 44
         Me.GroupBox8.TabStop = False
-        '
-        'PictureBox6
-        '
-        Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox6.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_credits_default
-        Me.PictureBox6.Location = New System.Drawing.Point(182, 30)
-        Me.PictureBox6.Name = "PictureBox6"
-        Me.PictureBox6.Size = New System.Drawing.Size(76, 39)
-        Me.PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.PictureBox6.TabIndex = 43
-        Me.PictureBox6.TabStop = False
-        '
-        'GroupBox5
-        '
-        Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox5.Controls.Add(Me.Server)
-        Me.GroupBox5.Controls.Add(Me.CB_Log)
-        Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
-        Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox5.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox5.Location = New System.Drawing.Point(6, 205)
-        Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(456, 100)
-        Me.GroupBox5.TabIndex = 7
-        Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "Other"
+        Me.GroupBox8.Text = "Add-on Support"
         '
         'Server
         '
         Me.Server.AutoSize = True
-        Me.Server.Location = New System.Drawing.Point(285, 29)
+        Me.Server.Location = New System.Drawing.Point(24, 66)
         Me.Server.Name = "Server"
         Me.Server.Size = New System.Drawing.Size(129, 20)
         Me.Server.TabIndex = 42
         Me.Server.Text = "enable http server"
         Me.Server.UseVisualStyleBackColor = True
         '
+        'GroupBox5
+        '
+        Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox5.Controls.Add(Me.CB_Log)
+        Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
+        Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox5.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox5.Location = New System.Drawing.Point(6, 205)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(456, 70)
+        Me.GroupBox5.TabIndex = 7
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "Other"
+        '
         'CB_Log
         '
         Me.CB_Log.AutoSize = True
-        Me.CB_Log.Location = New System.Drawing.Point(64, 29)
+        Me.CB_Log.Location = New System.Drawing.Point(45, 38)
         Me.CB_Log.Name = "CB_Log"
         Me.CB_Log.Size = New System.Drawing.Size(84, 20)
         Me.CB_Log.TabIndex = 1
@@ -916,7 +942,7 @@ Partial Class einstellungen
         'ListViewAdd_True
         '
         Me.ListViewAdd_True.AutoSize = True
-        Me.ListViewAdd_True.Location = New System.Drawing.Point(108, 74)
+        Me.ListViewAdd_True.Location = New System.Drawing.Point(214, 38)
         Me.ListViewAdd_True.Name = "ListViewAdd_True"
         Me.ListViewAdd_True.Size = New System.Drawing.Size(236, 20)
         Me.ListViewAdd_True.TabIndex = 0
@@ -977,6 +1003,17 @@ Partial Class einstellungen
         Me.NumericUpDown1.TabIndex = 0
         Me.NumericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.NumericUpDown1.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'PictureBox6
+        '
+        Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureBox6.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_credits_default
+        Me.PictureBox6.Location = New System.Drawing.Point(326, 2)
+        Me.PictureBox6.Name = "PictureBox6"
+        Me.PictureBox6.Size = New System.Drawing.Size(76, 39)
+        Me.PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.PictureBox6.TabIndex = 43
+        Me.PictureBox6.TabStop = False
         '
         'TabControl1
         '
@@ -1046,6 +1083,7 @@ Partial Class einstellungen
         Me.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.crdSettings_Background
         Me.ClientSize = New System.Drawing.Size(500, 550)
         Me.Controls.Add(Me.TabControl1)
+        Me.Controls.Add(Me.PictureBox6)
         Me.Controls.Add(Me.pictureBox4)
         Me.Controls.Add(Me.pictureBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
@@ -1083,15 +1121,18 @@ Partial Class einstellungen
         Me.GB_Resolution.ResumeLayout(False)
         Me.GB_Resolution.PerformLayout()
         Me.TabPage1.ResumeLayout(False)
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
+        CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
-        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.DL_Count_simultaneous.ResumeLayout(False)
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage6.ResumeLayout(False)
         Me.GroupBox7.ResumeLayout(False)
@@ -1183,4 +1224,7 @@ Partial Class einstellungen
     Public WithEvents CBdeDE As CheckBox
     Public WithEvents CBenUS As CheckBox
     Friend WithEvents GroupBox8 As GroupBox
+    Friend WithEvents GroupBox6 As GroupBox
+    Friend WithEvents Label2 As Label
+    Friend WithEvents NumericUpDown2 As NumericUpDown
 End Class

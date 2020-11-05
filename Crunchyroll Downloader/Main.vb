@@ -10,6 +10,7 @@ Imports System.Drawing.Drawing2D
 Imports Gecko
 
 Public Class Main
+    Public ErrorTolerance As Integer = 0
     Public liList As New List(Of String)
     Public HTMLString As String = My.Resources.Startuphtml
     Public RunServer As Boolean = True
@@ -134,6 +135,13 @@ Public Class Main
 
 
     Private Sub Form8_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Try
+        '    Dim SettingsDone As Boolean = False
+        '    Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+        '    SettingsDone = CBool(Integer.Parse(rkg.GetValue("SettingsDone").ToString))
+        'Catch ex As Exception
+        '    FirstStartup.ShowDialog()
+        'End Try
 
 
         Try
@@ -197,11 +205,12 @@ Public Class Main
             ffmpeg_command = " -c copy -bsf:a aac_adtstoasc "
         End Try
 
-        If ffmpeg_command = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
-            MaxDL = 2
-        ElseIf ffmpeg_command = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
-            MaxDL = 1
-        End If
+
+        'If ffmpeg_command = " -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+        '    MaxDL = 2
+        'ElseIf ffmpeg_command = " -c:v libx265 -preset fast -b:v 6M -bsf:a aac_adtstoasc " Then
+        '    MaxDL = 1
+        'End If
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             Resu = Integer.Parse(rkg.GetValue("Resu").ToString)
@@ -229,6 +238,13 @@ Public Class Main
 
         Catch ex As Exception
             MaxDL = 1
+        End Try
+
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            ErrorTolerance = Integer.Parse(rkg.GetValue("ErrorTolerance").ToString)
+        Catch ex As Exception
+            ErrorTolerance = 0
         End Try
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
@@ -326,6 +342,7 @@ Public Class Main
         r = ListView1.Items(c).Bounds()
         r.Width = 838
         r.Height = 142
+        Item.SetTolerance(ErrorTolerance)
         Item.SetTargetReso(Resu)
         Item.SetLabelWebsite(NameP1)
         Item.SetLabelAnimeTitel(NameP2)

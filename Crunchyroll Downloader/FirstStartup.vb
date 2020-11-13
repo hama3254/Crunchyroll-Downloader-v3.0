@@ -1,6 +1,10 @@
 ﻿Public Class FirstStartup
     Private Sub FistStartup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.Icon = My.Resources.icon
+        Try
+            Me.Icon = My.Resources.icon
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 

@@ -4,10 +4,17 @@ Imports System.Net
 Imports System.IO
 Imports System.Text
 Imports System.Threading
+Imports MetroFramework.Forms
+Imports MetroFramework
+Imports MetroFramework.Components
 
 Public Class einstellungen
-
+    Inherits MetroForm
     Private Sub einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Label6.Text = "Version " + Application.ProductVersion.ToString
+        MetroStyleManager1.Style = MetroColorStyle.Orange
+        TabControl1.SelectedIndex = 0
+        Me.StyleManager = MetroStyleManager1
         For i As Integer = 0 To Main.SoftSubs.Count - 1
             If Main.SoftSubs(i) = "deDE" Then
                 CBdeDE.Checked = True
@@ -30,7 +37,12 @@ Public Class einstellungen
             End If
         Next
         Me.Location = New Point(Main.Location.X + Main.Width / 2 - Me.Width / 2, Main.Location.Y + Main.Height / 2 - Me.Height / 2)
-        Me.Icon = My.Resources.icon
+        Try
+            Me.Icon = My.Resources.icon
+        Catch ex As Exception
+
+        End Try
+
         If Main.MergeSubstoMP4 = True Then
             MergeMP4.Checked = True
         End If
@@ -56,16 +68,23 @@ Public Class einstellungen
 
         End Try
 
-        If Main.Resu = 1080 Then
+        If Main.Reso = 1080 Then
             A1080p.Checked = True
-        ElseIf Main.Resu = 720 Then
+        ElseIf Main.Reso = 720 Then
             A720p.Checked = True
-        ElseIf Main.Resu = 480 Then
+        ElseIf Main.Reso = 480 Then
             A480p.Checked = True
-        ElseIf Main.Resu = 360 Then
+        ElseIf Main.Reso = 360 Then
             A360p.Checked = True
-        ElseIf Main.Resu = 42 Then
+        ElseIf Main.Reso = 42 Then
             AAuto.Checked = True
+        End If
+        If Main.AoD_Reso = 1080 Then
+            AoD_1080_Plus.Checked = True
+        ElseIf Main.AoD_Reso = 576 Then
+            AoD_576p.Checked = True
+        ElseIf Main.AoD_Reso = 0 Then
+            AoD_0p.Checked = True
         End If
 
         If Check_CB() = False Then
@@ -137,20 +156,31 @@ Public Class einstellungen
 
         End If
         If A1080p.Checked Then
-            Main.Resu = 1080
+            Main.Reso = 1080
             rk.SetValue("Resu", 1080, RegistryValueKind.String)
         ElseIf A720p.Checked Then
-            Main.Resu = 720
+            Main.Reso = 720
             rk.SetValue("Resu", 720, RegistryValueKind.String)
         ElseIf A360p.Checked Then
-            Main.Resu = 360
+            Main.Reso = 360
             rk.SetValue("Resu", 360, RegistryValueKind.String)
         ElseIf A480p.Checked Then
-            Main.Resu = 480
+            Main.Reso = 480
             rk.SetValue("Resu", 480, RegistryValueKind.String)
         ElseIf AAuto.Checked Then
-            Main.Resu = 42
+            Main.Reso = 42
             rk.SetValue("Resu", 42, RegistryValueKind.String)
+        End If
+        If AoD_1080_Plus.Checked Then
+            Main.AoD_Reso = 1080
+            rk.SetValue("AoD_Reso", 1080, RegistryValueKind.String)
+        ElseIf AoD_576p.Checked Then
+            Main.AoD_Reso = 576
+            rk.SetValue("AoD_Reso", 576, RegistryValueKind.String)
+        ElseIf AoD_0p.Checked Then
+            Main.AoD_Reso = 0
+            rk.SetValue("AoD_Reso", 0, RegistryValueKind.String)
+
         End If
         If ComboBox1.SelectedItem.ToString = "English" Then
             Main.SubSprache = "enUS"
@@ -370,73 +400,26 @@ Public Class einstellungen
     Private Sub pictureBox4_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox4.MouseLeave
         pictureBox4.Image = My.Resources.crdSettings_Button_SafeExit
     End Sub
-#Region " Move Form "
-
-    ' [ Move Form ]
-    '
-    ' // By Elektro 
-
-    Public MoveForm As Boolean
-    Public MoveForm_MousePosition As Point
-
-    Public Sub MoveForm_MouseDown(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseDown ' Add more handles here (Example: PictureBox1.MouseDown)
-
-        If e.Button = MouseButtons.Left Then
-            MoveForm = True
-            Me.Cursor = Cursors.NoMove2D
-            MoveForm_MousePosition = e.Location
-        End If
-
-    End Sub
-
-    Public Sub MoveForm_MouseMove(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseMove ' Add more handles here (Example: PictureBox1.MouseMove)
-
-        If MoveForm Then
-            Me.Location = Me.Location + (e.Location - MoveForm_MousePosition)
-        End If
-
-    End Sub
-
-    Public Sub MoveForm_MouseUp(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseUp ' Add more handles here (Example: PictureBox1.MouseUp)
-
-        If e.Button = MouseButtons.Left Then
-            MoveForm = False
-            Me.Cursor = Cursors.Default
-        End If
-
-    End Sub
 
 
     Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem
-        sender.BackColor = Color.White
+        Dim CB As ComboBox = sender
+        CB.BackColor = Color.White
         If e.Index >= 0 Then
             Using st As New StringFormat With {.Alignment = StringAlignment.Center}
                 ' e.DrawBackground()
                 ' e.DrawFocusRectangle()
                 e.Graphics.FillRectangle(SystemBrushes.ControlLightLight, e.Bounds)
-                e.Graphics.DrawString(sender.Items(e.Index).ToString, e.Font, Brushes.Black, e.Bounds, st)
+                e.Graphics.DrawString(CB.Items(e.Index).ToString, e.Font, Brushes.Black, e.Bounds, st)
 
             End Using
         End If
     End Sub
 
 
-    Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles PictureBox6.Click
-        Startup.ShowDialog()
-    End Sub
 
 
-#End Region
-    Private Sub PictureBox6_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox6.MouseEnter
-        PictureBox6.Image = My.Resources.main_credits_hover
-    End Sub
 
-    Private Sub PictureBox6_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox6.MouseLeave
-        PictureBox6.Image = My.Resources.main_credits_default
-    End Sub
 
     Private Sub AAuto_Click(sender As Object, e As EventArgs) Handles AAuto.Click
         If MergeMP4.Checked = True Then
@@ -509,7 +492,7 @@ Public Class einstellungen
                 End If
             Else
                 StatusLabel.Text = "Status: No language selected"
-                Main.Pause(3)
+                Pause(3)
                 StatusLabel.Text = "Status: idle"
             End If
 
@@ -636,6 +619,19 @@ Public Class einstellungen
         Else
         End If
     End Sub
+
+    Private Sub Label7_Click(sender As Object, e As EventArgs) Handles Label7.Click
+        Process.Start("https://bitbucket.org/geckofx/geckofx-60.0/src/default/")
+    End Sub
+
+    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
+        Process.Start("https://www.ffmpeg.org/about.html")
+    End Sub
+
+    Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
+        Process.Start("https://github.com/hama3254/metroframework-modern-ui")
+    End Sub
+
 
 
 

@@ -280,25 +280,14 @@ Public Class CRD_List_Item
         Label_percent.SetBounds(432, locationY + 101, 378, 19)
         Label_percent.AutoSize = False
         ProgressBar1.SetBounds(195, locationY + 70, 601, 20)
-        'ProgressBar1.ForeColor = Color.Red
+        PictureBox5.Location = New Point(0, 136)
+        PictureBox5.Height = 6
     End Sub
 
     Public Function GetTextBound()
         Return Label_website.Location.Y
     End Function
-    Public Sub SetLocations(ByVal locationY As Integer)
-        bt_del.SetBounds(775, locationY + 10, 35, 29)
-        bt_pause.SetBounds(740, locationY + 15, 25, 20)
-        PB_Thumbnail.SetBounds(11, locationY + 20, 168, 95)
-        PB_Thumbnail.BringToFront()
-        Label_website.Location = New Point(195, locationY + 15)
-        Label_Anime.Location = New Point(195, locationY + 42)
-        Label_Reso.Location = New Point(195, locationY + 101)
-        Label_Hardsub.Location = New Point(300, locationY + 101)
-        Label_percent.SetBounds(455, locationY + 101, 355, 19)
-        Label_percent.AutoSize = False
-        ProgressBar1.SetBounds(195, locationY + 70, 601, 20)
-    End Sub
+
 
 #Region "Download + Update UI"
 
@@ -402,40 +391,41 @@ Public Class CRD_List_Item
                                  End Function))
 
             For i As Integer = 1 To MergeSub.Count - 1
-                Dim SubsURL As String() = MergeSub(i).Split(New [Char]() {Chr(34)})
-                Dim SubsClient As New WebClient
-                SubsClient.Encoding = Encoding.UTF8
-                If Main.WebbrowserCookie = Nothing Then
-                Else
-                    SubsClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
-                End If
-                Dim SubsFile As String = einstellungen.GeräteID() + ".txt"
+                    Dim SubsURL As String() = MergeSub(i).Split(New [Char]() {Chr(34)})
+                    Dim SubsClient As New WebClient
+                    SubsClient.Encoding = Encoding.UTF8
+                    If Main.WebbrowserCookie = Nothing Then
+                    Else
+                        SubsClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
+                    End If
+                    Dim SubsFile As String = einstellungen.GeräteID() + ".txt"
 
-                Dim retry As Boolean = True
-                Dim retryCount As Integer = 3
-                While retry
-                    Try
-                        SubsClient.DownloadFile(SubsURL(0), Pfad2 + "\" + SubsFile)
-                        retry = False
-                    Catch ex As Exception
-                        If retryCount > 0 Then
-                            retryCount = retryCount - 1
-                            Me.Invoke(New Action(Function()
-                                                     Label_percent.Text = "Error Downloading Subtitles - retrying"
-                                                     Return Nothing
-                                                 End Function))
-
-                        Else
-                            Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
-                            Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
-                                sink.WriteLine(My.Resources.ass_template)
-                            End Using
+                    Dim retry As Boolean = True
+                    Dim retryCount As Integer = 3
+                    While retry
+                        Try
+                            SubsClient.DownloadFile(SubsURL(0), Pfad2 + "\" + SubsFile)
                             retry = False
-                        End If
-                    End Try
-                End While
-                DL_URL = DL_URL.Replace(SubsURL(0), Pfad2 + "\" + SubsFile)
-            Next
+                        Catch ex As Exception
+                            If retryCount > 0 Then
+                                retryCount = retryCount - 1
+                                Me.Invoke(New Action(Function()
+                                                         Label_percent.Text = "Error Downloading Subtitles - retrying"
+                                                         Return Nothing
+                                                     End Function))
+
+                            Else
+                                Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                                Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
+                                    sink.WriteLine(My.Resources.ass_template)
+                                End Using
+                                retry = False
+                            End If
+                        End Try
+                    End While
+                    DL_URL = DL_URL.Replace(SubsURL(0), Pfad2 + "\" + SubsFile)
+                Next
+
         End If
         Dim m3u8_url As String() = DL_URL.Split(New [Char]() {Chr(34)})
         Dim m3u8_url_1 As String = Nothing
@@ -445,12 +435,6 @@ Public Class CRD_List_Item
         End If
         Dim client0 As New WebClient
         client0.Encoding = Encoding.UTF8
-        'MsgBox(m3u8_url(1))
-        'client0.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
-        'client0.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
-        'client0.Headers.Add("Accept-Encoding: gzip, deflate, br")
-        'client0.Headers.Add("X-Requested-With: XMLHttpRequest")
-        'client0.Headers.Add(Main.WebbrowserCookie)
         Dim text As String = client0.DownloadString(m3u8_url(1))
         If InStr(text, "RESOLUTION=") Then 'master m3u8 no fragments 
             Dim new_m3u8_2() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -579,7 +563,36 @@ Public Class CRD_List_Item
                         End If
                         Dim KeyFile3 As String = einstellungen.GeräteID() + ".key"
                         KeyFileCache = KeyFile3
-                        KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
+
+                        Dim retry As Boolean = True
+                        Dim retryCount As Integer = 3
+
+                        Try
+                            KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
+                            Retry = False
+                        Catch ex As Exception
+                            If retryCount > 0 Then
+                                retryCount = retryCount - 1
+                                Me.Invoke(New Action(Function()
+                                                         Label_percent.Text = "Access Error - retrying"
+                                                         Return Nothing
+                                                     End Function))
+
+                            Else
+                                Me.Invoke(New Action(Function()
+                                                         Label_percent.Text = "Access Error - download canceled"
+                                                         Return Nothing
+                                                     End Function))
+                                                         Return Nothing
+                                                         Exit Function
+                                'Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                                'Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
+                                '    sink.WriteLine(My.Resources.ass_template)
+                                'End Using
+                                'Retry = False
+                            End If
+                        End Try
+
                         LoadedKeys.Add(KeyFile2(0))
                     End If
                     If KeyFile2.Count > 1 Then
@@ -616,7 +629,36 @@ Public Class CRD_List_Item
                         End If
                         Dim KeyFile3 As String = einstellungen.GeräteID() + ".key"
                         KeyFileCache = KeyFile3
-                        KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
+
+                        Dim retry As Boolean = True
+                        Dim retryCount As Integer = 3
+
+                        Try
+                            KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
+                            Retry = False
+                        Catch ex As Exception
+                            If retryCount > 0 Then
+                                retryCount = retryCount - 1
+                                Me.Invoke(New Action(Function()
+                                                         Label_percent.Text = "Access Error - retrying"
+                                                         Return Nothing
+                                                     End Function))
+
+                            Else
+                                Me.Invoke(New Action(Function()
+                                                         Label_percent.Text = "Access Error - download canceled"
+                                                         Return Nothing
+                                                     End Function))
+                                Return Nothing
+                                Exit Function
+                                'Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                                'Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
+                                '    sink.WriteLine(My.Resources.ass_template)
+                                'End Using
+                                'Retry = False
+                            End If
+                        End Try
+                        'KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
                         LoadedKeys.Add(KeyFile2(0))
                     End If
                     If KeyFile2.Count > 1 Then
@@ -719,7 +761,7 @@ Public Class CRD_List_Item
 
     Sub ProcessClosed(ByVal sender As Object, ByVal e As System.EventArgs)
         Try
-
+            Pause(5)
             If Finished = False Then
                 If Canceld = False Then
                     Label_website.Text = "The download process seems to have crashed"
@@ -990,5 +1032,13 @@ Public Class CRD_List_Item
         Process.Start(DownloadPfad.Replace(Chr(34), ""))
     End Sub
 
+    Private Sub CRD_List_Item_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+        PictureBox5.Width = Me.Width - 40
+
+        bt_del.Location = New Point(Me.Width - 63, 10)
+        bt_pause.Location = New Point(Me.Width - 98, 15)
+
+        ProgressBar1.Width = Me.Width - 223
+    End Sub
 End Class
 

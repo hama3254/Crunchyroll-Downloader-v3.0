@@ -94,6 +94,10 @@
     <Reference Include="Geckofx-Winforms, Version=60.0.50.0, Culture=neutral, PublicKeyToken=3209ac31600d1857, processorArchitecture=x86">
       <HintPath>..\packages\Geckofx60.32.60.0.50\lib\net45\Geckofx-Winforms.dll</HintPath>
     </Reference>
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\ui\metroframework-modern-ui-master\MetroFramework\bin\x86\Debug\MetroFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -158,16 +162,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ProcessSleep.vb" />
-    <Compile Include="Startup.Designer.vb">
-      <DependentUpon>Startup.vb</DependentUpon>
+    <Compile Include="ErrorDialog.Designer.vb">
+      <DependentUpon>ErrorDialog.vb</DependentUpon>
     </Compile>
-    <Compile Include="Startup.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Reso.Designer.vb">
-      <DependentUpon>Reso.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Reso.vb">
+    <Compile Include="ErrorDialog.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Main.designer.vb">
@@ -212,9 +210,6 @@
     <EmbeddedResource Include="CRD_List_Item.resx">
       <DependentUpon>CRD_List_Item.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Startup.resx">
-      <DependentUpon>Startup.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.vb</DependentUpon>
     </EmbeddedResource>
@@ -224,8 +219,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reso.resx">
-      <DependentUpon>Reso.vb</DependentUpon>
+    <EmbeddedResource Include="ErrorDialog.resx">
+      <DependentUpon>ErrorDialog.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -265,11 +260,12 @@
     <Content Include="Firefox\xul.dll" />
     <Content Include="icon.ico" />
     <None Include="packages.config" />
+    <None Include="Resources\main-setting_invert.png" />
+    <None Include="Resources\main-browser_invert.png" />
+    <None Include="Resources\main-add_invert.png" />
+    <None Include="Resources\Main_top.png" />
+    <None Include="Resources\about_icon.png" />
     <None Include="Resources\balken_console.png" />
-    <None Include="Resources\drop_down_reverse.png" />
-    <None Include="Resources\drop_down.png" />
-    <None Include="Resources\main-browser_hover.png" />
-    <None Include="Resources\main-settings_hover.png" />
     <None Include="Resources\main-pause-play-hover.png" />
     <None Include="Resources\main-pause-play.png" />
     <None Include="Resources\main-pause-hover.png" />

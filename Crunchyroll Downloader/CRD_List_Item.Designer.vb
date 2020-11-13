@@ -31,16 +31,18 @@ Partial Class CRD_List_Item
         Me.Label_Reso = New System.Windows.Forms.Label()
         Me.Label_Hardsub = New System.Windows.Forms.Label()
         Me.Label_percent = New System.Windows.Forms.Label()
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ViewInExplorerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PlaybackVideoFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ProgressBar1 = New MetroFramework.Controls.MetroProgressBar()
+        Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         CType(Me.PB_Thumbnail, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_pause, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_del, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
+        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PB_Thumbnail
@@ -125,14 +127,6 @@ Partial Class CRD_List_Item
         Me.Label_percent.Text = "Status Label : speed, size and percent"
         Me.Label_percent.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(195, 70)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(615, 20)
-        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.ProgressBar1.TabIndex = 8
-        '
         'Timer2
         '
         Me.Timer2.Enabled = True
@@ -141,25 +135,43 @@ Partial Class CRD_List_Item
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewInExplorerToolStripMenuItem, Me.PlaybackVideoFileToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(181, 70)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(173, 48)
         '
         'ViewInExplorerToolStripMenuItem
         '
         Me.ViewInExplorerToolStripMenuItem.Name = "ViewInExplorerToolStripMenuItem"
-        Me.ViewInExplorerToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ViewInExplorerToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.ViewInExplorerToolStripMenuItem.Text = "View in explorer"
         '
         'PlaybackVideoFileToolStripMenuItem
         '
         Me.PlaybackVideoFileToolStripMenuItem.Name = "PlaybackVideoFileToolStripMenuItem"
-        Me.PlaybackVideoFileToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.PlaybackVideoFileToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.PlaybackVideoFileToolStripMenuItem.Text = "playback video file"
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(195, 70)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(615, 20)
+        Me.ProgressBar1.TabIndex = 9
+        '
+        'PictureBox5
+        '
+        Me.PictureBox5.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.balken
+        Me.PictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.PictureBox5.Location = New System.Drawing.Point(0, 136)
+        Me.PictureBox5.Margin = New System.Windows.Forms.Padding(0)
+        Me.PictureBox5.Name = "PictureBox5"
+        Me.PictureBox5.Size = New System.Drawing.Size(838, 6)
+        Me.PictureBox5.TabIndex = 68
+        Me.PictureBox5.TabStop = False
         '
         'CRD_List_Item
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.backgroud
+        Me.Controls.Add(Me.PictureBox5)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.Label_percent)
         Me.Controls.Add(Me.Label_Hardsub)
@@ -175,6 +187,7 @@ Partial Class CRD_List_Item
         CType(Me.bt_pause, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.bt_del, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ContextMenuStrip1.ResumeLayout(False)
+        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -188,10 +201,11 @@ Partial Class CRD_List_Item
     Friend WithEvents Label_Reso As Label
     Friend WithEvents Label_Hardsub As Label
     Friend WithEvents Label_percent As Label
-    Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents Timer2 As Timer
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
     Friend WithEvents ViewInExplorerToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents PlaybackVideoFileToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ProgressBar1 As MetroFramework.Controls.MetroProgressBar
+    Friend WithEvents PictureBox5 As PictureBox
 End Class

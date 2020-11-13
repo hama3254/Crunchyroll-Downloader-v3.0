@@ -22,7 +22,7 @@ Public Class GeckoFX
         If Main.LoginOnly = "US_UnBlock" Then
             Main.LoginOnly = "US_UnBlock_Wait"
             If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "waiting for reCAPTCHA . . .")) Then
-                Main.Pause(4)
+                Pause(4)
                 Main.LoginOnly = "US_UnBlock"
             Else
                 Try
@@ -42,11 +42,11 @@ Public Class GeckoFX
                         End If
 
                         WebBrowser1.Navigate("https://www.crunchyroll.com/logout")
-                        Main.Pause(5)
+                        Pause(5)
                         WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "session_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
-                        Main.Pause(1)
+                        Pause(1)
                         WebBrowser1.Navigate("javascript:document.cookie =" + Chr(34) + "sess_id=" + keks + "; expires=Thu, 04 Jan 2022 00:00:00 UTC; path=/;" + Chr(34) + ";")
-                        Main.Pause(1)
+                        Pause(1)
                         WebBrowser1.Navigate("https://www.crunchyroll.com/")
                         Main.LoginOnly = "US_UnBlock_Finsihed"
                     End If
@@ -185,7 +185,7 @@ Public Class GeckoFX
                         t.Start()
 
                     Else
-                        Main.StatusMainForm.Text = "Status: no video found"
+                        Main.Text = "Status: no video found"
                         Anime_Add.StatusLabel.Text = "fail?"
                     End If
                 End If
@@ -208,7 +208,7 @@ Public Class GeckoFX
                     Main.b = True
                     Main.UserBowser = True
                     For i As Integer = 20 To 0 Step -1
-                        Main.Pause(1)
+                        Pause(1)
                         Anime_Add.StatusLabel.Text = "Status: scanning network traffic " + Math.Abs(i).ToString
                     Next
                     Anime_Add.StatusLabel.Text = "Status:  "
@@ -273,7 +273,7 @@ Public Class GeckoFX
                     Else
                         Anime_Add.StatusLabel.Text = "Status: no m3u8 found, analyzing HTML content"
                         WebBrowser1.Navigate("view-source:" + Main.WebbrowserURL)
-                        Main.Pause(3)
+                        Pause(3)
                         If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, ".m3u8")) Then
 #Region "m3u8 suche"
                             Main.WebbrowserText = UrlDecode(WebBrowser1.Document.Body.OuterHtml)
@@ -308,7 +308,7 @@ Public Class GeckoFX
                                     Anime_Add.StatusLabel.Text = "Status: m3u8 found, but looks like it is DRM protected"
                                 Else
                                     Anime_Add.StatusLabel.Text = "Status: m3u8 found, looks good"
-                                    Main.Pause(1)
+                                    Pause(1)
                                     Main.NonCR_URL = m3u8Link
                                     t = New Thread(AddressOf Main.Grapp_non_CR)
                                     t.Priority = ThreadPriority.Normal
@@ -369,7 +369,12 @@ Public Class GeckoFX
                 WebBrowser1.Navigate(Main.Startseite)
             End If
         End If
-        Me.Icon = My.Resources.icon
+        Try
+            Me.Icon = My.Resources.icon
+        Catch ex As Exception
+
+        End Try
+
         Main.UserBowser = True
         'Main.Pause(15)
         'For ii As Integer = 19 To 46
@@ -540,7 +545,7 @@ Public Class GeckoFX
                 Main.b = True
                 Main.UserBowser = True
                 For i As Integer = 20 To 0 Step -1
-                    Main.Pause(1)
+                    Pause(1)
                     Button2.Text = "network scan is in progess " + Math.Abs(i).ToString
                 Next
                 If InStr(Main.WebbrowserURL, "anime-on-demand.de/anime/") Then

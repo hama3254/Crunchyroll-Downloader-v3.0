@@ -30,7 +30,12 @@ Public Class Anime_Add
 
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Me.Icon = My.Resources.icon
+        Try
+            Me.Icon = My.Resources.icon
+        Catch ex As Exception
+
+        End Try
+
         Try
             Dim ListBox1List As New List(Of String)
             'Jeder Eintrag in der Combobox durchgehen
@@ -227,7 +232,7 @@ Public Class Anime_Add
                         If Main.RunningDownloads >= Main.MaxDL Then
                             ListBox1.Items.Add(textBox1.Text)
                             textBox1.ForeColor = Color.FromArgb(9248044)
-                            Main.Pause(1)
+                            Pause(1)
                             textBox1.ForeColor = Color.Black
                             textBox1.Text = "URL"
                         Else
@@ -264,7 +269,8 @@ Public Class Anime_Add
                     GeckoFX.WebBrowser1.Navigate(textBox1.Text)
 
                     Do Until Main.b = True
-                        Main.StatusMainForm.Text = "Status: loading ..."
+                        Main.Text = "Status: loading ..."
+                        Main.Invalidate()
                         StatusLabel.Text = "Status: loading ..."
                         Pause(1)
                     Loop
@@ -299,7 +305,8 @@ Public Class Anime_Add
                     AoDlogFileStream.Close()
                     If AoD_Cookie = Nothing Then
                         MsgBox(Main.LoginReminder)
-                        Main.StatusMainForm.Text = "Crunchyroll Downloader"
+                        Main.Text = "Crunchyroll Downloader"
+                        Main.Invalidate()
                         StatusLabel.Text = "Status: idle"
                         Exit Sub
                     End If
@@ -321,7 +328,7 @@ Public Class Anime_Add
                                 client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
                                 'MsgBox(OmUStreamSplitEpisodeIndex(1))
                                 m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
-
+                                '("Sub: " + m3u8Strings)
                             End Using
                         Catch ex As Exception
                             MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
@@ -353,7 +360,7 @@ Public Class Anime_Add
                                 client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
                                 'MsgBox(DubStreamSplitEpisodeIndex(1))
                                 m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
-
+                                'MsgBox("Dub: " + m3u8Strings)
                             End Using
                         Catch ex As Exception
                             MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
@@ -370,7 +377,7 @@ Public Class Anime_Add
 
                     End If
                     AoD_Mode = True
-                    If AoD_DubList.Count And AoD_OmuList.Count > 1 Then
+                    If AoD_DubList.Count And AoD_OmUList.Count > 0 Then
 
                         GroupBox3.Visible = False
                         groupBox2.Visible = True
@@ -381,7 +388,7 @@ Public Class Anime_Add
                         ComboBox1.Items.Add("Dub")
                         ComboBox1.Items.Add("OmU")
                         FillAoDDropDown()
-                    ElseIf AoD_DubList.Count Or AoD_OmuList.Count > 1 Then
+                    ElseIf AoD_DubList.Count Or AoD_OmUList.Count > 0 Then
 
                         GroupBox3.Visible = False
                         groupBox2.Visible = True
@@ -500,13 +507,14 @@ Public Class Anime_Add
 
 
     Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem
-        sender.BackColor = Color.White
+        Dim CB As ComboBox = sender
+        CB.BackColor = Color.White
         If e.Index >= 0 Then
             Using st As New StringFormat With {.Alignment = StringAlignment.Center}
                 ' e.DrawBackground()
                 ' e.DrawFocusRectangle()
                 e.Graphics.FillRectangle(SystemBrushes.ControlLightLight, e.Bounds)
-                e.Graphics.DrawString(sender.Items(e.Index).ToString, e.Font, Brushes.Black, e.Bounds, st)
+                e.Graphics.DrawString(CB.Items(e.Index).ToString, e.Font, Brushes.Black, e.Bounds, st)
 
             End Using
         End If
@@ -619,7 +627,8 @@ Public Class Anime_Add
                             Main.Funimation_Grapp_RDY = False
                             Main.b = False
                             StatusLabel.Text = "Status: loading ..."
-                            Main.StatusMainForm.Text = "Status: loading ..."
+                            Main.Text = "Status: loading ..."
+                            Main.Invalidate()
                         End If
 
                     Else
@@ -629,7 +638,8 @@ Public Class Anime_Add
                             Main.Grapp_RDY = False
                             Main.b = False
                             StatusLabel.Text = "Status: loading ..."
-                            Main.StatusMainForm.Text = "Status: loading ..."
+                            Main.Text = "Status: loading ..."
+                            Main.Invalidate()
 
                         End If
                     End If
@@ -688,24 +698,34 @@ Public Class Anime_Add
         Dim SubExit As Boolean = False
         Dim CB3 As Integer = 0
         Dim CB4 As Integer = 0
-        Dim TargetReso As String = Main.Resu
+        Dim TargetReso As String = Main.Reso
+        Dim AoD_1080pPlus As Boolean = False
         Me.Invoke(New Action(Function()
                                  'Main.StatusMainForm.Text = "Crunchyroll Downloader"
                                  Pfad2 = Main.Pfad
-                                 TargetReso = Main.Resu
+
+                                 If Main.AoD_Reso = 0 Then
+                                     TargetReso = Main.Reso
+                                 ElseIf Main.AoD_Reso = 576 Then
+                                     TargetReso = 576
+                                 ElseIf Main.AoD_Reso = 1080 Then
+                                     AoD_1080pPlus = True
+                                     TargetReso = 1080
+                                 End If
+
                                  If ComboBox1.Enabled = False Then
 
-                                     If AoD_DubList.Count > 1 Then
+                                     If AoD_DubList.Count > 0 Then
                                          For i As Integer = 0 To AoD_DubList.Count - 1
                                              ProcessList.Add(AoD_DubList(i))
                                          Next
                                          Dub = True
-                                     ElseIf AoD_OmuList.Count > 1 Then
-                                         For i As Integer = 0 To AoD_OmuList.Count - 1
-                                             ProcessList.Add(AoD_OmuList(i))
+                                     ElseIf AoD_OmUList.Count > 0 Then
+                                         For i As Integer = 0 To AoD_OmUList.Count - 1
+                                             ProcessList.Add(AoD_OmUList(i))
                                          Next
                                      Else
-                                         MsgBox("error")
+                                         MsgBox("error 1")
                                          SubExit = True
                                      End If
 
@@ -719,7 +739,7 @@ Public Class Anime_Add
                                          ProcessList.Add(AoD_OmuList(i))
                                      Next
                                  Else
-                                     MsgBox("error")
+                                     MsgBox("error 2")
                                      SubExit = True
 
 
@@ -780,7 +800,8 @@ Public Class Anime_Add
                                      DlMax = Main.MaxDL
                                      Dim d As Integer = ii - CB3 + 1
                                      Add_Display.Text = d.ToString + " / " + c.ToString
-                                     Main.StatusMainForm.Text = "Status: " + d.ToString + " / " + c.ToString '  looking for video file"
+                                     Main.Text = "Status: " + d.ToString + " / " + c.ToString '  looking for video file"
+                                     Main.Invalidate()
                                      Return Nothing
                                  End Function))
 
@@ -797,7 +818,8 @@ Public Class Anime_Add
             Dim Pfad5 As String = DownloadPfad.Replace(Chr(34), "")
             If My.Computer.FileSystem.FileExists(Pfad5) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
                 Me.Invoke(New Action(Function()
-                                         Main.StatusMainForm.Text = "Status: File already exists."
+                                         Main.Text = "Status: File already exists."
+                                         Main.Invalidate()
                                          Return Nothing
                                      End Function))
 
@@ -805,7 +827,8 @@ Public Class Anime_Add
                     Try
                         My.Computer.FileSystem.DeleteFile(Pfad5)
                         Me.Invoke(New Action(Function()
-                                                 Main.StatusMainForm.Text = "Status: Old file overwritten."
+                                                 Main.Text = "Status: Old file overwritten."
+                                                 Main.Invalidate()
                                                  Return Nothing
                                              End Function))
 
@@ -813,7 +836,7 @@ Public Class Anime_Add
                     End Try
                 Else
                     Me.Invoke(New Action(Function()
-                                             Main.StatusMainForm.Text = "Crunchyroll Downloader"
+                                             Main.Text = "Crunchyroll Downloader"
                                              Return Nothing
                                          End Function))
 
@@ -828,12 +851,18 @@ Public Class Anime_Add
             Dim AoDThumbnail As String = AoDThumbnail2(0)
             Dim AoDTm3u8() As String = ProcessList.Item(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim m3u8_Master_url As String = AoDTm3u8(0).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
+            Dim m3u8_list As New List(Of String)
             Dim m3u8_url As String = Nothing
             Dim m3u8_url_Temp As String = Nothing
 
             Dim client As New WebClient
             client.Encoding = System.Text.Encoding.UTF8
             Dim text As String = client.DownloadString(m3u8_Master_url)
+            'Me.Invoke(New Action(Function()
+            '                         MsgBox(text)
+            '                         Return Nothing
+            '                     End Function))
+
             If InStr(text, "RESOLUTION=") Then 'master m3u8 no fragments 
                 Dim new_m3u8() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
                 If TargetReso = 42 Then
@@ -843,10 +872,51 @@ Public Class Anime_Add
                 For i2 As Integer = 0 To new_m3u8.Count - 1
                     'MsgBox("x" + Main.Resu.ToString)
                     If CBool(InStr(new_m3u8(i2), "x" + TargetReso.ToString)) = True Then
-                        m3u8_url_Temp = new_m3u8(i2 + 1)
-                        Exit For
+                        m3u8_list.Add(new_m3u8(i2) + vbCrLf + new_m3u8(i2 + 1))
+                        'm3u8_url_Temp = new_m3u8(i2 + 1)
+                        'Exit For
                     End If
                 Next
+                If m3u8_list.Count > 1 Then
+                    Dim HigestBitrate As Integer = 0
+                    For i2 As Integer = 0 To m3u8_list.Count - 1
+                        'MsgBox("x" + Main.Resu.ToString)
+                        If CBool(InStr(m3u8_list.Item(i2), "AVERAGE-BANDWIDTH=")) = True Then
+                            Dim BitRate() As String = m3u8_list.Item(i2).Split(New String() {"AVERAGE-BANDWIDTH="}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim BitRate2() As String = BitRate(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                            If AoD_1080pPlus = True Then
+                                If CInt(BitRate2(0)) > HigestBitrate Then
+                                    HigestBitrate = CInt(BitRate2(0))
+                                End If
+                            Else
+                                'Me.Invoke(New Action(Function()
+                                '                         MsgBox(HigestBitrate.ToString + vbNewLine + BitRate2(0))
+                                '                         Return Nothing
+                                '                     End Function))
+                                If HigestBitrate > CInt(BitRate2(0)) Then
+                                    HigestBitrate = CInt(BitRate2(0))
+                                ElseIf HigestBitrate = 0 Then
+                                    HigestBitrate = CInt(BitRate2(0))
+                                End If
+                            End If
+
+                        End If
+                    Next
+                    'Me.Invoke(New Action(Function()
+                    '                         MsgBox(HigestBitrate.ToString)
+                    '                         Return Nothing
+                    '                     End Function))
+                    For i2 As Integer = 0 To m3u8_list.Count - 1
+                        If CBool(InStr(m3u8_list.Item(i2), HigestBitrate.ToString)) = True Then
+                            Dim new_m3u8_2() As String = m3u8_list.Item(i2).Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+                            m3u8_url_Temp = new_m3u8_2(1)
+                        End If
+                    Next
+                Else
+                    Dim new_m3u8_2() As String = m3u8_list.Item(0).Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+                    m3u8_url_Temp = new_m3u8_2(1)
+                End If
+
                 If InStr(m3u8_url_Temp, "https://") Then
                     m3u8_url = m3u8_url_Temp
                 Else
@@ -864,14 +934,17 @@ Public Class Anime_Add
 
 
             Dim AoDm3u8Final As String = "-i " + Chr(34) + m3u8_url + Chr(34) + " " + Main.ffmpeg_command
-
-
+            Dim DisplayReso As String = TargetReso.ToString + "p"
+            If AoD_1080pPlus = True Then
+                DisplayReso = "1080p+"
+            End If
             Dim L1Name As String = "anime-on-demand.de" 'L1Name_Split(1).Replace("www.", "") + " | Dub : " + FunimationDub
             Me.Invoke(New Action(Function()
-                                     Main.ListItemAdd(Pfad2, L1Name, AoDTitle, "[Auto]", "Unknown", "None", AoDThumbnail, AoDm3u8Final, DownloadPfad)
+                                     Main.ListItemAdd(Pfad2, L1Name, AoDTitle, DisplayReso, "Unknown", "None", AoDThumbnail, AoDm3u8Final, DownloadPfad)
+                                     Main.liList.Add(My.Resources.htmlvorThumbnail + AoDThumbnail + My.Resources.htmlnachTumbnail + "<br>" + AoDTitle + My.Resources.htmlvorAufloesung + "[Auto]" + My.Resources.htmlvorSoftSubs + vbNewLine + "None" + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + AoDTitle + "-->")
+
                                      Return Nothing
                                  End Function))
-            Main.liList.Add(My.Resources.htmlvorThumbnail + AoDThumbnail + My.Resources.htmlnachTumbnail + "<br>" + AoDTitle + My.Resources.htmlvorAufloesung + "[Auto]" + My.Resources.htmlvorSoftSubs + vbNewLine + "None" + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + AoDTitle + "-->")
 
 
 

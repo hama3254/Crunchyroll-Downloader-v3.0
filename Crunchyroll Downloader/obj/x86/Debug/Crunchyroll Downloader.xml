@@ -22,6 +22,11 @@ Crunchyroll Downloader
   Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.about_icon">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.add_background">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -348,12 +353,22 @@ setInterval(function loadXMLDoc() {
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_add_invert">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_background">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_browser">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_browser_invert">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
@@ -418,7 +433,17 @@ setInterval(function loadXMLDoc() {
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_setting_invert">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_settings">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.Main_top">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>

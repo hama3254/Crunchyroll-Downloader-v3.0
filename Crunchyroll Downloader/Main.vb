@@ -1794,7 +1794,6 @@ Public Class Main
     End Sub
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles Btn_add.Click
-        Me.Text = "Test"
         Anime_Add.Show()
 
     End Sub

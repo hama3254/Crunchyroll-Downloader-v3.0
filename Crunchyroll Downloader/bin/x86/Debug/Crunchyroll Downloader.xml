@@ -205,14 +205,19 @@ Video Position: 0
   Sucht eine lokalisierte Zeichenfolge, die &quot;src&quot;: ähnelt.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_subs_src">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die {&quot;src&quot;: &quot; ähnelt.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_Subtitle_String">
 <summary>
-  Sucht eine lokalisierte Zeichenfolge, die &quot;, &quot;kind&quot;: &quot;subtitle&quot;, &quot;type&quot;: &quot;CC&quot;, &quot;language&quot;: &quot;en&quot; ähnelt.
+  Sucht eine lokalisierte Zeichenfolge, die &quot;, &quot;kind&quot;: &quot;subtitle&quot;, &quot;type&quot;: &quot;CC&quot;, &quot;language&quot;: &quot; ähnelt.
 </summary>
 </member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_Subtitle_String2">
 <summary>
-  Sucht eine lokalisierte Zeichenfolge, die &quot;, &quot;kind&quot;: &quot;subtitle&quot;, &quot;type&quot;: &quot;Full&quot;, &quot;language&quot;: &quot;en&quot; ähnelt.
+  Sucht eine lokalisierte Zeichenfolge, die &quot;, &quot;kind&quot;: &quot;subtitle&quot;, &quot;type&quot;: &quot;Full&quot;, &quot;language&quot;: &quot; ähnelt.
 </summary>
 </member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_thumbnail">

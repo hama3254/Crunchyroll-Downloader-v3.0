@@ -82,7 +82,10 @@ Public Class Main
     Public WebbrowserCookie As String = Nothing
     Public UserBowser As Boolean = False
     Public HybridMode As Boolean = False
-    Public HardSubFunimation As Boolean = False
+    Public HardSubFunimation As String = "Disabled"
+    Public DubFunimation As String = "Disabled"
+    Public SubFunimationString As String = "en"
+    Public SubFunimation As New List(Of String)
 #Region "Sprachen Vairablen"
     Public URL_Invaild As String = "something is wrong here..."
     Public SubFolder_automatic As String = "[automatic : Series/Season]"
@@ -353,6 +356,30 @@ Public Class Main
         Catch ex As Exception
         End Try
 
+
+        'Try
+        '    Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+        '    SubFunimation = rkg.GetValue("Fun_Sub").ToString
+        'Catch ex As Exception
+        'End Try
+
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            SubFunimationString = rkg.GetValue("Fun_Sub").ToString
+            If SubFunimationString = "none" Then
+
+            Else
+                Dim SoftSubsStringSplit() As String = SubFunimationString.Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                For i As Integer = 0 To SoftSubsStringSplit.Count - 1
+                    SubFunimation.Add(SoftSubsStringSplit(i))
+                Next
+            End If
+        Catch ex As Exception
+            If SubFunimation.Count = 0 Then
+                SubFunimation.Add("en")
+            End If
+        End Try
+
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             SubFolder = Integer.Parse(rkg.GetValue("SubFolder").ToString)
@@ -389,7 +416,13 @@ Public Class Main
         End Try
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            HardSubFunimation = CBool(Integer.Parse(rkg.GetValue("FunimationHardsub").ToString))
+            HardSubFunimation = rkg.GetValue("FunimationHardsub").ToString
+        Catch ex As Exception
+
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            DubFunimation = rkg.GetValue("FunimationDub").ToString
         Catch ex As Exception
 
         End Try
@@ -1202,6 +1235,8 @@ Public Class Main
                 Return "Italiano (Italian)"
             ElseIf HardSub = Chr(34) + "esES" + Chr(34) Then
                 Return "Español (España)"
+            ElseIf HardSub = Chr(34) + "jaJP" + Chr(34) Then
+                Return "Japanese"
             Else
                 Return CB_SuB_Nothing
             End If
@@ -1216,11 +1251,11 @@ Public Class Main
         Try
             If HardSub = "deDE" Then
                 Return "ger"
-            ElseIf HardSub = "enUS" Then
+            ElseIf HardSub = "enUS" Or HardSub = "en" Then
                 Return "eng"
-            ElseIf HardSub = "ptBR" Then
+            ElseIf HardSub = "ptBR" Or HardSub = "pt" Then
                 Return "por"
-            ElseIf HardSub = "esLA" Then
+            ElseIf HardSub = "esLA" Or HardSub = "es" Then
                 Return "spa"
             ElseIf HardSub = "frFR" Then
                 Return "fre"
@@ -2366,6 +2401,8 @@ Public Class Main
             Dim ResoHTMLDisplay As String = Reso.ToString + "p"
 
 #Region "Subs"
+
+
             Dim SubsClient As New WebClient
             SubsClient.Encoding = Encoding.UTF8
             If WebbrowserCookie = Nothing Then
@@ -2373,159 +2410,200 @@ Public Class Main
                 SubsClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
             End If
             Dim PlayerPage As String = SubsClient.DownloadString("https://www.funimation.com/player/" + Player_ID2(0) + "/?bdub=0&qid=")
-            Dim SplittString As String = Nothing
-            If InStr(PlayerPage, My.Resources.Funimation_Subtitle_String) Then
-                SplittString = My.Resources.Funimation_Subtitle_String
-            ElseIf InStr(PlayerPage, My.Resources.Funimation_Subtitle_String2) Then
-                SplittString = My.Resources.Funimation_Subtitle_String2
 
-            End If
-            Dim UsedSub As String = Nothing
-            If SplittString = Nothing Then
-                If InStr(PlayerPage, ".srt") Then
-                    Dim SubTitle() As String = PlayerPage.Split(New String() {".srt"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim SubTitle2() As String = SubTitle(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    UsedSub = SubTitle2(SubTitle2.Count - 1) + ".srt"
-                ElseIf InStr(PlayerPage, ".vtt") Then
-                    Dim SubTitle() As String = PlayerPage.Split(New String() {".vtt"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim SubTitle2() As String = SubTitle(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    UsedSub = SubTitle2(SubTitle2.Count - 1) + ".vtt"
-                ElseIf InStr(PlayerPage, ".dfxp") Then
-                    Dim SubTitle() As String = PlayerPage.Split(New String() {".dfxp"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim SubTitle2() As String = SubTitle(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    UsedSub = SubTitle2(SubTitle2.Count - 1) + ".dfxp"
-                Else
-                    If MessageBox.Show("No Subtitle found in the website, a logfile was created." + vbNewLine + "Press 'Yes' to download the video without subtitle", "No Subtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                        File.WriteAllText(DownloadPfad.Replace(".mp4", "-no subtitle.log"), PlayerPage, Encoding.UTF8)
-                    Else
-                        File.WriteAllText(DownloadPfad.Replace(".mp4", "-no subtitle.log"), PlayerPage, Encoding.UTF8)
-                        Exit Sub
+            Dim Subs_in_srt As New List(Of String)
+            Dim Subs_in_vtt As New List(Of String)
+            Dim Subs_in_dfxp As New List(Of String)
+
+            Dim SoftSubs2 As New List(Of String)
+
+            If SubFunimation.Count > 0 Then
+                For i As Integer = 0 To SubFunimation.Count - 1
+                    If InStr(PlayerPage, My.Resources.Funimation_Subtitle_String + SubFunimation(i)) Then
+                        SoftSubs2.Add(My.Resources.Funimation_Subtitle_String + SubFunimation(i))
+                        Continue For
+                    ElseIf InStr(PlayerPage, My.Resources.Funimation_Subtitle_String2 + SubFunimation(i)) Then
+                        SoftSubs2.Add(My.Resources.Funimation_Subtitle_String2 + SubFunimation(i))
                     End If
-                    'MsgBox("No Subtitle found In the website, a logfile was created.", MsgBoxStyle.OkCancel, "No Subtitle")
-                End If
 
-            Else
-                Dim SubTitle1() As String = PlayerPage.Split(New String() {SplittString}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim Subs_in_srt As New List(Of String)
-                Dim Subs_in_vtt As New List(Of String)
-                Dim Subs_in_dfxp As New List(Of String)
-
-                For i As Integer = 0 To SubTitle1.Count - 1
-                    Dim SubTitle2() As String = SubTitle1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-
-                    If InStr(SubTitle2(SubTitle2.Count - 1), ".srt") Then
-                        Subs_in_srt.Add(SubTitle2(SubTitle2.Count - 1))
-                    ElseIf InStr(SubTitle2(SubTitle2.Count - 1), ".vtt") Then
-                        Subs_in_vtt.Add(SubTitle2(SubTitle2.Count - 1))
-                    ElseIf InStr(SubTitle2(SubTitle2.Count - 1), ".dfxp") Then
-                        Subs_in_dfxp.Add(SubTitle2(SubTitle2.Count - 1))
-                    End If
                 Next
+                If SoftSubs2.Count = 0 Then
+                    Me.Invoke(New Action(Function()
+                                             Me.Text = "No Subtitles found..."
+                                             Me.Invalidate()
+                                             Return Nothing
+                                         End Function))
+                    File.WriteAllText(DownloadPfad.Replace(".mp4", "-subtitle_error.log"), PlayerPage, Encoding.UTF8)
 
-                If Subs_in_srt.Count > 0 Then
-                    UsedSub = Subs_in_srt.Item(0)
-                ElseIf Subs_in_vtt.Count > 0 Then
-                    UsedSub = Subs_in_vtt.Item(0)
-                ElseIf Subs_in_dfxp.Count > 0 Then
-                    UsedSub = Subs_in_dfxp.Item(0)
                 End If
-            End If
-            If UsedSub = Nothing Then
-            ElseIf MergeSubstoMP4 = True Then
-                If HardSubFunimation = True Then
-                    Dim SubText As String = client0.DownloadString(UsedSub)
-                    Dim SubtitelFormat As String = ".srt"
-                    If InStr(UsedSub, ".vtt") Then
-                        SubtitelFormat = ".vtt"
-                    ElseIf InStr(UsedSub, ".dfxp") Then
-                        SubtitelFormat = ".dfxp"
-                    End If
-                    UsedSub = einstellungen.GeräteID() + SubtitelFormat
-                    File.WriteAllText(Application.StartupPath + "\" + UsedSub, SubText, Encoding.UTF8)
-                End If
-            Else
-                If HardSubFunimation = True Then
-                    Dim SubText As String = client0.DownloadString(UsedSub)
-                    Dim SubtitelFormat As String = ".srt"
-                    If InStr(UsedSub, ".vtt") Then
-                        SubtitelFormat = ".vtt"
-                    ElseIf InStr(UsedSub, ".dfxp") Then
-                        SubtitelFormat = ".dfxp"
-                    End If
-                    UsedSub = einstellungen.GeräteID() + SubtitelFormat
-                    File.WriteAllText(Application.StartupPath + "\" + UsedSub, SubText, Encoding.UTF8)
-                Else
-                    Dim str2 As String = client0.DownloadString(UsedSub)
-                    Dim SubtitelFormat As String = ".srt"
-                    If InStr(UsedSub, ".vtt") Then
-                        SubtitelFormat = ".vtt"
-                    ElseIf InStr(UsedSub, ".dfxp") Then
-                        SubtitelFormat = ".dfxp"
-                    End If
-                    Dim Pfad3 As String = DownloadPfad.Replace(Chr(34), "")
-                    Dim Pfad4 As String = Pfad3.Replace(".mp4", SubtitelFormat)
-                    File.WriteAllText(Pfad4, str2, Encoding.UTF8)
-                End If
+
             End If
 
-            ' End If
-#End Region
 
-#Region "SubsToMP4"
-            If UsedSub = Nothing Then
-                If FunimationDub = "japanese" Then
-                    Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
-                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
-                Else
-                    Dim DubMetatata As String = " -metadata:s:a:0 language=eng"
-                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
-                End If
-            ElseIf HardSubFunimation = True Then
-                Dim ffmpeg_hardsub As String = Nothing
+            Dim HardSubFound As Boolean = False
+            Dim HardSubSplittString As String = Nothing
+            Dim UsedSub As String = Nothing
+            Dim UsedSubs As New List(Of String)
+            Dim ffmpeg_hardsub As String = Nothing
+
+            If InStr(PlayerPage, My.Resources.Funimation_Subtitle_String + HardSubFunimation) Then
+                HardSubFound = True
+                HardSubSplittString = My.Resources.Funimation_Subtitle_String + HardSubFunimation
+            ElseIf InStr(PlayerPage, My.Resources.Funimation_Subtitle_String2 + HardSubFunimation) Then
+                HardSubFound = True
+                HardSubSplittString = My.Resources.Funimation_Subtitle_String2 + HardSubFunimation
+            End If
+
+            If HardSubFound = True Then 'anyways not true if hardsub is "Disabled"
+
+
                 If InStr(ffmpeg_command, "-c copy") Then
                     ffmpeg_hardsub = "-bsf:a aac_adtstoasc"
                 Else
                     ffmpeg_hardsub = ffmpeg_command
                 End If
-                If UsedSub = Nothing Then
-                Else
-                    If FunimationDub = "japanese" Then
-                        Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
-                        Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + " -vf subtitles=" + Chr(34) + UsedSub + Chr(34) + " " + ffmpeg_hardsub
-                    Else
-                        Dim DubMetatata As String = " -metadata:s:a:0 language=eng"
-                        Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + " -vf subtitles=" + Chr(34) + UsedSub + Chr(34) + " " + ffmpeg_hardsub
-                    End If
-                End If
-                'MsgBox(Funimation_m3u8_final)
-            ElseIf MergeSubstoMP4 = True Then
-                If UsedSub = Nothing Then
-                Else
-                    Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
-                    If FunimationDub = "japanese" Then
-                        DubMetatata = " -metadata:s:a:0 language=jpn"
-                        'Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
-                    Else
-                        DubMetatata = " -metadata:s:a:0 language=eng"
-                        'Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
-                    End If
 
-                    Dim SoftSubMergeURLs As String = " -headers  " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + UsedSub + Chr(34)
-                    Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a -map 1"
-                    Dim SoftSubMergeMetatata As String = " -metadata:s:s:0 language=eng"
-                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + DubMetatata
+                Dim HardSubTitle() As String = PlayerPage.Split(New String() {HardSubSplittString}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim HardSubTitle2() As String = HardSubTitle(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                UsedSub = HardSubTitle2(0)
+                Dim SubText As String = client0.DownloadString(UsedSub)
+                Dim SubtitelFormat As String = ".srt"
+                If InStr(UsedSub, ".vtt") Then
+                    SubtitelFormat = ".vtt"
+                ElseIf InStr(UsedSub, ".dfxp") Then
+                    SubtitelFormat = ".dfxp"
                 End If
-            Else
-                If FunimationDub = "japanese" Then
-                    Dim DubMetatata As String = " -metadata:s:a:0 language=jpn"
-                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+                UsedSub = einstellungen.GeräteID() + SubtitelFormat
+                File.WriteAllText(Application.StartupPath + "\" + UsedSub, SubText, Encoding.UTF8)
+            ElseIf SoftSubs2.Count > 0 Then
+                For i As Integer = 0 To SoftSubs2.Count - 1
+                    Dim SubTitle() As String = PlayerPage.Split(New String() {SoftSubs2.Item(i)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim FoundCount As Integer = 0
+                    For ii As Integer = 0 To SubTitle.Count - 1
+                        Dim SubTitle2() As String = SubTitle(ii).Split(New String() {My.Resources.Funimation_subs_src}, System.StringSplitOptions.RemoveEmptyEntries)
+                        For iii As Integer = 0 To SubTitle2.Count - 1
+                            If InStr(SubTitle2(iii), ".srt" + Chr(34)) Then
+                            ElseIf InStr(SubTitle2(iii), ".vtt" + Chr(34)) Then
+                            ElseIf InStr(SubTitle2(iii), ".dfxp" + Chr(34)) Then
+                            ElseIf InStr(SubTitle2(iii), ".srt") Then
+                                If Subs_in_srt.Contains(SubTitle2(iii)) Then
+                                Else
+                                    Subs_in_srt.Add(SubTitle2(iii))
+                                End If
+                            ElseIf InStr(SubTitle2(iii), ".vtt") Then
+                                If Subs_in_vtt.Contains(SubTitle2(iii)) Then
+                                Else
+                                    Subs_in_vtt.Add(SubTitle2(iii))
+                                End If
+                            ElseIf InStr(SubTitle2(iii), ".dfxp") Then
+                                If Subs_in_dfxp.Contains(SubTitle2(iii)) Then
+                                Else
+                                    Subs_in_dfxp.Add(SubTitle2(iii))
+                                End If
+
+                            End If
+                        Next
+
+                    Next
+                    If Subs_in_srt.Count > 0 Then
+                        UsedSubs.Add(Subs_in_srt.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, ""))
+                    ElseIf Subs_in_vtt.Count > 0 Then
+                        UsedSubs.Add(Subs_in_vtt.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, ""))
+                    ElseIf Subs_in_dfxp.Count > 0 Then
+                        UsedSubs.Add(Subs_in_dfxp.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, ""))
+                    End If
+                    Subs_in_srt.Clear()
+                    Subs_in_vtt.Clear()
+                    Subs_in_dfxp.Clear()
+                Next
+            End If
+
+            '
+            Dim SoftSubMergeURLs As String = Nothing
+            Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a"
+            Dim SoftSubMergeMetatata As String = Nothing
+
+            If UsedSubs.Count > 0 Then
+                If MergeSubstoMP4 = True Then
+                    For i As Integer = 0 To UsedSubs.Count - 1
+                        Dim SoftSub As String() = UsedSubs.Item(i).Split(New String() {" , "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        If SoftSubMergeURLs = Nothing Then
+                            SoftSubMergeURLs = " -i " + Chr(34) + SoftSub(0) + Chr(34)
+                        Else
+                            SoftSubMergeURLs = SoftSubMergeURLs + " -i " + Chr(34) + SoftSub(0) + Chr(34)
+                        End If
+                        SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + 1).ToString
+                        If SoftSubMergeMetatata = Nothing Then
+                            SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSub(1))
+                        Else
+                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i))
+                        End If
+
+                    Next
+
                 Else
-                    Dim DubMetatata As String = " -metadata:s:a:0 language=eng"
-                    Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+                    For i As Integer = 0 To UsedSubs.Count - 1
+                        LabelUpdate = "Status: downloading subtitle file"
+                        LabelEpisode = SoftSubs2(i)
+                        Dim SoftSub As String() = UsedSubs.Item(i).Split(New String() {" , "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim SoftSub_3 As String = SoftSub(0).Replace("\/", "/")
+                        Dim Subfile As String = SubsClient.DownloadString(SoftSub_3)
+                        Dim Pfad3 As String = DownloadPfad.Replace(Chr(34), "")
+                        'MsgBox(FN)
+                        Dim SubtitelFormat As String = "srt"
+                        If InStr(SoftSub_3, ".vtt") Then
+                            SubtitelFormat = "vtt"
+                        ElseIf InStr(SoftSub_3, ".dfxp") Then
+                            SubtitelFormat = "dfxp"
+                        End If
+                        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + " " + SoftSub(1) + Path.GetExtension(Pfad3)), SubtitelFormat)
+
+                        If i = 0 Then
+                            FN = Path.ChangeExtension(Path.GetFileName(Pfad3), SubtitelFormat)
+                            'MsgBox(FN)
+                        End If
+                        Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
+                        'MsgBox(Pfad4)
+                        File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                        Pause(1)
+                    Next
+
                 End If
+            End If
+
+#End Region
+
+#Region "ffmpeg command"
+
+            Dim DubMetatata As String = Nothing
+            If FunimationDub = "japanese" Then
+                DubMetatata = " -metadata:s:a:0 language=jpn"
+
+            ElseIf FunimationDub = "portuguese-brazil" Then
+                DubMetatata = " -metadata:s:a:0 language=por"
+
+            ElseIf FunimationDub = "spanish-latin-am" Then
+                DubMetatata = " -metadata:s:a:0 language=spa"
+
+            Else '
+                DubMetatata = " -metadata:s:a:0 language=eng"
 
             End If
+
+            If HardSubFound = True Then
+                Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + " -vf subtitles=" + Chr(34) + UsedSub + Chr(34) + " " + ffmpeg_hardsub
+
+            ElseIf MergeSubstoMP4 = True Then
+
+                Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + DubMetatata
+
+            Else
+
+                Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+
+            End If
+
+
 
 #End Region
             'MsgBox(Funimation_m3u8_final)

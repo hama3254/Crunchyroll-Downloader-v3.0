@@ -391,7 +391,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;, &quot;kind&quot;: &quot;subtitle&quot;, &quot;type&quot;: &quot;CC&quot;, &quot;language&quot;: &quot;en&quot; ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die {&quot;src&quot;: &quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property Funimation_subs_src() As String
+            Get
+                Return ResourceManager.GetString("Funimation_subs_src", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;, &quot;kind&quot;: &quot;subtitle&quot;, &quot;type&quot;: &quot;CC&quot;, &quot;language&quot;: &quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property Funimation_Subtitle_String() As String
             Get
@@ -400,7 +409,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;, &quot;kind&quot;: &quot;subtitle&quot;, &quot;type&quot;: &quot;Full&quot;, &quot;language&quot;: &quot;en&quot; ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;, &quot;kind&quot;: &quot;subtitle&quot;, &quot;type&quot;: &quot;Full&quot;, &quot;language&quot;: &quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property Funimation_Subtitle_String2() As String
             Get

@@ -36,6 +36,22 @@ Public Class einstellungen
                 CBesES.Checked = True
             End If
         Next
+        For i As Integer = 0 To Main.SubFunimation.Count - 1
+            If Main.SubFunimation(i) = "en" Then
+                CB_fun_eng.Checked = True
+            ElseIf Main.SubFunimation(i) = "es" Then
+                CB_fun_es.Checked = True
+            ElseIf Main.SubFunimation(i) = "pt" Then
+                CB_fun_ptbr.Checked = True
+            End If
+            'If Main.SubFunimation(i) = "en" Then
+            '    RB_eng.Checked = True
+            'ElseIf Main.SubFunimation(i) = "es" Then
+            '    RB_es.Checked = True
+            'ElseIf Main.SubFunimation(i) = "pt" Then
+            '    RB_pt.Checked = True
+            'End If
+        Next
         Me.Location = New Point(Main.Location.X + Main.Width / 2 - Me.Width / 2, Main.Location.Y + Main.Height / 2 - Me.Height / 2)
         Try
             Me.Icon = My.Resources.icon
@@ -50,8 +66,35 @@ Public Class einstellungen
             HybridMode_CB.Checked = True
         End If
 
-        If Main.HardSubFunimation = True Then
-            FunimationHardsub.Checked = True
+        'If Main.HardSubFunimation = True Then
+        If Main.HardSubFunimation = "en" Then
+            CB_Fun_HardSubs.SelectedItem = "English"
+
+        ElseIf Main.HardSubFunimation = "pt" Then
+            CB_Fun_HardSubs.SelectedItem = "Português (Brasil)"
+
+        ElseIf Main.HardSubFunimation = "es" Then
+            CB_Fun_HardSubs.SelectedItem = "Español (LA)"
+
+        Else
+            CB_Fun_HardSubs.SelectedItem = "Disabled"
+            'FunimationHardsub.Checked = True
+        End If
+
+        If Main.DubFunimation = "english" Then
+            Fun_Dub_Over.SelectedItem = "english"
+
+        ElseIf Main.DubFunimation = "japanese" Then
+            Fun_Dub_Over.SelectedItem = "japanese"
+
+        ElseIf Main.DubFunimation = "portuguese(Brazil)" Then
+            Fun_Dub_Over.SelectedItem = "portuguese(Brazil)"
+
+        ElseIf Main.DubFunimation = "spanish(Mexico)" Then
+            Fun_Dub_Over.SelectedItem = "spanish(Mexico)"
+
+        Else
+            Fun_Dub_Over.SelectedItem = "Disabled"
         End If
 
         If Main.SaveLog = True Then
@@ -237,14 +280,58 @@ Public Class einstellungen
             Main.HybridMode = False
             rk.SetValue("HybridMode", "0", RegistryValueKind.String)
         End If
+#Region "funimation"
 
-        If FunimationHardsub.Checked = True Then
-            Main.HardSubFunimation = True
-            rk.SetValue("FunimationHardsub", "1", RegistryValueKind.String)
-        Else
-            Main.HardSubFunimation = False
-            rk.SetValue("FunimationHardsub", "0", RegistryValueKind.String)
+        Main.DubFunimation = Fun_Dub_Over.SelectedItem.ToString
+
+        rk.SetValue("FunimationDub", Fun_Dub_Over.SelectedItem.ToString, RegistryValueKind.String)
+
+
+        If CB_Fun_HardSubs.SelectedItem.ToString = "Disabled" Then
+            Main.HardSubFunimation = "Disabled"
+            rk.SetValue("FunimationHardsub", "Disabled", RegistryValueKind.String)
+
+        ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "English" Then
+            Main.HardSubFunimation = "en"
+            rk.SetValue("FunimationHardsub", "en", RegistryValueKind.String)
+
+        ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "Português (Brasil)" Then
+            Main.HardSubFunimation = "pt"
+            rk.SetValue("FunimationHardsub", "pt", RegistryValueKind.String)
+
+        ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "Español (LA)" Then
+            Main.HardSubFunimation = "es"
+            rk.SetValue("FunimationHardsub", "es", RegistryValueKind.String)
+
         End If
+
+        Main.SubFunimation.Clear()
+        If CB_fun_eng.Checked = True Then
+            Main.SubFunimation.Add("en")
+        End If
+        If CB_fun_es.Checked = True Then
+            Main.SubFunimation.Add("es")
+
+        End If
+        If CB_fun_ptbr.Checked = True Then
+            Main.SubFunimation.Add("pt")
+        End If
+
+        Dim FunimationSaveString As String = Nothing
+        For ii As Integer = 0 To Main.SubFunimation.Count - 1
+            If FunimationSaveString = Nothing Then
+                FunimationSaveString = Main.SubFunimation(ii)
+            Else
+                FunimationSaveString = FunimationSaveString + "," + Main.SubFunimation(ii)
+            End If
+        Next
+        If FunimationSaveString = Nothing Then
+            FunimationSaveString = "none"
+        End If
+        rk.SetValue("Fun_Sub", FunimationSaveString, RegistryValueKind.String)
+#End Region
+
+
 
         If CB_Log.Checked = True Then
             Main.SaveLog = True
@@ -402,7 +489,7 @@ Public Class einstellungen
     End Sub
 
 
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem
+    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem, CB_Fun_HardSubs.DrawItem, Fun_Dub_Over.DrawItem
         Dim CB As ComboBox = sender
         CB.BackColor = Color.White
         If e.Index >= 0 Then
@@ -606,14 +693,16 @@ Public Class einstellungen
 
     End Sub
 
-    Private Sub FunimationHardsub_Click(sender As Object, e As EventArgs) Handles FunimationHardsub.Click
+    Private Sub FunimationHardsub_Click(sender As Object, e As EventArgs)
 
         If FFMPEG_CommandP1.Text = "-c copy" Then
-            If FunimationHardsub.Checked = True Then
+            If CB_Fun_HardSubs.SelectedItem = "Disabled" Then
+            Else
+
                 If MessageBox.Show("This feature does not work with the current output setting." + vbNewLine + "Do you want to ignore the output settings?", "Settings incompatible", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                    FunimationHardsub.Checked = True
+                    'FunimationHardsub.Checked = True
                 Else
-                    FunimationHardsub.Checked = False
+                    CB_Fun_HardSubs.SelectedItem = "Disabled"
                 End If
             End If
         Else
@@ -631,6 +720,7 @@ Public Class einstellungen
     Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
         Process.Start("https://github.com/hama3254/metroframework-modern-ui")
     End Sub
+
 
 
 

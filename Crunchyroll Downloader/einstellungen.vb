@@ -52,6 +52,15 @@ Public Class einstellungen
             '    RB_pt.Checked = True
             'End If
         Next
+        If Main.CR_NameMethode = 0 Then
+            CR_Filename.SelectedIndex = 0
+        ElseIf Main.CR_NameMethode = 1 Then
+            CR_Filename.SelectedIndex = 1
+        ElseIf Main.CR_NameMethode = 2 Then
+            CR_Filename.SelectedIndex = 2
+        Else
+            CR_Filename.SelectedIndex = 0
+        End If
         Me.Location = New Point(Main.Location.X + Main.Width / 2 - Me.Width / 2, Main.Location.Y + Main.Height / 2 - Me.Height / 2)
         Try
             Me.Icon = My.Resources.icon
@@ -66,7 +75,24 @@ Public Class einstellungen
             HybridMode_CB.Checked = True
         End If
 
-        'If Main.HardSubFunimation = True Then
+        If Main.Funimation_srt = True Then
+            CB_srt.Checked = True
+        Else
+            CB_srt.Checked = False
+        End If
+
+        If Main.Funimation_vtt = True Then
+            CB_vtt.Checked = True
+        Else
+            CB_vtt.Checked = False
+        End If
+
+        If Main.Funimation_dfxp = True Then
+            CB_dfxp.Checked = True
+        Else
+            CB_dfxp.Checked = False
+        End If
+
         If Main.HardSubFunimation = "en" Then
             CB_Fun_HardSubs.SelectedItem = "English"
 
@@ -266,6 +292,19 @@ Public Class einstellungen
             rk.SetValue("Sub", "None", RegistryValueKind.String)
 
         End If
+
+        If CR_Filename.Text = "[episode number]" Then
+            Main.CR_NameMethode = 0
+            rk.SetValue("CR_NameMethode", 0, RegistryValueKind.String)
+        ElseIf CR_Filename.Text = "[episode name]" Then
+            Main.CR_NameMethode = 1
+            rk.SetValue("CR_NameMethode", 1, RegistryValueKind.String)
+        ElseIf CR_Filename.Text = "[episode number] [episode name]" Then
+            Main.CR_NameMethode = 2
+            rk.SetValue("CR_NameMethode", 2, RegistryValueKind.String)
+
+        End If
+
         If MergeMP4.Checked = True Then
             Main.MergeSubstoMP4 = True
             rk.SetValue("MergeMP4", "1", RegistryValueKind.String)
@@ -281,6 +320,29 @@ Public Class einstellungen
             rk.SetValue("HybridMode", "0", RegistryValueKind.String)
         End If
 #Region "funimation"
+
+        If CB_srt.Checked = True Then
+            Main.Funimation_srt = True
+            rk.SetValue("Funimation_srt", "1", RegistryValueKind.String)
+        Else
+            Main.Funimation_srt = False
+            rk.SetValue("Funimation_srt", "0", RegistryValueKind.String)
+        End If
+        If CB_vtt.Checked = True Then
+            Main.Funimation_vtt = True
+            rk.SetValue("Funimation_vtt", "1", RegistryValueKind.String)
+        Else
+            Main.Funimation_vtt = False
+            rk.SetValue("Funimation_vtt", "0", RegistryValueKind.String)
+        End If
+        If CB_dfxp.Checked = True Then
+            Main.Funimation_dfxp = True
+            rk.SetValue("Funimation_dfxp", "1", RegistryValueKind.String)
+        Else
+            Main.Funimation_dfxp = False
+            rk.SetValue("Funimation_dfxp", "0", RegistryValueKind.String)
+        End If
+
 
         Main.DubFunimation = Fun_Dub_Over.SelectedItem.ToString
 
@@ -489,7 +551,7 @@ Public Class einstellungen
     End Sub
 
 
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem, CB_Fun_HardSubs.DrawItem, Fun_Dub_Over.DrawItem
+    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem, CB_Fun_HardSubs.DrawItem, Fun_Dub_Over.DrawItem, CR_Filename.DrawItem
         Dim CB As ComboBox = sender
         CB.BackColor = Color.White
         If e.Index >= 0 Then

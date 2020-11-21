@@ -71,7 +71,9 @@ Public Class CRD_List_Item
         Return StatusRunning
     End Function
     Public Function GetIsStatusFinished() As Boolean
-        If HybridRunning = True Then
+        If Canceld = True Then
+            Return True
+        ElseIf HybridRunning = True Then
             Return False
         Else
             If proc.HasExited = True Then
@@ -169,7 +171,27 @@ Public Class CRD_List_Item
     End Sub
 
     Private Sub bt_pause_Click(sender As Object, e As EventArgs) Handles bt_pause.Click
-        If HybridRunning = True Then
+        If Canceld = True And HybridRunning = True Then
+
+            If Main.RunningDownloads < Main.MaxDL Then
+
+            Else
+                If MessageBox.Show("You have currtenly on your set Download limit." + vbNewLine + " You can Press OK to ignore it.", "Download maximum reached", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
+                    Exit Sub
+                End If
+            End If
+            Canceld = False
+            'If My.Computer.FileSystem.FileExists(HistoryDL_Pfad.Replace(Chr(34), "")) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
+            '    Try
+            '        My.Computer.FileSystem.DeleteFile(HistoryDL_Pfad.Replace(Chr(34), ""))
+            '    Catch ex As Exception
+            '    End Try
+            'End If
+            StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode)
+            StatusRunning = True
+            Label_website.Text = Label_website_Text
+            Exit Sub
+        ElseIf HybridRunning = True Then
             If StatusRunning = True Then
                 StatusRunning = False
                 bt_pause.BackgroundImage = My.Resources.main_pause_play
@@ -178,6 +200,7 @@ Public Class CRD_List_Item
                 StatusRunning = True
                 bt_pause.BackgroundImage = My.Resources.main_pause
             End If
+
         Else
             If proc.HasExited = True Then
                 If ProgressBar1.Value < 100 Then
@@ -505,6 +528,12 @@ Public Class CRD_List_Item
                                     System.IO.Directory.Delete(HybridModePath, True)
                                 Catch ex As Exception
                                 End Try
+                                Me.Invoke(New Action(Function()
+                                                         ProgressBar1.Value = 0
+                                                         Label_percent.Text = "canceled -%"
+                                                         bt_pause.BackgroundImage = My.Resources.main_pause_play
+                                                         Return Nothing
+                                                     End Function))
                                 Exit For
                             End If
                         Next
@@ -947,12 +976,18 @@ Public Class CRD_List_Item
 #End Region
 
     Private Sub bt_del_Click(sender As Object, e As EventArgs) Handles bt_del.Click
-        If HybridRunning = True Then
+        If Canceld = True Then
+            If MessageBox.Show("The Download is not running anymore, press ok to remove it from the list.", "Remove from list!", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
+                Exit Sub
+            End If
+            ToDispose = True
+        ElseIf HybridRunning = True Then
             If MessageBox.Show("Are you sure you want to cancel the Download?", "Cancel Download!", MessageBoxButtons.YesNo) = DialogResult.No Then
                 Exit Sub
             End If
             Canceld = True
             'KillRunningTask()
+
         Else
             If proc.HasExited Then
                 If MessageBox.Show("The Download is not running anymore, press ok to remove it from the list.", "Remove from list!", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then

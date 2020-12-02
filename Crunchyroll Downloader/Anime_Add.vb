@@ -11,20 +11,29 @@ Public Class Anime_Add
     Dim AoD_DubList As New List(Of String)
     Dim AoD_Mode As Boolean = False
     Dim AoD_DL_running As Boolean = False
+    Public AoDHTML As String = Nothing
+
     Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
         Try
-            If ComboBox2.Text = Main.SubFolder_Nothing Then
+            If ComboBox2.Text = SubFolder_Nothing Then
                 Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
-                rk.SetValue("SubFolder_Value", Main.SubFolder_Nothing, RegistryValueKind.String)
-            ElseIf ComboBox2.Text = Main.SubFolder_automatic Then
+                rk.SetValue("SubFolder_Value", SubFolder_Nothing, RegistryValueKind.String)
+                SubFolder_Value = SubFolder_Nothing
+            ElseIf ComboBox2.Text = SubFolder_automatic Then
                 Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
-                rk.SetValue("SubFolder_Value", Main.SubFolder_automatic, RegistryValueKind.String)
+                rk.SetValue("SubFolder_Value", SubFolder_automatic, RegistryValueKind.String)
+                SubFolder_Value = SubFolder_automatic
+            ElseIf ComboBox2.Text = SubFolder_automatic2 Then
+                Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
+                rk.SetValue("SubFolder_Value", SubFolder_automatic2, RegistryValueKind.String)
+                SubFolder_Value = SubFolder_automatic2
             Else
                 Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
                 rk.SetValue("SubFolder_Value", ComboBox2.Text, RegistryValueKind.String)
+                SubFolder_Value = ComboBox2.Text
             End If
         Catch ex As Exception
-            ComboBox2.Text = Main.SubFolder_Nothing
+            ComboBox2.Text = SubFolder_Nothing
         End Try
     End Sub
 
@@ -64,27 +73,35 @@ Public Class Anime_Add
         Me.Location = New Point(Main.Location.X + Main.Width / 2 - Me.Width / 2, Main.Location.Y + Main.Height / 2 - Me.Height / 2)
         TextBox4.Text = Main.Pfad
 
-        Dim SubFolder_Value As String
+        ' Dim SubFolder_Value As String
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             SubFolder_Value = rkg.GetValue("SubFolder_Value").ToString
-            If SubFolder_Value = Main.SubFolder_Nothing Then
-                ComboBox2.Items.Add(Main.SubFolder_automatic)
-                ComboBox2.Items.Add(Main.SubFolder_Nothing)
-            ElseIf SubFolder_Value = Main.SubFolder_automatic Then
-                ComboBox2.Items.Add(Main.SubFolder_automatic)
-                ComboBox2.Items.Add(Main.SubFolder_Nothing)
+            If SubFolder_Value = SubFolder_Nothing Then
+                ComboBox2.Items.Add(SubFolder_automatic)
+                ComboBox2.Items.Add(SubFolder_automatic2)
+                ComboBox2.Items.Add(SubFolder_Nothing)
+            ElseIf SubFolder_Value = SubFolder_automatic Then
+                ComboBox2.Items.Add(SubFolder_automatic)
+                ComboBox2.Items.Add(SubFolder_automatic2)
+                ComboBox2.Items.Add(SubFolder_Nothing)
+            ElseIf SubFolder_Value = SubFolder_automatic2 Then
+                ComboBox2.Items.Add(SubFolder_automatic)
+                ComboBox2.Items.Add(SubFolder_automatic2)
+                ComboBox2.Items.Add(SubFolder_Nothing)
             Else
 
-                ComboBox2.Items.Add(Main.SubFolder_automatic)
-                ComboBox2.Items.Add(Main.SubFolder_Nothing)
+                ComboBox2.Items.Add(SubFolder_automatic)
+                ComboBox2.Items.Add(SubFolder_automatic2)
+                ComboBox2.Items.Add(SubFolder_Nothing)
                 ComboBox2.Items.Add(SubFolder_Value)
             End If
         Catch ex As Exception
-            ComboBox2.Items.Add(Main.SubFolder_automatic)
-            ComboBox2.Items.Add(Main.SubFolder_Nothing)
-            ComboBox2.SelectedItem = Main.SubFolder_Nothing
-            SubFolder_Value = Main.SubFolder_Nothing
+            ComboBox2.Items.Add(SubFolder_automatic)
+            ComboBox2.Items.Add(SubFolder_automatic2)
+            ComboBox2.Items.Add(SubFolder_Nothing)
+            ComboBox2.SelectedItem = SubFolder_Nothing
+            SubFolder_Value = SubFolder_Nothing
         End Try
 
         Try
@@ -123,9 +140,10 @@ Public Class Anime_Add
             Dim rk0 As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
             rk0.SetValue("Ordner", Main.Pfad, RegistryValueKind.String)
 
-            ComboBox2.Items.Add(Main.SubFolder_automatic)
-            ComboBox2.Items.Add(Main.SubFolder_Nothing)
-            ComboBox2.SelectedItem = Main.SubFolder_Nothing
+            ComboBox2.Items.Add(SubFolder_automatic)
+            ComboBox2.Items.Add(SubFolder_automatic2)
+            ComboBox2.Items.Add(SubFolder_Nothing)
+            ComboBox2.SelectedItem = SubFolder_Nothing
             TextBox4.Text = Main.Pfad
             Try
                 Dim di As New System.IO.DirectoryInfo(Main.Pfad)
@@ -333,17 +351,18 @@ Public Class Anime_Add
                             Dim m3u8Strings As String = Nothing
                             'I/nsHttp   Cookie: 
                             Try
-                                Using client As New WebClient()
-                                    client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
-                                    client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
-                                    client.Headers.Add("Accept-Encoding: gzip, deflate, br")
-                                    client.Headers.Add("X-Requested-With: XMLHttpRequest")
-                                    client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
-                                    'MsgBox(OmUStreamSplitEpisodeIndex(1))
-                                    m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
-                                    '("Sub: " + m3u8Strings)
-                                End Using
-                            Catch ex As Exception
+                            Using client As New WebClient()
+                                client.Encoding = System.Text.Encoding.UTF8
+                                client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
+                                client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
+                                client.Headers.Add("Accept-Encoding: gzip, deflate, br")
+                                client.Headers.Add("X-Requested-With: XMLHttpRequest")
+                                client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
+                                'MsgBox(OmUStreamSplitEpisodeIndex(1))
+                                m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
+                                '("Sub: " + m3u8Strings)
+                            End Using
+                        Catch ex As Exception
                                 MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
                             End Try
                             If m3u8Strings = Nothing Then
@@ -365,17 +384,18 @@ Public Class Anime_Add
                             Dim m3u8Strings As String = Nothing
                             'I/nsHttp   Cookie: 
                             Try
-                                Using client As New WebClient()
-                                    client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
-                                    client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
-                                    client.Headers.Add("Accept-Encoding: gzip, deflate, br")
-                                    client.Headers.Add("X-Requested-With: XMLHttpRequest")
-                                    client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
-                                    'MsgBox(DubStreamSplitEpisodeIndex(1))
-                                    m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
-                                    'MsgBox("Dub: " + m3u8Strings)
-                                End Using
-                            Catch ex As Exception
+                            Using client As New WebClient()
+                                client.Encoding = System.Text.Encoding.UTF8
+                                client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
+                                client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
+                                client.Headers.Add("Accept-Encoding: gzip, deflate, br")
+                                client.Headers.Add("X-Requested-With: XMLHttpRequest")
+                                client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
+                                'MsgBox(DubStreamSplitEpisodeIndex(1))
+                                m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
+                                'MsgBox("Dub: " + m3u8Strings)
+                            End Using
+                        Catch ex As Exception
                                 MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
                             End Try
                             If m3u8Strings = Nothing Then
@@ -390,29 +410,29 @@ Public Class Anime_Add
 
                         End If
                         AoD_Mode = True
-                        If AoD_DubList.Count And AoD_OmUList.Count > 0 Then
+                    If AoD_DubList.Count And AoD_OmUList.Count > 0 Then
+                        ComboBox1.Items.Clear()
+                        GroupBox3.Visible = False
+                        groupBox2.Visible = True
+                        groupBox1.Visible = False
+                        ComboBox1.Enabled = True
+                        comboBox3.Enabled = True
+                        comboBox4.Enabled = True
+                        ComboBox1.Items.Add("Dub")
+                        ComboBox1.Items.Add("OmU")
+                        FillAoDDropDown()
+                    ElseIf AoD_DubList.Count Or AoD_OmUList.Count > 0 Then
+                        ComboBox1.Items.Clear()
+                        GroupBox3.Visible = False
+                        groupBox2.Visible = True
+                        groupBox1.Visible = False
+                        ComboBox1.Enabled = False
+                        comboBox3.Enabled = True
+                        comboBox4.Enabled = True
+                        FillAoDDropDown()
+                    End If
 
-                            GroupBox3.Visible = False
-                            groupBox2.Visible = True
-                            groupBox1.Visible = False
-                            ComboBox1.Enabled = True
-                            comboBox3.Enabled = True
-                            comboBox4.Enabled = True
-                            ComboBox1.Items.Add("Dub")
-                            ComboBox1.Items.Add("OmU")
-                            FillAoDDropDown()
-                        ElseIf AoD_DubList.Count Or AoD_OmUList.Count > 0 Then
-
-                            GroupBox3.Visible = False
-                            groupBox2.Visible = True
-                            groupBox1.Visible = False
-                            ComboBox1.Enabled = False
-                            comboBox3.Enabled = True
-                            comboBox4.Enabled = True
-                            FillAoDDropDown()
-                        End If
-
-                    ElseIf CBool(InStr(textBox1.Text, "Test=true")) Then
+                ElseIf CBool(InStr(textBox1.Text, "Test=true")) Then
                         GeckoFX.WebBrowser1.Navigate(textBox1.Text)
                     Else 'If CBool(InStr(textBox1.Text, "vrv.co")) Then
                         If MessageBox.Show("This in NOT a Crunchyroll URL, try anyway?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
@@ -692,12 +712,23 @@ Public Class Anime_Add
 #End Region
 
     Private Sub FillAoDDropDown()
-        For i As Integer = 0 To AoD_OmuList.Count - 1
-            Dim DropDownTitle As String() = AoD_OmuList(i).Split(New String() {My.Resources.AoD_Titel}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim DropDownTitle2 As String() = DropDownTitle(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            comboBox3.Items.Add(DropDownTitle2(0))
-            comboBox4.Items.Add(DropDownTitle2(0))
-        Next
+        comboBox3.Items.Clear()
+        comboBox4.Items.Clear()
+        If AoD_OmUList.Count > 0 Then
+            For i As Integer = 0 To AoD_OmUList.Count - 1
+                Dim DropDownTitle As String() = AoD_OmUList(i).Split(New String() {My.Resources.AoD_Titel}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim DropDownTitle2 As String() = DropDownTitle(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                comboBox3.Items.Add(DropDownTitle2(0))
+                comboBox4.Items.Add(DropDownTitle2(0))
+            Next
+        ElseIf AoD_DubList.Count > 0 Then
+            For i As Integer = 0 To AoD_DubList.Count - 1
+                Dim DropDownTitle As String() = AoD_DubList(i).Split(New String() {My.Resources.AoD_Titel}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim DropDownTitle2 As String() = DropDownTitle(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                comboBox3.Items.Add(DropDownTitle2(0))
+                comboBox4.Items.Add(DropDownTitle2(0))
+            Next
+        End If
     End Sub
 
     Public Sub Add_AoD()
@@ -706,17 +737,26 @@ Public Class Anime_Add
         Dim RDY As Boolean = True
         Dim Running As Integer = Main.RunningDownloads
         Dim DlMax As Integer = Main.MaxDL
+        Dim Pfad0 As String = Main.Pfad
         Dim Pfad2 As String = Main.Pfad
+        Dim NameMethode As Integer = Main.CR_NameMethode
         Dim c As Integer = 0
         Dim SubExit As Boolean = False
         Dim CB3 As Integer = 0
         Dim CB4 As Integer = 0
         Dim TargetReso As String = Main.Reso
         Dim AoD_1080pPlus As Boolean = False
+        Dim AoDTempReso As String = "6666x6666"
+
+        Dim AoD_Season As String = Nothing
+        Dim AoD_Anime_Title As String = Nothing
+        Dim AoD_Episode_Title As String = Nothing
+        Dim AoD_Episode_Number As String = Nothing
+
         Me.Invoke(New Action(Function()
                                  'Main.StatusMainForm.Text = "Crunchyroll Downloader"
                                  Pfad2 = Main.Pfad
-
+                                 NameMethode = Main.CR_NameMethode
                                  If Main.AoD_Reso = 0 Then
                                      TargetReso = Main.Reso
                                  ElseIf Main.AoD_Reso = 576 Then
@@ -779,6 +819,9 @@ Public Class Anime_Add
             Exit Sub
         End If
 
+
+
+
         For i As Integer = CB3 To CB4
             Dim ii As Integer = i
 
@@ -818,14 +861,99 @@ Public Class Anime_Add
                                      Return Nothing
                                  End Function))
 
-
-
             Dim AoDTitle1() As String = ProcessList.Item(i).Split(New String() {My.Resources.AoD_Titel}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim AoDTitle2() As String = AoDTitle1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim AoDTitle As String = AoDTitle2(0)
+
+            Try
+
+
+                If InStr(AoDHTML, My.Resources.AoD_HTML_Episode_Title) Then ' Serie 
+                    Dim AoDTitle0() As String = AoDHTML.Split(New String() {My.Resources.AoD_HTML_Episode_Title}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim AoDTitle00() As String = AoDTitle0(ii + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim AoD_EpisodeSplit() As String = AoDTitle00(0).Split(New String() {" - "}, System.StringSplitOptions.RemoveEmptyEntries)
+                    AoD_Episode_Number = System.Text.RegularExpressions.Regex.Replace(AoD_EpisodeSplit(0), "[^\w\\-]", " ").Trim(" ")
+                    AoD_Episode_Title = System.Text.RegularExpressions.Regex.Replace(AoD_EpisodeSplit(1), "[^\w\\-]", " ").Trim(" ")
+
+                    Dim AoDTitle3() As String = AoDHTML.Split(New String() {My.Resources.AoD_HTML_Anime_Title}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim AoDTitle4() As String = AoDTitle3(1).Split(New String() {"</h1>"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    If InStr(AoDTitle4(0), " - ") Then
+                        Dim AoD_Anime_Season_split() As String = AoDTitle4(0).Split(New String() {" - "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        AoD_Anime_Title = System.Text.RegularExpressions.Regex.Replace(AoD_Anime_Season_split(0), "[^\w\\-]", " ").Trim(" ")
+                        AoD_Season = System.Text.RegularExpressions.Regex.Replace(AoD_Anime_Season_split(1), "[^\w\\-]", " ").Trim(" ")
+
+                    Else
+                        AoD_Anime_Title = System.Text.RegularExpressions.Regex.Replace(AoDTitle4(0), "[^\w\\-]", " ").Trim(" ")
+
+                    End If
+
+
+                Else 'keine Serie aka Film 
+
+                    Dim AoDMovie1() As String = AoDHTML.Split(New String() {My.Resources.AoD_HTML_Anime_Title}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim AoDMovie2() As String = AoDMovie1(1).Split(New String() {"</h1>"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    If InStr(AoDMovie2(0), " - ") Then
+
+                        Dim AoDMovie_split() As String = AoDMovie2(0).Split(New String() {" - "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        AoD_Anime_Title = System.Text.RegularExpressions.Regex.Replace(AoDMovie_split(0), "[^\w\\-]", " ").Trim(" ")
+                        AoD_Episode_Number = System.Text.RegularExpressions.Regex.Replace(AoDMovie_split(1), "[^\w\\-]", " ").Trim(" ")
+                        AoD_Episode_Title = System.Text.RegularExpressions.Regex.Replace(AoDMovie_split(1), "[^\w\\-]", " ").Trim(" ")
+                    Else
+                        AoD_Anime_Title = System.Text.RegularExpressions.Regex.Replace(AoDMovie2(0), "[^\w\\-]", " ").Trim(" ")
+
+                    End If
+
+
+
+
+                End If
+
+                If NameMethode = 0 Then
+                    If AoD_Season = Nothing Then
+                        AoDTitle = AoD_Anime_Title + " " + AoD_Episode_Number
+                    Else
+                        AoDTitle = AoD_Anime_Title + " " + AoD_Season + " " + AoD_Episode_Number
+                    End If
+
+                ElseIf NameMethode = 1 Then
+                    If AoD_Season = Nothing Then
+                        AoDTitle = AoD_Anime_Title + " " + AoD_Episode_Title
+                    Else
+                        AoDTitle = AoD_Anime_Title + " " + AoD_Season + " " + AoD_Episode_Title
+                    End If
+
+                ElseIf NameMethode = 2 Then
+                    If AoD_Season = Nothing Then
+                        AoDTitle = AoD_Anime_Title + " " + AoD_Episode_Number + " " + AoD_Episode_Title
+                    Else
+                        AoDTitle = AoD_Anime_Title + " " + AoD_Season + " " + AoD_Episode_Number + " " + AoD_Episode_Title
+                    End If
+
+                End If
+
+            Catch ex As Exception
+
+            End Try
+
             AoDTitle = System.Text.RegularExpressions.Regex.Replace(AoDTitle, "[^\w\\-]", " ").Trim(" ")
             AoDTitle = Main.RemoveExtraSpaces(AoDTitle)
+
+            Pfad2 = UseSubfolder(AoD_Anime_Title, AoD_Season, Pfad2)
+
+            If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
+                ' Nein! Jetzt erstellen...
+                Try
+                    Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
+                Catch ex As Exception
+                    ' Ordner wurde nich erstellt
+                    Pfad2 = Pfad0
+                End Try
+            End If
+
+
+
             Dim DownloadPfad As String = Chr(34) + Pfad2 + "\" + AoDTitle + ".mp4" + Chr(34)
+
 #Region "lösche doppel download"
 
             Dim Pfad5 As String = DownloadPfad.Replace(Chr(34), "")
@@ -894,7 +1022,8 @@ Public Class Anime_Add
                             '                     End Function))
                             m3u8_list.Add(new_m3u8(i2) + vbCrLf + new_m3u8(i2 + 1))
                         End If
-
+                    ElseIf CBool(InStr(new_m3u8(i2), AoDTempReso)) = True Then
+                        m3u8_list.Add(new_m3u8(i2) + vbCrLf + new_m3u8(i2 + 1))
                     End If
 
                 Next
@@ -955,9 +1084,33 @@ Public Class Anime_Add
                             m3u8_url_Temp = new_m3u8_2(1)
                         End If
                     Next
-                Else
+                ElseIf m3u8_list.Count = 1 Then
                     Dim new_m3u8_2() As String = m3u8_list.Item(0).Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
                     m3u8_url_Temp = new_m3u8_2(1)
+                Else
+
+                    Me.Invoke(New Action(Function()
+                                             Me.Text = "Status: Resolution not found!"
+                                             Me.Invalidate()
+                                             Main.DialogTaskString = "AoD_Resolution"
+                                             Main.ResoNotFoundString = text
+                                             ErrorDialog.ShowDialog()
+                                             AoDTempReso = Main.ResoBackString
+                                             Return Nothing
+                                         End Function))
+
+
+
+                    Dim m3u8BackupReso() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    For i2 As Integer = 0 To m3u8BackupReso.Count - 1
+                        Dim ii2 As Integer = i2
+                        If CBool(InStr(m3u8BackupReso(i2), AoDTempReso)) = True Then
+
+                            m3u8_url_Temp = m3u8BackupReso(ii2 + 1)
+                        End If
+                    Next
+
                 End If
 
                 If InStr(m3u8_url_Temp, "https://") Then
@@ -980,6 +1133,11 @@ Public Class Anime_Add
             Dim DisplayReso As String = TargetReso.ToString + "p"
             If AoD_1080pPlus = True Then
                 DisplayReso = "1080p+"
+            End If
+            If AoDTempReso = "6666x6666" Then
+            Else
+                Dim ResoSplit() As String = AoDTempReso.Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
+                DisplayReso = ResoSplit(1) + "p"
             End If
             Dim L1Name As String = "anime-on-demand.de" 'L1Name_Split(1).Replace("www.", "") + " | Dub : " + FunimationDub
             Me.Invoke(New Action(Function()

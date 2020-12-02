@@ -520,4 +520,10 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="Funimation_subs_src" xml:space="preserve">
     <value>{"src": "</value>
   </data>
+  <data name="AoD_HTML_Anime_Title" xml:space="preserve">
+    <value>&lt;h1 itemprop="name"&gt;</value>
+  </data>
+  <data name="AoD_HTML_Episode_Title" xml:space="preserve">
+    <value>&lt;h3 class="episodebox-title" title="</value>
+  </data>
 </root>

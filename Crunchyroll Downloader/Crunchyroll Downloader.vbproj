@@ -190,6 +190,7 @@
     <Compile Include="CRD_List_Item.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Subfolder.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Anime_Add.resx">

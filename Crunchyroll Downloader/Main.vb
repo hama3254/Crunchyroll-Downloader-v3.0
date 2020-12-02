@@ -57,7 +57,6 @@ Public Class Main
     Public ResoSave As String = "6666x6666"
     Public ResoFunBackup As String = "6666x6666"
     Public SubSprache As String
-    Public SubFolder As Integer
     Public SoftSubs As New List(Of String)
     Public TempSoftSubs As New List(Of String)
     Public AbourtList As New List(Of String)
@@ -93,8 +92,6 @@ Public Class Main
     Public SubFunimation As New List(Of String)
 #Region "Sprachen Vairablen"
     Public URL_Invaild As String = "something is wrong here..."
-    Public SubFolder_automatic As String = "[automatic : Series/Season]"
-    Public SubFolder_Nothing As String = "[ ignore subfolder ]"
 
     Dim DL_Path_String As String = "Please choose download directory."
     Public No_Stream As String = "Please make sure that the URL is correct or check if the Anime is available in your country."
@@ -387,9 +384,9 @@ Public Class Main
 
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            SubFolder = Integer.Parse(rkg.GetValue("SubFolder").ToString)
+            SubFolder_Value = rkg.GetValue("SubFolder_Value").ToString
         Catch ex As Exception
-            SubFolder = 1
+            SubFolder_Value = SubFolder_Nothing
         End Try
 
         Try
@@ -816,20 +813,13 @@ Public Class Main
         Dim CR_Anime_Staffel As String = Nothing
         Dim CR_Anime_Folge As String = Nothing
 #Region "Name + Pfad"
-        Dim Pfad2 As String
+        Dim Pfad2 As String = Nothing
         Dim CR_FilenName As String = Nothing
-        Dim SubfolderValue As String = Nothing
+        'Dim SubfolderValue As String = Nothing
         Dim CR_FilenName_Backup As String = Nothing
 
 
 #Region "Name von Crunchyroll"
-
-        'Dim Bug_Deutsch As String = "-"
-        'If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
-        '    Bug_Deutsch = ":"
-        'End If
-        'Dim CR_Name_by_Titel_2 As String() = WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
-        'CR_FilenName = CR_Name_by_Titel_2(0).Trim()
 
         Dim Bug_Deutsch As String = "-"
         If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
@@ -884,11 +874,9 @@ Public Class Main
         CR_FilenName = System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
         CR_FilenName = RemoveExtraSpaces(CR_FilenName)
 
-        If SubfolderValue = Nothing Then
-            Pfad2 = Pfad + "\" + CR_FilenName + ".mp4"
-        Else
-            Pfad2 = Pfad + "\" + SubfolderValue + CR_FilenName + ".mp4"
-        End If
+        Pfad2 = UseSubfolder(CR_Anime_Titel, CR_Anime_Staffel, Pfad)
+
+
         If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
             ' Nein! Jetzt erstellen...
             Try
@@ -898,7 +886,8 @@ Public Class Main
                 Pfad2 = Pfad + "\" + CR_FilenName_Backup + ".mp4"
             End Try
         End If
-        Pfad2 = Chr(34) + Pfad2 + Chr(34)
+
+        Pfad2 = Chr(34) + Pfad2 + CR_FilenName + ".mp4" + Chr(34)
 
 #End Region
 #Region "Subs"
@@ -935,63 +924,7 @@ Public Class Main
             Next
         End If
 
-#Region "copy paste trash"
 
-
-        'If SubSprache = "None" Then
-        '    If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":null")) Then
-        '        SubSprache2 = "null"
-        '    Else
-        '        Me.Invoke(New Action(Function()
-        '                                 ResoNotFoundString = WebbrowserText
-        '                                 DialogTaskString = "Language"
-        '                                 Reso.ShowDialog()
-        '                                 Return Nothing
-        '                             End Function))
-        '        If UserCloseDialog = True Then
-        '            Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
-        '        Else
-        '            If ResoBackString = Nothing Then
-        '            Else
-        '                SubSprache2 = ResoBackString
-        '            End If
-        '        End If
-        '        'Throw New System.Exception("Could not find the sub language")
-        '    End If
-
-
-        'Else
-        '    If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
-        '        SubSprache2 = Chr(34) + SubSprache + Chr(34)
-
-        '    ElseIf CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
-        '        If MessageBox.Show("It look like only Softsubtitle are avalibe." + vbNewLine + "Are you want to use Softsubtitle this time instead?", "No Hardsubtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-        '            SubSprache2 = "null"
-        '            SoftSubs2.Add(SubSprache)
-        '        Else
-        '            Throw New System.Exception("Could not find the sub language")
-        '        End If
-
-
-        '    Else
-        '        Me.Invoke(New Action(Function()
-        '                                 ResoNotFoundString = WebbrowserText
-        '                                 DialogTaskString = "Language"
-        '                                 Reso.ShowDialog()
-        '                                 Return Nothing
-        '                             End Function))
-        '        If UserCloseDialog = True Then
-        '            Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
-        '        Else
-        '            If ResoBackString = Nothing Then
-        '            Else
-        '                SubSprache2 = ResoBackString
-        '            End If
-        '        End If
-        '    End If
-        'End If
-
-#End Region
 #End Region
 
         If Grapp_Abord = True Then
@@ -1325,7 +1258,6 @@ Public Class Main
             Dim Pfad2 As String
             Dim TextBox2_Text As String = Nothing
             Dim CR_FilenName As String = Nothing
-            Dim SubfolderValue As String = Nothing
             Dim CR_FilenName_Backup As String = Nothing
 
             Me.Invoke(New Action(Function()
@@ -1333,8 +1265,8 @@ Public Class Main
                                      Return Nothing
                                  End Function))
 #Region "Name von Crunchyroll"
-            If TextBox2_Text = Nothing Or TextBox2_Text = "Name of the Anime" Then
-                Dim Bug_Deutsch As String = "-"
+
+            Dim Bug_Deutsch As String = "-"
                 If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
                     Bug_Deutsch = ":"
                 End If
@@ -1414,48 +1346,18 @@ Public Class Main
 
 
 #End Region
+            If TextBox2_Text = Nothing Or TextBox2_Text = "Name of the Anime" Then
 
             Else
-                Me.Invoke(New Action(Function()
-                                         If Anime_Add.ComboBox2.Text = SubFolder_automatic Then
-                                             MsgBox(SubFolder_automatic + " is not working with a costum name", MsgBoxStyle.Information)
-                                         ElseIf Anime_Add.ComboBox2.Text = SubFolder_Nothing Then
-                                         Else
-                                             SubfolderValue = Anime_Add.ComboBox2.Text + "\"
-                                         End If
-                                         Return Nothing
-                                     End Function))
-                'MsgBox(TextBox2_Text)
                 CR_FilenName = RemoveExtraSpaces(System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
                 CR_FilenName_Backup = CR_FilenName
             End If
-            Me.Invoke(New Action(Function()
-                                     If Anime_Add.ComboBox2.Text = SubFolder_automatic Then
-                                         If SubFolder = 2 Then
-                                             SubfolderValue = CR_Anime_Titel + "\" + CR_Anime_Staffel + "\"
-                                         ElseIf SubFolder = 1 Then
-                                             SubfolderValue = CR_Anime_Titel + "\"
-                                         End If
-                                     ElseIf Anime_Add.ComboBox2.Text = SubFolder_Nothing Then
-                                     Else
-                                         SubfolderValue = Anime_Add.ComboBox2.Text + "\"
-                                     End If
-                                     Return Nothing
-                                 End Function))
 
             CR_FilenName = System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = RemoveExtraSpaces(CR_FilenName)
-            'MsgBox(Pfad)
-            If SubfolderValue = Nothing Then
-                Pfad2 = Pfad + "\" + CR_FilenName + ".mp4"
-                'MsgBox(Pfad + vbNewLine + Pfad2)
-            ElseIf SubfolderValue = "\" Then
-                Pfad2 = Pfad + "\" + CR_FilenName + ".mp4"
-                'MsgBox(Pfad + vbNewLine + Pfad2)
-            Else
-                Pfad2 = Pfad + "\" + SubfolderValue + CR_FilenName + ".mp4"
-                'MsgBox(Pfad + vbNewLine + Pfad2 + vbNewLine + SubfolderValue)
-            End If
+
+            Pfad2 = UseSubfolder(CR_Anime_Titel, CR_Anime_Staffel, Pfad)
+
             If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
                 ' Nein! Jetzt erstellen...
                 Try
@@ -1465,7 +1367,8 @@ Public Class Main
                     Pfad2 = Pfad + "\" + CR_FilenName_Backup + ".mp4"
                 End Try
             End If
-            Pfad2 = Chr(34) + Pfad2 + Chr(34)
+
+            Pfad2 = Chr(34) + Pfad2 + "\" + CR_FilenName + ".mp4" + Chr(34)
 
 #End Region
 #Region "Subs"
@@ -2209,7 +2112,6 @@ Public Class Main
 
 #Region "Pfad"
             Dim TextBox2_Text As String = Nothing
-            Dim SubfolderValue As String = Nothing
             Me.Invoke(New Action(Function()
                                      TextBox2_Text = Anime_Add.textBox2.Text
                                      Return Nothing
@@ -2219,35 +2121,15 @@ Public Class Main
 
             Else
                 Me.Invoke(New Action(Function()
-                                         If Anime_Add.ComboBox2.Text = SubFolder_automatic Then
-                                             MsgBox(SubFolder_automatic + " is not working with a costum name", MsgBoxStyle.Information)
-                                         ElseIf Anime_Add.ComboBox2.Text = SubFolder_Nothing Then
-                                         Else
-                                             SubfolderValue = Anime_Add.ComboBox2.Text + "\"
-                                         End If
+
                                          Return Nothing
                                      End Function))
             End If
 
-            Me.Invoke(New Action(Function()
-                                     If Anime_Add.ComboBox2.Text = SubFolder_automatic Then
-                                         If SubFolder = 2 Then
-                                             SubfolderValue = FunimationTitle + "\" + FunimationSeason + "\"
-                                         ElseIf SubFolder = 1 Then
-                                             SubfolderValue = FunimationTitle + "\"
-                                         End If
-                                     ElseIf Anime_Add.ComboBox2.Text = SubFolder_Nothing Then
-                                     Else
-                                         SubfolderValue = Anime_Add.ComboBox2.Text + "\"
-                                     End If
-                                     Return Nothing
-                                 End Function))
 
-            If SubfolderValue = Nothing Then
-                DownloadPfad = Pfad + "\" + DefaultName + ".mp4"
-            Else
-                DownloadPfad = Pfad + "\" + SubfolderValue + DefaultName + ".mp4"
-            End If
+
+            DownloadPfad = UseSubfolder(FunimationTitle, FunimationEpisode, Pfad)
+
             If Not Directory.Exists(Path.GetDirectoryName(DownloadPfad)) Then
                 ' Nein! Jetzt erstellen...
                 Try
@@ -2257,6 +2139,9 @@ Public Class Main
                     DownloadPfad = Pfad + "\" + DefaultName + ".mp4"
                 End Try
             End If
+
+            DownloadPfad = DownloadPfad + DefaultName + ".mp4"
+
 
 #Region "lösche doppel download"
 
@@ -2861,7 +2746,7 @@ Public Class Main
             bytes = clientSocket.Receive(recvBytes, 0, clientSocket.Available, SocketFlags.None)
             htmlReq = Encoding.UTF8.GetString(recvBytes, 0, bytes)
             'MsgBox(htmlReq)
-            'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", htmlReq + vbNewLine, True)
+            My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", htmlReq + vbNewLine, True)
             Dim rootPath As String = Directory.GetCurrentDirectory() & "\WebInterface\"
             ' Set default page
             Dim defaultPage As String = "index.html"
@@ -3088,7 +2973,7 @@ Public Class Main
     ' Send HTTP Response
 
 
-    Private Sub sendHTMLResponse(ByVal httpRequest As String, ByVal clientSocket As Socket)
+    Private Sub SendHTMLResponse(ByVal httpRequest As String, ByVal clientSocket As Socket)
         Try
 
             Dim respByte() As Byte
@@ -3144,7 +3029,7 @@ Public Class Main
     End Sub
 
     ' Get Content Type
-    Private Function getContentType(ByVal httpRequest As String) As String
+    Private Function GetContentType(ByVal httpRequest As String) As String
         If (httpRequest.EndsWith("html")) Then
             Return "text/html"
         ElseIf (httpRequest.EndsWith("htm")) Then

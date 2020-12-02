@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class einstellungen
+Partial Class Einstellungen
     Inherits MetroFramework.Forms.MetroForm
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
@@ -24,8 +24,6 @@ Partial Class einstellungen
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.RBStaffel = New System.Windows.Forms.RadioButton()
-        Me.RBAnime = New System.Windows.Forms.RadioButton()
         Me.pictureBox1 = New System.Windows.Forms.PictureBox()
         Me.pictureBox4 = New System.Windows.Forms.PictureBox()
         Me.ToolTip2 = New System.Windows.Forms.ToolTip(Me.components)
@@ -57,10 +55,11 @@ Partial Class einstellungen
         Me.ComboBox2 = New System.Windows.Forms.ComboBox()
         Me.comboBox3 = New System.Windows.Forms.ComboBox()
         Me.TabPage2 = New MetroFramework.Controls.MetroTabPage()
+        Me.GroupBox12 = New System.Windows.Forms.GroupBox()
+        Me.CR_Filename = New System.Windows.Forms.ComboBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.HybridMode_CB = New System.Windows.Forms.CheckBox()
         Me.MergeMP4 = New System.Windows.Forms.CheckBox()
-        Me.GB_Sub_Path = New System.Windows.Forms.GroupBox()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
@@ -134,8 +133,6 @@ Partial Class einstellungen
         Me.Label5 = New System.Windows.Forms.Label()
         Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
         Me.MetroStyleExtender1 = New MetroFramework.Components.MetroStyleExtender(Me.components)
-        Me.GroupBox12 = New System.Windows.Forms.GroupBox()
-        Me.CR_Filename = New System.Windows.Forms.ComboBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
@@ -150,8 +147,8 @@ Partial Class einstellungen
         Me.MultiDLSoftSubs.SuspendLayout()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox12.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
-        Me.GB_Sub_Path.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -175,7 +172,6 @@ Partial Class einstellungen
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox12.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolTip1
@@ -184,34 +180,6 @@ Partial Class einstellungen
         Me.ToolTip1.InitialDelay = 500
         Me.ToolTip1.IsBalloon = True
         Me.ToolTip1.ReshowDelay = 100
-        '
-        'RBStaffel
-        '
-        Me.RBStaffel.AutoSize = True
-        Me.RBStaffel.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RBStaffel.ForeColor = System.Drawing.Color.Black
-        Me.RBStaffel.Location = New System.Drawing.Point(24, 21)
-        Me.RBStaffel.Name = "RBStaffel"
-        Me.RBStaffel.Size = New System.Drawing.Size(174, 22)
-        Me.RBStaffel.TabIndex = 1
-        Me.RBStaffel.TabStop = True
-        Me.RBStaffel.Text = "Anime Serie + Staffel"
-        Me.ToolTip1.SetToolTip(Me.RBStaffel, "Erstelle je einen Ordner für den Anime und darin einen für die Staffel")
-        Me.RBStaffel.UseVisualStyleBackColor = True
-        '
-        'RBAnime
-        '
-        Me.RBAnime.AutoSize = True
-        Me.RBAnime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RBAnime.ForeColor = System.Drawing.Color.Black
-        Me.RBAnime.Location = New System.Drawing.Point(285, 21)
-        Me.RBAnime.Name = "RBAnime"
-        Me.RBAnime.Size = New System.Drawing.Size(113, 22)
-        Me.RBAnime.TabIndex = 1
-        Me.RBAnime.TabStop = True
-        Me.RBAnime.Text = "Anime Serie"
-        Me.ToolTip1.SetToolTip(Me.RBAnime, "Erstelle einen Ordner für den Anime, unabhänig der Staffeln")
-        Me.RBAnime.UseVisualStyleBackColor = True
         '
         'pictureBox1
         '
@@ -606,7 +574,6 @@ Partial Class einstellungen
         Me.TabPage2.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
         Me.TabPage2.Controls.Add(Me.GroupBox12)
         Me.TabPage2.Controls.Add(Me.GroupBox4)
-        Me.TabPage2.Controls.Add(Me.GB_Sub_Path)
         Me.TabPage2.Controls.Add(Me.CheckBox1)
         Me.TabPage2.Controls.Add(Me.GroupBox2)
         Me.TabPage2.Controls.Add(Me.GB_Resolution)
@@ -624,6 +591,34 @@ Partial Class einstellungen
         Me.TabPage2.VerticalScrollbarSize = 10
         Me.TabPage2.Visible = False
         '
+        'GroupBox12
+        '
+        Me.GroupBox12.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox12.Controls.Add(Me.CR_Filename)
+        Me.GroupBox12.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox12.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox12.Location = New System.Drawing.Point(8, 144)
+        Me.GroupBox12.Name = "GroupBox12"
+        Me.GroupBox12.Size = New System.Drawing.Size(479, 63)
+        Me.GroupBox12.TabIndex = 53
+        Me.GroupBox12.TabStop = False
+        Me.GroupBox12.Text = "Filename"
+        '
+        'CR_Filename
+        '
+        Me.CR_Filename.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.CR_Filename.DropDownHeight = 250
+        Me.CR_Filename.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CR_Filename.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CR_Filename.FormattingEnabled = True
+        Me.CR_Filename.IntegralHeight = False
+        Me.CR_Filename.ItemHeight = 16
+        Me.CR_Filename.Items.AddRange(New Object() {"[episode number]", "[episode name]", "[episode number] [episode name]"})
+        Me.CR_Filename.Location = New System.Drawing.Point(63, 25)
+        Me.CR_Filename.Name = "CR_Filename"
+        Me.CR_Filename.Size = New System.Drawing.Size(326, 22)
+        Me.CR_Filename.TabIndex = 34
+        '
         'GroupBox4
         '
         Me.GroupBox4.BackColor = System.Drawing.Color.Transparent
@@ -631,9 +626,9 @@ Partial Class einstellungen
         Me.GroupBox4.Controls.Add(Me.MergeMP4)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox4.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox4.Location = New System.Drawing.Point(7, 9)
+        Me.GroupBox4.Location = New System.Drawing.Point(8, 9)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(480, 58)
+        Me.GroupBox4.Size = New System.Drawing.Size(479, 58)
         Me.GroupBox4.TabIndex = 42
         Me.GroupBox4.TabStop = False
         '
@@ -660,27 +655,13 @@ Partial Class einstellungen
         Me.MergeMP4.Text = "Merge soft-subs with video file"
         Me.MergeMP4.UseVisualStyleBackColor = True
         '
-        'GB_Sub_Path
-        '
-        Me.GB_Sub_Path.BackColor = System.Drawing.Color.Transparent
-        Me.GB_Sub_Path.Controls.Add(Me.RBStaffel)
-        Me.GB_Sub_Path.Controls.Add(Me.RBAnime)
-        Me.GB_Sub_Path.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GB_Sub_Path.ForeColor = System.Drawing.Color.Black
-        Me.GB_Sub_Path.Location = New System.Drawing.Point(7, 132)
-        Me.GB_Sub_Path.Name = "GB_Sub_Path"
-        Me.GB_Sub_Path.Size = New System.Drawing.Size(480, 58)
-        Me.GB_Sub_Path.TabIndex = 41
-        Me.GB_Sub_Path.TabStop = False
-        Me.GB_Sub_Path.Text = "Unterordner "
-        '
         'CheckBox1
         '
         Me.CheckBox1.AutoSize = True
         Me.CheckBox1.BackColor = System.Drawing.Color.Transparent
         Me.CheckBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox1.ForeColor = System.Drawing.Color.Black
-        Me.CheckBox1.Location = New System.Drawing.Point(65, 285)
+        Me.CheckBox1.Location = New System.Drawing.Point(66, 219)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(351, 20)
         Me.CheckBox1.TabIndex = 6
@@ -694,7 +675,7 @@ Partial Class einstellungen
         Me.GroupBox2.Enabled = False
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox2.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox2.Location = New System.Drawing.Point(6, 311)
+        Me.GroupBox2.Location = New System.Drawing.Point(7, 245)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(480, 63)
         Me.GroupBox2.TabIndex = 40
@@ -846,9 +827,9 @@ Partial Class einstellungen
         Me.GB_Resolution.Controls.Add(Me.A1080p)
         Me.GB_Resolution.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Resolution.ForeColor = System.Drawing.Color.Black
-        Me.GB_Resolution.Location = New System.Drawing.Point(6, 73)
+        Me.GB_Resolution.Location = New System.Drawing.Point(8, 73)
         Me.GB_Resolution.Name = "GB_Resolution"
-        Me.GB_Resolution.Size = New System.Drawing.Size(481, 53)
+        Me.GB_Resolution.Size = New System.Drawing.Size(479, 53)
         Me.GB_Resolution.TabIndex = 38
         Me.GB_Resolution.TabStop = False
         Me.GB_Resolution.Text = "Auflösung"
@@ -1046,7 +1027,7 @@ Partial Class einstellungen
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(6, 25)
+        Me.Label1.Location = New System.Drawing.Point(6, 20)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(469, 22)
         Me.Label1.TabIndex = 2
@@ -1055,7 +1036,7 @@ Partial Class einstellungen
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(6, 54)
+        Me.TextBox1.Location = New System.Drawing.Point(6, 50)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(469, 22)
         Me.TextBox1.TabIndex = 1
@@ -1097,7 +1078,7 @@ Partial Class einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 45)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 1
+        Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(501, 500)
         Me.TabControl1.TabIndex = 38
         Me.TabControl1.UseSelectable = True
@@ -1472,35 +1453,7 @@ Partial Class einstellungen
         '
         Me.MetroStyleManager1.Owner = Nothing
         '
-        'GroupBox12
-        '
-        Me.GroupBox12.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox12.Controls.Add(Me.CR_Filename)
-        Me.GroupBox12.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox12.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox12.Location = New System.Drawing.Point(11, 195)
-        Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(470, 63)
-        Me.GroupBox12.TabIndex = 53
-        Me.GroupBox12.TabStop = False
-        Me.GroupBox12.Text = "Filename"
-        '
-        'CR_Filename
-        '
-        Me.CR_Filename.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.CR_Filename.DropDownHeight = 250
-        Me.CR_Filename.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CR_Filename.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CR_Filename.FormattingEnabled = True
-        Me.CR_Filename.IntegralHeight = False
-        Me.CR_Filename.ItemHeight = 16
-        Me.CR_Filename.Items.AddRange(New Object() {"[episode number]", "[episode name]", "[episode number] [episode name]"})
-        Me.CR_Filename.Location = New System.Drawing.Point(63, 25)
-        Me.CR_Filename.Name = "CR_Filename"
-        Me.CR_Filename.Size = New System.Drawing.Size(326, 22)
-        Me.CR_Filename.TabIndex = 34
-        '
-        'einstellungen
+        'Einstellungen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -1514,7 +1467,7 @@ Partial Class einstellungen
         Me.ForeColor = System.Drawing.Color.Black
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "einstellungen"
+        Me.Name = "Einstellungen"
         Me.Text = " "
         Me.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1535,10 +1488,9 @@ Partial Class einstellungen
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
+        Me.GroupBox12.ResumeLayout(False)
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
-        Me.GB_Sub_Path.ResumeLayout(False)
-        Me.GB_Sub_Path.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
@@ -1571,7 +1523,6 @@ Partial Class einstellungen
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel2.ResumeLayout(False)
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox12.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1630,9 +1581,6 @@ Partial Class einstellungen
     Friend WithEvents SoftSubs As GroupBox
     Friend WithEvents GB_SubLanguage As GroupBox
     Friend WithEvents ComboBox1 As ComboBox
-    Friend WithEvents GB_Sub_Path As GroupBox
-    Friend WithEvents RBStaffel As RadioButton
-    Friend WithEvents RBAnime As RadioButton
     Friend WithEvents MergeMP4 As CheckBox
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents HybridMode_CB As CheckBox

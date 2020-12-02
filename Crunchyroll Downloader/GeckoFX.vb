@@ -195,6 +195,7 @@ Public Class GeckoFX
                     Main.WebbrowserURL = WebBrowser1.Url.ToString
                     Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                     Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                    Anime_Add.AoDHTML = WebBrowser1.Document.Body.OuterHtml
                     Exit Sub
 
 

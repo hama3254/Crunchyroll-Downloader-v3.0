@@ -32,6 +32,10 @@ Public Class CRD_List_Item
     Dim HybridModePath As String = Nothing
     Dim HybridRunning As Boolean = False
     Dim TargetReso As Integer = 1080
+    Dim HybrideLog As String = Nothing
+
+
+
 #Region "Remove from list"
     Public Sub DisposeItem(ByVal Dispose As Boolean)
         If Dispose = True Then
@@ -143,16 +147,16 @@ Public Class CRD_List_Item
         End If
     End Sub
 
-    Private Sub bt_del_MouseEnter(sender As Object, e As EventArgs) Handles bt_del.MouseEnter
+    Private Sub BT_del_MouseEnter(sender As Object, e As EventArgs) Handles bt_del.MouseEnter
         Dim p As PictureBox = sender
         p.BackgroundImage = My.Resources.main_del_hover
     End Sub
 
-    Private Sub bt_del_MouseLeave(sender As Object, e As EventArgs) Handles bt_del.MouseLeave
+    Private Sub BT_del_MouseLeave(sender As Object, e As EventArgs) Handles bt_del.MouseLeave
         Dim p As PictureBox = sender
         p.BackgroundImage = My.Resources.main_del
     End Sub
-    Private Sub bt_pause_MouseEnter(sender As Object, e As EventArgs) Handles bt_pause.MouseEnter
+    Private Sub BT_pause_MouseEnter(sender As Object, e As EventArgs) Handles bt_pause.MouseEnter
         Dim p As PictureBox = sender
         If StatusRunning = True Then
             p.BackgroundImage = My.Resources.main_pause_hover
@@ -161,7 +165,7 @@ Public Class CRD_List_Item
         End If
     End Sub
 
-    Private Sub bt_pause_MouseLeave(sender As Object, e As EventArgs) Handles bt_pause.MouseLeave
+    Private Sub BT_pause_MouseLeave(sender As Object, e As EventArgs) Handles bt_pause.MouseLeave
         Dim p As PictureBox = sender
         If StatusRunning = True Then
             p.BackgroundImage = My.Resources.main_pause
@@ -170,7 +174,7 @@ Public Class CRD_List_Item
         End If
     End Sub
 
-    Private Sub bt_pause_Click(sender As Object, e As EventArgs) Handles bt_pause.Click
+    Private Sub BT_pause_Click(sender As Object, e As EventArgs) Handles bt_pause.Click
         If Canceld = True And HybridRunning = True Then
 
             If Main.RunningDownloads < Main.MaxDL Then
@@ -333,10 +337,18 @@ Public Class CRD_List_Item
     End Sub
 
 #Region "Download Cache"
-    Private Sub tsDownloadAsync(ByVal DL_URL As String, ByVal DL_Pfad As String)
+
+    Public WithEvents WC_TS As WebClient
+
+
+
+    Private Sub TS_DownloadAsync(ByVal DL_URL As String, ByVal DL_Pfad As String)
+        HybrideLog = HybrideLog + vbNewLine + DL_Pfad + " - " + DL_URL
         Try
-            Dim wc_ts As New WebClient
-            wc_ts.DownloadFile(New Uri(DL_URL), DL_Pfad)
+            'Dim wc_ts As New WebClient
+            WC_TS = New WebClient
+
+            WC_TS.DownloadFile(New Uri(DL_URL), DL_Pfad)
         Catch ex As Exception
             Try
                 Dim wc_ts As New WebClient
@@ -348,7 +360,7 @@ Public Class CRD_List_Item
         End Try
 
     End Sub
-    Private Function tsStatusAsync(ByVal prozent As Integer, ByVal di As IO.DirectoryInfo, ByVal Filename As String, ByVal pausetime As Integer)
+    Private Function TS_StatusAsync(ByVal prozent As Integer, ByVal di As IO.DirectoryInfo, ByVal Filename As String, ByVal pausetime As Integer)
         Dim Now As Date = Date.Now
 
         Dim FinishedSize As Double = 0
@@ -379,11 +391,16 @@ Public Class CRD_List_Item
         ElseIf prozent < 0 Then
             prozent = 0
         End If
-        Me.Invoke(New Action(Function()
-                                 ProgressBar1.Value = prozent
-                                 Label_percent.Text = DataRateString + "MB\s " + Math.Round(FinishedSize, 2, MidpointRounding.AwayFromZero).ToString + "MB/" + Math.Round(AproxFinalSize, 2, MidpointRounding.AwayFromZero).ToString + "MB " + prozent.ToString + "%"
-                                 Return Nothing
-                             End Function))
+        Try
+            Me.Invoke(New Action(Function()
+
+                                     ProgressBar1.Value = prozent
+                                     Label_percent.Text = DataRateString + "MB\s " + Math.Round(FinishedSize, 2, MidpointRounding.AwayFromZero).ToString + "MB/" + Math.Round(AproxFinalSize, 2, MidpointRounding.AwayFromZero).ToString + "MB " + prozent.ToString + "%"
+
+                                     Return Nothing
+                                 End Function))
+        Catch ex As Exception
+        End Try
         'RaiseEvent UpdateUI(Filename, prozent, FinishedSize, AproxFinalSize, Color.FromArgb(247, 140, 37), DataRateString + "MB\s")
 
         Return Nothing
@@ -499,7 +516,6 @@ Public Class CRD_List_Item
         Dim ts_dl As String = Nothing
 
         HybridModePath = Pfad2
-        'MsgBox(HybridModePath)
         If Debug2 = True Then
             MsgBox(Pfad2)
         End If
@@ -539,8 +555,11 @@ Public Class CRD_List_Item
                         Next
                         Return Nothing
                         Exit Function
+                        'ElseIf nummerint < Threads Then
+                        '    Thread.Sleep(2000)
+                        '    Exit For
                     Else
-
+                        Thread.Sleep(1000)
                         Exit For
                     End If
                 Next
@@ -567,15 +586,16 @@ Public Class CRD_List_Item
                     curi = path + textLenght(i)
                 End If
 
-                Dim Evaluator = New Thread(Sub() Me.tsDownloadAsync(curi, Pfad2 + nummer4D + ".ts"))
+                Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(curi, Pfad2 + nummer4D + ".ts"))
                 Evaluator.Start()
                 ThreadList.Add(Evaluator)
-                m3u8FFmpeg = m3u8FFmpeg + Pfad2 + nummer4D + ".ts" + vbLf
+                m3u8FFmpeg = m3u8FFmpeg + Pfad2 + nummer4D + ".ts" + vbLf '+ "#" + curi + vbLf
                 Dim FragmentsFinised = (ThreadList.Count + nummerint) / FragmentsInt * 100
-                tsStatusAsync(FragmentsFinised, di, Filename, PauseTime)
+                TS_StatusAsync(FragmentsFinised, di, Filename, PauseTime)
 
 
             ElseIf textLenght(i) = "#EXT-X-PLAYLIST-TYPE:VOD" Then
+
             ElseIf InStr(textLenght(i), "URI=" + Chr(34)) Then
                 Dim KeyLine As String = textLenght(i)
                 If InStr(KeyLine, "https://") Then
@@ -713,9 +733,13 @@ Public Class CRD_List_Item
                 Exit For
             End If
         Next
-        tsStatusAsync(100, di, Filename, PauseTime)
+        TS_StatusAsync(100, di, Filename, PauseTime)
 
         DL_URL = DL_URL.Replace(m3u8_url(1), Pfad2 + "index" + Folder + ".m3u8")
+
+        Using sink3 As New StreamWriter(Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\hybridelog.log", False, utf8WithoutBom)
+            sink3.WriteLine(HybrideLog)
+        End Using
 
 
         'MsgBox(DL_URL)
@@ -723,7 +747,7 @@ Public Class CRD_List_Item
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
 
         Dim cmd As String = "-allowed_extensions ALL " + DL_URL + " " + DL_Pfad '+ " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
-        ' MsgBox(cmd) -headers " + Chr(34) + "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0" + Chr(34) + 
+        ' MsgBox(cmd) -headers " + Chr(34) + "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0" + Chr(34) +
         If Debug2 = True Then
             MsgBox(cmd)
         End If
@@ -809,7 +833,7 @@ Public Class CRD_List_Item
         '                     End Function))
     End Sub
 
-    Sub ffmpegOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
+    Sub FFMPEGOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
         'timeout = DateTime.Now
         'MsgBox(timeout)
         Try
@@ -928,7 +952,7 @@ Public Class CRD_List_Item
             If HybridMode = True Then
                 Thread.Sleep(5000)
                 Try
-                    System.IO.Directory.Delete(HybridModePath, True)
+                    'System.IO.Directory.Delete(HybridModePath, True)
                 Catch ex As Exception
                 End Try
             End If
@@ -975,7 +999,7 @@ Public Class CRD_List_Item
     End Sub
 #End Region
 
-    Private Sub bt_del_Click(sender As Object, e As EventArgs) Handles bt_del.Click
+    Private Sub BT_del_Click(sender As Object, e As EventArgs) Handles bt_del.Click
         If Canceld = True Then
             If MessageBox.Show("The Download is not running anymore, press ok to remove it from the list.", "Remove from list!", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
                 Exit Sub
@@ -1075,5 +1099,10 @@ Public Class CRD_List_Item
 
         ProgressBar1.Width = Me.Width - 223
     End Sub
+
+
+
+
+
 End Class
 

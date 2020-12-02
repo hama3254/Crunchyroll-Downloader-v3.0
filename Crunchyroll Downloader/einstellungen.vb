@@ -8,9 +8,9 @@ Imports MetroFramework.Forms
 Imports MetroFramework
 Imports MetroFramework.Components
 
-Public Class einstellungen
+Public Class Einstellungen
     Inherits MetroForm
-    Private Sub einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Label6.Text = "Version " + Application.ProductVersion.ToString
         MetroStyleManager1.Style = MetroColorStyle.Orange
         TabControl1.SelectedIndex = 0
@@ -129,9 +129,6 @@ Public Class einstellungen
         Try
             GB_Resolution.Text = Main.GB_Resolution_Text
             GB_SubLanguage.Text = Main.GB_SubLanguage_Text
-            GB_Sub_Path.Text = Main.GB_Sub_Path_Text
-            RBAnime.Text = Main.RBAnime_Text
-            RBStaffel.Text = Main.RBStaffel_Text
             DL_Count_simultaneous.Text = Main.DL_Count_simultaneousText
         Catch ex As Exception
 
@@ -181,11 +178,7 @@ Public Class einstellungen
             ComboBox1.SelectedItem = Main.CB_SuB_Nothing
         End If
 
-        If Main.SubFolder = 1 Then
-            RBAnime.Checked = True
-        ElseIf Main.SubFolder = 2 Then
-            RBStaffel.Checked = True
-        End If
+
         NumericUpDown2.Value = Main.ErrorTolerance
         NumericUpDown1.Value = Main.MaxDL
         TextBox1.Text = Main.Startseite
@@ -402,13 +395,7 @@ Public Class einstellungen
             Main.SaveLog = False
             rk.SetValue("SaveLog", "0", RegistryValueKind.String)
         End If
-        If RBAnime.Checked = True Then
-            Main.SubFolder = 1
-            rk.SetValue("SubFolder", 1, RegistryValueKind.String)
-        ElseIf RBStaffel.Checked = True Then
-            Main.SubFolder = 2
-            rk.SetValue("SubFolder", 2, RegistryValueKind.String)
-        End If
+
         If CheckBox1.Enabled = False Then
 
         Else
@@ -530,23 +517,23 @@ Public Class einstellungen
         Return "CRD-Temp-File-" + HWID
     End Function
 
-    Private Sub pictureBox1_Click(sender As Object, e As EventArgs) Handles pictureBox1.Click
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles pictureBox1.Click
         Me.Close()
     End Sub
 #Region "UI"
-    Private Sub pictureBox1_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox1.MouseEnter
+    Private Sub PictureBox1_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox1.MouseEnter
         pictureBox1.BackColor = SystemColors.Control
     End Sub
 
-    Private Sub pictureBox1_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox1.MouseLeave
+    Private Sub PictureBox1_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox1.MouseLeave
         pictureBox1.BackColor = Color.Transparent
     End Sub
 
-    Private Sub pictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
+    Private Sub PictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
         pictureBox4.Image = My.Resources.crdSettings_Button_SafeExit_hover
     End Sub
 
-    Private Sub pictureBox4_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox4.MouseLeave
+    Private Sub PictureBox4_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox4.MouseLeave
         pictureBox4.Image = My.Resources.crdSettings_Button_SafeExit
     End Sub
 

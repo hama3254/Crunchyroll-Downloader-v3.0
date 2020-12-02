@@ -130,6 +130,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;h1 itemprop=&quot;name&quot;&gt; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property AoD_HTML_Anime_Title() As String
+            Get
+                Return ResourceManager.GetString("AoD_HTML_Anime_Title", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;h3 class=&quot;episodebox-title&quot; title=&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property AoD_HTML_Episode_Title() As String
+            Get
+                Return ResourceManager.GetString("AoD_HTML_Episode_Title", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &quot;image&quot;:&quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property AoD_Image() As String

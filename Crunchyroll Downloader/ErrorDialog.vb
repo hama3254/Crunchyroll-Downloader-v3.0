@@ -91,6 +91,26 @@
                 ComboBox1.SelectedIndex = 0
             Catch ex As Exception
             End Try
+        ElseIf Main.DialogTaskString = "AoD_Resolution" Then
+            StatusLabel.Text = Main.LabelResoNotFoundText
+            Dim ResoList As New List(Of String)
+            Dim m3u8_split As String() = Main.ResoNotFoundString.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = 0 To m3u8_split.Count - 1
+                If InStr(m3u8_split(i), "RESOLUTION=") Then
+                    ResoList.Add(m3u8_split(i))
+                End If
+            Next
+
+            Dim Reso_avaible1 As String() = Main.ResoNotFoundString.Split(New String() {"RESOLUTION="}, System.StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = 0 To ResoList.Count - 1
+                Dim Reso_avaible As String() = ResoList.Item(i).Split(New String() {"RESOLUTION="}, System.StringSplitOptions.RemoveEmptyEntries)
+                ComboBox1.Items.Add(Reso_avaible(1))
+            Next
+            SurroundingSub()
+            Try
+                ComboBox1.SelectedIndex = 0
+            Catch ex As Exception
+            End Try
         End If
 
     End Sub
@@ -142,16 +162,16 @@
         PictureBox9.Image = My.Resources.DialogNotFound_Submit
     End Sub
 
-    Private Sub pictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
+    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
         Main.UserCloseDialog = True
         Me.Close()
     End Sub
 
-    Private Sub pictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
+    Private Sub PictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
         pictureBox3.BackColor = SystemColors.Control
     End Sub
 
-    Private Sub pictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
+    Private Sub PictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
         pictureBox3.BackColor = Color.Transparent
     End Sub
 

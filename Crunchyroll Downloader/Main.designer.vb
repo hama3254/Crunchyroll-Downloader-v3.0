@@ -137,6 +137,7 @@ Partial Class Main
         '
         'Timer1
         '
+        Me.Timer1.Enabled = True
         '
         'Timer2
         '

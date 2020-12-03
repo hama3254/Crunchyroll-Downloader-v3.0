@@ -102,15 +102,15 @@ Partial Class CRD_List_Item
         Me.Label_Reso.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold)
         Me.Label_Reso.Location = New System.Drawing.Point(195, 101)
         Me.Label_Reso.Name = "Label_Reso"
-        Me.Label_Reso.Size = New System.Drawing.Size(99, 19)
+        Me.Label_Reso.Size = New System.Drawing.Size(54, 19)
         Me.Label_Reso.TabIndex = 5
-        Me.Label_Reso.Text = "Resolution"
+        Me.Label_Reso.Text = "1080p"
         '
         'Label_Hardsub
         '
         Me.Label_Hardsub.AutoSize = True
         Me.Label_Hardsub.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.Label_Hardsub.Location = New System.Drawing.Point(300, 101)
+        Me.Label_Hardsub.Location = New System.Drawing.Point(260, 101)
         Me.Label_Hardsub.Name = "Label_Hardsub"
         Me.Label_Hardsub.Size = New System.Drawing.Size(126, 19)
         Me.Label_Hardsub.TabIndex = 6

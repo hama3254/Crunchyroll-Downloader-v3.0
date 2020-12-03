@@ -132,23 +132,6 @@ Public Class Main
         Me.Invalidate()
     End Sub
 
-    Private Sub ListView1_MouseWheel(sender As Object, e As MouseEventArgs) Handles ListView1.MouseWheel
-        Try
-            For s As Integer = 0 To ListView1.Items.Count - 1
-                Dim r As Rectangle = ListView1.Items.Item(s).Bounds
-                ItemList(s).SetBounds(r.X, r.Y, ListView1.Width - 2, r.Height)
-
-                If ItemList(s).GetToDispose() = True Then
-                    ItemList(s).DisposeItem(ItemList(s).GetToDispose())
-                    ItemList.RemoveAt(s)
-                    ListView1.Items.RemoveAt(s)
-                End If
-
-            Next
-        Catch ex As Exception
-
-        End Try
-    End Sub
 
 
     Dim ListViewHeightOffset As Integer = 7
@@ -1286,42 +1269,42 @@ Public Class Main
                 'End If
                 CR_FilenName = CR_Title
                 CR_FilenName_Backup = CR_Title
-                'MsgBox(CR_FilenName)
+            'MsgBox(CR_FilenName)
 
-                If CBool(InStr(WebbrowserText, "<h4>")) Then ' false on movie true on series
-                    Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {"<h4>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {"</h4>"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                    Dim CR_Name_Staffel0_Folge1 As String()
-                    If CBool(InStr(CR_Name_2(0), ",")) Then
-                        CR_Name_Staffel0_Folge1 = CR_Name_2(0).Split(New [Char]() {System.Convert.ToChar(",")}, System.StringSplitOptions.RemoveEmptyEntries)
-                        CR_Anime_Staffel = CR_Name_Staffel0_Folge1(0).Trim()
-                        CR_Anime_Folge = CR_Name_Staffel0_Folge1(1).Trim()
-                        CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
-                    Else
-                        CR_Anime_Staffel = Nothing
-                        CR_Anime_Folge = CR_Name_2(0).Trim()
-                        CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
-                    End If
-
-
-                    Dim CR_Name_4 As String() = CR_Name_1(0).Split(New String() {"class=" + Chr(34) + "text-link" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                    Dim CR_Name_Anime0 As String() = CR_Name_4(CR_Name_4.Length - 1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    CR_Name_Anime0(0) = System.Text.RegularExpressions.Regex.Replace(CR_Name_Anime0(0), "[^\w\\-]", " ")
-                    CR_Anime_Titel = CR_Name_Anime0(0).Trim
-
-                    CR_FilenName_Backup = RemoveExtraSpaces(CR_FilenName)
-
-
-                End If
-                If CBool(InStr(WebbrowserText, "vilos.config.player.pause_screen.text = " + Chr(34))) Then
-
-                    Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {"vilos.config.player.pause_screen.text = " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {Chr(34) + ";"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                    CR_Anime_Name = System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
-                    CR_Anime_Name = RemoveExtraSpaces(CR_Anime_Name)
+            If CBool(InStr(WebbrowserText, "<h4>")) Then ' false on movie true on series
+                Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {"<h4>"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {"</h4>"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                Dim CR_Name_Staffel0_Folge1 As String()
+                If CBool(InStr(CR_Name_2(0), ",")) Then
+                    CR_Name_Staffel0_Folge1 = CR_Name_2(0).Split(New [Char]() {System.Convert.ToChar(",")}, System.StringSplitOptions.RemoveEmptyEntries)
+                    CR_Anime_Staffel = CR_Name_Staffel0_Folge1(0).Trim()
+                    CR_Anime_Folge = CR_Name_Staffel0_Folge1(1).Trim()
+                    CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
+                Else
+                    CR_Anime_Staffel = Nothing
+                    CR_Anime_Folge = CR_Name_2(0).Trim()
+                    CR_Anime_Folge = System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
                 End If
 
-                If CR_NameMethode = 0 Then
+
+                Dim CR_Name_4 As String() = CR_Name_1(0).Split(New String() {"class=" + Chr(34) + "text-link" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                Dim CR_Name_Anime0 As String() = CR_Name_4(CR_Name_4.Length - 1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
+                CR_Name_Anime0(0) = System.Text.RegularExpressions.Regex.Replace(CR_Name_Anime0(0), "[^\w\\-]", " ")
+                CR_Anime_Titel = CR_Name_Anime0(0).Trim
+
+                CR_FilenName_Backup = RemoveExtraSpaces(CR_FilenName)
+
+
+            End If
+
+            If CBool(InStr(WebbrowserText, My.Resources.CR_MediaName)) = True Then ' And CBool(InStr(WebbrowserText, "&rdquo;</h4>")) 
+                Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {My.Resources.CR_MediaName}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {My.Resources.CR_MediaName2}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                CR_Anime_Name = System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
+                CR_Anime_Name = RemoveExtraSpaces(CR_Anime_Name)
+            End If
+
+            If CR_NameMethode = 0 Then
                     If CR_Anime_Staffel = Nothing Then
                         CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Folge
                     Else
@@ -1369,7 +1352,7 @@ Public Class Main
             End If
 
             Pfad2 = Chr(34) + Pfad2 + "\" + CR_FilenName + ".mp4" + Chr(34)
-            Pfad2 = Pfad2.Replace("\\", "\")
+
 #End Region
 #Region "Subs"
             Dim SoftSubs2 As New List(Of String)
@@ -1667,7 +1650,11 @@ Public Class Main
                     ResoHTMLDisplay = ResoHTML(0) + "p"
                 End If
             End If
-            Dim L2Name As String = CR_FilenName_Backup
+            Dim L2Name As String = System.Text.RegularExpressions.Regex.Replace(CR_FilenName_Backup, "[^\w\\-]", " ")
+            If CR_FilenName = Nothing Then
+            Else
+                L2Name = CR_FilenName
+            End If
             If Reso = 42 Then
                 ResoHTMLDisplay = "[Auto]"
             End If
@@ -3067,6 +3054,14 @@ Public Class Main
             Return "text/plain"
         End If
     End Function
+
+    Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub ListView1_RegionChanged(sender As Object, e As EventArgs) Handles ListView1.RegionChanged
+
+    End Sub
 
 
 

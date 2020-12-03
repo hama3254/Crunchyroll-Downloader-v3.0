@@ -237,6 +237,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;h4 id=&quot;showmedia_about_name&quot; class=&quot;strong&quot;&gt;“ ähnelt.
+        '''</summary>
+        Friend ReadOnly Property CR_MediaName() As String
+            Get
+                Return ResourceManager.GetString("CR_MediaName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ”&lt;/h4&gt; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property CR_MediaName2() As String
+            Get
+                Return ResourceManager.GetString("CR_MediaName2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property crdSettings_Background() As System.Drawing.Bitmap

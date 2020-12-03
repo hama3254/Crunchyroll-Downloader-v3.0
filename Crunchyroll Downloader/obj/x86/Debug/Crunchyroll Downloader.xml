@@ -122,6 +122,16 @@ Video Position: 0
   Sucht eine lokalisierte Zeichenfolge, die &lt;meta property=&quot;og:url&quot; content=&quot; ähnelt.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.CR_MediaName">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &lt;h4 id=&quot;showmedia_about_name&quot; class=&quot;strong&quot;&gt;“ ähnelt.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.CR_MediaName2">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die ”&lt;/h4&gt; ähnelt.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.crdSettings_Background">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.

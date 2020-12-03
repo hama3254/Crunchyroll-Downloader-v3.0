@@ -766,7 +766,16 @@ Public Class Anime_Add
                                      TargetReso = 1080
                                  End If
 
-                                 If ComboBox1.Enabled = False Then
+                                 If ComboBox1.Text = "Dub" Then
+                                     For i As Integer = 0 To AoD_DubList.Count - 1
+                                         ProcessList.Add(AoD_DubList(i))
+                                     Next
+
+                                 ElseIf ComboBox1.Text = "OmU" Then
+                                     For i As Integer = 0 To AoD_OmUList.Count - 1
+                                         ProcessList.Add(AoD_OmUList(i))
+                                     Next
+                                 ElseIf ComboBox1.Enabled = False Then
 
                                      If AoD_DubList.Count > 0 Then
                                          For i As Integer = 0 To AoD_DubList.Count - 1
@@ -782,15 +791,6 @@ Public Class Anime_Add
                                          SubExit = True
                                      End If
 
-                                 ElseIf ComboBox1.Text = "Dub" Then
-                                     For i As Integer = 0 To AoD_DubList.Count - 1
-                                         ProcessList.Add(AoD_DubList(i))
-                                     Next
-
-                                 ElseIf ComboBox1.Text = "OmU" Then
-                                     For i As Integer = 0 To AoD_OmuList.Count - 1
-                                         ProcessList.Add(AoD_OmuList(i))
-                                     Next
                                  Else
                                      MsgBox("error 2")
                                      SubExit = True
@@ -999,7 +999,11 @@ Public Class Anime_Add
             Dim client As New WebClient
             client.Encoding = System.Text.Encoding.UTF8
             Dim text As String = client.DownloadString(m3u8_Master_url)
-
+            'Me.Invoke(New Action(Function()
+            '                         MsgBox(m3u8_Master_url)
+            '                         Return Nothing
+            '                     End Function))
+            'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\Test.txt", text, False)
 
             If InStr(text, "RESOLUTION=") Then 'master m3u8 no fragments 
                 Dim new_m3u8() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)

@@ -1369,7 +1369,7 @@ Public Class Main
             End If
 
             Pfad2 = Chr(34) + Pfad2 + "\" + CR_FilenName + ".mp4" + Chr(34)
-
+            Pfad2 = Pfad2.Replace("\\", "\")
 #End Region
 #Region "Subs"
             Dim SoftSubs2 As New List(Of String)
@@ -2108,6 +2108,7 @@ Public Class Main
 
 
             Dim DefaultPath As String = Pfad + "\" + DefaultName + ".mp4"
+            DefaultPath = DefaultPath.Replace("\\", "\")
 #End Region
 
 #Region "Pfad"
@@ -2746,7 +2747,7 @@ Public Class Main
             bytes = clientSocket.Receive(recvBytes, 0, clientSocket.Available, SocketFlags.None)
             htmlReq = Encoding.UTF8.GetString(recvBytes, 0, bytes)
             'MsgBox(htmlReq)
-            My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", htmlReq + vbNewLine, True)
+            'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", htmlReq + vbNewLine, True)
             Dim rootPath As String = Directory.GetCurrentDirectory() & "\WebInterface\"
             ' Set default page
             Dim defaultPage As String = "index.html"

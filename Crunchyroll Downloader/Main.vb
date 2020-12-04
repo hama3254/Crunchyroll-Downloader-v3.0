@@ -3064,6 +3064,32 @@ Public Class Main
     End Sub
 
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
+        Dim rnd As New Random
+        Dim ZufallsZahl As Integer = rnd.Next(1, 33)
+
+        If ZufallsZahl > 30 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue
+            Debug.WriteLine("Blue")
+        ElseIf ZufallsZahl > 25 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Lime
+            Debug.WriteLine("Lime")
+        ElseIf ZufallsZahl > 20 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Magenta
+            Debug.WriteLine("Magenta")
+        ElseIf ZufallsZahl > 15 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Green
+            Debug.WriteLine("Green")
+        ElseIf ZufallsZahl > 10 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Brown
+            Debug.WriteLine("Brown")
+        ElseIf ZufallsZahl > 5 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Purple
+            Debug.WriteLine("Purple")
+        End If
+    End Sub
+
+
 
 
 

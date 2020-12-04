@@ -13,6 +13,7 @@ Public Class Einstellungen
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Label6.Text = "Version " + Application.ProductVersion.ToString
         MetroStyleManager1.Style = MetroColorStyle.Orange
+        'MetroStyleManager1.Theme = MetroThemeStyle.Dark
         TabControl1.SelectedIndex = 0
         Me.StyleManager = MetroStyleManager1
         For i As Integer = 0 To Main.SoftSubs.Count - 1
@@ -206,7 +207,7 @@ Public Class Einstellungen
         End Try
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
+    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
         Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
         If InStr(TextBox1.Text, "https://") Then
             Main.Startseite = TextBox1.Text
@@ -768,6 +769,32 @@ Public Class Einstellungen
 
     Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
         Process.Start("https://github.com/hama3254/metroframework-modern-ui")
+    End Sub
+
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
+        Dim rnd As New Random
+        Dim ZufallsZahl As Integer = rnd.Next(1, 33)
+
+        If ZufallsZahl > 30 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue
+            Debug.WriteLine("Blue")
+        ElseIf ZufallsZahl > 25 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Lime
+            Debug.WriteLine("Lime")
+        ElseIf ZufallsZahl > 20 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Magenta
+            Debug.WriteLine("Magenta")
+        ElseIf ZufallsZahl > 15 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Green
+            Debug.WriteLine("Green")
+        ElseIf ZufallsZahl > 10 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Brown
+            Debug.WriteLine("Brown")
+        ElseIf ZufallsZahl > 5 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Purple
+            Debug.WriteLine("Purple")
+        End If
     End Sub
 
 

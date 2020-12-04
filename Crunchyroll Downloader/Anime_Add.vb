@@ -872,8 +872,22 @@ Public Class Anime_Add
                     Dim AoDTitle0() As String = AoDHTML.Split(New String() {My.Resources.AoD_HTML_Episode_Title}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim AoDTitle00() As String = AoDTitle0(ii + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim AoD_EpisodeSplit() As String = AoDTitle00(0).Split(New String() {" - "}, System.StringSplitOptions.RemoveEmptyEntries)
-                    AoD_Episode_Number = System.Text.RegularExpressions.Regex.Replace(AoD_EpisodeSplit(0), "[^\w\\-]", " ").Trim(" ")
-                    AoD_Episode_Title = System.Text.RegularExpressions.Regex.Replace(AoD_EpisodeSplit(1), "[^\w\\-]", " ").Trim(" ")
+                    If AoD_EpisodeSplit.Count > 2 Then
+                        For i3 As Integer = 1 To AoD_EpisodeSplit.Count - 1
+                            If AoD_Episode_Title = Nothing Then
+                                AoD_Episode_Title = System.Text.RegularExpressions.Regex.Replace(AoD_EpisodeSplit(i3), "[^\w\\-]", " ").Trim(" ")
+                            Else
+                                AoD_Episode_Title = AoD_Episode_Title + " - " + System.Text.RegularExpressions.Regex.Replace(AoD_EpisodeSplit(i3), "[^\w\\-]", " ").Trim(" ")
+
+                            End If
+                        Next
+                        AoD_Episode_Number = System.Text.RegularExpressions.Regex.Replace(AoD_EpisodeSplit(0), "[^\w\\-]", " ").Trim(" ")
+                    Else
+                        AoD_Episode_Number = System.Text.RegularExpressions.Regex.Replace(AoD_EpisodeSplit(0), "[^\w\\-]", " ").Trim(" ")
+                        AoD_Episode_Title = System.Text.RegularExpressions.Regex.Replace(AoD_EpisodeSplit(1), "[^\w\\-]", " ").Trim(" ")
+
+                    End If
+
 
                     Dim AoDTitle3() As String = AoDHTML.Split(New String() {My.Resources.AoD_HTML_Anime_Title}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim AoDTitle4() As String = AoDTitle3(1).Split(New String() {"</h1>"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -881,7 +895,6 @@ Public Class Anime_Add
                         Dim AoD_Anime_Season_split() As String = AoDTitle4(0).Split(New String() {" - "}, System.StringSplitOptions.RemoveEmptyEntries)
                         AoD_Anime_Title = System.Text.RegularExpressions.Regex.Replace(AoD_Anime_Season_split(0), "[^\w\\-]", " ").Trim(" ")
                         AoD_Season = System.Text.RegularExpressions.Regex.Replace(AoD_Anime_Season_split(1), "[^\w\\-]", " ").Trim(" ")
-
                     Else
                         AoD_Anime_Title = System.Text.RegularExpressions.Regex.Replace(AoDTitle4(0), "[^\w\\-]", " ").Trim(" ")
 

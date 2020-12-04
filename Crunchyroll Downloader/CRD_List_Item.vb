@@ -309,6 +309,8 @@ Public Class CRD_List_Item
         ProgressBar1.SetBounds(195, locationY + 70, 601, 20)
         PictureBox5.Location = New Point(0, 136)
         PictureBox5.Height = 6
+
+
     End Sub
 
     Public Function GetTextBound()
@@ -952,7 +954,7 @@ Public Class CRD_List_Item
             If HybridMode = True Then
                 Thread.Sleep(5000)
                 Try
-                    'System.IO.Directory.Delete(HybridModePath, True)
+                    System.IO.Directory.Delete(HybridModePath, True)
                 Catch ex As Exception
                 End Try
             End If
@@ -1100,9 +1102,33 @@ Public Class CRD_List_Item
         ProgressBar1.Width = Me.Width - 223
     End Sub
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
+        Dim rnd As New Random
+        Dim ZufallsZahl As Integer = rnd.Next(1, 33)
 
+        If ZufallsZahl > 30 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue
+            Debug.WriteLine("Blue")
+        ElseIf ZufallsZahl > 25 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Lime
+            Debug.WriteLine("Lime")
+        ElseIf ZufallsZahl > 20 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Magenta
+            Debug.WriteLine("Magenta")
+        ElseIf ZufallsZahl > 15 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Green
+            Debug.WriteLine("Green")
+        ElseIf ZufallsZahl > 10 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Brown
+            Debug.WriteLine("Brown")
+        ElseIf ZufallsZahl > 5 Then
+            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Purple
+            Debug.WriteLine("Purple")
+        End If
+    End Sub
 
+    Private Sub Label_Anime_Click(sender As Object, e As EventArgs) Handles ProgressBar1.Click, PB_Thumbnail.Click, MyBase.Click, Label_website.Click, Label_Reso.Click, Label_percent.Click, Label_Anime.Click
 
-
+    End Sub
 End Class
 

@@ -36,13 +36,16 @@ Partial Class CRD_List_Item
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ViewInExplorerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PlaybackVideoFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ProgressBar1 = New MetroFramework.Controls.MetroProgressBar()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
+        Me.ProgressBar1 = New MetroFramework.Controls.MetroProgressBar()
+        Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
+        Me.MetroStyleExtender1 = New MetroFramework.Components.MetroStyleExtender(Me.components)
         CType(Me.PB_Thumbnail, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_pause, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_del, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PB_Thumbnail
@@ -149,13 +152,6 @@ Partial Class CRD_List_Item
         Me.PlaybackVideoFileToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.PlaybackVideoFileToolStripMenuItem.Text = "playback video file"
         '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(195, 70)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(615, 20)
-        Me.ProgressBar1.TabIndex = 9
-        '
         'PictureBox5
         '
         Me.PictureBox5.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.balken
@@ -166,6 +162,18 @@ Partial Class CRD_List_Item
         Me.PictureBox5.Size = New System.Drawing.Size(838, 6)
         Me.PictureBox5.TabIndex = 68
         Me.PictureBox5.TabStop = False
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(195, 70)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(615, 20)
+        Me.ProgressBar1.TabIndex = 9
+        '
+        'MetroStyleManager1
+        '
+        Me.MetroStyleManager1.Owner = Me
+        Me.MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Orange
         '
         'CRD_List_Item
         '
@@ -188,6 +196,7 @@ Partial Class CRD_List_Item
         CType(Me.bt_del, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ContextMenuStrip1.ResumeLayout(False)
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -208,4 +217,6 @@ Partial Class CRD_List_Item
     Friend WithEvents PlaybackVideoFileToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ProgressBar1 As MetroFramework.Controls.MetroProgressBar
     Friend WithEvents PictureBox5 As PictureBox
+    Friend WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
+    Friend WithEvents MetroStyleExtender1 As MetroFramework.Components.MetroStyleExtender
 End Class

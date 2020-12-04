@@ -1451,7 +1451,7 @@ Partial Class Einstellungen
         '
         'MetroStyleManager1
         '
-        Me.MetroStyleManager1.Owner = Nothing
+        Me.MetroStyleManager1.Owner = Me
         '
         'Einstellungen
         '
@@ -1637,4 +1637,5 @@ Partial Class Einstellungen
     Friend WithEvents CheckBox1 As CheckBox
     Friend WithEvents GroupBox12 As GroupBox
     Friend WithEvents CR_Filename As ComboBox
+    Friend WithEvents Button1 As Button
 End Class

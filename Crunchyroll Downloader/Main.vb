@@ -13,6 +13,13 @@ Imports MetroFramework.Components
 Public Class Main
     Inherits MetroForm
 
+    Public Manager As New MetroStyleManager
+
+
+
+
+
+
     Public ErrorTolerance As Integer = 0
     Public liList As New List(Of String)
     Public HTMLString As String = My.Resources.Startuphtml
@@ -241,6 +248,7 @@ Public Class Main
     Private Sub Form8_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim tbtl As TextBoxTraceListener = New TextBoxTraceListener(TheTextBox)
         Debug.Listeners.Add(tbtl)
+
         'Try
         '    Dim SettingsDone As Boolean = False
         '    Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
@@ -248,9 +256,13 @@ Public Class Main
         'Catch ex As Exception
         '    FirstStartup.ShowDialog()
         'End Try
-        MetroStyleManager1.Style = MetroColorStyle.Orange
+        'Dim Style As New MetroStyleManager
 
-        Me.StyleManager = MetroStyleManager1
+        Manager.Style = MetroColorStyle.Orange
+        Manager.Theme = MetroThemeStyle.Light
+        Me.StyleManager = Manager
+        Manager.Owner = Me
+
 
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
@@ -537,7 +549,7 @@ Public Class Main
         Dim Thumbnail As Image = My.Resources.main_del
         Try
             Dim wc As New WebClient()
-            wc.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0")
+            wc.Headers.Add(My.Resources.ffmpeg_user_agend)
             Dim bytes As Byte() = wc.DownloadData(ThumbnialURL)
             Dim ms As New MemoryStream(bytes)
             Thumbnail = System.Drawing.Image.FromStream(ms)
@@ -1351,7 +1363,7 @@ Public Class Main
                 End Try
             End If
 
-            Pfad2 = Chr(34) + Pfad2 + "\" + CR_FilenName + ".mp4" + Chr(34)
+            Pfad2 = Chr(34) + Pfad2 + CR_FilenName + ".mp4" + Chr(34)
 
 #End Region
 #Region "Subs"
@@ -2094,8 +2106,8 @@ Public Class Main
             End If
 
 
-            Dim DefaultPath As String = Pfad + "\" + DefaultName + ".mp4"
-            DefaultPath = DefaultPath.Replace("\\", "\")
+            'Dim DefaultPath As String = Pfad + "\" + DefaultName + ".mp4"
+            'DefaultPath = DefaultPath.Replace("\\", "\")
 #End Region
 
 #Region "Pfad"
@@ -2116,7 +2128,7 @@ Public Class Main
 
 
 
-            DownloadPfad = UseSubfolder(FunimationTitle, FunimationEpisode, Pfad)
+            DownloadPfad = UseSubfolder(FunimationTitle, FunimationSeason, Pfad)
 
             If Not Directory.Exists(Path.GetDirectoryName(DownloadPfad)) Then
                 ' Nein! Jetzt erstellen...
@@ -2443,10 +2455,12 @@ Public Class Main
                 Else
                     ffmpeg_hardsub = ffmpeg_command
                 End If
-
+                'MsgBox(HardSubSplittString)
                 Dim HardSubTitle() As String = PlayerPage.Split(New String() {HardSubSplittString}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim HardSubTitle2() As String = HardSubTitle(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                UsedSub = HardSubTitle2(0)
+
+                UsedSub = HardSubTitle2(HardSubTitle2.Count - 1)
+                'MsgBox(UsedSub)
                 Dim SubText As String = client0.DownloadString(UsedSub)
                 Dim SubtitelFormat As String = ".srt"
                 If InStr(UsedSub, ".vtt") Then
@@ -2526,7 +2540,7 @@ Public Class Main
                     For i As Integer = 0 To UsedSubs.Count - 1
                         Dim SoftSub As String() = UsedSubs.Item(i).Split(New String() {" , "}, System.StringSplitOptions.RemoveEmptyEntries)
                         If SoftSubMergeURLs = Nothing Then
-                            SoftSubMergeURLs = " -i " + Chr(34) + SoftSub(0) + Chr(34)
+                            SoftSubMergeURLs = " -headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + SoftSub(0) + Chr(34)
                         Else
                             SoftSubMergeURLs = SoftSubMergeURLs + " -i " + Chr(34) + SoftSub(0) + Chr(34)
                         End If
@@ -3055,43 +3069,9 @@ Public Class Main
         End If
     End Function
 
-    Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub ListView1_RegionChanged(sender As Object, e As EventArgs) Handles ListView1.RegionChanged
-
-    End Sub
-
-
     Private Sub Button1_Click(sender As Object, e As EventArgs)
-        Dim rnd As New Random
-        Dim ZufallsZahl As Integer = rnd.Next(1, 33)
-
-        If ZufallsZahl > 30 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue
-            Debug.WriteLine("Blue")
-        ElseIf ZufallsZahl > 25 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Lime
-            Debug.WriteLine("Lime")
-        ElseIf ZufallsZahl > 20 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Magenta
-            Debug.WriteLine("Magenta")
-        ElseIf ZufallsZahl > 15 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Green
-            Debug.WriteLine("Green")
-        ElseIf ZufallsZahl > 10 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Brown
-            Debug.WriteLine("Brown")
-        ElseIf ZufallsZahl > 5 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Purple
-            Debug.WriteLine("Purple")
-        End If
+        ErrorDialog.Show()
     End Sub
-
-
-
-
 
 
 #End Region

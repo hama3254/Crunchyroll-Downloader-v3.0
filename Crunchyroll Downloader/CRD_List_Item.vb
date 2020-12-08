@@ -788,7 +788,7 @@ Public Class CRD_List_Item
 
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
-        Dim cmd As String = "-headers " + Chr(34) + "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        Dim cmd As String = "-headers " + My.Resources.ffmpeg_user_agend + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
 
         If Debug2 = True Then
             MsgBox(cmd)
@@ -984,7 +984,7 @@ Public Class CRD_List_Item
             'MsgBox(BaseURL + SiteList(i) + vbNewLine + Pfad_DL + "\" + SiteList(i))
             Dim iWert As Integer = i
             Using client As New WebClient()
-                client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0")
+                client.Headers.Add(My.Resources.ffmpeg_user_agend)
                 client.DownloadFile(BaseURL + SiteList(i), Pfad_DL + "\" + SiteList(i))
                 Pause(1)
             End Using

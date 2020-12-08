@@ -114,7 +114,6 @@ D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crun
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.exe
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.xml
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.pdb
-D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.FirstStartup.resources
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe.config
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.pdb

@@ -175,7 +175,8 @@ Partial Class Main
         '
         'MetroStyleManager1
         '
-        Me.MetroStyleManager1.Owner = Nothing
+        Me.MetroStyleManager1.Owner = Me
+        Me.MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Orange
         '
         'PictureBox1
         '
@@ -240,6 +241,6 @@ Partial Class Main
     Friend WithEvents TheTextBox As RichTextBox
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents MetroStyleExtender1 As MetroFramework.Components.MetroStyleExtender
-    Friend WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
     Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
 End Class

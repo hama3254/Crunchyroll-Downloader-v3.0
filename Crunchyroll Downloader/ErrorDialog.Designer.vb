@@ -1,6 +1,6 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class ErrorDialog
-    Inherits System.Windows.Forms.Form
+    Inherits MetroFramework.Forms.MetroForm
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
     <System.Diagnostics.DebuggerNonUserCode()>
@@ -97,7 +97,7 @@ Partial Class ErrorDialog
         Me.StatusLabel.Text = "Status: idle"
         Me.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'Reso
+        'ErrorDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -105,9 +105,7 @@ Partial Class ErrorDialog
         Me.ClientSize = New System.Drawing.Size(380, 280)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.pictureBox3)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "Reso"
-        Me.Text = "crunchyroll downloader"
+        Me.Name = "ErrorDialog"
         CType(Me.pictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()

@@ -353,7 +353,7 @@ Public Class Anime_Add
                             Try
                             Using client As New WebClient()
                                 client.Encoding = System.Text.Encoding.UTF8
-                                client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
+                                client.Headers.Add(My.Resources.ffmpeg_user_agend)
                                 client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
                                 client.Headers.Add("Accept-Encoding: gzip, deflate, br")
                                 client.Headers.Add("X-Requested-With: XMLHttpRequest")
@@ -386,7 +386,7 @@ Public Class Anime_Add
                             Try
                             Using client As New WebClient()
                                 client.Encoding = System.Text.Encoding.UTF8
-                                client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
+                                client.Headers.Add(My.Resources.ffmpeg_user_agend)
                                 client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
                                 client.Headers.Add("Accept-Encoding: gzip, deflate, br")
                                 client.Headers.Add("X-Requested-With: XMLHttpRequest")

@@ -131,8 +131,6 @@ Partial Class Einstellungen
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
-        Me.MetroStyleExtender1 = New MetroFramework.Components.MetroStyleExtender(Me.components)
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
@@ -171,7 +169,6 @@ Partial Class Einstellungen
         Me.TabPage7.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
-        CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ToolTip1
@@ -1449,10 +1446,6 @@ Partial Class Einstellungen
         Me.Label5.Text = "Created by hama3254"
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'MetroStyleManager1
-        '
-        Me.MetroStyleManager1.Owner = Me
-        '
         'Einstellungen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1522,7 +1515,6 @@ Partial Class Einstellungen
         Me.TabPage7.ResumeLayout(False)
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel2.ResumeLayout(False)
-        CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1603,8 +1595,6 @@ Partial Class Einstellungen
     Private WithEvents TabPage1 As MetroFramework.Controls.MetroTabPage
     Private WithEvents TabControl1 As MetroFramework.Controls.MetroTabControl
     Private WithEvents TabPage6 As MetroFramework.Controls.MetroTabPage
-    Private WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
-    Friend WithEvents MetroStyleExtender1 As MetroFramework.Components.MetroStyleExtender
     Friend WithEvents TabPage7 As TabPage
     Friend WithEvents Panel2 As Panel
     Public WithEvents Label8 As Label

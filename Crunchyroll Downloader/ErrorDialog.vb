@@ -40,6 +40,7 @@
 #End Region
 
     Private Sub Reso_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' Me.StyleManager = Main.StyleManager
         'ButtonResoNotFound.Text = Main.ButtonResoNotFoundText
         Try
             Me.Icon = My.Resources.icon

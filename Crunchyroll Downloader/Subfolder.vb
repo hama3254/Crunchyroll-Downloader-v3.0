@@ -7,7 +7,7 @@
 
 
     Public Function UseSubfolder(ByVal Series As String, ByVal Season As String, ByVal Path As String)
-        Dim newPath As String = Path
+        Dim newPath As String = Path + "\"
 
         If SubFolder_Value = SubFolder_automatic Then
 

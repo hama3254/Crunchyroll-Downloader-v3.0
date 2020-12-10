@@ -3,6 +3,9 @@ Imports System.Net
 Imports Gecko
 Imports System.IO
 Imports System.Threading
+Imports MetroFramework.Forms
+Imports MetroFramework
+Imports MetroFramework.Components
 
 Public Class Anime_Add
     Public Mass_DL_Cancel As Boolean = False
@@ -36,8 +39,14 @@ Public Class Anime_Add
             ComboBox2.Text = SubFolder_Nothing
         End Try
     End Sub
+    Dim Manager As MetroStyleManager = Main.Manager
+
 
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        Manager.Owner = Me
+        Me.StyleManager = Manager
+        pictureBox3.Image = Main.CloseImg
 
         Try
             Me.Icon = My.Resources.icon
@@ -171,54 +180,19 @@ Public Class Anime_Add
         End If
     End Sub
 
-#Region " Move Form "
 
-    ' [ Move Form ]
-    '
-    ' // By Elektro 
 
-    Public MoveForm As Boolean
-    Public MoveForm_MousePosition As Point
 
-    Public Sub MoveForm_MouseDown(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseDown ' Add more handles here (Example: PictureBox1.MouseDown)
-
-        If e.Button = MouseButtons.Left Then
-            MoveForm = True
-            Me.Cursor = Cursors.NoMove2D
-            MoveForm_MousePosition = e.Location
-        End If
-
+    Private Sub Btn_Close_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
+        Dim PB As PictureBox = sender
+        PB.Image = My.Resources.main_del
     End Sub
 
-    Public Sub MoveForm_MouseMove(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseMove ' Add more handles here (Example: PictureBox1.MouseMove)
-
-        If MoveForm Then
-            Me.Location = Me.Location + (e.Location - MoveForm_MousePosition)
-        End If
-
+    Private Sub Btn_Close_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
+        Dim PB As PictureBox = sender
+        PB.Image = Main.CloseImg
     End Sub
 
-    Public Sub MoveForm_MouseUp(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseUp ' Add more handles here (Example: PictureBox1.MouseUp)
-
-        If e.Button = MouseButtons.Left Then
-            MoveForm = False
-            Me.Cursor = Cursors.Default
-        End If
-
-    End Sub
-
-
-#End Region
-    Private Sub PictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
-        pictureBox3.BackColor = SystemColors.Control
-    End Sub
-
-    Private Sub PictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
-        pictureBox3.BackColor = Color.Transparent
-    End Sub
 
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
         Main.ListBoxList.Clear()
@@ -349,11 +323,12 @@ Public Class Anime_Add
                             Dim OmUStreamSplitEpisodeIndex() As String = OmUStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
                             Dim OmUStreamSplitEpisodeIndex2() As String = OmUStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
                             Dim m3u8Strings As String = Nothing
-                            'I/nsHttp   Cookie: 
-                            Try
+                        'I/nsHttp   Cookie: 
+
+                        Try
                             Using client As New WebClient()
                                 client.Encoding = System.Text.Encoding.UTF8
-                                client.Headers.Add(My.Resources.ffmpeg_user_agend)
+                                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
                                 client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
                                 client.Headers.Add("Accept-Encoding: gzip, deflate, br")
                                 client.Headers.Add("X-Requested-With: XMLHttpRequest")
@@ -386,7 +361,7 @@ Public Class Anime_Add
                             Try
                             Using client As New WebClient()
                                 client.Encoding = System.Text.Encoding.UTF8
-                                client.Headers.Add(My.Resources.ffmpeg_user_agend)
+                                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
                                 client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
                                 client.Headers.Add("Accept-Encoding: gzip, deflate, br")
                                 client.Headers.Add("X-Requested-With: XMLHttpRequest")
@@ -539,19 +514,32 @@ Public Class Anime_Add
 
 
 
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem
-        Dim CB As ComboBox = sender
-        CB.BackColor = Color.White
-        If e.Index >= 0 Then
-            Using st As New StringFormat With {.Alignment = StringAlignment.Center}
-                ' e.DrawBackground()
-                ' e.DrawFocusRectangle()
-                e.Graphics.FillRectangle(SystemBrushes.ControlLightLight, e.Bounds)
-                e.Graphics.DrawString(CB.Items(e.Index).ToString, e.Font, Brushes.Black, e.Bounds, st)
+    'Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem
+    '    Dim CB As ComboBox = sender
+    '    'CB.BackColor = Color.DarkGray
+    '    If Main.DarkModeValue = True Then
+    '        If e.Index >= 0 Then
+    '            Using st As New StringFormat With {.Alignment = StringAlignment.Center}
+    '                ' e.DrawBackground()
+    '                ' e.DrawFocusRectangle()
+    '                e.Graphics.FillRectangle(Brushes.Black, e.Bounds)
+    '                e.Graphics.DrawString(CB.Items(e.Index).ToString, e.Font, SystemBrushes.ControlLightLight, e.Bounds, st)
 
-            End Using
-        End If
-    End Sub
+    '            End Using
+    '        End If
+    '    Else
+    '        If e.Index >= 0 Then
+    '            Using st As New StringFormat With {.Alignment = StringAlignment.Center}
+    '                ' e.DrawBackground()
+    '                ' e.DrawFocusRectangle()
+    '                e.Graphics.FillRectangle(SystemBrushes.ControlLightLight, e.Bounds)
+    '                e.Graphics.DrawString(CB.Items(e.Index).ToString, e.Font, Brushes.Black, e.Bounds, st)
+
+    '            End Using
+    '        End If
+    '    End If
+
+    'End Sub
 
     Private Sub PictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
         If Mass_DL_Cancel = True Then
@@ -1158,7 +1146,7 @@ Public Class Anime_Add
             End If
             Dim L1Name As String = "anime-on-demand.de" 'L1Name_Split(1).Replace("www.", "") + " | Dub : " + FunimationDub
             Me.Invoke(New Action(Function()
-                                     Main.ListItemAdd(Pfad2, L1Name, AoDTitle, DisplayReso, "Unknown", "None", AoDThumbnail, AoDm3u8Final, DownloadPfad)
+                                     Main.ListItemAdd(Pfad2, L1Name, AoDTitle, DisplayReso, "Unknown", "None", AoDThumbnail, AoDm3u8Final, DownloadPfad, "AoD")
                                      Main.liList.Add(My.Resources.htmlvorThumbnail + AoDThumbnail + My.Resources.htmlnachTumbnail + "<br>" + AoDTitle + My.Resources.htmlvorAufloesung + "[Auto]" + My.Resources.htmlvorSoftSubs + vbNewLine + "None" + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + AoDTitle + "-->")
 
                                      Return Nothing

@@ -38,7 +38,6 @@ Partial Class Main
         Me.PictureBox6 = New System.Windows.Forms.PictureBox()
         Me.MetroStyleExtender1 = New MetroFramework.Components.MetroStyleExtender(Me.components)
         Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         CType(Me.Btn_add, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Btn_Settings, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -46,7 +45,6 @@ Partial Class Main
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Btn_add
@@ -126,6 +124,7 @@ Partial Class Main
         '
         'PictureBox5
         '
+        Me.PictureBox5.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox5.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.balken
         Me.PictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.PictureBox5.Location = New System.Drawing.Point(1, 65)
@@ -163,6 +162,7 @@ Partial Class Main
         '
         'PictureBox6
         '
+        Me.PictureBox6.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox6.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.balken
         Me.PictureBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
@@ -178,24 +178,12 @@ Partial Class Main
         Me.MetroStyleManager1.Owner = Me
         Me.MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Orange
         '
-        'PictureBox1
-        '
-        Me.PictureBox1.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.Main_top
-        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.PictureBox1.Location = New System.Drawing.Point(1, 0)
-        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(0)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(840, 1)
-        Me.PictureBox1.TabIndex = 70
-        Me.PictureBox1.TabStop = False
-        '
         'Main
         '
         Me.ApplyImageInvert = True
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle
         Me.ClientSize = New System.Drawing.Size(842, 630)
-        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.TheTextBox)
         Me.Controls.Add(Me.PictureBox6)
         Me.Controls.Add(Me.PictureBox5)
@@ -222,7 +210,6 @@ Partial Class Main
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -241,6 +228,5 @@ Partial Class Main
     Friend WithEvents TheTextBox As RichTextBox
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents MetroStyleExtender1 As MetroFramework.Components.MetroStyleExtender
-    Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
 End Class

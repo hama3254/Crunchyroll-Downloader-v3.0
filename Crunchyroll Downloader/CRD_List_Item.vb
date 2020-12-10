@@ -4,8 +4,16 @@ Imports System.IO
 Imports System.Threading
 Imports Microsoft.Win32
 Imports System.ComponentModel
+Imports MetroFramework
+Imports MetroFramework.Components
+Imports MetroFramework.Forms
 
 Public Class CRD_List_Item
+    Inherits Controls.MetroUserControl
+
+
+
+
     Dim ZeitGesamtInteger As Integer = 0
     Dim ListOfStreams As New List(Of String)
     Dim proc As Process
@@ -33,6 +41,7 @@ Public Class CRD_List_Item
     Dim HybridRunning As Boolean = False
     Dim TargetReso As Integer = 1080
     Dim HybrideLog As String = Nothing
+    Dim Service As String = "CR"
 
 
 
@@ -51,6 +60,11 @@ Public Class CRD_List_Item
         Label_website.Text = Text
         Label_website_Text = Text
     End Sub
+
+    Public Sub SetTheme(ByVal Theme As MetroThemeStyle)
+        MetroStyleManager1.Theme = Theme
+    End Sub
+
     Public Sub SetTolerance(ByVal value As Integer)
         Item_ErrorTolerance = value
     End Sub
@@ -129,6 +143,9 @@ Public Class CRD_List_Item
     End Sub
     Public Sub SetTargetReso(ByVal Value As Integer)
         TargetReso = Value
+    End Sub
+    Public Sub SetService(ByVal Value As String)
+        Service = Value
     End Sub
 #End Region
     Public Sub KillRunningTask()
@@ -295,26 +312,27 @@ Public Class CRD_List_Item
     End Sub
     Private Sub Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.ContextMenuStrip = ContextMenuStrip1 '.ContextMenu
-        Dim locationY As Integer = 0
-        bt_del.SetBounds(775, locationY + 10, 35, 29)
-        bt_pause.SetBounds(740, locationY + 15, 25, 20)
-        PB_Thumbnail.SetBounds(11, 20, 168, 95)
-        PB_Thumbnail.BringToFront()
-        Label_website.Location = New Point(195, locationY + 15)
-        Label_Anime.Location = New Point(195, locationY + 42)
-        Label_Reso.Location = New Point(195, locationY + 101)
-        Label_Hardsub.Location = New Point(260, locationY + 101)
-        Label_percent.SetBounds(432, locationY + 101, 378, 19)
-        Label_percent.AutoSize = False
-        ProgressBar1.SetBounds(195, locationY + 70, 601, 20)
-        PictureBox5.Location = New Point(0, 136)
-        PictureBox5.Height = 6
+        'bt_del.SetBounds(775, 10, 35, 29)
+        'bt_pause.SetBounds(740, 15, 25, 20)
+        'PB_Thumbnail.SetBounds(11, 20, 168, 95)
+        'PB_Thumbnail.BringToFront()
+        'Label_website.Location = New Point(195, 15)
+        'Label_Anime.Location = New Point(195, 37)
+        'Label_Reso.Location = New Point(195, 97)
+        'Label_Hardsub.Location = New Point(265, 97)
+        'Label_percent.SetBounds(432, 97, 378, 27)
+        'Label_percent.AutoSize = False
+        'ProgressBar1.SetBounds(195, 70, 601, 20)
+        'PictureBox5.Location = New Point(0, 136)
+        'PictureBox5.Height = 6
 
 
+        'MetroStyleManager1.Theme = Main.Manager.Theme
     End Sub
 
     Public Function GetTextBound()
-        Return Label_website.Location.Y
+        'Return Label_website.Location.Y
+        Return bt_del.Size.Height
     End Function
 
 
@@ -322,6 +340,9 @@ Public Class CRD_List_Item
 
     Public Sub StartDownload(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String, ByVal DownloadHybridMode As Boolean)
         'MsgBox(DL_URL)
+
+        Me.StyleManager = MetroStyleManager1
+
         DownloadPfad = DL_Pfad
         HistoryDL_URL = DL_URL
         HistoryDL_Pfad = DL_Pfad
@@ -411,7 +432,7 @@ Public Class CRD_List_Item
 
     Public Function DownloadHybrid(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
         'MsgBox(DL_URL)
-        Dim Folder As String = einstellungen.GeräteID()
+        Dim Folder As String = Einstellungen.GeräteID()
         Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
         If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
             ' Nein! Jetzt erstellen...
@@ -433,40 +454,40 @@ Public Class CRD_List_Item
                                  End Function))
 
             For i As Integer = 1 To MergeSub.Count - 1
-                    Dim SubsURL As String() = MergeSub(i).Split(New [Char]() {Chr(34)})
-                    Dim SubsClient As New WebClient
-                    SubsClient.Encoding = Encoding.UTF8
-                    If Main.WebbrowserCookie = Nothing Then
-                    Else
-                        SubsClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
-                    End If
-                    Dim SubsFile As String = einstellungen.GeräteID() + ".txt"
+                Dim SubsURL As String() = MergeSub(i).Split(New [Char]() {Chr(34)})
+                Dim SubsClient As New WebClient
+                SubsClient.Encoding = Encoding.UTF8
+                If Main.WebbrowserCookie = Nothing Then
+                Else
+                    SubsClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
+                End If
+                Dim SubsFile As String = Einstellungen.GeräteID() + ".txt"
 
-                    Dim retry As Boolean = True
-                    Dim retryCount As Integer = 3
-                    While retry
-                        Try
-                            SubsClient.DownloadFile(SubsURL(0), Pfad2 + "\" + SubsFile)
+                Dim retry As Boolean = True
+                Dim retryCount As Integer = 3
+                While retry
+                    Try
+                        SubsClient.DownloadFile(SubsURL(0), Pfad2 + "\" + SubsFile)
+                        retry = False
+                    Catch ex As Exception
+                        If retryCount > 0 Then
+                            retryCount = retryCount - 1
+                            Me.Invoke(New Action(Function()
+                                                     Label_percent.Text = "Error Downloading Subtitles - retrying"
+                                                     Return Nothing
+                                                 End Function))
+
+                        Else
+                            Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                            Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
+                                sink.WriteLine(My.Resources.ass_template)
+                            End Using
                             retry = False
-                        Catch ex As Exception
-                            If retryCount > 0 Then
-                                retryCount = retryCount - 1
-                                Me.Invoke(New Action(Function()
-                                                         Label_percent.Text = "Error Downloading Subtitles - retrying"
-                                                         Return Nothing
-                                                     End Function))
-
-                            Else
-                                Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
-                                Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
-                                    sink.WriteLine(My.Resources.ass_template)
-                                End Using
-                                retry = False
-                            End If
-                        End Try
-                    End While
-                    DL_URL = DL_URL.Replace(SubsURL(0), Pfad2 + "\" + SubsFile)
-                Next
+                        End If
+                    End Try
+                End While
+                DL_URL = DL_URL.Replace(SubsURL(0), Pfad2 + "\" + SubsFile)
+            Next
 
         End If
         Dim m3u8_url As String() = DL_URL.Split(New [Char]() {Chr(34)})
@@ -485,28 +506,28 @@ Public Class CRD_List_Item
             End If
 
             For i As Integer = 0 To new_m3u8_2.Count - 1
-                    'MsgBox("x" + Main.Resu.ToString)
-                    If CBool(InStr(new_m3u8_2(i), "x" + TargetReso.ToString)) = True Then
-                        m3u8_url_1 = new_m3u8_2(i + 1)
-                        Exit For
-                    End If
-                Next
-                If InStr(m3u8_url_1, "https://") Then
-                    text = client0.DownloadString(m3u8_url_1)
-                Else
-                    Dim c() As String = New Uri(m3u8_url_3).Segments
-                    Dim path As String = "https://" + New Uri(m3u8_url_3).Host
-                    For i3 As Integer = 0 To c.Count - 2
-                        path = path + c(i3)
-                    Next
-                    m3u8_url_3 = path + m3u8_url_1
-                    'MsgBox(m3u8_url_1)
-                    text = client0.DownloadString(m3u8_url_3)
+                'MsgBox("x" + Main.Resu.ToString)
+                If CBool(InStr(new_m3u8_2(i), "x" + TargetReso.ToString)) = True Then
+                    m3u8_url_1 = new_m3u8_2(i + 1)
+                    Exit For
                 End If
-
-
-
+            Next
+            If InStr(m3u8_url_1, "https://") Then
+                text = client0.DownloadString(m3u8_url_1)
+            Else
+                Dim c() As String = New Uri(m3u8_url_3).Segments
+                Dim path As String = "https://" + New Uri(m3u8_url_3).Host
+                For i3 As Integer = 0 To c.Count - 2
+                    path = path + c(i3)
+                Next
+                m3u8_url_3 = path + m3u8_url_1
+                'MsgBox(m3u8_url_1)
+                text = client0.DownloadString(m3u8_url_3)
             End If
+
+
+
+        End If
         Dim LoadedKeys As New List(Of String)
         LoadedKeys.Add("Nothing")
         Dim KeyFileCache As String = Nothing
@@ -612,7 +633,7 @@ Public Class CRD_List_Item
                         Else
                             KeyClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
                         End If
-                        Dim KeyFile3 As String = einstellungen.GeräteID() + ".key"
+                        Dim KeyFile3 As String = Einstellungen.GeräteID() + ".key"
                         KeyFileCache = KeyFile3
 
                         Dim retry As Boolean = True
@@ -620,7 +641,7 @@ Public Class CRD_List_Item
 
                         Try
                             KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
-                            Retry = False
+                            retry = False
                         Catch ex As Exception
                             If retryCount > 0 Then
                                 retryCount = retryCount - 1
@@ -634,8 +655,8 @@ Public Class CRD_List_Item
                                                          Label_percent.Text = "Access Error - download canceled"
                                                          Return Nothing
                                                      End Function))
-                                                         Return Nothing
-                                                         Exit Function
+                                Return Nothing
+                                Exit Function
                                 'Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
                                 'Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
                                 '    sink.WriteLine(My.Resources.ass_template)
@@ -678,7 +699,7 @@ Public Class CRD_List_Item
                         Else
                             KeyClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
                         End If
-                        Dim KeyFile3 As String = einstellungen.GeräteID() + ".key"
+                        Dim KeyFile3 As String = Einstellungen.GeräteID() + ".key"
                         KeyFileCache = KeyFile3
 
                         Dim retry As Boolean = True
@@ -686,7 +707,7 @@ Public Class CRD_List_Item
 
                         Try
                             KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
-                            Retry = False
+                            retry = False
                         Catch ex As Exception
                             If retryCount > 0 Then
                                 retryCount = retryCount - 1
@@ -739,6 +760,10 @@ Public Class CRD_List_Item
 
         DL_URL = DL_URL.Replace(m3u8_url(1), Pfad2 + "index" + Folder + ".m3u8")
 
+        If InStr(DL_URL, "-headers " + My.Resources.ffmpeg_user_agend) Then
+            DL_URL = DL_URL.Replace("-headers " + My.Resources.ffmpeg_user_agend, "")
+        End If
+
         Using sink3 As New StreamWriter(Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\hybridelog.log", False, utf8WithoutBom)
             sink3.WriteLine(HybrideLog)
         End Using
@@ -766,8 +791,8 @@ Public Class CRD_List_Item
         startinfo.CreateNoWindow = True
         proc = New Process
         proc.EnableRaisingEvents = True
-        AddHandler proc.ErrorDataReceived, AddressOf ffmpegOutput
-        AddHandler proc.OutputDataReceived, AddressOf ffmpegOutput
+        AddHandler proc.ErrorDataReceived, AddressOf FFMPEGOutput
+        AddHandler proc.OutputDataReceived, AddressOf FFMPEGOutput
         AddHandler proc.Exited, AddressOf ProcessClosed
         proc.StartInfo = startinfo
         proc.Start() ' start the process
@@ -804,8 +829,8 @@ Public Class CRD_List_Item
         startinfo.CreateNoWindow = True
         proc = New Process
         proc.EnableRaisingEvents = True
-        AddHandler proc.ErrorDataReceived, AddressOf ffmpegOutput
-        AddHandler proc.OutputDataReceived, AddressOf ffmpegOutput
+        AddHandler proc.ErrorDataReceived, AddressOf FFMPEGOutput
+        AddHandler proc.OutputDataReceived, AddressOf FFMPEGOutput
         AddHandler proc.Exited, AddressOf ProcessClosed
         proc.StartInfo = startinfo
         proc.Start() ' start the process
@@ -984,7 +1009,7 @@ Public Class CRD_List_Item
             'MsgBox(BaseURL + SiteList(i) + vbNewLine + Pfad_DL + "\" + SiteList(i))
             Dim iWert As Integer = i
             Using client As New WebClient()
-                client.Headers.Add(My.Resources.ffmpeg_user_agend)
+                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
                 client.DownloadFile(BaseURL + SiteList(i), Pfad_DL + "\" + SiteList(i))
                 Pause(1)
             End Using
@@ -1094,41 +1119,47 @@ Public Class CRD_List_Item
     End Sub
 
     Private Sub CRD_List_Item_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+        bt_del.SetBounds(775, 10, 35, 29)
+        bt_pause.SetBounds(740, 15, 25, 20)
+        PB_Thumbnail.SetBounds(11, 20, 168, 95)
+        PB_Thumbnail.BringToFront()
+        Label_website.Location = New Point(195, 12)
+        Label_Anime.Location = New Point(195, 40)
+        Label_Reso.Location = New Point(195, 97)
+        Label_Hardsub.Location = New Point(265, 97)
+        Label_percent.SetBounds(Me.Width - 400, 97, 378, 27)
+        Label_percent.AutoSize = False
+        ProgressBar1.SetBounds(195, 70, 601, 20)
+        PictureBox5.Location = New Point(0, 136)
+        PictureBox5.Height = 6
+
+        If Service = "AoD" Then
+            MetroStyleManager1.Style = MetroColorStyle.LightGreen
+        ElseIf Service = "FM" Then
+            MetroStyleManager1.Style = MetroColorStyle.DarkPurple
+        Else
+            MetroStyleManager1.Style = MetroColorStyle.Orange
+        End If
+        MetroStyleManager1.Theme = Main.Manager.Theme
+        MetroStyleManager1.Owner = Me
+        Me.StyleManager = MetroStyleManager1
+
+
         PictureBox5.Width = Me.Width - 40
 
         bt_del.Location = New Point(Me.Width - 63, 10)
         bt_pause.Location = New Point(Me.Width - 98, 15)
 
         ProgressBar1.Width = Me.Width - 223
+
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs)
-        Dim rnd As New Random
-        Dim ZufallsZahl As Integer = rnd.Next(1, 33)
 
-        If ZufallsZahl > 30 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue
-            Debug.WriteLine("Blue")
-        ElseIf ZufallsZahl > 25 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Lime
-            Debug.WriteLine("Lime")
-        ElseIf ZufallsZahl > 20 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Magenta
-            Debug.WriteLine("Magenta")
-        ElseIf ZufallsZahl > 15 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Green
-            Debug.WriteLine("Green")
-        ElseIf ZufallsZahl > 10 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Brown
-            Debug.WriteLine("Brown")
-        ElseIf ZufallsZahl > 5 Then
-            MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Purple
-            Debug.WriteLine("Purple")
-        End If
-    End Sub
 
     Private Sub Label_Anime_Click(sender As Object, e As EventArgs) Handles ProgressBar1.Click, PB_Thumbnail.Click, MyBase.Click, Label_website.Click, Label_Reso.Click, Label_percent.Click, Label_Anime.Click
 
     End Sub
+
+
 End Class
 

@@ -27,11 +27,6 @@ Crunchyroll Downloader
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
-<member name="P:Crunchyroll_Downloader.My.Resources.Resources.add_background">
-<summary>
-  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-</summary>
-</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.add_mass_cancel">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -97,11 +92,6 @@ Video Position: 0
  [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
 </summary>
 </member>
-<member name="P:Crunchyroll_Downloader.My.Resources.Resources.backgroud">
-<summary>
-  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-</summary>
-</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.balken">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -132,11 +122,6 @@ Video Position: 0
   Sucht eine lokalisierte Zeichenfolge, die ”&lt;/h4&gt; ähnelt.
 </summary>
 </member>
-<member name="P:Crunchyroll_Downloader.My.Resources.Resources.crdSettings_Background">
-<summary>
-  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-</summary>
-</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.crdSettings_Button_SafeExit">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -153,16 +138,6 @@ Video Position: 0
 </summary>
 </member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.crdsettings_setUScookie_button_hover">
-<summary>
-  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-</summary>
-</member>
-<member name="P:Crunchyroll_Downloader.My.Resources.Resources.credits_background">
-<summary>
-  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-</summary>
-</member>
-<member name="P:Crunchyroll_Downloader.My.Resources.Resources.DialogNotFound_Background">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
@@ -383,6 +358,11 @@ setInterval(function loadXMLDoc() {
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_add_invert_dark">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_background">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -394,6 +374,11 @@ setInterval(function loadXMLDoc() {
 </summary>
 </member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_browser_invert">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_browser_invert_dark">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
@@ -418,12 +403,7 @@ setInterval(function loadXMLDoc() {
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
-<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_credits_default">
-<summary>
-  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-</summary>
-</member>
-<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_credits_hover">
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_close_dark">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
@@ -459,6 +439,11 @@ setInterval(function loadXMLDoc() {
 </summary>
 </member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_setting_invert">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_setting_invert_dark">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>

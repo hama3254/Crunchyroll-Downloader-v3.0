@@ -127,14 +127,8 @@
 
 &lt;img alt="image error" src="</value>
   </data>
-  <data name="backgroud" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\backgroud.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="main_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DialogNotFound_Background" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DialogNotFound_Background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Funimation_Split_2" xml:space="preserve">
     <value>"&gt;</value>
@@ -157,9 +151,6 @@
   <data name="AoD_Titel" xml:space="preserve">
     <value>"title":"</value>
   </data>
-  <data name="credits_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\credits-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Funimation_Subtitle_String2" xml:space="preserve">
     <value>", "kind": "subtitle", "type": "Full", "language": "</value>
   </data>
@@ -177,9 +168,6 @@
 &lt;hr&gt;
 &lt;address&gt;Server at Crunchyroll Downloader Port 8080&lt;/address&gt;
 &lt;/body&gt;&lt;/html&gt;</value>
-  </data>
-  <data name="crdSettings_Background" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\crdSettings_Background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Funimation_Player_ID" xml:space="preserve">
     <value>src="/player/</value>
@@ -374,9 +362,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="CC_String" xml:space="preserve">
     <value>&lt;img id="footer_country_flag" src="https://www.crunchyroll.com/i/country_flags/</value>
   </data>
-  <data name="add_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\add-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="balken_console" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\balken_console.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -391,9 +376,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   </data>
   <data name="main_button_download_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main_button_download_default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_credits_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main_credits_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="htmlvorHardSubs" xml:space="preserve">
     <value>"&gt; &lt;img alt="image error" src="cc1.png" class="class-cc"&gt;</value>
@@ -502,9 +484,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   &lt;/style&gt;
 &lt;body id="bodypage" class="main-bg" &gt;</value>
   </data>
-  <data name="main_credits_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main_credits_default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Main_top" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Main_top.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -531,5 +510,17 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   </data>
   <data name="CR_MediaName2" xml:space="preserve">
     <value>”&lt;/h4&gt;</value>
+  </data>
+  <data name="main_add_invert_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-add_invert_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_browser_invert_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-browser_invert_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_close_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-close_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_setting_invert_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-setting_invert_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

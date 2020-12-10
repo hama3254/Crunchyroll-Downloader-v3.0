@@ -22,11 +22,11 @@ Partial Class ErrorDialog
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
         Me.pictureBox3 = New System.Windows.Forms.PictureBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.PictureBox9 = New System.Windows.Forms.PictureBox()
-        Me.StatusLabel = New System.Windows.Forms.Label()
+        Me.StatusLabel = New MetroFramework.Controls.MetroLabel()
         CType(Me.pictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -34,17 +34,16 @@ Partial Class ErrorDialog
         '
         'ComboBox1
         '
-        Me.ComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.ComboBox1.DropDownHeight = 250
-        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ComboBox1.FormattingEnabled = True
         Me.ComboBox1.IntegralHeight = False
-        Me.ComboBox1.ItemHeight = 16
+        Me.ComboBox1.ItemHeight = 23
         Me.ComboBox1.Location = New System.Drawing.Point(34, 82)
         Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(281, 22)
+        Me.ComboBox1.Size = New System.Drawing.Size(281, 29)
         Me.ComboBox1.TabIndex = 33
+        Me.ComboBox1.UseSelectable = True
         '
         'pictureBox3
         '
@@ -88,7 +87,8 @@ Partial Class ErrorDialog
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.StatusLabel.BackColor = System.Drawing.Color.Transparent
-        Me.StatusLabel.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.StatusLabel.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.StatusLabel.FontWeight = MetroFramework.MetroLabelWeight.Bold
         Me.StatusLabel.ForeColor = System.Drawing.Color.Black
         Me.StatusLabel.Location = New System.Drawing.Point(6, 16)
         Me.StatusLabel.Name = "StatusLabel"
@@ -101,7 +101,7 @@ Partial Class ErrorDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.DialogNotFound_Background
+        'Me.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.DialogNotFound_Background
         Me.ClientSize = New System.Drawing.Size(380, 280)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.pictureBox3)
@@ -114,10 +114,9 @@ Partial Class ErrorDialog
         Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents ComboBox1 As ComboBox
     Private WithEvents pictureBox3 As PictureBox
     Private WithEvents GroupBox3 As GroupBox
-    Public WithEvents StatusLabel As Label
     Private WithEvents PictureBox9 As PictureBox
+    Friend WithEvents ComboBox1 As MetroFramework.Controls.MetroComboBox
+    Public WithEvents StatusLabel As MetroFramework.Controls.MetroLabel
 End Class

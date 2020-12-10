@@ -73,16 +73,6 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property add_background() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("add_background", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
         Friend ReadOnly Property add_mass_cancel() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("add_mass_cancel", resourceCulture)
@@ -191,16 +181,6 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property backgroud() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("backgroud", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
         Friend ReadOnly Property balken() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("balken", resourceCulture)
@@ -257,16 +237,6 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property crdSettings_Background() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("crdSettings_Background", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
         Friend ReadOnly Property crdSettings_Button_SafeExit() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("crdSettings_Button_SafeExit", resourceCulture)
@@ -300,26 +270,6 @@ Namespace My.Resources
         Friend ReadOnly Property crdsettings_setUScookie_button_hover() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("crdsettings_setUScookie_button_hover", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property credits_background() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("credits_background", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property DialogNotFound_Background() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("DialogNotFound_Background", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -676,6 +626,16 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property main_add_invert_dark() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("main_add_invert_dark", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property main_background() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("main_background", resourceCulture)
@@ -699,6 +659,16 @@ Namespace My.Resources
         Friend ReadOnly Property main_browser_invert() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("main_browser_invert", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property main_browser_invert_dark() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("main_browser_invert_dark", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -746,19 +716,9 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property main_credits_default() As System.Drawing.Bitmap
+        Friend ReadOnly Property main_close_dark() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("main_credits_default", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property main_credits_hover() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("main_credits_hover", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("main_close_dark", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -829,6 +789,16 @@ Namespace My.Resources
         Friend ReadOnly Property main_setting_invert() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("main_setting_invert", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property main_setting_invert_dark() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("main_setting_invert_dark", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

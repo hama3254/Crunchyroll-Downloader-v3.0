@@ -94,9 +94,9 @@
     <Reference Include="Geckofx-Winforms, Version=60.0.50.0, Culture=neutral, PublicKeyToken=3209ac31600d1857, processorArchitecture=x86">
       <HintPath>..\packages\Geckofx60.32.60.0.50\lib\net45\Geckofx-Winforms.dll</HintPath>
     </Reference>
-    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>E:\ui\metroframework-modern-ui-master\MetroFramework\bin\x86\Debug\MetroFramework.dll</HintPath>
+      <HintPath>..\..\metroframework-modern-ui\MetroFramework\bin\x86\Debug\MetroFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -251,6 +251,10 @@
     <Content Include="Firefox\softokn3.dll" />
     <Content Include="Firefox\xul.dll" />
     <Content Include="icon.ico" />
+    <None Include="Resources\main-setting_invert_dark.png" />
+    <None Include="Resources\main-close_dark.png" />
+    <None Include="Resources\main-browser_invert_dark.png" />
+    <None Include="Resources\main-add_invert_dark.png" />
     <None Include="packages.config" />
     <None Include="Resources\main-setting_invert.png" />
     <None Include="Resources\main-browser_invert.png" />

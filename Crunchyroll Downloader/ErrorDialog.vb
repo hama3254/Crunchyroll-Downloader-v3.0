@@ -1,47 +1,15 @@
-﻿Public Class ErrorDialog
-#Region " Move Form "
+﻿Imports MetroFramework.Components
 
-    ' [ Move Form ]
-    '
-    ' // By Elektro 
+Public Class ErrorDialog
 
-    Public MoveForm As Boolean
-    Public MoveForm_MousePosition As Point
+    Dim Manager As MetroStyleManager = Main.Manager
 
-    Public Sub MoveForm_MouseDown(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseDown ' Add more handles here (Example: PictureBox1.MouseDown)
-
-        If e.Button = MouseButtons.Left Then
-            MoveForm = True
-            Me.Cursor = Cursors.NoMove2D
-            MoveForm_MousePosition = e.Location
-        End If
-
-    End Sub
-
-    Public Sub MoveForm_MouseMove(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseMove ' Add more handles here (Example: PictureBox1.MouseMove)
-
-        If MoveForm Then
-            Me.Location = Me.Location + (e.Location - MoveForm_MousePosition)
-        End If
-
-    End Sub
-
-    Public Sub MoveForm_MouseUp(sender As Object, e As MouseEventArgs) Handles _
-    MyBase.MouseUp ' Add more handles here (Example: PictureBox1.MouseUp)
-
-        If e.Button = MouseButtons.Left Then
-            MoveForm = False
-            Me.Cursor = Cursors.Default
-        End If
-
-    End Sub
-#End Region
 
     Private Sub Reso_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' Me.StyleManager = Main.StyleManager
-        'ButtonResoNotFound.Text = Main.ButtonResoNotFoundText
+        Manager.Owner = Me
+        Me.StyleManager = Manager
+        pictureBox3.Image = Main.CloseImg
+
         Try
             Me.Icon = My.Resources.icon
         Catch ex As Exception
@@ -168,12 +136,15 @@
         Me.Close()
     End Sub
 
-    Private Sub PictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
-        pictureBox3.BackColor = SystemColors.Control
+    Private Sub Btn_Close_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
+        Dim PB As PictureBox = sender
+        PB.Image = My.Resources.main_del
     End Sub
 
-    Private Sub PictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
-        pictureBox3.BackColor = Color.Transparent
+    Private Sub Btn_Close_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
+        Dim PB As PictureBox = sender
+        PB.Image = Main.CloseImg
     End Sub
+
 
 End Class

@@ -19,14 +19,14 @@
 
         ElseIf SubFolder_Value = SubFolder_Nothing Then
 
-            newPath = Path
+            newPath = Path + "\"
 
         Else
 
             newPath = Path + "\" + SubFolder_Value + "\"
 
         End If
-
+        Debug.WriteLine(newPath)
 
         Return newPath.Replace("\\", "\")
     End Function

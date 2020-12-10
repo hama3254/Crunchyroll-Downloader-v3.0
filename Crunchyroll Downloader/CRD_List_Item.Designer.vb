@@ -1,7 +1,7 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class CRD_List_Item
-    Inherits System.Windows.Forms.UserControl
-
+    'Inherits System.Windows.Forms.UserControl
+    Inherits MetroFramework.Controls.MetroUserControl
     'UserControl1 überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
     <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -26,11 +26,11 @@ Partial Class CRD_List_Item
         Me.PB_Thumbnail = New System.Windows.Forms.PictureBox()
         Me.bt_pause = New System.Windows.Forms.PictureBox()
         Me.bt_del = New System.Windows.Forms.PictureBox()
-        Me.Label_Anime = New System.Windows.Forms.Label()
-        Me.Label_website = New System.Windows.Forms.Label()
-        Me.Label_Reso = New System.Windows.Forms.Label()
-        Me.Label_Hardsub = New System.Windows.Forms.Label()
-        Me.Label_percent = New System.Windows.Forms.Label()
+        Me.Label_Anime = New MetroFramework.Controls.MetroLabel()
+        Me.Label_website = New MetroFramework.Controls.MetroLabel()
+        Me.Label_Reso = New MetroFramework.Controls.MetroLabel()
+        Me.Label_Hardsub = New MetroFramework.Controls.MetroLabel()
+        Me.Label_percent = New MetroFramework.Controls.MetroLabel()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -39,7 +39,6 @@ Partial Class CRD_List_Item
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.ProgressBar1 = New MetroFramework.Controls.MetroProgressBar()
         Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
-        Me.MetroStyleExtender1 = New MetroFramework.Components.MetroStyleExtender(Me.components)
         CType(Me.PB_Thumbnail, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_pause, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_del, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -82,50 +81,60 @@ Partial Class CRD_List_Item
         'Label_Anime
         '
         Me.Label_Anime.AutoSize = True
-        Me.Label_Anime.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.Label_Anime.Location = New System.Drawing.Point(195, 42)
+        Me.Label_Anime.BackColor = System.Drawing.Color.Transparent
+        Me.Label_Anime.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.Label_Anime.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.Label_Anime.Location = New System.Drawing.Point(195, 37)
         Me.Label_Anime.Name = "Label_Anime"
-        Me.Label_Anime.Size = New System.Drawing.Size(270, 19)
+        Me.Label_Anime.Size = New System.Drawing.Size(243, 25)
         Me.Label_Anime.TabIndex = 3
         Me.Label_Anime.Text = "Anime Titel, Season, Episode "
         '
         'Label_website
         '
         Me.Label_website.AutoSize = True
-        Me.Label_website.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.Label_website.Location = New System.Drawing.Point(195, 15)
+        Me.Label_website.BackColor = System.Drawing.Color.Transparent
+        Me.Label_website.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.Label_website.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.Label_website.Location = New System.Drawing.Point(195, 10)
         Me.Label_website.Name = "Label_website"
-        Me.Label_website.Size = New System.Drawing.Size(72, 19)
+        Me.Label_website.Size = New System.Drawing.Size(72, 25)
         Me.Label_website.TabIndex = 4
         Me.Label_website.Text = "website"
         '
         'Label_Reso
         '
         Me.Label_Reso.AutoSize = True
-        Me.Label_Reso.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.Label_Reso.Location = New System.Drawing.Point(195, 101)
+        Me.Label_Reso.BackColor = System.Drawing.Color.Transparent
+        Me.Label_Reso.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.Label_Reso.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.Label_Reso.Location = New System.Drawing.Point(195, 97)
         Me.Label_Reso.Name = "Label_Reso"
-        Me.Label_Reso.Size = New System.Drawing.Size(54, 19)
+        Me.Label_Reso.Size = New System.Drawing.Size(63, 25)
         Me.Label_Reso.TabIndex = 5
         Me.Label_Reso.Text = "1080p"
         '
         'Label_Hardsub
         '
         Me.Label_Hardsub.AutoSize = True
-        Me.Label_Hardsub.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.Label_Hardsub.Location = New System.Drawing.Point(260, 101)
+        Me.Label_Hardsub.BackColor = System.Drawing.Color.Transparent
+        Me.Label_Hardsub.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.Label_Hardsub.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.Label_Hardsub.Location = New System.Drawing.Point(265, 97)
         Me.Label_Hardsub.Name = "Label_Hardsub"
-        Me.Label_Hardsub.Size = New System.Drawing.Size(126, 19)
+        Me.Label_Hardsub.Size = New System.Drawing.Size(126, 25)
         Me.Label_Hardsub.TabIndex = 6
         Me.Label_Hardsub.Text = "Hardsub Label"
         '
         'Label_percent
         '
         Me.Label_percent.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.Label_percent.Font = New System.Drawing.Font("Consolas", 12.0!)
-        Me.Label_percent.Location = New System.Drawing.Point(432, 101)
+        Me.Label_percent.BackColor = System.Drawing.Color.Transparent
+        Me.Label_percent.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.Label_percent.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.Label_percent.Location = New System.Drawing.Point(432, 97)
         Me.Label_percent.Name = "Label_percent"
-        Me.Label_percent.Size = New System.Drawing.Size(378, 19)
+        Me.Label_percent.Size = New System.Drawing.Size(378, 27)
         Me.Label_percent.TabIndex = 7
         Me.Label_percent.Text = "Status Label : speed, size and percent"
         Me.Label_percent.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -179,6 +188,7 @@ Partial Class CRD_List_Item
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PictureBox5)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.Label_percent)
@@ -205,11 +215,6 @@ Partial Class CRD_List_Item
     Friend WithEvents PB_Thumbnail As PictureBox
     Friend WithEvents bt_pause As PictureBox
     Friend WithEvents bt_del As PictureBox
-    Friend WithEvents Label_Anime As Label
-    Friend WithEvents Label_website As Label
-    Friend WithEvents Label_Reso As Label
-    Friend WithEvents Label_Hardsub As Label
-    Friend WithEvents Label_percent As Label
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents Timer2 As Timer
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
@@ -218,5 +223,9 @@ Partial Class CRD_List_Item
     Friend WithEvents ProgressBar1 As MetroFramework.Controls.MetroProgressBar
     Friend WithEvents PictureBox5 As PictureBox
     Friend WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
-    Friend WithEvents MetroStyleExtender1 As MetroFramework.Components.MetroStyleExtender
+    Friend WithEvents Label_Anime As MetroFramework.Controls.MetroLabel
+    Friend WithEvents Label_website As MetroFramework.Controls.MetroLabel
+    Friend WithEvents Label_Reso As MetroFramework.Controls.MetroLabel
+    Friend WithEvents Label_Hardsub As MetroFramework.Controls.MetroLabel
+    Friend WithEvents Label_percent As MetroFramework.Controls.MetroLabel
 End Class

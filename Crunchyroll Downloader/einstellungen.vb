@@ -10,11 +10,23 @@ Imports MetroFramework.Components
 
 Public Class Einstellungen
     Inherits MetroForm
+
+    Dim Manager As MetroStyleManager = Main.Manager
+
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Label6.Text = "Version " + Application.ProductVersion.ToString
-        Dim Manager As MetroStyleManager = Main.Manager
-        Manager.Owner = Me
 
+        Manager.Owner = Me
+        Me.StyleManager = Manager
+
+        If Main.DarkModeValue = True Then
+            DarkMode.Checked = True
+            GroupBoxColor(Color.FromArgb(150, 150, 150))
+            pictureBox1.Image = Main.CloseImg
+        Else
+            GroupBoxColor(Color.FromArgb(0, 0, 0))
+            DarkMode.Checked = False
+        End If
 
         TabControl1.SelectedIndex = 0
         For i As Integer = 0 To Main.SoftSubs.Count - 1
@@ -523,12 +535,15 @@ Public Class Einstellungen
         Me.Close()
     End Sub
 #Region "UI"
-    Private Sub PictureBox1_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox1.MouseEnter
-        pictureBox1.BackColor = SystemColors.Control
+
+    Private Sub Btn_Close_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox1.MouseEnter
+        Dim PB As PictureBox = sender
+        PB.Image = My.Resources.main_del
     End Sub
 
-    Private Sub PictureBox1_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox1.MouseLeave
-        pictureBox1.BackColor = Color.Transparent
+    Private Sub Btn_Close_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox1.MouseLeave
+        Dim PB As PictureBox = sender
+        PB.Image = Main.CloseImg
     End Sub
 
     Private Sub PictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
@@ -760,20 +775,63 @@ Public Class Einstellungen
         End If
     End Sub
 
-    Private Sub Label7_Click(sender As Object, e As EventArgs) Handles Label7.Click
+    Private Sub Label7_Click(sender As Object, e As EventArgs)
         Process.Start("https://bitbucket.org/geckofx/geckofx-60.0/src/default/")
     End Sub
 
-    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
+    Private Sub Label3_Click(sender As Object, e As EventArgs)
         Process.Start("https://www.ffmpeg.org/about.html")
     End Sub
 
-    Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
+    Private Sub Label9_Click(sender As Object, e As EventArgs)
         Process.Start("https://github.com/hama3254/metroframework-modern-ui")
     End Sub
 
 
 
+    Sub GroupBoxColor(ByVal color As Color)
+        SoftSubs.ForeColor = color
+        GB_SubLanguage.ForeColor = color
+        DL_Count_simultaneous.ForeColor = color
+        GB_Resolution.ForeColor = color
+        GroupBox1.ForeColor = color
+        GroupBox2.ForeColor = color
+        GroupBox3.ForeColor = color
+        GroupBox5.ForeColor = color
+        GroupBox6.ForeColor = color
+        GroupBox7.ForeColor = color
+        GroupBox8.ForeColor = color
+        GroupBox9.ForeColor = color
+        GroupBox10.ForeColor = color
+        GroupBox11.ForeColor = color
+        GroupBox12.ForeColor = color
+    End Sub
+
+
+
+    Private Sub GroupBox2_EnabledChanged(sender As Object, e As EventArgs) Handles GroupBox2.EnabledChanged
+
+    End Sub
+
+    Private Sub DarkMode_CheckedChanged(sender As Object, e As EventArgs) Handles DarkMode.CheckedChanged
+        Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
+
+        If DarkMode.Checked = True Then
+            rk.SetValue("Dark_Mode", 1, RegistryValueKind.String)
+            Manager.Theme = MetroThemeStyle.Dark
+            GroupBoxColor(Color.FromArgb(150, 150, 150))
+            Main.DarkMode()
+            Main.DarkModeValue = True
+            pictureBox1.Image = Main.CloseImg
+        Else
+            Main.DarkModeValue = False
+            rk.SetValue("Dark_Mode", 0, RegistryValueKind.String)
+            Manager.Theme = MetroThemeStyle.Light
+            Main.LightMode()
+            GroupBoxColor(Color.FromArgb(0, 0, 0))
+            pictureBox1.Image = Main.CloseImg
+        End If
+    End Sub
 
 
 

@@ -15,7 +15,7 @@ Public Class Main
 
     Public Manager As New MetroStyleManager
 
-
+    Public DarkModeValue As Boolean = False
 
 
 
@@ -139,13 +139,29 @@ Public Class Main
         Me.Invalidate()
     End Sub
 
+    Public CloseImg As Bitmap = My.Resources.main_del
 
+    Public Sub DarkMode()
+        ListView1.BackColor = Color.FromArgb(50, 50, 50)
+        CloseImg = My.Resources.main_close_dark
+        Btn_Close.Image = CloseImg
+    End Sub
+    Public Sub LightMode()
+        ListView1.BackColor = SystemColors.Control
+        CloseImg = My.Resources.main_close
+        Btn_Close.Image = CloseImg
+    End Sub
 
     Dim ListViewHeightOffset As Integer = 7
 
     Private Sub Btn_add_MouseEnter(sender As Object, e As EventArgs) Handles Btn_add.MouseEnter
         Dim PB As PictureBox = sender
-        PB.Image = My.Resources.main_add_invert
+        If Manager.Theme = MetroThemeStyle.Dark Then
+            PB.Image = My.Resources.main_add_invert_dark
+        Else
+            PB.Image = My.Resources.main_add_invert
+        End If
+
     End Sub
 
     Private Sub Btn_add_MouseLeave(sender As Object, e As EventArgs) Handles Btn_add.MouseLeave
@@ -154,7 +170,12 @@ Public Class Main
     End Sub
     Private Sub Btn_Browser_MouseEnter(sender As Object, e As EventArgs) Handles Btn_Browser.MouseEnter
         Dim PB As PictureBox = sender
-        PB.Image = My.Resources.main_browser_invert
+        If Manager.Theme = MetroThemeStyle.Dark Then
+            PB.Image = My.Resources.main_browser_invert_dark
+        Else
+            PB.Image = My.Resources.main_browser_invert
+        End If
+
     End Sub
 
     Private Sub Btn_Browser_MouseLeave(sender As Object, e As EventArgs) Handles Btn_Browser.MouseLeave
@@ -163,7 +184,12 @@ Public Class Main
     End Sub
     Private Sub Btn_Settings_MouseEnter(sender As Object, e As EventArgs) Handles Btn_Settings.MouseEnter
         Dim PB As PictureBox = sender
-        PB.Image = My.Resources.main_setting_invert
+        If Manager.Theme = MetroThemeStyle.Dark Then
+            PB.Image = My.Resources.main_setting_invert_dark
+        Else
+            PB.Image = My.Resources.main_setting_invert
+        End If
+
     End Sub
 
     Private Sub Btn_Settings_MouseLeave(sender As Object, e As EventArgs) Handles Btn_Settings.MouseLeave
@@ -177,7 +203,7 @@ Public Class Main
 
     Private Sub Btn_Close_MouseLeave(sender As Object, e As EventArgs) Handles Btn_Close.MouseLeave
         Dim PB As PictureBox = sender
-        PB.Image = My.Resources.main_close
+        PB.Image = CloseImg
     End Sub
 
     Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles PictureBox6.Click
@@ -212,7 +238,7 @@ Public Class Main
         ListView1.Height = Me.Height - 71 - ListViewHeightOffset
 
         PictureBox5.Width = Me.Width - 40
-        PictureBox1.Width = Me.Width - 2
+
 
         PictureBox6.Location = New Point(1, Me.Height - ListViewHeightOffset)
         PictureBox6.Width = Me.Width - 40
@@ -244,6 +270,10 @@ Public Class Main
 #End Region
     Public Declare Function waveOutSetVolume Lib "winmm.dll" (ByVal uDeviceID As Integer, ByVal dwVolume As Integer) As Integer
 
+    Public Sub SetSettingsTheme()
+
+        Einstellungen.Theme = Manager.Theme
+    End Sub
 
     Private Sub Form8_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim tbtl As TextBoxTraceListener = New TextBoxTraceListener(TheTextBox)
@@ -257,9 +287,22 @@ Public Class Main
         '    FirstStartup.ShowDialog()
         'End Try
         'Dim Style As New MetroStyleManager
+        '
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            DarkModeValue = CBool(Integer.Parse(rkg.GetValue("Dark_Mode").ToString))
+        Catch ex As Exception
 
+        End Try
         Manager.Style = MetroColorStyle.Orange
-        Manager.Theme = MetroThemeStyle.Light
+        If DarkModeValue = True Then
+            Manager.Theme = MetroThemeStyle.Dark
+            DarkMode()
+        Else
+            Manager.Theme = MetroThemeStyle.Light
+            LightMode()
+        End If
+
         Me.StyleManager = Manager
         Manager.Owner = Me
 
@@ -488,7 +531,7 @@ Public Class Main
 
     End Sub
 
-    Public Sub ListItemAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String) ', ByVal AudioLang As String)
+    Public Sub ListItemAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String, Optional Service As String = "CR") ', ByVal AudioLang As String)
         Dim Thumbnail As Image = My.Resources.main_del
         Try
             Dim wc As New WebClient()
@@ -501,11 +544,11 @@ Public Class Main
         End Try
 
         With ListView1.Items.Add(0)
-            ItemConstructor(NameP1, NameP2, Reso, HardSub, SoftSubs, Thumbnail, URL_DL, Pfad_DL)
+            ItemConstructor(NameP1, NameP2, Reso, HardSub, SoftSubs, Thumbnail, URL_DL, Pfad_DL, Service)
         End With
 
     End Sub
-    Public Sub ItemConstructor(ByVal NameP1 As String, ByVal NameP2 As String, ByVal DisplayReso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal Thumbnail As Image, ByVal URL_DL As String, ByVal Pfad_DL As String)
+    Public Sub ItemConstructor(ByVal NameP1 As String, ByVal NameP2 As String, ByVal DisplayReso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal Thumbnail As Image, ByVal URL_DL As String, ByVal Pfad_DL As String, ByVal Service As String)
         Dim Item As New CRD_List_Item
 
         Item.Visible = False
@@ -526,6 +569,7 @@ Public Class Main
         r = ListView1.Items(c).Bounds()
         r.Width = 838
         r.Height = 142
+        Item.SetService(Service)
         Item.SetTolerance(ErrorTolerance)
         Item.SetTargetReso(Reso)
         Item.SetLabelWebsite(NameP1)
@@ -549,7 +593,7 @@ Public Class Main
         Dim Thumbnail As Image = My.Resources.main_del
         Try
             Dim wc As New WebClient()
-            wc.Headers.Add(My.Resources.ffmpeg_user_agend)
+            wc.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
             Dim bytes As Byte() = wc.DownloadData(ThumbnialURL)
             Dim ms As New MemoryStream(bytes)
             Thumbnail = System.Drawing.Image.FromStream(ms)
@@ -2044,7 +2088,7 @@ Public Class Main
         Try
             Dim ItemDownloadingCount As Integer = 0
             For i As Integer = 0 To ListView1.Items.Count - 1
-
+                ItemList(i).SetTheme(Manager.Theme)
                 If ItemList(i).GetIsStatusFinished() = False Then
                     ItemDownloadingCount = ItemDownloadingCount + 1
                 End If
@@ -2624,7 +2668,7 @@ Public Class Main
             Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + FunimationDub
             Me.Invoke(New Action(Function()
-                                     ListItemAdd(Pfad_DL, L1Name, DefaultName, ResoHTMLDisplay, "Unknown", SubValuesToDisplay(), thumbnail3, Funimation_m3u8_final, Chr(34) + DownloadPfad + Chr(34))
+                                     ListItemAdd(Pfad_DL, L1Name, DefaultName, ResoHTMLDisplay, "Unknown", SubValuesToDisplay(), thumbnail3, Funimation_m3u8_final, Chr(34) + DownloadPfad + Chr(34), "FM")
                                      Return Nothing
                                  End Function))
             liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + FunimationTitle + " <br> " + FunimationSeason + " " + FunimationEpisode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + DefaultName + "-->")
@@ -3071,6 +3115,10 @@ Public Class Main
 
     Private Sub Button1_Click(sender As Object, e As EventArgs)
         ErrorDialog.Show()
+    End Sub
+
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs)
+        ErrorDialog.ShowDialog()
     End Sub
 
 

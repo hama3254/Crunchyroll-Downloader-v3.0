@@ -1859,7 +1859,7 @@ Public Class Main
         Try
             For s As Integer = 0 To ListView1.Items.Count - 1
                 Dim r As Rectangle = ListView1.Items.Item(s).Bounds
-                ItemList(s).SetBounds(r.X, r.Y, ListView1.Width - 2, r.Height)
+                ItemList(s).SetBounds(r.X, r.Y, ListView1.Width, r.Height)
 
                 If ItemList(s).GetToDispose() = True Then
                     ItemList(s).DisposeItem(ItemList(s).GetToDispose())

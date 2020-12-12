@@ -42,7 +42,13 @@ Public Class CRD_List_Item
     Dim TargetReso As Integer = 1080
     Dim HybrideLog As String = Nothing
     Dim Service As String = "CR"
+    Dim ServiceSleep As Integer = 0
 
+    Dim LastDate As Date = Date.Now
+    Dim LastSize As Double = 0
+    Dim LastDataRate1 As Double = 0
+    Dim LastDataRate2 As Double = 0
+    Dim LastDataRate3 As Double = 0
 
 
 #Region "Remove from list"
@@ -384,7 +390,7 @@ Public Class CRD_List_Item
 
     End Sub
     Private Function TS_StatusAsync(ByVal prozent As Integer, ByVal di As IO.DirectoryInfo, ByVal Filename As String, ByVal pausetime As Integer)
-        Dim Now As Date = Date.Now
+        'Dim Now As Date = Date.Now
 
         Dim FinishedSize As Double = 0
         Dim AproxFinalSize As Double = 0
@@ -394,36 +400,62 @@ Public Class CRD_List_Item
             Dim aryFi As IO.FileInfo() = di.GetFiles("*.ts")
             Dim fi As IO.FileInfo
             For Each fi In aryFi
-                FinishedSize = FinishedSize + Math.Round(fi.Length / 1048576, 2, MidpointRounding.AwayFromZero).ToString()
+                FinishedSize = FinishedSize + fi.Length 'Math.Round(fi.Length / 1048576, 2, MidpointRounding.AwayFromZero).ToString()
             Next
         Catch ex As Exception
         End Try
-        'Thread.Sleep(1000)
-        'Pause(1)
+        ''Thread.Sleep(1000)
+        ''Pause(1)
 
         If prozent > 0 Then
-            AproxFinalSize = Math.Round(FinishedSize * 100 / prozent, 2, MidpointRounding.AwayFromZero).ToString() ' Math.Round( / 1048576, 2, MidpointRounding.AwayFromZero).ToString()
+            AproxFinalSize = Math.Round((FinishedSize / 1048576) * 100 / prozent, 2, MidpointRounding.AwayFromZero).ToString() ' Math.Round( / 1048576, 2, MidpointRounding.AwayFromZero).ToString()
         End If
-        Dim duration As TimeSpan = Date.Now - di.CreationTime
-        Dim TimeinSeconds As Integer = duration.Hours * 3600 + duration.Minutes * 60 + duration.Seconds
-        TimeinSeconds = TimeinSeconds - pausetime
-        Dim DataRate As Double = FinishedSize / TimeinSeconds
-        Dim DataRateString As String = Math.Round(DataRate, 2, MidpointRounding.AwayFromZero).ToString()
-        If prozent > 100 Then
-            prozent = 100
-        ElseIf prozent < 0 Then
-            prozent = 0
+
+        'Dim duration As TimeSpan = Date.Now - di.CreationTime
+        'Dim TimeinSeconds As Integer = duration.Hours * 3600 + duration.Minutes * 60 + duration.Seconds
+        'TimeinSeconds = TimeinSeconds - pausetime
+        'Dim DataRate As Double = FinishedSize / TimeinSeconds
+        'Dim DataRateString As String = Math.Round(DataRate, 2, MidpointRounding.AwayFromZero).ToString()
+        Dim duration As TimeSpan = Date.Now - LastDate
+        Dim TimeinMilliSeconds As Integer = duration.Seconds * 1000 + duration.Milliseconds
+
+        If FinishedSize = LastSize Then
+        ElseIf TimeinMilliSeconds < 250 Then
+        Else
+
+
+            LastDate = Date.Now
+            'TimeinSeconds = TimeinSeconds - pausetime
+            Dim SinceLast = FinishedSize - LastSize
+            LastSize = FinishedSize
+
+            Dim DataRate As Double = (SinceLast / 1048576) / (TimeinMilliSeconds / 1000)
+            Dim DataRateFinal As Double = (DataRate + LastDataRate1 + LastDataRate2 + LastDataRate3) / 4
+            LastDataRate3 = LastDataRate2
+            LastDataRate2 = LastDataRate1
+            LastDataRate1 = DataRate
+            Dim DataRateString As String = Math.Round(DataRateFinal, 2, MidpointRounding.AwayFromZero).ToString()
+
+            Debug.WriteLine("----------------")
+            Debug.WriteLine(SinceLast)
+            Debug.WriteLine(TimeinMilliSeconds)
+            Debug.WriteLine(DataRate)
+            If prozent > 100 Then
+                prozent = 100
+            ElseIf prozent < 0 Then
+                prozent = 0
+            End If
+            Try
+                Me.Invoke(New Action(Function()
+
+                                         ProgressBar1.Value = prozent
+                                         Label_percent.Text = DataRateString + "MB\s " + Math.Round(FinishedSize / 1048576, 2, MidpointRounding.AwayFromZero).ToString + "MB/" + Math.Round(AproxFinalSize, 2, MidpointRounding.AwayFromZero).ToString + "MB " + prozent.ToString + "%"
+
+                                         Return Nothing
+                                     End Function))
+            Catch ex As Exception
+            End Try
         End If
-        Try
-            Me.Invoke(New Action(Function()
-
-                                     ProgressBar1.Value = prozent
-                                     Label_percent.Text = DataRateString + "MB\s " + Math.Round(FinishedSize, 2, MidpointRounding.AwayFromZero).ToString + "MB/" + Math.Round(AproxFinalSize, 2, MidpointRounding.AwayFromZero).ToString + "MB " + prozent.ToString + "%"
-
-                                     Return Nothing
-                                 End Function))
-        Catch ex As Exception
-        End Try
         'RaiseEvent UpdateUI(Filename, prozent, FinishedSize, AproxFinalSize, Color.FromArgb(247, 140, 37), DataRateString + "MB\s")
 
         Return Nothing
@@ -547,6 +579,7 @@ Public Class CRD_List_Item
         If Threads < 2 Then
             Threads = 2
         End If
+        'Threads = 16
         Dim di As New IO.DirectoryInfo(Pfad2)
         For i As Integer = 0 To textLenght.Length - 1
             If InStr(textLenght(i), ".ts") Then
@@ -557,7 +590,7 @@ Public Class CRD_List_Item
                         Thread.Sleep(5000)
                         PauseTime = PauseTime + 5
                     ElseIf ThreadList.Count > Threads Then
-                        Thread.Sleep(125)
+                        Thread.Sleep(50)
                     ElseIf Canceld = True Then
                         For www As Integer = 0 To Integer.MaxValue
                             If ThreadList.Count > 0 Then
@@ -582,7 +615,7 @@ Public Class CRD_List_Item
                         '    Thread.Sleep(2000)
                         '    Exit For
                     Else
-                        Thread.Sleep(1000)
+                        Thread.Sleep(ServiceSleep)
                         Exit For
                     End If
                 Next
@@ -613,8 +646,11 @@ Public Class CRD_List_Item
                 Evaluator.Start()
                 ThreadList.Add(Evaluator)
                 m3u8FFmpeg = m3u8FFmpeg + Pfad2 + nummer4D + ".ts" + vbLf '+ "#" + curi + vbLf
-                Dim FragmentsFinised = (ThreadList.Count + nummerint) / FragmentsInt * 100
-                TS_StatusAsync(FragmentsFinised, di, Filename, PauseTime)
+
+                Dim FragmentsFinised = nummerint / FragmentsInt * 100 '(ThreadList.Count + nummerint) / FragmentsInt * 100
+                Dim Update = New Thread(Sub() Me.TS_StatusAsync(FragmentsFinised, di, Filename, PauseTime))
+                Update.Start()
+
 
 
             ElseIf textLenght(i) = "#EXT-X-PLAYLIST-TYPE:VOD" Then
@@ -1135,6 +1171,7 @@ Public Class CRD_List_Item
 
         If Service = "AoD" Then
             MetroStyleManager1.Style = MetroColorStyle.LightGreen
+            ServiceSleep = 1000
         ElseIf Service = "FM" Then
             MetroStyleManager1.Style = MetroColorStyle.DarkPurple
         Else

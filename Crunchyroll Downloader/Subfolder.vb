@@ -1,6 +1,7 @@
 ﻿Module Subfolder
     Public SubFolder_automatic As String = "[automatic by Series and Season]"
     Public SubFolder_automatic2 As String = "[automatic by Series]"
+    Public SubFolder_automatic_old As String = "[automatic: Series/Season]"
     Public SubFolder_Nothing As String = "[ ignore subfolder ]"
 
     Public SubFolder_Value As String = "[ ignore subfolder ]"
@@ -9,7 +10,7 @@
     Public Function UseSubfolder(ByVal Series As String, ByVal Season As String, ByVal Path As String)
         Dim newPath As String = Path + "\"
 
-        If SubFolder_Value = SubFolder_automatic Then
+        If SubFolder_Value = SubFolder_automatic Or SubFolder_Value = SubFolder_automatic_old Then
 
             newPath = Path + "\" + Series + "\" + Season + "\"
 

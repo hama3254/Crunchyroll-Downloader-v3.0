@@ -23,6 +23,7 @@ Partial Class Main
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.Btn_add = New System.Windows.Forms.PictureBox()
         Me.Btn_Close = New System.Windows.Forms.PictureBox()
         Me.Btn_Settings = New System.Windows.Forms.PictureBox()
@@ -38,6 +39,7 @@ Partial Class Main
         Me.PictureBox6 = New System.Windows.Forms.PictureBox()
         Me.MetroStyleExtender1 = New MetroFramework.Components.MetroStyleExtender(Me.components)
         Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
+        Me.Btn_min = New System.Windows.Forms.PictureBox()
         CType(Me.Btn_add, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Btn_Settings, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -45,6 +47,7 @@ Partial Class Main
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Btn_add
@@ -63,13 +66,14 @@ Partial Class Main
         'Btn_Close
         '
         Me.Btn_Close.BackColor = System.Drawing.Color.Transparent
+        Me.Btn_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.Btn_Close.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_Close.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_close
-        Me.Btn_Close.Location = New System.Drawing.Point(790, 1)
+        Me.Btn_Close.Location = New System.Drawing.Point(800, 1)
         Me.Btn_Close.Margin = New System.Windows.Forms.Padding(0)
         Me.Btn_Close.Name = "Btn_Close"
-        Me.Btn_Close.Size = New System.Drawing.Size(50, 40)
-        Me.Btn_Close.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.Btn_Close.Size = New System.Drawing.Size(40, 40)
+        Me.Btn_Close.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.Btn_Close.TabIndex = 23
         Me.Btn_Close.TabStop = False
         '
@@ -78,7 +82,7 @@ Partial Class Main
         Me.Btn_Settings.BackColor = System.Drawing.Color.Transparent
         Me.Btn_Settings.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_Settings.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_settings
-        Me.Btn_Settings.Location = New System.Drawing.Point(676, 17)
+        Me.Btn_Settings.Location = New System.Drawing.Point(646, 17)
         Me.Btn_Settings.Margin = New System.Windows.Forms.Padding(0)
         Me.Btn_Settings.Name = "Btn_Settings"
         Me.Btn_Settings.Size = New System.Drawing.Size(80, 35)
@@ -178,12 +182,27 @@ Partial Class Main
         Me.MetroStyleManager1.Owner = Me
         Me.MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Orange
         '
+        'Btn_min
+        '
+        Me.Btn_min.BackColor = System.Drawing.Color.Transparent
+        Me.Btn_min.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.Btn_min.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_min.Image = CType(resources.GetObject("Btn_min.Image"), System.Drawing.Image)
+        Me.Btn_min.Location = New System.Drawing.Point(764, 8)
+        Me.Btn_min.Margin = New System.Windows.Forms.Padding(0)
+        Me.Btn_min.Name = "Btn_min"
+        Me.Btn_min.Size = New System.Drawing.Size(25, 25)
+        Me.Btn_min.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.Btn_min.TabIndex = 71
+        Me.Btn_min.TabStop = False
+        '
         'Main
         '
         Me.ApplyImageInvert = True
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle
         Me.ClientSize = New System.Drawing.Size(842, 630)
+        Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.TheTextBox)
         Me.Controls.Add(Me.PictureBox6)
         Me.Controls.Add(Me.PictureBox5)
@@ -210,8 +229,8 @@ Partial Class Main
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Private WithEvents Btn_add As PictureBox
@@ -229,4 +248,5 @@ Partial Class Main
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents MetroStyleExtender1 As MetroFramework.Components.MetroStyleExtender
     Friend WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
+    Private WithEvents Btn_min As PictureBox
 End Class

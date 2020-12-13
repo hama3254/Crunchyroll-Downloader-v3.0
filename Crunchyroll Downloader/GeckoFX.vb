@@ -52,11 +52,15 @@ Public Class GeckoFX
                     End If
 
                 Catch ex As Exception
-                    MsgBox(ex.ToString)
+                    If Main.LoginOnly = "US_UnBlock_Finsihed" And Main.UserBowser = False Then
+                        Me.Close()
+                    End If
+                    'MsgBox(ex.ToString)
                 End Try
 
             End If
-
+        ElseIf Main.LoginOnly = "US_UnBlock_Finsihed" And Main.UserBowser = False Then
+            Me.Close()
         Else
 
 

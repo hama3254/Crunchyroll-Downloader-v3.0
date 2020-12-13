@@ -205,10 +205,10 @@ Partial Class Einstellungen
         '
         Me.TabPage4.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
         Me.TabPage4.Controls.Add(Me.TabControl2)
-        Me.TabPage4.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 35)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage4.Size = New System.Drawing.Size(493, 461)
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Crunchyroll"
         '
@@ -223,7 +223,7 @@ Partial Class Einstellungen
         Me.TabControl2.Margin = New System.Windows.Forms.Padding(0)
         Me.TabControl2.Name = "TabControl2"
         Me.TabControl2.SelectedIndex = 0
-        Me.TabControl2.Size = New System.Drawing.Size(487, 446)
+        Me.TabControl2.Size = New System.Drawing.Size(487, 455)
         Me.TabControl2.TabIndex = 0
         Me.TabControl2.UseSelectable = True
         '
@@ -240,7 +240,7 @@ Partial Class Einstellungen
         Me.TabPage5.Location = New System.Drawing.Point(4, 44)
         Me.TabPage5.Name = "TabPage5"
         Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage5.Size = New System.Drawing.Size(479, 398)
+        Me.TabPage5.Size = New System.Drawing.Size(479, 407)
         Me.TabPage5.TabIndex = 0
         Me.TabPage5.Text = "Main"
         Me.TabPage5.VerticalScrollbarBarColor = True
@@ -424,10 +424,10 @@ Partial Class Einstellungen
         Me.TabPage3.HorizontalScrollbarBarColor = True
         Me.TabPage3.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage3.HorizontalScrollbarSize = 10
-        Me.TabPage3.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 35)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(479, 398)
+        Me.TabPage3.Size = New System.Drawing.Size(479, 416)
         Me.TabPage3.TabIndex = 3
         Me.TabPage3.Text = "Subtile Download"
         Me.TabPage3.VerticalScrollbarBarColor = True
@@ -934,10 +934,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage1.Size = New System.Drawing.Size(493, 461)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1150,7 +1150,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 2
+        Me.TabControl1.SelectedIndex = 1
         Me.TabControl1.Size = New System.Drawing.Size(501, 500)
         Me.TabControl1.TabIndex = 38
         Me.TabControl1.UseSelectable = True
@@ -1165,10 +1165,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage6.Size = New System.Drawing.Size(493, 461)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = "Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1336,9 +1336,9 @@ Partial Class Einstellungen
         '
         Me.TabPage8.BackColor = System.Drawing.Color.Transparent
         Me.TabPage8.Controls.Add(Me.GroupBox8)
-        Me.TabPage8.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage8.Location = New System.Drawing.Point(4, 35)
         Me.TabPage8.Name = "TabPage8"
-        Me.TabPage8.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage8.Size = New System.Drawing.Size(493, 461)
         Me.TabPage8.TabIndex = 6
         Me.TabPage8.Text = "  AoD"
         '
@@ -1407,9 +1407,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage7.Size = New System.Drawing.Size(493, 461)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = "About   "
         '

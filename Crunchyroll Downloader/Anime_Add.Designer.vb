@@ -24,6 +24,7 @@ Partial Class Anime_Add
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Anime_Add))
         Me.groupBox1 = New System.Windows.Forms.GroupBox()
         Me.StatusLabel = New MetroFramework.Controls.MetroLabel()
         Me.ComboBox2 = New MetroFramework.Controls.MetroComboBox()
@@ -31,7 +32,6 @@ Partial Class Anime_Add
         Me.textBox1 = New MetroFramework.Controls.MetroTextBox()
         Me.textBox2 = New MetroFramework.Controls.MetroTextBox()
         Me.pictureBox4 = New System.Windows.Forms.PictureBox()
-        Me.pictureBox3 = New System.Windows.Forms.PictureBox()
         Me.groupBox2 = New System.Windows.Forms.GroupBox()
         Me.comboBox4 = New MetroFramework.Controls.MetroComboBox()
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
@@ -42,12 +42,15 @@ Partial Class Anime_Add
         Me.ListBox1 = New System.Windows.Forms.ListBox()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.Btn_min = New System.Windows.Forms.PictureBox()
+        Me.Btn_Close = New System.Windows.Forms.PictureBox()
         Me.groupBox1.SuspendLayout()
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.groupBox2.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
+        CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'groupBox1
@@ -215,18 +218,6 @@ Partial Class Anime_Add
         Me.pictureBox4.TabIndex = 42
         Me.pictureBox4.TabStop = False
         '
-        'pictureBox3
-        '
-        Me.pictureBox3.BackColor = System.Drawing.Color.Transparent
-        Me.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pictureBox3.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_close
-        Me.pictureBox3.Location = New System.Drawing.Point(580, 0)
-        Me.pictureBox3.Name = "pictureBox3"
-        Me.pictureBox3.Size = New System.Drawing.Size(50, 40)
-        Me.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.pictureBox3.TabIndex = 43
-        Me.pictureBox3.TabStop = False
-        '
         'groupBox2
         '
         Me.groupBox2.BackColor = System.Drawing.Color.Transparent
@@ -334,13 +325,42 @@ Partial Class Anime_Add
         Me.Timer2.Enabled = True
         Me.Timer2.Interval = 2500
         '
+        'Btn_min
+        '
+        Me.Btn_min.BackColor = System.Drawing.Color.Transparent
+        Me.Btn_min.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.Btn_min.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_min.Image = CType(resources.GetObject("Btn_min.Image"), System.Drawing.Image)
+        Me.Btn_min.Location = New System.Drawing.Point(567, 1)
+        Me.Btn_min.Margin = New System.Windows.Forms.Padding(0)
+        Me.Btn_min.Name = "Btn_min"
+        Me.Btn_min.Size = New System.Drawing.Size(25, 25)
+        Me.Btn_min.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.Btn_min.TabIndex = 73
+        Me.Btn_min.TabStop = False
+        '
+        'Btn_Close
+        '
+        Me.Btn_Close.BackColor = System.Drawing.Color.Transparent
+        Me.Btn_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.Btn_Close.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_Close.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_close
+        Me.Btn_Close.Location = New System.Drawing.Point(592, 1)
+        Me.Btn_Close.Margin = New System.Windows.Forms.Padding(0)
+        Me.Btn_Close.Name = "Btn_Close"
+        Me.Btn_Close.Size = New System.Drawing.Size(40, 40)
+        Me.Btn_Close.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.Btn_Close.TabIndex = 72
+        Me.Btn_Close.TabStop = False
+        '
         'Anime_Add
         '
         Me.ApplyImageInvert = True
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle
         Me.ClientSize = New System.Drawing.Size(630, 300)
-        Me.Controls.Add(Me.pictureBox3)
+        Me.Controls.Add(Me.Btn_min)
+        Me.Controls.Add(Me.Btn_Close)
         Me.Controls.Add(Me.pictureBox4)
         Me.Controls.Add(Me.groupBox2)
         Me.Controls.Add(Me.groupBox1)
@@ -351,15 +371,14 @@ Partial Class Anime_Add
         Me.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center
         Me.groupBox1.ResumeLayout(False)
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.groupBox2.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
+        CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
-    Private WithEvents pictureBox3 As PictureBox
     Public WithEvents pictureBox4 As PictureBox
     Public WithEvents groupBox2 As GroupBox
     Public WithEvents PictureBox1 As PictureBox
@@ -378,4 +397,6 @@ Partial Class Anime_Add
     Public WithEvents comboBox4 As MetroFramework.Controls.MetroComboBox
     Public WithEvents ComboBox1 As MetroFramework.Controls.MetroComboBox
     Public WithEvents comboBox3 As MetroFramework.Controls.MetroComboBox
+    Private WithEvents Btn_min As PictureBox
+    Private WithEvents Btn_Close As PictureBox
 End Class

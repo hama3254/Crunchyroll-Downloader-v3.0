@@ -46,8 +46,8 @@ Public Class Anime_Add
 
         Manager.Owner = Me
         Me.StyleManager = Manager
-        pictureBox3.Image = Main.CloseImg
-
+        Btn_Close.Image = Main.CloseImg
+        Btn_min.Image = Main.MinImg
         Try
             Me.Icon = My.Resources.icon
         Catch ex As Exception
@@ -183,26 +183,9 @@ Public Class Anime_Add
 
 
 
-    Private Sub Btn_Close_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox3.MouseEnter
-        Dim PB As PictureBox = sender
-        PB.Image = My.Resources.main_del
-    End Sub
-
-    Private Sub Btn_Close_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox3.MouseLeave
-        Dim PB As PictureBox = sender
-        PB.Image = Main.CloseImg
-    End Sub
 
 
-    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles pictureBox3.Click
-        Main.ListBoxList.Clear()
-        If ListBox1.Items.Count > 0 Then
-            For i As Integer = 0 To ListBox1.Items.Count - 1
-                Main.ListBoxList.Add(ListBox1.Items.Item(i))
-            Next
-        End If
-        Me.Close()
-    End Sub
+
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
         'pictureBox4.Enabled = False
@@ -1238,4 +1221,43 @@ Public Class Anime_Add
         '        End Try
         '        Funimation_Grapp_RDY = True
     End Sub
+
+    Private Sub Anime_Add_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+        Btn_Close.Location = New Point(Me.Width - 40, 1)
+        Btn_min.Location = New Point(Me.Width - 68, 10)
+    End Sub
+
+    Private Sub Btn_min_Click(sender As Object, e As EventArgs) Handles Btn_min.Click
+        Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
+    End Sub
+
+    Private Sub Btn_Close_Click(sender As Object, e As EventArgs) Handles Btn_Close.Click
+        Main.ListBoxList.Clear()
+        If ListBox1.Items.Count > 0 Then
+            For i As Integer = 0 To ListBox1.Items.Count - 1
+                Main.ListBoxList.Add(ListBox1.Items.Item(i))
+            Next
+        End If
+        Me.Close()
+    End Sub
+
+    Private Sub Btn_min_MouseEnter(sender As Object, e As EventArgs) Handles Btn_min.MouseEnter
+        Dim PB As PictureBox = sender
+        PB.Image = My.Resources.main_mini_red
+    End Sub
+
+    Private Sub Btn_min_MouseLeave(sender As Object, e As EventArgs) Handles Btn_min.MouseLeave
+        Dim PB As PictureBox = sender
+        PB.Image = Main.MinImg
+    End Sub
+    Private Sub Btn_Close_MouseEnter(sender As Object, e As EventArgs) Handles Btn_Close.MouseEnter
+        Dim PB As PictureBox = sender
+        PB.Image = My.Resources.main_del
+    End Sub
+
+    Private Sub Btn_Close_MouseLeave(sender As Object, e As EventArgs) Handles Btn_Close.MouseLeave
+        Dim PB As PictureBox = sender
+        PB.Image = Main.CloseImg
+    End Sub
+
 End Class

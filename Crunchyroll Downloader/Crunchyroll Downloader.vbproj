@@ -251,6 +251,9 @@
     <Content Include="Firefox\softokn3.dll" />
     <Content Include="Firefox\xul.dll" />
     <Content Include="icon.ico" />
+    <None Include="Resources\main-mini_red.png" />
+    <None Include="Resources\main-mini_dark.png" />
+    <None Include="Resources\main-mini.png" />
     <None Include="Resources\main-setting_invert_dark.png" />
     <None Include="Resources\main-close_dark.png" />
     <None Include="Resources\main-browser_invert_dark.png" />
@@ -274,13 +277,10 @@
     <None Include="Resources\main-del-hover.png" />
     <None Include="Resources\main-del.png" />
     <None Include="Resources\balken.png" />
-    <None Include="Resources\backgroud.png" />
-    <None Include="Resources\credits-background.png" />
     <None Include="Resources\add_mass_running_cancel_hover.png" />
     <None Include="Resources\add_mass_running_cancel.png" />
     <None Include="Resources\add_mass_cancel_hover.png" />
     <None Include="Resources\add_mass_cancel.png" />
-    <None Include="Resources\add-background.png" />
     <None Include="Resources\main-settings.png" />
     <None Include="Resources\main-browser.png" />
     <None Include="Resources\main-add.png" />
@@ -294,19 +294,13 @@
     <None Include="Resources\download_subs.png" />
     <None Include="Resources\DialogNotFound_Submit_hover.png" />
     <None Include="Resources\DialogNotFound_Submit.png" />
-    <None Include="Resources\DialogNotFound_Background.png" />
     <None Include="Resources\main_button_download-deactivate.png" />
     <None Include="Resources\crdsettings_setUScookie_button_hover.png" />
     <None Include="Resources\crdsettings_setUScookie_button.png" />
-    <None Include="Resources\credits_close_hover.png" />
-    <None Include="Resources\credits_close_default.png" />
-    <None Include="Resources\main_credits_hover.png" />
-    <None Include="Resources\main_credits_default.png" />
     <None Include="Resources\main_button_download_hovert.png" />
     <None Include="Resources\main_button_download_default.png" />
     <None Include="Resources\crdSettings_Button_SafeExit_hover.png" />
     <None Include="Resources\crdSettings_Button_SafeExit.png" />
-    <None Include="Resources\crdSettings_Background.png" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

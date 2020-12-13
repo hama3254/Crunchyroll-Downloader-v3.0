@@ -418,6 +418,21 @@ setInterval(function loadXMLDoc() {
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_mini">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_mini_dark">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_mini_red">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.main_pause">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.

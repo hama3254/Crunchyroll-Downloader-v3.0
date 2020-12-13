@@ -581,12 +581,19 @@ Public Class Einstellungen
 
                 Else
                     AAuto.Checked = False
+                    A360p.Checked = True
                 End If
+            End If
+        ElseIf HybridMode_CB.Checked = True Then
+            If AAuto.Checked = True Then
+                MsgBox("Resolution '[Auto]' and 'Hybride Mode' does not work together", MsgBoxStyle.Information)
+                AAuto.Checked = False
+                A1080p.Checked = True
             End If
         End If
     End Sub
 
-    Private Sub MergeMP4_Click(sender As Object, e As EventArgs) Handles CheckBox1.Click
+    Private Sub MergeMP4_Click(sender As Object, e As EventArgs) Handles MergeMP4.Click
         If MergeMP4.Checked = True Then
             If AAuto.Checked = True Then
                 If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
@@ -594,6 +601,15 @@ Public Class Einstellungen
                 Else
                     MergeMP4.Checked = False
                 End If
+            End If
+        End If
+    End Sub
+
+    Private Sub HybridMode_CB_Click(sender As Object, e As EventArgs) Handles HybridMode_CB.Click
+        If HybridMode_CB.Checked = True Then
+            If AAuto.Checked = True Then
+                MsgBox("Resolution '[Auto]' and 'Hybride Mode' does not work together", MsgBoxStyle.Information)
+                HybridMode_CB.Checked = False
             End If
         End If
     End Sub
@@ -832,6 +848,14 @@ Public Class Einstellungen
             pictureBox1.Image = Main.CloseImg
         End If
     End Sub
+
+
+
+
+
+
+
+
 
 
 

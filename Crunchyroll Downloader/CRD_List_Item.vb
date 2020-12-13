@@ -50,6 +50,7 @@ Public Class CRD_List_Item
     Dim LastDataRate2 As Double = 0
     Dim LastDataRate3 As Double = 0
 
+    Dim FailedSegments As New List(Of FailedSegemtsWithURL)
 
 #Region "Remove from list"
     Public Sub DisposeItem(ByVal Dispose As Boolean)
@@ -223,13 +224,40 @@ Public Class CRD_List_Item
                 StatusRunning = False
                 bt_pause.BackgroundImage = My.Resources.main_pause_play
 
+            ElseIf Failed = True Then
+                Dim Result As DialogResult = MessageBox.Show("The hybride mode has failed to download a fragment." + vbNewLine + "Press 'Retry' to retry the fragment or 'Ignore' to continue.", "Download Error", MessageBoxButtons.AbortRetryIgnore) '= DialogResult.Ignore Then
+
+                If Result = DialogResult.Ignore Then
+                    Failed = False
+                    StatusRunning = True
+                    bt_pause.BackgroundImage = My.Resources.main_pause
+                    FailedSegments.Clear()
+                ElseIf Result = DialogResult.Retry Then
+                    If FailedSegments.Count > 0 Then
+                        For i As Integer = 0 To FailedSegments.Count - 1
+                            Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(FailedSegments.Item(i).url, FailedSegments.Item(i).path))
+                            FailedSegments.RemoveAt(i)
+                            Evaluator.Start()
+                            ThreadList.Add(Evaluator)
+                        Next
+                        Failed = False
+                        StatusRunning = True
+                        bt_pause.BackgroundImage = My.Resources.main_pause
+                    End If
+                ElseIf Result = DialogResult.Abort Then
+                    If MessageBox.Show("Are you sure you want to cancel the Download?", "Cancel Download!", MessageBoxButtons.YesNo) = DialogResult.No Then
+                        Exit Sub
+                    End If
+                    Canceld = True
+                End If
+
             Else
                 StatusRunning = True
-                bt_pause.BackgroundImage = My.Resources.main_pause
-            End If
+                    bt_pause.BackgroundImage = My.Resources.main_pause
+                End If
 
-        Else
-            If proc.HasExited = True Then
+            Else
+                If proc.HasExited = True Then
                 If ProgressBar1.Value < 100 Then
                     If Retry = True Then
                         If Main.RunningDownloads < Main.MaxDL Then
@@ -266,37 +294,41 @@ Public Class CRD_List_Item
                 SuspendProcess(proc)
             Else
                 If Failed = True Then
+                    'If HybridMode = True Then
+
+                    'Else
                     Dim Result As DialogResult = MessageBox.Show("The download has " + FailedCount.ToString + " failded segments" + vbNewLine + "Press 'Ignore' to continue", "Download Error", MessageBoxButtons.AbortRetryIgnore) '= DialogResult.Ignore Then
 
-                    If Result = DialogResult.Ignore Then
-                        Failed = False
-                        StatusRunning = True
-                        bt_pause.BackgroundImage = My.Resources.main_pause
-                        ResumeProcess(proc)
-                    ElseIf Result = DialogResult.Retry Then
-                        Try
-                            proc.Kill()
-                            proc.WaitForExit(500)
-                            Label_percent.Text = "retrying -%"
-                            Label_website.Text = Label_website_Text
-                        Catch ex As Exception
-                        End Try
-
-                        If proc.HasExited Then
-                            StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode)
+                        If Result = DialogResult.Ignore Then
+                            Failed = False
                             StatusRunning = True
-                            Label_website.Text = Label_website_Text
                             bt_pause.BackgroundImage = My.Resources.main_pause
+                            ResumeProcess(proc)
+                        ElseIf Result = DialogResult.Retry Then
+                            Try
+                                proc.Kill()
+                                proc.WaitForExit(500)
+                                Label_percent.Text = "retrying -%"
+                                Label_website.Text = Label_website_Text
+                            Catch ex As Exception
+                            End Try
+
+                            If proc.HasExited Then
+                                StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode)
+                                StatusRunning = True
+                                Label_website.Text = Label_website_Text
+                                bt_pause.BackgroundImage = My.Resources.main_pause
+                            End If
+                        ElseIf Result = DialogResult.Abort Then
+                            Try
+                                proc.Kill()
+                                proc.WaitForExit(500)
+                                Label_percent.Text = "canceled -%"
+                                Label_website.Text = Label_website_Text
+                            Catch ex As Exception
+                            End Try
                         End If
-                    ElseIf Result = DialogResult.Abort Then
-                        Try
-                            proc.Kill()
-                            proc.WaitForExit(500)
-                            Label_percent.Text = "canceled -%"
-                            Label_website.Text = Label_website_Text
-                        Catch ex As Exception
-                        End Try
-                    End If
+                    ' End If
                 Else
                     If StatusRunning = True Then
                         StatusRunning = False
@@ -379,13 +411,29 @@ Public Class CRD_List_Item
 
             WC_TS.DownloadFile(New Uri(DL_URL), DL_Pfad)
         Catch ex As Exception
+            Debug.WriteLine("Download error #1: " + DL_Pfad)
             Try
                 Dim wc_ts As New WebClient
                 wc_ts.DownloadFile(New Uri(DL_URL), DL_Pfad)
             Catch ex2 As Exception
+                FailedCount = FailedCount + 1
+                If Item_ErrorTolerance = 0 Then
+
+                ElseIf FailedCount >= Item_ErrorTolerance Then
+                    FailedSegments.Add(New FailedSegemtsWithURL(DL_Pfad, DL_URL))
+                    Failed = True
+                    StatusRunning = False
+                    bt_pause.BackgroundImage = My.Resources.main_pause_play
+                    Me.Invoke(New Action(Function()
+
+                                             Label_percent.Text = "Missing segment detected, retry or resume with the play button"
+                                             Return Nothing
+                                         End Function))
+                End If
+
+
                 Debug.WriteLine("Download error #2: " + DL_Pfad + vbNewLine + ex.ToString + vbNewLine + DL_URL)
             End Try
-            Debug.WriteLine("Download error #1: " + DL_Pfad)
         End Try
 
     End Sub
@@ -436,10 +484,10 @@ Public Class CRD_List_Item
             LastDataRate1 = DataRate
             Dim DataRateString As String = Math.Round(DataRateFinal, 2, MidpointRounding.AwayFromZero).ToString()
 
-            Debug.WriteLine("----------------")
-            Debug.WriteLine(SinceLast)
-            Debug.WriteLine(TimeinMilliSeconds)
-            Debug.WriteLine(DataRate)
+            'Debug.WriteLine("----------------")
+            'Debug.WriteLine(SinceLast)
+            'Debug.WriteLine(TimeinMilliSeconds)
+            'Debug.WriteLine(DataRate)
             If prozent > 100 Then
                 prozent = 100
             ElseIf prozent < 0 Then
@@ -530,8 +578,20 @@ Public Class CRD_List_Item
         End If
         Dim client0 As New WebClient
         client0.Encoding = Encoding.UTF8
-        Dim text As String = client0.DownloadString(m3u8_url(1))
+        Dim text As String = Nothing
+        Try
+            text = client0.DownloadString(m3u8_url(1))
+        Catch ex As Exception
+            Me.Invoke(New Action(Function()
+                                     Label_website.Text = "The download process seems to have crashed"
+                                     Label_percent.Text = ex.ToString
+                                     Return Nothing
+                                 End Function))
+            Return Nothing
+            Exit Function
+        End Try
         If InStr(text, "RESOLUTION=") Then 'master m3u8 no fragments 
+            'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", text, False)
             Dim new_m3u8_2() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
             If TargetReso = 42 Then
                 TargetReso = 1080
@@ -553,7 +613,7 @@ Public Class CRD_List_Item
                     path = path + c(i3)
                 Next
                 m3u8_url_3 = path + m3u8_url_1
-                'MsgBox(m3u8_url_1)
+                'MsgBox(m3u8_url_3)
                 text = client0.DownloadString(m3u8_url_3)
             End If
 
@@ -1200,3 +1260,18 @@ Public Class CRD_List_Item
 
 End Class
 
+Public Class FailedSegemtsWithURL
+    Public path As String
+    Public url As String
+
+    Public Sub New(ByVal path As String, ByVal url As Integer)
+        Me.path = path
+        Me.url = url
+    End Sub
+
+    Public Overrides Function ToString() As String
+        Return String.Format("{0}, {1}", Me.path, Me.url)
+    End Function
+
+
+End Class

@@ -140,15 +140,20 @@ Public Class Main
     End Sub
 
     Public CloseImg As Bitmap = My.Resources.main_del
+    Public MinImg As Bitmap = My.Resources.main_mini
 
     Public Sub DarkMode()
         ListView1.BackColor = Color.FromArgb(50, 50, 50)
         CloseImg = My.Resources.main_close_dark
+        MinImg = My.Resources.main_mini_dark
+        Btn_min.Image = MinImg
         Btn_Close.Image = CloseImg
     End Sub
     Public Sub LightMode()
         ListView1.BackColor = SystemColors.Control
         CloseImg = My.Resources.main_close
+        MinImg = My.Resources.main_mini
+        Btn_min.Image = MinImg
         Btn_Close.Image = CloseImg
     End Sub
 
@@ -196,6 +201,15 @@ Public Class Main
         Dim PB As PictureBox = sender
         PB.Image = My.Resources.main_settings
     End Sub
+    Private Sub Btn_min_MouseEnter(sender As Object, e As EventArgs) Handles Btn_min.MouseEnter
+        Dim PB As PictureBox = sender
+        PB.Image = My.Resources.main_mini_red
+    End Sub
+
+    Private Sub Btn_min_MouseLeave(sender As Object, e As EventArgs) Handles Btn_min.MouseLeave
+        Dim PB As PictureBox = sender
+        PB.Image = MinImg
+    End Sub
     Private Sub Btn_Close_MouseEnter(sender As Object, e As EventArgs) Handles Btn_Close.MouseEnter
         Dim PB As PictureBox = sender
         PB.Image = My.Resources.main_del
@@ -205,7 +219,6 @@ Public Class Main
         Dim PB As PictureBox = sender
         PB.Image = CloseImg
     End Sub
-
     Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles PictureBox6.Click
         If TheTextBox.Visible = True Then
             TheTextBox.Visible = False
@@ -246,8 +259,9 @@ Public Class Main
         TheTextBox.Location = New Point(1, Me.Height - ListViewHeightOffset + 7)
         TheTextBox.Width = Me.Width - 2
 
-        Btn_Close.Location = New Point(Me.Width - 49, 1)
-        Btn_Settings.Location = New Point(Me.Width - 140, 17)
+        Btn_Close.Location = New Point(Me.Width - 40, 1)
+        Btn_min.Location = New Point(Me.Width - 68, 10)
+        Btn_Settings.Location = New Point(Me.Width - 170, 17)
 
         Try
             For s As Integer = 0 To ListView1.Items.Count - 1
@@ -1597,7 +1611,7 @@ Public Class Main
 
             End If
 #End Region
-            If Reso = 42 Then
+            If Reso = 42 And HybridMode = False Then
                 If MergeSubstoMP4 = True Then
                     URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
                 Else
@@ -1633,6 +1647,7 @@ Public Class Main
                             Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
                         Else
                             Reso2 = ResoBackString
+                            ResoSave = ResoBackString
                         End If
                     End If
                 End If
@@ -1711,8 +1726,10 @@ Public Class Main
             Else
                 L2Name = CR_FilenName
             End If
-            If Reso = 42 Then
+            If Reso = 42 And HybridMode = False Then
                 ResoHTMLDisplay = "[Auto]"
+            ElseIf Reso = 42 And HybridMode = False Then
+                ResoHTMLDisplay = Reso2
             End If
             Pfad_DL = Pfad2
             Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1833,8 +1850,11 @@ Public Class Main
     End Sub
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles Btn_add.Click
-        Anime_Add.Show()
-
+        If Anime_Add.WindowState = System.Windows.Forms.FormWindowState.Minimized Then
+            Anime_Add.WindowState = System.Windows.Forms.FormWindowState.Normal
+        Else
+            Anime_Add.Show()
+        End If
     End Sub
 
     Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles Btn_Settings.Click
@@ -2727,7 +2747,7 @@ Public Class Main
             My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\index.html", c, False)
 
         Catch ex As Exception
-            Debug.WriteLine(ex.ToString)
+            'Debug.WriteLine(ex.ToString)
             'MsgBox(ex.ToString)
         End Try
     End Sub
@@ -3122,10 +3142,15 @@ Public Class Main
     End Sub
 
 
+
+    Private Sub Btn_min_Click(sender As Object, e As EventArgs) Handles Btn_min.Click
+        Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
+    End Sub
+
+
+
+
 #End Region
-
-
-
 
 
 End Class

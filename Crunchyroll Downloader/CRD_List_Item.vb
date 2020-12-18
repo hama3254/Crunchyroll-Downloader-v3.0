@@ -496,7 +496,7 @@ Public Class CRD_List_Item
             Try
                 Me.Invoke(New Action(Function()
 
-                                         ProgressBar1.Value = prozent
+                                         ProgressBar1.Value = prozent 'ThreadList.Count.ToString + " " +
                                          Label_percent.Text = DataRateString + "MB\s " + Math.Round(FinishedSize / 1048576, 2, MidpointRounding.AwayFromZero).ToString + "MB/" + Math.Round(AproxFinalSize, 2, MidpointRounding.AwayFromZero).ToString + "MB " + prozent.ToString + "%"
 
                                          Return Nothing
@@ -639,7 +639,7 @@ Public Class CRD_List_Item
         If Threads < 2 Then
             Threads = 2
         End If
-        'Threads = 16
+        'Threads = textLenght.Length / 20
         Dim di As New IO.DirectoryInfo(Pfad2)
         For i As Integer = 0 To textLenght.Length - 1
             If InStr(textLenght(i), ".ts") Then

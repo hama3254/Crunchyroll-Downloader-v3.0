@@ -141,43 +141,7 @@ Public Class Anime_Add
 
     Private Sub TextBox4_DoubleClick(sender As Object, e As EventArgs) Handles TextBox4.DoubleClick
         'MsgBox(DL_Path_String, MsgBoxStyle.OkOnly)
-        Dim FolderBrowserDialog1 As New FolderBrowserDialog()
 
-        If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
-            ComboBox2.Items.Clear()
-            Main.Pfad = FolderBrowserDialog1.SelectedPath
-            Dim rk0 As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
-            rk0.SetValue("Ordner", Main.Pfad, RegistryValueKind.String)
-
-            ComboBox2.Items.Add(SubFolder_automatic)
-            ComboBox2.Items.Add(SubFolder_automatic2)
-            ComboBox2.Items.Add(SubFolder_Nothing)
-            ComboBox2.SelectedItem = SubFolder_Nothing
-            TextBox4.Text = Main.Pfad
-            Try
-                Dim di As New System.IO.DirectoryInfo(Main.Pfad)
-                For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
-                    If fi.Attributes.HasFlag(System.IO.FileAttributes.Hidden) Then
-                    Else
-                        ComboBox2.Items.Add(fi.Name)
-                    End If
-                Next
-                Dim Result As New List(Of String)
-                'Jeder Eintrag in der Combobox durchgehen
-                For Each item As String In ComboBox2.Items
-                    'Wenn der Combobox-Eintrag noch nicht in der Result-List vorhanden ist, Eintrag der Result-List hinzufügen
-                    If Result.Contains(item) = False Then
-                        Result.Add(item)
-                    End If
-                Next
-                'In der Result-List sind jetzt alle Einträge einmal vorhanden
-                'Combobox leeren
-                'ComboBox2.Items.Clear()
-                'Die Result-List der Combobox hinzufügen
-                'ComboBox2.Items.AddRange(Result.ToArray)
-            Catch ex As Exception
-            End Try
-        End If
     End Sub
 
 
@@ -1260,4 +1224,43 @@ Public Class Anime_Add
         PB.Image = Main.CloseImg
     End Sub
 
+    Private Sub TextBox4_Click(sender As Object, e As EventArgs) Handles TextBox4.Click
+        Dim FolderBrowserDialog1 As New FolderBrowserDialog()
+        FolderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer
+        If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
+            ComboBox2.Items.Clear()
+            Main.Pfad = FolderBrowserDialog1.SelectedPath
+            Dim rk0 As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
+            rk0.SetValue("Ordner", Main.Pfad, RegistryValueKind.String)
+
+            ComboBox2.Items.Add(SubFolder_automatic)
+            ComboBox2.Items.Add(SubFolder_automatic2)
+            ComboBox2.Items.Add(SubFolder_Nothing)
+            ComboBox2.SelectedItem = SubFolder_Nothing
+            TextBox4.Text = Main.Pfad
+            Try
+                Dim di As New System.IO.DirectoryInfo(Main.Pfad)
+                For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
+                    If fi.Attributes.HasFlag(System.IO.FileAttributes.Hidden) Then
+                    Else
+                        ComboBox2.Items.Add(fi.Name)
+                    End If
+                Next
+                Dim Result As New List(Of String)
+                'Jeder Eintrag in der Combobox durchgehen
+                For Each item As String In ComboBox2.Items
+                    'Wenn der Combobox-Eintrag noch nicht in der Result-List vorhanden ist, Eintrag der Result-List hinzufügen
+                    If Result.Contains(item) = False Then
+                        Result.Add(item)
+                    End If
+                Next
+                'In der Result-List sind jetzt alle Einträge einmal vorhanden
+                'Combobox leeren
+                'ComboBox2.Items.Clear()
+                'Die Result-List der Combobox hinzufügen
+                'ComboBox2.Items.AddRange(Result.ToArray)
+            Catch ex As Exception
+            End Try
+        End If
+    End Sub
 End Class

@@ -443,7 +443,7 @@ Public Class Einstellungen
 
         If ListViewAdd_True.Checked = True Then
             rk.SetValue("QueueMode", 1, RegistryValueKind.String)
-
+            Main.UseQueue = True
         ElseIf ListViewAdd_True.Checked = False Then
             rk.SetValue("QueueMode", 0, RegistryValueKind.String)
             Main.UseQueue = False

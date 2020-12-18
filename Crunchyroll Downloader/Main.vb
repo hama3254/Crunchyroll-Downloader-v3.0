@@ -375,6 +375,7 @@ Public Class Main
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             UseQueue = CBool(Integer.Parse(rkg.GetValue("QueueMode").ToString))
+            'MsgBox(UseQueue.ToString)
         Catch ex As Exception
 
         End Try
@@ -599,7 +600,11 @@ Public Class Main
         'Item.SetLocations(r.Y)
         'MsgBox("test " + r.Y.ToString)
         Item.Visible = True
-        Item.StartDownload(URL_DL, Pfad_DL, Pfad_DL, HybridMode)
+        Dim TempHybridMode As Boolean = HybridMode
+        If InStr(URL_DL, ".mpd") Then
+            TempHybridMode = False
+        End If
+        Item.StartDownload(URL_DL, Pfad_DL, Pfad_DL, TempHybridMode)
     End Sub
 #Region "Manga DL"
     Public Sub MangaListItemAdd(ByVal NameP2 As String, ByVal ThumbnialURL As String, ByVal BaseURL As String, ByVal SiteList As List(Of String))
@@ -755,10 +760,10 @@ Public Class Main
                             Exit For
                         Else
                             'MsgBox(e)
-                            Await Task.Delay(2000)
+                            Await Task.Delay(1000)
                         End If
                     Else
-                        Await Task.Delay(2000)
+                        Await Task.Delay(5000)
                     End If
                 Next
                 If Anime_Add.Mass_DL_Cancel = False Then
@@ -1880,7 +1885,7 @@ Public Class Main
             For s As Integer = 0 To ListView1.Items.Count - 1
                 Dim r As Rectangle = ListView1.Items.Item(s).Bounds
                 ItemList(s).SetBounds(r.X, r.Y, ListView1.Width, r.Height)
-
+                ItemList(s).SetTheme(Manager.Theme)
                 If ItemList(s).GetToDispose() = True Then
                     ItemList(s).DisposeItem(ItemList(s).GetToDispose())
                     ItemList.RemoveAt(s)
@@ -1922,8 +1927,8 @@ Public Class Main
             'Else
             ResoAvalibe = ResoAvalibe + vbNewLine + ZeileReso2(ZeileReso2.Count - 1).Trim + ":--:" + ZeileReso4(1)
             'End If
-        ElseIf InStr(e.Data, "Duration:") Then
-            ResoAvalibe = Nothing
+            'ElseIf InStr(e.Data, "Duration:") Then
+            '    ResoAvalibe = Nothing
         ElseIf InStr(e.Data, "At least one output file must be specified") Then
             ResoSearchRunning = False
         End If
@@ -1996,6 +2001,7 @@ Public Class Main
         Dim Video_FilenName As String = Video_Title
         Video_FilenName = System.Text.RegularExpressions.Regex.Replace(Video_FilenName, "[^\w\\-]", " ")
         Video_FilenName = RemoveExtraSpaces(Video_FilenName + ".mp4")
+        Pfad_DL = Chr(34) + Pfad + "\" + Video_FilenName + Chr(34)
 #End Region
 
 #Region "thumbnail"
@@ -2108,7 +2114,6 @@ Public Class Main
         Try
             Dim ItemDownloadingCount As Integer = 0
             For i As Integer = 0 To ListView1.Items.Count - 1
-                ItemList(i).SetTheme(Manager.Theme)
                 If ItemList(i).GetIsStatusFinished() = False Then
                     ItemDownloadingCount = ItemDownloadingCount + 1
                 End If

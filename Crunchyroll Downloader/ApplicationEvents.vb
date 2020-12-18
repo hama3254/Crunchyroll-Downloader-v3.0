@@ -53,9 +53,11 @@ Namespace My
                 GeckoPreferences.Default("plugin.state.flash") = 0
                 GeckoPreferences.Default("zoom.maxPercent") = 100
                 GeckoPreferences.Default("zoom.minPercent") = 100
-                ' GeckoPreferences.Default("media.autoplay.default") = 2
-                'GeckoPreferences.Default("media.autoplay.block-webaudio") = False
-                'GeckoPreferences.Default("javascript.enabled") = False
+                'GeckoPreferences.Default("network.proxy.http") = "51.159.26.44"
+                'GeckoPreferences.Default("network.proxy.http_port") = 3128
+                'GeckoPreferences.Default("network.proxy.ssl") = "51.159.26.44"
+                'GeckoPreferences.Default("network.proxy.ssl_port") = 3128
+                'GeckoPreferences.Default("network.proxy.type") = 1
 
 
                 Return True

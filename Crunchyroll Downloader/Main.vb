@@ -68,6 +68,7 @@ Public Class Main
     Public TempSoftSubs As New List(Of String)
     Public AbourtList As New List(Of String)
     Public watingList As New List(Of String)
+    Public GeckoLogFile As String = Nothing
     Dim SoftSubsString As String
     Dim CR_Unlock_Error As String
     Public Startseite As String = "https://www.crunchyroll.com/"

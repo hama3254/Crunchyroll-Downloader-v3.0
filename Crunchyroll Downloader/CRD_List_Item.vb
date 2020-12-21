@@ -235,7 +235,8 @@ Public Class CRD_List_Item
                 ElseIf Result = DialogResult.Retry Then
                     If FailedSegments.Count > 0 Then
                         For i As Integer = 0 To FailedSegments.Count - 1
-                            Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(FailedSegments.Item(i).url, FailedSegments.Item(i).path))
+                            Dim ii As Integer = i
+                            Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(FailedSegments.Item(ii).url, FailedSegments.Item(ii).path))
                             FailedSegments.RemoveAt(i)
                             Evaluator.Start()
                             ThreadList.Add(Evaluator)
@@ -734,33 +735,31 @@ Public Class CRD_List_Item
 
                         Dim retry As Boolean = True
                         Dim retryCount As Integer = 3
+                        While retry
+                            Try
+                                KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
+                                retry = False
+                            Catch ex As Exception
+                                If retryCount > 0 Then
+                                    retryCount = retryCount - 1
+                                    Me.Invoke(New Action(Function()
+                                                             Label_percent.Text = "Access Error - retrying"
+                                                             Return Nothing
+                                                         End Function))
 
-                        Try
-                            KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
-                            retry = False
-                        Catch ex As Exception
-                            If retryCount > 0 Then
-                                retryCount = retryCount - 1
-                                Me.Invoke(New Action(Function()
-                                                         Label_percent.Text = "Access Error - retrying"
-                                                         Return Nothing
-                                                     End Function))
+                                Else
+                                    'retry = False
+                                    Me.Invoke(New Action(Function()
+                                                             Label_percent.Text = "Access Error - download canceled"
+                                                             Return Nothing
+                                                         End Function))
+                                    Return Nothing
+                                    Exit Function
 
-                            Else
-                                Me.Invoke(New Action(Function()
-                                                         Label_percent.Text = "Access Error - download canceled"
-                                                         Return Nothing
-                                                     End Function))
-                                Return Nothing
-                                Exit Function
-                                'Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
-                                'Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
-                                '    sink.WriteLine(My.Resources.ass_template)
-                                'End Using
-                                'Retry = False
-                            End If
-                        End Try
+                                End If
+                            End Try
 
+                        End While
                         LoadedKeys.Add(KeyFile2(0))
                     End If
                     If KeyFile2.Count > 1 Then

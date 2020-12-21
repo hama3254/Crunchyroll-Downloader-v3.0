@@ -171,105 +171,105 @@ Public Class Anime_Add
                     End If
 
                     If StatusLabel.Text = "Status: waiting for episode selection" Then
-                            If MessageBox.Show("Are you sure you want cancel the advanced download?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                                StatusLabel.Text = "Status: idle"
-                            Else
-                                Exit Sub
-                                pictureBox4.Enabled = True
-                            End If
-                            'ElseIf LabelUpdate = "Status: looking for video file" Then
-                            '    Exit Sub
-                            '    pictureBox4.Enabled = True
-                        Else
-                            If Main.RunningDownloads >= Main.MaxDL Then
-                                ListBox1.Items.Add(textBox1.Text)
-                                textBox1.ForeColor = Color.FromArgb(9248044)
-                                Pause(1)
-                                textBox1.ForeColor = Color.Black
-                                textBox1.Text = "URL"
-                            Else
-                                If Main.Grapp_RDY = True Then
-                                    GeckoFX.WebBrowser1.Navigate(textBox1.Text)
-                                    StatusLabel.Text = "Status: loading ..."
-                                    Main.b = False
-                                End If
-                            End If
-                        End If
-                    ElseIf CBool(InStr(textBox1.Text, "anime-on-demand.de")) Then
-                        Main.b = False
-                        AoD_DubList.Clear()
-                        AoD_OmUList.Clear()
-                        Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
-                        Dim CurrentFile As String = Nothing
-                        For Each File In FileLocation.GetFiles()
-                            If InStr(File.FullName, "gecko-network.txt") Then
-                                CurrentFile = File.FullName
-                                Exit For
-                            End If
-                        Next
-                        If CurrentFile = Nothing Then
-                        Else
-                            Dim logFileStream As FileStream = New FileStream(CurrentFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
-                            Dim logFileReader As StreamReader = New StreamReader(logFileStream)
-                            logFileStream.SetLength(0)
-                            logFileReader.Close()
-                            logFileStream.Close()
-                        End If
-                        Main.LogBrowserData = True
-                        GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
-                        GeckoPreferences.Default("logging.nsHttp") = 3
-                        GeckoFX.WebBrowser1.Navigate(textBox1.Text)
-
-                        Do Until Main.b = True
-                            Main.Text = "Status: loading ..."
-                            Main.Invalidate()
-                            StatusLabel.Text = "Status: loading ..."
-                            Pause(1)
-                        Loop
-
-                        Main.LogBrowserData = False
-                        GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
-                        GeckoPreferences.Default("logging.nsHttp") = 0
-
-                        Dim AoD_Cookie As String = Nothing
-                        Dim AoDhttpLog As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
-                        Dim AoDhttpLogFile As String = Nothing
-                        For Each File In AoDhttpLog.GetFiles()
-                            If InStr(File.FullName, "gecko-network.txt") Then
-                                AoDhttpLogFile = File.FullName
-                                Exit For
-                            End If
-                        Next
-                        Dim AoDlogFileStream As FileStream = New FileStream(AoDhttpLogFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
-                        Dim AoDlogFileReader As StreamReader = New StreamReader(AoDlogFileStream)
-                        Dim line As String = Nothing
-                        Dim HTMLString As String = Nothing
-                        line = AoDlogFileReader.ReadLine
-
-                        While (line IsNot Nothing)
-                            line = AoDlogFileReader.ReadLine
-                            If CBool(InStr(line, "Cookie: ")) And CBool(InStr(line, "remember_user_token=")) Then
-                                AoD_Cookie = "Cookie: " + line.Split(New String() {"Cookie: "}, System.StringSplitOptions.RemoveEmptyEntries)(1)
-                                Exit While
-                            End If
-                        End While
-                        AoDlogFileReader.Close()
-                        AoDlogFileStream.Close()
-                        If AoD_Cookie = Nothing Then
-                            MsgBox(Main.LoginReminder)
-                            Main.Text = "Crunchyroll Downloader"
-                            Main.Invalidate()
+                        If MessageBox.Show("Are you sure you want cancel the advanced download?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                             StatusLabel.Text = "Status: idle"
+                        Else
                             Exit Sub
+                            pictureBox4.Enabled = True
                         End If
-                        'MsgBox(AoD_Cookie)
-                        'Main.WebbrowserCookie = AoD_Cookie
-                        If CBool(InStr(Main.WebbrowserText, "/OmU/1080/hlsfirst/")) Then
-                            Dim OmUStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/OmU/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim OmUStreamSplitToken() As String = OmUStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim OmUStreamSplitEpisodeIndex() As String = OmUStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim OmUStreamSplitEpisodeIndex2() As String = OmUStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim m3u8Strings As String = Nothing
+                        'ElseIf LabelUpdate = "Status: looking for video file" Then
+                        '    Exit Sub
+                        '    pictureBox4.Enabled = True
+                    Else
+                        If Main.RunningDownloads >= Main.MaxDL Then
+                            ListBox1.Items.Add(textBox1.Text)
+                            textBox1.ForeColor = Color.FromArgb(9248044)
+                            Pause(1)
+                            textBox1.ForeColor = Color.Black
+                            textBox1.Text = "URL"
+                        Else
+                            If Main.Grapp_RDY = True Then
+                                GeckoFX.WebBrowser1.Navigate(textBox1.Text)
+                                StatusLabel.Text = "Status: loading ..."
+                                Main.b = False
+                            End If
+                        End If
+                    End If
+                ElseIf CBool(InStr(textBox1.Text, "anime-on-demand.de")) Then
+                    Main.b = False
+                    AoD_DubList.Clear()
+                    AoD_OmUList.Clear()
+                    Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
+                    Dim CurrentFile As String = Nothing
+                    For Each File In FileLocation.GetFiles()
+                        If InStr(File.FullName, "gecko-network.txt") Then
+                            CurrentFile = File.FullName
+                            Exit For
+                        End If
+                    Next
+                    If CurrentFile = Nothing Then
+                    Else
+                        Dim logFileStream As FileStream = New FileStream(CurrentFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
+                        Dim logFileReader As StreamReader = New StreamReader(logFileStream)
+                        logFileStream.SetLength(0)
+                        logFileReader.Close()
+                        logFileStream.Close()
+                    End If
+                    Main.LogBrowserData = True
+                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
+                    GeckoPreferences.Default("logging.nsHttp") = 3
+                    GeckoFX.WebBrowser1.Navigate(textBox1.Text)
+
+                    Do Until Main.b = True
+                        Main.Text = "Status: loading ..."
+                        Main.Invalidate()
+                        StatusLabel.Text = "Status: loading ..."
+                        Pause(1)
+                    Loop
+
+                    Main.LogBrowserData = False
+                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
+                    GeckoPreferences.Default("logging.nsHttp") = 0
+
+                    Dim AoD_Cookie As String = Nothing
+                    Dim AoDhttpLog As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
+                    Dim AoDhttpLogFile As String = Nothing
+                    For Each File In AoDhttpLog.GetFiles()
+                        If InStr(File.FullName, "gecko-network.txt") Then
+                            AoDhttpLogFile = File.FullName
+                            Exit For
+                        End If
+                    Next
+                    Dim AoDlogFileStream As FileStream = New FileStream(AoDhttpLogFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
+                    Dim AoDlogFileReader As StreamReader = New StreamReader(AoDlogFileStream)
+                    Dim line As String = Nothing
+                    Dim HTMLString As String = Nothing
+                    line = AoDlogFileReader.ReadLine
+
+                    While (line IsNot Nothing)
+                        line = AoDlogFileReader.ReadLine
+                        If CBool(InStr(line, "Cookie: ")) And CBool(InStr(line, "remember_user_token=")) Then
+                            AoD_Cookie = "Cookie: " + line.Split(New String() {"Cookie: "}, System.StringSplitOptions.RemoveEmptyEntries)(1)
+                            Exit While
+                        End If
+                    End While
+                    AoDlogFileReader.Close()
+                    AoDlogFileStream.Close()
+                    If AoD_Cookie = Nothing Then
+                        MsgBox(Main.LoginReminder)
+                        Main.Text = "Crunchyroll Downloader"
+                        Main.Invalidate()
+                        StatusLabel.Text = "Status: idle"
+                        Exit Sub
+                    End If
+                    'MsgBox(AoD_Cookie)
+                    'Main.WebbrowserCookie = AoD_Cookie
+                    If CBool(InStr(Main.WebbrowserText, "/OmU/1080/hlsfirst/")) Then
+                        Dim OmUStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/OmU/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim OmUStreamSplitToken() As String = OmUStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim OmUStreamSplitEpisodeIndex() As String = OmUStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim OmUStreamSplitEpisodeIndex2() As String = OmUStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim m3u8Strings As String = Nothing
                         'I/nsHttp   Cookie: 
 
                         Try
@@ -285,27 +285,27 @@ Public Class Anime_Add
                                 '("Sub: " + m3u8Strings)
                             End Using
                         Catch ex As Exception
-                                MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
-                            End Try
-                            If m3u8Strings = Nothing Then
-                            Else
+                            MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
+                        End Try
+                        If m3u8Strings = Nothing Then
+                        Else
 
-                                Dim OmUStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
-                                For i As Integer = 1 To OmUStreams.Count - 1
-                                    AoD_OmUList.Add(OmUStreams(i))
-                                Next
-                            End If
-
+                            Dim OmUStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
+                            For i As Integer = 1 To OmUStreams.Count - 1
+                                AoD_OmUList.Add(OmUStreams(i))
+                            Next
                         End If
 
-                        If CBool(InStr(Main.WebbrowserText, "/Dub/1080/hlsfirst/")) Then
-                            Dim DubStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/Dub/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim DubStreamSplitToken() As String = DubStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim DubStreamSplitEpisodeIndex() As String = DubStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim DubStreamSplitEpisodeIndex2() As String = DubStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim m3u8Strings As String = Nothing
-                            'I/nsHttp   Cookie: 
-                            Try
+                    End If
+
+                    If CBool(InStr(Main.WebbrowserText, "/Dub/1080/hlsfirst/")) Then
+                        Dim DubStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/Dub/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim DubStreamSplitToken() As String = DubStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim DubStreamSplitEpisodeIndex() As String = DubStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim DubStreamSplitEpisodeIndex2() As String = DubStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim m3u8Strings As String = Nothing
+                        'I/nsHttp   Cookie: 
+                        Try
                             Using client As New WebClient()
                                 client.Encoding = System.Text.Encoding.UTF8
                                 client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
@@ -318,20 +318,20 @@ Public Class Anime_Add
                                 'MsgBox("Dub: " + m3u8Strings)
                             End Using
                         Catch ex As Exception
-                                MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
-                            End Try
-                            If m3u8Strings = Nothing Then
-                            Else
+                            MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
+                        End Try
+                        If m3u8Strings = Nothing Then
+                        Else
 
-                                Dim DubStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
-                                For i As Integer = 1 To DubStreams.Count - 1
-                                    AoD_DubList.Add(DubStreams(i))
-                                Next
-                            End If
-
-
+                            Dim DubStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
+                            For i As Integer = 1 To DubStreams.Count - 1
+                                AoD_DubList.Add(DubStreams(i))
+                            Next
                         End If
-                        AoD_Mode = True
+
+
+                    End If
+                    AoD_Mode = True
                     If AoD_DubList.Count And AoD_OmUList.Count > 0 Then
                         ComboBox1.Items.Clear()
                         GroupBox3.Visible = False
@@ -355,28 +355,42 @@ Public Class Anime_Add
                     End If
 
                 ElseIf CBool(InStr(textBox1.Text, "Test=true")) Then
-                        GeckoFX.WebBrowser1.Navigate(textBox1.Text)
-                    Else 'If CBool(InStr(textBox1.Text, "vrv.co")) Then
-                        If MessageBox.Show("This in NOT a Crunchyroll URL, try anyway?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                    GeckoFX.WebBrowser1.Navigate(textBox1.Text)
+                Else 'If CBool(InStr(textBox1.Text, "vrv.co")) Then
+                    If MessageBox.Show("This in NOT a Crunchyroll URL, try anyway?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
-                        Dim CurrentFile As String = Nothing
+
                         For Each File In FileLocation.GetFiles()
                             If InStr(File.FullName, "gecko-network.txt") Then
-                                CurrentFile = File.FullName
+                                Try
+                                    File.Delete()
+                                Catch ex As Exception
+                                End Try
+                            End If
+                        Next
+
+                        Main.LogBrowserData = True
+                        GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
+                        GeckoPreferences.Default("logging.nsHttp") = 3
+
+                        For Each File In FileLocation.GetFiles()
+                            If InStr(File.FullName, "gecko-network.txt") Then
+                                Main.GeckoLogFile = File.FullName
                                 Exit For
                             End If
                         Next
-                        If CurrentFile = Nothing Then
+                        If Main.GeckoLogFile = Nothing Then
+                            StatusLabel.Text = "Status: error reading network traffic"
+                            Exit Sub
                         Else
-                            Dim logFileStream As FileStream = New FileStream(CurrentFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
+                            'MsgBox(Main.GeckoLogFile)
+                            Dim logFileStream As FileStream = New FileStream(Main.GeckoLogFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
                             Dim logFileReader As StreamReader = New StreamReader(logFileStream)
                             logFileStream.SetLength(0)
                             logFileReader.Close()
                             logFileStream.Close()
                         End If
-                        Main.LogBrowserData = True
-                        GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
-                        GeckoPreferences.Default("logging.nsHttp") = 3
+
                         GeckoFX.WebBrowser1.Navigate(textBox1.Text)
                         StatusLabel.Text = "Status: looking for non CR video file"
                         Main.b = False

@@ -12,8 +12,9 @@ Version :
 
 Please provide a logfile or text.
 For version below v3.6.10 the logfile needs be be activated in the settings before the download has started, newer version can copy the log to the clipboard or save it as file in the context menu (right click on the failed download)  
-Logfile/Logtext : Drag&Drop the .log file here or 
+Logfile/Logtext : click at the end of the line an Drag&Drop the .log file here 
+or 
 <details>
-  <summary>Insert the logtext before the details</summary>
+  <summary>Insert the logtext before the second details</summary>
     
 </details>

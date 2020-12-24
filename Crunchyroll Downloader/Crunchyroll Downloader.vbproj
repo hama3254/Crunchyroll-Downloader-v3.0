@@ -125,6 +125,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="network_scan.Designer.vb">
+      <DependentUpon>network_scan.vb</DependentUpon>
+    </Compile>
+    <Compile Include="network_scan.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Anime_Add.Designer.vb">
       <DependentUpon>Anime_Add.vb</DependentUpon>
     </Compile>
@@ -187,6 +193,9 @@
     <Compile Include="Subfolder.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="network_scan.resx">
+      <DependentUpon>network_scan.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Anime_Add.resx">
       <DependentUpon>Anime_Add.vb</DependentUpon>
     </EmbeddedResource>

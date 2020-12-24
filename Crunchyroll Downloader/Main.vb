@@ -1928,8 +1928,17 @@ Public Class Main
             'Else
             ResoAvalibe = ResoAvalibe + vbNewLine + ZeileReso2(ZeileReso2.Count - 1).Trim + ":--:" + ZeileReso4(1)
             'End If
-            'ElseIf InStr(e.Data, "Duration:") Then
-            '    ResoAvalibe = Nothing
+            'ElseIf InStr(e.Data, "Duration: N/A, bitrate: N/A") Then
+
+            'ElseIf InStr(e.Data, "Duration: ") Then
+            '    Dim ZeitGesamt As String() = e.Data.Split(New String() {"Duration: "}, System.StringSplitOptions.RemoveEmptyEntries)
+            '    Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
+            '    NetworkScanTime = ZeitGesamt2(0)
+            '    Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
+            '    Dim ZeitGesamtSplit() As String = ZeitGesamt2(0).Split(New [Char]() {System.Convert.ToChar(":")})
+            '    MsgBox(ZeitGesamt2(0))
+            '    ZeitGesamtInteger = CInt(ZeitGesamtSplit(0)) * 3600 + CInt(ZeitGesamtSplit(1)) * 60 + CInt(ZeitGesamtSplit(2))
+
         ElseIf InStr(e.Data, "At least one output file must be specified") Then
             ResoSearchRunning = False
         End If
@@ -3151,6 +3160,10 @@ Public Class Main
 
     Private Sub Btn_min_Click(sender As Object, e As EventArgs) Handles Btn_min.Click
         Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
+    End Sub
+
+    Private Sub Button1_Click_2(sender As Object, e As EventArgs)
+        network_scan.Show()
     End Sub
 
 

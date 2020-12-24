@@ -614,10 +614,7 @@ Public Class GeckoFX
                 Main.WebbrowserURL = WebBrowser1.Url.ToString
                 Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                 Main.WebbrowserTitle = WebBrowser1.DocumentTitle
-
-                Dim SubtitleName As String = Main.WebbrowserTitle.Replace(" - Watch on VRV", "").Replace("Free Streaming", "").Replace("Tubi", "")
-                SubtitleName = Main.RemoveExtraSpaces(System.Text.RegularExpressions.Regex.Replace(SubtitleName, "[^\w\\-]", " "))
-                Dim SubtitlePfad As String = Main.Pfad + "\" + SubtitleName
+                Main.WebbrowserCookie = WebBrowser1.Document.Cookie
 
                 Dim Requests As New List(Of String)
                 Dim LogText As String = Nothing
@@ -678,46 +675,48 @@ Public Class GeckoFX
 
                         ElseIf InStr(RequestURL, ".txt") Then
                             Main.txtList.Add(RequestURL)
-                            client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".txt")
+                            ' client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".txt")
                         ElseIf InStr(RequestURL, ".vtt") Then
                             Main.txtList.Add(RequestURL)
-                            client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".vtt")
+                            ' client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".vtt")
                         ElseIf InStr(RequestURL, ".srt") Then
                             Main.txtList.Add(RequestURL)
-                            client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".srt")
+                            ' client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".srt")
                         ElseIf InStr(RequestURL, ".ass") Then
                             Main.txtList.Add(RequestURL)
-                            client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".ass")
+                            ' client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".ass")
                         ElseIf InStr(RequestURL, ".ssa") Then
                             Main.txtList.Add(RequestURL)
-                            client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".ssa")
+                            'client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".ssa")
                         ElseIf InStr(RequestURL, ".dfxp") Then
                             Main.txtList.Add(RequestURL)
-                            client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".dfxp")
+                            ' client0.DownloadFileAsync(New Uri(RequestURL), SubtitlePfad + ".dfxp")
                         End If
                     End If
                 Next
+                Button2.Text = "use network scan dialog"
+                network_scan.ShowDialog()
+                'If Main.m3u8List.Count > 0 Then
+                '    Main.NonCR_URL = Main.m3u8List.Item(0)
+                '    Main.FFMPEG_Reso(Main.NonCR_URL)
+                '    t = New Thread(AddressOf Main.Grapp_non_CR)
+                '    t.Priority = ThreadPriority.Normal
+                '    t.IsBackground = True
+                '    t.Start()
+                '    Button2.Text = "Start network scan"
 
-                If Main.m3u8List.Count > 0 Then
-                    Main.NonCR_URL = Main.m3u8List.Item(0)
-                    Main.FFMPEG_Reso(Main.NonCR_URL)
-                    t = New Thread(AddressOf Main.Grapp_non_CR)
-                    t.Priority = ThreadPriority.Normal
-                    t.IsBackground = True
-                    t.Start()
-                    Button2.Text = "Start network scan"
-
-                ElseIf Main.mpdList.Count > 0 Then
-                    Main.NonCR_URL = Main.mpdList.Item(0)
-                    Main.FFMPEG_Reso(Main.NonCR_URL)
-                    t = New Thread(AddressOf Main.Grapp_non_CR)
-                    t.Priority = ThreadPriority.Normal
-                    t.IsBackground = True
-                    t.Start()
-                    Button2.Text = "Start network scan"
-                End If
+                'ElseIf Main.mpdList.Count > 0 Then
+                '    Main.NonCR_URL = Main.mpdList.Item(0)
+                '    Main.FFMPEG_Reso(Main.NonCR_URL)
+                '    t = New Thread(AddressOf Main.Grapp_non_CR)
+                '    t.Priority = ThreadPriority.Normal
+                '    t.IsBackground = True
+                '    t.Start()
+                '    Button2.Text = "Start network scan"
+                'End If
 
 
+                Button2.Text = "Start network scan"
                 ScanTrue = False
                 Button2.Enabled = True
             Catch ex As Exception

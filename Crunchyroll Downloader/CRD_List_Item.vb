@@ -18,7 +18,6 @@ Public Class CRD_List_Item
     Dim ListOfStreams As New List(Of String)
     Dim proc As Process
     Dim ThreadList As New List(Of Thread)
-    Dim timeout As DateTime
     Dim Item_ErrorTolerance As Integer
     Dim Canceld As Boolean = False
     Dim Finished As Boolean = False
@@ -51,7 +50,7 @@ Public Class CRD_List_Item
     Dim LastDataRate3 As Double = 0
 
     Dim FailedSegments As New List(Of FailedSegemtsWithURL)
-
+    Dim LogText As New List(Of String)
 #Region "Remove from list"
     Public Sub DisposeItem(ByVal Dispose As Boolean)
         If Dispose = True Then
@@ -62,7 +61,46 @@ Public Class CRD_List_Item
         Return ToDispose
     End Function
 #End Region
-#Region "Set UI"
+#Region "UI"
+
+    Private Sub CRD_List_Item_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+        bt_del.SetBounds(775, 10, 35, 29)
+        bt_pause.SetBounds(740, 15, 25, 20)
+        PB_Thumbnail.SetBounds(11, 20, 168, 95)
+        PB_Thumbnail.BringToFront()
+        Label_website.Location = New Point(195, 12)
+        Label_Anime.Location = New Point(195, 40)
+        Label_Reso.Location = New Point(195, 97)
+        Label_Hardsub.Location = New Point(265, 97)
+        Label_percent.SetBounds(Me.Width - 400, 97, 378, 27)
+        Label_percent.AutoSize = False
+        ProgressBar1.SetBounds(195, 70, 601, 20)
+        PictureBox5.Location = New Point(0, 136)
+        PictureBox5.Height = 6
+
+        If Service = "AoD" Then
+            MetroStyleManager1.Style = MetroColorStyle.LightGreen
+            ServiceSleep = 1000
+        ElseIf Service = "FM" Then
+            MetroStyleManager1.Style = MetroColorStyle.DarkPurple
+        Else
+            MetroStyleManager1.Style = MetroColorStyle.Orange
+        End If
+        MetroStyleManager1.Theme = Main.Manager.Theme
+        MetroStyleManager1.Owner = Me
+        Me.StyleManager = MetroStyleManager1
+
+
+        PictureBox5.Width = Me.Width - 40
+
+        bt_del.Location = New Point(Me.Width - 63, 10)
+        bt_pause.Location = New Point(Me.Width - 98, 15)
+
+        ProgressBar1.Width = Me.Width - 223
+
+    End Sub
+
+
     Public Sub SetLabelWebsite(ByVal Text As String)
         Label_website.Text = Text
         Label_website_Text = Text
@@ -584,7 +622,7 @@ Public Class CRD_List_Item
             text = client0.DownloadString(m3u8_url(1))
         Catch ex As Exception
             Me.Invoke(New Action(Function()
-                                     Label_website.Text = "The download process seems to have crashed"
+                                     Label_website.Text = "Hybrid mode error"
                                      Label_percent.Text = ex.ToString
                                      Return Nothing
                                  End Function))
@@ -909,7 +947,7 @@ Public Class CRD_List_Item
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
         Dim cmd As String = "-headers " + My.Resources.ffmpeg_user_agend + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
-
+        LogText.Add(Date.Now + " " + cmd)
         If Debug2 = True Then
             MsgBox(cmd)
         End If
@@ -941,7 +979,7 @@ Public Class CRD_List_Item
                 If Canceld = False Then
                     Label_website.Text = "The download process seems to have crashed"
                     Label_percent.Text = "Press the play button again to retry."
-                    ProgressBar1.Value = 100
+                    ProgressBar1.Value = 0
                     Retry = True
                     StatusRunning = False
                 End If
@@ -956,9 +994,13 @@ Public Class CRD_List_Item
     End Sub
 
     Sub FFMPEGOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
-        'timeout = DateTime.Now
-        'MsgBox(timeout)
         Try
+            LogText.Add(Date.Now + " " + e.Data)
+        Catch ex As Exception
+        End Try
+
+        Try
+
             Dim logfile As String = DownloadPfad.Replace(".mp4", ".log").Replace(Chr(34), "")
             If SaveLog = True Then
                 If File.Exists(logfile) Then
@@ -1213,50 +1255,38 @@ Public Class CRD_List_Item
         Process.Start(DownloadPfad.Replace(Chr(34), ""))
     End Sub
 
-    Private Sub CRD_List_Item_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-        bt_del.SetBounds(775, 10, 35, 29)
-        bt_pause.SetBounds(740, 15, 25, 20)
-        PB_Thumbnail.SetBounds(11, 20, 168, 95)
-        PB_Thumbnail.BringToFront()
-        Label_website.Location = New Point(195, 12)
-        Label_Anime.Location = New Point(195, 40)
-        Label_Reso.Location = New Point(195, 97)
-        Label_Hardsub.Location = New Point(265, 97)
-        Label_percent.SetBounds(Me.Width - 400, 97, 378, 27)
-        Label_percent.AutoSize = False
-        ProgressBar1.SetBounds(195, 70, 601, 20)
-        PictureBox5.Location = New Point(0, 136)
-        PictureBox5.Height = 6
+    Private Sub SaveToFile_Click(sender As Object, e As EventArgs) Handles SaveToFile.Click
+        Try
 
-        If Service = "AoD" Then
-            MetroStyleManager1.Style = MetroColorStyle.LightGreen
-            ServiceSleep = 1000
-        ElseIf Service = "FM" Then
-            MetroStyleManager1.Style = MetroColorStyle.DarkPurple
-        Else
-            MetroStyleManager1.Style = MetroColorStyle.Orange
-        End If
-        MetroStyleManager1.Theme = Main.Manager.Theme
-        MetroStyleManager1.Owner = Me
-        Me.StyleManager = MetroStyleManager1
+            Dim logfile As String = DownloadPfad.Replace(".mp4", ".log").Replace(Chr(34), "")
+            'If File.Exists(logfile) Then
+            Using sw As StreamWriter = File.AppendText(logfile)
+                sw.Write(LogText.Item(0))
+                sw.Write(vbNewLine)
+                For i As Integer = 1 To LogText.Count - 1
+                    sw.Write(vbNewLine)
+                    sw.Write(LogText.Item(i))
+                Next
 
-
-        PictureBox5.Width = Me.Width - 40
-
-        bt_del.Location = New Point(Me.Width - 63, 10)
-        bt_pause.Location = New Point(Me.Width - 98, 15)
-
-        ProgressBar1.Width = Me.Width - 223
-
+            End Using
+            'Else
+            'File.WriteAllText(logfile, Date.Now + " " + e.Data)
+            'End If
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
     End Sub
 
-
-
-    Private Sub Label_Anime_Click(sender As Object, e As EventArgs) Handles ProgressBar1.Click, PB_Thumbnail.Click, MyBase.Click, Label_website.Click, Label_Reso.Click, Label_percent.Click, Label_Anime.Click
-
+    Private Sub LogTocClipboard_Click(sender As Object, e As EventArgs) Handles LogTocClipboard.Click
+        Try
+            Dim Text As String = LogText.Item(0) + vbNewLine
+            For i As Integer = 1 To LogText.Count - 1
+                Text = Text + vbNewLine + LogText.Item(i)
+            Next
+            My.Computer.Clipboard.SetText(Text)
+        Catch ex As Exception
+        End Try
     End Sub
-
-
 End Class
 
 Public Class FailedSegemtsWithURL

@@ -36,6 +36,8 @@ Partial Class CRD_List_Item
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ViewInExplorerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PlaybackVideoFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LogTocClipboard = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveToFile = New System.Windows.Forms.ToolStripMenuItem()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.ProgressBar1 = New MetroFramework.Controls.MetroProgressBar()
         Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
@@ -145,21 +147,33 @@ Partial Class CRD_List_Item
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewInExplorerToolStripMenuItem, Me.PlaybackVideoFileToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewInExplorerToolStripMenuItem, Me.PlaybackVideoFileToolStripMenuItem, Me.LogTocClipboard, Me.SaveToFile})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(173, 48)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(190, 92)
         '
         'ViewInExplorerToolStripMenuItem
         '
         Me.ViewInExplorerToolStripMenuItem.Name = "ViewInExplorerToolStripMenuItem"
-        Me.ViewInExplorerToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.ViewInExplorerToolStripMenuItem.Size = New System.Drawing.Size(189, 22)
         Me.ViewInExplorerToolStripMenuItem.Text = "View in explorer"
         '
         'PlaybackVideoFileToolStripMenuItem
         '
         Me.PlaybackVideoFileToolStripMenuItem.Name = "PlaybackVideoFileToolStripMenuItem"
-        Me.PlaybackVideoFileToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.PlaybackVideoFileToolStripMenuItem.Size = New System.Drawing.Size(189, 22)
         Me.PlaybackVideoFileToolStripMenuItem.Text = "playback video file"
+        '
+        'LogTocClipboard
+        '
+        Me.LogTocClipboard.Name = "LogTocClipboard"
+        Me.LogTocClipboard.Size = New System.Drawing.Size(189, 22)
+        Me.LogTocClipboard.Text = "Copy log to clipboard"
+        '
+        'SaveToFile
+        '
+        Me.SaveToFile.Name = "SaveToFile"
+        Me.SaveToFile.Size = New System.Drawing.Size(189, 22)
+        Me.SaveToFile.Text = "Save log to file"
         '
         'PictureBox5
         '
@@ -228,4 +242,6 @@ Partial Class CRD_List_Item
     Friend WithEvents Label_Reso As MetroFramework.Controls.MetroLabel
     Friend WithEvents Label_Hardsub As MetroFramework.Controls.MetroLabel
     Friend WithEvents Label_percent As MetroFramework.Controls.MetroLabel
+    Friend WithEvents LogTocClipboard As ToolStripMenuItem
+    Friend WithEvents SaveToFile As ToolStripMenuItem
 End Class

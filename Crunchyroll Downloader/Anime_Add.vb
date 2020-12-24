@@ -749,9 +749,9 @@ Public Class Anime_Add
 
 
                                  If comboBox4.SelectedIndex > comboBox3.SelectedIndex Or comboBox4.SelectedIndex = comboBox3.SelectedIndex Then
-                                         c = comboBox4.SelectedIndex - comboBox3.SelectedIndex + 1
-                                     Else
-                                         Dim TempCB3 As Integer = comboBox3.SelectedIndex
+                                     c = comboBox4.SelectedIndex - comboBox3.SelectedIndex + 1
+                                 Else
+                                     Dim TempCB3 As Integer = comboBox3.SelectedIndex
                                      Dim TempCB4 As Integer = comboBox4.SelectedIndex
                                      comboBox3.SelectedIndex = TempCB4
                                      comboBox4.SelectedIndex = TempCB3

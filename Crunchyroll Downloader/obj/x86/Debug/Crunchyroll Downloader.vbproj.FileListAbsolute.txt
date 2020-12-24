@@ -143,3 +143,4 @@ D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\MetroFramework.dll
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\MetroFramework.pdb
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.ErrorDialog.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.network_scan.resources

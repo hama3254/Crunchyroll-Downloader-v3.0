@@ -124,6 +124,7 @@ Partial Class Einstellungen
         Me.AoD_576p = New MetroFramework.Controls.MetroRadioButton()
         Me.AoD_1080_Plus = New MetroFramework.Controls.MetroRadioButton()
         Me.TabPage7 = New System.Windows.Forms.TabPage()
+        Me.LastVersion = New MetroFramework.Controls.MetroLabel()
         Me.Label8 = New MetroFramework.Controls.MetroLabel()
         Me.Label9 = New MetroFramework.Controls.MetroLabel()
         Me.Label7 = New MetroFramework.Controls.MetroLabel()
@@ -603,10 +604,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 35)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage2.Size = New System.Drawing.Size(493, 461)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -934,10 +935,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(493, 461)
+        Me.TabPage1.Size = New System.Drawing.Size(493, 452)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1150,7 +1151,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 1
+        Me.TabControl1.SelectedIndex = 5
         Me.TabControl1.Size = New System.Drawing.Size(501, 500)
         Me.TabControl1.TabIndex = 38
         Me.TabControl1.UseSelectable = True
@@ -1399,6 +1400,7 @@ Partial Class Einstellungen
         'TabPage7
         '
         Me.TabPage7.BackColor = System.Drawing.Color.Transparent
+        Me.TabPage7.Controls.Add(Me.LastVersion)
         Me.TabPage7.Controls.Add(Me.Label8)
         Me.TabPage7.Controls.Add(Me.Label9)
         Me.TabPage7.Controls.Add(Me.Label7)
@@ -1407,11 +1409,23 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(493, 461)
+        Me.TabPage7.Size = New System.Drawing.Size(493, 452)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = "About   "
+        '
+        'LastVersion
+        '
+        Me.LastVersion.BackColor = System.Drawing.Color.Transparent
+        Me.LastVersion.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.LastVersion.ForeColor = System.Drawing.Color.Black
+        Me.LastVersion.Location = New System.Drawing.Point(1, 205)
+        Me.LastVersion.Name = "LastVersion"
+        Me.LastVersion.Size = New System.Drawing.Size(491, 45)
+        Me.LastVersion.TabIndex = 48
+        Me.LastVersion.Text = "last release v3.7.2"
+        Me.LastVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Label8
         '
@@ -1468,7 +1482,7 @@ Partial Class Einstellungen
         '
         Me.PictureBox7.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.about_icon
         Me.PictureBox7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
-        Me.PictureBox7.Location = New System.Drawing.Point(0, 25)
+        Me.PictureBox7.Location = New System.Drawing.Point(0, 50)
         Me.PictureBox7.Name = "PictureBox7"
         Me.PictureBox7.Size = New System.Drawing.Size(493, 137)
         Me.PictureBox7.TabIndex = 43
@@ -1479,7 +1493,7 @@ Partial Class Einstellungen
         Me.Label4.BackColor = System.Drawing.Color.Transparent
         Me.Label4.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.Label4.ForeColor = System.Drawing.Color.Black
-        Me.Label4.Location = New System.Drawing.Point(1, 190)
+        Me.Label4.Location = New System.Drawing.Point(1, -5)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(491, 45)
         Me.Label4.TabIndex = 40
@@ -1491,7 +1505,7 @@ Partial Class Einstellungen
         Me.Label6.BackColor = System.Drawing.Color.Transparent
         Me.Label6.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.Label6.ForeColor = System.Drawing.Color.Black
-        Me.Label6.Location = New System.Drawing.Point(1, 240)
+        Me.Label6.Location = New System.Drawing.Point(1, 255)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(491, 45)
         Me.Label6.TabIndex = 37
@@ -1503,7 +1517,7 @@ Partial Class Einstellungen
         Me.Label5.BackColor = System.Drawing.Color.Transparent
         Me.Label5.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.Label5.ForeColor = System.Drawing.Color.Black
-        Me.Label5.Location = New System.Drawing.Point(1, 290)
+        Me.Label5.Location = New System.Drawing.Point(1, 305)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(491, 45)
         Me.Label5.TabIndex = 38
@@ -1691,4 +1705,5 @@ Partial Class Einstellungen
     Friend WithEvents CB_Fun_HardSubs As MetroFramework.Controls.MetroComboBox
     Friend WithEvents Fun_Dub_Over As MetroFramework.Controls.MetroComboBox
     Friend WithEvents CR_Filename As MetroFramework.Controls.MetroComboBox
+    Public WithEvents LastVersion As MetroFramework.Controls.MetroLabel
 End Class

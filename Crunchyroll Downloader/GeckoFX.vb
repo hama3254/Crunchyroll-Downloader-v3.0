@@ -226,7 +226,7 @@ Public Class GeckoFX
 
 
                     Dim SubtitleName As String = Main.WebbrowserTitle.Replace(" - Watch on VRV", "").Replace("Free Streaming", "").Replace("Tubi", "")
-                    SubtitleName = Main.RemoveExtraSpaces(System.Text.RegularExpressions.Regex.Replace(SubtitleName, "[^\w\\-]", " "))
+                    SubtitleName = Main.RemoveExtraSpaces(String.Join(" ", SubtitleName.Split(Main.invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)) 'System.Text.RegularExpressions.Regex.Replace(SubtitleName, "[^\w\\-]", " "))
                     Dim SubtitlePfad As String = Main.Pfad + "\" + SubtitleName
 
                     Dim logFileStream As FileStream = New FileStream(Main.GeckoLogFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
@@ -542,7 +542,7 @@ Public Class GeckoFX
                     End If
                 End If
             Next
-            NameDLFinal = System.Text.RegularExpressions.Regex.Replace(NameDLFinal, "[^\w\\-]", " ")
+            NameDLFinal = String.Join(" ", NameDLFinal.Split(Main.invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) ''System.Text.RegularExpressions.Regex.Replace(NameDLFinal, "[^\w\\-]", " ")
             If Main.Debug2 = True Then
                 MsgBox(NameDLFinal)
             End If

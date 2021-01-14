@@ -149,7 +149,6 @@ Partial Class Main
         '
         'Timer3
         '
-        Me.Timer3.Enabled = True
         Me.Timer3.Interval = 1000
         '
         'TheTextBox

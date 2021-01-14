@@ -209,7 +209,7 @@ Public Class network_scan
         pictureBox4.Image = My.Resources.main_button_download_deactivate
 
         Dim FileName As String = Main.WebbrowserTitle.Replace(" - Watch on VRV", "").Replace("Free Streaming", "").Replace("Tubi", "")
-        FileName = Main.RemoveExtraSpaces(System.Text.RegularExpressions.Regex.Replace(FileName, "[^\w\\-]", " "))
+        FileName = Main.RemoveExtraSpaces(String.Join(" ", FileName.Split(Main.invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)) 'System.Text.RegularExpressions.Regex.Replace(FileName, "[^\w\\-]", " "))
         Dim FilePfad As String = Main.Pfad + "\" + FileName
 
         Dim client0 As New WebClient

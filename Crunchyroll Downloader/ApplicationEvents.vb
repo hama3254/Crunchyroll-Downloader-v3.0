@@ -53,6 +53,7 @@ Namespace My
                 GeckoPreferences.Default("plugin.state.flash") = 0
                 GeckoPreferences.Default("zoom.maxPercent") = 100
                 GeckoPreferences.Default("zoom.minPercent") = 100
+                GeckoPreferences.Default("layers.geometry.d3d11.enabled") = False
                 'GeckoPreferences.Default("network.proxy.http") = "51.159.26.44"
                 'GeckoPreferences.Default("network.proxy.http_port") = 3128
                 'GeckoPreferences.Default("network.proxy.ssl") = "51.159.26.44"

@@ -604,9 +604,9 @@ Public Class Anime_Add
                 If GroupBox3.Visible = True Then
                     If InStr(ListBox1.GetItemText(ListBox1.Items(0)), "funimation.com") Then
                         If Main.Funimation_Grapp_RDY = True Then
+                            Main.Funimation_Grapp_RDY = False
                             GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
                             ListBox1.Items.Remove(ListBox1.Items(0))
-                            Main.Funimation_Grapp_RDY = False
                             Main.b = False
                             StatusLabel.Text = "Status: loading ..."
                             Main.Text = "Status: loading ..."
@@ -615,9 +615,9 @@ Public Class Anime_Add
 
                     Else
                         If Main.Grapp_RDY = True Then
+                            Main.Grapp_RDY = False
                             GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
                             ListBox1.Items.Remove(ListBox1.Items(0))
-                            Main.Grapp_RDY = False
                             Main.b = False
                             StatusLabel.Text = "Status: loading ..."
                             Main.Text = "Status: loading ..."
@@ -822,6 +822,7 @@ Public Class Anime_Add
                     Dim AoDTitle00() As String = AoDTitle0(ii + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim AoD_EpisodeSplit() As String = AoDTitle00(0).Split(New String() {" - "}, System.StringSplitOptions.RemoveEmptyEntries)
                     If AoD_EpisodeSplit.Count > 2 Then
+                        AoD_Episode_Title = Nothing
                         For i3 As Integer = 1 To AoD_EpisodeSplit.Count - 1
                             If AoD_Episode_Title = Nothing Then
                                 AoD_Episode_Title = System.Text.RegularExpressions.Regex.Replace(AoD_EpisodeSplit(i3), "[^\w\\-]", " ").Trim(" ")
@@ -1203,6 +1204,7 @@ Public Class Anime_Add
     Private Sub Anime_Add_Resize(sender As Object, e As EventArgs) Handles Me.Resize
         Btn_Close.Location = New Point(Me.Width - 40, 1)
         Btn_min.Location = New Point(Me.Width - 68, 10)
+        Me.WindowState = System.Windows.Forms.FormWindowState.Normal
     End Sub
 
     Private Sub Btn_min_Click(sender As Object, e As EventArgs) Handles Btn_min.Click
@@ -1276,5 +1278,9 @@ Public Class Anime_Add
             Catch ex As Exception
             End Try
         End If
+    End Sub
+
+    Private Sub Anime_Add_DoubleClick(sender As Object, e As EventArgs) Handles Me.DoubleClick
+        '
     End Sub
 End Class

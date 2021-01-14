@@ -1326,7 +1326,7 @@ Public Class Main
             Dim Pfad2 As String
             Dim TextBox2_Text As String = Nothing
             Dim CR_FilenName As String = Nothing
-            Dim CR_FilenName_Backup As String = Nothing
+
 
             Me.Invoke(New Action(Function()
                                      TextBox2_Text = Anime_Add.textBox2.Text
@@ -1334,27 +1334,7 @@ Public Class Main
                                  End Function))
 #Region "Name von Crunchyroll"
 
-            Dim Bug_Deutsch As String = "-"
-                If CBool(InStr(WebbrowserTitle, "Anschauen auf Crunchyroll")) Then
-                    Bug_Deutsch = ":"
-                End If
-                Dim CR_Name_by_Titel_2 As String() = WebbrowserTitle.Split(New String() {Bug_Deutsch}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim CR_Title As String = Nothing
-                'If CR_Name_by_Titel_2.Count > 2 Then
-                For i As Integer = 0 To CR_Name_by_Titel_2.Count - 2
-                    If CR_Title = Nothing Then
-                        CR_Title = CR_Name_by_Titel_2(i).Trim()
-                    Else
-                        CR_Title = CR_Title + " " + CR_Name_by_Titel_2(i).Trim()
-                    End If
 
-                Next
-                'Else
-
-                'End If
-                CR_FilenName = CR_Title
-                CR_FilenName_Backup = CR_Title
-            'MsgBox(CR_FilenName)
 
             If CBool(InStr(WebbrowserText, "<h4>")) Then ' false on movie true on series
                 Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {"<h4>"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1378,7 +1358,7 @@ Public Class Main
                 CR_Name_Anime0(0) = String.Join(" ", CR_Name_Anime0(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_Name_Anime0(0), "[^\w\\-]", " ")
                 CR_Anime_Titel = CR_Name_Anime0(0).Trim
 
-                CR_FilenName_Backup = RemoveExtraSpaces(CR_FilenName)
+                'CR_FilenName_Backup = RemoveExtraSpaces(CR_FilenName)
 
 
             End If
@@ -1420,13 +1400,13 @@ Public Class Main
             Else
                 CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)) 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
 
-                CR_FilenName_Backup = CR_FilenName
+
             End If
 
             CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = RemoveExtraSpaces(CR_FilenName)
 
-            My.Computer.FileSystem.WriteAllText("log.log", WebbrowserText, False)
+            'My.Computer.FileSystem.WriteAllText("log.log", WebbrowserText, False)
 
             Pfad2 = UseSubfolder(CR_Anime_Titel, CR_Anime_Staffel, Pfad)
 
@@ -1436,7 +1416,7 @@ Public Class Main
                     Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
                 Catch ex As Exception
                     ' Ordner wurde nich erstellt
-                    Pfad2 = Pfad + "\" + CR_FilenName_Backup + ".mp4"
+                    Pfad2 = Pfad + "\" + CR_FilenName + ".mp4"
                 End Try
             End If
 
@@ -1741,11 +1721,7 @@ Public Class Main
                     ResoHTMLDisplay = ResoHTML(0) + "p"
                 End If
             End If
-            Dim L2Name As String = String.Join(" ", CR_FilenName_Backup.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName_Backup, "[^\w\\-]", " ")
-            If CR_FilenName = Nothing Then
-            Else
-                L2Name = CR_FilenName
-            End If
+            Dim L2Name As String = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName_Backup, "[^\w\\-]", " ")
             If Reso = 42 And HybridMode = False Then
                 ResoHTMLDisplay = "[Auto]"
             ElseIf Reso = 42 And HybridMode = False Then

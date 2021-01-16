@@ -19,17 +19,17 @@ browser.tabs.query({
             code: 'document.getElementsByClassName("trackVideo")[0].href'
         });
         funimation.then(FunimationSuccess, FunimationError);
-	} else if (tab.url.includes('anime-on-demand.de/anime/')) {
+    } else if (tab.url.includes('anime-on-demand.de/anime/')) {
 
-		document.getElementById("btn_add").hidden = true;
+        document.getElementById("btn_add").hidden = true;
         document.getElementById("btn_enable_select").hidden = true;
         document.getElementById("btn_add_mass").hidden = true;
         document.getElementById("btn_select_all").hidden = true;
         document.getElementById("btn_select_none").hidden = true;
         document.getElementById("btn_enable_funimation_select").hidden = true;
         document.getElementById("btn_add_funimation").hidden = true;
-		document.getElementById("btn_add_AoD").hidden = false;
-       
+        document.getElementById("btn_add_AoD").hidden = true; //false if implemented
+
     } else {
 
         document.getElementById("btn_add").hidden = true;
@@ -39,26 +39,26 @@ browser.tabs.query({
         document.getElementById("btn_select_none").hidden = true;
         document.getElementById("btn_enable_funimation_select").hidden = true;
         document.getElementById("btn_add_funimation").hidden = true;
-		document.getElementById("btn_add_AoD").hidden = true;
+        document.getElementById("btn_add_AoD").hidden = true;
     }
 }, console.error)
 
 document.getElementById('btn_add_AoD').addEventListener('click', () => {
-   //browser.cookies.getAllCookieStores().then((cookie) => {
-	//   browser.cookies.getAll({
-	//	name: "_aod_session"
-	//	}).then((cookie) => {
-	//console.log(cookie)
-        
-   //}, console.error)
-   
-   var cookies = {};
-   
-   cookies.all = url => new Promise(resolve => chrome.cookies.getAll({
-  url
-}, resolve));
-   
-   console.log(cookies)
+    //browser.cookies.getAllCookieStores().then((cookie) => {
+    //   browser.cookies.getAll({
+    //	name: "_aod_session"
+    //	}).then((cookie) => {
+    //console.log(cookie)
+
+    //}, console.error)
+
+    var cookies = {};
+
+    cookies.all = url => new Promise(resolve => chrome.cookies.getAll({
+                url
+            }, resolve));
+
+    console.log(cookies)
 });
 
 document.getElementById('btn_enable_select').addEventListener('click', () => {
@@ -73,7 +73,7 @@ document.getElementById('btn_enable_select').addEventListener('click', () => {
     document.getElementById("btn_add").hidden = true;
     document.getElementById("btn_enable_funimation_select").hidden = true;
     document.getElementById("btn_add_funimation").hidden = true;
-	document.getElementById("btn_add_AoD").hidden = true;
+    document.getElementById("btn_add_AoD").hidden = true;
 });
 
 document.getElementById('btn_select_all').addEventListener('click', () => {
@@ -160,7 +160,7 @@ function onExecuted(result) {
         document.getElementById("btn_enable_select").hidden = true;
         document.getElementById("btn_add_funimation").hidden = true;
         document.getElementById("btn_enable_funimation_select").hidden = true;
-		document.getElementById("btn_add_AoD").hidden = true;
+        document.getElementById("btn_add_AoD").hidden = true;
         console.log(true);
     } else {
         document.getElementById("btn_add").hidden = true;
@@ -170,7 +170,7 @@ function onExecuted(result) {
         document.getElementById("btn_select_none").hidden = true;
         document.getElementById("btn_add_funimation").hidden = true;
         document.getElementById("btn_enable_funimation_select").hidden = true;
-		document.getElementById("btn_add_AoD").hidden = true;
+        document.getElementById("btn_add_AoD").hidden = true;
 
         console.log(false);
     }
@@ -186,7 +186,7 @@ function onError(error) {
     document.getElementById("btn_enable_select").hidden = true;
     document.getElementById("btn_add_funimation").hidden = true;
     document.getElementById("btn_enable_funimation_select").hidden = true;
-	document.getElementById("btn_add_AoD").hidden = true;
+    document.getElementById("btn_add_AoD").hidden = true;
 
 }
 function add_fun_ok(result) {
@@ -197,41 +197,40 @@ function add_fun_ok(result) {
         let tab = tabs[0]; // Safe to assume there will only be one resultconsole.log(tab.url);
         console.log(tab.url);
 
-        const form = document.createElement('form');
-        form.method = 'post';
-        form.action = "http://127.0.0.1/post";
+        document.getElementById("btn_add_funimation").disabled = true;
+        document.getElementById("btn_add_funimation").style.background = "#c9c9c9"
 
-        //const hiddenField = document.createElement('input');
-        //hiddenField.type = 'hidden';
-        //hiddenField.name = "FunimationHTML";
-        //hiddenField.value = result;
-        //form.appendChild(hiddenField);
+            var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "http://127.0.0.1/post", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("FunimationURL=" + tab.url);
 
-        const hiddenField2 = document.createElement('input');
-        hiddenField2.type = 'hidden';
-        hiddenField2.name = "FunimationURL";
-        hiddenField2.value = tab.url;
-        form.appendChild(hiddenField2);
+        setTimeout(function () {
+            document.getElementById("btn_add_funimation").style.background = "#ff8000"
+        }, 10000);
+        setTimeout(function () {
+            document.getElementById("btn_add_funimation").disabled = false;
+        }, 10000);
 
-        document.body.appendChild(form);
-        form.submit();
     }, console.error)
 }
 
 function add_one_ok(result) {
 
-    const form = document.createElement('form');
-    form.method = 'post';
-    form.action = "http://127.0.0.1/post";
+    document.getElementById("btn_add").disabled = true;
+    document.getElementById("btn_add").style.background = "#c9c9c9"
 
-    const hiddenField = document.createElement('input');
-    hiddenField.type = 'hidden';
-    hiddenField.name = "HTMLSingle";
-    hiddenField.value = result;
-    form.appendChild(hiddenField);
+        var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "http://127.0.0.1/post", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("HTMLSingle=" + result);
 
-    document.body.appendChild(form);
-    form.submit();
+    setTimeout(function () {
+        document.getElementById("btn_add").style.background = "#ff8000"
+    }, 10000);
+    setTimeout(function () {
+        document.getElementById("btn_add").disabled = false;
+    }, 10000);
 
 }
 
@@ -240,18 +239,20 @@ function add_one_error(error) {
 }
 function add_mass_ok(result) {
 
-    const form = document.createElement('form');
-    form.method = 'post';
-    form.action = "http://127.0.0.1/post";
+    document.getElementById("btn_add_mass").disabled = true;
+    document.getElementById("btn_add_mass").style.background = "#c9c9c9"
 
-    const hiddenField = document.createElement('input');
-    hiddenField.type = 'hidden';
-    hiddenField.name = "HTMLMass";
-    hiddenField.value = result;
-    form.appendChild(hiddenField);
+        var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "http://127.0.0.1/post", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("HTMLMass=" + result);
 
-    document.body.appendChild(form);
-    form.submit();
+    setTimeout(function () {
+        document.getElementById("btn_add_mass").style.background = "#ff8000"
+    }, 10000);
+    setTimeout(function () {
+        document.getElementById("btn_add_mass").disabled = false;
+    }, 10000);
 
 }
 
@@ -272,7 +273,7 @@ document.getElementById('btn_enable_funimation_select').addEventListener('click'
     document.getElementById("btn_enable_select").hidden = true;
     document.getElementById("btn_add").hidden = true;
     document.getElementById("btn_add_funimation").hidden = true;
-	document.getElementById("btn_add_AoD").hidden = true;
+    document.getElementById("btn_add_AoD").hidden = true;
 
 });
 
@@ -285,11 +286,11 @@ function FunimationSuccess(result) {
         document.getElementById("btn_select_all").hidden = false;
         document.getElementById("btn_select_none").hidden = false;
         document.getElementById("btn_enable_select").hidden = true;
-		document.getElementById("btn_add_AoD").hidden = true;
+        document.getElementById("btn_add_AoD").hidden = true;
 
         document.getElementById("btn_enable_funimation_select").hidden = true;
         document.getElementById("btn_add_funimation").hidden = true;
-		document.getElementById("btn_add_AoD").hidden = true;
+        document.getElementById("btn_add_AoD").hidden = true;
         console.log(true);
     } else {
         document.getElementById("btn_add").hidden = true;
@@ -299,7 +300,7 @@ function FunimationSuccess(result) {
         document.getElementById("btn_select_all").hidden = true;
         document.getElementById("btn_select_none").hidden = true;
         document.getElementById("btn_enable_funimation_select").hidden = false;
-		document.getElementById("btn_add_AoD").hidden = true;
+        document.getElementById("btn_add_AoD").hidden = true;
 
         console.log(false);
     }
@@ -315,6 +316,6 @@ function FunimationError(error) {
     document.getElementById("btn_enable_select").hidden = true;
     document.getElementById("btn_add_funimation").hidden = false;
     document.getElementById("btn_enable_funimation_select").hidden = true;
-	document.getElementById("btn_add_AoD").hidden = true;
+    document.getElementById("btn_add_AoD").hidden = true;
 
 }

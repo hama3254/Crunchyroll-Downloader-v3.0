@@ -48,6 +48,11 @@ Public Class Anime_Add
         Me.StyleManager = Manager
         Btn_Close.Image = Main.CloseImg
         Btn_min.Image = Main.MinImg
+
+        ListBox1.BackColor = Main.BackColorValue
+        ListBox1.ForeColor = Main.ForeColorValue
+
+
         Try
             Me.Icon = My.Resources.icon
         Catch ex As Exception
@@ -158,16 +163,49 @@ Public Class Anime_Add
             Try
                 If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then 'Or CBool(InStr(textBox1.Text, "anime-on-demand.de")) Then
                     If InStr(textBox1.Text, "funimation.com") Then
-                        If InStr(textBox1.Text, "lang=") Then
-
+                        If Main.DubFunimation = "Disabled" Then
                         Else
-                            If InStr(textBox1.Text, "?") Then
+                            If InStr(textBox1.Text, "?lang=") Then
+                                Dim ClearUri As String() = textBox1.Text.Split(New String() {"?lang="}, System.StringSplitOptions.RemoveEmptyEntries)
+                                If ClearUri.Count > 1 Then
+                                    If InStr(ClearUri(1), "&") Then
+                                        Dim ClearUri2 As String() = ClearUri(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                        Dim Parms As String = Nothing
+                                        For i As Integer = 0 To ClearUri2.Count - 1
+                                            Parms = Parms + "&" + ClearUri2(i)
+                                        Next
+                                        textBox1.Text = ClearUri(0) + "?lang=" + Main.DubFunimation + Parms
+                                    Else
+                                        textBox1.Text = ClearUri(0) + "?lang=" + Main.DubFunimation
+                                    End If
+                                Else
+                                    textBox1.Text = ClearUri(0) + "?lang=" + Main.DubFunimation
+                                End If
+                            ElseIf InStr(textBox1.Text, "&lang=") Then
+                                Dim ClearUri As String() = textBox1.Text.Split(New String() {"&lang="}, System.StringSplitOptions.RemoveEmptyEntries)
+                                If ClearUri.Count > 1 Then
+
+                                    If InStr(ClearUri(1), "&") Then
+                                        Dim ClearUri2 As String() = ClearUri(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                        Dim Parms As String = Nothing
+                                        For i As Integer = 1 To ClearUri2.Count - 1
+                                            Parms = Parms + "&" + ClearUri2(i)
+                                        Next
+                                        textBox1.Text = ClearUri(0) + "&lang=" + Main.DubFunimation + Parms
+                                    Else
+                                        textBox1.Text = ClearUri(0) + "&lang=" + Main.DubFunimation
+                                    End If
+                                Else
+                                    textBox1.Text = ClearUri(0) + "&lang=" + Main.DubFunimation
+                                End If
+
+                            ElseIf InStr(textBox1.Text, "?") Then
                                 textBox1.AppendText("&lang=" + Main.DubFunimation)
                             Else
                                 textBox1.AppendText("?lang=" + Main.DubFunimation)
                             End If
-
                         End If
+
                     End If
 
                     If StatusLabel.Text = "Status: waiting for episode selection" Then
@@ -604,8 +642,53 @@ Public Class Anime_Add
                 If GroupBox3.Visible = True Then
                     If InStr(ListBox1.GetItemText(ListBox1.Items(0)), "funimation.com") Then
                         If Main.Funimation_Grapp_RDY = True Then
+
+                            Dim UriUsed As String = ListBox1.GetItemText(ListBox1.Items(0))
+                            If Main.DubFunimation = "Disabled" Then
+                            Else
+                                If InStr(UriUsed, "?lang=") Then
+                                    Dim ClearUri As String() = UriUsed.Split(New String() {"?lang="}, System.StringSplitOptions.RemoveEmptyEntries)
+                                    If ClearUri.Count > 1 Then
+                                        If InStr(ClearUri(1), "&") Then
+                                            Dim ClearUri2 As String() = ClearUri(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                            Dim Parms As String = Nothing
+                                            For i As Integer = 0 To ClearUri2.Count - 1
+                                                Parms = Parms + "&" + ClearUri2(i)
+                                            Next
+                                            UriUsed = ClearUri(0) + "?lang=" + Main.DubFunimation + Parms
+                                        Else
+                                            UriUsed = ClearUri(0) + "?lang=" + Main.DubFunimation
+                                        End If
+                                    Else
+                                        UriUsed = ClearUri(0) + "?lang=" + Main.DubFunimation
+                                    End If
+                                ElseIf InStr(UriUsed, "&lang=") Then
+                                    Dim ClearUri As String() = UriUsed.Split(New String() {"&lang="}, System.StringSplitOptions.RemoveEmptyEntries)
+                                    If ClearUri.Count > 1 Then
+
+                                        If InStr(ClearUri(1), "&") Then
+                                            Dim ClearUri2 As String() = ClearUri(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                            Dim Parms As String = Nothing
+                                            For i As Integer = 1 To ClearUri2.Count - 1
+                                                Parms = Parms + "&" + ClearUri2(i)
+                                            Next
+                                            UriUsed = ClearUri(0) + "&lang=" + Main.DubFunimation + Parms
+                                        Else
+                                            UriUsed = ClearUri(0) + "&lang=" + Main.DubFunimation
+                                        End If
+                                    Else
+                                        UriUsed = ClearUri(0) + "&lang=" + Main.DubFunimation
+                                    End If
+
+                                ElseIf InStr(UriUsed, "?") Then
+                                    UriUsed = UriUsed + "&lang=" + Main.DubFunimation
+                                Else
+                                    UriUsed = UriUsed + "?lang=" + Main.DubFunimation
+                                End If
+                            End If
+
                             Main.Funimation_Grapp_RDY = False
-                            GeckoFX.WebBrowser1.Navigate(ListBox1.GetItemText(ListBox1.Items(0)))
+                            GeckoFX.WebBrowser1.Navigate(UriUsed)
                             ListBox1.Items.Remove(ListBox1.Items(0))
                             Main.b = False
                             StatusLabel.Text = "Status: loading ..."

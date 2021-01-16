@@ -211,9 +211,9 @@ Partial Class Anime_Add
         Me.pictureBox4.BackColor = System.Drawing.Color.Transparent
         Me.pictureBox4.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pictureBox4.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_button_download_default
-        Me.pictureBox4.Location = New System.Drawing.Point(42, 231)
+        Me.pictureBox4.Location = New System.Drawing.Point(46, 231)
         Me.pictureBox4.Name = "pictureBox4"
-        Me.pictureBox4.Size = New System.Drawing.Size(537, 50)
+        Me.pictureBox4.Size = New System.Drawing.Size(538, 50)
         Me.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.pictureBox4.TabIndex = 42
         Me.pictureBox4.TabStop = False
@@ -362,9 +362,9 @@ Partial Class Anime_Add
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Close)
         Me.Controls.Add(Me.pictureBox4)
-        Me.Controls.Add(Me.groupBox1)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.groupBox2)
+        Me.Controls.Add(Me.groupBox1)
         Me.Name = "Anime_Add"
         Me.Padding = New System.Windows.Forms.Padding(10, 60, 20, 20)
         Me.Text = "Add Video"

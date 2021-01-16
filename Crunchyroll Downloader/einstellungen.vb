@@ -16,48 +16,8 @@ Public Class Einstellungen
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Label6.Text = "You have: v" + Application.ProductVersion.ToString
+        BackgroundWorker1.RunWorkerAsync()
 
-        Try
-            Dim client0 As New WebClient
-            client0.Encoding = Encoding.UTF8
-            client0.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-
-            Dim str0 As String = client0.DownloadString("https://api.github.com/repos/hama3254/Crunchyroll-Downloader-v3.0/releases")
-
-            Dim GitHubLastIsPre() As String = str0.Split(New String() {Chr(34) + "prerelease" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim LastNonPreRelase As Integer = 0
-
-            For i As Integer = 1 To GitHubLastIsPre.Count - 1
-                Dim GitHubLastIsPre1() As String = GitHubLastIsPre(i).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                If GitHubLastIsPre1(0) = "false" Then
-                    LastNonPreRelase = i
-                    Exit For
-                End If
-            Next
-
-            Dim GitHubLastTag() As String = str0.Split(New String() {Chr(34) + "tag_name" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim GitHubLastTag1() As String = GitHubLastTag(LastNonPreRelase).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-
-            LastVersion.Text = "last release: " + GitHubLastTag1(0)
-
-            'Dim v1 As String = Application.ProductVersion
-            'Dim v2 As String = GitHubLastTag1(0)
-            'Dim version1 = New Version(v1)
-            'Dim version2 = New Version(v2)
-            'Dim result = version1.CompareTo(version2)
-
-            'If result > 0 Then
-            '    Console.WriteLine("version1 is greater")
-            'ElseIf result < 0 Then
-            '    'Console.WriteLine("version2 is greater")
-            'Else
-            '    'Console.WriteLine("versions are equal")
-            'End If
-
-        Catch ex As Exception
-            Debug.WriteLine(ex.ToString)
-        End Try
 
         'CR_Anime_Folge = CR_Name_Staffel0_Folge1(1)
         'If GitHubLastTag1(0)
@@ -902,6 +862,39 @@ Public Class Einstellungen
         If Server.Checked = True Then
             MsgBox("This feature requires a restart of the downloader", MsgBoxStyle.Information)
         End If
+    End Sub
+
+    Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
+        Try
+            Dim client0 As New WebClient
+            client0.Encoding = Encoding.UTF8
+            client0.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+
+            Dim str0 As String = client0.DownloadString("https://api.github.com/repos/hama3254/Crunchyroll-Downloader-v3.0/releases")
+
+            Dim GitHubLastIsPre() As String = str0.Split(New String() {Chr(34) + "prerelease" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim LastNonPreRelase As Integer = 0
+
+            For i As Integer = 1 To GitHubLastIsPre.Count - 1
+                Dim GitHubLastIsPre1() As String = GitHubLastIsPre(i).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                If GitHubLastIsPre1(0) = "false" Then
+                    LastNonPreRelase = i
+                    Exit For
+                End If
+            Next
+
+            Dim GitHubLastTag() As String = str0.Split(New String() {Chr(34) + "tag_name" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim GitHubLastTag1() As String = GitHubLastTag(LastNonPreRelase).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            Me.Invoke(New Action(Function()
+                                     LastVersion.Text = "last release: " + GitHubLastTag1(0)
+                                     Return Nothing
+                                 End Function))
+
+        Catch ex As Exception
+            Debug.WriteLine(ex.ToString)
+        End Try
     End Sub
 
 

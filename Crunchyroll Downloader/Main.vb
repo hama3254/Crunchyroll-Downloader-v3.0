@@ -17,13 +17,13 @@ Public Class Main
 
     Public DarkModeValue As Boolean = False
     Public invalids As Char() = System.IO.Path.GetInvalidFileNameChars()
-
+    Dim ServerThread As Thread
 
 
     Public ErrorTolerance As Integer = 0
     Public liList As New List(Of String)
     Public HTMLString As String = My.Resources.Startuphtml
-    Public RunServer As Boolean = True
+    'Public RunServer As Boolean = True
     Public ListBoxList As New List(Of String)
     Dim ItemList As New List(Of CRD_List_Item)
     Public RunningDownloads As Integer = 0
@@ -142,15 +142,20 @@ Public Class Main
 
     Public CloseImg As Bitmap = My.Resources.main_del
     Public MinImg As Bitmap = My.Resources.main_mini
-
+    Public BackColorValue As Color = Color.FromArgb(243, 243, 243)
+    Public ForeColorValue As Color = SystemColors.WindowText
     Public Sub DarkMode()
         ListView1.BackColor = Color.FromArgb(50, 50, 50)
         CloseImg = My.Resources.main_close_dark
         MinImg = My.Resources.main_mini_dark
         Btn_min.Image = MinImg
         Btn_Close.Image = CloseImg
+        BackColorValue = Color.FromArgb(50, 50, 50)
+        ForeColorValue = Color.FromArgb(243, 243, 243)
     End Sub
     Public Sub LightMode()
+        BackColorValue = Color.FromArgb(243, 243, 243)
+        ForeColorValue = SystemColors.WindowText
         ListView1.BackColor = SystemColors.Control
         CloseImg = My.Resources.main_close
         MinImg = My.Resources.main_mini
@@ -330,10 +335,10 @@ Public Class Main
         End Try
         If StartServer = True Then
             Timer3.Enabled = True
-            Dim t As New Thread(AddressOf ServerStart)
-            t.Priority = ThreadPriority.Normal
-            t.IsBackground = True
-            t.Start()
+            ServerThread = New Thread(AddressOf ServerStart)
+            ServerThread.Priority = ThreadPriority.Normal
+            ServerThread.IsBackground = True
+            ServerThread.Start()
         End If
 
 
@@ -1812,12 +1817,16 @@ Public Class Main
                 For i As Integer = 0 To ListView1.Items.Count - 1
                     ItemList(i).KillRunningTask()
                 Next
-                RunServer = False
+                'RunServer = False
+                tcpListener.Stop()
                 RemoveTempFiles()
                 Me.Close()
             End If
         Else
-            RunServer = False
+            'RunServer = False
+
+            tcpListener.Stop()
+            Timer3.Enabled = False
             RemoveTempFiles()
             Me.Close()
         End If
@@ -2801,6 +2810,9 @@ Public Class Main
             Debug.WriteLine("Web server started at: " & serverIP.ToString() & ":" & Port)
 
             ProcessThread()
+        Catch abort As ThreadAbortException
+
+            Exit Sub
         Catch ex As Exception
 
             MsgBox(ex.ToString())
@@ -2821,6 +2833,8 @@ Public Class Main
                 ' Set Thread for each Web Browser Connection
                 Dim clientThread As New Thread(Sub() Me.ProcessRequest(clientSocket))
                 clientThread.Start()
+            Catch abort As ThreadAbortException
+                Exit Sub
             Catch ex As Exception
                 Debug.WriteLine(ex.ToString())
                 'If clientSocket.Connected Then
@@ -2837,6 +2851,7 @@ Public Class Main
         Try
             ' Receive HTTP Request from Web Browser
             bytes = clientSocket.Receive(recvBytes, 0, clientSocket.Available, SocketFlags.None)
+
             htmlReq = Encoding.UTF8.GetString(recvBytes, 0, bytes)
             'MsgBox(htmlReq)
             'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", htmlReq + vbNewLine, True)
@@ -2859,7 +2874,6 @@ Public Class Main
                                          Return Nothing
                                      End Function))
 #Region "CR Einzeln"
-
                 If InStr(htmlReq, "HTMLSingle=") Then
                     Debug.WriteLine("Single episode mode - Crunchyroll")
 
@@ -2904,7 +2918,7 @@ Public Class Main
                                 End If
                             End If
                             strRequest = rootPath & "Post_Single_Sucess.html" 'PostPage
-                            sendHTMLResponse(strRequest, clientSocket)
+                            SendHTMLResponse(strRequest, clientSocket)
                         Else
                             Me.Invoke(New Action(Function()
                                                      Me.Text = "Status: no video found"
@@ -2914,14 +2928,15 @@ Public Class Main
                             Dim ErrorPage As String = My.Resources.Post_error_Top + "no video found" + My.Resources.Post_error_Bottom
                             My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
                             strRequest = rootPath & "error_Page.html" 'PostPage
-                            sendHTMLResponse(strRequest, clientSocket)
+                            SendHTMLResponse(strRequest, clientSocket)
                         End If
-
+                    Catch abort As ThreadAbortException
+                        Exit Sub
                     Catch ex As Exception
                         Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
                         My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
                         strRequest = rootPath & "error_Page.html" 'PostPage
-                        sendHTMLResponse(strRequest, clientSocket)
+                        SendHTMLResponse(strRequest, clientSocket)
                     End Try
 #End Region
 #Region "mass-dl"
@@ -2960,12 +2975,14 @@ Public Class Main
                                                  End Function))
                         End If
                         strRequest = rootPath & "Post_Mass_Sucess.html" 'PostPage
-                        sendHTMLResponse(strRequest, clientSocket)
+                        SendHTMLResponse(strRequest, clientSocket)
+                    Catch abort As ThreadAbortException
+                        Exit Sub
                     Catch ex As Exception
                         Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
                         My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
                         strRequest = rootPath & "error_Page.html" 'PostPage
-                        sendHTMLResponse(strRequest, clientSocket)
+                        SendHTMLResponse(strRequest, clientSocket)
                     End Try
 #End Region
 #Region "funimation Einzeln"
@@ -2980,6 +2997,53 @@ Public Class Main
                     Try
                         Dim URLSplit() As String = htmlReq.Split(New String() {"FunimationURL="}, System.StringSplitOptions.RemoveEmptyEntries)
                         WebbrowserURL = UrlDecode(URLSplit(1))
+
+                        If InStr(WebbrowserURL, "funimation.com") Then
+                            If DubFunimation = "Disabled" Then
+                            Else
+                                If InStr(WebbrowserURL, "?lang=") Then
+                                    Dim ClearUri As String() = WebbrowserURL.Split(New String() {"?lang="}, System.StringSplitOptions.RemoveEmptyEntries)
+                                    If ClearUri.Count > 1 Then
+                                        If InStr(ClearUri(1), "&") Then
+                                            Dim ClearUri2 As String() = ClearUri(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                            Dim Parms As String = Nothing
+                                            For i As Integer = 0 To ClearUri2.Count - 1
+                                                Parms = Parms + "&" + ClearUri2(i)
+                                            Next
+                                            WebbrowserURL = ClearUri(0) + "?lang=" + DubFunimation + Parms
+                                        Else
+                                            WebbrowserURL = ClearUri(0) + "?lang=" + DubFunimation
+                                        End If
+                                    Else
+                                        WebbrowserURL = ClearUri(0) + "?lang=" + DubFunimation
+                                    End If
+                                ElseIf InStr(WebbrowserURL, "&lang=") Then
+                                    Dim ClearUri As String() = WebbrowserURL.Split(New String() {"&lang="}, System.StringSplitOptions.RemoveEmptyEntries)
+                                    If ClearUri.Count > 1 Then
+
+                                        If InStr(ClearUri(1), "&") Then
+                                            Dim ClearUri2 As String() = ClearUri(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                            Dim Parms As String = Nothing
+                                            For i As Integer = 1 To ClearUri2.Count - 1
+                                                Parms = Parms + "&" + ClearUri2(i)
+                                            Next
+                                            WebbrowserURL = ClearUri(0) + "&lang=" + DubFunimation + Parms
+                                        Else
+                                            WebbrowserURL = ClearUri(0) + "&lang=" + DubFunimation
+                                        End If
+                                    Else
+                                        WebbrowserURL = ClearUri(0) + "&lang=" + DubFunimation
+                                    End If
+
+                                ElseIf InStr(WebbrowserURL, "?") Then
+                                    WebbrowserURL = WebbrowserURL + "&lang=" + DubFunimation
+                                Else
+                                    WebbrowserURL = WebbrowserURL + "?lang=" + DubFunimation
+                                End If
+                            End If
+
+                        End If
+
 
                         If Funimation_Grapp_RDY = True Then
                             If RunningDownloads >= MaxDL Then
@@ -3018,12 +3082,14 @@ Public Class Main
                             End If
                         End If
                         strRequest = rootPath & "Post_Single_Sucess.html" 'PostPage
-                        sendHTMLResponse(strRequest, clientSocket)
+                        SendHTMLResponse(strRequest, clientSocket)
+                    Catch abort As ThreadAbortException
+                        Exit Sub
                     Catch ex As Exception
                         Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
                         My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
                         strRequest = rootPath & "error_Page.html" 'PostPage
-                        sendHTMLResponse(strRequest, clientSocket)
+                        SendHTMLResponse(strRequest, clientSocket)
                     End Try
 
 #End Region
@@ -3052,6 +3118,8 @@ Public Class Main
                 sendHTMLResponse(strRequest, clientSocket)
 
             End If
+        Catch abort As ThreadAbortException
+            Exit Sub
         Catch ex As Exception
             Debug.WriteLine(ex.ToString())
             Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
@@ -3077,9 +3145,9 @@ Public Class Main
                 ' Set HTML Header
                 Dim htmlHeader As String =
                     "HTTP/1.0 200 OK" & ControlChars.CrLf &
-                    "Server: WebServer 1.0" & ControlChars.CrLf &
+                    "Server: CRD 1.0" & ControlChars.CrLf &
                     "Content-Length: " & respByte.Length & ControlChars.CrLf &
-                    "Content-Type: " & getContentType(httpRequest) &
+                    "Content-Type: " & GetContentType(httpRequest) &
                     ControlChars.CrLf & ControlChars.CrLf
                 ' The content Length of HTML Header
                 Dim headerByte() As Byte = Encoding.UTF8.GetBytes(htmlHeader)
@@ -3111,7 +3179,8 @@ Public Class Main
                 clientSocket.Shutdown(SocketShutdown.Both)
                 clientSocket.Close()
             End If
-
+        Catch abort As ThreadAbortException
+            Exit Sub
         Catch ex As Exception
             'Debug.WriteLine(ex.ToString())
             If clientSocket.Connected Then

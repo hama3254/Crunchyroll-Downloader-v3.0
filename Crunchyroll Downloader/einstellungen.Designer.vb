@@ -133,6 +133,7 @@ Partial Class Einstellungen
         Me.Label4 = New MetroFramework.Controls.MetroLabel()
         Me.Label6 = New MetroFramework.Controls.MetroLabel()
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
+        Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
@@ -935,10 +936,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage1.Size = New System.Drawing.Size(493, 461)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1524,6 +1525,9 @@ Partial Class Einstellungen
         Me.Label5.Text = "Created by hama3254"
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'BackgroundWorker1
+        '
+        '
         'Einstellungen
         '
         Me.ApplyImageInvert = True
@@ -1706,4 +1710,5 @@ Partial Class Einstellungen
     Friend WithEvents Fun_Dub_Over As MetroFramework.Controls.MetroComboBox
     Friend WithEvents CR_Filename As MetroFramework.Controls.MetroComboBox
     Public WithEvents LastVersion As MetroFramework.Controls.MetroLabel
+    Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
 End Class

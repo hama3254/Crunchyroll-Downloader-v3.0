@@ -34,7 +34,7 @@ Namespace My
             Try
 
 
-                Dim sUserAgent As String = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0"
+                Dim sUserAgent As String = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0"
                 'sUserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
                 Xpcom.Initialize("Firefox")
                 'MsgBox(Xpcom.XulRunnerVersion)
@@ -48,22 +48,17 @@ Namespace My
                 'Xpcom.Initialize("C:\Program Files\Mozilla Firefox")
                 GeckoPreferences.Default("browser.cache.disk.enable") = False
                 GeckoPreferences.Default("network.cookie.thirdparty.sessionOnly") = False
-                'GeckoPreferences.Default("extensions.blocklist.enabled") = False
                 GeckoPreferences.Default("Services.sync.prefs.sync.privacy.clearOnShutdown.cookies") = False
                 GeckoPreferences.Default("plugin.state.flash") = 0
                 GeckoPreferences.Default("zoom.maxPercent") = 100
                 GeckoPreferences.Default("zoom.minPercent") = 100
                 GeckoPreferences.Default("layers.geometry.d3d11.enabled") = False
-                'GeckoPreferences.Default("network.proxy.http") = "51.159.26.44"
-                'GeckoPreferences.Default("network.proxy.http_port") = 3128
-                'GeckoPreferences.Default("network.proxy.ssl") = "51.159.26.44"
-                'GeckoPreferences.Default("network.proxy.ssl_port") = 3128
-                'GeckoPreferences.Default("network.proxy.type") = 1
+
 
 
                 Return True
             Catch ex As Exception
-                MsgBox(ex.ToString)
+                MsgBox(ex.ToString + vbNewLine + "this is usual fixed by installing the x86 version from the Visual C++ redistributable" + vbNewLine + "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads")
                 Return False
             End Try
 

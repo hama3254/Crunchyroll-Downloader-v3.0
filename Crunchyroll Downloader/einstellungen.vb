@@ -783,21 +783,7 @@ Public Class Einstellungen
 
     End Sub
 
-    Private Sub FunimationHardsub_Click(sender As Object, e As EventArgs)
 
-        If FFMPEG_CommandP1.Text = "-c copy" Then
-            If CB_Fun_HardSubs.SelectedItem = "Disabled" Then
-            Else
-
-                If MessageBox.Show("This feature does not work with the current output setting." + vbNewLine + "Do you want to ignore the output settings?", "Settings incompatible", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                    'FunimationHardsub.Checked = True
-                Else
-                    CB_Fun_HardSubs.SelectedItem = "Disabled"
-                End If
-            End If
-        Else
-        End If
-    End Sub
 
     Private Sub Label7_Click(sender As Object, e As EventArgs)
         Process.Start("https://bitbucket.org/geckofx/geckofx-60.0/src/default/")
@@ -896,6 +882,27 @@ Public Class Einstellungen
             Debug.WriteLine(ex.ToString)
         End Try
     End Sub
+
+
+
+
+    Private Sub CB_Fun_HardSubs_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CB_Fun_HardSubs.SelectedIndexChanged
+        If CB_Fun_HardSubs.SelectedIndex = 0 Then
+        Else
+            If Main.HardSubFunimation = "Disabled" Then
+                If FFMPEG_CommandP1.Text = "-c copy" Then
+                    If MessageBox.Show("Funimation hard subtitle are post-processed." + vbNewLine + "This cost a lot of performance and it should not more than one download run at the time!", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+
+                    Else
+                        CB_Fun_HardSubs.SelectedIndex = 0
+                    End If
+                End If
+            End If
+
+        End If
+    End Sub
+
+
 
 
 

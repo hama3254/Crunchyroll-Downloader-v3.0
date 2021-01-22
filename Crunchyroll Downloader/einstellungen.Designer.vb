@@ -1152,7 +1152,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 5
+        Me.TabControl1.SelectedIndex = 3
         Me.TabControl1.Size = New System.Drawing.Size(501, 500)
         Me.TabControl1.TabIndex = 38
         Me.TabControl1.UseSelectable = True
@@ -1167,10 +1167,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(493, 461)
+        Me.TabPage6.Size = New System.Drawing.Size(493, 452)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = "Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1410,9 +1410,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage7.Size = New System.Drawing.Size(493, 461)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = "About   "
         '

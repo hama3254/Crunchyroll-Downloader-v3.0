@@ -763,6 +763,19 @@ Public Class Main
                     'FontLabel.Visible = True
                     'FontLabel.Text = RunningDownloads
                     If Grapp_RDY = True Then
+                        Try
+                            Dim ItemFinshedCount As Integer = 0
+                            For i2 As Integer = 0 To ListView1.Items.Count - 1
+                                If ItemList(i2).GetIsStatusFinished() = True Then
+                                    ItemFinshedCount = ItemFinshedCount + 1
+                                End If
+                            Next
+                            RunningDownloads = ListView1.Items.Count - ItemFinshedCount
+
+                        Catch ex As Exception
+                            RunningDownloads = ListView1.Items.Count
+                        End Try
+
                         If RunningDownloads < MaxDL Then
                             Exit For
                         Else
@@ -1817,15 +1830,21 @@ Public Class Main
                 For i As Integer = 0 To ListView1.Items.Count - 1
                     ItemList(i).KillRunningTask()
                 Next
-                'RunServer = False
-                tcpListener.Stop()
+
+                Try
+                    tcpListener.Stop()
+                Catch ex As Exception
+                End Try
+
                 RemoveTempFiles()
                 Me.Close()
             End If
         Else
-            'RunServer = False
+            Try
+                tcpListener.Stop()
+            Catch ex As Exception
+            End Try
 
-            tcpListener.Stop()
             Timer3.Enabled = False
             RemoveTempFiles()
             Me.Close()
@@ -2132,7 +2151,7 @@ Public Class Main
             RunningDownloads = ListView1.Items.Count - ItemFinshedCount
 
         Catch ex As Exception
-
+            RunningDownloads = ListView1.Items.Count
         End Try
         'FontLabel2.Text = RunningDownloads.ToString
     End Sub

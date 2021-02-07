@@ -80,6 +80,8 @@ Public Class Einstellungen
             CR_Filename.SelectedIndex = 1
         ElseIf Main.CR_NameMethode = 2 Then
             CR_Filename.SelectedIndex = 2
+        ElseIf Main.CR_NameMethode = 3 Then
+            CR_Filename.SelectedIndex = 3
         Else
             CR_Filename.SelectedIndex = 0
         End If
@@ -201,6 +203,21 @@ Public Class Einstellungen
         End If
 
 
+        If DD_Season_Prefix.Items.Contains(Main.Season_Prefix) Then
+            DD_Season_Prefix.SelectedItem = Main.Season_Prefix
+        Else
+            DD_Season_Prefix.Items.Add(Main.Season_Prefix)
+            DD_Season_Prefix.SelectedItem = Main.Season_Prefix
+        End If
+
+        If DD_Episode_Prefix.Items.Contains(Main.Episode_Prefix) Then
+            DD_Episode_Prefix.SelectedItem = Main.Episode_Prefix
+        Else
+            DD_Episode_Prefix.Items.Add(Main.Episode_Prefix)
+            DD_Episode_Prefix.SelectedItem = Main.Episode_Prefix
+        End If
+
+
         NumericUpDown2.Value = Main.ErrorTolerance
         NumericUpDown1.Value = Main.MaxDL
         TextBox1.Text = Main.Startseite
@@ -229,6 +246,7 @@ Public Class Einstellungen
     End Sub
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
+        '  MsgBox(Name_season.Text)
         Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
         If InStr(TextBox1.Text, "https://") Then
             Main.Startseite = TextBox1.Text
@@ -239,6 +257,22 @@ Public Class Einstellungen
         Else
 
         End If
+        If DD_Season_Prefix.Text = "[default season prefix]" Then
+            Main.Season_Prefix = "[default season prefix]"
+            rk.SetValue("Prefix_S", "[default season prefix]", RegistryValueKind.String)
+        Else
+            Main.Season_Prefix = DD_Season_Prefix.Text
+            rk.SetValue("Prefix_S", DD_Season_Prefix.Text, RegistryValueKind.String)
+        End If
+
+        If DD_Episode_Prefix.Text = "[default episode prefix]" Then
+            Main.Episode_Prefix = "[default episode prefix]"
+            rk.SetValue("Prefix_E", "[default episode prefix]", RegistryValueKind.String)
+        Else
+            Main.Episode_Prefix = DD_Episode_Prefix.Text
+            rk.SetValue("Prefix_E", DD_Episode_Prefix.Text, RegistryValueKind.String)
+        End If
+
         If A1080p.Checked Then
             Main.Reso = 1080
             rk.SetValue("Resu", 1080, RegistryValueKind.String)
@@ -317,7 +351,9 @@ Public Class Einstellungen
         ElseIf CR_Filename.Text = "[episode number] [episode name]" Then
             Main.CR_NameMethode = 2
             rk.SetValue("CR_NameMethode", 2, RegistryValueKind.String)
-
+        ElseIf CR_Filename.Text = "[episode name] [episode number]" Then
+            Main.CR_NameMethode = 3
+            rk.SetValue("CR_NameMethode", 3, RegistryValueKind.String)
         End If
 
         If MergeMP4.Checked = True Then
@@ -900,7 +936,13 @@ Public Class Einstellungen
             End If
 
         End If
+
+        'MetroMessageBox.Show(Me, "Test", "Test Box", MessageBoxButtons.YesNo, MessageBoxIcon.None, 150)
+        'MetroMessageBox.Show(Me, "Test", "Test Box", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2, 150, MetroThemeStyle.Dark)
+
     End Sub
+
+
 
 
 

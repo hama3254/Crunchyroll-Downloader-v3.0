@@ -56,6 +56,8 @@ Partial Class Einstellungen
         Me.comboBox3 = New MetroFramework.Controls.MetroComboBox()
         Me.TabPage2 = New MetroFramework.Controls.MetroTabPage()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
+        Me.DD_Episode_Prefix = New MetroFramework.Controls.MetroComboBox()
+        Me.DD_Season_Prefix = New MetroFramework.Controls.MetroComboBox()
         Me.CR_Filename = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.HybridMode_CB = New MetroFramework.Controls.MetroCheckBox()
@@ -605,10 +607,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(493, 461)
+        Me.TabPage2.Size = New System.Drawing.Size(493, 452)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -619,15 +621,47 @@ Partial Class Einstellungen
         'GroupBox12
         '
         Me.GroupBox12.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox12.Controls.Add(Me.DD_Episode_Prefix)
+        Me.GroupBox12.Controls.Add(Me.DD_Season_Prefix)
         Me.GroupBox12.Controls.Add(Me.CR_Filename)
         Me.GroupBox12.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox12.ForeColor = System.Drawing.Color.Black
         Me.GroupBox12.Location = New System.Drawing.Point(8, 144)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(479, 63)
+        Me.GroupBox12.Size = New System.Drawing.Size(479, 126)
         Me.GroupBox12.TabIndex = 53
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Filename"
+        '
+        'DD_Episode_Prefix
+        '
+        Me.DD_Episode_Prefix.DropDownHeight = 250
+        Me.DD_Episode_Prefix.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
+        Me.DD_Episode_Prefix.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DD_Episode_Prefix.FormattingEnabled = True
+        Me.DD_Episode_Prefix.IntegralHeight = False
+        Me.DD_Episode_Prefix.ItemHeight = 23
+        Me.DD_Episode_Prefix.Items.AddRange(New Object() {"[default episode prefix]"})
+        Me.DD_Episode_Prefix.Location = New System.Drawing.Point(248, 79)
+        Me.DD_Episode_Prefix.Name = "DD_Episode_Prefix"
+        Me.DD_Episode_Prefix.Size = New System.Drawing.Size(225, 29)
+        Me.DD_Episode_Prefix.TabIndex = 36
+        Me.DD_Episode_Prefix.UseSelectable = True
+        '
+        'DD_Season_Prefix
+        '
+        Me.DD_Season_Prefix.DropDownHeight = 250
+        Me.DD_Season_Prefix.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
+        Me.DD_Season_Prefix.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DD_Season_Prefix.FormattingEnabled = True
+        Me.DD_Season_Prefix.IntegralHeight = False
+        Me.DD_Season_Prefix.ItemHeight = 23
+        Me.DD_Season_Prefix.Items.AddRange(New Object() {"[default season prefix]"})
+        Me.DD_Season_Prefix.Location = New System.Drawing.Point(6, 79)
+        Me.DD_Season_Prefix.Name = "DD_Season_Prefix"
+        Me.DD_Season_Prefix.Size = New System.Drawing.Size(225, 29)
+        Me.DD_Season_Prefix.TabIndex = 35
+        Me.DD_Season_Prefix.UseSelectable = True
         '
         'CR_Filename
         '
@@ -636,10 +670,10 @@ Partial Class Einstellungen
         Me.CR_Filename.FormattingEnabled = True
         Me.CR_Filename.IntegralHeight = False
         Me.CR_Filename.ItemHeight = 23
-        Me.CR_Filename.Items.AddRange(New Object() {"[episode number]", "[episode name]", "[episode number] [episode name]"})
-        Me.CR_Filename.Location = New System.Drawing.Point(63, 25)
+        Me.CR_Filename.Items.AddRange(New Object() {"[episode number]", "[episode name]", "[episode number] [episode name]", "[episode name] [episode number]"})
+        Me.CR_Filename.Location = New System.Drawing.Point(6, 25)
         Me.CR_Filename.Name = "CR_Filename"
-        Me.CR_Filename.Size = New System.Drawing.Size(326, 29)
+        Me.CR_Filename.Size = New System.Drawing.Size(467, 29)
         Me.CR_Filename.TabIndex = 34
         Me.CR_Filename.UseSelectable = True
         '
@@ -685,7 +719,7 @@ Partial Class Einstellungen
         Me.CheckBox1.BackColor = System.Drawing.Color.Transparent
         Me.CheckBox1.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CheckBox1.ForeColor = System.Drawing.Color.Black
-        Me.CheckBox1.Location = New System.Drawing.Point(66, 219)
+        Me.CheckBox1.Location = New System.Drawing.Point(67, 281)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(369, 19)
         Me.CheckBox1.TabIndex = 6
@@ -699,7 +733,7 @@ Partial Class Einstellungen
         Me.GroupBox2.Enabled = False
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox2.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox2.Location = New System.Drawing.Point(7, 245)
+        Me.GroupBox2.Location = New System.Drawing.Point(8, 301)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(480, 63)
         Me.GroupBox2.TabIndex = 40
@@ -1152,7 +1186,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 3
+        Me.TabControl1.SelectedIndex = 1
         Me.TabControl1.Size = New System.Drawing.Size(501, 500)
         Me.TabControl1.TabIndex = 38
         Me.TabControl1.UseSelectable = True
@@ -1167,10 +1201,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage6.Size = New System.Drawing.Size(493, 461)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = "Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1711,4 +1745,6 @@ Partial Class Einstellungen
     Friend WithEvents CR_Filename As MetroFramework.Controls.MetroComboBox
     Public WithEvents LastVersion As MetroFramework.Controls.MetroLabel
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
+    Friend WithEvents DD_Episode_Prefix As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents DD_Season_Prefix As MetroFramework.Controls.MetroComboBox
 End Class

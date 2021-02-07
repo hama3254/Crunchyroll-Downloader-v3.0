@@ -7,6 +7,7 @@ Imports System.ComponentModel
 Imports MetroFramework
 Imports MetroFramework.Components
 Imports MetroFramework.Forms
+Imports System.IO.Compression
 
 Public Class CRD_List_Item
     Inherits Controls.MetroUserControl
@@ -292,11 +293,11 @@ Public Class CRD_List_Item
 
             Else
                 StatusRunning = True
-                    bt_pause.BackgroundImage = My.Resources.main_pause
-                End If
+                bt_pause.BackgroundImage = My.Resources.main_pause
+            End If
 
-            Else
-                If proc.HasExited = True Then
+        Else
+            If proc.HasExited = True Then
                 If ProgressBar1.Value < 100 Then
                     If Retry = True Then
                         If Main.RunningDownloads < Main.MaxDL Then
@@ -338,35 +339,35 @@ Public Class CRD_List_Item
                     'Else
                     Dim Result As DialogResult = MessageBox.Show("The download has " + FailedCount.ToString + " failded segments" + vbNewLine + "Press 'Ignore' to continue", "Download Error", MessageBoxButtons.AbortRetryIgnore) '= DialogResult.Ignore Then
 
-                        If Result = DialogResult.Ignore Then
-                            Failed = False
-                            StatusRunning = True
-                            bt_pause.BackgroundImage = My.Resources.main_pause
-                            ResumeProcess(proc)
-                        ElseIf Result = DialogResult.Retry Then
-                            Try
-                                proc.Kill()
-                                proc.WaitForExit(500)
-                                Label_percent.Text = "retrying -%"
-                                Label_website.Text = Label_website_Text
-                            Catch ex As Exception
-                            End Try
+                    If Result = DialogResult.Ignore Then
+                        Failed = False
+                        StatusRunning = True
+                        bt_pause.BackgroundImage = My.Resources.main_pause
+                        ResumeProcess(proc)
+                    ElseIf Result = DialogResult.Retry Then
+                        Try
+                            proc.Kill()
+                            proc.WaitForExit(500)
+                            Label_percent.Text = "retrying -%"
+                            Label_website.Text = Label_website_Text
+                        Catch ex As Exception
+                        End Try
 
-                            If proc.HasExited Then
-                                StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode)
-                                StatusRunning = True
-                                Label_website.Text = Label_website_Text
-                                bt_pause.BackgroundImage = My.Resources.main_pause
-                            End If
-                        ElseIf Result = DialogResult.Abort Then
-                            Try
-                                proc.Kill()
-                                proc.WaitForExit(500)
-                                Label_percent.Text = "canceled -%"
-                                Label_website.Text = Label_website_Text
-                            Catch ex As Exception
-                            End Try
+                        If proc.HasExited Then
+                            StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode)
+                            StatusRunning = True
+                            Label_website.Text = Label_website_Text
+                            bt_pause.BackgroundImage = My.Resources.main_pause
                         End If
+                    ElseIf Result = DialogResult.Abort Then
+                        Try
+                            proc.Kill()
+                            proc.WaitForExit(500)
+                            Label_percent.Text = "canceled -%"
+                            Label_website.Text = Label_website_Text
+                        Catch ex As Exception
+                        End Try
+                    End If
                     ' End If
                 Else
                     If StatusRunning = True Then
@@ -615,20 +616,39 @@ Public Class CRD_List_Item
         If Debug2 = True Then
             MsgBox(m3u8_url(1) + vbNewLine + DL_Pfad + vbNewLine + Filename)
         End If
-        Dim client0 As New WebClient
-        client0.Encoding = Encoding.UTF8
+        'Dim client0 As New WebClient
+        'client0.Encoding = Encoding.UTF8
         Dim text As String = Nothing
+        'Try
+        '    text = client0.DownloadString(m3u8_url(1))
+        'Catch ex As Exception
+        '    Me.Invoke(New Action(Function()
+        '                             Label_website.Text = "Hybrid mode error"
+        '                             Label_percent.Text = ex.ToString
+        '                             Return Nothing
+        '                         End Function))
+        '    Return Nothing
+        '    Exit Function
+        'End Try
+
+
         Try
-            text = client0.DownloadString(m3u8_url(1))
+            Using client As New WebClient()
+                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                client.Headers.Add("ACCEPT: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                client.Headers.Add("ACCEPT-ENCODING: *")
+                'client.DownloadFile(TextBox1.Text, "test.m3u8")
+
+                'Dim archive As Zipfi = New ZipArchive(ms)
+                'Dim m3u8String As String = client.DownloadString(TextBox1.Text)
+                Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
+                Text = m3u8
+                'MsgBox(m3u8)
+            End Using
         Catch ex As Exception
-            Me.Invoke(New Action(Function()
-                                     Label_website.Text = "Hybrid mode error"
-                                     Label_percent.Text = ex.ToString
-                                     Return Nothing
-                                 End Function))
-            Return Nothing
-            Exit Function
+            MsgBox(ex.ToString)
         End Try
+
         If InStr(text, "RESOLUTION=") Then 'master m3u8 no fragments 
             'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", text, False)
             Dim new_m3u8_2() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -644,7 +664,22 @@ Public Class CRD_List_Item
                 End If
             Next
             If InStr(m3u8_url_1, "https://") Then
-                text = client0.DownloadString(m3u8_url_1)
+                Try
+                    Using client As New WebClient()
+                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                        client.Headers.Add("ACCEPT: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                        client.Headers.Add("ACCEPT-ENCODING: *")
+                        'client.DownloadFile(TextBox1.Text, "test.m3u8")
+
+                        'Dim archive As Zipfi = New ZipArchive(ms)
+                        'Dim m3u8String As String = client.DownloadString(TextBox1.Text)
+                        Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
+                        Text = m3u8
+                        'MsgBox(m3u8)
+                    End Using
+                Catch ex As Exception
+                    MsgBox(ex.ToString)
+                End Try
             Else
                 Dim c() As String = New Uri(m3u8_url_3).Segments
                 Dim path As String = "https://" + New Uri(m3u8_url_3).Host
@@ -653,7 +688,22 @@ Public Class CRD_List_Item
                 Next
                 m3u8_url_3 = path + m3u8_url_1
                 'MsgBox(m3u8_url_3)
-                text = client0.DownloadString(m3u8_url_3)
+                Try
+                    Using client As New WebClient()
+                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                        client.Headers.Add("ACCEPT: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                        client.Headers.Add("ACCEPT-ENCODING: *")
+                        'client.DownloadFile(TextBox1.Text, "test.m3u8")
+
+                        'Dim archive As Zipfi = New ZipArchive(ms)
+                        'Dim m3u8String As String = client.DownloadString(TextBox1.Text)
+                        Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
+                        Text = m3u8
+                        'MsgBox(m3u8)
+                    End Using
+                Catch ex As Exception
+                    MsgBox(ex.ToString)
+                End Try
             End If
 
 
@@ -946,7 +996,7 @@ Public Class CRD_List_Item
 
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
-        Dim cmd As String = "-headers " + My.Resources.ffmpeg_user_agend + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        Dim cmd As String = "-user-agent " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
         LogText.Add(Date.Now + " " + cmd)
         If Debug2 = True Then
             MsgBox(cmd)
@@ -955,7 +1005,7 @@ Public Class CRD_List_Item
         startinfo.FileName = exepath
         startinfo.Arguments = cmd
         startinfo.UseShellExecute = False
-        startinfo.WindowStyle = ProcessWindowStyle.Normal
+        startinfo.WindowStyle = ProcessWindowStyle.Hidden
         startinfo.RedirectStandardError = True
         startinfo.RedirectStandardInput = True
         startinfo.RedirectStandardOutput = True
@@ -1293,6 +1343,21 @@ Public Class CRD_List_Item
         Catch ex As Exception
         End Try
     End Sub
+
+    Public Function DecompressString(ByVal bytes As Byte()) As String
+
+        Using ms = New MemoryStream(bytes)
+            Using ds = New GZipStream(ms, CompressionMode.Decompress)
+                Using sr = New StreamReader(ds)
+
+                    Return sr.ReadToEnd()
+
+                End Using
+            End Using
+        End Using
+
+    End Function
+
 End Class
 
 Public Class FailedSegemtsWithURL

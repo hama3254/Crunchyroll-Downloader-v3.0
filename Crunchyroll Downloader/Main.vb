@@ -9,6 +9,7 @@ Imports System.Net.Sockets
 Imports MetroFramework.Forms
 Imports MetroFramework
 Imports MetroFramework.Components
+Imports System.Globalization
 
 Public Class Main
     Inherits MetroForm
@@ -59,6 +60,9 @@ Public Class Main
     Public ffmpeg_command As String = " -c copy -bsf:a aac_adtstoasc" '" -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " 
     Public Reso As Integer
     Public AoD_Reso As Integer = 0
+
+    Public Season_Prefix As String = "[default season prefix]"
+    Public Episode_Prefix As String = "[default episode prefix]"
 
     Dim Reso2 As String
     Public ResoSave As String = "6666x6666"
@@ -367,6 +371,18 @@ Public Class Main
             Pfad = rkg.GetValue("Ordner").ToString
         Catch ex As Exception
 
+        End Try
+
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            Episode_Prefix = rkg.GetValue("Prefix_E").ToString
+        Catch ex As Exception
+        End Try
+
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            Season_Prefix = rkg.GetValue("Prefix_S").ToString
+        Catch ex As Exception
         End Try
 
         Try
@@ -842,12 +858,12 @@ Public Class Main
 #Region "SubsOnly"
 
     Public Sub MassGrappSubs()
-        einstellungen.MultiDLSoftSubs.Enabled = True
-        einstellungen.PictureBox3.Image = My.Resources.softsubs_download
-        einstellungen.ComboBox1.Items.Clear()
-        einstellungen.comboBox3.Items.Clear()
-        einstellungen.comboBox4.Items.Clear()
-        einstellungen.ComboBox2.Enabled = False
+        Einstellungen.MultiDLSoftSubs.Enabled = True
+        Einstellungen.PictureBox3.Image = My.Resources.softsubs_download
+        Einstellungen.ComboBox1.Items.Clear()
+        Einstellungen.comboBox3.Items.Clear()
+        Einstellungen.comboBox4.Items.Clear()
+        Einstellungen.ComboBox2.Enabled = False
         Dim Anzahl As String() = WebbrowserText.Split(New String() {"wrapper container-shadow hover-classes"}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim Titel As String() = Anzahl(0).Split(New String() {"<meta content=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim Titel2 As String() = Titel(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -857,28 +873,28 @@ Public Class Main
             Dim URLGrapp As String() = Anzahl(i).Split(New String() {"title=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim URLGrapp2 As String() = URLGrapp(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-            einstellungen.comboBox3.Items.Add(URLGrapp2(0))
-            einstellungen.comboBox4.Items.Add(URLGrapp2(0))
+            Einstellungen.comboBox3.Items.Add(URLGrapp2(0))
+            Einstellungen.comboBox4.Items.Add(URLGrapp2(0))
         Next
 
     End Sub
 
     Public Sub SeasonDropdownGrappSubs()
-        einstellungen.MultiDLSoftSubs.Enabled = True
-        einstellungen.PictureBox3.Image = My.Resources.softsubs_download
-        einstellungen.ComboBox1.Items.Clear()
-        einstellungen.comboBox3.Items.Clear()
-        einstellungen.comboBox4.Items.Clear()
-        einstellungen.ComboBox2.Enabled = True
-        einstellungen.comboBox3.Enabled = True
-        einstellungen.comboBox4.Enabled = True
+        Einstellungen.MultiDLSoftSubs.Enabled = True
+        Einstellungen.PictureBox3.Image = My.Resources.softsubs_download
+        Einstellungen.ComboBox1.Items.Clear()
+        Einstellungen.comboBox3.Items.Clear()
+        Einstellungen.comboBox4.Items.Clear()
+        Einstellungen.ComboBox2.Enabled = True
+        Einstellungen.comboBox3.Enabled = True
+        Einstellungen.comboBox4.Enabled = True
         Dim Anzahl As String() = WebbrowserText.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
         Array.Reverse(Anzahl)
         For i As Integer = 0 To Anzahl.Count - 2
             Dim Titel As String() = Anzahl(i).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim Titel2 As String() = Titel(0).Split(New String() {">"}, System.StringSplitOptions.RemoveEmptyEntries)
             'MsgBox(Titel2(0))
-            einstellungen.ComboBox2.Items.Add(Titel2(1))
+            Einstellungen.ComboBox2.Items.Add(Titel2(1))
         Next
 
     End Sub
@@ -918,6 +934,8 @@ Public Class Main
         CR_FilenName = CR_Title
         CR_FilenName_Backup = CR_Title
         'MsgBox(CR_FilenName)
+        WebbrowserText = HtmlDecode(WebbrowserText)
+
         If CBool(InStr(WebbrowserText, "<h4>")) Then ' false on movie true on series
             Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {"<h4>"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {"</h4>"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
@@ -942,7 +960,7 @@ Public Class Main
             Dim CR_Name_4 As String() = CR_Name_1(0).Split(New String() {"class=" + Chr(34) + "text-link" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
             Dim CR_Name_Anime0 As String() = CR_Name_4(CR_Name_4.Length - 1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
             'CR_Name_Anime0(0) = System.Text.RegularExpressions.Regex.Replace(CR_Name_Anime0(0), "[^\w\\-]", " ")
-            CR_Name_Anime0(0) = HtmlDecode(CR_Name_Anime0(0))
+            'CR_Name_Anime0(0) = HtmlDecode(CR_Name_Anime0(0))
             CR_Name_Anime0(0) = String.Join(" ", CR_Name_Anime0(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
 
             CR_Anime_Titel = CR_Name_Anime0(0).Trim
@@ -953,6 +971,8 @@ Public Class Main
             End If
 
             CR_FilenName_Backup = RemoveExtraSpaces(CR_FilenName)
+        Else
+
 
 
         End If
@@ -986,7 +1006,7 @@ Public Class Main
                     SoftSubs2.Add(SoftSubs(i))
                 Else
                     Me.Invoke(New Action(Function()
-                                             einstellungen.StatusLabel.Text = "Status: language " + HardSubValuesToDisplay(Chr(34) + SoftSubs(ii) + Chr(34)) + " not found."
+                                             Einstellungen.StatusLabel.Text = "Status: language " + HardSubValuesToDisplay(Chr(34) + SoftSubs(ii) + Chr(34)) + " not found."
                                              Pause(10)
                                              Return Nothing
                                          End Function))
@@ -1000,7 +1020,7 @@ Public Class Main
                     SoftSubs2.Add(TempSoftSubs(i))
                 Else
                     Me.Invoke(New Action(Function()
-                                             einstellungen.StatusLabel.Text = "Status: language " + HardSubValuesToDisplay(Chr(34) + TempSoftSubs(ii) + Chr(34)) + " not found."
+                                             Einstellungen.StatusLabel.Text = "Status: language " + HardSubValuesToDisplay(Chr(34) + TempSoftSubs(ii) + Chr(34)) + " not found."
                                              Pause(10)
                                              Return Nothing
                                          End Function))
@@ -1029,7 +1049,7 @@ Public Class Main
                 Dim ii As Integer = i
                 Try
                     Me.Invoke(New Action(Function()
-                                             einstellungen.StatusLabel.Text = "Status: downloading - " + HardSubValuesToDisplay(Chr(34) + SoftSubs2(ii) + Chr(34))
+                                             Einstellungen.StatusLabel.Text = "Status: downloading - " + HardSubValuesToDisplay(Chr(34) + SoftSubs2(ii) + Chr(34))
                                              Pause(1)
                                              Return Nothing
                                          End Function))
@@ -1054,7 +1074,7 @@ Public Class Main
                     Pause(1)
                 Catch ex As Exception
                     Me.Invoke(New Action(Function()
-                                             einstellungen.StatusLabel.Text = "Status: failed - " + HardSubValuesToDisplay(Chr(34) + SoftSubs2(ii) + Chr(34))
+                                             Einstellungen.StatusLabel.Text = "Status: failed - " + HardSubValuesToDisplay(Chr(34) + SoftSubs2(ii) + Chr(34))
                                              Pause(3)
                                              Return Nothing
                                          End Function))
@@ -1063,7 +1083,7 @@ Public Class Main
         Else
 
             Me.Invoke(New Action(Function()
-                                     einstellungen.StatusLabel.Text = "Status: No language selected"
+                                     Einstellungen.StatusLabel.Text = "Status: No language selected"
                                      Pause(10)
                                      Return Nothing
                                  End Function))
@@ -1072,7 +1092,7 @@ Public Class Main
 
         DlSoftSubsRDY = True
         Me.Invoke(New Action(Function()
-                                 einstellungen.StatusLabel.Text = "Status: idle"
+                                 Einstellungen.StatusLabel.Text = "Status: idle"
                                  Return Nothing
                              End Function))
 
@@ -1082,20 +1102,20 @@ Public Class Main
     End Sub
 
     Public Async Sub MassSubsDL()
-        If einstellungen.comboBox3.Text = Nothing Then
+        If Einstellungen.comboBox3.Text = Nothing Then
             Exit Sub
-        ElseIf einstellungen.comboBox4.Text = Nothing Then
+        ElseIf Einstellungen.comboBox4.Text = Nothing Then
             Exit Sub
         End If
-        einstellungen.SoftSubsMass.Text = "preparing ..."
+        Einstellungen.SoftSubsMass.Text = "preparing ..."
         Dim Website As String = WebbrowserText
 
-        If einstellungen.ComboBox2.Enabled = True Then
+        If Einstellungen.ComboBox2.Enabled = True Then
             Dim SeasonDropdownAnzahl As String() = Website.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
             Array.Reverse(SeasonDropdownAnzahl)
             Dim SDV As Integer = 0
             For i As Integer = 0 To SeasonDropdownAnzahl.Count - 1
-                If InStr(SeasonDropdownAnzahl(i), Chr(34) + ">" + einstellungen.ComboBox2.SelectedItem.ToString + "</a>") Then
+                If InStr(SeasonDropdownAnzahl(i), Chr(34) + ">" + Einstellungen.ComboBox2.SelectedItem.ToString + "</a>") Then
                     SDV = i
                 End If
             Next
@@ -1104,13 +1124,13 @@ Public Class Main
         Try
             Dim Anzahl As String() = Website.Split(New String() {"wrapper container-shadow hover-classes"}, System.StringSplitOptions.RemoveEmptyEntries)
             Array.Reverse(Anzahl)
-            Dim c As Integer = einstellungen.comboBox4.SelectedIndex - einstellungen.comboBox3.SelectedIndex + 1
+            Dim c As Integer = Einstellungen.comboBox4.SelectedIndex - Einstellungen.comboBox3.SelectedIndex + 1
             'AnzahlGesamt.Text = c.ToString
             Gesamt = c.ToString
             Aktuell = "0"
-            If einstellungen.comboBox4.SelectedIndex > einstellungen.comboBox3.SelectedIndex Then
+            If Einstellungen.comboBox4.SelectedIndex > Einstellungen.comboBox3.SelectedIndex Then
 
-                For i As Integer = einstellungen.comboBox3.SelectedIndex To einstellungen.comboBox4.SelectedIndex
+                For i As Integer = Einstellungen.comboBox3.SelectedIndex To Einstellungen.comboBox4.SelectedIndex
 
                     For e As Integer = 0 To Integer.MaxValue
 
@@ -1121,7 +1141,7 @@ Public Class Main
                         End If
                     Next
 
-                    Dim dd As Integer = i - einstellungen.comboBox3.SelectedIndex + 1
+                    Dim dd As Integer = i - Einstellungen.comboBox3.SelectedIndex + 1
                     Dim URLGrapp As String() = Anzahl(i).Split(New String() {"<a href=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim URLGrapp2 As String() = URLGrapp(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     'MsgBox("https://www.crunchyroll.com" + URLGrapp2(0))
@@ -1130,24 +1150,24 @@ Public Class Main
                     d = False
                     GeckoFX.WebBrowser1.Navigate("https://www.crunchyroll.com" + URLGrapp2(0))
                     Aktuell = dd.ToString
-                    einstellungen.SoftSubsMass.Text = Aktuell + " / " + Gesamt
+                    Einstellungen.SoftSubsMass.Text = Aktuell + " / " + Gesamt
                 Next
 
 
 
             End If
         Catch ex As Exception
-            einstellungen.ComboBox2.Items.Clear()
-            einstellungen.comboBox3.Items.Clear()
-            einstellungen.comboBox4.Items.Clear()
-            einstellungen.MultiDLSoftSubs.Enabled = False
+            Einstellungen.ComboBox2.Items.Clear()
+            Einstellungen.comboBox3.Items.Clear()
+            Einstellungen.comboBox4.Items.Clear()
+            Einstellungen.MultiDLSoftSubs.Enabled = False
             Aktuell = 0.ToString
             Gesamt = 0.ToString
         End Try
-        einstellungen.ComboBox2.Items.Clear()
-        einstellungen.comboBox3.Items.Clear()
-        einstellungen.comboBox4.Items.Clear()
-        einstellungen.MultiDLSoftSubs.Enabled = False
+        Einstellungen.ComboBox2.Items.Clear()
+        Einstellungen.comboBox3.Items.Clear()
+        Einstellungen.comboBox4.Items.Clear()
+        Einstellungen.MultiDLSoftSubs.Enabled = False
 
     End Sub
 #End Region
@@ -1340,6 +1360,10 @@ Public Class Main
             Dim CR_Anime_Staffel As String = Nothing
             Dim CR_Anime_Folge As String = Nothing
             Dim CR_Anime_Name As String = Nothing
+
+            Dim CR_Anime_Staffel_int As String = Nothing
+            Dim CR_Anime_Folge_int As String = Nothing
+
 #Region "Name + Pfad"
             Dim Pfad2 As String
             Dim TextBox2_Text As String = Nothing
@@ -1348,10 +1372,10 @@ Public Class Main
 
             Me.Invoke(New Action(Function()
                                      TextBox2_Text = Anime_Add.textBox2.Text
+                                     ' My.Computer.Clipboard.SetText(WebbrowserText)
                                      Return Nothing
                                  End Function))
 #Region "Name von Crunchyroll"
-
 
 
             If CBool(InStr(WebbrowserText, "<h4>")) Then ' false on movie true on series
@@ -1380,6 +1404,45 @@ Public Class Main
 
 
             End If
+            If CBool(InStr(WebbrowserText, My.Resources.CR_Episode_Nr)) Then
+                If CBool(InStr(WebbrowserText, My.Resources.CR_Episode_Nr + Chr(34))) Then
+                    Debug.WriteLine("No Episode Number in a movie")
+                Else
+                    Dim CR_Episode_1 As String() = WebbrowserText.Split(New String() {My.Resources.CR_Episode_Nr}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim CR_Episode_2 As String() = CR_Episode_1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                    CR_Anime_Folge_int = String.Join(" ", CR_Episode_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
+                    CR_Anime_Folge_int = RemoveExtraSpaces(CR_Anime_Folge_int)
+                    If InStr(CR_Anime_Folge_int, ".") Then
+                        Dim Folge_Double As Double = Double.Parse(CR_Anime_Folge_int, CultureInfo.InvariantCulture)
+                        Debug.WriteLine(String.Format("{0:00.0}", Folge_Double))
+                        If Folge_Double < 10 Then
+                            CR_Anime_Folge_int = String.Format("{0:00.0}", Folge_Double)
+                            If InStr(CR_Anime_Folge_int, ",") Then
+                                CR_Anime_Folge_int = CR_Anime_Folge_int.Replace(",", ".")
+                            End If
+                        End If
+                    End If
+                End If
+
+            End If
+
+            If CBool(InStr(WebbrowserHeadText, My.Resources.CR_Season_Nr)) Then
+                If CBool(InStr(WebbrowserHeadText, My.Resources.CR_Season_Nr + Chr(34))) Then
+                    Debug.WriteLine("No Season Number in a movie")
+                Else
+                    Dim CR_Season_1 As String() = WebbrowserHeadText.Split(New String() {My.Resources.CR_Season_Nr}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim CR_Season_2 As String() = CR_Season_1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+
+                    CR_Anime_Staffel_int = String.Join(" ", CR_Season_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
+                    CR_Anime_Staffel_int = RemoveExtraSpaces(CR_Anime_Staffel_int)
+                End If
+            Else
+                'Me.Invoke(New Action(Function()
+                '                         My.Computer.Clipboard.SetText(WebbrowserHeadText)
+                '                         Return Nothing
+                '                     End Function))
+                Debug.WriteLine("Not found?")
+            End If
 
             If CBool(InStr(WebbrowserText, My.Resources.CR_MediaName)) = True Then ' And CBool(InStr(WebbrowserText, "&rdquo;</h4>")) 
                 Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {My.Resources.CR_MediaName}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1388,26 +1451,52 @@ Public Class Main
                 CR_Anime_Name = RemoveExtraSpaces(CR_Anime_Name)
             End If
 
-            If CR_NameMethode = 0 Then
-                    If CR_Anime_Staffel = Nothing Then
-                        CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Folge
-                    Else
-                        CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Staffel + " " + CR_Anime_Folge
-                    End If
-                ElseIf CR_NameMethode = 1 Then
-                    If CR_Anime_Staffel = Nothing Then
-                        CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Name
-                    Else
-                        CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Staffel + " " + CR_Anime_Name
-                    End If
-                ElseIf CR_NameMethode = 2 Then
-                    If CR_Anime_Staffel = Nothing Then
-                        CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Folge + " " + CR_Anime_Name
-                    Else
-                        CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Staffel + " " + CR_Anime_Folge + " " + CR_Anime_Name
-                    End If
+            If Season_Prefix = "[default season prefix]" Then
 
+            Else
+                If CR_Anime_Staffel_int = "0" Then
+                Else
+                    CR_Anime_Staffel = Season_Prefix + CR_Anime_Staffel_int
                 End If
+            End If
+
+            If Episode_Prefix = "[default episode prefix]" Then
+
+            Else
+                CR_Anime_Folge = Episode_Prefix + CR_Anime_Folge_int
+            End If
+
+            If CR_Anime_Titel = Nothing Then
+
+                CR_FilenName = CR_Anime_Name
+
+            ElseIf CR_NameMethode = 0 Then
+                If CR_Anime_Staffel = Nothing Then
+                    CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Folge
+                Else
+                    CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Staffel + " " + CR_Anime_Folge
+                End If
+            ElseIf CR_NameMethode = 1 Then
+                If CR_Anime_Staffel = Nothing Then
+                    CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Name
+                Else
+                    CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Staffel + " " + CR_Anime_Name
+                End If
+            ElseIf CR_NameMethode = 2 Then
+                If CR_Anime_Staffel = Nothing Then
+                    CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Folge + " " + CR_Anime_Name
+                Else
+                    CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Staffel + " " + CR_Anime_Folge + " " + CR_Anime_Name
+                End If
+            ElseIf CR_NameMethode = 3 Then
+                If CR_Anime_Staffel = Nothing Then
+                    CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Name + " " + CR_Anime_Folge
+                Else
+                    CR_FilenName = CR_Anime_Titel + " " + CR_Anime_Name + " " + CR_Anime_Staffel + " " + CR_Anime_Folge
+                End If
+            End If
+
+
 
 
 
@@ -1686,26 +1775,25 @@ Public Class Main
                 'End If
 #End Region
 
-#Region "gzip fix - no cloudfront cdn"
+#Region "gzip fixed with http header in hybrid + ffmpeg" '"gzip fix - no cloudfront cdn"
 
 
                 Dim ffmpeg_url_1 As String() = str.Split(New String() {Reso2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim ffmpeg_url_3 As String() = Nothing
                 'MsgBox(ffmpeg_url_1.Count.ToString)
-                If ffmpeg_url_1.Count > 2 Then
-                    If InStr(ffmpeg_url_1(1), "&cdn=cloudfront-prod") Then
-                        Dim ffmpeg_url_2 As String() = ffmpeg_url_1(2).Split(New [Char]() {Chr(34)})
-                        ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
-                    Else
-                        Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
-                        ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
-                    End If
+                'If ffmpeg_url_1.Count > 2 Then
+                '    If InStr(ffmpeg_url_1(1), "&cdn=cloudfront-prod") Then
+                '        Dim ffmpeg_url_2 As String() = ffmpeg_url_1(2).Split(New [Char]() {Chr(34)})
+                '        ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+                '    Else
+                '        Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
+                '        ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+                '    End If
 
-
-                Else
-                    Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
-                    ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
-                End If
+                'Else
+                Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
+                ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+                'End If
                 If MergeSubstoMP4 = True Then
                     URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
 
@@ -1884,7 +1972,7 @@ Public Class Main
     End Sub
 
     Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles Btn_Settings.Click
-        einstellungen.Show()
+        Einstellungen.Show()
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles Btn_Browser.Click
@@ -2120,7 +2208,7 @@ Public Class Main
     Private Sub PictureBox2_DoubleClick(sender As Object, e As EventArgs) Handles Btn_Settings.DoubleClick
         If Debug1 = True Then
             If Debug2 = True Then
-                einstellungen.Close()
+                Einstellungen.Close()
                 Try
                     My.Computer.Clipboard.SetText(WebbrowserText)
 
@@ -2129,12 +2217,12 @@ Public Class Main
                 End Try
             Else
                 Debug2 = True
-                einstellungen.Close()
+                Einstellungen.Close()
                 MsgBox("Debug activated")
             End If
         Else
             Debug1 = True
-            einstellungen.Close()
+            Einstellungen.Close()
             'MsgBox("Debug activated")
         End If
     End Sub
@@ -2176,11 +2264,19 @@ Public Class Main
 
             Dim FunimationSeason1() As String = WebbrowserText.Split(New String() {"seasonNum: "}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim FunimationSeason2() As String = FunimationSeason1(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-            FunimationSeason = "Season " + FunimationSeason2(0)
+            If Season_Prefix = "[default season prefix]" Then
+                FunimationSeason = "Season " + FunimationSeason2(0)
+            Else
+                FunimationSeason = Season_Prefix + FunimationSeason2(0)
+            End If
 
             Dim FunimationEpisode1() As String = WebbrowserText.Split(New String() {"episodeNum: "}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim FunimationEpisode2() As String = FunimationEpisode1(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-            FunimationEpisode = "Episode " + FunimationEpisode2(0)
+            If Episode_Prefix = "[default episode prefix]" Then
+                FunimationEpisode = "Episode " + FunimationEpisode2(0)
+            Else
+                FunimationEpisode = Episode_Prefix + FunimationEpisode2(0)
+            End If
 
             Dim FunimationTitle1() As String = WebbrowserText.Split(New String() {".showName = '"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim FunimationTitle2() As String = FunimationTitle1(1).Split(New String() {"';"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -2203,6 +2299,8 @@ Public Class Main
                 DefaultName = RemoveExtraSpaces(FunimationTitle + " " + FunimationSeason + " " + FunimationEpisodeTitle)
             ElseIf CR_NameMethode = 2 Then
                 DefaultName = RemoveExtraSpaces(FunimationTitle + " " + FunimationSeason + " " + FunimationEpisode + " " + FunimationEpisodeTitle)
+            ElseIf CR_NameMethode = 3 Then
+                DefaultName = RemoveExtraSpaces(FunimationTitle + " " + FunimationEpisodeTitle + " " + FunimationSeason + " " + FunimationEpisode)
             End If
 
 
@@ -2582,7 +2680,7 @@ Public Class Main
                     'ElseIf InStr(UsedSub, ".dfxp") Then
                     '    SubtitelFormat = ".dfxp"
                 End If
-                UsedSub = einstellungen.GeräteID() + SubtitelFormat
+                UsedSub = Einstellungen.GeräteID() + SubtitelFormat
                 File.WriteAllText(Application.StartupPath + "\" + UsedSub, SubText, Encoding.UTF8)
             ElseIf SoftSubs2.Count > 0 Then
                 For i As Integer = 0 To SoftSubs2.Count - 1
@@ -2904,6 +3002,7 @@ Public Class Main
                         WebbrowserURL = URLSplit2(0)
                         Dim BodySplit() As String = DecodedHTML.Split(New String() {"<body"}, System.StringSplitOptions.RemoveEmptyEntries)
                         WebbrowserText = BodySplit(1)
+                        WebbrowserHeadText = BodySplit(0)
                         Dim TitleSplit() As String = DecodedHTML.Split(New String() {"<title>"}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim TitleSplit2() As String = TitleSplit(1).Split(New String() {"</title>"}, System.StringSplitOptions.RemoveEmptyEntries)
                         WebbrowserTitle = TitleSplit2(0)
@@ -3115,7 +3214,7 @@ Public Class Main
                 Else
 
                     strRequest = rootPath & "error_Page_default.html" 'PostPage
-                    sendHTMLResponse(strRequest, clientSocket)
+                    SendHTMLResponse(strRequest, clientSocket)
                 End If
 
 
@@ -3130,11 +3229,11 @@ Public Class Main
                 End If
 
                 strRequest = rootPath & strRequest
-                sendHTMLResponse(strRequest, clientSocket)
+                SendHTMLResponse(strRequest, clientSocket)
 
             Else ' Not HTTP GET method
                 strRequest = rootPath & defaultPage
-                sendHTMLResponse(strRequest, clientSocket)
+                SendHTMLResponse(strRequest, clientSocket)
 
             End If
         Catch abort As ThreadAbortException
@@ -3144,7 +3243,7 @@ Public Class Main
             Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
             My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
             'strRequest = rootPath & "error_Page.html" 'PostPage
-            sendHTMLResponse(Application.StartupPath + "\WebInterface\error_Page.html", clientSocket)
+            SendHTMLResponse(Application.StartupPath + "\WebInterface\error_Page.html", clientSocket)
             'If clientSocket.Connected Then
             '    clientSocket.Close()
             'End If

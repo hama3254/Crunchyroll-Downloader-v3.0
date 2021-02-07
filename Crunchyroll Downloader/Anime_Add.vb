@@ -394,7 +394,8 @@ Public Class Anime_Add
 
                 ElseIf CBool(InStr(textBox1.Text, "Test=true")) Then
                     GeckoFX.WebBrowser1.Navigate(textBox1.Text)
-                Else 'If CBool(InStr(textBox1.Text, "vrv.co")) Then
+                    'Else 'If CBool(InStr(textBox1.Text, "vrv.co")) Then
+                ElseIf CBool(InStr(textBox1.Text, "https://")) Then
                     If MessageBox.Show("This in NOT a Crunchyroll URL, try anyway?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
 

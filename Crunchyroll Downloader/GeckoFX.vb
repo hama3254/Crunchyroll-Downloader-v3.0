@@ -94,6 +94,7 @@ Public Class GeckoFX
                             Main.WebbrowserURL = WebBrowser1.Url.ToString
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                            Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
                             Main.b = True
                             If Main.d = False Then
                                 Main.d = True
@@ -116,6 +117,7 @@ Public Class GeckoFX
                             Main.WebbrowserURL = WebBrowser1.Url.ToString
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                            Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
                             If Main.d = False Then
                                 Main.d = True
                                 Main.SeasonDropdownGrappSubs()
@@ -129,6 +131,7 @@ Public Class GeckoFX
                             Main.WebbrowserURL = WebBrowser1.Url.ToString
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                            Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
                             If Main.d = False Then
                                 Main.d = True
                                 Main.MassGrappSubs()
@@ -152,6 +155,7 @@ Public Class GeckoFX
                         Main.WebbrowserURL = WebBrowser1.Url.ToString
                         Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                         Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                        Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
                         'SoftSub.DownloadSubs()
                         Me.Close()
                     End If
@@ -163,6 +167,7 @@ Public Class GeckoFX
                         Main.WebbrowserURL = WebBrowser1.Url.ToString
                         Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                         Main.WebbrowserTitle = WebBrowser1.DocumentTitle
+                        Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
                     Catch ex As Exception
                     End Try
 

@@ -532,4 +532,10 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="main_mini_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-mini_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CR_Episode_Nr" xml:space="preserve">
+    <value>display_episode_number":"</value>
+  </data>
+  <data name="CR_Season_Nr" xml:space="preserve">
+    <value>seasonNumber":"</value>
+  </data>
 </root>

@@ -107,6 +107,11 @@ Video Position: 0
   Sucht eine lokalisierte Zeichenfolge, die &lt;img id=&quot;footer_country_flag&quot; src=&quot;https://www.crunchyroll.com/i/country_flags/ ähnelt.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.CR_Episode_Nr">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die display_episode_number&quot;:&quot; ähnelt.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.CR_Head_Url_Split">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die &lt;meta property=&quot;og:url&quot; content=&quot; ähnelt.
@@ -120,6 +125,11 @@ Video Position: 0
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.CR_MediaName2">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die ”&lt;/h4&gt; ähnelt.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.CR_Season_Nr">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die seasonNumber&quot;:&quot; ähnelt.
 </summary>
 </member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.crdSettings_Button_SafeExit">

@@ -208,6 +208,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die display_episode_number&quot;:&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property CR_Episode_Nr() As String
+            Get
+                Return ResourceManager.GetString("CR_Episode_Nr", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;meta property=&quot;og:url&quot; content=&quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property CR_Head_Url_Split() As String
@@ -231,6 +240,15 @@ Namespace My.Resources
         Friend ReadOnly Property CR_MediaName2() As String
             Get
                 Return ResourceManager.GetString("CR_MediaName2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die seasonNumber&quot;:&quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property CR_Season_Nr() As String
+            Get
+                Return ResourceManager.GetString("CR_Season_Nr", resourceCulture)
             End Get
         End Property
         

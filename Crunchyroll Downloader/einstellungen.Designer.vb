@@ -97,8 +97,8 @@ Partial Class Einstellungen
         Me.Label2 = New MetroFramework.Controls.MetroLabel()
         Me.NumericUpDown2 = New System.Windows.Forms.NumericUpDown()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.http_support = New MetroFramework.Controls.MetroComboBox()
         Me.DarkMode = New MetroFramework.Controls.MetroCheckBox()
-        Me.Server = New MetroFramework.Controls.MetroCheckBox()
         Me.CB_Log = New MetroFramework.Controls.MetroCheckBox()
         Me.ListViewAdd_True = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -607,10 +607,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 35)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage2.Size = New System.Drawing.Size(493, 461)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -970,10 +970,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(493, 461)
+        Me.TabPage1.Size = New System.Drawing.Size(493, 452)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1039,8 +1039,8 @@ Partial Class Einstellungen
         'GroupBox5
         '
         Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox5.Controls.Add(Me.http_support)
         Me.GroupBox5.Controls.Add(Me.DarkMode)
-        Me.GroupBox5.Controls.Add(Me.Server)
         Me.GroupBox5.Controls.Add(Me.CB_Log)
         Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
         Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
@@ -1052,6 +1052,21 @@ Partial Class Einstellungen
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Other"
         '
+        'http_support
+        '
+        Me.http_support.DropDownHeight = 250
+        Me.http_support.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
+        Me.http_support.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.http_support.FormattingEnabled = True
+        Me.http_support.IntegralHeight = False
+        Me.http_support.ItemHeight = 23
+        Me.http_support.Items.AddRange(New Object() {"add-on support disabled", "80", "8080"})
+        Me.http_support.Location = New System.Drawing.Point(214, 70)
+        Me.http_support.Name = "http_support"
+        Me.http_support.Size = New System.Drawing.Size(237, 29)
+        Me.http_support.TabIndex = 45
+        Me.http_support.UseSelectable = True
+        '
         'DarkMode
         '
         Me.DarkMode.AutoSize = True
@@ -1061,17 +1076,6 @@ Partial Class Einstellungen
         Me.DarkMode.TabIndex = 44
         Me.DarkMode.Text = "enable dark mode"
         Me.DarkMode.UseSelectable = True
-        '
-        'Server
-        '
-        Me.Server.AutoSize = True
-        Me.Server.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.Server.Location = New System.Drawing.Point(214, 75)
-        Me.Server.Name = "Server"
-        Me.Server.Size = New System.Drawing.Size(246, 19)
-        Me.Server.TabIndex = 43
-        Me.Server.Text = "enable http server (add-on Support)"
-        Me.Server.UseSelectable = True
         '
         'CB_Log
         '
@@ -1186,7 +1190,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 1
+        Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(501, 500)
         Me.TabControl1.TabIndex = 38
         Me.TabControl1.UseSelectable = True
@@ -1712,7 +1716,6 @@ Partial Class Einstellungen
     Public WithEvents Label6 As MetroFramework.Controls.MetroLabel
     Public WithEvents Label5 As MetroFramework.Controls.MetroLabel
     Friend WithEvents CheckBox2 As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents Server As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CB_fun_ptbr As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CB_fun_es As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CB_fun_eng As MetroFramework.Controls.MetroCheckBox
@@ -1747,4 +1750,5 @@ Partial Class Einstellungen
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
     Friend WithEvents DD_Episode_Prefix As MetroFramework.Controls.MetroComboBox
     Friend WithEvents DD_Season_Prefix As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents http_support As MetroFramework.Controls.MetroComboBox
 End Class

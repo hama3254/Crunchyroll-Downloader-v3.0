@@ -13,3 +13,18 @@
   border-radius: 12px;
    cursor:pointer;
 }
+.txt_class {
+  background-color: #ebe9e8;
+  border: none;
+  color: black;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin-left:12px;
+  margin-right:12px;
+  margin-Top:12px;
+  margin-Bottom:12px;
+  border-radius: 12px;
+   cursor:pointer;
+}

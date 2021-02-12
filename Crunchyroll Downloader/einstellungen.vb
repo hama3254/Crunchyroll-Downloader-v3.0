@@ -7,6 +7,7 @@ Imports System.Threading
 Imports MetroFramework.Forms
 Imports MetroFramework
 Imports MetroFramework.Components
+Imports System.Text.RegularExpressions
 
 Public Class Einstellungen
     Inherits MetroForm
@@ -240,14 +241,40 @@ Public Class Einstellungen
         End Try
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Server.Checked = CBool(Integer.Parse(rkg.GetValue("StartServer").ToString))
+            Dim ServerSetting As String = rkg.GetValue("ServerPort").ToString
+
+            If ServerSetting = 0 Then
+                http_support.Text = "add-on support disabled"
+            Else
+                http_support.Text = ServerSetting
+            End If
+
         Catch ex As Exception
         End Try
     End Sub
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
-        '  MsgBox(Name_season.Text)
         Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
+
+        If http_support.Text = "add-on support disabled" Then
+            rk.SetValue("ServerPort", 0, RegistryValueKind.String)
+            Main.StartServer = False
+
+        Else
+            Dim Port As Integer = 0
+            Try
+                Port = CInt(http_support.Text)
+                rk.SetValue("ServerPort", Port, RegistryValueKind.String)
+                Main.StartServer = False
+            Catch ex As Exception
+                MsgBox("The add-on support Port can only be numbers!", MsgBoxStyle.Exclamation)
+                Exit Sub
+            End Try
+
+        End If
+
+
+        '  MsgBox(Name_season.Text)
         If InStr(TextBox1.Text, "https://") Then
             Main.Startseite = TextBox1.Text
             rk.SetValue("Startseite", Main.Startseite, RegistryValueKind.String)
@@ -492,17 +519,7 @@ Public Class Einstellungen
             rk.SetValue("QueueMode", 0, RegistryValueKind.String)
             Main.UseQueue = False
         End If
-        If Server.Checked = True Then
-            rk.SetValue("StartServer", 1, RegistryValueKind.String)
-            Main.StartServer = True
-            'Dim t As New Thread(AddressOf Main.ServerStart)
-            't.Priority = ThreadPriority.Normal
-            't.IsBackground = True
-            't.Start()
-        ElseIf Server.Checked = False Then
-            rk.SetValue("StartServer", 0, RegistryValueKind.String)
-            Main.StartServer = False
-        End If
+
 
 #Region "sof subs"
         Main.SoftSubs.Clear()
@@ -880,10 +897,10 @@ Public Class Einstellungen
     End Sub
 
 
-    Private Sub Server_Click(sender As Object, e As EventArgs) Handles Server.Click
-        If Server.Checked = True Then
-            MsgBox("This feature requires a restart of the downloader", MsgBoxStyle.Information)
-        End If
+    Private Sub Server_Click(sender As Object, e As EventArgs)
+        'If Server.Checked = True Then
+        '    MsgBox("This feature requires a restart of the downloader", MsgBoxStyle.Information)
+        'End If
     End Sub
 
     Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
@@ -941,18 +958,6 @@ Public Class Einstellungen
         'MetroMessageBox.Show(Me, "Test", "Test Box", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2, 150, MetroThemeStyle.Dark)
 
     End Sub
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -29,7 +29,7 @@ Public Class Main
     Dim ItemList As New List(Of CRD_List_Item)
     Public RunningDownloads As Integer = 0
     Public UseQueue As Boolean = False
-    Public StartServer As Boolean = False
+    Public StartServer As Integer = 0
     Public m3u8List As New List(Of String)
     Public txtList As New List(Of String)
     Public mpdList As New List(Of String)
@@ -333,11 +333,11 @@ Public Class Main
 
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            StartServer = CBool(Integer.Parse(rkg.GetValue("StartServer").ToString))
+            StartServer = Integer.Parse(rkg.GetValue("ServerPort").ToString)
         Catch ex As Exception
 
         End Try
-        If StartServer = True Then
+        If StartServer > 0 Then
             Timer3.Enabled = True
             ServerThread = New Thread(AddressOf ServerStart)
             ServerThread.Priority = ThreadPriority.Normal
@@ -2920,13 +2920,15 @@ Public Class Main
                 Exit Sub
             End If
             Dim serverIP As IPAddress = Dns.GetHostEntry(hostName).AddressList(Adresscount) 'Dns.Resolve(hostName).AddressList(0) 'New IPAddress("localhost") '
-            ' Web Server Port = 80  
-            Dim Port As String = "80"
+
+            Dim Port As String = StartServer
             tcpListener = New TcpListener(serverIP, Int32.Parse(Port))
             tcpListener.Start()
             Debug.WriteLine("Web server started at: " & serverIP.ToString() & ":" & Port)
-
             ProcessThread()
+
+
+
         Catch abort As ThreadAbortException
 
             Exit Sub
@@ -2983,8 +2985,9 @@ Public Class Main
 
             If strArray(0).Trim().ToUpper.Equals("POST") Then
 
-                Debug.WriteLine("receiving data from the add-on")
-                Debug.WriteLine(UrlDecode(htmlReq))
+                'Debug.WriteLine("receiving data from the add-on")
+                'Debug.WriteLine(UrlDecode(htmlReq))
+
                 Me.Invoke(New Action(Function()
                                          Me.Text = "Status: receiving data from the add-on"
                                          Me.Invalidate()
@@ -3219,6 +3222,12 @@ Public Class Main
 
 
             ElseIf strArray(0).Trim().ToUpper.Equals("GET") Then
+
+                If InStr(htmlReq, "CRD_Handshake") Then
+                    SendHTMLResponse("Handshake_Confirm", clientSocket)
+                    Exit Sub
+                End If
+
                 strRequest = strArray(1).Trim
 
                 If strRequest.StartsWith("/") Then
@@ -3275,6 +3284,21 @@ Public Class Main
                 ' Send HTML Content back to Web Browser
                 clientSocket.Send(respByte, 0, respByte.Length, SocketFlags.None)
                 ' Close HTTP Socket connection
+                clientSocket.Shutdown(SocketShutdown.Both)
+                clientSocket.Close()
+            ElseIf httpRequest = "Handshake_Confirm" Then
+                respByte = System.Text.Encoding.UTF8.GetBytes("CRD_Handshake_Confirm") 'File.ReadAllBytes("") '
+
+                Dim htmlHeader As String =
+                    "HTTP/1.0 200 OK" & ControlChars.CrLf &
+                    "Server: CRD 1.0" & ControlChars.CrLf &
+                    "Access-Control-Allow-Origin: *" & ControlChars.CrLf &
+                    "Content-Length: " & respByte.Length & ControlChars.CrLf &
+                    "Content-Type: text/plain" &
+                    ControlChars.CrLf & ControlChars.CrLf
+                Dim headerByte() As Byte = Encoding.UTF8.GetBytes(htmlHeader)
+                clientSocket.Send(headerByte, 0, headerByte.Length, SocketFlags.None)
+                clientSocket.Send(respByte, 0, respByte.Length, SocketFlags.None)
                 clientSocket.Shutdown(SocketShutdown.Both)
                 clientSocket.Close()
             Else

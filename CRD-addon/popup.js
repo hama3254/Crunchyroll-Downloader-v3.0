@@ -1,47 +1,129 @@
-browser.tabs.query({
-    currentWindow: true,
-    active: true
-}).then((tabs) => {
+var Port;
+document.getElementById("btn_add").hidden = true;
+document.getElementById("btn_enable_select").hidden = true;
+document.getElementById("btn_add_mass").hidden = true;
+document.getElementById("btn_select_all").hidden = true;
+document.getElementById("btn_select_none").hidden = true;
+document.getElementById("btn_enable_funimation_select").hidden = true;
+document.getElementById("btn_add_funimation").hidden = true;
+document.getElementById("btn_add_AoD").hidden = true;
+document.getElementById("CRD-Webserver").hidden = true;
 
-    let tab = tabs[0]; // Safe to assume there will only be one resultconsole.log(tab.url);
-    console.log(tab.url);
-    if (tab.url.includes('crunchyroll.com')) {
-        var crunchyroll = browser.tabs.executeScript({
-            code: 'document.getElementsByClassName("episode")[0].href;'
-        });
 
-        crunchyroll.then(onExecuted, onError);
 
-    } else if (tab.url.includes('funimation.com')) {
+function setItem() {
+    console.log("OK");
+}
+function notsetItem() {
+    console.log("Not OK");
+}
 
-        var funimation = browser.tabs.executeScript({
+browser.storage.local.get("CRD_Port")
+.then(gotPort, NoPort);
 
-            code: 'document.getElementsByClassName("trackVideo")[0].href'
-        });
-        funimation.then(FunimationSuccess, FunimationError);
-    } else if (tab.url.includes('anime-on-demand.de/anime/')) {
-
-        document.getElementById("btn_add").hidden = true;
-        document.getElementById("btn_enable_select").hidden = true;
-        document.getElementById("btn_add_mass").hidden = true;
-        document.getElementById("btn_select_all").hidden = true;
-        document.getElementById("btn_select_none").hidden = true;
-        document.getElementById("btn_enable_funimation_select").hidden = true;
-        document.getElementById("btn_add_funimation").hidden = true;
-        document.getElementById("btn_add_AoD").hidden = true; //false if implemented
-
-    } else {
-
-        document.getElementById("btn_add").hidden = true;
-        document.getElementById("btn_enable_select").hidden = true;
-        document.getElementById("btn_add_mass").hidden = true;
-        document.getElementById("btn_select_all").hidden = true;
-        document.getElementById("btn_select_none").hidden = true;
-        document.getElementById("btn_enable_funimation_select").hidden = true;
-        document.getElementById("btn_add_funimation").hidden = true;
-        document.getElementById("btn_add_AoD").hidden = true;
+function gotPort(result) {
+    try {
+        onStartup(result.CRD_Port.value);
+        console.log("Port: " + result.CRD_Port.value)
+    } catch (e) {
+        onStartup(80);
+        console.log("no port")
     }
-}, console.error)
+
+}
+
+function NoPort(result) {
+    //onStartup(80);
+    console.log("no port")
+}
+
+function onStartup(result) {
+    console.log(result);
+    Port = result;
+    const xhr = new XMLHttpRequest(),
+    method = "GET",
+    url = "http://localhost:" + Port + "/CRD_Handshake";
+    xhr.open(method, url, true);
+    xhr.onreadystatechange = function () {
+        // In local files, status is 0 upon success in Mozilla Firefox
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            //var status = xhr.status;
+            //status === 0 || (status >= 200 && status < 400)
+            console.log(xhr.responseText);
+            if (xhr.responseText == "CRD_Handshake_Confirm") {
+				document.getElementById("txtInput").hidden = true;
+				document.getElementById("btn_set_port").hidden = true;
+				document.getElementById("CRD-Webserver").hidden = false
+				document.getElementById("CRD-Webserver").src = "http://localhost:" + Port;
+                // The request has been completed successfully
+
+                browser.tabs.query({
+                    currentWindow: true,
+                    active: true
+                }).then((tabs) => {
+
+                    let tab = tabs[0]; // Safe to assume there will only be one resultconsole.log(tab.url);
+                    console.log(tab.url);
+                    if (tab.url.includes('crunchyroll.com')) {
+                        var crunchyroll = browser.tabs.executeScript({
+                            code: 'document.getElementsByClassName("episode")[0].href;'
+                        });
+
+                        crunchyroll.then(onExecuted, onError);
+
+                    } else if (tab.url.includes('funimation.com')) {
+
+                        var funimation = browser.tabs.executeScript({
+
+                            code: 'document.getElementsByClassName("trackVideo")[0].href'
+                        });
+                        funimation.then(FunimationSuccess, FunimationError);
+                    } else if (tab.url.includes('anime-on-demand.de/anime/')) {
+
+                        document.getElementById("btn_add").hidden = true;
+                        document.getElementById("btn_enable_select").hidden = true;
+                        document.getElementById("btn_add_mass").hidden = true;
+                        document.getElementById("btn_select_all").hidden = true;
+                        document.getElementById("btn_select_none").hidden = true;
+                        document.getElementById("btn_enable_funimation_select").hidden = true;
+                        document.getElementById("btn_add_funimation").hidden = true;
+                        document.getElementById("btn_add_AoD").hidden = true; //false if implemented
+
+                    } else {
+
+                        document.getElementById("btn_add").hidden = true;
+                        document.getElementById("btn_enable_select").hidden = true;
+                        document.getElementById("btn_add_mass").hidden = true;
+                        document.getElementById("btn_select_all").hidden = true;
+                        document.getElementById("btn_select_none").hidden = true;
+                        document.getElementById("btn_enable_funimation_select").hidden = true;
+                        document.getElementById("btn_add_funimation").hidden = true;
+                        document.getElementById("btn_add_AoD").hidden = true;
+                    }
+                }, console.error)
+                i = 91;
+            } else {
+                console.log("No CRD found");
+                // Oh no! There has been an error with the request!
+            }
+        }
+    };
+    xhr.send();
+}
+
+document.getElementById('btn_set_port').addEventListener('click', () => {
+let CRD_Port = {
+    value: document.getElementById('txtInput').value
+}
+
+browser.storage.local.set({
+    CRD_Port
+})
+.then(setItem, notsetItem);
+
+window.close();
+});
+
 
 document.getElementById('btn_add_AoD').addEventListener('click', () => {
     //browser.cookies.getAllCookieStores().then((cookie) => {
@@ -63,7 +145,7 @@ document.getElementById('btn_add_AoD').addEventListener('click', () => {
 
 document.getElementById('btn_enable_select').addEventListener('click', () => {
     browser.tabs.executeScript({
-        code: 'var script=document.createElement("script");script.type="text/javascript",script.src="http://127.0.0.1/inject.js",document.head.appendChild(script);'
+        code: 'var script=document.createElement("script");script.type="text/javascript",script.src="http://127.0.0.1:'+Port+'/inject.js",document.head.appendChild(script);'
     }); //load script from local CRD Server included in https://github.com/hama3254/Crunchyroll-Downloader-v3.0
 
     document.getElementById("btn_add_mass").hidden = false;
@@ -201,7 +283,7 @@ function add_fun_ok(result) {
         document.getElementById("btn_add_funimation").style.background = "#c9c9c9"
 
             var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "http://127.0.0.1/post", true);
+        xhttp.open("POST", "http://127.0.0.1:"+Port+"/post", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send("FunimationURL=" + tab.url);
 
@@ -221,7 +303,7 @@ function add_one_ok(result) {
     document.getElementById("btn_add").style.background = "#c9c9c9"
 
         var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "http://127.0.0.1/post", true);
+    xhttp.open("POST", "http://127.0.0.1:"+Port+"/post", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("HTMLSingle=" + result);
 
@@ -243,7 +325,7 @@ function add_mass_ok(result) {
     document.getElementById("btn_add_mass").style.background = "#c9c9c9"
 
         var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "http://127.0.0.1/post", true);
+    xhttp.open("POST", "http://127.0.0.1:"+Port+"/post", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("HTMLMass=" + result);
 
@@ -264,7 +346,7 @@ function add_mass_error(error) {
 document.getElementById('btn_enable_funimation_select').addEventListener('click', () => {
 
     browser.tabs.executeScript({
-        code: 'var script=document.createElement("script");script.type="text/javascript",script.src="http://127.0.0.1/inject_funimation.js",document.head.appendChild(script);'
+        code: 'var script=document.createElement("script");script.type="text/javascript",script.src="http://127.0.0.1:'+Port+'/inject_funimation.js",document.head.appendChild(script);'
     }); //load script from local CRD Server included in https://github.com/hama3254/Crunchyroll-Downloader-v3.0
 
     document.getElementById("btn_add_mass").hidden = false;

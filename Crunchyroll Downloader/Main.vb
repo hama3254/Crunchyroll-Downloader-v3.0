@@ -10,9 +10,12 @@ Imports MetroFramework.Forms
 Imports MetroFramework
 Imports MetroFramework.Components
 Imports System.Globalization
+Imports System.ComponentModel
 
 Public Class Main
     Inherits MetroForm
+
+    Dim HTML As String = Nothing
 
     Public Manager As New MetroStyleManager
 
@@ -102,6 +105,8 @@ Public Class Main
     Public Funimation_dfxp As Boolean = False
     Public SubFunimationString As String = "en"
     Public SubFunimation As New List(Of String)
+    Public DefaultSubFunimation As String = "Disabled"
+    Public DefaultSubCR As String = "Disabled"
 #Region "Sprachen Vairablen"
     Public URL_Invaild As String = "something is wrong here..."
 
@@ -382,6 +387,18 @@ Public Class Main
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             Season_Prefix = rkg.GetValue("Prefix_S").ToString
+        Catch ex As Exception
+        End Try
+
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            DefaultSubFunimation = rkg.GetValue("DefaultSubFunimation").ToString
+        Catch ex As Exception
+        End Try
+
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            DefaultSubCR = rkg.GetValue("DefaultSubCR").ToString
         Catch ex As Exception
         End Try
 
@@ -1421,6 +1438,8 @@ Public Class Main
                                 CR_Anime_Folge_int = CR_Anime_Folge_int.Replace(",", ".")
                             End If
                         End If
+                    ElseIf Integer.Parse(CR_Anime_Folge_int) < 10 Then
+                        CR_Anime_Folge_int = "0" + CR_Anime_Folge_int
                     End If
                 End If
 
@@ -1649,7 +1668,12 @@ Public Class Main
 
             If SoftSubs2.Count > 0 Then
                 If MergeSubstoMP4 = True Then
+                    Dim DispositionIndex As Integer
                     For i As Integer = 0 To SoftSubs2.Count - 1
+                        Debug.WriteLine(SoftSubs2(i))
+                        If SoftSubs2(i) = DefaultSubCR Then
+                            DispositionIndex = i
+                        End If
                         Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
                         Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
@@ -1666,7 +1690,10 @@ Public Class Main
                         End If
 
                     Next
-
+                    If DispositionIndex = Nothing Then
+                    Else
+                        SoftSubMergeMetatata = SoftSubMergeMetatata + " -disposition:s:" + DispositionIndex + " default"
+                    End If
                 Else
                     For i As Integer = 0 To SoftSubs2.Count - 1
                         LabelUpdate = "Status: downloading subtitle file"
@@ -1691,7 +1718,7 @@ Public Class Main
                     Next
 
                 End If
-                'SoftSubMergeMetatata = SoftSubMergeMetatata + " -disposition:s:0 default"
+
             End If
 #End Region
 
@@ -1919,23 +1946,29 @@ Public Class Main
                     ItemList(i).KillRunningTask()
                 Next
 
-                Try
-                    tcpListener.Stop()
-                Catch ex As Exception
-                End Try
+                'Try
+                '    tcpListener.Stop()
+
+                'Catch ex As Exception
+                'End Try
 
                 RemoveTempFiles()
                 Me.Close()
             End If
         Else
-            Try
-                tcpListener.Stop()
-            Catch ex As Exception
-            End Try
+
+            'Try
+
+            '    tcpListener.Stop()
+            'Catch ex As Exception
+            '    MsgBox(ex.ToString)
+            'End Try
 
             Timer3.Enabled = False
             RemoveTempFiles()
+
             Me.Close()
+
         End If
     End Sub
     Private Sub RemoveTempFiles()
@@ -2749,8 +2782,14 @@ Public Class Main
 
             If UsedSubs.Count > 0 Then
                 If MergeSubstoMP4 = True Then
+                    Dim DispositionIndex As Integer
                     For i As Integer = 0 To UsedSubs.Count - 1
                         Dim SoftSub As String() = UsedSubs.Item(i).Split(New String() {" , "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Debug.WriteLine(SoftSub(1))
+                        If DefaultSubFunimation = SoftSub(1) Then
+                            Debug.WriteLine(SoftSub(1))
+                            DispositionIndex = i
+                        End If
                         If SoftSubMergeURLs = Nothing Then
                             SoftSubMergeURLs = " -headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + SoftSub(0) + Chr(34)
                         Else
@@ -2768,7 +2807,10 @@ Public Class Main
                         End If
 
                     Next
-
+                    If DispositionIndex = Nothing Then
+                    Else
+                        SoftSubMergeMetatata = SoftSubMergeMetatata + " -disposition:s:" + DispositionIndex + " default"
+                    End If
                 Else
                     For i As Integer = 0 To UsedSubs.Count - 1
                         LabelUpdate = "Status: downloading subtitle file"
@@ -2897,83 +2939,150 @@ Public Class Main
             c = c.Replace("balken1.png", Balken)
             Dim CC As String = "cc.png"
             c = c.Replace("cc1.png", CC)
-            My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\index.html", c, False)
-
+            'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\index.html", c, False)
+            HTML = c
         Catch ex As Exception
             'Debug.WriteLine(ex.ToString)
             'MsgBox(ex.ToString)
         End Try
     End Sub
 #Region "server"
-    Dim tcpListener As TcpListener
-    Public Sub ServerStart()
+    'Dim tcpListener As TcpListener
+    'Public Sub ServerStart()
+    '    Try
+    '        Dim hostName As String = "localhost" 'Dns.GetHostName()
+    '        Dim Adresscount As Integer
+    '        For i As Integer = 0 To Dns.GetHostEntry(hostName).AddressList.Count - 1
+    '            If Dns.GetHostEntry(hostName).AddressList(i).ToString = "127.0.0.1" Then
+    '                Adresscount = i
+    '            End If
+    '        Next
+    '        If Adresscount = Nothing Then
+    '            MsgBox("http server start failed")
+    '            Exit Sub
+    '        End If
+    '        Dim serverIP As IPAddress = Dns.GetHostEntry(hostName).AddressList(Adresscount) 'Dns.Resolve(hostName).AddressList(0) 'New IPAddress("localhost") '
+
+    '        Dim Port As String = StartServer
+    '        tcpListener = New TcpListener(serverIP, Int32.Parse(Port))
+    '        tcpListener.Start()
+    '        Debug.WriteLine("Web server started at: " & serverIP.ToString() & ":" & Port)
+    '        ProcessThread()
+
+
+    '    Catch abort As ThreadAbortException
+    '        Exit Sub
+    '        MsgBox(abort.ToString())
+    '    Catch ex As Exception
+
+    '        MsgBox(ex.ToString())
+    '    End Try
+    'End Sub
+
+
+    'Public Sub ProcessThread()
+    '    Dim ServerRunning = True
+    '    Dim clientSocket As Socket
+    '    While ServerRunning = True
+
+
+    '        Try
+    '            clientSocket = tcpListener.AcceptSocket
+    '            clientSocket.ReceiveBufferSize = 1048576
+    '            ' Socket Information
+    '            'Dim clientInfo As IPEndPoint = CType(clientSocket.RemoteEndPoint, IPEndPoint)
+    '            'Debug.WriteLine("Client: " + clientInfo.Address.ToString() + ":" + clientInfo.Port.ToString())
+    '            ' Set Thread for each Web Browser Connection
+    '            Dim clientThread As New Thread(Sub() Me.ProcessRequest(clientSocket))
+    '            clientThread.Start()
+
+    '        Catch ex As Exception
+
+    '            Debug.WriteLine(ex.ToString())
+
+    '            Try
+    '                clientSocket.Close()
+    '            Catch ex2 As Exception
+
+    '            End Try
+    '            ServerRunning = False
+    '            Exit Sub
+    '        End Try
+    '    End While
+
+    '    'New AsyncCallback(AddressOf DoAcceptSocketCallback), listener
+    'End Sub
+
+    Dim ListOfThread As New List(Of Thread)
+
+    Sub ServerStart()
+        Dim server As TcpListener
+        server = Nothing
         Try
-            Dim hostName As String = "localhost" 'Dns.GetHostName()
-            Dim Adresscount As Integer
-            For i As Integer = 0 To Dns.GetHostEntry(hostName).AddressList.Count - 1
-                If Dns.GetHostEntry(hostName).AddressList(i).ToString = "127.0.0.1" Then
-                    Adresscount = i
-                End If
-            Next
-            If Adresscount = Nothing Then
-                MsgBox("http server start failed")
-                Exit Sub
-            End If
-            Dim serverIP As IPAddress = Dns.GetHostEntry(hostName).AddressList(Adresscount) 'Dns.Resolve(hostName).AddressList(0) 'New IPAddress("localhost") '
+
 
             Dim Port As String = StartServer
-            tcpListener = New TcpListener(serverIP, Int32.Parse(Port))
-            tcpListener.Start()
-            Debug.WriteLine("Web server started at: " & serverIP.ToString() & ":" & Port)
-            ProcessThread()
 
+            Dim localAddr As IPAddress = IPAddress.Parse("127.0.0.1")
 
+            server = New TcpListener(localAddr, Int32.Parse(port))
 
-        Catch abort As ThreadAbortException
+            ' Start listening for client requests.
+            server.Start()
 
-            Exit Sub
-        Catch ex As Exception
+            Debug.WriteLine("Web server started at: " & localAddr.ToString() & ":" & port)
 
-            MsgBox(ex.ToString())
-        End Try
-    End Sub
+            While True
 
-
-    Public Sub ProcessThread()
-        While (True)
-
-            Dim clientSocket As Socket
-            Try
-                clientSocket = tcpListener.AcceptSocket()
-                clientSocket.ReceiveBufferSize = 1048576
-                ' Socket Information
-                Dim clientInfo As IPEndPoint = CType(clientSocket.RemoteEndPoint, IPEndPoint)
-                'Debug.WriteLine("Client: " + clientInfo.Address.ToString() + ":" + clientInfo.Port.ToString())
-                ' Set Thread for each Web Browser Connection
-                Dim clientThread As New Thread(Sub() Me.ProcessRequest(clientSocket))
+                Dim client As TcpClient = server.AcceptTcpClient()
+                Dim clientThread As New Thread(Sub() Me.ManageConnections(client))
                 clientThread.Start()
-            Catch abort As ThreadAbortException
-                Exit Sub
-            Catch ex As Exception
-                Debug.WriteLine(ex.ToString())
-                'If clientSocket.Connected Then
-                '    clientSocket.Close()
-                'End If
-            End Try
-        End While
+
+            End While
+
+        Catch ex As SocketException
+            Debug.WriteLine("SocketException: " + ex.ToString)
+
+
+        Finally
+            Debug.WriteLine(Date.Now + " " + "End server")
+            server.Stop()
+        End Try
+        Debug.WriteLine(ControlChars.Cr + "Hit enter to continue....")
 
     End Sub
-    Protected Sub ProcessRequest(ByVal clientSocket As Socket)
-        Dim recvBytes(1048576) As Byte
-        Dim htmlReq As String = Nothing
-        Dim bytes As Long
-        Try
-            ' Receive HTTP Request from Web Browser
-            bytes = clientSocket.Receive(recvBytes, 0, clientSocket.Available, SocketFlags.None)
+    Sub ManageConnections(ByVal client As TcpClient)
+        Dim bytes(1048576) As Byte
 
-            htmlReq = Encoding.UTF8.GetString(recvBytes, 0, bytes)
-            'MsgBox(htmlReq)
-            'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", htmlReq + vbNewLine, True)
+        Dim stream As NetworkStream = client.GetStream()
+
+        ' Debug.WriteLine(Date.Now + " " + "stream opend")
+
+        Dim numberOfBytesRead As Integer = 0
+        Dim myCompleteMessage As StringBuilder = New StringBuilder()
+
+        Dim stopWatch As New Stopwatch()
+        stopWatch.Start()
+
+        Do While stopWatch.Elapsed.TotalSeconds < 4 And stream.DataAvailable
+
+            'Debug.WriteLine(Date.Now + " " + numberOfBytesRead.ToString + " " + stopWatch.Elapsed.TotalSeconds.ToString)
+            numberOfBytesRead = stream.Read(bytes, 0, bytes.Length)
+            myCompleteMessage.AppendFormat("{0}", Encoding.UTF8.GetString(bytes, 0, numberOfBytesRead))
+
+        Loop
+        stopWatch.Stop()
+
+        ProcessRequest(stream, myCompleteMessage.ToString())
+
+        client.Close()
+    End Sub
+
+
+    Sub ProcessRequest(ByVal stream As NetworkStream, ByVal htmlReq As String)
+        Dim recvBytes(1048576) As Byte
+
+        Try
             Dim rootPath As String = Directory.GetCurrentDirectory() & "\WebInterface\"
             ' Set default page
             Dim defaultPage As String = "index.html"
@@ -2986,8 +3095,8 @@ Public Class Main
             If strArray(0).Trim().ToUpper.Equals("POST") Then
 
                 'Debug.WriteLine("receiving data from the add-on")
-                'Debug.WriteLine(UrlDecode(htmlReq))
-
+                'Debug.WriteLine(htmlReq)
+                'UrlDecode
                 Me.Invoke(New Action(Function()
                                          Me.Text = "Status: receiving data from the add-on"
                                          Me.Invalidate()
@@ -3039,7 +3148,7 @@ Public Class Main
                                 End If
                             End If
                             strRequest = rootPath & "Post_Single_Sucess.html" 'PostPage
-                            SendHTMLResponse(strRequest, clientSocket)
+                            SendHTMLResponse(strRequest, stream)
                         Else
                             Me.Invoke(New Action(Function()
                                                      Me.Text = "Status: no video found"
@@ -3049,7 +3158,7 @@ Public Class Main
                             Dim ErrorPage As String = My.Resources.Post_error_Top + "no video found" + My.Resources.Post_error_Bottom
                             My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
                             strRequest = rootPath & "error_Page.html" 'PostPage
-                            SendHTMLResponse(strRequest, clientSocket)
+                            SendHTMLResponse(strRequest, stream)
                         End If
                     Catch abort As ThreadAbortException
                         Exit Sub
@@ -3057,7 +3166,7 @@ Public Class Main
                         Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
                         My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
                         strRequest = rootPath & "error_Page.html" 'PostPage
-                        SendHTMLResponse(strRequest, clientSocket)
+                        SendHTMLResponse(strRequest, stream)
                     End Try
 #End Region
 #Region "mass-dl"
@@ -3096,14 +3205,14 @@ Public Class Main
                                                  End Function))
                         End If
                         strRequest = rootPath & "Post_Mass_Sucess.html" 'PostPage
-                        SendHTMLResponse(strRequest, clientSocket)
+                        SendHTMLResponse(strRequest, stream)
                     Catch abort As ThreadAbortException
                         Exit Sub
                     Catch ex As Exception
                         Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
                         My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
                         strRequest = rootPath & "error_Page.html" 'PostPage
-                        SendHTMLResponse(strRequest, clientSocket)
+                        SendHTMLResponse(strRequest, stream)
                     End Try
 #End Region
 #Region "funimation Einzeln"
@@ -3203,69 +3312,105 @@ Public Class Main
                             End If
                         End If
                         strRequest = rootPath & "Post_Single_Sucess.html" 'PostPage
-                        SendHTMLResponse(strRequest, clientSocket)
+                        SendHTMLResponse(strRequest, stream)
                     Catch abort As ThreadAbortException
                         Exit Sub
                     Catch ex As Exception
                         Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
                         My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
                         strRequest = rootPath & "error_Page.html" 'PostPage
-                        SendHTMLResponse(strRequest, clientSocket)
+                        SendHTMLResponse(strRequest, stream)
                     End Try
 
 #End Region
                 Else
 
                     strRequest = rootPath & "error_Page_default.html" 'PostPage
-                    SendHTMLResponse(strRequest, clientSocket)
+                    SendHTMLResponse(strRequest, stream)
                 End If
 
 
             ElseIf strArray(0).Trim().ToUpper.Equals("GET") Then
+                'Debug.WriteLine(Date.Now + " " + "found GET while procesing")
 
-                If InStr(htmlReq, "CRD_Handshake") Then
-                    SendHTMLResponse("Handshake_Confirm", clientSocket)
-                    Exit Sub
-                End If
-
+                'Debug.WriteLine(Date.Now + " " + strArray(1))
                 strRequest = strArray(1).Trim
 
                 If strRequest.StartsWith("/") Then
                     strRequest = strRequest.Substring(1)
-                End If
-                If strRequest.EndsWith("/") Or strRequest.Equals("") Then
-                    strRequest = strRequest & defaultPage '"HTMLString" 'strRequest & defaultPage
+
                 End If
 
+                If strRequest.EndsWith("/") Or strRequest.Equals("") Then
+                    'Debug.WriteLine(Date.Now + " " + "it's index.html")
+                    strRequest = strRequest & defaultPage '"HTMLString" 'strRequest & defaultPage
+
+                End If
+
+                'If InStr(htmlReq, "CRD_Handshake") Then
+                '    'Debug.WriteLine(Date.Now + " " + "it's a handshake")
+                '    SendHTMLResponse("Handshake_Confirm", stream)
+                'Else
+                '    
+                'End If
                 strRequest = rootPath & strRequest
-                SendHTMLResponse(strRequest, clientSocket)
+                SendHTMLResponse(strRequest, stream)
 
             Else ' Not HTTP GET method
+                'Debug.WriteLine(Date.Now + " " + "empty request, returning index.html")
+                'Debug.WriteLine(Date.Now + " " + strArray(0))
                 strRequest = rootPath & defaultPage
-                SendHTMLResponse(strRequest, clientSocket)
+                SendHTMLResponse(strRequest, stream)
 
             End If
-        Catch abort As ThreadAbortException
-            Exit Sub
+
         Catch ex As Exception
             Debug.WriteLine(ex.ToString())
             Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
             My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
             'strRequest = rootPath & "error_Page.html" 'PostPage
-            SendHTMLResponse(Application.StartupPath + "\WebInterface\error_Page.html", clientSocket)
-            'If clientSocket.Connected Then
-            '    clientSocket.Close()
-            'End If
+            SendHTMLResponse(Application.StartupPath + "\WebInterface\error_Page.html", stream)
+
         End Try
     End Sub
     ' Send HTTP Response
 
 
-    Private Sub SendHTMLResponse(ByVal httpRequest As String, ByVal clientSocket As Socket)
+
+
+    Private Sub SendHTMLResponse(ByVal httpRequest As String, ByVal stream As NetworkStream)
         Try
 
             Dim respByte() As Byte
-            If File.Exists(httpRequest) Then
+            If InStr(httpRequest, "index.html") Then
+                Debug.WriteLine(httpRequest)
+                respByte = System.Text.Encoding.UTF8.GetBytes(HTML) 'File.ReadAllBytes("") '
+
+
+                ' Set HTML Header
+                Dim htmlHeader As String =
+                    "HTTP/1.0 200 OK" & ControlChars.CrLf &
+                    "Server: CRD 1.0" & ControlChars.CrLf &
+                   "Content-Length: " & respByte.Length & ControlChars.CrLf &
+                    "Content-Type: " & GetContentType(httpRequest) &
+                    ControlChars.CrLf & ControlChars.CrLf
+                ' The content Length of HTML Header
+                Dim headerByte() As Byte = Encoding.UTF8.GetBytes(htmlHeader)
+                'Debug.WriteLine("HTML Header: " & ControlChars.CrLf & htmlHeader)
+                ' Send HTML Header back to Web Browser
+                'Dim response() As Byte = headerByte.Concat(respByte).ToArray()
+
+                ' stream.Write(response, 0, response.Length)
+                'Debug.WriteLine("sending headers")
+                stream.Write(headerByte, 0, headerByte.Length)
+                'Debug.WriteLine("headers send")
+                'Debug.WriteLine("sending content")
+                ' Send HTML Content back to Web Browser
+                stream.Write(respByte, 0, respByte.Length)
+                'clientSocket.Send(respByte, 0, respByte.Length, SocketFlags.None)
+                ' Close HTTP Socket connection
+                'Debug.WriteLine("content send")
+            ElseIf File.Exists(httpRequest) Then
                 Debug.WriteLine(httpRequest)
                 respByte = File.ReadAllBytes(httpRequest)
 
@@ -3273,34 +3418,32 @@ Public Class Main
                 Dim htmlHeader As String =
                     "HTTP/1.0 200 OK" & ControlChars.CrLf &
                     "Server: CRD 1.0" & ControlChars.CrLf &
-                    "Content-Length: " & respByte.Length & ControlChars.CrLf &
+                   "Content-Length: " & respByte.Length & ControlChars.CrLf &
                     "Content-Type: " & GetContentType(httpRequest) &
+                    "Connection: close" &
                     ControlChars.CrLf & ControlChars.CrLf
                 ' The content Length of HTML Header
                 Dim headerByte() As Byte = Encoding.UTF8.GetBytes(htmlHeader)
-                'Debug.WriteLine("HTML Header: " & ControlChars.CrLf & htmlHeader)
                 ' Send HTML Header back to Web Browser
-                clientSocket.Send(headerByte, 0, headerByte.Length, SocketFlags.None)
+                stream.Write(headerByte, 0, headerByte.Length)
                 ' Send HTML Content back to Web Browser
-                clientSocket.Send(respByte, 0, respByte.Length, SocketFlags.None)
-                ' Close HTTP Socket connection
-                clientSocket.Shutdown(SocketShutdown.Both)
-                clientSocket.Close()
+                stream.Write(respByte, 0, respByte.Length)
             ElseIf httpRequest = "Handshake_Confirm" Then
                 respByte = System.Text.Encoding.UTF8.GetBytes("CRD_Handshake_Confirm") 'File.ReadAllBytes("") '
-
                 Dim htmlHeader As String =
                     "HTTP/1.0 200 OK" & ControlChars.CrLf &
                     "Server: CRD 1.0" & ControlChars.CrLf &
                     "Access-Control-Allow-Origin: *" & ControlChars.CrLf &
                     "Content-Length: " & respByte.Length & ControlChars.CrLf &
                     "Content-Type: text/plain" &
-                    ControlChars.CrLf & ControlChars.CrLf
+                    "Connection: close" &
+                      ControlChars.CrLf & ControlChars.CrLf
                 Dim headerByte() As Byte = Encoding.UTF8.GetBytes(htmlHeader)
-                clientSocket.Send(headerByte, 0, headerByte.Length, SocketFlags.None)
-                clientSocket.Send(respByte, 0, respByte.Length, SocketFlags.None)
-                clientSocket.Shutdown(SocketShutdown.Both)
-                clientSocket.Close()
+                stream.Write(headerByte, 0, headerByte.Length)
+                ' Send HTML Content back to Web Browser
+                stream.Write(respByte, 0, respByte.Length)
+
+                Debug.WriteLine("content send")
             Else
 
                 respByte = Encoding.UTF8.GetBytes(My.Resources.Error_404) 'File.ReadAllBytes(httpRequest)
@@ -3309,28 +3452,26 @@ Public Class Main
                 Dim htmlHeader As String =
                 "HTTP/1.0 404 Not Found" & ControlChars.CrLf &
                 "Server: WebServer 1.0" & ControlChars.CrLf &
+                "Connection: close" &
                  ControlChars.CrLf & ControlChars.CrLf
                 ' The content Length of HTML Header
                 Dim headerByte() As Byte = Encoding.UTF8.GetBytes(htmlHeader)
 
                 ' Send HTML Header back to Web Browser
-                clientSocket.Send(headerByte, 0, headerByte.Length, SocketFlags.None)
+                stream.Write(headerByte, 0, headerByte.Length)
+
+                'stream.Write(headerByte, 0, headerByte.Length, SocketFlags.None)
                 ' Send HTML Content back to Web Browser
-                clientSocket.Send(respByte, 0, respByte.Length, SocketFlags.None)
-                ' Close HTTP Socket connection
-                clientSocket.Shutdown(SocketShutdown.Both)
-                clientSocket.Close()
+                stream.Write(respByte, 0, respByte.Length)
             End If
-        Catch abort As ThreadAbortException
-            Exit Sub
         Catch ex As Exception
-            'Debug.WriteLine(ex.ToString())
-            If clientSocket.Connected Then
-                clientSocket.Close()
-            End If
+            Debug.WriteLine(ex.ToString())
+
 
         End Try
     End Sub
+
+
 
     ' Get Content Type
     Private Function GetContentType(ByVal httpRequest As String) As String
@@ -3388,9 +3529,6 @@ Public Class Main
     Private Sub Button1_Click_2(sender As Object, e As EventArgs)
         network_scan.Show()
     End Sub
-
-
-
 
 #End Region
 

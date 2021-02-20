@@ -1190,6 +1190,7 @@ Public Class Anime_Add
                 Dim ResoSplit() As String = AoDTempReso.Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
                 DisplayReso = ResoSplit(1) + "p"
             End If
+
             Dim L1Name As String = "anime-on-demand.de" 'L1Name_Split(1).Replace("www.", "") + " | Dub : " + FunimationDub
             Me.Invoke(New Action(Function()
                                      Main.ListItemAdd(Pfad2, L1Name, AoDTitle, DisplayReso, "Unknown", "None", AoDThumbnail, AoDm3u8Final, DownloadPfad, "AoD")

@@ -251,6 +251,42 @@ Public Class Einstellungen
 
         Catch ex As Exception
         End Try
+
+        If Main.DefaultSubFunimation = "en" Then
+            FunSubDef.SelectedItem = "English"
+        ElseIf Main.DefaultSubFunimation = "pt" Then
+            FunSubDef.SelectedItem = "Português (Brasil)"
+        ElseIf Main.DefaultSubFunimation = "es" Then
+            FunSubDef.SelectedItem = "Español (LA)"
+        Else
+            FunSubDef.SelectedItem = "[Disabled]"
+            'FunimationHardsub.Checked = True
+        End If
+
+
+
+        If Main.DefaultSubCR = "deDE" Then
+            CR_SoftSubDefault.SelectedItem = "Deutsch"
+        ElseIf Main.DefaultSubCR = "enUS" Then
+            CR_SoftSubDefault.SelectedItem = "English"
+        ElseIf Main.DefaultSubCR = "ptBR" Then
+            CR_SoftSubDefault.SelectedItem = "Português (Brasil)"
+        ElseIf Main.DefaultSubCR = "esLA" Then
+            CR_SoftSubDefault.SelectedItem = "Español (LA)"
+        ElseIf Main.DefaultSubCR = "frFR" Then
+            CR_SoftSubDefault.SelectedItem = "Français (France)"
+        ElseIf Main.DefaultSubCR = "arME" Then
+            CR_SoftSubDefault.SelectedItem = "العربية (Arabic)"
+        ElseIf Main.DefaultSubCR = "ruRU" Then
+            CR_SoftSubDefault.SelectedItem = "Русский (Russian)"
+        ElseIf Main.DefaultSubCR = "itIT" Then
+            CR_SoftSubDefault.SelectedItem = "Italiano (Italian)"
+        ElseIf Main.DefaultSubCR = "esES" Then
+            CR_SoftSubDefault.SelectedItem = "Español (España)"
+        Else
+            CR_SoftSubDefault.SelectedItem = "[Disabled]"
+        End If
+
     End Sub
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
@@ -369,6 +405,48 @@ Public Class Einstellungen
 
         End If
 
+        If CR_SoftSubDefault.SelectedItem.ToString = "English" Then
+            Main.DefaultSubCR = "enUS"
+            rk.SetValue("DefaultSubCR", "enUS", RegistryValueKind.String)
+
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Deutsch" Then
+            Main.DefaultSubCR = "deDE"
+            rk.SetValue("DefaultSubCR", "deDE", RegistryValueKind.String)
+
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Português (Brasil)" Then
+            Main.DefaultSubCR = "ptBR"
+            rk.SetValue("DefaultSubCR", "ptBR", RegistryValueKind.String)
+
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (LA)" Then
+            Main.DefaultSubCR = "esLA"
+            rk.SetValue("DefaultSubCR", "esLA", RegistryValueKind.String)
+
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Français (France)" Then
+            Main.DefaultSubCR = "frFR"
+            rk.SetValue("DefaultSubCR", "frFR", RegistryValueKind.String)
+
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "العربية (Arabic)" Then
+            Main.DefaultSubCR = "arME"
+            rk.SetValue("DefaultSubCR", "arME", RegistryValueKind.String)
+
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Русский (Russian)" Then
+            Main.DefaultSubCR = "ruRU"
+            rk.SetValue("DefaultSubCR", "ruRU", RegistryValueKind.String)
+
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Italiano (Italian)" Then
+            Main.DefaultSubCR = "itIT"
+            rk.SetValue("DefaultSubCR", "itIT", RegistryValueKind.String)
+
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (España)" Then
+            Main.DefaultSubCR = "esES"
+            rk.SetValue("DefaultSubCR", "esES", RegistryValueKind.String)
+
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "[Disabled]" Then
+            Main.DefaultSubCR = "None"
+            rk.SetValue("DefaultSubCR", "Disabled", RegistryValueKind.String)
+
+        End If
+
         If CR_Filename.Text = "[episode number]" Then
             Main.CR_NameMethode = 0
             rk.SetValue("CR_NameMethode", 0, RegistryValueKind.String)
@@ -442,6 +520,24 @@ Public Class Einstellungen
         ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "Español (LA)" Then
             Main.HardSubFunimation = "es"
             rk.SetValue("FunimationHardsub", "es", RegistryValueKind.String)
+
+        End If
+
+        If FunSubDef.SelectedItem.ToString = "[Disabled]" Then
+            Main.DefaultSubFunimation = "Disabled"
+            rk.SetValue("DefaultSubFunimation", "Disabled", RegistryValueKind.String)
+
+        ElseIf FunSubDef.SelectedItem.ToString = "English" Then
+            Main.DefaultSubFunimation = "en"
+            rk.SetValue("DefaultSubFunimation", "en", RegistryValueKind.String)
+
+        ElseIf FunSubDef.SelectedItem.ToString = "Português (Brasil)" Then
+            Main.DefaultSubFunimation = "pt"
+            rk.SetValue("DefaultSubFunimation", "pt", RegistryValueKind.String)
+
+        ElseIf FunSubDef.SelectedItem.ToString = "Español (LA)" Then
+            Main.DefaultSubFunimation = "es"
+            rk.SetValue("DefaultSubFunimation", "es", RegistryValueKind.String)
 
         End If
 
@@ -958,6 +1054,143 @@ Public Class Einstellungen
         'MetroMessageBox.Show(Me, "Test", "Test Box", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2, 150, MetroThemeStyle.Dark)
 
     End Sub
+
+    Private Sub CB_fun_eng_CheckedChanged(sender As Object, e As EventArgs) Handles CB_fun_eng.CheckedChanged
+        If CB_fun_eng.Checked = True Then
+            FunSubDef.Items.Add("English")
+        Else
+            FunSubDef.Items.Remove("English")
+            If FunSubDef.Text = "English" Then
+                FunSubDef.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+    Private Sub CB_fun_es_CheckedChanged(sender As Object, e As EventArgs) Handles CB_fun_es.CheckedChanged
+        If CB_fun_es.Checked = True Then
+            FunSubDef.Items.Add("Español (LA)")
+        Else
+            FunSubDef.Items.Remove("Español (LA)")
+            If FunSubDef.Text = "Español (LA)" Then
+                FunSubDef.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+    Private Sub CB_fun_ptbr_CheckedChanged(sender As Object, e As EventArgs) Handles CB_fun_ptbr.CheckedChanged
+        If CB_fun_ptbr.Checked = True Then
+            FunSubDef.Items.Add("Português (Brasil)")
+        Else
+            FunSubDef.Items.Remove("Português (Brasil)")
+            If FunSubDef.Text = "Português (Brasil)" Then
+                FunSubDef.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+#Region "CR_default soft sub"
+
+
+    Private Sub CBesES_CheckedChanged(sender As Object, e As EventArgs) Handles CBesES.CheckedChanged
+        If CBesES.Checked = True Then
+            CR_SoftSubDefault.Items.Add(CBesES.Text)
+        Else
+            CR_SoftSubDefault.Items.Remove(CBesES.Text)
+            If CR_SoftSubDefault.Text = CBesES.Text Then
+                CR_SoftSubDefault.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+    Private Sub CBitIT_CheckedChanged(sender As Object, e As EventArgs) Handles CBitIT.CheckedChanged
+        If CBitIT.Checked = True Then
+            CR_SoftSubDefault.Items.Add(CBitIT.Text)
+        Else
+            CR_SoftSubDefault.Items.Remove(CBitIT.Text)
+            If CR_SoftSubDefault.Text = CBitIT.Text Then
+                CR_SoftSubDefault.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+    Private Sub CBruRU_CheckedChanged(sender As Object, e As EventArgs) Handles CBruRU.CheckedChanged
+        If CBruRU.Checked = True Then
+            CR_SoftSubDefault.Items.Add(CBruRU.Text)
+        Else
+            CR_SoftSubDefault.Items.Remove(CBruRU.Text)
+            If CR_SoftSubDefault.Text = CBruRU.Text Then
+                CR_SoftSubDefault.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+    Private Sub CBarME_CheckedChanged(sender As Object, e As EventArgs) Handles CBarME.CheckedChanged
+        If CBarME.Checked = True Then
+            CR_SoftSubDefault.Items.Add(CBarME.Text)
+        Else
+            CR_SoftSubDefault.Items.Remove(CBarME.Text)
+            If CR_SoftSubDefault.Text = CBarME.Text Then
+                CR_SoftSubDefault.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+    Private Sub CBfrFR_CheckedChanged(sender As Object, e As EventArgs) Handles CBfrFR.CheckedChanged
+        If CBfrFR.Checked = True Then
+            CR_SoftSubDefault.Items.Add(CBfrFR.Text)
+        Else
+            CR_SoftSubDefault.Items.Remove(CBfrFR.Text)
+            If CR_SoftSubDefault.Text = CBfrFR.Text Then
+                CR_SoftSubDefault.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+    Private Sub CBesLA_CheckedChanged(sender As Object, e As EventArgs) Handles CBesLA.CheckedChanged
+        If CBesLA.Checked = True Then
+            CR_SoftSubDefault.Items.Add(CBesLA.Text)
+        Else
+            CR_SoftSubDefault.Items.Remove(CBesLA.Text)
+            If CR_SoftSubDefault.Text = CBesLA.Text Then
+                CR_SoftSubDefault.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+    Private Sub CBptBR_CheckedChanged(sender As Object, e As EventArgs) Handles CBptBR.CheckedChanged
+        If CBptBR.Checked = True Then
+            CR_SoftSubDefault.Items.Add(CBptBR.Text)
+        Else
+            CR_SoftSubDefault.Items.Remove(CBptBR.Text)
+            If CR_SoftSubDefault.Text = CBptBR.Text Then
+                CR_SoftSubDefault.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+    Private Sub CBdeDE_CheckedChanged(sender As Object, e As EventArgs) Handles CBdeDE.CheckedChanged
+        If CBdeDE.Checked = True Then
+            CR_SoftSubDefault.Items.Add(CBdeDE.Text)
+        Else
+            CR_SoftSubDefault.Items.Remove(CBdeDE.Text)
+            If CR_SoftSubDefault.Text = CBdeDE.Text Then
+                CR_SoftSubDefault.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+    Private Sub CBenUS_CheckedChanged(sender As Object, e As EventArgs) Handles CBenUS.CheckedChanged
+        If CBenUS.Checked = True Then
+            CR_SoftSubDefault.Items.Add(CBenUS.Text)
+        Else
+            CR_SoftSubDefault.Items.Remove(CBenUS.Text)
+            If CR_SoftSubDefault.Text = CBenUS.Text Then
+                CR_SoftSubDefault.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+#End Region
 
 
 

@@ -641,8 +641,15 @@ Public Class CRD_List_Item
 
                 'Dim archive As Zipfi = New ZipArchive(ms)
                 'Dim m3u8String As String = client.DownloadString(TextBox1.Text)
-                Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
-                Text = m3u8
+
+                Try
+                    Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
+                    text = m3u8
+                Catch ex As Exception
+                    Dim m3u8 As String = client.DownloadString(m3u8_url(1))
+                    text = m3u8
+                End Try
+
                 'MsgBox(m3u8)
             End Using
         Catch ex As Exception
@@ -1091,7 +1098,11 @@ Public Class CRD_List_Item
                             If CBool(InStr(ResoSearch(2), " [")) = True Then
                                 Dim ResoSearch2() As String = ResoSearch(2).Split(New String() {" ["}, System.StringSplitOptions.RemoveEmptyEntries)
                                 Me.Invoke(New Action(Function()
-                                                         Label_Reso.Text = ResoSearch2(0) + "p"
+                                                         If Label_Reso.Text = "1080p+" Then
+                                                         Else
+                                                             Label_Reso.Text = ResoSearch2(0) + "p"
+                                                         End If
+
                                                          Return Nothing
                                                      End Function))
                             End If

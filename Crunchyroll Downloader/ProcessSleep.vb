@@ -30,5 +30,17 @@
 
     End Sub
 
+    Public Sub Pause_ms(ByVal ms As Integer)
+
+        'Programmausführung verzögern *******************************************************
+        Dim stopWatch As New Stopwatch()
+        stopWatch.Start()
+
+        Do Until stopWatch.Elapsed.TotalMilliseconds > ms
+            Application.DoEvents()
+        Loop
+
+        stopWatch.Stop()
+    End Sub
 
 End Module

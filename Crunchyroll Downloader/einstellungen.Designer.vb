@@ -30,6 +30,8 @@ Partial Class Einstellungen
         Me.TabPage4 = New System.Windows.Forms.TabPage()
         Me.TabControl2 = New MetroFramework.Controls.MetroTabControl()
         Me.TabPage5 = New MetroFramework.Controls.MetroTabPage()
+        Me.GroupBox14 = New System.Windows.Forms.GroupBox()
+        Me.CR_SoftSubDefault = New MetroFramework.Controls.MetroComboBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.SoftSubs = New System.Windows.Forms.GroupBox()
         Me.CBesES = New MetroFramework.Controls.MetroCheckBox()
@@ -108,6 +110,8 @@ Partial Class Einstellungen
         Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
         Me.TabControl1 = New MetroFramework.Controls.MetroTabControl()
         Me.TabPage6 = New MetroFramework.Controls.MetroTabPage()
+        Me.GroupBox13 = New System.Windows.Forms.GroupBox()
+        Me.FunSubDef = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.CB_srt = New MetroFramework.Controls.MetroCheckBox()
         Me.CB_vtt = New MetroFramework.Controls.MetroCheckBox()
@@ -141,6 +145,7 @@ Partial Class Einstellungen
         Me.TabPage4.SuspendLayout()
         Me.TabControl2.SuspendLayout()
         Me.TabPage5.SuspendLayout()
+        Me.GroupBox14.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SoftSubs.SuspendLayout()
         Me.GB_SubLanguage.SuspendLayout()
@@ -165,6 +170,7 @@ Partial Class Einstellungen
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.TabPage6.SuspendLayout()
+        Me.GroupBox13.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -209,10 +215,10 @@ Partial Class Einstellungen
         '
         Me.TabPage4.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
         Me.TabPage4.Controls.Add(Me.TabControl2)
-        Me.TabPage4.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 44)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(493, 461)
+        Me.TabPage4.Size = New System.Drawing.Size(493, 452)
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Crunchyroll"
         '
@@ -227,13 +233,14 @@ Partial Class Einstellungen
         Me.TabControl2.Margin = New System.Windows.Forms.Padding(0)
         Me.TabControl2.Name = "TabControl2"
         Me.TabControl2.SelectedIndex = 0
-        Me.TabControl2.Size = New System.Drawing.Size(487, 455)
+        Me.TabControl2.Size = New System.Drawing.Size(487, 446)
         Me.TabControl2.TabIndex = 0
         Me.TabControl2.UseSelectable = True
         '
         'TabPage5
         '
         Me.TabPage5.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
+        Me.TabPage5.Controls.Add(Me.GroupBox14)
         Me.TabPage5.Controls.Add(Me.PictureBox2)
         Me.TabPage5.Controls.Add(Me.SoftSubs)
         Me.TabPage5.Controls.Add(Me.GB_SubLanguage)
@@ -244,7 +251,7 @@ Partial Class Einstellungen
         Me.TabPage5.Location = New System.Drawing.Point(4, 44)
         Me.TabPage5.Name = "TabPage5"
         Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage5.Size = New System.Drawing.Size(479, 407)
+        Me.TabPage5.Size = New System.Drawing.Size(479, 398)
         Me.TabPage5.TabIndex = 0
         Me.TabPage5.Text = "Main"
         Me.TabPage5.VerticalScrollbarBarColor = True
@@ -252,12 +259,40 @@ Partial Class Einstellungen
         Me.TabPage5.VerticalScrollbarSize = 10
         Me.TabPage5.Visible = False
         '
+        'GroupBox14
+        '
+        Me.GroupBox14.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox14.Controls.Add(Me.CR_SoftSubDefault)
+        Me.GroupBox14.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox14.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox14.Location = New System.Drawing.Point(6, 242)
+        Me.GroupBox14.Name = "GroupBox14"
+        Me.GroupBox14.Size = New System.Drawing.Size(467, 69)
+        Me.GroupBox14.TabIndex = 57
+        Me.GroupBox14.TabStop = False
+        Me.GroupBox14.Text = "default subtitle"
+        '
+        'CR_SoftSubDefault
+        '
+        Me.CR_SoftSubDefault.DropDownHeight = 250
+        Me.CR_SoftSubDefault.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CR_SoftSubDefault.FormattingEnabled = True
+        Me.CR_SoftSubDefault.IntegralHeight = False
+        Me.CR_SoftSubDefault.ItemHeight = 23
+        Me.CR_SoftSubDefault.Items.AddRange(New Object() {"[Disabled]"})
+        Me.CR_SoftSubDefault.Location = New System.Drawing.Point(69, 30)
+        Me.CR_SoftSubDefault.Name = "CR_SoftSubDefault"
+        Me.CR_SoftSubDefault.Size = New System.Drawing.Size(326, 29)
+        Me.CR_SoftSubDefault.Sorted = True
+        Me.CR_SoftSubDefault.TabIndex = 33
+        Me.CR_SoftSubDefault.UseSelectable = True
+        '
         'PictureBox2
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox2.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox2.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.crdsettings_setUScookie_button
-        Me.PictureBox2.Location = New System.Drawing.Point(152, 253)
+        Me.PictureBox2.Location = New System.Drawing.Point(162, 351)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(150, 30)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -431,7 +466,7 @@ Partial Class Einstellungen
         Me.TabPage3.Location = New System.Drawing.Point(4, 35)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(479, 416)
+        Me.TabPage3.Size = New System.Drawing.Size(479, 407)
         Me.TabPage3.TabIndex = 3
         Me.TabPage3.Text = "Subtile Download"
         Me.TabPage3.VerticalScrollbarBarColor = True
@@ -970,10 +1005,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage1.Size = New System.Drawing.Size(493, 461)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1190,7 +1225,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.SelectedIndex = 3
         Me.TabControl1.Size = New System.Drawing.Size(501, 500)
         Me.TabControl1.TabIndex = 38
         Me.TabControl1.UseSelectable = True
@@ -1198,6 +1233,7 @@ Partial Class Einstellungen
         'TabPage6
         '
         Me.TabPage6.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
+        Me.TabPage6.Controls.Add(Me.GroupBox13)
         Me.TabPage6.Controls.Add(Me.GroupBox11)
         Me.TabPage6.Controls.Add(Me.GroupBox10)
         Me.TabPage6.Controls.Add(Me.GroupBox7)
@@ -1205,16 +1241,44 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(493, 461)
+        Me.TabPage6.Size = New System.Drawing.Size(493, 452)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = "Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
         Me.TabPage6.VerticalScrollbarHighlightOnWheel = False
         Me.TabPage6.VerticalScrollbarSize = 10
         Me.TabPage6.Visible = False
+        '
+        'GroupBox13
+        '
+        Me.GroupBox13.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox13.Controls.Add(Me.FunSubDef)
+        Me.GroupBox13.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox13.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox13.Location = New System.Drawing.Point(6, 270)
+        Me.GroupBox13.Name = "GroupBox13"
+        Me.GroupBox13.Size = New System.Drawing.Size(475, 69)
+        Me.GroupBox13.TabIndex = 56
+        Me.GroupBox13.TabStop = False
+        Me.GroupBox13.Text = "default subtitle"
+        '
+        'FunSubDef
+        '
+        Me.FunSubDef.DropDownHeight = 250
+        Me.FunSubDef.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FunSubDef.FormattingEnabled = True
+        Me.FunSubDef.IntegralHeight = False
+        Me.FunSubDef.ItemHeight = 23
+        Me.FunSubDef.Items.AddRange(New Object() {"[Disabled]"})
+        Me.FunSubDef.Location = New System.Drawing.Point(69, 30)
+        Me.FunSubDef.Name = "FunSubDef"
+        Me.FunSubDef.Size = New System.Drawing.Size(326, 29)
+        Me.FunSubDef.Sorted = True
+        Me.FunSubDef.TabIndex = 33
+        Me.FunSubDef.UseSelectable = True
         '
         'GroupBox11
         '
@@ -1272,7 +1336,7 @@ Partial Class Einstellungen
         Me.GroupBox10.Controls.Add(Me.Fun_Dub_Over)
         Me.GroupBox10.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox10.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox10.Location = New System.Drawing.Point(6, 270)
+        Me.GroupBox10.Location = New System.Drawing.Point(6, 345)
         Me.GroupBox10.Name = "GroupBox10"
         Me.GroupBox10.Size = New System.Drawing.Size(475, 69)
         Me.GroupBox10.TabIndex = 55
@@ -1590,6 +1654,7 @@ Partial Class Einstellungen
         Me.TabControl2.ResumeLayout(False)
         Me.TabPage5.ResumeLayout(False)
         Me.TabPage5.PerformLayout()
+        Me.GroupBox14.ResumeLayout(False)
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SoftSubs.ResumeLayout(False)
         Me.SoftSubs.PerformLayout()
@@ -1622,6 +1687,7 @@ Partial Class Einstellungen
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage6.ResumeLayout(False)
+        Me.GroupBox13.ResumeLayout(False)
         Me.GroupBox11.ResumeLayout(False)
         Me.GroupBox11.PerformLayout()
         Me.GroupBox10.ResumeLayout(False)
@@ -1751,4 +1817,8 @@ Partial Class Einstellungen
     Friend WithEvents DD_Episode_Prefix As MetroFramework.Controls.MetroComboBox
     Friend WithEvents DD_Season_Prefix As MetroFramework.Controls.MetroComboBox
     Friend WithEvents http_support As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents GroupBox13 As GroupBox
+    Friend WithEvents FunSubDef As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents GroupBox14 As GroupBox
+    Friend WithEvents CR_SoftSubDefault As MetroFramework.Controls.MetroComboBox
 End Class

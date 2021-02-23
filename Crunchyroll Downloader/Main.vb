@@ -1323,6 +1323,12 @@ Public Class Main
                 Return "Español (España)"
             ElseIf HardSub = Chr(34) + "jaJP" + Chr(34) Then
                 Return "Japanese"
+            ElseIf HardSub = Chr(34) + "en" + Chr(34) Then
+                Return "English"
+            ElseIf HardSub = Chr(34) + "pt" + Chr(34) Then
+                Return "Português (Brasil)"
+            ElseIf HardSub = Chr(34) + "es" + Chr(34) Then
+                Return "Español (LA)"
             Else
                 Return CB_SuB_Nothing
             End If
@@ -1945,24 +1951,10 @@ Public Class Main
                 For i As Integer = 0 To ListView1.Items.Count - 1
                     ItemList(i).KillRunningTask()
                 Next
-
-                'Try
-                '    tcpListener.Stop()
-
-                'Catch ex As Exception
-                'End Try
-
                 RemoveTempFiles()
                 Me.Close()
             End If
         Else
-
-            'Try
-
-            '    tcpListener.Stop()
-            'Catch ex As Exception
-            '    MsgBox(ex.ToString)
-            'End Try
 
             Timer3.Enabled = False
             RemoveTempFiles()
@@ -2782,12 +2774,17 @@ Public Class Main
 
             If UsedSubs.Count > 0 Then
                 If MergeSubstoMP4 = True Then
-                    Dim DispositionIndex As Integer
+                    Dim DispositionIndex As Integer = 999
+                    Dim LastMerged As String = Nothing
                     For i As Integer = 0 To UsedSubs.Count - 1
                         Dim SoftSub As String() = UsedSubs.Item(i).Split(New String() {" , "}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Debug.WriteLine(SoftSub(1))
+                        If CCtoMP4CC(SoftSub(1)) = LastMerged Then
+                            Continue For
+                        Else
+                            LastMerged = CCtoMP4CC(SoftSub(1))
+                        End If
                         If DefaultSubFunimation = SoftSub(1) Then
-                            Debug.WriteLine(SoftSub(1))
+                            'Debug.WriteLine(SoftSub(1))
                             DispositionIndex = i
                         End If
                         If SoftSubMergeURLs = Nothing Then
@@ -2807,9 +2804,8 @@ Public Class Main
                         End If
 
                     Next
-                    If DispositionIndex = Nothing Then
-                    Else
-                        SoftSubMergeMetatata = SoftSubMergeMetatata + " -disposition:s:" + DispositionIndex + " default"
+                    If DispositionIndex < 999 Then
+                        SoftSubMergeMetatata = SoftSubMergeMetatata + " -disposition:s:" + DispositionIndex.ToString + " default"
                     End If
                 Else
                     For i As Integer = 0 To UsedSubs.Count - 1

@@ -250,6 +250,8 @@ Public Class Einstellungen
             End If
 
         Catch ex As Exception
+            http_support.Text = "add-on support disabled"
+
         End Try
 
         If Main.DefaultSubFunimation = "en" Then
@@ -303,6 +305,12 @@ Public Class Einstellungen
                 rk.SetValue("ServerPort", Port, RegistryValueKind.String)
                 Main.StartServer = False
             Catch ex As Exception
+                If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+
+                Else
+                    AAuto.Checked = False
+                    A360p.Checked = True
+                End If
                 MsgBox("The add-on support Port can only be numbers!", MsgBoxStyle.Exclamation)
                 Exit Sub
             End Try

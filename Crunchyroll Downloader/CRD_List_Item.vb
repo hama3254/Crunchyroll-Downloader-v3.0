@@ -7,7 +7,7 @@ Imports System.ComponentModel
 Imports MetroFramework
 Imports MetroFramework.Components
 Imports MetroFramework.Forms
-Imports System.IO.Compression
+
 
 Public Class CRD_List_Item
     Inherits Controls.MetroUserControl
@@ -1355,21 +1355,8 @@ Public Class CRD_List_Item
         End Try
     End Sub
 
-    Public Function DecompressString(ByVal bytes As Byte()) As String
-
-        Using ms = New MemoryStream(bytes)
-            Using ds = New GZipStream(ms, CompressionMode.Decompress)
-                Using sr = New StreamReader(ds)
-
-                    Return sr.ReadToEnd()
-
-                End Using
-            End Using
-        End Using
-
-    End Function
-
 End Class
+
 
 Public Class FailedSegemtsWithURL
     Public path As String

@@ -93,6 +93,7 @@ Public Class Main
     Public WebbrowserHeadText As String = Nothing
     Public WebbrowserSoftSubURL As String = Nothing
     Public WebbrowserURL As String = Nothing
+    Public SystemWebBrowserCookie As String = Nothing
     Public WebbrowserText As String = Nothing
     Public WebbrowserTitle As String = Nothing
     Public WebbrowserCookie As String = Nothing
@@ -134,7 +135,7 @@ Public Class Main
     Public DL_Count_simultaneousText As String = "Simultaneous Downloads"
     Public GB_Sub_FormatText As String = "extended Sub Settings"
     Public LabelResoNotFoundText As String = "resolution not found" + vbNewLine + "Select another one below"
-    Public LabelLangNotFoundText As String = "language not found" + vbNewLine + "Select another one below"
+    Public LabelLangNotFoundText As String = "subtitle language not found" + vbNewLine + "Select another one below"
     Public ButtonResoNotFoundText As String = "Submit"
     Public CB_SuB_Nothing As String = "[ null ]"
     Dim StatusToolTip As ToolTip = New ToolTip()
@@ -2623,6 +2624,7 @@ Public Class Main
             SubsClient.Encoding = Encoding.UTF8
             If WebbrowserCookie = Nothing Then
             Else
+                'MsgBox(WebbrowserCookie)
                 SubsClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
             End If
             Dim PlayerPage As String = SubsClient.DownloadString("https://www.funimation.com/player/" + Player_ID2(0) + "/?bdub=0&qid=")
@@ -3211,10 +3213,69 @@ Public Class Main
                         SendHTMLResponse(strRequest, stream)
                     End Try
 #End Region
+#Region "Funimation-mass"
+
+
+                ElseIf InStr(htmlReq, "FunimationMass=") Then
+                    Debug.WriteLine("Funimation multi episode mode")
+
+                    Try
+                        Dim DecodedHTML As String = UrlDecode(htmlReq)
+                        If InStr(DecodedHTML, "&FunimationCookie=") Then
+
+
+
+
+                            Dim CookieSplit() As String = DecodedHTML.Split(New String() {"&FunimationCookie="}, System.StringSplitOptions.RemoveEmptyEntries)
+                            SystemWebBrowserCookie = CookieSplit(1)
+
+                            Dim URLSplit() As String = CookieSplit(0).Split(New String() {"FunimationMass="}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim URLSplit2() As String = URLSplit(1).Split(New String() {"javascript:"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                                For i As Integer = 0 To URLSplit2.Count - 1
+                                    Dim ii As Integer = i
+                                    Me.Invoke(New Action(Function()
+                                                             If Anime_Add.ListBox1.Items.Contains(URLSplit2(ii)) = False Then
+                                                                 Anime_Add.ListBox1.Items.Add(URLSplit2(ii))
+                                                             End If
+                                                             'Anime_Add.ListBox1.Items.Add(URLSplit(ii))
+                                                             Return Nothing
+                                                         End Function))
+                                Next
+                            Else
+
+                                For i As Integer = 0 To URLSplit2.Count - 1
+                                    If ListBoxList.Contains(URLSplit2(i)) = False Then
+                                        ListBoxList.Add(URLSplit2(i))
+                                    End If
+
+                                Next
+                                Me.Invoke(New Action(Function()
+                                                         Me.Text = "Status: " + ListBoxList.Count.ToString + " Downloads in queue" + vbNewLine + "open the add window to continue"
+                                                         Me.Invalidate()
+                                                         Return Nothing
+                                                     End Function))
+                            End If
+                            strRequest = rootPath & "Post_Mass_Sucess.html" 'PostPage
+                            SendHTMLResponse(strRequest, stream)
+
+                        End If
+                    Catch abort As ThreadAbortException
+                        Exit Sub
+                    Catch ex As Exception
+                        Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
+                        My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
+                        strRequest = rootPath & "error_Page.html" 'PostPage
+                        SendHTMLResponse(strRequest, stream)
+                    End Try
+#End Region
 #Region "funimation Einzeln"
                 ElseIf InStr(htmlReq, "FunimationURL=") Then
                     Debug.WriteLine("single episode mode - Funimation")
-                    'Debug.WriteLine(htmlReq)
+                    MsgBox(htmlReq)
+
                     Me.Invoke(New Action(Function()
                                              Me.Text = "Status: Download added from add-on"
                                              Me.Invalidate()
@@ -3222,7 +3283,9 @@ Public Class Main
                                          End Function))
                     Try
                         Dim URLSplit() As String = htmlReq.Split(New String() {"FunimationURL="}, System.StringSplitOptions.RemoveEmptyEntries)
-                        WebbrowserURL = UrlDecode(URLSplit(1))
+                        Dim URLSplit2() As String = URLSplit(1).Split(New String() {"&FunimationCookie="}, System.StringSplitOptions.RemoveEmptyEntries)
+                        SystemWebBrowserCookie = URLSplit2(1)
+                        WebbrowserURL = UrlDecode(URLSplit2(0))
 
                         If InStr(WebbrowserURL, "funimation.com") Then
                             If DubFunimation = "Disabled" Then
@@ -3278,12 +3341,58 @@ Public Class Main
                                 End If
                                 'ListBoxList.Add(WebbrowserURL)
                             Else
-                                Me.Invoke(New Action(Function()
-                                                         GeckoFX.WebBrowser1.Navigate(WebbrowserURL)
-                                                         Return Nothing
-                                                     End Function))
+                                'Me.Invoke(New Action(Function()
+                                '                         GeckoFX.WebBrowser1.Navigate(WebbrowserURL)
+                                '                         Return Nothing
+                                '                     End Function))
 
-                                b = False
+                                'b = False
+                                ServicePointManager.Expect100Continue = True
+                                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+
+                                Try
+                                    Using client As New WebClient()
+                                        client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
+                                        client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
+                                        client.Headers.Add("Accept-Encoding: gzip, deflate, br")
+                                        client.Headers.Add("Cookie:" + SystemWebBrowserCookie)
+                                        Dim HTMLString As String = DecompressString(client.DownloadData(WebbrowserURL))
+
+                                        If InStr(HTMLString, My.Resources.Funimation_Player_ID) Then
+                                            Dim WebbrowserHeadTextSplit() As String = HTMLString.Split(New String() {"<head"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                            Dim WebbrowserHeadTextSplit2() As String = WebbrowserHeadTextSplit(1).Split(New String() {"</head>"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                                            Dim WebbrowserTitleSplit() As String = HTMLString.Split(New String() {"<title>"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                            Dim WebbrowserTitleSplit2() As String = WebbrowserTitleSplit(1).Split(New String() {"</title>"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                                            WebbrowserText = HTMLString
+                                            WebbrowserTitle = "<title>" + WebbrowserTitleSplit2(0) + "</title>"
+                                            WebbrowserHeadText = "<head" + WebbrowserHeadTextSplit2(0) + "</head>"
+                                            WebbrowserCookie = SystemWebBrowserCookie
+
+                                            Dim t As Thread
+                                            t = New Thread(AddressOf Funitmation_Grapp)
+                                            t.Priority = ThreadPriority.Normal
+                                            t.IsBackground = True
+                                            t.Start()
+
+                                        Else
+                                            Me.Invoke(New Action(Function()
+                                                                     Me.Text = "Status: no video found"
+                                                                     Anime_Add.StatusLabel.Text = "fail?"
+                                                                     Return Nothing
+                                                                 End Function))
+
+                                        End If
+                                    End Using
+                                Catch ex As Exception
+                                    MsgBox(ex.ToString)
+                                    Exit Sub
+                                End Try
+
+
+
                             End If
 
                         Else

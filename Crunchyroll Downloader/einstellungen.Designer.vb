@@ -1005,10 +1005,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(493, 461)
+        Me.TabPage1.Size = New System.Drawing.Size(493, 452)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1225,7 +1225,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 3
+        Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(501, 500)
         Me.TabControl1.TabIndex = 38
         Me.TabControl1.UseSelectable = True

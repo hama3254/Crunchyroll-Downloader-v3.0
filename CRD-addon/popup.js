@@ -1,4 +1,5 @@
 var Port;
+var FunCookie;
 document.getElementById("btn_add").hidden = true;
 document.getElementById("btn_enable_select").hidden = true;
 document.getElementById("btn_add_mass").hidden = true;
@@ -6,6 +7,7 @@ document.getElementById("btn_select_all").hidden = true;
 document.getElementById("btn_select_none").hidden = true;
 document.getElementById("btn_enable_funimation_select").hidden = true;
 document.getElementById("btn_add_funimation").hidden = true;
+document.getElementById("btn_add_mass_funimation").hidden = true;
 document.getElementById("btn_add_AoD").hidden = true;
 
 browser.storage.local.get("CRD_Port")
@@ -205,8 +207,9 @@ document.getElementById('btn_add').addEventListener('click', () => {
 });
 
 document.getElementById('btn_add_funimation').addEventListener('click', () => {
+
     var add_fun = browser.tabs.executeScript({
-        code: "javascript:void(0);" //"document.getElementsByClassName('show-details')[0].innerHTML;"
+        code: "document.cookie" //"document.getElementsByClassName('show-details')[0].innerHTML;"
     });
     add_fun.then(add_fun_ok, add_one_error);
 
@@ -218,6 +221,15 @@ document.getElementById('btn_add_mass').addEventListener('click', () => {
         code: 'var i,URLList="";for(i=0;i<document.getElementsByClassName("CRD-Selected").length;i++)URLList+=document.getElementsByClassName("CRD-Selected")[i].getAttribute("href");URLList;'
     });
     add_mass.then(add_mass_ok, add_mass_error);
+
+});
+
+document.getElementById('btn_add_mass_funimation').addEventListener('click', () => {
+
+    var add_mass = browser.tabs.executeScript({
+        code: 'var i,URLList="";for(i=0;i<document.getElementsByClassName("CRD-Selected").length;i++)URLList+=document.getElementsByClassName("CRD-Selected")[i].getAttribute("href");URLList;'
+    });
+    add_mass.then(add_mass_fun_ok, add_mass_error);
 
 });
 
@@ -275,7 +287,7 @@ function add_fun_ok(result) {
             var xhttp = new XMLHttpRequest();
         xhttp.open("POST", "http://127.0.0.1:" + Port + "/post", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("FunimationURL=" + tab.url);
+        xhttp.send("FunimationURL=" + tab.url + "&FunimationCookie=" + result);
 
         setTimeout(function () {
             document.getElementById("btn_add_funimation").style.background = "#ff8000"
@@ -328,6 +340,27 @@ function add_mass_ok(result) {
 
 }
 
+function add_mass_fun_ok(result) {
+
+    document.getElementById("btn_add_mass_funimation").disabled = true;
+    document.getElementById("btn_add_mass_funimation").style.background = "#c9c9c9"
+
+        var postdata = result + "&FunimationCookie=" + FunCookie
+
+        var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "http://127.0.0.1:" + Port + "/post", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("FunimationMass=" + postdata);
+
+    setTimeout(function () {
+        document.getElementById("btn_add_mass_funimation").style.background = "#ff8000"
+    }, 10000);
+    setTimeout(function () {
+        document.getElementById("btn_add_mass_funimation").disabled = false;
+    }, 10000);
+
+}
+
 function add_mass_error(error) {
     console.log(`Error: ${error}`);
 }
@@ -339,22 +372,31 @@ document.getElementById('btn_enable_funimation_select').addEventListener('click'
         code: 'var script=document.createElement("script");script.type="text/javascript",script.src="http://127.0.0.1:' + Port + '/inject_funimation.js",document.head.appendChild(script);'
     }); //load script from local CRD Server included in https://github.com/hama3254/Crunchyroll-Downloader-v3.0
 
-    document.getElementById("btn_add_mass").hidden = false;
+    document.getElementById("btn_add_mass").hidden = true;
+    document.getElementById("btn_add_mass_funimation").hidden = false;
     document.getElementById("btn_select_all").hidden = false;
     document.getElementById("btn_select_none").hidden = false;
     document.getElementById("btn_enable_select").hidden = true;
     document.getElementById("btn_add").hidden = true;
     document.getElementById("btn_add_funimation").hidden = true;
     document.getElementById("btn_add_AoD").hidden = true;
+    document.getElementById("btn_enable_funimation_select").hidden = true;
 
 });
+
+function fun_cookie_ok(result) {
+
+    FunCookie = result;
+
+}
 
 function FunimationSuccess(result) {
     console.log(result[0]);
 
     if (result[0].includes('javascript:')) {
         document.getElementById("btn_add").hidden = true;
-        document.getElementById("btn_add_mass").hidden = false;
+        document.getElementById("btn_add_mass").hidden = true;
+        document.getElementById("btn_add_mass_funimation").hidden = false;
         document.getElementById("btn_select_all").hidden = false;
         document.getElementById("btn_select_none").hidden = false;
         document.getElementById("btn_enable_select").hidden = true;
@@ -363,6 +405,10 @@ function FunimationSuccess(result) {
         document.getElementById("btn_enable_funimation_select").hidden = true;
         document.getElementById("btn_add_funimation").hidden = true;
         document.getElementById("btn_add_AoD").hidden = true;
+        var SaveFunimationCookie = browser.tabs.executeScript({
+            code: "document.cookie"
+        });
+        SaveFunimationCookie.then(fun_cookie_ok, add_mass_error);
         console.log(true);
     } else {
         document.getElementById("btn_add").hidden = true;
@@ -373,7 +419,10 @@ function FunimationSuccess(result) {
         document.getElementById("btn_select_none").hidden = true;
         document.getElementById("btn_enable_funimation_select").hidden = false;
         document.getElementById("btn_add_AoD").hidden = true;
-
+        var SaveFunimationCookie = browser.tabs.executeScript({
+            code: "document.cookie"
+        });
+        SaveFunimationCookie.then(fun_cookie_ok, add_mass_error);
         console.log(false);
     }
 }

@@ -1,4 +1,6 @@
-﻿Module ProcessSleep
+﻿Imports System.IO
+Imports System.IO.Compression
+Module ProcessSleep
     Public Enum ThreadAccess As Integer
         TERMINATE = (&H1)
         SUSPEND_RESUME = (&H2)
@@ -42,5 +44,20 @@
 
         stopWatch.Stop()
     End Sub
+
+    Public Function DecompressString(ByVal bytes As Byte()) As String
+
+        Using ms = New MemoryStream(bytes)
+            Using ds = New GZipStream(ms, CompressionMode.Decompress)
+                Using sr = New StreamReader(ds)
+
+                    Return sr.ReadToEnd()
+
+                End Using
+            End Using
+        End Using
+
+    End Function
+
 
 End Module

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Crunchyroll Downloader Addon",
-  "version": "0.4.2",
+  "version": "0.5.0",
 
   "description": "A Firefox Addon for my Crunchyroll Downloader",
 

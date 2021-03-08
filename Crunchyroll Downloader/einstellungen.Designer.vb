@@ -62,8 +62,8 @@ Partial Class Einstellungen
         Me.DD_Season_Prefix = New MetroFramework.Controls.MetroComboBox()
         Me.CR_Filename = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.HybridMode_CB = New MetroFramework.Controls.MetroCheckBox()
         Me.MergeMP4 = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_Format = New MetroFramework.Controls.MetroComboBox()
         Me.CheckBox1 = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
@@ -99,9 +99,9 @@ Partial Class Einstellungen
         Me.Label2 = New MetroFramework.Controls.MetroLabel()
         Me.NumericUpDown2 = New System.Windows.Forms.NumericUpDown()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.HybridMode_CB = New MetroFramework.Controls.MetroCheckBox()
         Me.http_support = New MetroFramework.Controls.MetroComboBox()
         Me.DarkMode = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_Log = New MetroFramework.Controls.MetroCheckBox()
         Me.ListViewAdd_True = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label1 = New MetroFramework.Controls.MetroLabel()
@@ -466,7 +466,7 @@ Partial Class Einstellungen
         Me.TabPage3.Location = New System.Drawing.Point(4, 35)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(479, 407)
+        Me.TabPage3.Size = New System.Drawing.Size(479, 416)
         Me.TabPage3.TabIndex = 3
         Me.TabPage3.Text = "Subtile Download"
         Me.TabPage3.VerticalScrollbarBarColor = True
@@ -642,10 +642,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(493, 461)
+        Me.TabPage2.Size = New System.Drawing.Size(493, 452)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -661,7 +661,7 @@ Partial Class Einstellungen
         Me.GroupBox12.Controls.Add(Me.CR_Filename)
         Me.GroupBox12.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox12.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox12.Location = New System.Drawing.Point(8, 144)
+        Me.GroupBox12.Location = New System.Drawing.Point(8, 11)
         Me.GroupBox12.Name = "GroupBox12"
         Me.GroupBox12.Size = New System.Drawing.Size(479, 126)
         Me.GroupBox12.TabIndex = 53
@@ -715,38 +715,40 @@ Partial Class Einstellungen
         'GroupBox4
         '
         Me.GroupBox4.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox4.Controls.Add(Me.HybridMode_CB)
         Me.GroupBox4.Controls.Add(Me.MergeMP4)
+        Me.GroupBox4.Controls.Add(Me.CB_Format)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox4.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox4.Location = New System.Drawing.Point(8, 9)
+        Me.GroupBox4.Location = New System.Drawing.Point(8, 205)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(479, 58)
+        Me.GroupBox4.Size = New System.Drawing.Size(479, 78)
         Me.GroupBox4.TabIndex = 42
         Me.GroupBox4.TabStop = False
-        '
-        'HybridMode_CB
-        '
-        Me.HybridMode_CB.AutoSize = True
-        Me.HybridMode_CB.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.HybridMode_CB.ForeColor = System.Drawing.Color.Blue
-        Me.HybridMode_CB.Location = New System.Drawing.Point(24, 21)
-        Me.HybridMode_CB.Name = "HybridMode_CB"
-        Me.HybridMode_CB.Size = New System.Drawing.Size(128, 19)
-        Me.HybridMode_CB.TabIndex = 43
-        Me.HybridMode_CB.Text = "hybrid download"
-        Me.HybridMode_CB.UseSelectable = True
         '
         'MergeMP4
         '
         Me.MergeMP4.AutoSize = True
         Me.MergeMP4.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.MergeMP4.Location = New System.Drawing.Point(205, 21)
+        Me.MergeMP4.Location = New System.Drawing.Point(248, 35)
         Me.MergeMP4.Name = "MergeMP4"
         Me.MergeMP4.Size = New System.Drawing.Size(214, 19)
         Me.MergeMP4.TabIndex = 42
         Me.MergeMP4.Text = "Merge soft-subs with video file"
         Me.MergeMP4.UseSelectable = True
+        '
+        'CB_Format
+        '
+        Me.CB_Format.DropDownHeight = 250
+        Me.CB_Format.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_Format.FormattingEnabled = True
+        Me.CB_Format.IntegralHeight = False
+        Me.CB_Format.ItemHeight = 23
+        Me.CB_Format.Items.AddRange(New Object() {"MP4", "MKV"})
+        Me.CB_Format.Location = New System.Drawing.Point(6, 30)
+        Me.CB_Format.Name = "CB_Format"
+        Me.CB_Format.Size = New System.Drawing.Size(225, 29)
+        Me.CB_Format.TabIndex = 37
+        Me.CB_Format.UseSelectable = True
         '
         'CheckBox1
         '
@@ -754,7 +756,7 @@ Partial Class Einstellungen
         Me.CheckBox1.BackColor = System.Drawing.Color.Transparent
         Me.CheckBox1.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CheckBox1.ForeColor = System.Drawing.Color.Black
-        Me.CheckBox1.Location = New System.Drawing.Point(67, 281)
+        Me.CheckBox1.Location = New System.Drawing.Point(67, 295)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(369, 19)
         Me.CheckBox1.TabIndex = 6
@@ -768,7 +770,7 @@ Partial Class Einstellungen
         Me.GroupBox2.Enabled = False
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox2.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox2.Location = New System.Drawing.Point(8, 301)
+        Me.GroupBox2.Location = New System.Drawing.Point(8, 325)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(480, 63)
         Me.GroupBox2.TabIndex = 40
@@ -920,9 +922,9 @@ Partial Class Einstellungen
         Me.GB_Resolution.Controls.Add(Me.A1080p)
         Me.GB_Resolution.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Resolution.ForeColor = System.Drawing.Color.Black
-        Me.GB_Resolution.Location = New System.Drawing.Point(8, 73)
+        Me.GB_Resolution.Location = New System.Drawing.Point(8, 140)
         Me.GB_Resolution.Name = "GB_Resolution"
-        Me.GB_Resolution.Size = New System.Drawing.Size(479, 53)
+        Me.GB_Resolution.Size = New System.Drawing.Size(479, 59)
         Me.GB_Resolution.TabIndex = 38
         Me.GB_Resolution.TabStop = False
         Me.GB_Resolution.Text = "Auflösung"
@@ -1074,9 +1076,9 @@ Partial Class Einstellungen
         'GroupBox5
         '
         Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox5.Controls.Add(Me.HybridMode_CB)
         Me.GroupBox5.Controls.Add(Me.http_support)
         Me.GroupBox5.Controls.Add(Me.DarkMode)
-        Me.GroupBox5.Controls.Add(Me.CB_Log)
         Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
         Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox5.ForeColor = System.Drawing.Color.Black
@@ -1086,6 +1088,18 @@ Partial Class Einstellungen
         Me.GroupBox5.TabIndex = 7
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Other"
+        '
+        'HybridMode_CB
+        '
+        Me.HybridMode_CB.AutoSize = True
+        Me.HybridMode_CB.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.HybridMode_CB.ForeColor = System.Drawing.Color.Blue
+        Me.HybridMode_CB.Location = New System.Drawing.Point(45, 38)
+        Me.HybridMode_CB.Name = "HybridMode_CB"
+        Me.HybridMode_CB.Size = New System.Drawing.Size(128, 19)
+        Me.HybridMode_CB.TabIndex = 46
+        Me.HybridMode_CB.Text = "hybrid download"
+        Me.HybridMode_CB.UseSelectable = True
         '
         'http_support
         '
@@ -1111,17 +1125,6 @@ Partial Class Einstellungen
         Me.DarkMode.TabIndex = 44
         Me.DarkMode.Text = "enable dark mode"
         Me.DarkMode.UseSelectable = True
-        '
-        'CB_Log
-        '
-        Me.CB_Log.AutoSize = True
-        Me.CB_Log.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_Log.Location = New System.Drawing.Point(45, 38)
-        Me.CB_Log.Name = "CB_Log"
-        Me.CB_Log.Size = New System.Drawing.Size(85, 19)
-        Me.CB_Log.TabIndex = 1
-        Me.CB_Log.Text = "create log"
-        Me.CB_Log.UseSelectable = True
         '
         'ListViewAdd_True
         '
@@ -1225,7 +1228,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.SelectedIndex = 1
         Me.TabControl1.Size = New System.Drawing.Size(501, 500)
         Me.TabControl1.TabIndex = 38
         Me.TabControl1.UseSelectable = True
@@ -1241,10 +1244,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(493, 452)
+        Me.TabPage6.Size = New System.Drawing.Size(493, 461)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = "Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1763,11 +1766,9 @@ Partial Class Einstellungen
     Friend WithEvents Button1 As Button
     Public WithEvents StatusLabel As MetroFramework.Controls.MetroLabel
     Public WithEvents SoftSubsMass As MetroFramework.Controls.MetroLabel
-    Friend WithEvents CB_Log As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents ListViewAdd_True As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents Label1 As MetroFramework.Controls.MetroLabel
     Friend WithEvents MergeMP4 As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents HybridMode_CB As MetroFramework.Controls.MetroCheckBox
     Public WithEvents CBesES As MetroFramework.Controls.MetroCheckBox
     Public WithEvents CBitIT As MetroFramework.Controls.MetroCheckBox
     Public WithEvents CBruRU As MetroFramework.Controls.MetroCheckBox
@@ -1821,4 +1822,6 @@ Partial Class Einstellungen
     Friend WithEvents FunSubDef As MetroFramework.Controls.MetroComboBox
     Friend WithEvents GroupBox14 As GroupBox
     Friend WithEvents CR_SoftSubDefault As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents CB_Format As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents HybridMode_CB As MetroFramework.Controls.MetroCheckBox
 End Class

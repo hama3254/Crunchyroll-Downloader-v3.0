@@ -27,7 +27,7 @@ Public Class CRD_List_Item
     Dim ffmpeg_command As String = Nothing
     Dim Debug2 As Boolean = False
     Dim MergeSubstoMP4 As Boolean = False
-    Dim SaveLog As Boolean = False
+
     Dim DownloadPfad As String = Nothing
     Dim ToDispose As Boolean = False
     Dim Failed As Boolean = False
@@ -184,9 +184,7 @@ Public Class CRD_List_Item
     Public Sub SetDebug2(ByVal Value As Boolean)
         Debug2 = Value
     End Sub
-    Public Sub SetSaveLog(ByVal Value As Boolean)
-        SaveLog = Value
-    End Sub
+
     Public Sub SetTargetReso(ByVal Value As Integer)
         TargetReso = Value
     End Sub
@@ -839,6 +837,7 @@ Public Class CRD_List_Item
                                     retryCount = retryCount - 1
                                     Me.Invoke(New Action(Function()
                                                              Label_percent.Text = "Access Error - retrying"
+                                                             Debug.WriteLine(ex.ToString)
                                                              Return Nothing
                                                          End Function))
 
@@ -846,6 +845,7 @@ Public Class CRD_List_Item
                                     'retry = False
                                     Me.Invoke(New Action(Function()
                                                              Label_percent.Text = "Access Error - download canceled"
+                                                             Debug.WriteLine(ex.ToString)
                                                              Return Nothing
                                                          End Function))
                                     Return Nothing
@@ -903,12 +903,14 @@ Public Class CRD_List_Item
                                 retryCount = retryCount - 1
                                 Me.Invoke(New Action(Function()
                                                          Label_percent.Text = "Access Error - retrying"
+                                                         Debug.WriteLine(ex.ToString)
                                                          Return Nothing
                                                      End Function))
 
                             Else
                                 Me.Invoke(New Action(Function()
                                                          Label_percent.Text = "Access Error - download canceled"
+                                                         Debug.WriteLine(ex.ToString)
                                                          Return Nothing
                                                      End Function))
                                 Return Nothing
@@ -1053,22 +1055,6 @@ Public Class CRD_List_Item
     Sub FFMPEGOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
         Try
             LogText.Add(Date.Now + " " + e.Data)
-        Catch ex As Exception
-        End Try
-
-        Try
-
-            Dim logfile As String = DownloadPfad.Replace(".mp4", ".log").Replace(Chr(34), "")
-            If SaveLog = True Then
-                If File.Exists(logfile) Then
-                    Using sw As StreamWriter = File.AppendText(logfile)
-                        sw.Write(vbNewLine)
-                        sw.Write(Date.Now + e.Data)
-                    End Using
-                Else
-                    File.WriteAllText(logfile, Date.Now + " " + e.Data)
-                End If
-            End If
         Catch ex As Exception
         End Try
 
@@ -1325,7 +1311,7 @@ Public Class CRD_List_Item
     Private Sub SaveToFile_Click(sender As Object, e As EventArgs) Handles SaveToFile.Click
         Try
 
-            Dim logfile As String = DownloadPfad.Replace(".mp4", ".log").Replace(Chr(34), "")
+            Dim logfile As String = DownloadPfad.Replace(Main.VideoFormat, ".log").Replace(Chr(34), "")
             'If File.Exists(logfile) Then
             Using sw As StreamWriter = File.AppendText(logfile)
                 sw.Write(LogText.Item(0))

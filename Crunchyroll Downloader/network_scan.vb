@@ -273,7 +273,7 @@ Public Class network_scan
             Dim m3u8Final As String = "-headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + RequestURL + Chr(34) + " -map " + RequestMap + " -map 0:a" + Main.ffmpeg_command
             'MsgBox(m3u8Final)
             Dim DisplayReso As String = RequestReso.ToString + "p"
-            Dim Pfad2 As String = Chr(34) + FilePfad + ".mp4" + Chr(34)
+            Dim Pfad2 As String = Chr(34) + FilePfad + Main.VideoFormat + Chr(34)
             Dim Title As String = FileName '+ ".mp4"
             Dim L1Name_Split As String() = Main.WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim L1Name As String = L1Name_Split(1)

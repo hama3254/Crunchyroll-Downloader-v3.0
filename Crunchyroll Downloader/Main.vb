@@ -29,7 +29,7 @@ Public Class Main
     Public HTMLString As String = My.Resources.Startuphtml
     'Public RunServer As Boolean = True
     Public ListBoxList As New List(Of String)
-    Dim ItemList As New List(Of CRD_List_Item)
+    Public ItemList As New List(Of CRD_List_Item)
     Public RunningDownloads As Integer = 0
     Public UseQueue As Boolean = False
     Public StartServer As Integer = 0
@@ -43,9 +43,12 @@ Public Class Main
     Public Debug2 As Boolean = False
     Public LogBrowserData As Boolean = False
     Public Thumbnail As String = Nothing
-    Public MergeSubstoMP4 As Boolean = False
+    Public MergeSubs As Boolean = False
+    Public VideoFormat As String = ".mp4"
+    Public MergeSubsFormat As String = "mov_text"
+
     Public LoginDialog As Boolean = False
-    Public SaveLog As Boolean = False
+
     Public NonCR_Timeout As Integer = 5
     Public NonCR_URL As String = Nothing
     Public DlSoftSubsRDY As Boolean = True
@@ -507,8 +510,23 @@ Public Class Main
         End Try
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            MergeSubstoMP4 = CBool(Integer.Parse(rkg.GetValue("MergeMP4").ToString))
+            MergeSubs = CBool(Integer.Parse(rkg.GetValue("MergeSubs").ToString))
         Catch ex As Exception
+            Try
+                Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+                MergeSubs = CBool(Integer.Parse(rkg.GetValue("MergeMP4").ToString))
+            Catch ex2 As Exception
+
+            End Try
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            Dim Format As String = rkg.GetValue("VideoFormat").ToString
+            If Format = ".mkv" Then
+                VideoFormat = ".mkv"
+                MergeSubsFormat = "copy"
+            End If
+        Catch ex2 As Exception
 
         End Try
         Try
@@ -547,18 +565,7 @@ Public Class Main
         Catch ex As Exception
 
         End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            SaveLog = CBool(Integer.Parse(rkg.GetValue("SaveLog").ToString))
-        Catch ex As Exception
 
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            SaveLog = CBool(Integer.Parse(rkg.GetValue("SaveLog").ToString))
-        Catch ex As Exception
-
-        End Try
 #Region "removed softsubtitle"
 
         Try
@@ -614,9 +621,9 @@ Public Class Main
 #Region "Set Variables"
         'Item.SetUsedMap(UsedMap)
         Item.Setffmpeg_command(ffmpeg_command)
-        Item.SetMergeSubstoMP4(MergeSubstoMP4)
+        Item.SetMergeSubstoMP4(MergeSubs)
         Item.SetDebug2(Debug2)
-        Item.SetSaveLog(SaveLog)
+
 #End Region
 
         Dim r As Rectangle
@@ -712,6 +719,9 @@ Public Class Main
         Anime_Add.ComboBox1.Items.Clear()
         Anime_Add.comboBox3.Items.Clear()
         Anime_Add.comboBox4.Items.Clear()
+        Anime_Add.ComboBox1.Text = Nothing
+        Anime_Add.comboBox3.Text = Nothing
+        Anime_Add.comboBox4.Text = Nothing
         Anime_Add.ComboBox1.Enabled = False
         Anime_Add.comboBox3.Enabled = True
         Anime_Add.comboBox4.Enabled = True
@@ -744,9 +754,12 @@ Public Class Main
         Anime_Add.ComboBox1.Items.Clear()
         Anime_Add.comboBox3.Items.Clear()
         Anime_Add.comboBox4.Items.Clear()
+        Anime_Add.ComboBox1.Text = Nothing
+        Anime_Add.comboBox3.Text = Nothing
+        Anime_Add.comboBox4.Text = Nothing
         Anime_Add.ComboBox1.Enabled = True
-        Anime_Add.comboBox3.Enabled = True
-        Anime_Add.comboBox4.Enabled = True
+        Anime_Add.comboBox3.Enabled = False
+        Anime_Add.comboBox4.Enabled = False
         Dim Anzahl As String() = WebbrowserText.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
         Array.Reverse(Anzahl)
         For i As Integer = 0 To Anzahl.Count - 2
@@ -1007,11 +1020,11 @@ Public Class Main
                 Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
             Catch ex As Exception
                 ' Ordner wurde nich erstellt
-                Pfad2 = Pfad + "\" + CR_FilenName_Backup + ".mp4"
+                Pfad2 = Pfad + "\" + CR_FilenName_Backup + VideoFormat
             End Try
         End If
 
-        Pfad2 = Chr(34) + Pfad2 + CR_FilenName + ".mp4" + Chr(34)
+        Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
 
 #End Region
 #Region "Subs"
@@ -1436,21 +1449,32 @@ Public Class Main
                     Dim CR_Episode_2 As String() = CR_Episode_1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
                     CR_Anime_Folge_int = String.Join(" ", CR_Episode_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
                     CR_Anime_Folge_int = RemoveExtraSpaces(CR_Anime_Folge_int)
-                    If InStr(CR_Anime_Folge_int, ".") Then
-                        Dim Folge_Double As Double = Double.Parse(CR_Anime_Folge_int, CultureInfo.InvariantCulture)
-                        Debug.WriteLine(String.Format("{0:00.0}", Folge_Double))
+
+                    Dim CleanedNumber As String = Nothing
+                    Dim myChars() As Char = CR_Anime_Folge_int.ToCharArray()
+                    For Each ch As Char In myChars
+                        If Char.IsDigit(ch) Then
+                            CleanedNumber = CleanedNumber + ch.ToString
+                        ElseIf ch = "." Then
+                            CleanedNumber = CleanedNumber + ch.ToString
+                        ElseIf ch = "," Then
+                            CleanedNumber = CleanedNumber + "."
+                        End If
+                    Next
+                    If CleanedNumber = Nothing Then
+
+                    ElseIf InStr(CleanedNumber, ".") Then
+
+                        Dim Folge_Double As Double = Double.Parse(CleanedNumber, CultureInfo.InvariantCulture)
                         If Folge_Double < 10 Then
                             CR_Anime_Folge_int = String.Format("{0:00.0}", Folge_Double)
-                            If InStr(CR_Anime_Folge_int, ",") Then
-                                CR_Anime_Folge_int = CR_Anime_Folge_int.Replace(",", ".")
-                            End If
                         End If
-                    ElseIf Integer.Parse(CR_Anime_Folge_int) < 10 Then
-                        CR_Anime_Folge_int = "0" + CR_Anime_Folge_int
+                    ElseIf Integer.Parse(CleanedNumber) < 10 Then
+                        CR_Anime_Folge_int = "0" + CleanedNumber
+                        End If
                     End If
-                End If
 
-            End If
+                End If
 
             If CBool(InStr(WebbrowserHeadText, My.Resources.CR_Season_Nr)) Then
                 If CBool(InStr(WebbrowserHeadText, My.Resources.CR_Season_Nr + Chr(34))) Then
@@ -1549,11 +1573,11 @@ Public Class Main
                     Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
                 Catch ex As Exception
                     ' Ordner wurde nich erstellt
-                    Pfad2 = Pfad + "\" + CR_FilenName + ".mp4"
+                    Pfad2 = Pfad + "\" + CR_FilenName + VideoFormat
                 End Try
             End If
 
-            Pfad2 = Chr(34) + Pfad2 + CR_FilenName + ".mp4" + Chr(34)
+            Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
 
 #End Region
 #Region "Subs"
@@ -1674,7 +1698,7 @@ Public Class Main
             Dim SoftSubMergeMetatata As String = Nothing
 
             If SoftSubs2.Count > 0 Then
-                If MergeSubstoMP4 = True Then
+                If MergeSubs = True Then
                     Dim DispositionIndex As Integer
                     For i As Integer = 0 To SoftSubs2.Count - 1
                         Debug.WriteLine(SoftSubs2(i))
@@ -1753,8 +1777,8 @@ Public Class Main
             End If
 #End Region
             If Reso = 42 And HybridMode = False Then
-                If MergeSubstoMP4 = True Then
-                    URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
+                If MergeSubs = True Then
+                    URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
                 Else
                     URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + " " + ffmpeg_command
                 End If
@@ -1792,53 +1816,22 @@ Public Class Main
                         End If
                     End If
                 End If
-#Region "old non gzip fix"
-                'MsgBox(Reso2)
-                '    Dim VLC_URI_1 As String() = str.Split(New String() {Reso2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-                '    Dim VLC_URI_2 As String() = VLC_URI_1(1).Split(New [Char]() {Chr(34)})
-                '    Dim VLC_URI_3 As String() = VLC_URI_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
-                '    If MergeSubstoMP4 = True Then
-                '        URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
-
-                '        'URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
-                '    Else
-                '        URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + " " + ffmpeg_command
-                '        'URL_DL = VLC_URI_3(0).Trim()
-                '    End If
-                '    'MsgBox(URL_DL)
-                'End If
-#End Region
-
-#Region "gzip fixed with http header in hybrid + ffmpeg" '"gzip fix - no cloudfront cdn"
 
 
                 Dim ffmpeg_url_1 As String() = str.Split(New String() {Reso2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim ffmpeg_url_3 As String() = Nothing
-                'MsgBox(ffmpeg_url_1.Count.ToString)
-                'If ffmpeg_url_1.Count > 2 Then
-                '    If InStr(ffmpeg_url_1(1), "&cdn=cloudfront-prod") Then
-                '        Dim ffmpeg_url_2 As String() = ffmpeg_url_1(2).Split(New [Char]() {Chr(34)})
-                '        ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
-                '    Else
-                '        Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
-                '        ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
-                '    End If
-
-                'Else
                 Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
                 ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
-                'End If
-                If MergeSubstoMP4 = True Then
-                    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
 
-                    'URL_DL = "-i " + Chr(34) + VLC_URI_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata
+                If MergeSubs = True Then
+                    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
+
                 Else
                     URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub) + " " + ffmpeg_command
-                    'URL_DL = VLC_URI_3(0).Trim()
                 End If
-                'MsgBox(URL_DL)
+
             End If
-#End Region
+
 
 #Region "thumbnail"
             Dim thumbnail As String() = WebbrowserText.Split(New String() {My.Resources.thumbnailString}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -2144,7 +2137,7 @@ Public Class Main
 #Region "Name + Pfad"
         Dim Video_FilenName As String = Video_Title
         Video_FilenName = String.Join(" ", Video_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(Video_FilenName, "[^\w\\-]", " ")
-        Video_FilenName = RemoveExtraSpaces(Video_FilenName + ".mp4")
+        Video_FilenName = RemoveExtraSpaces(Video_FilenName + VideoFormat)
         Pfad_DL = Chr(34) + Pfad + "\" + Video_FilenName + Chr(34)
 #End Region
 
@@ -2219,7 +2212,7 @@ Public Class Main
                              End Function))
 
 #End Region
-        'AsyncWorkerX.RunAsync(AddressOf DownloadFFMPEG, URL_DL, Pfad_DL, Pfad_DL)
+
         Grapp_non_cr_RDY = True
         Me.Invoke(New Action(Function()
 
@@ -2330,7 +2323,7 @@ Public Class Main
             End If
 
 
-            'Dim DefaultPath As String = Pfad + "\" + DefaultName + ".mp4"
+            'Dim DefaultPath As String = Pfad + "\" + DefaultName + VideoFormat
             'DefaultPath = DefaultPath.Replace("\\", "\")
 #End Region
 
@@ -2360,11 +2353,11 @@ Public Class Main
                     Directory.CreateDirectory(Path.GetDirectoryName(DownloadPfad))
                 Catch ex As Exception
                     ' Ordner wurde nich erstellt
-                    DownloadPfad = Pfad + "\" + DefaultName + ".mp4"
+                    DownloadPfad = Pfad + "\" + DefaultName + VideoFormat
                 End Try
             End If
 
-            DownloadPfad = DownloadPfad + DefaultName + ".mp4"
+            DownloadPfad = DownloadPfad + DefaultName + VideoFormat
 
 
 #Region "lösche doppel download"
@@ -2651,7 +2644,7 @@ Public Class Main
                                              Me.Invalidate()
                                              Return Nothing
                                          End Function))
-                    File.WriteAllText(DownloadPfad.Replace(".mp4", "-subtitle_error.log"), PlayerPage, Encoding.UTF8)
+                    File.WriteAllText(DownloadPfad.Replace(VideoFormat, "-subtitle_error.log"), PlayerPage, Encoding.UTF8)
 
                 End If
 
@@ -2775,7 +2768,7 @@ Public Class Main
             Dim SoftSubMergeMetatata As String = Nothing
 
             If UsedSubs.Count > 0 Then
-                If MergeSubstoMP4 = True Then
+                If MergeSubs = True Then
                     Dim DispositionIndex As Integer = 999
                     Dim LastMerged As String = Nothing
                     For i As Integer = 0 To UsedSubs.Count - 1
@@ -2861,9 +2854,9 @@ Public Class Main
             If HardSubFound = True Then
                 Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + " -vf subtitles=" + Chr(34) + UsedSub + Chr(34) + " " + ffmpeg_hardsub
 
-            ElseIf MergeSubstoMP4 = True Then
+            ElseIf MergeSubs = True Then
 
-                Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s mov_text" + SoftSubMergeMetatata + DubMetatata
+                Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + DubMetatata
 
             Else
 
@@ -3274,7 +3267,7 @@ Public Class Main
 #Region "funimation Einzeln"
                 ElseIf InStr(htmlReq, "FunimationURL=") Then
                     Debug.WriteLine("single episode mode - Funimation")
-                    MsgBox(htmlReq)
+                    'MsgBox(htmlReq)
 
                     Me.Invoke(New Action(Function()
                                              Me.Text = "Status: Download added from add-on"
@@ -3296,7 +3289,7 @@ Public Class Main
                                         If InStr(ClearUri(1), "&") Then
                                             Dim ClearUri2 As String() = ClearUri(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
                                             Dim Parms As String = Nothing
-                                            For i As Integer = 0 To ClearUri2.Count - 1
+                                            For i As Integer = 1 To ClearUri2.Count - 1
                                                 Parms = Parms + "&" + ClearUri2(i)
                                             Next
                                             WebbrowserURL = ClearUri(0) + "?lang=" + DubFunimation + Parms
@@ -3349,12 +3342,11 @@ Public Class Main
                                 'b = False
                                 ServicePointManager.Expect100Continue = True
                                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-
                                 Try
                                     Using client As New WebClient()
                                         client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
                                         client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
-                                        client.Headers.Add("Accept-Encoding: gzip, deflate, br")
+                                        client.Headers.Add("Accept-Encoding: gzip")
                                         client.Headers.Add("Cookie:" + SystemWebBrowserCookie)
                                         Dim HTMLString As String = DecompressString(client.DownloadData(WebbrowserURL))
 

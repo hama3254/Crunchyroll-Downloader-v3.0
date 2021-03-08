@@ -93,7 +93,7 @@ Public Class Einstellungen
 
         End Try
 
-        If Main.MergeSubstoMP4 = True Then
+        If Main.MergeSubs = True Then
             MergeMP4.Checked = True
         End If
         If Main.HybridMode = True Then
@@ -131,6 +131,12 @@ Public Class Einstellungen
             CB_Fun_HardSubs.SelectedItem = "Disabled"
             'FunimationHardsub.Checked = True
         End If
+        If Main.VideoFormat = ".mkv" Then
+            CB_Format.SelectedItem = "MKV"
+
+        Else
+            CB_Format.SelectedItem = "MP4"
+        End If
 
         If Main.DubFunimation = "english" Then
             Fun_Dub_Over.SelectedItem = "english"
@@ -148,9 +154,7 @@ Public Class Einstellungen
             Fun_Dub_Over.SelectedItem = "Disabled"
         End If
 
-        If Main.SaveLog = True Then
-            CB_Log.Checked = True
-        End If
+
         Try
             GB_Resolution.Text = Main.GB_Resolution_Text
             GB_SubLanguage.Text = Main.GB_SubLanguage_Text
@@ -469,12 +473,22 @@ Public Class Einstellungen
             rk.SetValue("CR_NameMethode", 3, RegistryValueKind.String)
         End If
 
-        If MergeMP4.Checked = True Then
-            Main.MergeSubstoMP4 = True
-            rk.SetValue("MergeMP4", "1", RegistryValueKind.String)
+        If CB_Format.Text = "MKV" Then
+            Main.VideoFormat = ".mkv"
+            Main.MergeSubsFormat = "copy"
+            rk.SetValue("VideoFormat", ".mkv", RegistryValueKind.String)
         Else
-            Main.MergeSubstoMP4 = False
-            rk.SetValue("MergeMP4", "0", RegistryValueKind.String)
+            Main.VideoFormat = ".mp4"
+            Main.MergeSubsFormat = "mov_text"
+            rk.SetValue("VideoFormat", ".mp4", RegistryValueKind.String)
+        End If
+
+        If MergeMP4.Checked = True Then
+            Main.MergeSubs = True
+            rk.SetValue("MergeSubs", "1", RegistryValueKind.String)
+        Else
+            Main.MergeSubs = False
+            rk.SetValue("MergeSubs", "0", RegistryValueKind.String)
         End If
         If HybridMode_CB.Checked = True Then
             Main.HybridMode = True
@@ -577,13 +591,6 @@ Public Class Einstellungen
 
 
 
-        If CB_Log.Checked = True Then
-            Main.SaveLog = True
-            rk.SetValue("SaveLog", "1", RegistryValueKind.String)
-        Else
-            Main.SaveLog = False
-            rk.SetValue("SaveLog", "0", RegistryValueKind.String)
-        End If
 
         If CheckBox1.Enabled = False Then
 
@@ -770,14 +777,7 @@ Public Class Einstellungen
         End If
     End Sub
 
-    Private Sub HybridMode_CB_Click(sender As Object, e As EventArgs) Handles HybridMode_CB.Click
-        If HybridMode_CB.Checked = True Then
-            If AAuto.Checked = True Then
-                MsgBox("Resolution '[Auto]' and 'Hybride Mode' does not work together", MsgBoxStyle.Information)
-                HybridMode_CB.Checked = False
-            End If
-        End If
-    End Sub
+
 
     Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles PictureBox5.Click
         If Main.SoftSubs.Count > 0 Then
@@ -1194,6 +1194,16 @@ Public Class Einstellungen
             CR_SoftSubDefault.Items.Remove(CBenUS.Text)
             If CR_SoftSubDefault.Text = CBenUS.Text Then
                 CR_SoftSubDefault.SelectedItem = "[Disabled]"
+            End If
+        End If
+    End Sub
+
+
+    Private Sub HybridMode_CB_Click(sender As Object, e As EventArgs) Handles HybridMode_CB.Click
+        If HybridMode_CB.Checked = True Then
+            If AAuto.Checked = True Then
+                MsgBox("Resolution '[Auto]' and 'Hybride Mode' does not work together", MsgBoxStyle.Information)
+                HybridMode_CB.Checked = False
             End If
         End If
     End Sub

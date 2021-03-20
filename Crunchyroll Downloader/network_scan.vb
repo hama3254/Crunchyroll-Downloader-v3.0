@@ -125,7 +125,8 @@ Public Class network_scan
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
         Dim sr As StreamReader
         Dim cmd As String = "-headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + ComboBox2.Text + Chr(34)                            'start ffmpeg with command strFFCMD string
-        ' 
+
+        'MsgBox(cmd)
         Dim ffmpegOutput As String = Nothing
         Dim ffmpegOutputLine As String = Nothing
         Dim ffmpegOutputLine2 As String = Nothing
@@ -160,7 +161,18 @@ Public Class network_scan
                 Dim ZeileReso3() As String = ffmpegOutput2(i).Split(New String() {": Video:"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim ZeileReso4() As String = ZeileReso3(0).Split(New String() {"Stream #"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                ComboBox3.Items.Add(ZeileReso2(ZeileReso2.Count - 1).Trim + ":--:" + ZeileReso4(1))
+
+                If InStr(ZeileReso2(ZeileReso2.Count - 1), ", ") Then
+                    Dim ZeileReso5() As String = ZeileReso2(ZeileReso2.Count - 1).Split(New String() {", "}, System.StringSplitOptions.RemoveEmptyEntries)
+                    ComboBox3.Items.Add(ZeileReso5(0).Trim + ":--:" + ZeileReso4(1))
+
+                Else
+                    ComboBox3.Items.Add(ZeileReso2(ZeileReso2.Count - 1).Trim + ":--:" + ZeileReso4(1))
+
+                End If
+
+
+
             ElseIf InStr(ffmpegOutput2(i), "Duration: N/A, bitrate: N/A") Then
 
             ElseIf InStr(ffmpegOutput2(i), "Subtitle: ") Then

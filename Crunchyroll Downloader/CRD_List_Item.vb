@@ -423,8 +423,18 @@ Public Class CRD_List_Item
         HistoryDL_URL = DL_URL
         HistoryDL_Pfad = DL_Pfad
         HistoryFilename = Filename
+        If InStr(DL_URL, "-i [Subtitles only]") Then
+            Me.Invoke(New Action(Function()
 
-        If DownloadHybridMode = True Then
+                                     ProgressBar1.Value = 100
+                                     Label_percent.Text = "selected subtiles have been dowloaded"
+                                     Canceld = True
+                                     PlaybackVideoFileToolStripMenuItem.Enabled = False
+                                     LogTocClipboard.Enabled = False
+                                     SaveToFile.Enabled = False
+                                     Return Nothing
+                                 End Function))
+        ElseIf DownloadHybridMode = True Then
             Dim Evaluator = New Thread(Sub() DownloadHybrid(DL_URL, DL_Pfad, Filename))
             Evaluator.Start()
             HybridMode = True
@@ -470,7 +480,7 @@ Public Class CRD_List_Item
                 End If
 
 
-                Debug.WriteLine("Download error #2: " + DL_Pfad + vbNewLine + ex.ToString + vbNewLine + DL_URL)
+                Debug.WriteLine("Download error #2: " + DL_Pfad + vbNewLine + ex2.ToString + vbNewLine + DL_URL)
             End Try
         End Try
 

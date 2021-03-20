@@ -96,18 +96,11 @@ Public Class GeckoFX
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
                             Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
                             Main.b = True
-                            If Main.d = False Then
-                                Main.d = True
-                                t = New Thread(AddressOf Main.DownloadSubsOnly)
-                                t.Priority = ThreadPriority.Normal
-                                t.IsBackground = True
-                                t.Start()
-                            Else
-                                t = New Thread(AddressOf Main.GrappURL)
-                                t.Priority = ThreadPriority.Normal
-                                t.IsBackground = True
-                                t.Start()
-                            End If
+
+                            t = New Thread(AddressOf Main.GrappURL)
+                            t.Priority = ThreadPriority.Normal
+                            t.IsBackground = True
+                            t.Start()
 
 
 
@@ -118,13 +111,9 @@ Public Class GeckoFX
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
                             Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
-                            If Main.d = False Then
-                                Main.d = True
-                                Main.SeasonDropdownGrappSubs()
-                                Einstellungen.StatusLabel.Text = "Status: Multi Download detected!"
-                            Else
-                                Main.SeasonDropdownGrapp()
-                            End If
+
+                            Main.SeasonDropdownGrapp()
+
                         ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "wrapper container-shadow hover-classes")) Then
                             Main.b = True
                             Anime_Add.textBox2.Text = "Name of the Anime"
@@ -132,14 +121,7 @@ Public Class GeckoFX
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
                             Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
-                            If Main.d = False Then
-                                Main.d = True
-                                Main.MassGrappSubs()
-                                Einstellungen.StatusLabel.Text = "Status: Multi Download detected!"
-
-                            Else
-                                Main.MassGrapp()
-                            End If
+                            Main.MassGrapp()
                         Else
                             Main.b = True
                             MsgBox(Main.No_Stream, MsgBoxStyle.OkOnly)
@@ -286,8 +268,9 @@ Public Class GeckoFX
 
 
                             If InStr(RequestURL, ".m3u8") Then
-
+                                MsgBox(RequestURL)
                                 Dim str0 As String = client0.DownloadString(RequestURL)
+                                MsgBox(str0)
                                 If InStr(str0, "#EXTM3U") Then
                                     Main.m3u8List.Add(RequestURL)
 
@@ -671,11 +654,24 @@ Public Class GeckoFX
                         If InStr(RequestURL, ".m3u8") Then
 
                             Dim str0 As String = client0.DownloadString(RequestURL)
+
                             If InStr(str0, "#EXTM3U") Then
                                 Main.m3u8List.Add(RequestURL)
+                            Else
+                                Dim DecodedUrl As String = UrlDecode(RequestURL)
+                                'MsgBox(DecodedUrl)
+                                Dim URLSplit() As String = DecodedUrl.Split(New String() {".m3u8"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                Dim URLSplit2() As String = URLSplit(0).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                Dim NewUrl As String = "https://" + URLSplit2(URLSplit2.Count - 1) + ".m3u8" + URLSplit(1)
+                                'MsgBox(NewUrl)
+                                Dim str1 As String = client0.DownloadString(NewUrl)
+                                'MsgBox(str1)
+                                If InStr(str1, "#EXTM3U") Then
+                                    Main.m3u8List.Add(NewUrl)
+                                End If
 
                             End If
-                        ElseIf InStr(RequestURL, ".mpd") Then
+                                ElseIf InStr(RequestURL, ".mpd") Then
                             Main.mpdList.Add(RequestURL)
 
                         ElseIf InStr(RequestURL, ".txt") Then

@@ -43,7 +43,7 @@ Public Class Anime_Add
 
 
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        SubTitlesOnlyCB.SelectedIndex = 0
         Manager.Owner = Me
         Me.StyleManager = Manager
         Btn_Close.Image = Main.CloseImg
@@ -148,6 +148,11 @@ Public Class Anime_Add
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
         'pictureBox4.Enabled = False
         Main.LoginOnly = "Download Mode!"
+        If SubTitlesOnlyCB.Text = "[Default]" Then
+            Main.SubsOnly = False
+        Else
+            Main.SubsOnly = True
+        End If
         If groupBox1.Visible = True Then
             Try
                 If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then 'Or CBool(InStr(textBox1.Text, "anime-on-demand.de")) Then
@@ -223,6 +228,11 @@ Public Class Anime_Add
                         End If
                     End If
                 ElseIf CBool(InStr(textBox1.Text, "anime-on-demand.de")) Then
+                    If Main.SubsOnly = True Then
+                        MsgBox("Anime on Demand wird nicht im [Subtitles only] modus unterstützt" + vbNewLine + "Normaler Download modus ist aktiv!", MsgBoxStyle.Information)
+                        Main.SubsOnly = False
+                        SubTitlesOnlyCB.Text = "[Default]"
+                    End If
                     Main.b = False
                     AoD_DubList.Clear()
                     AoD_OmUList.Clear()
@@ -285,10 +295,10 @@ Public Class Anime_Add
                     If AoD_Cookie = Nothing Then
 
                         MsgBox(Main.LoginReminder)
-                            Main.Text = "Crunchyroll Downloader"
-                            Main.Invalidate()
-                            StatusLabel.Text = "Status: idle"
-                            Exit Sub
+                        Main.Text = "Crunchyroll Downloader"
+                        Main.Invalidate()
+                        StatusLabel.Text = "Status: idle"
+                        Exit Sub
 
                     End If
                     'MsgBox(AoD_Cookie)
@@ -298,37 +308,37 @@ Public Class Anime_Add
                         Dim OmUStreamSplitToken() As String = OmUStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
                         Dim OmUStreamSplitEpisodeIndex() As String = OmUStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim OmUStreamSplitEpisodeIndex2() As String = OmUStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim m3u8Strings As String = Nothing
-                            'I/nsHttp   Cookie: 
+                        Dim OmUStreamSplitEpisodeIndex2() As String = OmUStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim m3u8Strings As String = Nothing
+                        'I/nsHttp   Cookie: 
 
-                            Try
-                                Using client As New WebClient()
-                                    client.Encoding = System.Text.Encoding.UTF8
-                                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                                    client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
-                                    client.Headers.Add("Accept-Encoding: gzip, deflate, br")
-                                    client.Headers.Add("X-Requested-With: XMLHttpRequest")
-                                    client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
-                                    'MsgBox(OmUStreamSplitEpisodeIndex(1))
-                                    m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
-                                    '("Sub: " + m3u8Strings)
-                                End Using
-                            Catch ex As Exception
-                                MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
-                            End Try
-                            If m3u8Strings = Nothing Then
-                            Else
+                        Try
+                            Using client As New WebClient()
+                                client.Encoding = System.Text.Encoding.UTF8
+                                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                                client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
+                                client.Headers.Add("Accept-Encoding: gzip, deflate, br")
+                                client.Headers.Add("X-Requested-With: XMLHttpRequest")
+                                client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
+                                'MsgBox(OmUStreamSplitEpisodeIndex(1))
+                                m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
+                                '("Sub: " + m3u8Strings)
+                            End Using
+                        Catch ex As Exception
+                            MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
+                        End Try
+                        If m3u8Strings = Nothing Then
+                        Else
 
-                                Dim OmUStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
-                                For i As Integer = 1 To OmUStreams.Count - 1
-                                    AoD_OmUList.Add(OmUStreams(i))
-                                Next
-                            End If
-
+                            Dim OmUStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
+                            For i As Integer = 1 To OmUStreams.Count - 1
+                                AoD_OmUList.Add(OmUStreams(i))
+                            Next
                         End If
 
-                        If CBool(InStr(Main.WebbrowserText, "/Dub/1080/hlsfirst/")) Then
+                    End If
+
+                    If CBool(InStr(Main.WebbrowserText, "/Dub/1080/hlsfirst/")) Then
                         Dim DubStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/Dub/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim DubStreamSplitToken() As String = DubStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim DubStreamSplitEpisodeIndex() As String = DubStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -746,6 +756,7 @@ Public Class Anime_Add
                                                                      Main.Text = "Status: Website error"
                                                                      Me.StatusLabel.Text = "Status: no video found"
                                                                      Return Nothing
+                                                                     Main.Funimation_Grapp_RDY = True
                                                                  End Function))
 
                                         Else
@@ -753,6 +764,8 @@ Public Class Anime_Add
                                             Me.Invoke(New Action(Function()
                                                                      Main.Text = "Status: no video found"
                                                                      Me.StatusLabel.Text = "Status: no video found"
+                                                                     My.Computer.FileSystem.WriteAllText(Application.StartupPath + "funimation.log", HTMLString, True)
+                                                                     Main.Funimation_Grapp_RDY = True
                                                                      Return Nothing
                                                                  End Function))
 
@@ -760,6 +773,8 @@ Public Class Anime_Add
                                     End Using
                                 Catch ex As Exception
                                     MsgBox(ex.ToString)
+
+                                    Main.Funimation_Grapp_RDY = True
                                     Exit Sub
                                 End Try
 
@@ -1359,5 +1374,11 @@ Public Class Anime_Add
         End If
     End Sub
 
-
+    Private Sub SubTitlesOnlyCB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SubTitlesOnlyCB.SelectedIndexChanged
+        If SubTitlesOnlyCB.Text = "[Default]" Then
+            Main.SubsOnly = False
+        Else
+            Main.SubsOnly = True
+        End If
+    End Sub
 End Class

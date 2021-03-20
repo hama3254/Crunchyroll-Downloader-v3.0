@@ -727,7 +727,7 @@ Public Class Einstellungen
     End Sub
 
 
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem, CB_Fun_HardSubs.DrawItem, Fun_Dub_Over.DrawItem, CR_Filename.DrawItem
+    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, CB_Fun_HardSubs.DrawItem, Fun_Dub_Over.DrawItem, CR_Filename.DrawItem
         Dim CB As ComboBox = sender
         CB.BackColor = Color.White
         If e.Index >= 0 Then
@@ -779,109 +779,11 @@ Public Class Einstellungen
 
 
 
-    Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles PictureBox5.Click
-        If Main.SoftSubs.Count > 0 Then
-            If CBool(InStr(TextBox2.Text, "crunchyroll.com")) Then
-                GeckoFX.WebBrowser1.Navigate(TextBox2.Text)
-                StatusLabel.Text = "Status: looking for subtitles"
-                Main.d = False
-                Main.b = False
-            End If
-        Else
-            Main.TempSoftSubs.Clear()
-            If CBdeDE.Checked = True Then
-                Main.TempSoftSubs.Add("deDE")
-            End If
-            If CBenUS.Checked = True Then
-                Main.TempSoftSubs.Add("enUS")
-            End If
-            If CBptBR.Checked = True Then
-                Main.TempSoftSubs.Add("ptBR")
-            End If
-            If CBesLA.Checked = True Then
-                Main.TempSoftSubs.Add("esLA")
-            End If
-            If CBfrFR.Checked = True Then
-                Main.TempSoftSubs.Add("frFR")
-            End If
-            If CBarME.Checked = True Then
-                Main.TempSoftSubs.Add("arME")
-            End If
-            If CBruRU.Checked = True Then
-                Main.TempSoftSubs.Add("ruRU")
-            End If
-            If CBitIT.Checked = True Then
-                Main.TempSoftSubs.Add("itIT")
-            End If
-            If CBesES.Checked = True Then
-                Main.TempSoftSubs.Add("esES")
-            End If
-            If Main.TempSoftSubs.Count > 0 Then
 
-                If CBool(InStr(TextBox2.Text, "crunchyroll.com")) Then
-                    GeckoFX.WebBrowser1.Navigate(TextBox2.Text)
-                    StatusLabel.Text = "Status: looking for subtitles"
-                    Main.d = False
-                    Main.b = False
-                End If
-            Else
-                StatusLabel.Text = "Status: No language selected"
-                Pause(3)
-                StatusLabel.Text = "Status: idle"
-            End If
 
-        End If
-    End Sub
 
-    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
-        Main.MassSubsDL()
-    End Sub
 
-    Private Sub PictureBox3_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox3.MouseEnter
-        PictureBox3.Image = My.Resources.softsubs_download_hover
-    End Sub
 
-    Private Sub PictureBox3_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox3.MouseLeave
-        PictureBox3.Image = My.Resources.softsubs_download
-    End Sub
-    Private Sub PictureBox5_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox5.MouseEnter
-        PictureBox5.Image = My.Resources.softsubs_download_hover
-    End Sub
-
-    Private Sub PictureBox5_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox5.MouseLeave
-        PictureBox5.Image = My.Resources.softsubs_download
-    End Sub
-
-    Private Sub TextBox2_Click(sender As Object, e As EventArgs) Handles TextBox2.Click
-        If TextBox2.Text = "URL" Then
-            TextBox2.Text = Nothing
-        End If
-    End Sub
-
-    Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
-
-        comboBox3.Items.Clear()
-        comboBox4.Items.Clear()
-        Dim SeasonDropdownAnzahl As String() = Main.WebbrowserText.Split(New String() {"season-dropdown content-menu block"}, System.StringSplitOptions.RemoveEmptyEntries)
-        Array.Reverse(SeasonDropdownAnzahl)
-        Dim SDV As Integer = 0
-        For i As Integer = 0 To SeasonDropdownAnzahl.Count - 1
-            If InStr(SeasonDropdownAnzahl(i), Chr(34) + ">" + ComboBox2.SelectedItem.ToString + "</a>") Then
-                SDV = i
-            End If
-        Next
-        Dim Anzahl As String() = SeasonDropdownAnzahl(SDV).Split(New String() {"wrapper container-shadow hover-classes"}, System.StringSplitOptions.RemoveEmptyEntries)
-        Dim c As Integer = Anzahl.Count - 1
-        Array.Reverse(Anzahl)
-        For i As Integer = 0 To Anzahl.Count - 2
-            Dim URLGrapp As String() = Anzahl(i).Split(New String() {"title=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-            Dim URLGrapp2 As String() = URLGrapp(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-            comboBox3.Items.Add(URLGrapp2(0))
-            comboBox4.Items.Add(URLGrapp2(0))
-        Next
-    End Sub
 
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
@@ -963,7 +865,6 @@ Public Class Einstellungen
         GB_Resolution.ForeColor = color
         GroupBox1.ForeColor = color
         GroupBox2.ForeColor = color
-        GroupBox3.ForeColor = color
         GroupBox5.ForeColor = color
         GroupBox6.ForeColor = color
         GroupBox7.ForeColor = color

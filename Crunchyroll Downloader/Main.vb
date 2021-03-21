@@ -1417,7 +1417,7 @@ Public Class Main
                     Next
                     If DispositionIndex = Nothing Then
                     Else
-                        SoftSubMergeMetatata = SoftSubMergeMetatata + " -disposition:s:" + DispositionIndex + " default"
+                        SoftSubMergeMetatata = SoftSubMergeMetatata + " -disposition:s:" + DispositionIndex.ToString + " default"
                     End If
                 Else
                     For i As Integer = 0 To SoftSubs2.Count - 1

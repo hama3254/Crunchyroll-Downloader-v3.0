@@ -720,9 +720,9 @@ Public Class Anime_Add
                                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
                                 Try
                                     Using client As New WebClient()
-                                        client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
+                                        client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0")
                                         client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
-                                        client.Headers.Add("Accept-Encoding: gzip")
+                                        client.Headers.Add("Accept-Encoding: *")
                                         client.Headers.Add("Cookie:" + Main.SystemWebBrowserCookie)
                                         Dim HTMLString As String = "No Value"
 
@@ -764,7 +764,7 @@ Public Class Anime_Add
                                             Me.Invoke(New Action(Function()
                                                                      Main.Text = "Status: no video found"
                                                                      Me.StatusLabel.Text = "Status: no video found"
-                                                                     My.Computer.FileSystem.WriteAllText(Application.StartupPath + "funimation.log", HTMLString, True)
+                                                                     My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\funimation.log", HTMLString, True)
                                                                      Main.Funimation_Grapp_RDY = True
                                                                      Return Nothing
                                                                  End Function))

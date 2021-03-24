@@ -229,12 +229,13 @@ Public Class Einstellungen
 
         If InStr(Main.ffmpeg_command, "-c copy") Then
             FFMPEG_CommandP1.Text = "-c copy"
-            FFMPEG_CommandP4.Text = "-bsf:a aac_adtstoasc"
+            FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
         Else
             Dim ffmpegDisplayCurrent As String() = Main.ffmpeg_command.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
             FFMPEG_CommandP1.Text = ffmpegDisplayCurrent(0) + " " + ffmpegDisplayCurrent(1)
             FFMPEG_CommandP2.Text = ffmpegDisplayCurrent(2) + " " + ffmpegDisplayCurrent(3)
             FFMPEG_CommandP3.Text = ffmpegDisplayCurrent(4) + " " + ffmpegDisplayCurrent(5)
+            FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
         End If
 
 

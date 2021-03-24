@@ -55,26 +55,17 @@ Partial Class Main
         Me.Btn_add.BackColor = System.Drawing.Color.Transparent
         Me.Btn_add.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_add.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_add
-        Me.Btn_add.Location = New System.Drawing.Point(20, 17)
-        Me.Btn_add.Margin = New System.Windows.Forms.Padding(0)
+        resources.ApplyResources(Me.Btn_add, "Btn_add")
         Me.Btn_add.Name = "Btn_add"
-        Me.Btn_add.Size = New System.Drawing.Size(80, 35)
-        Me.Btn_add.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
-        Me.Btn_add.TabIndex = 24
         Me.Btn_add.TabStop = False
         '
         'Btn_Close
         '
         Me.Btn_Close.BackColor = System.Drawing.Color.Transparent
-        Me.Btn_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        resources.ApplyResources(Me.Btn_Close, "Btn_Close")
         Me.Btn_Close.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_Close.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_close
-        Me.Btn_Close.Location = New System.Drawing.Point(800, 1)
-        Me.Btn_Close.Margin = New System.Windows.Forms.Padding(0)
         Me.Btn_Close.Name = "Btn_Close"
-        Me.Btn_Close.Size = New System.Drawing.Size(40, 40)
-        Me.Btn_Close.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.Btn_Close.TabIndex = 23
         Me.Btn_Close.TabStop = False
         '
         'Btn_Settings
@@ -82,12 +73,8 @@ Partial Class Main
         Me.Btn_Settings.BackColor = System.Drawing.Color.Transparent
         Me.Btn_Settings.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_Settings.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_settings
-        Me.Btn_Settings.Location = New System.Drawing.Point(646, 17)
-        Me.Btn_Settings.Margin = New System.Windows.Forms.Padding(0)
+        resources.ApplyResources(Me.Btn_Settings, "Btn_Settings")
         Me.Btn_Settings.Name = "Btn_Settings"
-        Me.Btn_Settings.Size = New System.Drawing.Size(80, 35)
-        Me.Btn_Settings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
-        Me.Btn_Settings.TabIndex = 22
         Me.Btn_Settings.TabStop = False
         '
         'Btn_Browser
@@ -95,12 +82,8 @@ Partial Class Main
         Me.Btn_Browser.BackColor = System.Drawing.Color.Transparent
         Me.Btn_Browser.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Btn_Browser.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_browser
-        Me.Btn_Browser.Location = New System.Drawing.Point(114, 18)
-        Me.Btn_Browser.Margin = New System.Windows.Forms.Padding(0)
+        resources.ApplyResources(Me.Btn_Browser, "Btn_Browser")
         Me.Btn_Browser.Name = "Btn_Browser"
-        Me.Btn_Browser.Size = New System.Drawing.Size(80, 35)
-        Me.Btn_Browser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
-        Me.Btn_Browser.TabIndex = 21
         Me.Btn_Browser.TabStop = False
         '
         'ListView1
@@ -108,34 +91,24 @@ Partial Class Main
         Me.ListView1.BackColor = System.Drawing.SystemColors.Control
         Me.ListView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.Link})
-        Me.ListView1.Font = New System.Drawing.Font("Microsoft Sans Serif", 93.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        resources.ApplyResources(Me.ListView1, "ListView1")
         Me.ListView1.ForeColor = System.Drawing.Color.Black
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.ListView1.HideSelection = False
-        Me.ListView1.Location = New System.Drawing.Point(1, 71)
-        Me.ListView1.Margin = New System.Windows.Forms.Padding(0)
-        Me.ListView1.MinimumSize = New System.Drawing.Size(798, 403)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(840, 546)
-        Me.ListView1.TabIndex = 57
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
         '
         'Link
         '
-        Me.Link.Text = "Link"
-        Me.Link.Width = 818
+        resources.ApplyResources(Me.Link, "Link")
         '
         'PictureBox5
         '
         Me.PictureBox5.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox5.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.balken
-        Me.PictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.PictureBox5.Location = New System.Drawing.Point(1, 65)
-        Me.PictureBox5.Margin = New System.Windows.Forms.Padding(0)
+        resources.ApplyResources(Me.PictureBox5, "PictureBox5")
         Me.PictureBox5.Name = "PictureBox5"
-        Me.PictureBox5.Size = New System.Drawing.Size(840, 6)
-        Me.PictureBox5.TabIndex = 67
         Me.PictureBox5.TabStop = False
         '
         'Timer1
@@ -155,25 +128,16 @@ Partial Class Main
         '
         Me.TheTextBox.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.TheTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TheTextBox.Location = New System.Drawing.Point(0, 652)
-        Me.TheTextBox.Margin = New System.Windows.Forms.Padding(0)
+        resources.ApplyResources(Me.TheTextBox, "TheTextBox")
         Me.TheTextBox.Name = "TheTextBox"
-        Me.TheTextBox.Size = New System.Drawing.Size(840, 96)
-        Me.TheTextBox.TabIndex = 69
-        Me.TheTextBox.Text = ""
-        Me.TheTextBox.Visible = False
         '
         'PictureBox6
         '
         Me.PictureBox6.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox6.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.balken
-        Me.PictureBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        resources.ApplyResources(Me.PictureBox6, "PictureBox6")
         Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox6.Location = New System.Drawing.Point(0, 618)
-        Me.PictureBox6.Margin = New System.Windows.Forms.Padding(0)
         Me.PictureBox6.Name = "PictureBox6"
-        Me.PictureBox6.Size = New System.Drawing.Size(840, 6)
-        Me.PictureBox6.TabIndex = 68
         Me.PictureBox6.TabStop = False
         '
         'MetroStyleManager1
@@ -184,15 +148,9 @@ Partial Class Main
         'Btn_min
         '
         Me.Btn_min.BackColor = System.Drawing.Color.Transparent
-        Me.Btn_min.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        resources.ApplyResources(Me.Btn_min, "Btn_min")
         Me.Btn_min.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Btn_min.Image = CType(resources.GetObject("Btn_min.Image"), System.Drawing.Image)
-        Me.Btn_min.Location = New System.Drawing.Point(764, 8)
-        Me.Btn_min.Margin = New System.Windows.Forms.Padding(0)
         Me.Btn_min.Name = "Btn_min"
-        Me.Btn_min.Size = New System.Drawing.Size(25, 25)
-        Me.Btn_min.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.Btn_min.TabIndex = 71
         Me.Btn_min.TabStop = False
         '
         'Main
@@ -200,7 +158,7 @@ Partial Class Main
         Me.ApplyImageInvert = True
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle
-        Me.ClientSize = New System.Drawing.Size(842, 630)
+        resources.ApplyResources(Me, "$this")
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.TheTextBox)
         Me.Controls.Add(Me.PictureBox6)
@@ -210,16 +168,12 @@ Partial Class Main
         Me.Controls.Add(Me.Btn_Close)
         Me.Controls.Add(Me.Btn_Settings)
         Me.Controls.Add(Me.Btn_Browser)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ForeColor = System.Drawing.Color.Black
-        Me.Margin = New System.Windows.Forms.Padding(0)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.MinimumSize = New System.Drawing.Size(840, 630)
         Me.Name = "Main"
         Me.Resizable = True
         Me.Style = MetroFramework.MetroColorStyle.Orange
-        Me.Text = "Crunchyroll Downloader"
         Me.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center
         CType(Me.Btn_add, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).EndInit()

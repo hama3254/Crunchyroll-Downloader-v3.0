@@ -710,11 +710,15 @@ Public Class Anime_Add
                             'MsgBox(UriUsed)
                             ListBox1.Items.Remove(ListBox1.Items(0))
                             'Main.b = False
-                            StatusLabel.Text = "Status: loading ..."
-                            Main.Text = "Status: loading ..."
+
                             If Main.SystemWebBrowserCookie = Nothing Then
+                                Main.b = False
                                 GeckoFX.WebBrowser1.Navigate(UriUsed)
+                                StatusLabel.Text = "Status: loading in browser"
+                                Main.Text = "Status: loading in browser"
                             Else
+                                StatusLabel.Text = "Status: loading ..."
+                                Main.Text = "Status: loading ..."
                                 'MsgBox(Main.SystemWebBrowserCookie)
                                 ServicePointManager.Expect100Continue = True
                                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12

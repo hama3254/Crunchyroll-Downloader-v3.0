@@ -559,7 +559,7 @@ Public Class CRD_List_Item
     End Function
 
     Public Function DownloadHybrid(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
-        'MsgBox(DL_URL)
+        MsgBox(DL_URL)
         Dim Folder As String = Einstellungen.GeräteID()
         Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
         If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
@@ -649,7 +649,8 @@ Public Class CRD_List_Item
 
                 'Dim archive As Zipfi = New ZipArchive(ms)
                 'Dim m3u8String As String = client.DownloadString(TextBox1.Text)
-
+                'MsgBox(DL_URL)
+                'MsgBox(m3u8_url(1))
                 Try
                     Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
                     text = m3u8
@@ -688,14 +689,22 @@ Public Class CRD_List_Item
 
                         'Dim archive As Zipfi = New ZipArchive(ms)
                         'Dim m3u8String As String = client.DownloadString(TextBox1.Text)
-                        Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
-                        Text = m3u8
+                        Try
+                            Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
+                            text = m3u8
+                        Catch ex As Exception
+                            Dim m3u8 As String = client.DownloadString(m3u8_url(1))
+                            text = m3u8
+                        End Try
+                        'Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
+                        'text = m3u8
                         'MsgBox(m3u8)
                     End Using
                 Catch ex As Exception
                     MsgBox(ex.ToString)
                 End Try
             Else
+                'MsgBox("false postive")
                 Dim c() As String = New Uri(m3u8_url_3).Segments
                 Dim path As String = "https://" + New Uri(m3u8_url_3).Host
                 For i3 As Integer = 0 To c.Count - 2
@@ -712,8 +721,13 @@ Public Class CRD_List_Item
 
                         'Dim archive As Zipfi = New ZipArchive(ms)
                         'Dim m3u8String As String = client.DownloadString(TextBox1.Text)
-                        Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
-                        Text = m3u8
+                        Try
+                            Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
+                            text = m3u8
+                        Catch ex As Exception
+                            Dim m3u8 As String = client.DownloadString(m3u8_url(1))
+                            text = m3u8
+                        End Try
                         'MsgBox(m3u8)
                     End Using
                 Catch ex As Exception

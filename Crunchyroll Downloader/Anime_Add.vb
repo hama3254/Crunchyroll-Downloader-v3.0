@@ -10,11 +10,15 @@ Imports MetroFramework.Components
 Public Class Anime_Add
     Public Mass_DL_Cancel As Boolean = False
     Public List_DL_Cancel As Boolean = False
+    Public AoD_Cookie As String = Nothing
     Dim AoD_OmUList As New List(Of String)
     Dim AoD_DubList As New List(Of String)
     Dim AoD_Mode As Boolean = False
     Dim AoD_DL_running As Boolean = False
     Public AoDHTML As String = Nothing
+
+    Public Authorization As String = Nothing
+    Public AuthorizationCookie As String = Nothing
 
     Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
         Try
@@ -144,6 +148,30 @@ Public Class Anime_Add
         End Try
     End Sub
 
+    Public Sub BetaCR(ByVal Auth As String, ByVal Cookie As String)
+
+        Try
+            Using client As New WebClient()
+                client.Encoding = System.Text.Encoding.UTF8
+                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                client.Headers.Add("ACCEPT: gzip")
+                client.Headers.Add("Cookie: " + Cookie)
+                client.Headers.Add("Authorization: " + Auth)
+                client.Headers.Add("Content-Type: application/x-www-form-urlencoded")
+                client.Headers.Add("Referer: https://beta.crunchyroll.com/") '
+                Dim reqparm As New Specialized.NameValueCollection
+
+                reqparm.Add("grant_type", "etp_rt_cookie")
+                Dim responsebytes = client.UploadValues("https://beta-api.crunchyroll.com/auth/v1/token", "POST", reqparm)
+                Dim responsebody = (New Text.UTF8Encoding).GetString(responsebytes)
+                'My.Computer.Clipboard.SetText(responsebody)
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+
+
+    End Sub
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
         'pictureBox4.Enabled = False
@@ -156,6 +184,8 @@ Public Class Anime_Add
         If groupBox1.Visible = True Then
             Try
                 If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then 'Or CBool(InStr(textBox1.Text, "anime-on-demand.de")) Then
+
+#Region "Funimation url parameter"
                     If InStr(textBox1.Text, "funimation.com") Then
                         If Main.DubFunimation = "Disabled" Then
                         Else
@@ -201,6 +231,7 @@ Public Class Anime_Add
                         End If
 
                     End If
+#End Region
 
                     If StatusLabel.Text = "Status: waiting for episode selection" Then
                         If MessageBox.Show("Are you sure you want cancel the advanced download?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
@@ -227,6 +258,8 @@ Public Class Anime_Add
                             End If
                         End If
                     End If
+
+#Region "AoD"
                 ElseIf CBool(InStr(textBox1.Text, "anime-on-demand.de")) Then
                     If Main.SubsOnly = True Then
                         MsgBox("Anime on Demand wird nicht im [Subtitles only] modus unterstützt" + vbNewLine + "Normaler Download modus ist aktiv!", MsgBoxStyle.Information)
@@ -234,207 +267,19 @@ Public Class Anime_Add
                         SubTitlesOnlyCB.Text = "[Default]"
                     End If
                     Main.b = False
-                    AoD_DubList.Clear()
-                    AoD_OmUList.Clear()
-                    Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
-                    Dim CurrentFile As String = Nothing
-                    For Each File In FileLocation.GetFiles()
-                        If InStr(File.FullName, "gecko-network.txt") Then
-                            CurrentFile = File.FullName
-                            Exit For
-                        End If
-                    Next
-                    If CurrentFile = Nothing Then
-                    Else
-                        Dim logFileStream As FileStream = New FileStream(CurrentFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
-                        Dim logFileReader As StreamReader = New StreamReader(logFileStream)
-                        logFileStream.SetLength(0)
-                        logFileReader.Close()
-                        logFileStream.Close()
-                    End If
-                    Main.LogBrowserData = True
-                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
-                    GeckoPreferences.Default("logging.nsHttp") = 3
+
                     GeckoFX.WebBrowser1.Navigate(textBox1.Text)
-
-                    Do Until Main.b = True
-                        Main.Text = "Status: loading ..."
-                        Main.Invalidate()
-                        StatusLabel.Text = "Status: loading ..."
-                        Pause(1)
-                    Loop
-
-                    Main.LogBrowserData = False
-                    GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
-                    GeckoPreferences.Default("logging.nsHttp") = 0
-
-                    Dim AoD_Cookie As String = Nothing
-                    Dim AoDhttpLog As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
-                    Dim AoDhttpLogFile As String = Nothing
-                    For Each File In AoDhttpLog.GetFiles()
-                        If InStr(File.FullName, "gecko-network.txt") Then
-                            AoDhttpLogFile = File.FullName
-                            Exit For
-                        End If
-                    Next
-                    Dim AoDlogFileStream As FileStream = New FileStream(AoDhttpLogFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
-                    Dim AoDlogFileReader As StreamReader = New StreamReader(AoDlogFileStream)
-                    Dim line As String = Nothing
-                    Dim HTMLString As String = Nothing
-                    line = AoDlogFileReader.ReadLine
-
-                    While (line IsNot Nothing)
-                        line = AoDlogFileReader.ReadLine
-                        If CBool(InStr(line, "Cookie: ")) And CBool(InStr(line, "remember_user_token=")) Then
-                            AoD_Cookie = "Cookie: " + line.Split(New String() {"Cookie: "}, System.StringSplitOptions.RemoveEmptyEntries)(1)
-                            Exit While
-                        End If
-                    End While
-                    AoDlogFileReader.Close()
-                    AoDlogFileStream.Close()
-                    If AoD_Cookie = Nothing Then
-
-                        MsgBox(Main.LoginReminder)
-                        Main.Text = "Crunchyroll Downloader"
-                        Main.Invalidate()
-                        StatusLabel.Text = "Status: idle"
-                        Exit Sub
-
-                    End If
-                    'MsgBox(AoD_Cookie)
-                    'Main.WebbrowserCookie = AoD_Cookie
-                    If CBool(InStr(Main.WebbrowserText, "/OmU/1080/hlsfirst/")) Then
-                        Dim OmUStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/OmU/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim OmUStreamSplitToken() As String = OmUStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                        Dim OmUStreamSplitEpisodeIndex() As String = OmUStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim OmUStreamSplitEpisodeIndex2() As String = OmUStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim m3u8Strings As String = Nothing
-                        'I/nsHttp   Cookie: 
-
-                        Try
-                            Using client As New WebClient()
-                                client.Encoding = System.Text.Encoding.UTF8
-                                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                                client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
-                                client.Headers.Add("Accept-Encoding: gzip, deflate, br")
-                                client.Headers.Add("X-Requested-With: XMLHttpRequest")
-                                client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
-                                'MsgBox(OmUStreamSplitEpisodeIndex(1))
-                                m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
-                                '("Sub: " + m3u8Strings)
-                            End Using
-                        Catch ex As Exception
-                            MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
-                        End Try
-                        If m3u8Strings = Nothing Then
-                        Else
-
-                            Dim OmUStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
-                            For i As Integer = 1 To OmUStreams.Count - 1
-                                AoD_OmUList.Add(OmUStreams(i))
-                            Next
-                        End If
-
-                    End If
-
-                    If CBool(InStr(Main.WebbrowserText, "/Dub/1080/hlsfirst/")) Then
-                        Dim DubStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/Dub/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim DubStreamSplitToken() As String = DubStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim DubStreamSplitEpisodeIndex() As String = DubStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim DubStreamSplitEpisodeIndex2() As String = DubStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim m3u8Strings As String = Nothing
-
-                        Try
-                            Using client As New WebClient()
-                                client.Encoding = System.Text.Encoding.UTF8
-                                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                                client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
-                                client.Headers.Add("Accept-Encoding: gzip, deflate, br")
-                                client.Headers.Add("X-Requested-With: XMLHttpRequest")
-                                client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
-                                'MsgBox(DubStreamSplitEpisodeIndex(1))
-                                m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
-                                'MsgBox("Dub: " + m3u8Strings)
-                            End Using
-                        Catch ex As Exception
-                            MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
-                        End Try
-                        If m3u8Strings = Nothing Then
-                        Else
-
-                            Dim DubStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
-                            For i As Integer = 1 To DubStreams.Count - 1
-                                AoD_DubList.Add(DubStreams(i))
-                            Next
-                        End If
-
-
-                    End If
-                    AoD_Mode = True
-                    If AoD_DubList.Count And AoD_OmUList.Count > 0 Then
-                        ComboBox1.Items.Clear()
-                        GroupBox3.Visible = False
-                        groupBox2.Visible = True
-                        groupBox1.Visible = False
-                        ComboBox1.Enabled = True
-                        comboBox3.Enabled = True
-                        comboBox4.Enabled = True
-                        ComboBox1.Items.Add("Dub")
-                        ComboBox1.Items.Add("OmU")
-                        FillAoDDropDown()
-                    ElseIf AoD_DubList.Count Or AoD_OmUList.Count > 0 Then
-                        ComboBox1.Items.Clear()
-                        GroupBox3.Visible = False
-                        groupBox2.Visible = True
-                        groupBox1.Visible = False
-                        ComboBox1.Enabled = False
-                        comboBox3.Enabled = True
-                        comboBox4.Enabled = True
-                        FillAoDDropDown()
-                    End If
+#End Region
 
                 ElseIf CBool(InStr(textBox1.Text, "Test=true")) Then
                     GeckoFX.WebBrowser1.Navigate(textBox1.Text)
                     'Else 'If CBool(InStr(textBox1.Text, "vrv.co")) Then
                 ElseIf CBool(InStr(textBox1.Text, "https://")) Then
                     If MessageBox.Show("This in NOT a Crunchyroll URL, try anyway?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                        Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
-
-                        For Each File In FileLocation.GetFiles()
-                            If InStr(File.FullName, "gecko-network.txt") Then
-                                Try
-                                    File.Delete()
-                                Catch ex As Exception
-                                End Try
-                            End If
-                        Next
-
-                        Main.LogBrowserData = True
-                        GeckoPreferences.Default("logging.config.LOG_FILE") = "gecko-network.txt"
-                        GeckoPreferences.Default("logging.nsHttp") = 3
-
-                        For Each File In FileLocation.GetFiles()
-                            If InStr(File.FullName, "gecko-network.txt") Then
-                                Main.GeckoLogFile = File.FullName
-                                Exit For
-                            End If
-                        Next
-                        If Main.GeckoLogFile = Nothing Then
-                            StatusLabel.Text = "Status: error reading network traffic"
-                            Exit Sub
-                        Else
-                            'MsgBox(Main.GeckoLogFile)
-                            Dim logFileStream As FileStream = New FileStream(Main.GeckoLogFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
-                            Dim logFileReader As StreamReader = New StreamReader(logFileStream)
-                            logFileStream.SetLength(0)
-                            logFileReader.Close()
-                            logFileStream.Close()
-                        End If
-
+                        Main.b = False
                         GeckoFX.WebBrowser1.Navigate(textBox1.Text)
                         StatusLabel.Text = "Status: looking for non CR video file"
-                        Main.b = False
+
                     Else
                         Exit Sub
                         pictureBox4.Enabled = True
@@ -449,6 +294,8 @@ Public Class Anime_Add
                 MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
             End Try
         ElseIf groupBox2.Visible = True Then
+
+
             If Mass_DL_Cancel = True Then
                 Mass_DL_Cancel = False
                 GroupBox3.Visible = False
@@ -457,6 +304,18 @@ Public Class Anime_Add
                 Main.b = True
                 groupBox1.Visible = True
                 pictureBox4.Image = My.Resources.main_button_download_default
+            ElseIf CBool(InStr(Main.WebbrowserURL, "beta.crunchyroll.com")) = True Then
+
+                StatusLabel.Text = "Status: idle"
+                pictureBox4.Image = My.Resources.add_mass_running_cancel
+                Mass_DL_Cancel = True
+                PictureBox1.Enabled = False
+                PictureBox1.Visible = False
+                Main.DownloadBetaSeasons()
+                comboBox4.Enabled = False
+                comboBox3.Enabled = False
+                ComboBox1.Enabled = False
+
             ElseIf AoD_Mode = True Then
                 If AoD_DL_running = False Then
                     If comboBox3.SelectedIndex < 0 And comboBox4.SelectedIndex < 0 Then
@@ -503,8 +362,9 @@ Public Class Anime_Add
                 comboBox3.Enabled = False
                 ComboBox1.Enabled = False
             End If
+
         ElseIf GroupBox3.Visible = True Then
-            GroupBox3.Visible = False
+                GroupBox3.Visible = False
             groupBox2.Visible = False
             groupBox1.Visible = True
             List_DL_Cancel = False
@@ -514,34 +374,110 @@ Public Class Anime_Add
         pictureBox4.Enabled = True
     End Sub
 
+    Public Sub ProcessAoD()
+
+        AoD_DubList.Clear()
+        AoD_OmUList.Clear()
+        If AoD_Cookie = Nothing Then
+
+            MsgBox(Main.LoginReminder)
+            Main.Text = "Crunchyroll Downloader"
+            Main.Invalidate()
+            StatusLabel.Text = "Status: idle"
+            Exit Sub
+
+        End If
+
+        If CBool(InStr(Main.WebbrowserText, "/OmU/1080/hlsfirst/")) Then
+            Dim OmUStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/OmU/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim OmUStreamSplitToken() As String = OmUStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            Dim OmUStreamSplitEpisodeIndex() As String = OmUStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim OmUStreamSplitEpisodeIndex2() As String = OmUStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim m3u8Strings As String = Nothing
+
+            Try
+                Using client As New WebClient()
+                    client.Encoding = System.Text.Encoding.UTF8
+                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
+                    client.Headers.Add("Accept-Encoding: gzip, deflate, br")
+                    client.Headers.Add("X-Requested-With: XMLHttpRequest")
+                    client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
+                    'MsgBox(OmUStreamSplitEpisodeIndex(1))
+                    m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
+                    '("Sub: " + m3u8Strings)
+                End Using
+            Catch ex As Exception
+                MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
+            End Try
+            If m3u8Strings = Nothing Then
+            Else
+
+                Dim OmUStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
+                For i As Integer = 1 To OmUStreams.Count - 1
+                    AoD_OmUList.Add(OmUStreams(i))
+                Next
+            End If
+
+        End If
+
+        If CBool(InStr(Main.WebbrowserText, "/Dub/1080/hlsfirst/")) Then
+            Dim DubStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/Dub/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim DubStreamSplitToken() As String = DubStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim DubStreamSplitEpisodeIndex() As String = DubStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim DubStreamSplitEpisodeIndex2() As String = DubStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim m3u8Strings As String = Nothing
+
+            Try
+                Using client As New WebClient()
+                    client.Encoding = System.Text.Encoding.UTF8
+                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
+                    client.Headers.Add("Accept-Encoding: gzip, deflate, br")
+                    client.Headers.Add("X-Requested-With: XMLHttpRequest")
+                    client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
+                    'MsgBox(DubStreamSplitEpisodeIndex(1))
+                    m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
+                    'MsgBox("Dub: " + m3u8Strings)
+                End Using
+            Catch ex As Exception
+                MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
+            End Try
+            If m3u8Strings = Nothing Then
+            Else
+
+                Dim DubStreams() As String = m3u8Strings.Split(New String() {My.Resources.AoD_files}, System.StringSplitOptions.RemoveEmptyEntries)
+                For i As Integer = 1 To DubStreams.Count - 1
+                    AoD_DubList.Add(DubStreams(i))
+                Next
+            End If
 
 
-    'Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, ComboBox2.DrawItem, comboBox3.DrawItem, comboBox4.DrawItem
-    '    Dim CB As ComboBox = sender
-    '    'CB.BackColor = Color.DarkGray
-    '    If Main.DarkModeValue = True Then
-    '        If e.Index >= 0 Then
-    '            Using st As New StringFormat With {.Alignment = StringAlignment.Center}
-    '                ' e.DrawBackground()
-    '                ' e.DrawFocusRectangle()
-    '                e.Graphics.FillRectangle(Brushes.Black, e.Bounds)
-    '                e.Graphics.DrawString(CB.Items(e.Index).ToString, e.Font, SystemBrushes.ControlLightLight, e.Bounds, st)
-
-    '            End Using
-    '        End If
-    '    Else
-    '        If e.Index >= 0 Then
-    '            Using st As New StringFormat With {.Alignment = StringAlignment.Center}
-    '                ' e.DrawBackground()
-    '                ' e.DrawFocusRectangle()
-    '                e.Graphics.FillRectangle(SystemBrushes.ControlLightLight, e.Bounds)
-    '                e.Graphics.DrawString(CB.Items(e.Index).ToString, e.Font, Brushes.Black, e.Bounds, st)
-
-    '            End Using
-    '        End If
-    '    End If
-
-    'End Sub
+        End If
+        AoD_Mode = True
+        If AoD_DubList.Count And AoD_OmUList.Count > 0 Then
+            ComboBox1.Items.Clear()
+            GroupBox3.Visible = False
+            groupBox2.Visible = True
+            groupBox1.Visible = False
+            ComboBox1.Enabled = True
+            comboBox3.Enabled = True
+            comboBox4.Enabled = True
+            ComboBox1.Items.Add("Dub")
+            ComboBox1.Items.Add("OmU")
+            FillAoDDropDown()
+        ElseIf AoD_DubList.Count Or AoD_OmUList.Count > 0 Then
+            ComboBox1.Items.Clear()
+            GroupBox3.Visible = False
+            groupBox2.Visible = True
+            groupBox1.Visible = False
+            ComboBox1.Enabled = False
+            comboBox3.Enabled = True
+            comboBox4.Enabled = True
+            FillAoDDropDown()
+        End If
+    End Sub
 
     Private Sub PictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
         If Mass_DL_Cancel = True Then
@@ -578,9 +514,40 @@ Public Class Anime_Add
     End Sub
 
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
-        If AoD_Mode = False Then
+        If CBool(InStr(Main.WebbrowserURL, "beta.crunchyroll.com")) = True Then
+            comboBox3.Items.Clear()
+            comboBox4.Items.Clear()
+            comboBox3.Enabled = True
+            comboBox4.Enabled = True
+            Dim SeasonSplit() As String = Main.CrBetaMass.Split(New String() {Chr(34) + "id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-            'MsgBox("Test")
+            Dim SeasonSplit2() As String = SeasonSplit(ComboBox1.SelectedIndex + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            Dim EpisodeJsonURL As String = "https://beta-api.crunchyroll.com/cms/v2/DE/M3/crunchyroll/episodes?season_id=" + SeasonSplit2(0) + "&locale=" + Main.CrBetaMassParameters
+            Dim EpisodeJson As String = Nothing
+            Debug.WriteLine(EpisodeJsonURL)
+
+            Try
+                Using client As New WebClient()
+                    client.Encoding = System.Text.Encoding.UTF8
+                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    EpisodeJson = client.DownloadString(EpisodeJsonURL)
+                End Using
+            Catch ex As Exception
+                Debug.WriteLine("error- getting EpisodeJson data")
+                'Exit Sub
+            End Try
+            Main.CrBetaMassEpisodes = EpisodeJson
+            Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = 1 To EpisodeSplit.Count - 1
+                Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
+                comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
+            Next
+
+        ElseIf AoD_Mode = False Then
+
+            'MsgBox(Main.WebbrowserURL)
             comboBox3.Items.Clear()
             comboBox4.Items.Clear()
             comboBox3.Enabled = True

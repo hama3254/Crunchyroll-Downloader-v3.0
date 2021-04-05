@@ -14,6 +14,7 @@ Public Class network_scan
     Dim SubtitleFormat As String = Nothing
 
     Private Sub network_scan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ComboBox2.Enabled = False
         Manager.Owner = Me
         Me.StyleManager = Manager
         Btn_Close.Image = Main.CloseImg
@@ -85,6 +86,7 @@ Public Class network_scan
         ComboBox3.Text = Nothing
         ComboBox2.Items.Clear()
         ComboBox2.Text = Nothing
+        ComboBox2.Enabled = True
         SubtitleFormat = Nothing
         pictureBox4.Enabled = False
         pictureBox4.Image = My.Resources.main_button_download_deactivate
@@ -281,8 +283,37 @@ Public Class network_scan
             Catch ex As Exception
             End Try
 
+            Dim m3u8Final As String = "-i " + Chr(34) + RequestURL + Chr(34) + " -map " + RequestMap + " -map 0:a" + Main.ffmpeg_command
 
-            Dim m3u8Final As String = "-headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + RequestURL + Chr(34) + " -map " + RequestMap + " -map 0:a" + Main.ffmpeg_command
+            If Main.HybridMode = True Then
+                Dim client As New WebClient
+                client.Encoding = System.Text.Encoding.UTF8
+                Dim text As String = client.DownloadString(RequestURL)
+
+                If InStr(text, "RESOLUTION=") Then 'master m3u8 no fragments 
+                    Dim new_m3u8() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+                    For i2 As Integer = 0 To new_m3u8.Count - 1
+
+                        'MsgBox("x" + Main.Resu.ToString)
+                        If CBool(InStr(new_m3u8(i2), "x" + RequestReso.ToString)) = True Then
+
+                            m3u8Final = "-i " + Chr(34) + new_m3u8(i2 + 1) + Chr(34) + Main.ffmpeg_command
+
+
+                            Exit For
+
+                        End If
+
+                    Next
+
+                End If
+
+
+            End If
+
+
+
+
             'MsgBox(m3u8Final)
             Dim DisplayReso As String = RequestReso.ToString + "p"
             Dim Pfad2 As String = Chr(34) + FilePfad + Main.VideoFormat + Chr(34)

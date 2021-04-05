@@ -383,9 +383,9 @@ Partial Class Anime_Add
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Close)
         Me.Controls.Add(Me.pictureBox4)
+        Me.Controls.Add(Me.groupBox2)
         Me.Controls.Add(Me.groupBox1)
         Me.Controls.Add(Me.GroupBox3)
-        Me.Controls.Add(Me.groupBox2)
         Me.Name = "Anime_Add"
         Me.Padding = New System.Windows.Forms.Padding(10, 60, 20, 20)
         Me.Text = "Add Video"

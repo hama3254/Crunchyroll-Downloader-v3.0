@@ -40,6 +40,7 @@ Partial Class Main
         Me.MetroStyleExtender1 = New MetroFramework.Components.MetroStyleExtender(Me.components)
         Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
         Me.Btn_min = New System.Windows.Forms.PictureBox()
+        Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         CType(Me.Btn_add, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Btn_Settings, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -153,6 +154,9 @@ Partial Class Main
         Me.Btn_min.Name = "Btn_min"
         Me.Btn_min.TabStop = False
         '
+        'BackgroundWorker1
+        '
+        '
         'Main
         '
         Me.ApplyImageInvert = True
@@ -202,4 +206,5 @@ Partial Class Main
     Friend WithEvents MetroStyleExtender1 As MetroFramework.Components.MetroStyleExtender
     Friend WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
     Private WithEvents Btn_min As PictureBox
+    Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
 End Class

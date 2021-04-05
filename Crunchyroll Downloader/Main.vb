@@ -16,6 +16,10 @@ Public Class Main
     Inherits MetroForm
 
     Dim HTML As String = Nothing
+    Public CrBetaMass As String = Nothing
+    Public CrBetaMassEpisodes As String = Nothing
+    Public CrBetaMassParameters As String = Nothing
+    Public BlockList As List(Of String)
 
     Public Manager As New MetroStyleManager
 
@@ -591,6 +595,30 @@ Public Class Main
             SubSprache = "enUS"
         End If
 
+        BlockList = New List(Of String)
+        BackgroundWorker1.RunWorkerAsync()
+
+
+    End Sub
+
+    Private Sub BackgroundWorker1_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorker1.DoWork
+        Try
+
+            Dim fileEntries As String() = Directory.GetFiles(Application.StartupPath + "\AdBlock", "*.txt")
+            ' Process the list of .txt files found in the directory. '
+            Dim fileName As String
+
+            For Each fileName In fileEntries
+                If (System.IO.File.Exists(fileName)) Then
+                    BlockList.AddRange(System.IO.File.ReadAllLines(fileName).OrderBy(Function(x) Asc(x)).ToList)
+
+                End If
+
+            Next
+
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Public Sub ListItemAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String, Optional Service As String = "CR") ', ByVal AudioLang As String)
@@ -1001,32 +1029,52 @@ Public Class Main
 
     Public Function HardSubValuesToDisplay(ByVal HardSub As String) As String
         Try
-            If HardSub = Chr(34) + "deDE" + Chr(34) Then
+            If HardSub = "deDE" Then
                 Return "Deutsch"
-            ElseIf HardSub = Chr(34) + "enUS" + Chr(34) Then
+            ElseIf HardSub = "enUS" Then
                 Return "English"
-            ElseIf HardSub = Chr(34) + "ptBR" + Chr(34) Then
+            ElseIf HardSub = "ptBR" Then
                 Return "Português (Brasil)"
-            ElseIf HardSub = Chr(34) + "esLA" + Chr(34) Then
+            ElseIf HardSub = "esLA" Then
                 Return "Español (LA)"
-            ElseIf HardSub = Chr(34) + "frFR" + Chr(34) Then
+            ElseIf HardSub = "frFR" Then
                 Return "Français (France)"
-            ElseIf HardSub = Chr(34) + "arME" + Chr(34) Then
+            ElseIf HardSub = "arME" Then
                 Return "العربية (Arabic)"
-            ElseIf HardSub = Chr(34) + "ruRU" + Chr(34) Then
+            ElseIf HardSub = "ruRU" Then
                 Return "Русский (Russian)"
-            ElseIf HardSub = Chr(34) + "itIT" + Chr(34) Then
+            ElseIf HardSub = "itIT" Then
                 Return "Italiano (Italian)"
-            ElseIf HardSub = Chr(34) + "esES" + Chr(34) Then
+            ElseIf HardSub = "esES" Then
                 Return "Español (España)"
-            ElseIf HardSub = Chr(34) + "jaJP" + Chr(34) Then
+            ElseIf HardSub = "jaJP" Then
                 Return "Japanese"
-            ElseIf HardSub = Chr(34) + "en" + Chr(34) Then
+            ElseIf HardSub = "en" Then
                 Return "English"
-            ElseIf HardSub = Chr(34) + "pt" + Chr(34) Then
+            ElseIf HardSub = "pt" Then
                 Return "Português (Brasil)"
-            ElseIf HardSub = Chr(34) + "es" + Chr(34) Then
+            ElseIf HardSub = "es" Then
                 Return "Español (LA)"
+            ElseIf HardSub = "de-DE" Then
+                Return "Deutsch"
+            ElseIf HardSub = "en-US" Then
+                Return "English"
+            ElseIf HardSub = "pt-BR" Then
+                Return "Português (Brasil)"
+            ElseIf HardSub = "es-LA" Then
+                Return "Español (LA)"
+            ElseIf HardSub = "fr-FR" Then
+                Return "Français (France)"
+            ElseIf HardSub = "ar-ME" Then
+                Return "العربية (Arabic)"
+            ElseIf HardSub = "ru-RU" Then
+                Return "Русский (Russian)"
+            ElseIf HardSub = "it-IT" Then
+                Return "Italiano (Italian)"
+            ElseIf HardSub = "es-ES" Then
+                Return "Español (España)"
+            ElseIf HardSub = "ja-JP" Then
+                Return "Japanese"
             Else
                 Return CB_SuB_Nothing
             End If
@@ -1059,9 +1107,11 @@ Public Class Main
                 Return "spa"
             ElseIf HardSub = "jaJP" Then
                 Return "jpn"
+            Else
+                Return "chi"
             End If
 
-            Return "chi"
+
 
         Catch ex As Exception
             Return Nothing
@@ -1255,13 +1305,14 @@ Public Class Main
                 ' Nein! Jetzt erstellen...
                 Try
                     Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
+                    Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
+
                 Catch ex As Exception
                     ' Ordner wurde nich erstellt
                     Pfad2 = Pfad + "\" + CR_FilenName + VideoFormat
                 End Try
             End If
 
-            Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
 
 #End Region
 #Region "Subs"
@@ -1409,9 +1460,9 @@ Public Class Main
                         End If
                         SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + 1).ToString
                         If SoftSubMergeMetatata = Nothing Then
-                            SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSubs2(i) + Chr(34)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSubs2(i) + Chr(34)) + Chr(34)
+                            SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
                         Else
-                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSubs2(i) + Chr(34)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSubs2(i) + Chr(34)) + Chr(34)
+                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
                         End If
 
                     Next
@@ -1422,8 +1473,8 @@ Public Class Main
                 Else
                     For i As Integer = 0 To SoftSubs2.Count - 1
                         Me.Invoke(New Action(Function()
-                                                 Anime_Add.StatusLabel.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(Chr(34) + SoftSubs2(i) + Chr(34))
-                                                 Me.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(Chr(34) + SoftSubs2(i) + Chr(34))
+                                                 Anime_Add.StatusLabel.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(i))
+                                                 Me.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(i))
                                                  Me.Invalidate()
                                                  Return Nothing
                                              End Function))
@@ -1539,7 +1590,7 @@ Public Class Main
             Dim thumbnail3 As String = thumbnail2(0).Replace("\/", "/")
 #End Region
 #Region "<li> constructor"
-            Dim Subsprache3 As String = HardSubValuesToDisplay(SubSprache2)
+            Dim Subsprache3 As String = HardSubValuesToDisplay(SubSprache2.Replace(Chr(34), ""))
             Dim ResoHTMLDisplay As String = Nothing
             If ResoBackString = Nothing Then
                 ResoHTMLDisplay = Reso.ToString + "p"
@@ -1562,7 +1613,7 @@ Public Class Main
             End If
             Pfad_DL = Pfad2
             Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + HardSubValuesToDisplay(Chr(34) + CR_Anime_Dub + Chr(34))
+            Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + HardSubValuesToDisplay(CR_Anime_Dub)
 
             If SubsOnly = True Then
                 URL_DL = "-i [Subtitles only]"
@@ -1606,41 +1657,697 @@ Public Class Main
             Else
                 MsgBox(ex.ToString, MsgBoxStyle.Information)
 
-                'If MessageBox.Show(Error_unknown, "Error!", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                '    Dim CCC As String() = WebbrowserText.Split(New String() {My.Resources.CC_String}, System.StringSplitOptions.RemoveEmptyEntries)
-                '    Dim CCC1 As String() = CCC(1).Split(New String() {".gif" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                '    Dim SaveString As String = "Operating System: " + My.Computer.Info.OSFullName + vbNewLine + vbNewLine + "Crunchyroll URL: " + WebbrowserURL + vbNewLine + vbNewLine + "subtitle language: " + SubSprache + vbNewLine + vbNewLine + "video resolution: " + Reso.ToString + vbNewLine + vbNewLine + "error message: " + ex.ToString + vbNewLine + ex.StackTrace.ToString + vbNewLine + vbNewLine + "softsubs enabled?: " + SoftSubs.ToString + vbNewLine + vbNewLine + "Crunchyroll Downloader Version: " + Application.ProductVersion + vbNewLine + vbNewLine + "detected location from Crunchyroll: " + CCC1(0)
-
-                '    File.WriteAllText("Error " + DateTime.Now.ToString("dd.MM.yyyy HH.mm") + ".txt", SaveString)
-                '    Dim Request As HttpWebRequest = CType(WebRequest.Create("https://docs.google.com/forms/d/e/1FAIpQLSdR1QI19Lh-c-XO_iXNkDwsTUZhCMEu84boQkgW5AOBUxyiyA/formResponse"), HttpWebRequest)
-                '    Request.Method = "POST"
-                '    Request.ContentType = "application/x-www-form-urlencoded"
-                '    Dim Post As String = "entry.240217066=" + My.Computer.Info.OSFullName + "&entry.358200455=" + WebbrowserURL + "&entry.618751432=" + SubSprache + "&entry.924054550=" + Reso.ToString + "&entry.679000538=" + ex.ToString + "&entry.1789515979=" + SoftSubsString + "&entry.683247287=" + Application.ProductVersion + "&entry.377264428=" + CCC1(0) + "&fvv=1&draftResponse=[null,null," + Chr(34) + "-3005021683493723280" + Chr(34) + "] &pageHistory=0&fbzx=-3005021683493723280"
-                '    Dim byteArray() As Byte = Encoding.UTF8.GetBytes(Post)
-                '    Request.ContentLength = byteArray.Length
-                '    Dim DataStream As Stream = Request.GetRequestStream()
-                '    DataStream.Write(byteArray, 0, byteArray.Length)
-                '    DataStream.Close()
-                '    Dim Response As HttpWebResponse = Request.GetResponse()
-                '    DataStream = Response.GetResponseStream()
-                '    Dim reader As New StreamReader(DataStream)
-                '    Dim ServerResponse As String = reader.ReadToEnd()
-                '    reader.Close()
-                '    DataStream.Close()
-                '    Response.Close()
-                '    Dim Version_Check As String() = ServerResponse.Split(New String() {"<div class=" + Chr(34) + "freebirdFormviewerViewResponseConfirmationMessage" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
-                '    Dim Version_Check2 As String() = Version_Check(1).Split(New String() {"</div>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                '    'If Application.ProductVersion = Version_Check2(0) Then
-                '    'Else
-                '    'MsgBox("A newer version is available: v" + Version_Check2(0))
-                '    'End If
-                'End If
             End If
 
         End Try
     End Sub
 
+#Region "CR-Beta"
+    Public Async Sub DownloadBetaSeasons()
+        Try
+            Dim ListOfEpisodes As New List(Of String)
+
+            Dim EpisodeSplit() As String = CrBetaMassEpisodes.Split(New String() {Chr(34) + "id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = 1 To EpisodeSplit.Count - 1
+                Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                ListOfEpisodes.Add("https://beta.crunchyroll.com/watch/" + EpisodeSplit2(0) + "/")
+            Next
+
+
+            Dim First As Integer = 0
+            Dim Last As Integer = 0
+
+            If Anime_Add.comboBox4.SelectedIndex > Anime_Add.comboBox3.SelectedIndex Then
+                First = Anime_Add.comboBox3.SelectedIndex
+                Last = Anime_Add.comboBox4.SelectedIndex
+            ElseIf Anime_Add.comboBox4.SelectedIndex = Anime_Add.comboBox3.SelectedIndex Then
+
+                Exit Sub
+            Else
+                First = Anime_Add.comboBox4.SelectedIndex
+                Last = Anime_Add.comboBox4.SelectedIndex
+            End If
+
+
+
+            Dim Anzahl As Integer = Anime_Add.comboBox4.SelectedIndex - Anime_Add.comboBox3.SelectedIndex
+            For i As Integer = First To Last
+                For e As Integer = 0 To Integer.MaxValue
+                    If Grapp_RDY = True Then
+                        Try
+                            Dim ItemFinshedCount As Integer = 0
+                            For i2 As Integer = 0 To ListView1.Items.Count - 1
+                                If ItemList(i2).GetIsStatusFinished() = True Then
+                                    ItemFinshedCount = ItemFinshedCount + 1
+                                End If
+                            Next
+                            RunningDownloads = ListView1.Items.Count - ItemFinshedCount
+
+                        Catch ex As Exception
+                            RunningDownloads = ListView1.Items.Count
+                        End Try
+
+                        If RunningDownloads < MaxDL Then
+                            Exit For
+                        Else
+                            'MsgBox(e)
+                            Await Task.Delay(1000)
+                        End If
+                    Else
+                        Await Task.Delay(5000)
+                    End If
+                Next
+                If Anime_Add.Mass_DL_Cancel = False Then
+                    b = True
+                    Exit For
+                    Grapp_Abord = True
+                    'MsgBox("dl_abourd")
+                End If
+                If UseQueue = True Then
+                    Anime_Add.ListBox1.Items.Add(ListOfEpisodes(i))
+                    Anime_Add.Add_Display.ForeColor = Color.FromArgb(9248044)
+                    Pause(1)
+                    Anime_Add.Add_Display.ForeColor = Color.Black
+
+                Else
+                    Grapp_RDY = False
+                    b = False
+                    GeckoFX.WebBrowser1.Navigate(ListOfEpisodes(i))
+                End If
+
+
+                Anime_Add.Add_Display.Text = (i - First + 1).ToString + " / " + (Last - First + 1).ToString
+            Next
+
+
+        Catch ex As Exception
+            If Debug2 = True Then
+            MsgBox(ex.ToString)
+        End If
+        Anime_Add.comboBox4.Items.Clear()
+        Anime_Add.comboBox3.Items.Clear()
+        Aktuell = 0.ToString
+        Gesamt = 0.ToString
+
+        Anime_Add.groupBox1.Visible = True
+        Anime_Add.groupBox2.Visible = False
+        Anime_Add.GroupBox3.Visible = False
+        Anime_Add.Mass_DL_Cancel = False
+        Anime_Add.pictureBox4.Image = My.Resources.main_button_download_default
+        End Try
+        Pause(5)
+        Anime_Add.groupBox1.Visible = True
+        Anime_Add.groupBox2.Visible = False
+        Anime_Add.GroupBox3.Visible = False
+        Anime_Add.Mass_DL_Cancel = False
+        Anime_Add.pictureBox4.Image = My.Resources.main_button_download_default
+    End Sub
+    Public Sub GetBetaSeasons(ByVal JsonUrl As String)
+
+        Anime_Add.groupBox2.Visible = True
+        Anime_Add.PictureBox1.Enabled = True
+        Anime_Add.PictureBox1.Visible = True
+        Anime_Add.groupBox1.Visible = False
+        Anime_Add.ComboBox1.Items.Clear()
+        Anime_Add.comboBox3.Items.Clear()
+        Anime_Add.comboBox4.Items.Clear()
+        Anime_Add.ComboBox1.Text = Nothing
+        Anime_Add.comboBox3.Text = Nothing
+        Anime_Add.comboBox4.Text = Nothing
+        Anime_Add.ComboBox1.Enabled = True
+        Anime_Add.comboBox3.Enabled = True
+        Anime_Add.comboBox4.Enabled = True
+
+        Dim SeasonJson As String = Nothing
+
+        Try
+            Using client As New WebClient()
+                client.Encoding = System.Text.Encoding.UTF8
+                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                SeasonJson = client.DownloadString(JsonUrl)
+            End Using
+        Catch ex As Exception
+            Debug.WriteLine("error- getting SeasonJson data")
+        End Try
+        Dim ParameterSplit() As String = JsonUrl.Split(New String() {"&locale="}, System.StringSplitOptions.RemoveEmptyEntries)
+
+        CrBetaMassParameters = ParameterSplit(1)
+        CrBetaMass = SeasonJson
+
+        Dim SeasonSplit() As String = SeasonJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        For i As Integer = 1 To SeasonSplit.Count - 1
+            Dim SeasonSplit2() As String = SeasonSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Anime_Add.ComboBox1.Items.Add(SeasonSplit2(0))
+        Next
+
+
+
+    End Sub
+
+
+    Public Sub GetBetaVideo(ByVal Streams As String, ByVal WebsiteURL As String)
+
+        Try
+            Grapp_RDY = False
+
+            Dim CR_series_title As String = Nothing
+            Dim CR_season_number As String = Nothing
+            Dim CR_episode As String = Nothing
+            Dim CR_season_title As String = Nothing
+            Dim CR_title As String = Nothing
+            Dim CR_audio_locale As String = Nothing
+
+#Region "Name + Pfad"
+            Dim Pfad2 As String
+            Dim TextBox2_Text As String = Nothing
+            Dim CR_FilenName As String = Nothing
+            Dim ObjectJson As String = Nothing
+
+            Me.Invoke(New Action(Function()
+                                     TextBox2_Text = Anime_Add.textBox2.Text
+                                     Return Nothing
+                                 End Function))
+#Region "Name von Crunchyroll"
+            If TextBox2_Text = Nothing Or TextBox2_Text = "Name of the Anime" Then
+                Dim ObjectsURLBuilder() As String = Streams.Split(New String() {"videos"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ObjectsURLBuilder2() As String = ObjectsURLBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ObjectsURLBuilder3() As String = WebsiteURL.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim ObjectsURL As String = ObjectsURLBuilder(0) + "objects/" + ObjectsURLBuilder4(0) + ObjectsURLBuilder2(1)
+
+                Debug.WriteLine(ObjectsURL)
+
+                Try
+                    Using client As New WebClient()
+                        client.Encoding = System.Text.Encoding.UTF8
+                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                        ObjectJson = client.DownloadString(ObjectsURL)
+                    End Using
+                Catch ex As Exception
+                    Debug.WriteLine("error- getting name data")
+                    'Exit Sub
+                End Try
+
+                My.Computer.Clipboard.SetText(ObjectJson)
+
+                If CBool(InStr(ObjectJson, Chr(34) + "title")) Then ' false on movie true on series
+                    Dim CR_Name_1 As String() = ObjectJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                    CR_title = String.Join(" ", CR_Name_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+
+                End If
+                If CBool(InStr(ObjectJson, "series_title")) Then ' false on movie true on series
+                    Dim CR_Name_1 As String() = ObjectJson.Split(New String() {"series_title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                    CR_series_title = String.Join(" ", CR_Name_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+
+                End If
+                If CBool(InStr(ObjectJson, "season_title")) Then ' false on movie true on series
+                    Dim CR_Name_1 As String() = ObjectJson.Split(New String() {"season_title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                    CR_season_title = String.Join(" ", CR_Name_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+
+                End If
+                If CBool(InStr(ObjectJson, "season_number")) Then ' false on movie true on series
+                    Dim CR_Name_1 As String() = ObjectJson.Split(New String() {"season_number" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                    CR_season_number = String.Join(" ", CR_Name_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+
+                End If
+
+                If CBool(InStr(ObjectJson, "episode")) Then ' false on movie true on series
+                    Dim CR_Name_1 As String() = ObjectJson.Split(New String() {"episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                    CR_episode = String.Join(" ", CR_Name_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+
+                End If
+
+                If Season_Prefix = "[default season prefix]" Then
+                    CR_season_number = CR_season_title
+                Else
+
+                    CR_season_number = Season_Prefix + CR_season_number
+
+                End If
+
+                If Episode_Prefix = "[default episode prefix]" Then
+                    CR_episode = "Episode " + CR_episode
+                Else
+                    CR_episode = Episode_Prefix + CR_episode
+                End If
+
+                If CR_NameMethode = 0 Then 'nummer
+                    If CR_season_number = Nothing Then
+                        CR_FilenName = CR_series_title + " " + CR_episode
+                    Else
+                        CR_FilenName = CR_season_number + " " + CR_episode
+                    End If
+                ElseIf CR_NameMethode = 1 Then 'name
+                    If CR_season_number = Nothing Then
+                        CR_FilenName = CR_series_title + " " + CR_title
+                    Else
+                        CR_FilenName = CR_season_number + " " + CR_title
+                    End If
+                ElseIf CR_NameMethode = 2 Then ' nummer - name
+                    If CR_season_number = Nothing Then
+                        CR_FilenName = CR_series_title + " " + CR_episode + " " + CR_title
+                    Else
+                        CR_FilenName = CR_season_number + " " + CR_episode + " " + CR_title
+                    End If
+                ElseIf CR_NameMethode = 3 Then ' name - nummer
+                    If CR_season_number = Nothing Then
+                        CR_FilenName = CR_series_title + " " + CR_title + " " + CR_episode
+                    Else
+                        CR_FilenName = CR_series_title + " " + CR_title + " " + CR_season_number + " " + CR_episode
+                    End If
+                End If
+
+
+                Debug.WriteLine(CR_FilenName)
+#End Region
+
+            Else
+                CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)) 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
+
+
+            End If
+
+            CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
+            CR_FilenName = RemoveExtraSpaces(CR_FilenName)
+
+            'My.Computer.FileSystem.WriteAllText("log.log", WebbrowserText, False)
+
+            Pfad2 = UseSubfolder(CR_series_title, CR_season_title, Pfad)
+
+            If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
+                ' Nein! Jetzt erstellen...
+                Try
+                    Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
+                    Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
+
+                Catch ex As Exception
+                    ' Ordner wurde nich erstellt
+                    Pfad2 = Pfad + "\" + CR_FilenName + VideoFormat
+                End Try
+            End If
+
+            Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
+
+
+#End Region
+#Region "Subs" 'to be done
+
+            'Dim SoftSubs2 As New List(Of String)
+            'If SoftSubs.Count > 0 Then
+            '    For i As Integer = 0 To SoftSubs.Count - 1
+            '        If CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs(i) + Chr(34) + ",")) Then
+            '            SoftSubs2.Add(SoftSubs(i))
+            '        Else
+            '            'MsgBox("Softsubtitle for " + SoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
+            '        End If
+            '    Next
+
+            'End If
+            'If SubSprache = "None" Then
+            '    If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":null")) Then
+            '        SubSprache2 = "null"
+            '    Else
+            '        Me.Invoke(New Action(Function()
+            '                                 ResoNotFoundString = WebbrowserText
+            '                                 DialogTaskString = "Language"
+            '                                 ErrorDialog.ShowDialog()
+            '                                 Return Nothing
+            '                             End Function))
+            '        If UserCloseDialog = True Then
+            '            Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
+            '        Else
+            '            If ResoBackString = Nothing Then
+            '            Else
+            '                SubSprache2 = ResoBackString
+            '            End If
+            '        End If
+            '        'Throw New System.Exception("Could not find the sub language")
+            '    End If
+
+
+            'Else
+            '    If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
+            '        SubSprache2 = Chr(34) + SubSprache + Chr(34)
+
+            '    ElseIf CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
+            '        If MessageBox.Show("It look like only Softsubtitle are avalibe." + vbNewLine + "Are you want to use Softsubtitle this time instead?", "No Hardsubtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+            '            SubSprache2 = "null"
+            '            SoftSubs2.Add(SubSprache)
+            '        Else
+            '            Throw New System.Exception("Could not find the sub language")
+            '        End If
+
+
+            '    Else
+            '        Me.Invoke(New Action(Function()
+            '                                 ResoNotFoundString = WebbrowserText
+            '                                 DialogTaskString = "Language"
+            '                                 ErrorDialog.ShowDialog()
+            '                                 Return Nothing
+            '                             End Function))
+            '        If UserCloseDialog = True Then
+            '            Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
+            '        Else
+            '            If ResoBackString = Nothing Then
+            '            Else
+            '                SubSprache2 = ResoBackString
+            '            End If
+            '        End If
+            '    End If
+            'End If
+
+
+#End Region
+
+#Region "m3u8 suche"
+
+            Dim VideoJson As String = Nothing
+            Try
+                Using client As New WebClient()
+                    client.Encoding = System.Text.Encoding.UTF8
+                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    VideoJson = client.DownloadString(Streams)
+                End Using
+            Catch ex As Exception
+                Debug.WriteLine("error- getting stream data")
+                Exit Sub
+            End Try
+
+            If CBool(InStr(VideoJson, "audio_locale")) Then ' false on movie true on series
+                Dim CR_audio As String() = VideoJson.Split(New String() {"audio_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim CR_audio2 As String() = CR_audio(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                CR_audio_locale = String.Join(" ", CR_audio2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+
+            End If
+
+            Dim CR_URI_Master As String = Nothing
+            'If SubsOnly = False Then
+            Dim ii As Integer = 0
+            'MsgBox(Chr(34) + "hardsub_lang" + Chr(34) + ":" + SubSprache2 + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))
+
+            Dim CR_VideoJson As String() = VideoJson.Split(New String() {"adaptive_hls"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim CR_VideoJsonHardSubs As String() = CR_VideoJson(1).Split(New String() {"hardsub_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim LangNew As String = ConvertCC(SubSprache)
+            Debug.WriteLine(LangNew)
+            Dim hls_List As New List(Of String)
+            For i As Integer = 0 To CR_VideoJsonHardSubs.Count - 1
+                If InStr(CR_VideoJsonHardSubs(i), LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)) Then
+                    CR_URI_Master = CR_VideoJsonHardSubs(i).Replace(LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34), "").Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)(0)
+                    Exit For
+                End If
+            Next
+            CR_URI_Master = CR_URI_Master.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
+
+            If CBool(InStr(CR_URI_Master, "master.m3u8")) Then
+                    Me.Invoke(New Action(Function()
+                                             Anime_Add.StatusLabel.Text = "Status: m3u8 found, looking for resolution"
+                                             Me.Text = "Status: m3u8 found, looking for resolution"
+                                             Me.Invalidate()
+                                             Return Nothing
+                                         End Function))
+                Else
+                    Throw New System.Exception("Premium Episode")
+                End If
+            'Else
+            '    Me.Invoke(New Action(Function()
+            '                             Anime_Add.StatusLabel.Text = "Status: Substitles only mode - skipped video"
+            '                             Me.Text = "Status: Substitles only mode - skipped video"
+            '                             Me.Invalidate()
+            '                             Return Nothing
+            '                         End Function))
+            'End If
+#End Region
+
+#Region "Download softsub file or build ffmpeg cmd"
+            'Dim SoftSubMergeURLs As String = Nothing
+            'Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a"
+            'Dim SoftSubMergeMetatata As String = Nothing
+
+            'If SoftSubs2.Count > 0 Then
+            '    If MergeSubs = True And SubsOnly = False Then
+            '        Dim DispositionIndex As Integer
+            '        For i As Integer = 0 To SoftSubs2.Count - 1
+            '            Debug.WriteLine(SoftSubs2(i))
+            '            If SoftSubs2(i) = DefaultSubCR Then
+            '                DispositionIndex = i
+            '            End If
+            '            Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            '            Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
+            '            Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
+            '            If SoftSubMergeURLs = Nothing Then
+            '                SoftSubMergeURLs = " -i " + Chr(34) + SoftSub_3 + Chr(34)
+            '            Else
+            '                SoftSubMergeURLs = SoftSubMergeURLs + " -i " + Chr(34) + SoftSub_3 + Chr(34)
+            '            End If
+            '            SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + 1).ToString
+            '            If SoftSubMergeMetatata = Nothing Then
+            '                SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
+            '            Else
+            '                SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
+            '            End If
+
+            '        Next
+            '        If DispositionIndex = Nothing Then
+            '        Else
+            '            SoftSubMergeMetatata = SoftSubMergeMetatata + " -disposition:s:" + DispositionIndex.ToString + " default"
+            '        End If
+            '    Else
+            '        For i As Integer = 0 To SoftSubs2.Count - 1
+            '            Me.Invoke(New Action(Function()
+            '                                     Anime_Add.StatusLabel.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(i))
+            '                                     Me.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(i))
+            '                                     Me.Invalidate()
+            '                                     Return Nothing
+            '                                 End Function))
+            '            Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            '            Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
+            '            Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
+            '            Dim client0 As New WebClient
+            '            client0.Encoding = Encoding.UTF8
+            '            Dim str0 As String = client0.DownloadString(SoftSub_3)
+            '            Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
+            '            Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + " " + SoftSubs2(i) + Path.GetExtension(Pfad3)), "ass")
+            '            'MsgBox(FN)
+            '            If i = 0 Then
+            '                FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
+            '                'MsgBox(FN)
+            '            End If
+            '            Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
+            '            'MsgBox(Pfad4)
+            '            File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+            '            Pause(3)
+            '        Next
+
+            '    End If
+
+            'End If
+#End Region
+
+#Region "lösche doppel download"
+
+            Dim Pfad5 As String = Pfad2.Replace(Chr(34), "")
+            If My.Computer.FileSystem.FileExists(Pfad5) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
+                Me.Invoke(New Action(Function()
+
+                                         Anime_Add.StatusLabel.Text = "Status: The file video already exists."
+                                         Me.Text = "Status: The file video already exists."
+                                         Me.Invalidate()
+                                         Return Nothing
+                                     End Function))
+                If MessageBox.Show("The file " + Pfad5 + " already exists." + vbNewLine + "You want to override it?", "File exists!", MessageBoxButtons.OKCancel) = DialogResult.OK Then
+                    Try
+                        My.Computer.FileSystem.DeleteFile(Pfad5)
+                    Catch ex As Exception
+                    End Try
+                Else
+                    Grapp_RDY = True
+                    Exit Sub
+                End If
+
+            End If
+#End Region
+            If SubsOnly = False Then
+
+                If Reso = 42 And HybridMode = False Then
+                    If MergeSubs = True Then
+                        ' URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
+                        URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command
+                    Else
+                        URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command
+                    End If
+                    'MsgBox(URL_DL)
+                Else
+
+
+                    Dim client As New System.Net.WebClient
+                    client.Encoding = Encoding.UTF8
+                    'MsgBox(CR_URI_Master)
+                    Dim str As String = client.DownloadString(CR_URI_Master)
+                    'MsgBox(str)
+
+                    If CBool(InStr(str, "x" + Reso.ToString + ",")) Then
+                        Reso2 = "x" + Reso.ToString
+                    Else
+                        'MsgBox(str)
+                        If CBool(InStr(str, ResoSave + ",")) Then
+                            Reso2 = Reso2
+                        Else
+                            Me.Invoke(New Action(Function()
+                                                     DialogTaskString = "Resolution"
+                                                     ResoNotFoundString = str
+                                                     ErrorDialog.ShowDialog()
+                                                     Return Nothing
+                                                 End Function))
+
+
+                            'MsgBox(ResoBackString)
+                            If UserCloseDialog = True Then
+                                Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
+                            Else
+                                Reso2 = ResoBackString
+                                ResoSave = ResoBackString
+                            End If
+                        End If
+                    End If
+
+
+                    Dim ffmpeg_url_1 As String() = str.Split(New String() {Reso2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim ffmpeg_url_3 As String() = Nothing
+                    Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
+                    ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+
+                    If MergeSubs = True Then
+                        'URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
+                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command
+
+                    Else
+                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command
+                    End If
+
+                End If
+
+            End If
+#Region "thumbnail"
+            Dim thumbnail As String() = ObjectJson.Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim thumbnail2 As String() = thumbnail(1).Split(New String() {Chr(34) + "}"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+            Dim thumbnail3 As String = "https://" + thumbnail2(0).Replace("\/", "/")
+#End Region
+#Region "<li> constructor"
+            Dim Subsprache3 As String = "none" 'HardSubValuesToDisplay(SubSprache2.Replace(Chr(34), ""))
+            Dim ResoHTMLDisplay As String = Nothing
+            If ResoBackString = Nothing Then
+                ResoHTMLDisplay = Reso.ToString + "p"
+            ElseIf DialogTaskString = "Language" Then
+                ResoHTMLDisplay = Reso.ToString + "p"
+            Else
+                Dim ResoHTML As String() = ResoBackString.Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
+                If ResoHTML.Count > 1 Then
+                    ResoHTMLDisplay = ResoHTML(1) + "p"
+
+                Else
+                    ResoHTMLDisplay = ResoHTML(0) + "p"
+                End If
+            End If
+            Dim L2Name As String = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName_Backup, "[^\w\\-]", " ")
+            If Reso = 42 And HybridMode = False Then
+                ResoHTMLDisplay = "[Auto]"
+            ElseIf Reso = 42 And HybridMode = False Then
+                ResoHTMLDisplay = Reso2
+            End If
+            Pfad_DL = Pfad2
+            Dim L1Name_Split As String() = WebsiteURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + HardSubValuesToDisplay(CR_audio_locale)
+
+            If SubsOnly = True Then
+                URL_DL = "-i [Subtitles only]"
+            End If
+            Me.Invoke(New Action(Function()
+                                     ListItemAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL, Pfad_DL)
+                                     Return Nothing
+                                 End Function))
+            liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_title + " <br> " + CR_season_title + " " + CR_episode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
+            'Form1.RichTextBox1.Text = My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_Anime_Titel + " <br> " + CR_Anime_Staffel + " " + CR_Anime_Folge + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->"
+#End Region
+
+            Grapp_RDY = True
+            Me.Invoke(New Action(Function()
+
+                                     Anime_Add.StatusLabel.Text = "Status: idle"
+                                     Me.Text = "Crunchyroll Downloader"
+                                     Me.Invalidate()
+                                     Return Nothing
+                                 End Function))
+        Catch ex As Exception
+            Me.Invoke(New Action(Function()
+
+                                     Anime_Add.StatusLabel.Text = "Status: idle"
+                                     Me.Text = "Crunchyroll Downloader"
+                                     Me.Invalidate()
+                                     Return Nothing
+                                 End Function))
+            Grapp_RDY = True
+
+            If CBool(InStr(ex.ToString, "Could not find the sub language")) Then
+                MsgBox(Sub_language_NotFound + SubSprache)
+            ElseIf CBool(InStr(ex.ToString, "RESOLUTION Not Found")) Then
+                MsgBox(Resolution_NotFound)
+            ElseIf CBool(InStr(ex.ToString, "Premium Episode")) Then
+                MsgBox(Premium_Stream, MsgBoxStyle.Information)
+            ElseIf CBool(InStr(ex.ToString, "System.UnauthorizedAccessException")) Then
+                MsgBox(ErrorNoPermisson + vbNewLine + ex.ToString, MsgBoxStyle.Information)
+            ElseIf CBool(InStr(ex.ToString, Chr(34) + "UserAbort" + Chr(34))) Then
+                MsgBox(ex.ToString, MsgBoxStyle.Information)
+            Else
+                MsgBox(ex.ToString, MsgBoxStyle.Information)
+
+            End If
+
+        End Try
+    End Sub
+
+    Function ConvertCC(ByVal CC As String)
+
+        Try
+            If CC = "deDE" Then
+                Return "de-DE"
+            ElseIf CC = "enUS" Then
+                Return "en-US"
+            ElseIf CC = "ptBR" Then
+                Return "pt-BR"
+            ElseIf CC = "esLA" Then
+                Return "es-LA"
+            ElseIf CC = "frFR" Then
+                Return "fr-FR"
+            ElseIf CC = "arME" Then
+                Return "ar-ME"
+            ElseIf CC = "ruRU" Then
+                Return "ru-RU"
+            ElseIf CC = "itIT" Then
+                Return "it-IT"
+            ElseIf CC = "esES" Then
+                Return "Español (España)"
+            ElseIf CC = "jaJP" Then
+                Return "es-ES"
+            ElseIf CC = "en" Then
+                Return "English"
+            ElseIf CC = "pt" Then
+                Return "ja-JP"
+            Else
+                Return CB_SuB_Nothing
+            End If
+
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+    End Function
+#End Region
 
 
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles Btn_Close.Click
@@ -1891,24 +2598,15 @@ Public Class Main
 #End Region
         URL_DL = NonCR_URL.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/") 'hls_List.Item(i2).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/")
 #Region "<li> constructor"
-        Dim Subsprache3 As String = "undefined" 'HardSubValuesToDisplay(SubSprache2)
+        Dim Subsprache3 As String = "undefined" '
         Dim ResoHTMLDisplay As String = "[Auto]"
         Dim L2Name As String = Video_Title
         Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim L1Name As String = L1Name_Split(1)
         Pfad_DL = Chr(34) + Pfad + "\" + Video_FilenName + Chr(34)
 
-        'If InStr(ResoAvalibe, Resu.ToString) Then
-        '    Dim ResoUse As String() = ResoAvalibe.Split(New String() {Resu.ToString + ":--:"}, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Dim ResoUse2 As String() = ResoUse(1).Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
-        '    UsedMap = ResoUse2(0)
-        '    If Debug2 = True Then
-        '        MsgBox(UsedMap)
-        '    End If
-        '    ResoHTMLDisplay = Resu.ToString + "p"
-        'Else
         ResoHTMLDisplay = "[Auto]"
-        'End If
+
         Dim cmd As String = "-i " + Chr(34) + URL_DL + Chr(34) + " " + ffmpeg_command
         Me.Invoke(New Action(Function()
                                  ListItemAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail4, cmd, Pfad_DL)
@@ -2055,13 +2753,13 @@ Public Class Main
                 ' Nein! Jetzt erstellen...
                 Try
                     Directory.CreateDirectory(Path.GetDirectoryName(DownloadPfad))
+                    DownloadPfad = DownloadPfad + DefaultName + VideoFormat
+
                 Catch ex As Exception
                     ' Ordner wurde nich erstellt
                     DownloadPfad = Pfad + "\" + DefaultName + VideoFormat
                 End Try
             End If
-
-            DownloadPfad = DownloadPfad + DefaultName + VideoFormat
 
 
 #Region "lösche doppel download"
@@ -2503,9 +3201,9 @@ Public Class Main
                         SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + 1).ToString
                         If SoftSubMergeMetatata = Nothing Then
                             'SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSub(1))
-                            SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSub(1)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34)
+                            SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSub(1)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSub(1)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSub(1)) + Chr(34)
                         Else
-                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSub(1)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34)
+                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSub(1)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSub(1)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSub(1)) + Chr(34)
                             'SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i))
 
 
@@ -3347,6 +4045,8 @@ Public Class Main
     Private Sub Button1_Click_2(sender As Object, e As EventArgs)
         network_scan.Show()
     End Sub
+
+
 
 #End Region
 

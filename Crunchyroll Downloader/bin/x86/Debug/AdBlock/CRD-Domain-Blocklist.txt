@@ -1,0 +1,14 @@
+api.segment.io
+bam.nr-data.net
+cdn.cookielaw.org
+cdn.krxd.net
+cdn.segment.com
+connect.facebook.net
+consent.trustarc.com
+consumer.krxd.net
+eec.crunchyroll.com
+i.cdn.turner.com
+js-agent.newrelic.com
+www.googletagmanager.com
+googletagmanager.com
+ocsp.sca1b.amazontrust.com

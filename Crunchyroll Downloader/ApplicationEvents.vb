@@ -14,19 +14,19 @@ Namespace My
     ' StartupNextInstance: Raised when launching a single-instance application and the application is already active.
     ' NetworkAvailabilityChanged: Raised when the network connection is connected or disconnected.
     Partial Friend Class MyApplication
-        Dim UseFirefoxProfile As Boolean = False
+        'Dim UseFirefoxProfile As Boolean = True
         Protected Overrides Function OnStartup(ByVal eventArgs As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) As Boolean
             Dim ProfileDirectory As String = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Mozilla", "Firefox", "Profiles", "CRD")
-            If UseFirefoxProfile = True Then
-                Dim di As New System.IO.DirectoryInfo(Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Mozilla", "Firefox", "Profiles"))
-                Try
-                    For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
-                        Dim TempPath As String = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Mozilla", "Firefox", "Profiles", fi.Name)
-                        ProfileDirectory = TempPath
-                    Next
-                Catch ex As Exception
-                End Try
-            End If
+            'If UseFirefoxProfile = True Then
+            '    Dim di As New System.IO.DirectoryInfo(Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Mozilla", "Firefox", "Profiles"))
+            '    Try
+            '        For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
+            '            Dim TempPath As String = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Mozilla", "Firefox", "Profiles", fi.Name)
+            '            ProfileDirectory = TempPath
+            '        Next
+            '    Catch ex As Exception
+            '    End Try
+            'End If
             'MsgBox(ProfileDirectory)
             If Not Directory.Exists(ProfileDirectory) Then
                 Directory.CreateDirectory(ProfileDirectory)
@@ -34,11 +34,12 @@ Namespace My
             Try
 
 
-                Dim sUserAgent As String = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0"
+                Dim sUserAgent As String = My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "").Replace(Chr(34), "") '"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0"
                 'sUserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
+                Xpcom.ProfileDirectory = ProfileDirectory
                 Xpcom.Initialize("Firefox")
                 'MsgBox(Xpcom.XulRunnerVersion)
-                Xpcom.ProfileDirectory = ProfileDirectory
+
                 'Dim File As nsIFile = CType(Xpcom.NewNativeLocalFile("E:\addon\"), nsIFile)
                 'File.Append(New nsAString("manifest.json"))
                 'Xpcom.ComponentRegistrar.AutoRegister(File)

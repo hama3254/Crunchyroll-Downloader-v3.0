@@ -13,8 +13,6 @@ Public Class CRD_List_Item
     Inherits Controls.MetroUserControl
 
 
-
-
     Dim ZeitGesamtInteger As Integer = 0
     Dim ListOfStreams As New List(Of String)
     Dim proc As Process
@@ -52,6 +50,11 @@ Public Class CRD_List_Item
 
     Dim FailedSegments As New List(Of FailedSegemtsWithURL)
     Dim LogText As New List(Of String)
+
+
+    Dim PauseTime As Integer = 0
+    Dim Threads As Integer = Environment.ProcessorCount / 2 - 1
+
 #Region "Remove from list"
     Public Sub DisposeItem(ByVal Dispose As Boolean)
         If Dispose = True Then
@@ -388,6 +391,9 @@ Public Class CRD_List_Item
     End Sub
     Private Sub Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.ContextMenuStrip = ContextMenuStrip1 '.ContextMenu
+        If Threads < 2 Then
+            Threads = 2
+        End If
         'bt_del.SetBounds(775, 10, 35, 29)
         'bt_pause.SetBounds(740, 15, 25, 20)
         'PB_Thumbnail.SetBounds(11, 20, 168, 95)
@@ -485,7 +491,7 @@ Public Class CRD_List_Item
         End Try
 
     End Sub
-    Private Function TS_StatusAsync(ByVal prozent As Integer, ByVal di As IO.DirectoryInfo, ByVal Filename As String, ByVal pausetime As Integer)
+    Private Function TS_StatusAsync(ByVal prozent As Integer, ByVal di As IO.DirectoryInfo, ByVal pausetime As Integer)
         'Dim Now As Date = Date.Now
 
         Dim FinishedSize As Double = 0
@@ -493,7 +499,7 @@ Public Class CRD_List_Item
 
         Try
 
-            Dim aryFi As IO.FileInfo() = di.GetFiles("*.ts")
+            Dim aryFi As IO.FileInfo() = di.GetFiles("*.*")
             Dim fi As IO.FileInfo
             For Each fi In aryFi
                 FinishedSize = FinishedSize + fi.Length 'Math.Round(fi.Length / 1048576, 2, MidpointRounding.AwayFromZero).ToString()
@@ -558,412 +564,258 @@ Public Class CRD_List_Item
 
     End Function
 
-    Public Function DownloadHybrid(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
-        MsgBox(DL_URL)
-        Dim Folder As String = Einstellungen.GeräteID()
-        Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
-        If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
+    Private Function GetFullUri(ByVal MainUri As String, ByVal CurrentPath As String)
+        Dim path As String = Nothing
+        If InStr(CurrentPath, "../") Then
+            Dim countDot() As String = CurrentPath.Split(New String() {"./"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            Dim c() As String = New Uri(MainUri).Segments
+            path = "https://" + New Uri(MainUri).Host
+            For i3 As Integer = 0 To c.Count - (2 + countDot.Count - 1)
+                path = path + c(i3)
+            Next
+            path = path + countDot(countDot.Count - 1)
+        Else
+            Dim c() As String = New Uri(MainUri).Segments
+            path = "https://" + New Uri(MainUri).Host
+            For i3 As Integer = 0 To c.Count - 2
+                path = path + c(i3)
+            Next
+        End If
+
+        Return path
+    End Function
+
+    Private Function ProcessV4(ByVal InputData As String, ByVal Folder As String) As String
+
+        If Not Directory.Exists(Path.GetDirectoryName(Folder)) Then
             ' Nein! Jetzt erstellen...
             Try
-                Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
+                Directory.CreateDirectory(Path.GetDirectoryName(Folder))
             Catch ex As Exception
-                MsgBox("Temp folder creation failed")
-                Return Nothing
+                Debug.WriteLine("folder issue")
+                Return "Error"
                 Exit Function
-                ' Ordner wurde nich erstellt
-                'Pfad2 = Pfad + "\" + CR_FilenName_Backup + ".mp4"
             End Try
         End If
-        Dim MergeSub As String() = DL_URL.Split(New String() {"-i " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-        If MergeSub.Count > 1 Then
-            Me.Invoke(New Action(Function()
-                                     Label_percent.Text = "Downloading Subtitles..."
-                                     Return Nothing
-                                 End Function))
 
-            For i As Integer = 1 To MergeSub.Count - 1
-                Dim SubsURL As String() = MergeSub(i).Split(New [Char]() {Chr(34)})
-                Dim SubsClient As New WebClient
-                SubsClient.Encoding = Encoding.UTF8
-                If Main.WebbrowserCookie = Nothing Then
-                Else
-                    SubsClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
-                End If
-                Dim SubsFile As String = Einstellungen.GeräteID() + ".txt"
+        Dim KeyFile As String = Einstellungen.GeräteID + ".key"
+        Dim KeyFilePath As String = Application.StartupPath + "\" + KeyFile 'needs to be in the ffmpeg/downloader directory
+        Dim Fragments() As String = InputData.Split(New String() {"#EXT-X-BYTERANGE:"}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim FragmentsInt As Integer = Fragments.Count - 2
 
-                Dim retry As Boolean = True
-                Dim retryCount As Integer = 3
-                While retry
-                    Try
-                        SubsClient.DownloadFile(SubsURL(0), Pfad2 + "\" + SubsFile)
-                        retry = False
-                    Catch ex As Exception
-                        If retryCount > 0 Then
-                            retryCount = retryCount - 1
+        Dim di As New IO.DirectoryInfo(Folder)
+        Dim m3u8FileContent As String = Nothing
+
+        Dim Client As New WebClient
+        Client.Encoding = Encoding.UTF8
+        Client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+
+        Dim m3u8Text As String = InputData
+        Dim m3u8Key() As String = m3u8Text.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim m3u8Key2() As String = m3u8Key(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        Client.DownloadFile(m3u8Key2(0), KeyFilePath)
+
+        Dim StreamFile() As String = m3u8Text.Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim StreamFile2() As String = StreamFile(2).Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim DownloadFile As String = "https:\\" + StreamFile2(0)
+
+        Dim text() As String = m3u8Text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim zeile As String
+        Dim Count As Integer = 0
+
+
+        For i As Integer = 0 To text.Count - 1
+            zeile = text(i)
+
+            For w As Integer = 0 To Integer.MaxValue
+
+                If StatusRunning = False Then
+                    'MsgBox(True.ToString)
+                    Thread.Sleep(5000)
+                    PauseTime = PauseTime + 5
+                ElseIf ThreadList.Count > Threads Then
+                    Thread.Sleep(50)
+                ElseIf Canceld = True Then
+                    For www As Integer = 0 To Integer.MaxValue
+                        If ThreadList.Count > 0 Then
+                            Thread.Sleep(250)
+                        Else
+                            Try
+                                System.IO.Directory.Delete(HybridModePath, True)
+                            Catch ex As Exception
+                            End Try
                             Me.Invoke(New Action(Function()
-                                                     Label_percent.Text = "Error Downloading Subtitles - retrying"
+                                                     ProgressBar1.Value = 0
+                                                     Label_percent.Text = "canceled -%"
+                                                     bt_pause.BackgroundImage = My.Resources.main_pause_play
                                                      Return Nothing
                                                  End Function))
-
-                        Else
-                            Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
-                            Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
-                                sink.WriteLine(My.Resources.ass_template)
-                            End Using
-                            retry = False
+                            Exit For
                         End If
-                    End Try
-                End While
-                DL_URL = DL_URL.Replace(SubsURL(0), Pfad2 + "\" + SubsFile)
-            Next
+                    Next
+                    Return Nothing
+                    Exit Function
 
-        End If
-        Dim m3u8_url As String() = DL_URL.Split(New [Char]() {Chr(34)})
-        Dim m3u8_url_1 As String = Nothing
-        Dim m3u8_url_3 As String = m3u8_url(1)
-        If Debug2 = True Then
-            MsgBox(m3u8_url(1) + vbNewLine + DL_Pfad + vbNewLine + Filename)
-        End If
-        'Dim client0 As New WebClient
-        'client0.Encoding = Encoding.UTF8
-        Dim text As String = Nothing
-        'Try
-        '    text = client0.DownloadString(m3u8_url(1))
-        'Catch ex As Exception
-        '    Me.Invoke(New Action(Function()
-        '                             Label_website.Text = "Hybrid mode error"
-        '                             Label_percent.Text = ex.ToString
-        '                             Return Nothing
-        '                         End Function))
-        '    Return Nothing
-        '    Exit Function
-        'End Try
-
-
-        Try
-            Using client As New WebClient()
-                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                client.Headers.Add("ACCEPT: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-                client.Headers.Add("ACCEPT-ENCODING: *")
-                'client.DownloadFile(TextBox1.Text, "test.m3u8")
-
-                'Dim archive As Zipfi = New ZipArchive(ms)
-                'Dim m3u8String As String = client.DownloadString(TextBox1.Text)
-                'MsgBox(DL_URL)
-                'MsgBox(m3u8_url(1))
-                Try
-                    Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
-                    text = m3u8
-                Catch ex As Exception
-                    Dim m3u8 As String = client.DownloadString(m3u8_url(1))
-                    text = m3u8
-                End Try
-
-                'MsgBox(m3u8)
-            End Using
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-        End Try
-
-        If InStr(text, "RESOLUTION=") Then 'master m3u8 no fragments 
-            'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", text, False)
-            Dim new_m3u8_2() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
-            If TargetReso = 42 Then
-                TargetReso = 1080
-            End If
-
-            For i As Integer = 0 To new_m3u8_2.Count - 1
-                'MsgBox("x" + Main.Resu.ToString)
-                If CBool(InStr(new_m3u8_2(i), "x" + TargetReso.ToString)) = True Then
-                    m3u8_url_1 = new_m3u8_2(i + 1)
+                Else
+                    Thread.Sleep(ServiceSleep)
                     Exit For
                 End If
             Next
-            If InStr(m3u8_url_1, "https://") Then
-                Try
-                    Using client As New WebClient()
-                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                        client.Headers.Add("ACCEPT: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-                        client.Headers.Add("ACCEPT-ENCODING: *")
-                        'client.DownloadFile(TextBox1.Text, "test.m3u8")
-
-                        'Dim archive As Zipfi = New ZipArchive(ms)
-                        'Dim m3u8String As String = client.DownloadString(TextBox1.Text)
-                        Try
-                            Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
-                            text = m3u8
-                        Catch ex As Exception
-                            Dim m3u8 As String = client.DownloadString(m3u8_url(1))
-                            text = m3u8
-                        End Try
-                        'Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
-                        'text = m3u8
-                        'MsgBox(m3u8)
-                    End Using
-                Catch ex As Exception
-                    MsgBox(ex.ToString)
-                End Try
-            Else
-                'MsgBox("false postive")
-                Dim c() As String = New Uri(m3u8_url_3).Segments
-                Dim path As String = "https://" + New Uri(m3u8_url_3).Host
-                For i3 As Integer = 0 To c.Count - 2
-                    path = path + c(i3)
-                Next
-                m3u8_url_3 = path + m3u8_url_1
-                'MsgBox(m3u8_url_3)
-                Try
-                    Using client As New WebClient()
-                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                        client.Headers.Add("ACCEPT: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-                        client.Headers.Add("ACCEPT-ENCODING: *")
-                        'client.DownloadFile(TextBox1.Text, "test.m3u8")
-
-                        'Dim archive As Zipfi = New ZipArchive(ms)
-                        'Dim m3u8String As String = client.DownloadString(TextBox1.Text)
-                        Try
-                            Dim m3u8 As String = DecompressString(client.DownloadData(m3u8_url(1)))
-                            text = m3u8
-                        Catch ex As Exception
-                            Dim m3u8 As String = client.DownloadString(m3u8_url(1))
-                            text = m3u8
-                        End Try
-                        'MsgBox(m3u8)
-                    End Using
-                Catch ex As Exception
-                    MsgBox(ex.ToString)
-                End Try
-            End If
 
 
+            If zeile.Contains("#EXT-X-BYTERANGE:") Then
+                Dim Zeile2 As String = zeile.Replace("#EXT-X-BYTERANGE:", "")
+                Dim Zeile3() As String = Zeile2.Split(New String() {"@"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-        End If
-        Dim LoadedKeys As New List(Of String)
-        LoadedKeys.Add("Nothing")
-        Dim KeyFileCache As String = Nothing
-        Dim textLenght() As String = text.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
-        Dim Fragments() As String = text.Split(New String() {".ts"}, System.StringSplitOptions.RemoveEmptyEntries)
-        Dim FragmentsInt As Integer = Fragments.Count - 2
-        Dim nummerint As Integer = 0 '-1
-        Dim m3u8FFmpeg As String = Nothing
-        Dim ts_dl As String = Nothing
-
-        HybridModePath = Pfad2
-        If Debug2 = True Then
-            MsgBox(Pfad2)
-        End If
-        Dim PauseTime As Integer = 0
-        Dim Threads As Integer = Environment.ProcessorCount / 2 - 1
-        If Threads < 2 Then
-            Threads = 2
-        End If
-        'Threads = textLenght.Length / 20
-        Dim di As New IO.DirectoryInfo(Pfad2)
-        For i As Integer = 0 To textLenght.Length - 1
-            If InStr(textLenght(i), ".ts") Then
-                For w As Integer = 0 To Integer.MaxValue
-
-                    If StatusRunning = False Then
-                        'MsgBox(True.ToString)
-                        Thread.Sleep(5000)
-                        PauseTime = PauseTime + 5
-                    ElseIf ThreadList.Count > Threads Then
-                        Thread.Sleep(50)
-                    ElseIf Canceld = True Then
-                        For www As Integer = 0 To Integer.MaxValue
-                            If ThreadList.Count > 0 Then
-                                Thread.Sleep(250)
-                            Else
-                                Try
-                                    System.IO.Directory.Delete(HybridModePath, True)
-                                Catch ex As Exception
-                                End Try
-                                Me.Invoke(New Action(Function()
-                                                         ProgressBar1.Value = 0
-                                                         Label_percent.Text = "canceled -%"
-                                                         bt_pause.BackgroundImage = My.Resources.main_pause_play
-                                                         Return Nothing
-                                                     End Function))
-                                Exit For
-                            End If
-                        Next
-                        Return Nothing
-                        Exit Function
-                        'ElseIf nummerint < Threads Then
-                        '    Thread.Sleep(2000)
-                        '    Exit For
-                    Else
-                        Thread.Sleep(ServiceSleep)
-                        Exit For
-                    End If
-                Next
-
-                nummerint = nummerint + 1
-                Dim nummer4D As String = String.Format("{0:0000}", nummerint)
-                Dim curi As String = textLenght(i)
-                If InStr(curi, "https://") Then
-                ElseIf InStr(curi, "../") Then
-                    Dim countDot() As String = curi.Split(New String() {"./"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                    Dim c() As String = New Uri(m3u8_url_3).Segments
-                    Dim path As String = "https://" + New Uri(m3u8_url_3).Host
-                    For i3 As Integer = 0 To c.Count - (2 + countDot.Count - 1)
-                        path = path + c(i3)
-                    Next
-                    curi = path + countDot(countDot.Count - 1)
-                Else
-                    Dim c() As String = New Uri(m3u8_url_3).Segments
-                    Dim path As String = "https://" + New Uri(m3u8_url_3).Host
-                    For i3 As Integer = 0 To c.Count - 2
-                        path = path + c(i3)
-                    Next
-                    curi = path + textLenght(i)
-                End If
-
-                Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(curi, Pfad2 + nummer4D + ".ts"))
+                Dim CurrentSize As Integer = Integer.Parse(Zeile3(1))
+                Dim NewBytes As Integer = Integer.Parse(Zeile3(0))
+                Dim File As String = Folder + String.Format("{0:0000}", Count)
+                Dim Evaluator = New Thread(Sub() Me.DownloadTSv4(DownloadFile, File, CurrentSize, NewBytes))
                 Evaluator.Start()
                 ThreadList.Add(Evaluator)
-                m3u8FFmpeg = m3u8FFmpeg + Pfad2 + nummer4D + ".ts" + vbLf '+ "#" + curi + vbLf
+                m3u8FileContent = m3u8FileContent + File + vbNewLine
 
-                Dim FragmentsFinised = nummerint / FragmentsInt * 100 '(ThreadList.Count + nummerint) / FragmentsInt * 100
-                Dim Update = New Thread(Sub() Me.TS_StatusAsync(FragmentsFinised, di, Filename, PauseTime))
+                Count = Count + 1
+                Dim FragmentsFinised = Count * 100 / FragmentsInt
+
+                Dim Update = New Thread(Sub() Me.TS_StatusAsync(FragmentsFinised, di, PauseTime))
                 Update.Start()
 
+            ElseIf zeile.Contains("URI=" + Chr(34)) Then
+                Dim Zeile2() As String = zeile.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                m3u8FileContent = m3u8FileContent + Zeile2(0) + "URI=" + Chr(34) + KeyFile + Chr(34) + vbNewLine ' a full path does not work here, that's why KeyFilePath is in the ffmpeg/downloader folder
 
-
-            ElseIf textLenght(i) = "#EXT-X-PLAYLIST-TYPE:VOD" Then
-
-            ElseIf InStr(textLenght(i), "URI=" + Chr(34)) Then
-                Dim KeyLine As String = textLenght(i)
-                If InStr(KeyLine, "https://") Then
-
-                    Dim KeyFile() As String = KeyLine.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim KeyFile2() As String = KeyFile(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    If LoadedKeys.Item(LoadedKeys.Count - 1) = KeyFile2(0) Then
-                    Else
-                        Dim KeyClient As New WebClient
-                        KeyClient.Encoding = Encoding.UTF8
-                        If Main.WebbrowserCookie = Nothing Then
-                        Else
-                            KeyClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
-                        End If
-                        Dim KeyFile3 As String = Einstellungen.GeräteID() + ".key"
-                        KeyFileCache = KeyFile3
-
-                        Dim retry As Boolean = True
-                        Dim retryCount As Integer = 3
-                        While retry
-                            Try
-                                KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
-                                retry = False
-                            Catch ex As Exception
-                                If retryCount > 0 Then
-                                    retryCount = retryCount - 1
-                                    Me.Invoke(New Action(Function()
-                                                             Label_percent.Text = "Access Error - retrying"
-                                                             Debug.WriteLine(ex.ToString)
-                                                             Return Nothing
-                                                         End Function))
-
-                                Else
-                                    'retry = False
-                                    Me.Invoke(New Action(Function()
-                                                             Label_percent.Text = "Access Error - download canceled"
-                                                             Debug.WriteLine(ex.ToString)
-                                                             Return Nothing
-                                                         End Function))
-                                    Return Nothing
-                                    Exit Function
-
-                                End If
-                            End Try
-
-                        End While
-                        LoadedKeys.Add(KeyFile2(0))
-                    End If
-                    If KeyFile2.Count > 1 Then
-                        KeyLine = KeyFile(0) + "URI=" + Chr(34) + KeyFileCache + Chr(34) + KeyFile2(1)
-                    Else
-                        KeyLine = KeyFile(0) + "URI=" + Chr(34) + KeyFileCache + Chr(34)
-                    End If
-                    'ElseIf InStr(KeyLine, "../") Then
-                    '    Dim countDot() As String = KeyLine.Split(New String() {"./"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                    '    Dim c() As String = New Uri(m3u8_url_3).Segments
-                    '    Dim path As String = "https://" + New Uri(m3u8_url_3).Host
-                    '    For i3 As Integer = 0 To c.Count - (2 + countDot.Count - 1)
-                    '        path = path + c(i3)
-                    '    Next
-                    '    KeyLine = path + countDot(countDot.Count - 1)
-
-                Else
-                    Dim c() As String = New Uri(m3u8_url_3).Segments
-                    Dim path As String = "https://" + New Uri(m3u8_url_3).Host
-                    For i3 As Integer = 0 To c.Count - 2
-                        path = path + c(i3)
-                    Next
-                    KeyLine = KeyLine.Replace("URI=" + Chr(34), "URI=" + Chr(34) + path) 'path + textLenght(i)
-                    Dim KeyFile() As String = KeyLine.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim KeyFile2() As String = KeyFile(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    If LoadedKeys.Item(LoadedKeys.Count - 1) = KeyFile2(0) Then
-                    Else
-                        Dim KeyClient As New WebClient
-                        KeyClient.Encoding = Encoding.UTF8
-                        If Main.WebbrowserCookie = Nothing Then
-                        Else
-                            KeyClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
-                        End If
-                        Dim KeyFile3 As String = Einstellungen.GeräteID() + ".key"
-                        KeyFileCache = KeyFile3
-
-                        Dim retry As Boolean = True
-                        Dim retryCount As Integer = 3
-
-                        Try
-                            KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
-                            retry = False
-                        Catch ex As Exception
-                            If retryCount > 0 Then
-                                retryCount = retryCount - 1
-                                Me.Invoke(New Action(Function()
-                                                         Label_percent.Text = "Access Error - retrying"
-                                                         Debug.WriteLine(ex.ToString)
-                                                         Return Nothing
-                                                     End Function))
-
-                            Else
-                                Me.Invoke(New Action(Function()
-                                                         Label_percent.Text = "Access Error - download canceled"
-                                                         Debug.WriteLine(ex.ToString)
-                                                         Return Nothing
-                                                     End Function))
-                                Return Nothing
-                                Exit Function
-                                'Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
-                                'Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
-                                '    sink.WriteLine(My.Resources.ass_template)
-                                'End Using
-                                'Retry = False
-                            End If
-                        End Try
-                        'KeyClient.DownloadFile(KeyFile2(0), Application.StartupPath + "\" + KeyFile3)
-                        LoadedKeys.Add(KeyFile2(0))
-                    End If
-                    If KeyFile2.Count > 1 Then
-                        KeyLine = KeyFile(0) + "URI=" + Chr(34) + KeyFileCache + Chr(34) + KeyFile2(1)
-                    Else
-                        KeyLine = KeyFile(0) + "URI=" + Chr(34) + KeyFileCache + Chr(34)
-                    End If
-                End If
-                m3u8FFmpeg = m3u8FFmpeg + KeyLine + vbLf
+            ElseIf zeile.Contains("https://") Then
+                'If zeile = DownloadFile Then
+                'Else
+                '    DownloadFile = zeile
+                'End If
             Else
-                m3u8FFmpeg = m3u8FFmpeg + textLenght(i) + vbLf
+                m3u8FileContent = m3u8FileContent + zeile + vbNewLine
+
             End If
+
         Next
+
+        My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\m3u8FileContent.txt", m3u8FileContent, False)
+
         Dim utf8WithoutBom As New System.Text.UTF8Encoding(False)
-        Using sink As New StreamWriter(Pfad2 + "\index" + Folder + ".m3u8", False, utf8WithoutBom)
-            sink.WriteLine(m3u8FFmpeg)
+        Using sink As New StreamWriter(Folder + "\index.m3u8", False, utf8WithoutBom)
+            sink.WriteLine(m3u8FileContent)
         End Using
+
+        Return Folder + "\index.m3u8"
+
+    End Function
+
+    Private Sub DownloadTSv4(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal CurrentSize As Integer, ByVal NewBytes As Integer)
+        Dim retry As Boolean = True
+        Dim retryCount As Integer = 3
+        While retry
+            Try
+
+
+                Dim Request As Net.HttpWebRequest = Net.HttpWebRequest.Create(DL_URL)
+            Dim Bytes(NewBytes) As Byte
+            Request.UserAgent = My.Resources.ffmpeg_user_agend.Replace(Chr(34), "").Replace("User-Agent: ", "")
+            Request.Timeout = 30000
+            Request.Method = "GET"
+            Request.AddRange(CurrentSize, CurrentSize + NewBytes)
+
+
+            Dim Response As Net.HttpWebResponse = Request.GetResponse()
+            If Response.StatusCode = Net.HttpStatusCode.PartialContent Or Net.HttpStatusCode.OK Then
+
+                Using binaryReader As New BinaryReader(Response.GetResponseStream())
+                    Bytes = binaryReader.ReadBytes(NewBytes)
+                    binaryReader.Close()
+                End Using
+
+            End If
+
+            File.WriteAllBytes(DL_Pfad, Bytes)
+
+
+
+
+                retry = False
+                Catch ex As Exception
+                    If retryCount > 0 Then
+                        retryCount = retryCount - 1
+                        Me.Invoke(New Action(Function()
+                                                 Label_percent.Text = "Access Error - retrying"
+                                                 Debug.WriteLine(ex.ToString)
+                                                 Return Nothing
+                                             End Function))
+
+                    Else
+                        Me.Invoke(New Action(Function()
+                                                 Label_percent.Text = "Access Error - download canceled"
+                                                 Debug.WriteLine(ex.ToString)
+                                                 Return Nothing
+                                             End Function))
+
+
+                    End If
+                End Try
+
+            End While
+
+    End Sub
+
+    Public Function DownloadHybrid(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
+        Dim Folder As String = Einstellungen.GeräteID()
+
+        Dim PauseTime As Integer = 0
+        Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
+        Dim di As New IO.DirectoryInfo(Pfad2)
+        Dim m3u8_url As String() = DL_URL.Split(New [Char]() {Chr(34)})
+        Dim m3u8FFmpeg As String = Nothing
+
+        Dim InuputStreams As String() = DL_URL.Split(New String() {"-i " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+        Me.Invoke(New Action(Function()
+                                 Label_percent.Text = "Checking input..."
+                                 Return Nothing
+                                 End Function))
+
+        For i As Integer = 0 To InuputStreams.Count - 1
+            Dim int As Integer = i
+            Dim InputURL As String() = InuputStreams(i).Split(New [Char]() {Chr(34)})
+            Dim InputClient As New WebClient
+            InputClient.Encoding = Encoding.UTF8
+            If Main.WebbrowserCookie = Nothing Then
+            Else
+                InputClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
+            End If
+            Dim SubsFile As String = Pfad2 + Einstellungen.GeräteID() + ".txt"
+
+            Try
+                Dim InputData As String = InputClient.DownloadString(InputURL(0))
+
+                If InStr(InputData, "#EXT-X-VERSION:3") Then
+
+                ElseIf InStr(InputData, "#EXT-X-VERSION:4") Then
+                    ProcessV4(InputData, Pfad2 + "Stream-" + int.ToString + "\")
+                    DL_URL = DL_URL.Replace("-i " + Chr(34) + InputURL(0), "-allowed_extensions ALL " + "-i " + Chr(34) + Pfad2 + "Stream-" + int.ToString + "\index.m3u8")
+                Else
+                    'write string to file
+                    Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                    Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
+                        sink.WriteLine(InputData)
+                    End Using
+                    'replace url with local file
+                    DL_URL = DL_URL.Replace(InputURL(0), SubsFile)
+                End If
+            Catch ex As Exception
+
+            End Try
+
+
+        Next
+
+
         For w As Integer = 0 To Integer.MaxValue
             If ThreadList.Count > 0 Then
                 Thread.Sleep(250)
@@ -972,25 +824,22 @@ Public Class CRD_List_Item
                 Exit For
             End If
         Next
-        TS_StatusAsync(100, di, Filename, PauseTime)
 
-        DL_URL = DL_URL.Replace(m3u8_url(1), Pfad2 + "index" + Folder + ".m3u8")
 
-        If InStr(DL_URL, "-headers " + My.Resources.ffmpeg_user_agend) Then
-            DL_URL = DL_URL.Replace("-headers " + My.Resources.ffmpeg_user_agend, "")
+        TS_StatusAsync(100, di, PauseTime)
+
+
+
+        If InStr(DL_URL, " -headers " + My.Resources.ffmpeg_user_agend) Then
+            DL_URL = DL_URL.Replace(" -headers " + My.Resources.ffmpeg_user_agend, "")
         End If
-
-        'Using sink3 As New StreamWriter(Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\hybridelog.log", False, utf8WithoutBom)
-        '    sink3.WriteLine(HybrideLog)
-        'End Using
-
 
         'MsgBox(DL_URL)
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
 
-        Dim cmd As String = "-allowed_extensions ALL " + DL_URL + " " + DL_Pfad '+ " " + ffmpeg_command + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
-        ' MsgBox(cmd) -headers " + Chr(34) + "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0" + Chr(34) +
+        Dim cmd As String = DL_URL + " " + DL_Pfad
+
         If Debug2 = True Then
             MsgBox(cmd)
         End If
@@ -1017,6 +866,7 @@ Public Class CRD_List_Item
         HybridRunning = False
         Return Nothing
     End Function
+
 
 
 

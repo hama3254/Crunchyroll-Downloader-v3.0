@@ -350,7 +350,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0&quot; ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0&quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property ffmpeg_user_agend() As String
             Get
@@ -418,6 +418,15 @@ Namespace My.Resources
         Friend ReadOnly Property Funimation_Subtitle_String2() As String
             Get
                 Return ResourceManager.GetString("Funimation_Subtitle_String2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;, &quot;kind&quot;: &quot;subtitle&quot;, &quot;type&quot;: &quot;full&quot;, &quot;language&quot;: &quot; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property Funimation_Subtitle_String3() As String
+            Get
+                Return ResourceManager.GetString("Funimation_Subtitle_String3", resourceCulture)
             End Get
         End Property
         

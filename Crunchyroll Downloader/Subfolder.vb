@@ -7,7 +7,7 @@
     Public SubFolder_Value As String = "[ ignore subfolder ]"
 
 
-    Public Function UseSubfolder(ByVal Series As String, ByVal Season As String, ByVal Path As String)
+    Public Function UseSubfolder(ByVal Series As String, ByVal Season As String, ByVal Path As String) As String
         Dim newPath As String = Path + "\"
 
         If SubFolder_Value = SubFolder_automatic Or SubFolder_Value = SubFolder_automatic_old Then

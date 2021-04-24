@@ -42,6 +42,10 @@ Public Class ErrorDialog
 
         ElseIf Main.DialogTaskString = "Funimation_Resolution" Then
             StatusLabel.Text = Main.LabelResoNotFoundText
+            'Try
+            '    My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\Funimation-Resolution.log", Main.ResoNotFoundString, True)
+            'Catch ex As Exception
+            'End Try
             Dim ResoList As New List(Of String)
             Dim m3u8_split As String() = Main.ResoNotFoundString.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
             For i As Integer = 0 To m3u8_split.Count - 1
@@ -53,7 +57,12 @@ Public Class ErrorDialog
             Dim Reso_avaible1 As String() = Main.ResoNotFoundString.Split(New String() {"RESOLUTION="}, System.StringSplitOptions.RemoveEmptyEntries)
             For i As Integer = 0 To ResoList.Count - 1
                 Dim Reso_avaible As String() = ResoList.Item(i).Split(New String() {"RESOLUTION="}, System.StringSplitOptions.RemoveEmptyEntries)
-                ComboBox1.Items.Add(Reso_avaible(1))
+                If InStr(Reso_avaible(1), ",") Then
+                    Dim Reso_avaible2 As String() = Reso_avaible(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                    ComboBox1.Items.Add(Reso_avaible2(0))
+                Else
+                    ComboBox1.Items.Add(Reso_avaible(1))
+                End If
             Next
             SurroundingSub()
             Try

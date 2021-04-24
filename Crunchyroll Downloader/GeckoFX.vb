@@ -19,6 +19,7 @@ Public Class GeckoFX
 
 
     Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
+        Debug.WriteLine(Date.Now.ToString + "." + Date.Now.Millisecond.ToString)
         'MsgBox("loaded!")
         If ScanTrue = False Then
             Button2.Enabled = True
@@ -68,6 +69,7 @@ Public Class GeckoFX
         Else
 
             If CBool(InStr(WebBrowser1.Url.ToString, "beta.crunchyroll.com")) Then
+                Main.WebbrowserURL = WebBrowser1.Url.ToString
                 Exit Sub
 
             ElseIf CBool(InStr(WebBrowser1.Url.ToString, "crunchyroll.com")) Then
@@ -208,7 +210,7 @@ Public Class GeckoFX
                 End If
             End If
         End If
-            If Main.UserBowser = False Then
+        If Main.UserBowser = False Then
             If Main.b = True Then
                 Anime_Add.StatusLabel.Text = "Status: idle"
                 Me.Close()
@@ -253,7 +255,7 @@ Public Class GeckoFX
 
         End Try
 
-        Main.UserBowser = True
+        'Main.UserBowser = True
         'Main.Pause(15)
         'For ii As Integer = 19 To 46
         '    WebBrowser1.Navigate("https://proxer.me/read/22459/" + ii.ToString + "/en/1")
@@ -443,21 +445,26 @@ Public Class GeckoFX
 
         If Main.BlockList.Contains(url.Host) Then
             e.Cancel = True
-            Debug.WriteLine(requesturl)
+            'Debug.WriteLine(requesturl)
             Exit Sub
-        ElseIf requesturl.Contains("ad_") Or requesturl.Contains("ads") Or requesturl.Contains(".swf") Then
+        ElseIf requesturl.Contains("ad_") Or requesturl.Contains("ads") Or requesturl.Contains(".swf") Or requesturl.Contains("unsupported") Then
             e.Cancel = True
-            Debug.WriteLine(requesturl)
+            'Debug.WriteLine(requesturl)
             Exit Sub
+
+        End If
+        If CBool(InStr(requesturl, ".js")) = True Then
+
+            Debug.WriteLine(requesturl)
         End If
         If CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "streams?")) Then
             If Main.b = False Then
-                Main.GetBetaVideo(requesturl, WebBrowser1.Url.ToString)
+                Main.GetBetaVideo(requesturl, Main.WebbrowserURL)
                 Exit Sub
             End If
         ElseIf CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
             If Main.b = False Then
-                Main.WebbrowserURL = WebBrowser1.Url.ToString
+                'Main.WebbrowserURL = WebBrowser1.Url.ToString
                 Main.GetBetaSeasons(requesturl)
                 Exit Sub
             End If
@@ -514,6 +521,13 @@ Public Class GeckoFX
 
         End If
 
+        If Main.UserBowser = False Then
+            If CBool(InStr(requesturl, ".jpg")) = True Or CBool(InStr(requesturl, ".bmp")) = True Or CBool(InStr(requesturl, ".gif")) = True Or CBool(InStr(requesturl, ".png")) = True Or CBool(InStr(requesturl, ".webp")) = True Then
+                e.Cancel = True
+
+            End If
+
+        End If
 
     End Sub
 
@@ -545,6 +559,11 @@ Public Class GeckoFX
         If e.Message.Contains("certificate") And CBool(InStr(e.Uri.Host, "funimation.com")) = True Then
             CertOverrideService.GetService().RememberValidityOverride(e.Uri, e.Certificate, CertOverride.Mismatch, False)
         End If
+    End Sub
+
+    Private Sub WebBrowser1_ConsoleMessage(sender As Object, e As ConsoleMessageEventArgs) Handles WebBrowser1.ConsoleMessage
+        ' Debug.WriteLine(e.Message)
+        ' MsgBox(e.Message)
     End Sub
 End Class
 

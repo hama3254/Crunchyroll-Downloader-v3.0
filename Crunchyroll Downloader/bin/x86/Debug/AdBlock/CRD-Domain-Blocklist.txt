@@ -12,3 +12,4 @@ js-agent.newrelic.com
 www.googletagmanager.com
 googletagmanager.com
 ocsp.sca1b.amazontrust.com
+sa.etp-prod.com

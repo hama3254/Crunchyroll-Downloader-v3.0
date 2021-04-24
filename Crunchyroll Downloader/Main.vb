@@ -304,6 +304,7 @@ Public Class Main
     End Sub
 
 #End Region
+
     Public Declare Function waveOutSetVolume Lib "winmm.dll" (ByVal uDeviceID As Integer, ByVal dwVolume As Integer) As Integer
 
     Public Sub SetSettingsTheme()
@@ -1086,6 +1087,7 @@ Public Class Main
     End Function
 
     Public Function CCtoMP4CC(ByVal HardSub As String) As String
+
         Try
             If HardSub = "deDE" Then
                 Return "ger"
@@ -1281,7 +1283,7 @@ Public Class Main
             End If
 
 
-
+            'MsgBox(CR_FilenName)
 
 
 
@@ -1311,6 +1313,8 @@ Public Class Main
                     ' Ordner wurde nich erstellt
                     Pfad2 = Pfad + "\" + CR_FilenName + VideoFormat
                 End Try
+            Else
+                Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
             End If
 
 
@@ -1472,9 +1476,10 @@ Public Class Main
                     End If
                 Else
                     For i As Integer = 0 To SoftSubs2.Count - 1
+                        Dim ii As Integer = i
                         Me.Invoke(New Action(Function()
-                                                 Anime_Add.StatusLabel.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(i))
-                                                 Me.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(i))
+                                                 Anime_Add.StatusLabel.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(ii))
+                                                 Me.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(ii))
                                                  Me.Invalidate()
                                                  Return Nothing
                                              End Function))
@@ -1883,11 +1888,17 @@ Public Class Main
 
                 End If
 
-                If Season_Prefix = "[default season prefix]" Then
-                    CR_season_number = CR_season_title
-                Else
+                'My.Computer.Clipboard.SetText(ObjectJson)
+                'MsgBox(CR_season_title)
 
-                    CR_season_number = Season_Prefix + CR_season_number
+                If Season_Prefix = "[default season prefix]" Then
+                    If CR_season_title = CR_series_title Then
+                        CR_season_number = CR_season_title + "Season " + CR_season_number
+                    End If
+                    CR_season_number = CR_season_title
+                    Else
+
+                        CR_season_number = Season_Prefix + CR_season_number
 
                 End If
 
@@ -1950,82 +1961,17 @@ Public Class Main
                     ' Ordner wurde nich erstellt
                     Pfad2 = Pfad + "\" + CR_FilenName + VideoFormat
                 End Try
+            Else
+                Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
             End If
 
-            Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
 
-
-#End Region
-#Region "Subs" 'to be done
-
-            'Dim SoftSubs2 As New List(Of String)
-            'If SoftSubs.Count > 0 Then
-            '    For i As Integer = 0 To SoftSubs.Count - 1
-            '        If CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs(i) + Chr(34) + ",")) Then
-            '            SoftSubs2.Add(SoftSubs(i))
-            '        Else
-            '            'MsgBox("Softsubtitle for " + SoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
-            '        End If
-            '    Next
-
-            'End If
-            'If SubSprache = "None" Then
-            '    If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":null")) Then
-            '        SubSprache2 = "null"
-            '    Else
-            '        Me.Invoke(New Action(Function()
-            '                                 ResoNotFoundString = WebbrowserText
-            '                                 DialogTaskString = "Language"
-            '                                 ErrorDialog.ShowDialog()
-            '                                 Return Nothing
-            '                             End Function))
-            '        If UserCloseDialog = True Then
-            '            Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
-            '        Else
-            '            If ResoBackString = Nothing Then
-            '            Else
-            '                SubSprache2 = ResoBackString
-            '            End If
-            '        End If
-            '        'Throw New System.Exception("Could not find the sub language")
-            '    End If
-
-
-            'Else
-            '    If CBool(InStr(WebbrowserText, Chr(34) + "hardsub_lang" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
-            '        SubSprache2 = Chr(34) + SubSprache + Chr(34)
-
-            '    ElseIf CBool(InStr(WebbrowserText, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SubSprache + Chr(34) + ",")) Then
-            '        If MessageBox.Show("It look like only Softsubtitle are avalibe." + vbNewLine + "Are you want to use Softsubtitle this time instead?", "No Hardsubtitle", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-            '            SubSprache2 = "null"
-            '            SoftSubs2.Add(SubSprache)
-            '        Else
-            '            Throw New System.Exception("Could not find the sub language")
-            '        End If
-
-
-            '    Else
-            '        Me.Invoke(New Action(Function()
-            '                                 ResoNotFoundString = WebbrowserText
-            '                                 DialogTaskString = "Language"
-            '                                 ErrorDialog.ShowDialog()
-            '                                 Return Nothing
-            '                             End Function))
-            '        If UserCloseDialog = True Then
-            '            Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
-            '        Else
-            '            If ResoBackString = Nothing Then
-            '            Else
-            '                SubSprache2 = ResoBackString
-            '            End If
-            '        End If
-            '    End If
-            'End If
 
 
 #End Region
 
-#Region "m3u8 suche"
+#Region "VideoJson"
+
 
             Dim VideoJson As String = Nothing
             Try
@@ -2039,7 +1985,106 @@ Public Class Main
                 Exit Sub
             End Try
 
-            If CBool(InStr(VideoJson, "audio_locale")) Then ' false on movie true on series
+            Dim hls_type As String = Nothing
+
+            If CBool(InStr(VideoJson, Chr(34) + "adaptive_hls")) = True Then
+                hls_type = "adaptive_hls"
+            ElseIf CBool(InStr(VideoJson, Chr(34) + "multitrack_adaptive_hls_v2")) = True Then
+                hls_type = "multitrack_adaptive_hls_v2"
+            ElseIf CBool(InStr(VideoJson, Chr(34) + "vo_adaptive_hls")) = True Then
+                hls_type = "vo_adaptive_hls"
+            Else
+                MsgBox("No download stream avalible", MsgBoxStyle.Critical)
+                Exit Sub
+            End If
+
+            Dim LangNew As String = ConvertCC(SubSprache)
+
+
+#End Region
+
+#Region "Download softsub file or build ffmpeg cmd"
+            Dim SoftSubs2 As New List(Of String)
+            If SoftSubs.Count > 0 Then
+                For i As Integer = 0 To SoftSubs.Count - 1
+                    If CBool(InStr(VideoJson, Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + ConvertCC(SoftSubs(i)) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) Then
+                        SoftSubs2.Add(SoftSubs(i))
+                    Else
+                        'MsgBox("Softsubtitle for " + SoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
+                    End If
+                Next
+
+            End If
+
+            Dim SoftSubMergeURLs As String = Nothing
+            Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a"
+            Dim SoftSubMergeMetatata As String = Nothing
+
+            If SoftSubs2.Count > 0 Then
+                If MergeSubs = True And SubsOnly = False Then
+                    Dim DispositionIndex As Integer
+                    For i As Integer = 0 To SoftSubs2.Count - 1
+                        Debug.WriteLine(SoftSubs2(i))
+                        If SoftSubs2(i) = DefaultSubCR Then
+                            DispositionIndex = i
+                        End If
+                        Dim SoftSub As String() = VideoJson.Split(New String() {Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + ConvertCC(SoftSubs2(i)) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
+                        Dim SoftSub_3 As String = SoftSub_2(0).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
+                        If SoftSubMergeURLs = Nothing Then
+                            SoftSubMergeURLs = " -i " + Chr(34) + SoftSub_3 + Chr(34)
+                        Else
+                            SoftSubMergeURLs = SoftSubMergeURLs + " -i " + Chr(34) + SoftSub_3 + Chr(34)
+                        End If
+                        SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + 1).ToString
+                        If SoftSubMergeMetatata = Nothing Then
+                            SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
+                        Else
+                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
+                        End If
+
+                    Next
+                    If DispositionIndex = Nothing Then
+                    Else
+                        SoftSubMergeMetatata = SoftSubMergeMetatata + " -disposition:s:" + DispositionIndex.ToString + " default"
+                    End If
+                Else
+                    For i As Integer = 0 To SoftSubs2.Count - 1
+                        Dim i2 As Integer = i
+                        Me.Invoke(New Action(Function()
+                                                 Anime_Add.StatusLabel.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(i2))
+                                                 Me.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(i2))
+                                                 Me.Invalidate()
+                                                 Return Nothing
+                                             End Function))
+                        Dim SoftSub As String() = VideoJson.Split(New String() {Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + ConvertCC(SoftSubs2(i)) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
+                        Dim SoftSub_3 As String = SoftSub_2(0).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
+                        'MsgBox(SoftSub_3)
+                        Dim client0 As New WebClient
+                        client0.Encoding = Encoding.UTF8
+                        Dim str0 As String = client0.DownloadString(SoftSub_3)
+                        Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
+                        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + " " + SoftSubs2(i) + Path.GetExtension(Pfad3)), "ass")
+                        'MsgBox(FN)
+                        If i = 0 Then
+                            FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
+                            'MsgBox(FN)
+                        End If
+                        Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
+                        'MsgBox(Pfad4)
+                        File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                        Pause(3)
+                    Next
+
+                End If
+
+            End If
+#End Region
+
+#Region "m3u8 suche"
+
+            If CBool(InStr(VideoJson, "audio_locale")) Then
                 Dim CR_audio As String() = VideoJson.Split(New String() {"audio_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim CR_audio2 As String() = CR_audio(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
                 CR_audio_locale = String.Join(" ", CR_audio2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
@@ -2049,11 +2094,9 @@ Public Class Main
             Dim CR_URI_Master As String = Nothing
             'If SubsOnly = False Then
             Dim ii As Integer = 0
-            'MsgBox(Chr(34) + "hardsub_lang" + Chr(34) + ":" + SubSprache2 + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))
-
-            Dim CR_VideoJson As String() = VideoJson.Split(New String() {"adaptive_hls"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim CR_VideoJson As String() = VideoJson.Split(New String() {hls_type}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim CR_VideoJsonHardSubs As String() = CR_VideoJson(1).Split(New String() {"hardsub_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim LangNew As String = ConvertCC(SubSprache)
+
             Debug.WriteLine(LangNew)
             Dim hls_List As New List(Of String)
             For i As Integer = 0 To CR_VideoJsonHardSubs.Count - 1
@@ -2084,70 +2127,6 @@ Public Class Main
             'End If
 #End Region
 
-#Region "Download softsub file or build ffmpeg cmd"
-            'Dim SoftSubMergeURLs As String = Nothing
-            'Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a"
-            'Dim SoftSubMergeMetatata As String = Nothing
-
-            'If SoftSubs2.Count > 0 Then
-            '    If MergeSubs = True And SubsOnly = False Then
-            '        Dim DispositionIndex As Integer
-            '        For i As Integer = 0 To SoftSubs2.Count - 1
-            '            Debug.WriteLine(SoftSubs2(i))
-            '            If SoftSubs2(i) = DefaultSubCR Then
-            '                DispositionIndex = i
-            '            End If
-            '            Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            '            Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
-            '            Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
-            '            If SoftSubMergeURLs = Nothing Then
-            '                SoftSubMergeURLs = " -i " + Chr(34) + SoftSub_3 + Chr(34)
-            '            Else
-            '                SoftSubMergeURLs = SoftSubMergeURLs + " -i " + Chr(34) + SoftSub_3 + Chr(34)
-            '            End If
-            '            SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + 1).ToString
-            '            If SoftSubMergeMetatata = Nothing Then
-            '                SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
-            '            Else
-            '                SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
-            '            End If
-
-            '        Next
-            '        If DispositionIndex = Nothing Then
-            '        Else
-            '            SoftSubMergeMetatata = SoftSubMergeMetatata + " -disposition:s:" + DispositionIndex.ToString + " default"
-            '        End If
-            '    Else
-            '        For i As Integer = 0 To SoftSubs2.Count - 1
-            '            Me.Invoke(New Action(Function()
-            '                                     Anime_Add.StatusLabel.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(i))
-            '                                     Me.Text = "Status: downloading subtitle file " + HardSubValuesToDisplay(SoftSubs2(i))
-            '                                     Me.Invalidate()
-            '                                     Return Nothing
-            '                                 End Function))
-            '            Dim SoftSub As String() = WebbrowserText.Split(New String() {Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            '            Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
-            '            Dim SoftSub_3 As String = SoftSub_2(0).Replace("\/", "/")
-            '            Dim client0 As New WebClient
-            '            client0.Encoding = Encoding.UTF8
-            '            Dim str0 As String = client0.DownloadString(SoftSub_3)
-            '            Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
-            '            Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + " " + SoftSubs2(i) + Path.GetExtension(Pfad3)), "ass")
-            '            'MsgBox(FN)
-            '            If i = 0 Then
-            '                FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
-            '                'MsgBox(FN)
-            '            End If
-            '            Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
-            '            'MsgBox(Pfad4)
-            '            File.WriteAllText(Pfad4, str0, Encoding.UTF8)
-            '            Pause(3)
-            '        Next
-
-            '    End If
-
-            'End If
-#End Region
 
 #Region "lösche doppel download"
 
@@ -2176,10 +2155,10 @@ Public Class Main
 
                 If Reso = 42 And HybridMode = False Then
                     If MergeSubs = True Then
-                        ' URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
-                        URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command
+                        URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(ConvertCC(CR_audio_locale))
+                        'URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(ConvertCC(CR_audio_locale)) + " " + ffmpeg_command
                     Else
-                        URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command
+                        URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(ConvertCC(CR_audio_locale)) + " " + ffmpeg_command
                     End If
                     'MsgBox(URL_DL)
                 Else
@@ -2223,11 +2202,12 @@ Public Class Main
                     ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
 
                     If MergeSubs = True Then
-                        'URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_Anime_Dub)
-                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command
+                        Debug.WriteLine(ConvertCC(CR_audio_locale))
+                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(ConvertCC(CR_audio_locale))
+                        'URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command
 
                     Else
-                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command
+                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(ConvertCC(CR_audio_locale)) + " " + ffmpeg_command
                     End If
 
                 End If
@@ -2316,8 +2296,8 @@ Public Class Main
         Try
             If CC = "deDE" Then
                 Return "de-DE"
-            ElseIf CC = "enUS" Then
-                Return "en-US"
+            ElseIf CC = "en-US" Then
+                Return "enUS"
             ElseIf CC = "ptBR" Then
                 Return "pt-BR"
             ElseIf CC = "esLA" Then
@@ -2333,11 +2313,9 @@ Public Class Main
             ElseIf CC = "esES" Then
                 Return "Español (España)"
             ElseIf CC = "jaJP" Then
-                Return "es-ES"
-            ElseIf CC = "en" Then
-                Return "English"
-            ElseIf CC = "pt" Then
                 Return "ja-JP"
+            ElseIf CC = "None" Then
+                Return ""
             Else
                 Return CB_SuB_Nothing
             End If
@@ -2406,6 +2384,7 @@ Public Class Main
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles Btn_Browser.Click
+        Debug.WriteLine(Date.Now.ToString + "." + Date.Now.Millisecond.ToString)
         UserBowser = True
         GeckoFX.Show()
     End Sub
@@ -2665,6 +2644,7 @@ Public Class Main
         'FontLabel2.Text = RunningDownloads.ToString
     End Sub
 
+
     Public Sub Funitmation_Grapp()
         Try
             Me.Invoke(New Action(Function()
@@ -2682,6 +2662,7 @@ Public Class Main
             Dim FunimationTitle As String = Nothing
             Dim FunimationEpisodeTitle As String = Nothing
             Dim FunimationDub As String = Nothing
+            Dim FunimationAudioMap As String = Nothing
 
             Dim FunimationSeason1() As String = WebbrowserText.Split(New String() {"seasonNum: "}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim FunimationSeason2() As String = FunimationSeason1(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -2724,6 +2705,7 @@ Public Class Main
                 DefaultName = RemoveExtraSpaces(FunimationTitle + " " + FunimationEpisodeTitle + " " + FunimationSeason + " " + FunimationEpisode)
             End If
 
+            DefaultName = DefaultName.Replace("&#x27;", "'")
 
             'Dim DefaultPath As String = Pfad + "\" + DefaultName + VideoFormat
             'DefaultPath = DefaultPath.Replace("\\", "\")
@@ -2753,13 +2735,13 @@ Public Class Main
                 ' Nein! Jetzt erstellen...
                 Try
                     Directory.CreateDirectory(Path.GetDirectoryName(DownloadPfad))
-                    DownloadPfad = DownloadPfad + DefaultName + VideoFormat
-
                 Catch ex As Exception
                     ' Ordner wurde nich erstellt
                     DownloadPfad = Pfad + "\" + DefaultName + VideoFormat
                 End Try
             End If
+
+            DownloadPfad = DownloadPfad + DefaultName + VideoFormat
 
 
 #Region "lösche doppel download"
@@ -2812,12 +2794,15 @@ Public Class Main
                                          Return Nothing
                                      End Function))
 
-
-                If WebbrowserCookie = Nothing Then
-                Else
+                If Not WebbrowserCookie = Nothing Then
                     client0.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                ElseIf Not SystemWebBrowserCookie = Nothing Then
+                    client0.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
                 End If
+
                 Dim str0 As String = client0.DownloadString("https://www.funimation.com/api/showexperience/" + Player_ID2(0) + "/?pinst_id=fzQc9p9f")
+                'MsgBox("https://www.funimation.com/api/showexperience/" + Player_ID2(0) + "/?pinst_id=fzQc9p9f")
+                'MsgBox(str0)
                 Dim Funimation_m3u8() As String = str0.Split(New String() {My.Resources.Funimation_src_string}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim Funimation_m3u8_Main As String = Nothing
                 For i As Integer = 0 To Funimation_m3u8.Count - 1
@@ -2854,88 +2839,107 @@ Public Class Main
                                      End Function))
 
                 Dim str1 As String = client0.DownloadString(Funimation_m3u8_Main.Replace(Chr(34), ""))
-                Dim textLenght() As String = str1.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                If InStr(str1, "# AUDIO groups") Then
+                    Dim FunimationAudio() As String = str1.Split(New String() {"# AUDIO groups"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim FunimationAudio2() As String = FunimationAudio(1).Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim FunimationAudio3() As String = FunimationAudio2(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    FunimationAudioMap = " -headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + FunimationAudio3(0) + Chr(34)
+                End If
+
+                Dim Streams() As String = str1.Split(New String() {"RESOLUTION="}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
                 'MsgBox(Funimation_m3u8_Main)
                 Dim FunimationBackupm3u8 As String = Nothing
-                For i As Integer = 0 To textLenght.Length - 1
+                For i As Integer = 0 To Streams.Length - 1
+
                     Try
-                        If InStr(textLenght(i), "https") Then
-                            If InStr(textLenght(i - 1), "x" + Reso.ToString) Then
 
-                                Dim CheckClient As New WebClient
-                                CheckClient.Encoding = Encoding.UTF8
-                                If WebbrowserCookie = Nothing Then
-                                Else
-                                    CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
-                                End If
-                                Dim m3u8String As String = CheckClient.DownloadString(textLenght(i))
-                                Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl3 As String = keyfileurl2(0)
+                        If InStr(Streams(i), "x" + Reso.ToString) Then
+                            Dim Streams2() As String = Streams(i).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim Streams3() As String = Streams2(1).Split(New String() {"#EXT-"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim StreamURL As String = "https://" + Streams3(0).Trim
 
-                                If InStr(keyfileurl2(0), "https://") Then
-
-                                Else
-                                    Dim c() As String = New Uri(textLenght(i)).Segments
-                                    Dim path As String = "https://" + New Uri(textLenght(i)).Host
-
-                                    For i3 As Integer = 0 To c.Count - 2
-                                        path = path + c(i3)
-                                    Next
-                                    keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
-                                End If
-
-                                'MsgBox(keyfileurl3)
-                                Try
-                                    Dim CheckClient2 As New WebClient
-                                    CheckClient2.Encoding = System.Text.Encoding.UTF8
-                                    Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
-                                    Funimation_m3u8_final = textLenght(i)
-                                    FunimationBackupm3u8 = textLenght(i)
-                                    Exit For
-                                Catch ex As Exception
-                                    Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
-                                End Try
-                            ElseIf InStr(textLenght(i - 1), ResoFunBackup) Then
-
-                                Dim CheckClient As New WebClient
-                                CheckClient.Encoding = Encoding.UTF8
-                                If WebbrowserCookie = Nothing Then
-                                Else
-                                    CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
-                                End If
-                                Dim m3u8String As String = CheckClient.DownloadString(textLenght(i))
-                                Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl3 As String = keyfileurl2(0)
-
-                                If InStr(keyfileurl2(0), "https://") Then
-
-                                Else
-                                    Dim c() As String = New Uri(textLenght(i)).Segments
-                                    Dim path As String = "https://" + New Uri(textLenght(i)).Host
-
-                                    For i3 As Integer = 0 To c.Count - 2
-                                        path = path + c(i3)
-                                    Next
-                                    keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
-                                End If
-
-                                'MsgBox(keyfileurl3)
-                                Try
-                                    Dim CheckClient2 As New WebClient
-                                    CheckClient2.Encoding = System.Text.Encoding.UTF8
-                                    Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
-                                    FunimationBackupm3u8 = textLenght(i)
-                                    Exit For
-                                Catch ex As Exception
-                                    Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
-                                End Try
-
+                            Dim CheckClient As New WebClient
+                            CheckClient.Encoding = Encoding.UTF8
+                            If Not WebbrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                            ElseIf Not SystemWebBrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
                             End If
+
+                            Dim m3u8String As String = CheckClient.DownloadString(StreamURL)
+                            'MsgBox(m3u8String)
+                            Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl3 As String = keyfileurl2(0)
+
+                            If InStr(keyfileurl2(0), "https://") Then
+
+                            Else
+                                Dim c() As String = New Uri(StreamURL).Segments
+                                Dim path As String = "https://" + New Uri(StreamURL).Host
+
+                                For i3 As Integer = 0 To c.Count - 2
+                                    path = path + c(i3)
+                                Next
+                                keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
+                            End If
+
+                            'MsgBox(keyfileurl3)
+                            Try
+                                Dim CheckClient2 As New WebClient
+                                CheckClient2.Encoding = System.Text.Encoding.UTF8
+                                Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
+                                Funimation_m3u8_final = StreamURL
+                                FunimationBackupm3u8 = StreamURL
+                                Exit For
+                            Catch ex As Exception
+                                Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
+                            End Try
+                        ElseIf InStr(Streams(i), ResoFunBackup) Then
+                            Dim Streams2() As String = Streams(i).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim Streams3() As String = Streams2(1).Split(New String() {"#EXT-"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim StreamURL As String = "https://" + Streams3(0).Trim
+
+                            Dim CheckClient As New WebClient
+                            CheckClient.Encoding = Encoding.UTF8
+                            If Not WebbrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                            ElseIf Not SystemWebBrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
+                            End If
+                            Dim m3u8String As String = CheckClient.DownloadString(StreamURL)
+                            Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl3 As String = keyfileurl2(0)
+
+                            If InStr(keyfileurl2(0), "https://") Then
+
+                            Else
+                                Dim c() As String = New Uri(StreamURL).Segments
+                                Dim path As String = "https://" + New Uri(StreamURL).Host
+
+                                For i3 As Integer = 0 To c.Count - 2
+                                    path = path + c(i3)
+                                Next
+                                keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
+                            End If
+
+                            'MsgBox(keyfileurl3)
+                            Try
+                                Dim CheckClient2 As New WebClient
+                                CheckClient2.Encoding = System.Text.Encoding.UTF8
+                                Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
+                                FunimationBackupm3u8 = StreamURL
+                                Exit For
+                            Catch ex As Exception
+                                Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
+                            End Try
+
                         End If
+
                     Catch ex As Exception
 
                     End Try
@@ -2953,45 +2957,49 @@ Public Class Main
                                              Return Nothing
                                          End Function))
                     ResoFunBackup = ResoBackString
-                    For i As Integer = 0 To textLenght.Length - 1
-                        If InStr(textLenght(i), "https") Then
-                            If InStr(textLenght(i - 1), ResoBackString) Then
+                    For i As Integer = 0 To Streams.Length - 1
+                        If InStr(Streams(i), ResoBackString) Then
+                            Dim Streams2() As String = Streams(i).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim Streams3() As String = Streams2(1).Split(New String() {"#EXT-"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim StreamURL As String = "https://" + Streams3(0).Trim
+                            Dim CheckClient As New WebClient
+                            CheckClient.Encoding = Encoding.UTF8
 
-                                Dim CheckClient As New WebClient
-                                CheckClient.Encoding = Encoding.UTF8
-                                If WebbrowserCookie = Nothing Then
-                                Else
-                                    CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
-                                End If
-                                Dim m3u8String As String = CheckClient.DownloadString(textLenght(i))
-                                'MsgBox(textLenght(i))
-                                Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl3 As String = keyfileurl2(0)
-                                If InStr(keyfileurl2(0), "https://") Then
-                                Else
-                                    Dim c() As String = New Uri(textLenght(i)).Segments
-                                    Dim path As String = "https://" + New Uri(textLenght(i)).Host
-
-                                    For i3 As Integer = 0 To c.Count - 2
-                                        path = path + c(i3)
-                                    Next
-                                    keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
-                                End If
-                                Try
-                                    Dim CheckClient2 As New WebClient
-                                    CheckClient2.Encoding = System.Text.Encoding.UTF8
-                                    Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
-                                    Funimation_m3u8_final = textLenght(i)
-                                    Exit For
-                                Catch ex As Exception
-                                    Debug.WriteLine(keyfileurl3 + vbNewLine + ex.ToString)
-                                End Try
-
-
-                                'Funimation_m3u8_final = textLenght(i)
-                                'Exit For
+                            If Not WebbrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                            ElseIf Not SystemWebBrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
                             End If
+
+                            Dim m3u8String As String = CheckClient.DownloadString(StreamURL)
+                            'MsgBox(textLenght(i))
+                            Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl3 As String = keyfileurl2(0)
+                            If InStr(keyfileurl2(0), "https://") Then
+                            Else
+                                Dim c() As String = New Uri(StreamURL).Segments
+                                Dim path As String = "https://" + New Uri(StreamURL).Host
+
+                                For i3 As Integer = 0 To c.Count - 2
+                                    path = path + c(i3)
+                                Next
+                                keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
+                            End If
+                            Try
+                                Dim CheckClient2 As New WebClient
+                                CheckClient2.Encoding = System.Text.Encoding.UTF8
+                                Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
+                                Funimation_m3u8_final = StreamURL
+                                Exit For
+                            Catch ex As Exception
+                                Debug.WriteLine(keyfileurl3 + vbNewLine + ex.ToString)
+                            End Try
+
+
+                            'Funimation_m3u8_final = textLenght(i)
+                            'Exit For
+
                         End If
                     Next
                 ElseIf Funimation_m3u8_final = Nothing Then
@@ -3026,10 +3034,10 @@ Public Class Main
 
             Dim SubsClient As New WebClient
             SubsClient.Encoding = Encoding.UTF8
-            If WebbrowserCookie = Nothing Then
-            Else
-                'MsgBox(WebbrowserCookie)
+            If Not WebbrowserCookie = Nothing Then
                 SubsClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+            ElseIf Not SystemWebBrowserCookie = Nothing Then
+                SubsClient.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
             End If
             Dim PlayerPage As String = SubsClient.DownloadString("https://www.funimation.com/player/" + Player_ID2(0) + "/?bdub=0&qid=")
 
@@ -3046,6 +3054,8 @@ Public Class Main
                         Continue For
                     ElseIf InStr(PlayerPage, My.Resources.Funimation_Subtitle_String2 + SubFunimation(i)) Then
                         SoftSubs2.Add(My.Resources.Funimation_Subtitle_String2 + SubFunimation(i))
+                    ElseIf InStr(PlayerPage, My.Resources.Funimation_Subtitle_String3 + SubFunimation(i)) Then
+                        SoftSubs2.Add(My.Resources.Funimation_Subtitle_String3 + SubFunimation(i))
                     End If
 
                 Next
@@ -3074,6 +3084,9 @@ Public Class Main
             ElseIf InStr(PlayerPage, My.Resources.Funimation_Subtitle_String2 + HardSubFunimation) Then
                 HardSubFound = True
                 HardSubSplittString = My.Resources.Funimation_Subtitle_String2 + HardSubFunimation
+            ElseIf InStr(PlayerPage, My.Resources.Funimation_Subtitle_String3 + HardSubFunimation) Then
+                HardSubFound = True
+                HardSubSplittString = My.Resources.Funimation_Subtitle_String3 + HardSubFunimation
             End If
 
             If HardSubFound = True Then 'anyways not true if hardsub is "Disabled"
@@ -3144,25 +3157,35 @@ Public Class Main
 
                     Next
                     Dim TempCount As Integer = UsedSubs.Count
-                    If Funimation_srt = True Then
-                        UsedSubs.Add(Subs_in_srt.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, ""))
-                    End If
+                    Try
+                        If Funimation_srt = True Then
+                            UsedSubs.Add(Subs_in_srt.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, "").Replace(My.Resources.Funimation_Subtitle_String3, ""))
+                        End If
+                    Catch ex As Exception
+                    End Try
 
-                    If Funimation_vtt = True Then
-                        UsedSubs.Add(Subs_in_vtt.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, ""))
-                    End If
+                    Try
+                        If Funimation_vtt = True Then
+                            UsedSubs.Add(Subs_in_vtt.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, "").Replace(My.Resources.Funimation_Subtitle_String3, ""))
+                        End If
+                    Catch ex As Exception
+                    End Try
 
-                    If Funimation_dfxp = True Then
-                        UsedSubs.Add(Subs_in_dfxp.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, ""))
-                    End If
+                    Try
+                        If Funimation_dfxp = True Then
+                            UsedSubs.Add(Subs_in_dfxp.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, "").Replace(My.Resources.Funimation_Subtitle_String3, ""))
+                        End If
+                    Catch ex As Exception
+                    End Try
+
 
                     If TempCount = UsedSubs.Count Then
                         If Subs_in_srt.Count > 0 Then
-                            UsedSubs.Add(Subs_in_srt.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, ""))
+                            UsedSubs.Add(Subs_in_srt.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, "").Replace(My.Resources.Funimation_Subtitle_String3, ""))
                         ElseIf Subs_in_vtt.Count > 0 Then
-                            UsedSubs.Add(Subs_in_vtt.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, ""))
+                            UsedSubs.Add(Subs_in_vtt.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, "").Replace(My.Resources.Funimation_Subtitle_String3, ""))
                         ElseIf Subs_in_dfxp.Count > 0 Then
-                            UsedSubs.Add(Subs_in_dfxp.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, ""))
+                            UsedSubs.Add(Subs_in_dfxp.Item(0) + " , " + SoftSubs2.Item(i).Replace(My.Resources.Funimation_Subtitle_String, "").Replace(My.Resources.Funimation_Subtitle_String2, "").Replace(My.Resources.Funimation_Subtitle_String3, ""))
                         End If
                     End If
 
@@ -3176,12 +3199,16 @@ Public Class Main
             '
             Dim SoftSubMergeURLs As String = Nothing
             Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a"
+            If Not FunimationAudioMap = Nothing Then
+                SoftSubMergeMaps = " -map 0:v -map 1:a"
+            End If
             Dim SoftSubMergeMetatata As String = Nothing
 
             If UsedSubs.Count > 0 Then
                 If MergeSubs = True And SubsOnly = False Then
                     Dim DispositionIndex As Integer = 999
                     Dim LastMerged As String = Nothing
+                    Dim MapCount As Integer = -1
                     For i As Integer = 0 To UsedSubs.Count - 1
                         Dim SoftSub As String() = UsedSubs.Item(i).Split(New String() {" , "}, System.StringSplitOptions.RemoveEmptyEntries)
                         If CCtoMP4CC(SoftSub(1)) = LastMerged Then
@@ -3189,21 +3216,28 @@ Public Class Main
                         Else
                             LastMerged = CCtoMP4CC(SoftSub(1))
                         End If
+                        MapCount = MapCount + 1
                         If DefaultSubFunimation = SoftSub(1) Then
                             'Debug.WriteLine(SoftSub(1))
-                            DispositionIndex = i
+                            DispositionIndex = MapCount
                         End If
                         If SoftSubMergeURLs = Nothing Then
                             SoftSubMergeURLs = " -headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + SoftSub(0) + Chr(34)
                         Else
-                            SoftSubMergeURLs = SoftSubMergeURLs + " -i " + Chr(34) + SoftSub(0) + Chr(34)
+                            SoftSubMergeURLs = SoftSubMergeURLs + " -headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + SoftSub(0) + Chr(34)
                         End If
-                        SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + 1).ToString
+
+                        If FunimationAudioMap = Nothing Then
+                            SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (MapCount + 1).ToString
+                        Else
+                            SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (MapCount + 2).ToString
+                        End If
+
                         If SoftSubMergeMetatata = Nothing Then
                             'SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSub(1))
-                            SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSub(1)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSub(1)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSub(1)) + Chr(34)
+                            SoftSubMergeMetatata = " -metadata:s:s:" + MapCount.ToString + " language=" + CCtoMP4CC(SoftSub(1)) + " -metadata:s:s:" + MapCount.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34) + " -metadata:s:s:" + MapCount.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34)
                         Else
-                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSub(1)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSub(1)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSub(1)) + Chr(34)
+                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + MapCount.ToString + " language=" + CCtoMP4CC(SoftSub(1)) + " -metadata:s:s:" + MapCount.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34) + " -metadata:s:s:" + MapCount.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34)
                             'SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i))
 
 
@@ -3263,15 +3297,15 @@ Public Class Main
             End If
 
             If HardSubFound = True Then
-                Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + " -vf subtitles=" + Chr(34) + UsedSub + Chr(34) + " " + ffmpeg_hardsub
+                Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + FunimationAudioMap + " -vf subtitles=" + Chr(34) + UsedSub + Chr(34) + " " + ffmpeg_hardsub
 
             ElseIf MergeSubs = True Then
 
-                Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + DubMetatata
+                Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + FunimationAudioMap + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + DubMetatata
 
             Else
 
-                Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command
+                Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + FunimationAudioMap + DubMetatata + " " + ffmpeg_command
 
             End If
 
@@ -3310,6 +3344,7 @@ Public Class Main
         End Try
         Funimation_Grapp_RDY = True
     End Sub
+
 
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
 

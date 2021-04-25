@@ -1851,7 +1851,7 @@ Public Class Main
                     End Using
                 Catch ex As Exception
                     Debug.WriteLine("error- getting name data")
-                    'Exit Sub
+                    Exit Sub
                 End Try
 
                 My.Computer.Clipboard.SetText(ObjectJson)
@@ -2440,22 +2440,7 @@ Public Class Main
             Dim ZeileReso2() As String = ZeileReso(0).Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim ZeileReso3() As String = e.Data.Split(New String() {": Video:"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim ZeileReso4() As String = ZeileReso3(0).Split(New String() {"Stream #"}, System.StringSplitOptions.RemoveEmptyEntries)
-            'If ResoAvalibe = Nothing Then
-            '    ResoAvalibe = ZeileReso2(ZeileReso2.Count - 1).Trim + ":--:" + ZeileReso4(1)
-            'Else
             ResoAvalibe = ResoAvalibe + vbNewLine + ZeileReso2(ZeileReso2.Count - 1).Trim + ":--:" + ZeileReso4(1)
-            'End If
-            'ElseIf InStr(e.Data, "Duration: N/A, bitrate: N/A") Then
-
-            'ElseIf InStr(e.Data, "Duration: ") Then
-            '    Dim ZeitGesamt As String() = e.Data.Split(New String() {"Duration: "}, System.StringSplitOptions.RemoveEmptyEntries)
-            '    Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
-            '    NetworkScanTime = ZeitGesamt2(0)
-            '    Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
-            '    Dim ZeitGesamtSplit() As String = ZeitGesamt2(0).Split(New [Char]() {System.Convert.ToChar(":")})
-            '    MsgBox(ZeitGesamt2(0))
-            '    ZeitGesamtInteger = CInt(ZeitGesamtSplit(0)) * 3600 + CInt(ZeitGesamtSplit(1)) * 60 + CInt(ZeitGesamtSplit(2))
-
         ElseIf InStr(e.Data, "At least one output file must be specified") Then
             ResoSearchRunning = False
         End If
@@ -3384,7 +3369,6 @@ Public Class Main
             c = c.Replace("balken1.png", Balken)
             Dim CC As String = "cc.png"
             c = c.Replace("cc1.png", CC)
-            'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\index.html", c, False)
             HTML = c
         Catch ex As Exception
             'Debug.WriteLine(ex.ToString)
@@ -3392,71 +3376,7 @@ Public Class Main
         End Try
     End Sub
 #Region "server"
-    'Dim tcpListener As TcpListener
-    'Public Sub ServerStart()
-    '    Try
-    '        Dim hostName As String = "localhost" 'Dns.GetHostName()
-    '        Dim Adresscount As Integer
-    '        For i As Integer = 0 To Dns.GetHostEntry(hostName).AddressList.Count - 1
-    '            If Dns.GetHostEntry(hostName).AddressList(i).ToString = "127.0.0.1" Then
-    '                Adresscount = i
-    '            End If
-    '        Next
-    '        If Adresscount = Nothing Then
-    '            MsgBox("http server start failed")
-    '            Exit Sub
-    '        End If
-    '        Dim serverIP As IPAddress = Dns.GetHostEntry(hostName).AddressList(Adresscount) 'Dns.Resolve(hostName).AddressList(0) 'New IPAddress("localhost") '
 
-    '        Dim Port As String = StartServer
-    '        tcpListener = New TcpListener(serverIP, Int32.Parse(Port))
-    '        tcpListener.Start()
-    '        Debug.WriteLine("Web server started at: " & serverIP.ToString() & ":" & Port)
-    '        ProcessThread()
-
-
-    '    Catch abort As ThreadAbortException
-    '        Exit Sub
-    '        MsgBox(abort.ToString())
-    '    Catch ex As Exception
-
-    '        MsgBox(ex.ToString())
-    '    End Try
-    'End Sub
-
-
-    'Public Sub ProcessThread()
-    '    Dim ServerRunning = True
-    '    Dim clientSocket As Socket
-    '    While ServerRunning = True
-
-
-    '        Try
-    '            clientSocket = tcpListener.AcceptSocket
-    '            clientSocket.ReceiveBufferSize = 1048576
-    '            ' Socket Information
-    '            'Dim clientInfo As IPEndPoint = CType(clientSocket.RemoteEndPoint, IPEndPoint)
-    '            'Debug.WriteLine("Client: " + clientInfo.Address.ToString() + ":" + clientInfo.Port.ToString())
-    '            ' Set Thread for each Web Browser Connection
-    '            Dim clientThread As New Thread(Sub() Me.ProcessRequest(clientSocket))
-    '            clientThread.Start()
-
-    '        Catch ex As Exception
-
-    '            Debug.WriteLine(ex.ToString())
-
-    '            Try
-    '                clientSocket.Close()
-    '            Catch ex2 As Exception
-
-    '            End Try
-    '            ServerRunning = False
-    '            Exit Sub
-    '        End Try
-    '    End While
-
-    '    'New AsyncCallback(AddressOf DoAcceptSocketCallback), listener
-    'End Sub
 
     Dim ListOfThread As New List(Of Thread)
 

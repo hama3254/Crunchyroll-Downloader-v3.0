@@ -535,15 +535,19 @@ Public Class Anime_Add
                 End Using
             Catch ex As Exception
                 Debug.WriteLine("error- getting EpisodeJson data")
-                'Exit Sub
+                Exit Sub
             End Try
             Main.CrBetaMassEpisodes = EpisodeJson
+
+
+
+
             Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            For i As Integer = 1 To EpisodeSplit.Count - 1
-                Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
-                comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
-            Next
+                For i As Integer = 1 To EpisodeSplit.Count - 1
+                    Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
+                    comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
+                Next
 
         ElseIf AoD_Mode = False Then
 

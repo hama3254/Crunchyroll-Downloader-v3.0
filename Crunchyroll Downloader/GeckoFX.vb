@@ -311,14 +311,8 @@ Public Class GeckoFX
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        'Main.WebbrowserURL = WebBrowser1.Url.ToString
-        'Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
-        'Main.WebbrowserTitle = WebBrowser1.DocumentTitle
-        'Main.GrappURL()
         Try
             My.Computer.Clipboard.SetText(WebBrowser1.Url.ToString)
-            'My.Computer.Clipboard.SetText(WebBrowser1.Document.Cookie)
-
             MsgBox("copied: " + Chr(34) + WebBrowser1.Url.ToString + Chr(34))
         Catch ex As Exception
         End Try
@@ -395,7 +389,7 @@ Public Class GeckoFX
             Main.MangaListItemAdd(Main.RemoveExtraSpaces(NameDLFinal), Thumbnail, BaseURL3, ImageList)
 
         ElseIf InStr(WebBrowser1.Url.ToString, "cr-cookie-ui.php") Then
-            MsgBox(WebBrowser1.Document.Body.InnerHtml)
+            'MsgBox(WebBrowser1.Document.Body.InnerHtml)
         Else
             Main.m3u8List.Clear()
             Main.mpdList.Clear()
@@ -455,7 +449,7 @@ Public Class GeckoFX
         End If
         If CBool(InStr(requesturl, ".js")) = True Then
 
-            Debug.WriteLine(requesturl)
+            'Debug.WriteLine(requesturl)
         End If
         If CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "streams?")) Then
             If Main.b = False Then
@@ -463,6 +457,7 @@ Public Class GeckoFX
                 Exit Sub
             End If
         ElseIf CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
+            'Debug.WriteLine(requesturl)
             If Main.b = False Then
                 'Main.WebbrowserURL = WebBrowser1.Url.ToString
                 Main.GetBetaSeasons(requesturl)
@@ -470,7 +465,9 @@ Public Class GeckoFX
             End If
 
         End If
-
+        'If CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "episodes?")) Then
+        '    Debug.WriteLine(requesturl)
+        'End If
         If ScanTrue = True Then
 
             If InStr(requesturl, ".m3u8") Then

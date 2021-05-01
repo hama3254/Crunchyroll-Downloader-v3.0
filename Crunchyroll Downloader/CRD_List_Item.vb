@@ -536,6 +536,7 @@ Public Class CRD_List_Item
 #End Region
 
     Private Function GetFullUri(ByVal MainUri As String, ByVal CurrentPath As String)
+
         Dim path As String = Nothing
         If InStr(CurrentPath, "https://") Then
             path = CurrentPath
@@ -554,6 +555,7 @@ Public Class CRD_List_Item
             For i3 As Integer = 0 To c.Count - 2
                 path = path + c(i3)
             Next
+            path = path + CurrentPath
         End If
 
         Return path
@@ -852,6 +854,7 @@ Public Class CRD_List_Item
 
             WC_TS.DownloadFile(New Uri(DL_URL), DL_Pfad)
         Catch ex As Exception
+
             Debug.WriteLine("Download error #1: " + DL_Pfad)
             Try
                 Dim wc_ts As New WebClient
@@ -1330,7 +1333,7 @@ Public Class CRD_List_Item
         Try
 
             Dim logfile As String = DownloadPfad.Replace(Main.VideoFormat, ".log").Replace(Chr(34), "")
-            'If File.Exists(logfile) Then
+
             Using sw As StreamWriter = File.AppendText(logfile)
                 sw.Write(LogText.Item(0))
                 sw.Write(vbNewLine)
@@ -1340,12 +1343,21 @@ Public Class CRD_List_Item
                 Next
 
             End Using
-            'Else
-            'File.WriteAllText(logfile, Date.Now + " " + e.Data)
-            'End If
+
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
+        If HybridMode = True Then
+            Try
+
+                Dim logfile As String = DownloadPfad.Replace(Main.VideoFormat, ".log").Replace(Chr(34), "")
+
+                File.WriteAllText(logfile, HybrideLog)
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            End Try
+        End If
     End Sub
 
     Private Sub LogTocClipboard_Click(sender As Object, e As EventArgs) Handles LogTocClipboard.Click

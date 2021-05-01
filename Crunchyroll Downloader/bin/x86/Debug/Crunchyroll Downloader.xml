@@ -67,6 +67,11 @@ Crunchyroll Downloader
   Sucht eine lokalisierte Zeichenfolge, die &quot;image&quot;:&quot; ähnelt.
 </summary>
 </member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.AoD_MediaID">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die &quot;mediaid&quot;: ähnelt.
+</summary>
+</member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.AoD_Titel">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die &quot;title&quot;:&quot; ähnelt.
@@ -193,6 +198,11 @@ Video Position: 0
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_Player_ID">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die src=&quot;/player/ ähnelt.
+</summary>
+</member>
+<member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_Player_ID_2">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die src=&quot;https://www.funimation.com/player/ ähnelt.
 </summary>
 </member>
 <member name="P:Crunchyroll_Downloader.My.Resources.Resources.Funimation_Split_1">

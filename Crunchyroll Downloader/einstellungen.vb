@@ -16,7 +16,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Beta-U2"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Beta-U3"
         BackgroundWorker1.RunWorkerAsync()
 
 
@@ -310,12 +310,12 @@ Public Class Einstellungen
                 rk.SetValue("ServerPort", Port, RegistryValueKind.String)
                 Main.StartServer = False
             Catch ex As Exception
-                If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+                'If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
 
-                Else
-                    AAuto.Checked = False
-                    A360p.Checked = True
-                End If
+                'Else
+                '    AAuto.Checked = False
+                '    A360p.Checked = True
+                'End If
                 MsgBox("The add-on support Port can only be numbers!", MsgBoxStyle.Exclamation)
                 Exit Sub
             End Try
@@ -830,7 +830,7 @@ Public Class Einstellungen
     Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
         GeckoFX.Show()
         Main.LoginOnly = "US_UnBlock"
-
+        Main.UserBowser = True
         GeckoFX.WebBrowser1.Navigate("https://api.criater-stiftung.org/us-unlock.php")
     End Sub
 

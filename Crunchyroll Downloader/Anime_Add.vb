@@ -388,6 +388,8 @@ Public Class Anime_Add
 
         End If
 
+        'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\test.log", Main.WebbrowserText, False)
+
         If CBool(InStr(Main.WebbrowserText, "/OmU/1080/hlsfirst/")) Then
             Dim OmUStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/OmU/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim OmUStreamSplitToken() As String = OmUStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -396,6 +398,8 @@ Public Class Anime_Add
             Dim OmUStreamSplitEpisodeIndex2() As String = OmUStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim m3u8Strings As String = Nothing
 
+            Dim VideoStreamUrls As String = "https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0)
+            VideoStreamUrls = VideoStreamUrls.Replace("/single", "")
             Try
                 Using client As New WebClient()
                     client.Encoding = System.Text.Encoding.UTF8
@@ -404,12 +408,13 @@ Public Class Anime_Add
                     client.Headers.Add("Accept-Encoding: gzip, deflate, br")
                     client.Headers.Add("X-Requested-With: XMLHttpRequest")
                     client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
-                    'MsgBox(OmUStreamSplitEpisodeIndex(1))
-                    m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
+                    'MsgBox("https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
+
+                    m3u8Strings = client.DownloadString(VideoStreamUrls)
                     '("Sub: " + m3u8Strings)
                 End Using
             Catch ex As Exception
-                MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + OmUStreamSplitEpisodeIndex2(0) + "/OmU/1080/hlsfirst/" + OmUStreamSplitToken(0))
+                MsgBox(ex.ToString + vbNewLine + VideoStreamUrls)
             End Try
             If m3u8Strings = Nothing Then
             Else
@@ -423,12 +428,14 @@ Public Class Anime_Add
         End If
 
         If CBool(InStr(Main.WebbrowserText, "/Dub/1080/hlsfirst/")) Then
+
             Dim DubStreamSplit() As String = Main.WebbrowserText.Split(New String() {"/Dub/1080/hlsfirst/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim DubStreamSplitToken() As String = DubStreamSplit(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim DubStreamSplitEpisodeIndex() As String = DubStreamSplit(0).Split(New String() {"/videomaterialurl/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim DubStreamSplitEpisodeIndex2() As String = DubStreamSplitEpisodeIndex(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim DubStreamSplitEpisodeIndex2() As String = DubStreamSplitEpisodeIndex(DubStreamSplitEpisodeIndex.Count - 1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim m3u8Strings As String = Nothing
-
+            Dim VideoStreamUrls As String = "https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0)
+            VideoStreamUrls = VideoStreamUrls.Replace("/single", "")
             Try
                 Using client As New WebClient()
                     client.Encoding = System.Text.Encoding.UTF8
@@ -438,11 +445,11 @@ Public Class Anime_Add
                     client.Headers.Add("X-Requested-With: XMLHttpRequest")
                     client.Headers.Add(AoD_Cookie) '+ WebBrowser1.Document.Cookie)
                     'MsgBox(DubStreamSplitEpisodeIndex(1))
-                    m3u8Strings = client.DownloadString("https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
+                    m3u8Strings = client.DownloadString(VideoStreamUrls)
                     'MsgBox("Dub: " + m3u8Strings)
                 End Using
             Catch ex As Exception
-                MsgBox(ex.ToString + vbNewLine + "https://www.anime-on-demand.de/videomaterialurl/" + DubStreamSplitEpisodeIndex2(0) + "/Dub/1080/hlsfirst/" + DubStreamSplitToken(0))
+                MsgBox(ex.ToString + vbNewLine + VideoStreamUrls)
             End Try
             If m3u8Strings = Nothing Then
             Else
@@ -456,19 +463,24 @@ Public Class Anime_Add
 
         End If
         AoD_Mode = True
+        'MsgBox(AoD_DubList.Count)
+        'MsgBox(AoD_OmUList.Count)
+
         If AoD_DubList.Count And AoD_OmUList.Count > 0 Then
             ComboBox1.Items.Clear()
+            ComboBox1.Text = Nothing
             GroupBox3.Visible = False
             groupBox2.Visible = True
             groupBox1.Visible = False
             ComboBox1.Enabled = True
-            comboBox3.Enabled = True
-            comboBox4.Enabled = True
+            comboBox3.Enabled = False
+            comboBox4.Enabled = False
             ComboBox1.Items.Add("Dub")
             ComboBox1.Items.Add("OmU")
             FillAoDDropDown()
         ElseIf AoD_DubList.Count Or AoD_OmUList.Count > 0 Then
             ComboBox1.Items.Clear()
+            ComboBox1.Text = Nothing
             GroupBox3.Visible = False
             groupBox2.Visible = True
             groupBox1.Visible = False
@@ -543,11 +555,11 @@ Public Class Anime_Add
 
 
             Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                For i As Integer = 1 To EpisodeSplit.Count - 1
-                    Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
-                    comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
-                Next
+            For i As Integer = 1 To EpisodeSplit.Count - 1
+                Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
+                comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
+            Next
 
         ElseIf AoD_Mode = False Then
 
@@ -581,6 +593,29 @@ Public Class Anime_Add
             Next
             'comboBox3.SelectedIndex = 0
             'comboBox4.SelectedIndex = 0
+        ElseIf AoD_Mode = True Then
+            comboBox3.Items.Clear()
+            comboBox4.Items.Clear()
+            comboBox3.Enabled = True
+            comboBox4.Enabled = True
+
+            If ComboBox1.Text = "OmU" Then
+                For i As Integer = 0 To AoD_OmUList.Count - 1
+                    Dim DropDownTitle As String() = AoD_OmUList(i).Split(New String() {My.Resources.AoD_Titel}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim DropDownTitle2 As String() = DropDownTitle(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    comboBox3.Items.Add(DropDownTitle2(0))
+                    comboBox4.Items.Add(DropDownTitle2(0))
+                Next
+
+            ElseIf ComboBox1.Text = "Dub" Then
+                For i As Integer = 0 To AoD_DubList.Count - 1
+                    Dim DropDownTitle As String() = AoD_DubList(i).Split(New String() {My.Resources.AoD_Titel}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim DropDownTitle2 As String() = DropDownTitle(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    comboBox3.Items.Add(DropDownTitle2(0))
+                    comboBox4.Items.Add(DropDownTitle2(0))
+                Next
+            End If
+
         End If
     End Sub
 
@@ -707,7 +742,14 @@ Public Class Anime_Add
                                             HTMLString = client.DownloadString(Main.WebbrowserURL)
                                         End Try
 
+                                        Dim Funimation_iFrame As String = Nothing
                                         If InStr(HTMLString, My.Resources.Funimation_Player_ID) Then
+                                            Funimation_iFrame = My.Resources.Funimation_Player_ID
+                                        ElseIf InStr(HTMLString, My.Resources.Funimation_Player_ID_2) Then
+                                            Funimation_iFrame = My.Resources.Funimation_Player_ID_2
+                                        End If
+
+                                        If InStr(HTMLString, Funimation_iFrame) Then
                                             Dim WebbrowserHeadTextSplit() As String = HTMLString.Split(New String() {"<head"}, System.StringSplitOptions.RemoveEmptyEntries)
                                             Dim WebbrowserHeadTextSplit2() As String = WebbrowserHeadTextSplit(1).Split(New String() {"</head>"}, System.StringSplitOptions.RemoveEmptyEntries)
 
@@ -962,11 +1004,17 @@ Public Class Anime_Add
             Dim AoDTitle2() As String = AoDTitle1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim AoDTitle As String = AoDTitle2(0)
 
+            Dim AoDMediaID1() As String = ProcessList.Item(i).Split(New String() {My.Resources.AoD_MediaID}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim AoDMediaID2() As String = AoDMediaID1(1).Split(New String() {"},"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim AoDMediaID As String = AoDMediaID2(0)
+
             Try
 
 
                 If InStr(AoDHTML, My.Resources.AoD_HTML_Episode_Title) Then ' Serie 
-                    Dim AoDTitle0() As String = AoDHTML.Split(New String() {My.Resources.AoD_HTML_Episode_Title}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim AoDTitleDivByMediaID() As String = AoDHTML.Split(New String() {AoDMediaID}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim AoDTitle0() As String = AoDTitleDivByMediaID(1).Split(New String() {My.Resources.AoD_HTML_Episode_Title}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim AoDTitle00() As String = AoDTitle0(ii + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim AoD_EpisodeSplit() As String = AoDTitle00(0).Split(New String() {" - "}, System.StringSplitOptions.RemoveEmptyEntries)
                     If AoD_EpisodeSplit.Count > 2 Then
@@ -1101,6 +1149,8 @@ Public Class Anime_Add
             Dim AoDThumbnail1() As String = ProcessList.Item(i).Split(New String() {My.Resources.AoD_Image}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim AoDThumbnail2() As String = AoDThumbnail1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim AoDThumbnail As String = AoDThumbnail2(0)
+
+
             Dim AoDTm3u8() As String = ProcessList.Item(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim m3u8_Master_url As String = AoDTm3u8(0).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
             Dim m3u8_list As New List(Of String)

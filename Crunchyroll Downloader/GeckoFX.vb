@@ -58,13 +58,17 @@ Public Class GeckoFX
 
                 Catch ex As Exception
                     If Main.LoginOnly = "US_UnBlock_Finsihed" And Main.UserBowser = False Then
+                        Main.UserBowser = False
                         Me.Close()
+
                     End If
+
                     'MsgBox(ex.ToString)
                 End Try
 
             End If
         ElseIf Main.LoginOnly = "US_UnBlock_Finsihed" And Main.UserBowser = False Then
+            Main.UserBowser = False
             Me.Close()
         Else
 
@@ -167,7 +171,7 @@ Public Class GeckoFX
             ElseIf CBool(InStr(WebBrowser1.Url.ToString, "funimation.com")) Then
                 If Main.b = False Then
 
-                    If InStr(WebBrowser1.Document.Body.OuterHtml, My.Resources.Funimation_Player_ID) Then
+                    If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, My.Resources.Funimation_Player_ID)) = True Or CBool(InStr(WebBrowser1.Document.Body.OuterHtml, My.Resources.Funimation_Player_ID_2)) = True Then
                         Main.WebbrowserURL = WebBrowser1.Url.ToString
                         Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                         Main.WebbrowserTitle = WebBrowser1.DocumentTitle
@@ -519,6 +523,7 @@ Public Class GeckoFX
         End If
 
         If Main.UserBowser = False Then
+
             If CBool(InStr(requesturl, ".jpg")) = True Or CBool(InStr(requesturl, ".bmp")) = True Or CBool(InStr(requesturl, ".gif")) = True Or CBool(InStr(requesturl, ".png")) = True Or CBool(InStr(requesturl, ".webp")) = True Then
                 e.Cancel = True
 

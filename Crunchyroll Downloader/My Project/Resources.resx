@@ -541,4 +541,10 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="Funimation_Subtitle_String3" xml:space="preserve">
     <value>", "kind": "subtitle", "type": "full", "language": "</value>
   </data>
+  <data name="Funimation_Player_ID_2" xml:space="preserve">
+    <value>src="https://www.funimation.com/player/</value>
+  </data>
+  <data name="AoD_MediaID" xml:space="preserve">
+    <value>"mediaid":</value>
+  </data>
 </root>

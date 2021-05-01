@@ -1223,10 +1223,7 @@ Public Class Main
                     CR_Anime_Staffel_int = RemoveExtraSpaces(CR_Anime_Staffel_int)
                 End If
             Else
-                'Me.Invoke(New Action(Function()
-                '                         My.Computer.Clipboard.SetText(WebbrowserHeadText)
-                '                         Return Nothing
-                '                     End Function))
+
                 Debug.WriteLine("Not found?")
             End If
 
@@ -1295,7 +1292,9 @@ Public Class Main
 
 
             End If
-
+            If CR_FilenName = Nothing Then
+                CR_FilenName = WebbrowserTitle
+            End If
             CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = RemoveExtraSpaces(CR_FilenName)
 
@@ -2769,7 +2768,13 @@ Public Class Main
             Dim client0 As New WebClient
             client0.Encoding = Encoding.UTF8
             Dim Funimation_m3u8_final As String = Nothing
-            Dim Player_ID() As String = WebbrowserText.Split(New String() {My.Resources.Funimation_Player_ID}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim Funimation_iFrame As String = Nothing
+            If InStr(WebbrowserText, My.Resources.Funimation_Player_ID) Then
+                Funimation_iFrame = My.Resources.Funimation_Player_ID
+            ElseIf InStr(WebbrowserText, My.Resources.Funimation_Player_ID_2) Then
+                Funimation_iFrame = My.Resources.Funimation_Player_ID_2
+            End If
+            Dim Player_ID() As String = WebbrowserText.Split(New String() {Funimation_iFrame}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim Player_ID2() As String = Player_ID(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
             If SubsOnly = False Then
 
@@ -3724,7 +3729,14 @@ Public Class Main
                                         client.Headers.Add("Cookie:" + SystemWebBrowserCookie)
                                         Dim HTMLString As String = DecompressString(client.DownloadData(WebbrowserURL))
 
+                                        Dim Funimation_iFrame As String = Nothing
                                         If InStr(HTMLString, My.Resources.Funimation_Player_ID) Then
+                                            Funimation_iFrame = My.Resources.Funimation_Player_ID
+                                        ElseIf InStr(HTMLString, My.Resources.Funimation_Player_ID_2) Then
+                                            Funimation_iFrame = My.Resources.Funimation_Player_ID_2
+                                        End If
+
+                                        If InStr(HTMLString, Funimation_iFrame) Then
                                             Dim WebbrowserHeadTextSplit() As String = HTMLString.Split(New String() {"<head"}, System.StringSplitOptions.RemoveEmptyEntries)
                                             Dim WebbrowserHeadTextSplit2() As String = WebbrowserHeadTextSplit(1).Split(New String() {"</head>"}, System.StringSplitOptions.RemoveEmptyEntries)
 

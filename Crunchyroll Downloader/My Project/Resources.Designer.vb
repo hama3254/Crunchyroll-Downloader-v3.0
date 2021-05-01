@@ -147,6 +147,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;mediaid&quot;: ähnelt.
+        '''</summary>
+        Friend ReadOnly Property AoD_MediaID() As String
+            Get
+                Return ResourceManager.GetString("AoD_MediaID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &quot;title&quot;:&quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property AoD_Titel() As String
@@ -364,6 +373,15 @@ Namespace My.Resources
         Friend ReadOnly Property Funimation_Player_ID() As String
             Get
                 Return ResourceManager.GetString("Funimation_Player_ID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die src=&quot;https://www.funimation.com/player/ ähnelt.
+        '''</summary>
+        Friend ReadOnly Property Funimation_Player_ID_2() As String
+            Get
+                Return ResourceManager.GetString("Funimation_Player_ID_2", resourceCulture)
             End Get
         End Property
         

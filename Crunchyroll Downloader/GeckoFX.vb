@@ -67,7 +67,8 @@ Public Class GeckoFX
                 End Try
 
             End If
-        ElseIf Main.LoginOnly = "US_UnBlock_Finsihed" And Main.UserBowser = False Then
+        ElseIf Main.LoginOnly = "US_UnBlock_Finsihed" Then
+            Main.LoginOnly = "ClosedAfterUS_UnBlock"
             Main.UserBowser = False
             Me.Close()
         Else
@@ -438,7 +439,13 @@ Public Class GeckoFX
 
 
     Private Sub ObserveHttpModifyRequest(sender As Object, e As GeckoObserveHttpModifyRequestEventArgs) Handles WebBrowser1.ObserveHttpModifyRequest
-        Dim requesturl As String = e.Channel.Uri.ToString()
+        Dim requesturl As String = Nothing
+        Try
+            requesturl = e.Channel.Uri.ToString()
+        Catch ex As Exception
+            Exit Sub
+        End Try
+
         Dim url As New Uri(requesturl)
 
         If Main.BlockList.Contains(url.Host) Then
@@ -469,9 +476,22 @@ Public Class GeckoFX
             End If
 
         End If
-        'If CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "episodes?")) Then
-        '    Debug.WriteLine(requesturl)
-        'End If
+
+        If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com")) And CBool(InStr(requesturl, "?region=")) Then
+            Dim parms As String() = requesturl.Split(New String() {"?region="}, System.StringSplitOptions.RemoveEmptyEntries)
+            Main.FunimationAPIRegion = "?region=" + parms(1)
+            If Main.b = False Then
+                If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com/v1/show")) And CBool(InStr(requesturl, "/episodes/")) Then
+
+                Else
+                    MsgBox(Main.WebbrowserURL)
+                    Anime_Add.ProcessFunimationJS(Main.WebbrowserURL)
+                    Main.b = True
+                End If
+
+
+            End If
+        End If
         If ScanTrue = True Then
 
             If InStr(requesturl, ".m3u8") Then

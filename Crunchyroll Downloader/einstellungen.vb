@@ -13,10 +13,11 @@ Public Class Einstellungen
     Inherits MetroForm
 
     Dim Manager As MetroStyleManager = Main.Manager
+    Dim LastVersionString As String = "v3.8-Beta"
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Beta-U3"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Beta-U6"
         BackgroundWorker1.RunWorkerAsync()
 
 
@@ -27,6 +28,9 @@ Public Class Einstellungen
 
         Manager.Owner = Me
         Me.StyleManager = Manager
+        If Main.KodiNaming = True Then
+            KodiSupport.Checked = True
+        End If
 
         If Main.DarkModeValue = True Then
             DarkMode.Checked = True
@@ -230,7 +234,23 @@ Public Class Einstellungen
         If InStr(Main.ffmpeg_command, "-c copy") Then
             FFMPEG_CommandP1.Text = "-c copy"
             FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
+        ElseIf InStr(Main.ffmpeg_command, "-c:a copy ") Then
+            Dim ffmpegDisplayCurrent As String() = Main.ffmpeg_command.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
+            If ffmpegDisplayCurrent.Count > 8 Then
+                FFMPEG_CommandP1.Text = ffmpegDisplayCurrent(0) + " " + ffmpegDisplayCurrent(1)
+                FFMPEG_CommandP2.Text = ffmpegDisplayCurrent(2) + " " + ffmpegDisplayCurrent(3)
+                FFMPEG_CommandP3.Text = ffmpegDisplayCurrent(4) + " " + ffmpegDisplayCurrent(5)
+                FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
+            Else
+                FFMPEG_CommandP1.Text = ffmpegDisplayCurrent(0) + " " + ffmpegDisplayCurrent(1)
+                FFMPEG_CommandP2.Text = "[no Preset]"
+                FFMPEG_CommandP3.Text = ffmpegDisplayCurrent(2) + " " + ffmpegDisplayCurrent(3)
+                FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
+            End If
+
+
         Else
+
             Dim ffmpegDisplayCurrent As String() = Main.ffmpeg_command.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
             FFMPEG_CommandP1.Text = ffmpegDisplayCurrent(0) + " " + ffmpegDisplayCurrent(1)
             FFMPEG_CommandP2.Text = ffmpegDisplayCurrent(2) + " " + ffmpegDisplayCurrent(3)
@@ -322,6 +342,13 @@ Public Class Einstellungen
 
         End If
 
+        If KodiSupport.Checked = True Then
+            Main.KodiNaming = True
+            rk.SetValue("KodiSupport", 1, RegistryValueKind.String)
+        Else
+            Main.KodiNaming = False
+            rk.SetValue("KodiSupport", 0, RegistryValueKind.String)
+        End If
 
         '  MsgBox(Name_season.Text)
         If InStr(TextBox1.Text, "https://") Then
@@ -599,6 +626,9 @@ Public Class Einstellungen
             Dim ffpmeg_cmd As String = Nothing
             If FFMPEG_CommandP1.Text = "-c copy" Then
                 ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP4.Text
+            ElseIf FFMPEG_CommandP2.Text = "[no Preset]" Then
+
+                ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP3.Text + " " + FFMPEG_CommandP4.Text
             Else
 
                 ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP2.Text + " " + FFMPEG_CommandP3.Text + " " + FFMPEG_CommandP4.Text
@@ -798,7 +828,7 @@ Public Class Einstellungen
         End If
     End Sub
 
-    Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles ListC1.Click, ListC2.Click, ListC3.Click, ListC4.Click, ListC5.Click
+    Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles ListC1.Click, ListC2.Click, ListC3.Click, ListC4.Click, ListC5.Click, ListC6.Click, ListC7.Click
         Dim Button As ToolStripMenuItem = sender
         If Button.Text = "-c copy" Then
             FFMPEG_CommandP1.Text = "-c copy"
@@ -812,7 +842,7 @@ Public Class Einstellungen
 
     End Sub
 
-    Private Sub ListP1_Click(sender As Object, e As EventArgs) Handles ListP1.Click, ListP2.Click
+    Private Sub ListP1_Click(sender As Object, e As EventArgs) Handles ListP1.Click, ListP2.Click, ListP3.Click
         Dim Button As ToolStripMenuItem = sender
         FFMPEG_CommandP2.Text = Button.Text
         FFMPEG_CommandP2.Enabled = True
@@ -932,10 +962,9 @@ Public Class Einstellungen
             Dim GitHubLastTag() As String = str0.Split(New String() {Chr(34) + "tag_name" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim GitHubLastTag1() As String = GitHubLastTag(LastNonPreRelase).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
 
-            Me.Invoke(New Action(Function()
-                                     LastVersion.Text = "last release: " + GitHubLastTag1(0)
-                                     Return Nothing
-                                 End Function))
+            LastVersionString = GitHubLastTag1(0)
+
+            'Debug.WriteLine(GitHubLastTag1(0))
 
         Catch ex As Exception
             Debug.WriteLine(ex.ToString)
@@ -1109,6 +1138,19 @@ Public Class Einstellungen
             End If
         End If
     End Sub
+
+    Private Sub MetroLink1_Click(sender As Object, e As EventArgs) Handles MetroLink1.Click
+        Process.Start("https://github.com/hama3254/Crunchyroll-Downloader-v3.0/discussions/276")
+    End Sub
+
+
+    Private Sub TabPage7_Enter(sender As Object, e As EventArgs) Handles TabPage7.Enter
+        LastVersion.Text = "last release: " + LastVersionString
+    End Sub
+
+
+
+
 
 #End Region
 

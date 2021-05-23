@@ -186,7 +186,15 @@ Public Class Anime_Add
                 If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then 'Or CBool(InStr(textBox1.Text, "anime-on-demand.de")) Then
 
 #Region "Funimation url parameter"
-                    If InStr(textBox1.Text, "funimation.com") Then
+                    If CBool(InStr(textBox1.Text, "funimation.com")) Then
+                        Main.WebbrowserURL = textBox1.Text
+                        If CBool(InStr(Main.FunimationAPIRegion, "?region=")) And CBool(InStr(textBox1.Text, "/shows/")) Then
+
+                            ProcessFunimationJS(textBox1.Text)
+
+                            Exit Sub
+                        End If
+
                         If Main.DubFunimation = "Disabled" Then
                         Else
                             If InStr(textBox1.Text, "?lang=") Then
@@ -289,7 +297,7 @@ Public Class Anime_Add
                     'MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
                 End If
             Catch ex As Exception
-                'MsgBox(ex.ToString)
+                MsgBox(ex.ToString)
                 Main.b = True
                 MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
             End Try
@@ -304,6 +312,19 @@ Public Class Anime_Add
                 Main.b = True
                 groupBox1.Visible = True
                 pictureBox4.Image = My.Resources.main_button_download_default
+            ElseIf CBool(InStr(Main.WebbrowserURL, "funimation.com")) = True Then
+
+
+                StatusLabel.Text = "Status: idle"
+                pictureBox4.Image = My.Resources.add_mass_running_cancel
+                Mass_DL_Cancel = True
+                PictureBox1.Enabled = False
+                PictureBox1.Visible = False
+                Main.DownloadFunimationJS_Seasons()
+                comboBox4.Enabled = False
+                comboBox3.Enabled = False
+                ComboBox1.Enabled = False
+
             ElseIf CBool(InStr(Main.WebbrowserURL, "beta.crunchyroll.com")) = True Then
 
                 StatusLabel.Text = "Status: idle"
@@ -364,7 +385,7 @@ Public Class Anime_Add
             End If
 
         ElseIf GroupBox3.Visible = True Then
-                GroupBox3.Visible = False
+            GroupBox3.Visible = False
             groupBox2.Visible = False
             groupBox1.Visible = True
             List_DL_Cancel = False
@@ -372,6 +393,44 @@ Public Class Anime_Add
         End If
 
         pictureBox4.Enabled = True
+    End Sub
+
+    Public Sub ProcessFunimationJS(ByVal InputURL As String)
+
+
+        Dim FunUri As String = Nothing
+        If InStr(InputURL, "?") Then
+            Dim ClearUri As String() = InputURL.Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
+            FunUri = ClearUri(0)
+        Else
+            FunUri = InputURL
+        End If
+        Dim ShowPath As String = Nothing
+        Dim EpisodePath As String = Nothing
+        Dim ShowPath1 As String() = FunUri.Split(New String() {"/shows/"}, System.StringSplitOptions.RemoveEmptyEntries)
+        'If InStr(ShowPath1(1), "/") Then
+        Dim ShowPath2 As String() = ShowPath1(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+        If ShowPath2.Count > 1 Then
+
+            ShowPath = ShowPath2(0)
+            EpisodePath = ShowPath2(1)
+        Else
+            ShowPath = ShowPath1(1)
+        End If
+        Main.FunimationShowPath = ShowPath
+        If EpisodePath = Nothing Then 'overview site
+            Main.GetFunimationJS_Seasons("https://title-api.prd.funimationsvc.com/v2/shows/" + ShowPath + Main.FunimationAPIRegion)
+
+        Else 'single episode
+
+
+        End If
+
+        Dim FunimationCC As String() = ShowPath1(0).Split(New String() {"funimation.com"}, System.StringSplitOptions.RemoveEmptyEntries)
+        If FunimationCC.Count > 1 Then
+            Main.FunimationRegion = FunimationCC(1).Replace("/", "")
+        End If
     End Sub
 
     Public Sub ProcessAoD()
@@ -531,11 +590,13 @@ Public Class Anime_Add
             comboBox4.Items.Clear()
             comboBox3.Enabled = True
             comboBox4.Enabled = True
+            comboBox3.Text = Nothing
+            comboBox4.Text = Nothing
             Dim SeasonSplit() As String = Main.CrBetaMass.Split(New String() {Chr(34) + "id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
             Dim SeasonSplit2() As String = SeasonSplit(ComboBox1.SelectedIndex + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-            Dim EpisodeJsonURL As String = "https://beta-api.crunchyroll.com/cms/v2/DE/M3/crunchyroll/episodes?season_id=" + SeasonSplit2(0) + "&locale=" + Main.CrBetaMassParameters
+            Dim EpisodeJsonURL As String = Main.CrBetaMassBaseURL + "episodes?season_id=" + SeasonSplit2(0) + "&locale=" + Main.CrBetaMassParameters
             Dim EpisodeJson As String = Nothing
             Debug.WriteLine(EpisodeJsonURL)
 
@@ -553,13 +614,69 @@ Public Class Anime_Add
 
 
 
+            Dim EpisodeNameSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
 
             Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = 1 To EpisodeSplit.Count - 1
+                Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim EpisodeNameSplit2() As String = EpisodeNameSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                If EpisodeSplit(i).Substring(0, 1) = Chr(34) Then
+                    comboBox3.Items.Add(EpisodeNameSplit2(0))
+                    comboBox4.Items.Add(EpisodeNameSplit2(0))
+                Else
+                    comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
+                    comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
+                End If
+
+            Next
+        ElseIf main.WebbrowserURL = "funimation.com/js" Then
+
+            'MsgBox(Main.FunimtaionAPISeasonID.Item(ComboBox1.SelectedIndex))
+
+            comboBox3.Items.Clear()
+            comboBox4.Items.Clear()
+            comboBox3.Enabled = True
+            comboBox4.Enabled = True
+            comboBox3.Text = Nothing
+            comboBox4.Text = Nothing
+
+            'Dim SeasonSplit() As String = Main.CrBetaMass.Split(New String() {Chr(34) + "id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            'Dim SeasonSplit2() As String = SeasonSplit(ComboBox1.SelectedIndex + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            '
+            'https://title-api.prd.funimationsvc.com/v1/seasons/1007609?region=US&deviceType=web
+
+
+            Dim EpisodeJsonURL As String = "https://title-api.prd.funimationsvc.com/v1/seasons/" + Main.FunimtaionAPISeasonID.Item(ComboBox1.SelectedIndex) + Main.FunimationAPIRegion
+            Dim EpisodeJson As String = Nothing
+            Debug.WriteLine(EpisodeJsonURL)
+
+            Try
+                Using client As New WebClient()
+                    client.Encoding = System.Text.Encoding.UTF8
+                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    EpisodeJson = client.DownloadString(EpisodeJsonURL)
+                End Using
+            Catch ex As Exception
+                Debug.WriteLine("error- getting EpisodeJson data")
+                Exit Sub
+            End Try
+
+            Main.FunimationEpisodeJSON = EpisodeJson
+
+
+
+
+            Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episodeNumber" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             For i As Integer = 1 To EpisodeSplit.Count - 1
                 Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                 comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
                 comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
             Next
+
+
+
 
         ElseIf AoD_Mode = False Then
 
@@ -1406,4 +1523,6 @@ Public Class Anime_Add
             Main.SubsOnly = True
         End If
     End Sub
+
+
 End Class

@@ -27,6 +27,21 @@ Public Class ErrorDialog
                 ComboBox1.Items.Add(langsplit(0))
             Next
             SurroundingSub()
+        ElseIf Main.DialogTaskString = "Language_CR_Beta" Then
+            'CheckBox1.Visible = False
+            StatusLabel.Text = Main.LabelLangNotFoundText
+
+            Dim lang_avalibe As String() = Main.ResoNotFoundString.Split(New String() {"hardsub_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            For i As Integer = 1 To lang_avalibe.Count - 1
+                If lang_avalibe(i).Substring(0, 1) = Chr(34) Then
+                    ComboBox1.Items.Add("No Hardsubs")
+                    Continue For 'Chr(34) +
+                End If
+                Dim langsplit As String() = lang_avalibe(i).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+                ComboBox1.Items.Add(Main.HardSubValuesToDisplay(langsplit(0)))
+            Next
+            SurroundingSub()
         ElseIf Main.DialogTaskString = "Resolution" Then
             StatusLabel.Text = Main.LabelResoNotFoundText
             Dim Reso_avaible1 As String() = Main.ResoNotFoundString.Split(New String() {"RESOLUTION="}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -126,11 +141,48 @@ Public Class ErrorDialog
     Private Sub PictureBox9_Click(sender As Object, e As EventArgs) Handles PictureBox9.Click
         If ComboBox1.SelectedItem.ToString = Nothing Then
         Else
-            Main.ResoBackString = ComboBox1.SelectedItem.ToString
-            Main.UserCloseDialog = False
-            Me.Close()
+            If Main.DialogTaskString = "Language_CR_Beta" Then
+                Main.ResoBackString = DisplayToHardSubValues(ComboBox1.SelectedItem.ToString)
+                Main.UserCloseDialog = False
+                Me.Close()
+            Else
+                Main.ResoBackString = ComboBox1.SelectedItem.ToString
+                Main.UserCloseDialog = False
+                Me.Close()
+            End If
         End If
     End Sub
+
+    Public Function DisplayToHardSubValues(ByVal HardSub As String) As String
+        Try
+            If HardSub = "Deutsch" Then
+                Return "de-DE"
+            ElseIf HardSub = "English" Then
+                Return "en-US"
+            ElseIf HardSub = "Português (Brasil)" Then
+                Return "pt-BR"
+            ElseIf HardSub = "Español (LA)" Then
+                Return "es-LA"
+            ElseIf HardSub = "Français (France)" Then
+                Return "fr-FR"
+            ElseIf HardSub = "العربية (Arabic)" Then
+                Return "ar-ME"
+            ElseIf HardSub = "Русский (Russian)" Then
+                Return "ru-RU"
+            ElseIf HardSub = "Italiano (Italian)" Then
+                Return "it-IT"
+            ElseIf HardSub = "Español (España)" Then
+                Return "es-ES"
+            Else
+
+                Return Nothing
+            End If
+
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+    End Function
 
     Private Sub PictureBox9_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox9.MouseEnter
         PictureBox9.Image = My.Resources.DialogNotFound_Submit_hover

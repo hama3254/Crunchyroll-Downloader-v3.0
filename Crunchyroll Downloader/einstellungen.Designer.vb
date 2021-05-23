@@ -44,6 +44,8 @@ Partial Class Einstellungen
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
         Me.TabPage2 = New MetroFramework.Controls.MetroTabPage()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
+        Me.KodiSupport = New MetroFramework.Controls.MetroToggle()
+        Me.MetroLink1 = New MetroFramework.Controls.MetroLink()
         Me.DD_Episode_Prefix = New MetroFramework.Controls.MetroComboBox()
         Me.DD_Season_Prefix = New MetroFramework.Controls.MetroComboBox()
         Me.CR_Filename = New MetroFramework.Controls.MetroComboBox()
@@ -60,9 +62,12 @@ Partial Class Einstellungen
         Me.ListC3 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListC4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListC5 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListC6 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListC7 = New System.Windows.Forms.ToolStripMenuItem()
         Me.FFMPEG_CommandP2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListP1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListP2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListP3 = New System.Windows.Forms.ToolStripMenuItem()
         Me.FFMPEG_CommandP3 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListBit1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListBit2 = New System.Windows.Forms.ToolStripMenuItem()
@@ -398,10 +403,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 35)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(501, 452)
+        Me.TabPage2.Size = New System.Drawing.Size(501, 461)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -412,6 +417,8 @@ Partial Class Einstellungen
         'GroupBox12
         '
         Me.GroupBox12.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox12.Controls.Add(Me.KodiSupport)
+        Me.GroupBox12.Controls.Add(Me.MetroLink1)
         Me.GroupBox12.Controls.Add(Me.DD_Episode_Prefix)
         Me.GroupBox12.Controls.Add(Me.DD_Season_Prefix)
         Me.GroupBox12.Controls.Add(Me.CR_Filename)
@@ -419,10 +426,33 @@ Partial Class Einstellungen
         Me.GroupBox12.ForeColor = System.Drawing.Color.Black
         Me.GroupBox12.Location = New System.Drawing.Point(5, 11)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(490, 126)
+        Me.GroupBox12.Size = New System.Drawing.Size(490, 150)
         Me.GroupBox12.TabIndex = 53
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Filename"
+        '
+        'KodiSupport
+        '
+        Me.KodiSupport.AutoSize = True
+        Me.KodiSupport.Location = New System.Drawing.Point(259, 120)
+        Me.KodiSupport.Name = "KodiSupport"
+        Me.KodiSupport.Size = New System.Drawing.Size(80, 20)
+        Me.KodiSupport.TabIndex = 38
+        Me.KodiSupport.Text = "Aus"
+        Me.KodiSupport.UseSelectable = True
+        '
+        'MetroLink1
+        '
+        Me.MetroLink1.FontSize = MetroFramework.MetroLinkSize.Medium
+        Me.MetroLink1.ForeColor = System.Drawing.Color.SteelBlue
+        Me.MetroLink1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.MetroLink1.Location = New System.Drawing.Point(97, 120)
+        Me.MetroLink1.Name = "MetroLink1"
+        Me.MetroLink1.Size = New System.Drawing.Size(145, 23)
+        Me.MetroLink1.TabIndex = 37
+        Me.MetroLink1.Text = "enable Kodi naming"
+        Me.MetroLink1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.MetroLink1.UseSelectable = True
         '
         'DD_Episode_Prefix
         '
@@ -433,7 +463,7 @@ Partial Class Einstellungen
         Me.DD_Episode_Prefix.IntegralHeight = False
         Me.DD_Episode_Prefix.ItemHeight = 23
         Me.DD_Episode_Prefix.Items.AddRange(New Object() {"[default episode prefix]"})
-        Me.DD_Episode_Prefix.Location = New System.Drawing.Point(248, 79)
+        Me.DD_Episode_Prefix.Location = New System.Drawing.Point(248, 70)
         Me.DD_Episode_Prefix.Name = "DD_Episode_Prefix"
         Me.DD_Episode_Prefix.Size = New System.Drawing.Size(225, 29)
         Me.DD_Episode_Prefix.TabIndex = 36
@@ -448,7 +478,7 @@ Partial Class Einstellungen
         Me.DD_Season_Prefix.IntegralHeight = False
         Me.DD_Season_Prefix.ItemHeight = 23
         Me.DD_Season_Prefix.Items.AddRange(New Object() {"[default season prefix]"})
-        Me.DD_Season_Prefix.Location = New System.Drawing.Point(6, 79)
+        Me.DD_Season_Prefix.Location = New System.Drawing.Point(6, 70)
         Me.DD_Season_Prefix.Name = "DD_Season_Prefix"
         Me.DD_Season_Prefix.Size = New System.Drawing.Size(225, 29)
         Me.DD_Season_Prefix.TabIndex = 35
@@ -462,7 +492,7 @@ Partial Class Einstellungen
         Me.CR_Filename.IntegralHeight = False
         Me.CR_Filename.ItemHeight = 23
         Me.CR_Filename.Items.AddRange(New Object() {"[episode number]", "[episode name]", "[episode number] [episode name]", "[episode name] [episode number]"})
-        Me.CR_Filename.Location = New System.Drawing.Point(6, 25)
+        Me.CR_Filename.Location = New System.Drawing.Point(6, 27)
         Me.CR_Filename.Name = "CR_Filename"
         Me.CR_Filename.Size = New System.Drawing.Size(467, 29)
         Me.CR_Filename.TabIndex = 34
@@ -475,7 +505,7 @@ Partial Class Einstellungen
         Me.GroupBox4.Controls.Add(Me.CB_Format)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox4.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox4.Location = New System.Drawing.Point(5, 205)
+        Me.GroupBox4.Location = New System.Drawing.Point(5, 230)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(490, 78)
         Me.GroupBox4.TabIndex = 42
@@ -512,7 +542,7 @@ Partial Class Einstellungen
         Me.CheckBox1.BackColor = System.Drawing.Color.Transparent
         Me.CheckBox1.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CheckBox1.ForeColor = System.Drawing.Color.Black
-        Me.CheckBox1.Location = New System.Drawing.Point(67, 295)
+        Me.CheckBox1.Location = New System.Drawing.Point(67, 320)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(369, 19)
         Me.CheckBox1.TabIndex = 6
@@ -526,7 +556,7 @@ Partial Class Einstellungen
         Me.GroupBox2.Enabled = False
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox2.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox2.Location = New System.Drawing.Point(5, 325)
+        Me.GroupBox2.Location = New System.Drawing.Point(5, 350)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(490, 63)
         Me.GroupBox2.TabIndex = 40
@@ -554,7 +584,7 @@ Partial Class Einstellungen
         '
         'FFMPEG_CommandP1
         '
-        Me.FFMPEG_CommandP1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListC1, Me.ListC2, Me.ListC3, Me.ListC4, Me.ListC5})
+        Me.FFMPEG_CommandP1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListC1, Me.ListC2, Me.ListC3, Me.ListC4, Me.ListC5, Me.ListC6, Me.ListC7})
         Me.FFMPEG_CommandP1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FFMPEG_CommandP1.Name = "FFMPEG_CommandP1"
         Me.FFMPEG_CommandP1.Size = New System.Drawing.Size(64, 20)
@@ -590,9 +620,21 @@ Partial Class Einstellungen
         Me.ListC5.Size = New System.Drawing.Size(174, 22)
         Me.ListC5.Text = "-c:v libx265"
         '
+        'ListC6
+        '
+        Me.ListC6.Name = "ListC6"
+        Me.ListC6.Size = New System.Drawing.Size(174, 22)
+        Me.ListC6.Text = "-c:v h264_amf"
+        '
+        'ListC7
+        '
+        Me.ListC7.Name = "ListC7"
+        Me.ListC7.Size = New System.Drawing.Size(174, 22)
+        Me.ListC7.Text = "-c:v hevc_amf"
+        '
         'FFMPEG_CommandP2
         '
-        Me.FFMPEG_CommandP2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListP1, Me.ListP2})
+        Me.FFMPEG_CommandP2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListP1, Me.ListP2, Me.ListP3})
         Me.FFMPEG_CommandP2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FFMPEG_CommandP2.Name = "FFMPEG_CommandP2"
         Me.FFMPEG_CommandP2.Size = New System.Drawing.Size(86, 20)
@@ -609,6 +651,12 @@ Partial Class Einstellungen
         Me.ListP2.Name = "ListP2"
         Me.ListP2.Size = New System.Drawing.Size(148, 22)
         Me.ListP2.Text = "-preset slow"
+        '
+        'ListP3
+        '
+        Me.ListP3.Name = "ListP3"
+        Me.ListP3.Size = New System.Drawing.Size(148, 22)
+        Me.ListP3.Text = "[no Preset]"
         '
         'FFMPEG_CommandP3
         '
@@ -678,7 +726,7 @@ Partial Class Einstellungen
         Me.GB_Resolution.Controls.Add(Me.A1080p)
         Me.GB_Resolution.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Resolution.ForeColor = System.Drawing.Color.Black
-        Me.GB_Resolution.Location = New System.Drawing.Point(5, 140)
+        Me.GB_Resolution.Location = New System.Drawing.Point(5, 165)
         Me.GB_Resolution.Name = "GB_Resolution"
         Me.GB_Resolution.Size = New System.Drawing.Size(490, 59)
         Me.GB_Resolution.TabIndex = 38
@@ -763,10 +811,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(501, 452)
+        Me.TabPage1.Size = New System.Drawing.Size(501, 461)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -984,7 +1032,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 4
+        Me.TabControl1.SelectedIndex = 5
         Me.TabControl1.Size = New System.Drawing.Size(509, 500)
         Me.TabControl1.TabIndex = 38
         Me.TabControl1.UseSelectable = True
@@ -998,9 +1046,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 452)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 461)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1018,10 +1066,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(501, 452)
+        Me.TabPage6.Size = New System.Drawing.Size(501, 461)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = "Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1217,9 +1265,9 @@ Partial Class Einstellungen
         '
         Me.TabPage8.BackColor = System.Drawing.Color.Transparent
         Me.TabPage8.Controls.Add(Me.GroupBox8)
-        Me.TabPage8.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage8.Location = New System.Drawing.Point(4, 35)
         Me.TabPage8.Name = "TabPage8"
-        Me.TabPage8.Size = New System.Drawing.Size(501, 452)
+        Me.TabPage8.Size = New System.Drawing.Size(501, 461)
         Me.TabPage8.TabIndex = 6
         Me.TabPage8.Text = "  AoD"
         '
@@ -1289,9 +1337,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(493, 461)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 452)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = "About   "
         '
@@ -1435,6 +1483,7 @@ Partial Class Einstellungen
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
         Me.GroupBox12.ResumeLayout(False)
+        Me.GroupBox12.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
@@ -1578,4 +1627,9 @@ Partial Class Einstellungen
     Friend WithEvents CB_Format As MetroFramework.Controls.MetroComboBox
     Friend WithEvents HybridMode_CB As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents MetroTabPage1 As MetroFramework.Controls.MetroTabPage
+    Friend WithEvents ListC6 As ToolStripMenuItem
+    Friend WithEvents ListC7 As ToolStripMenuItem
+    Friend WithEvents ListP3 As ToolStripMenuItem
+    Friend WithEvents KodiSupport As MetroFramework.Controls.MetroToggle
+    Friend WithEvents MetroLink1 As MetroFramework.Controls.MetroLink
 End Class

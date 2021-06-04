@@ -187,7 +187,7 @@ Public Class GeckoFX
 
                     Else
                         Main.Text = "Status: no video found"
-                        Anime_Add.StatusLabel.Text = "fail?"
+                        Anime_Add.StatusLabel.Text = "Status: no video found"
                     End If
                 End If
             ElseIf CBool(InStr(WebBrowser1.Url.ToString, "anime-on-demand.de")) Then
@@ -464,14 +464,15 @@ Public Class GeckoFX
         End If
         If CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "streams?")) Then
             If Main.b = False Then
-                Main.GetBetaVideo(requesturl, Main.WebbrowserURL)
+                Main.GetBetaVideoProxy(requesturl, Main.WebbrowserURL)
+                Main.b = True
                 Exit Sub
             End If
         ElseIf CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
             'Debug.WriteLine(requesturl)
             If Main.b = False Then
-                'Main.WebbrowserURL = WebBrowser1.Url.ToString
                 Main.GetBetaSeasons(requesturl)
+                Main.b = True
                 Exit Sub
             End If
 
@@ -482,16 +483,19 @@ Public Class GeckoFX
             Main.FunimationAPIRegion = "?region=" + parms(1)
             If Main.b = False Then
                 If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com/v1/show")) And CBool(InStr(requesturl, "/episodes/")) Then
-
+                    Main.GetFunimationJS_VideoProxy(requesturl)
+                    Main.b = True
+                    Exit Sub
                 Else
-                    MsgBox(Main.WebbrowserURL)
                     Anime_Add.ProcessFunimationJS(Main.WebbrowserURL)
                     Main.b = True
+                    Exit Sub
                 End If
 
 
             End If
         End If
+
         If ScanTrue = True Then
 
             If InStr(requesturl, ".m3u8") Then

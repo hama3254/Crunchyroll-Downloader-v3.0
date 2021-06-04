@@ -22,7 +22,7 @@ Public Class CRD_List_Item
     Dim Finished As Boolean = False
     Dim Label_website_Text As String = Nothing
     Dim StatusRunning As Boolean = True
-    Dim ffmpeg_command As String = Nothing
+    'Dim ffmpeg_command As String = Nothing
     Dim Debug2 As Boolean = False
     Dim MergeSubstoMP4 As Boolean = False
 
@@ -178,9 +178,7 @@ Public Class CRD_List_Item
     End Function
 #End Region
 #Region "Set Variables"
-    Public Sub Setffmpeg_command(ByVal Value As String)
-        ffmpeg_command = Value
-    End Sub
+
     Public Sub SetMergeSubstoMP4(ByVal Value As Boolean)
         MergeSubstoMP4 = Value
     End Sub

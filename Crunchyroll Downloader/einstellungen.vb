@@ -17,7 +17,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Beta-U6"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Beta-U7"
         BackgroundWorker1.RunWorkerAsync()
 
 
@@ -137,7 +137,8 @@ Public Class Einstellungen
         End If
         If Main.VideoFormat = ".mkv" Then
             CB_Format.SelectedItem = "MKV"
-
+        ElseIf Main.VideoFormat = ".aac" Then
+            CB_Format.SelectedItem = "AAC (Audio only)"
         Else
             CB_Format.SelectedItem = "MP4"
         End If
@@ -505,6 +506,10 @@ Public Class Einstellungen
             Main.VideoFormat = ".mkv"
             Main.MergeSubsFormat = "copy"
             rk.SetValue("VideoFormat", ".mkv", RegistryValueKind.String)
+        ElseIf CB_Format.Text = "AAC (Audio only)" Then
+            Main.VideoFormat = ".aac"
+            Main.MergeSubsFormat = "mov_text"
+            rk.SetValue("VideoFormat", ".aac", RegistryValueKind.String)
         Else
             Main.VideoFormat = ".mp4"
             Main.MergeSubsFormat = "mov_text"
@@ -1146,6 +1151,24 @@ Public Class Einstellungen
 
     Private Sub TabPage7_Enter(sender As Object, e As EventArgs) Handles TabPage7.Enter
         LastVersion.Text = "last release: " + LastVersionString
+    End Sub
+
+    Private Sub CB_Format_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CB_Format.SelectedIndexChanged
+        If CB_Format.Text = "AAC (Audio only)" Then
+            If MergeMP4.Checked = True Then
+                MsgBox("Merged subs are not avalible with audio only!", MsgBoxStyle.Information)
+            End If
+            MergeMP4.Checked = False
+        End If
+    End Sub
+
+    Private Sub MergeMP4_CheckedChanged(sender As Object, e As EventArgs) Handles MergeMP4.CheckedChanged
+        If CB_Format.Text = "AAC (Audio only)" Then
+            If MergeMP4.Checked = True Then
+                MsgBox("Merged subs are not avalible with audio only!", MsgBoxStyle.Information)
+            End If
+            MergeMP4.Checked = False
+        End If
     End Sub
 
 

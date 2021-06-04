@@ -3680,6 +3680,18 @@ Public Class Main
             FunimationTitle = String.Join(" ", FunimationTitle2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(FunimationTitle2(0), "[^\w\\-]", " ").Trim(" ")
             FunimationTitle = RemoveExtraSpaces(FunimationTitle)
 
+            Dim ser As JObject = JObject.Parse(v1Json)
+            Try
+                Dim AnimeName As String = ser("name")
+                If AnimeName = Nothing Then
+                Else
+                    FunimationTitle = RemoveExtraSpaces(AnimeName)
+                End If
+            Catch ex As Exception
+
+            End Try
+
+
             'Dim FunimationDub1() As String = WebbrowserText.Split(New String() {".showLanguage =  '"}, System.StringSplitOptions.RemoveEmptyEntries)
             'Dim FunimationDub2() As String = FunimationDub1(1).Split(New String() {"';"}, System.StringSplitOptions.RemoveEmptyEntries)
             FunimationDub = ConvertFunimationDub(DubFunimation) 'FunimationDub2(0)
@@ -3782,7 +3794,7 @@ Public Class Main
             Dim ExperienceID As String = Nothing
 
 
-            Dim ser As JObject = JObject.Parse(v1Json)
+            'Dim ser As JObject = JObject.Parse(v1Json)
             Dim data As List(Of JToken) = ser.Children().ToList
 
             For Each item As JProperty In data
@@ -4053,10 +4065,36 @@ Public Class Main
             'MsgBox(Funimation_m3u8_final)
 #Region "thumbnail"
 
-            Dim thumbnail As String() = v1Json.Split(New String() {"episodeThumbnail"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim thumbnail2 As String() = thumbnail(1).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-            Dim thumbnail3 As String() = thumbnail2(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-            Dim thumbnail4 As String = "https://" + thumbnail3(0) '.Replace("\/", "/")
+            'Dim thumbnail As String() = v1Json.Split(New String() {"episodeThumbnail"}, System.StringSplitOptions.RemoveEmptyEntries)
+            'Dim thumbnail2 As String() = thumbnail(1).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+            'Dim thumbnail3 As String() = thumbnail2(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+            Dim thumbnail4 As String = ""
+            For Each item As JProperty In data
+                item.CreateReader()
+                Select Case item.Name
+                    Case "images" 'each record is inside the entries array
+                        For Each Entry As JObject In item.Values
+
+                            Dim key As String = Entry("key")
+
+                            If key = "episodeThumbnail" Then
+                                Dim path As String = Entry("path")
+                                thumbnail4 = path
+                                Exit Select
+                            End If
+
+
+                            'Dim factor As String = Entry("factor").ToList.Item(0)
+                            ' you can continue listing the array items untill you reach the end of you array
+
+                        Next
+
+
+
+                End Select
+            Next
+
+
 #End Region
             Dim ResoHTMLDisplay As String = Reso.ToString + "p"
 

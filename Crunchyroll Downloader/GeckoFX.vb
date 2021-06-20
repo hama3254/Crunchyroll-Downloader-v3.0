@@ -136,6 +136,7 @@ Public Class GeckoFX
                             Main.WebbrowserHeadText = WebBrowser1.Document.Head.InnerHtml
                             Main.MassGrapp()
                         Else
+                            My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\html.log", WebBrowser1.Document.Body.OuterHtml, True)
                             Main.b = True
                             MsgBox(Main.No_Stream, MsgBoxStyle.OkOnly)
                             Anime_Add.StatusLabel.Text = "Status: idle"

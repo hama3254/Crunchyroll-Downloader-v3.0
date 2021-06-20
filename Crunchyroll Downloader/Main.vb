@@ -4805,61 +4805,12 @@ Public Class Main
                                 End If
                                 'ListBoxList.Add(WebbrowserURL)
                             Else
-                                'Me.Invoke(New Action(Function()
-                                '                         GeckoFX.WebBrowser1.Navigate(WebbrowserURL)
-                                '                         Return Nothing
-                                '                     End Function))
+                                Me.Invoke(New Action(Function()
+                                                         GeckoFX.WebBrowser1.Navigate(WebbrowserURL)
+                                                         Return Nothing
+                                                     End Function))
 
-                                'b = False
-                                ServicePointManager.Expect100Continue = True
-                                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-                                Try
-                                    Using client As New WebClient()
-                                        client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
-                                        client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
-                                        client.Headers.Add("Accept-Encoding: gzip")
-                                        client.Headers.Add("Cookie:" + SystemWebBrowserCookie)
-                                        Dim HTMLString As String = DecompressString(client.DownloadData(WebbrowserURL))
-
-                                        Dim Funimation_iFrame As String = Nothing
-                                        If InStr(HTMLString, My.Resources.Funimation_Player_ID) Then
-                                            Funimation_iFrame = My.Resources.Funimation_Player_ID
-                                        ElseIf InStr(HTMLString, My.Resources.Funimation_Player_ID_2) Then
-                                            Funimation_iFrame = My.Resources.Funimation_Player_ID_2
-                                        End If
-
-                                        If InStr(HTMLString, Funimation_iFrame) Then
-                                            Dim WebbrowserHeadTextSplit() As String = HTMLString.Split(New String() {"<head"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                            Dim WebbrowserHeadTextSplit2() As String = WebbrowserHeadTextSplit(1).Split(New String() {"</head>"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                                            Dim WebbrowserTitleSplit() As String = HTMLString.Split(New String() {"<title>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                            Dim WebbrowserTitleSplit2() As String = WebbrowserTitleSplit(1).Split(New String() {"</title>"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-
-                                            WebbrowserText = HTMLString
-                                            WebbrowserTitle = "<title>" + WebbrowserTitleSplit2(0) + "</title>"
-                                            WebbrowserHeadText = "<head" + WebbrowserHeadTextSplit2(0) + "</head>"
-                                            WebbrowserCookie = SystemWebBrowserCookie
-
-                                            Dim t As Thread
-                                            t = New Thread(AddressOf Funitmation_Grapp)
-                                            t.Priority = ThreadPriority.Normal
-                                            t.IsBackground = True
-                                            t.Start()
-
-                                        Else
-                                            Me.Invoke(New Action(Function()
-                                                                     Me.Text = "Status: no video found"
-                                                                     Anime_Add.StatusLabel.Text = "fail?"
-                                                                     Return Nothing
-                                                                 End Function))
-
-                                        End If
-                                    End Using
-                                Catch ex As Exception
-                                    MsgBox(ex.ToString)
-                                    Exit Sub
-                                End Try
+                                b = False
 
 
 
@@ -4994,7 +4945,7 @@ Public Class Main
                     "HTTP/1.0 200 OK" & ControlChars.CrLf &
                     "Server: CRD 1.0" & ControlChars.CrLf &
                    "Content-Length: " & respByte.Length & ControlChars.CrLf &
-                    "Content-Type: " & GetContentType(httpRequest) &
+                    "Content-Type: " & GetContentType(httpRequest) & ControlChars.CrLf &
                     "Connection: close" &
                     ControlChars.CrLf & ControlChars.CrLf
                 ' The content Length of HTML Header

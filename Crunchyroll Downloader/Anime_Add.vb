@@ -834,86 +834,13 @@ Public Class Anime_Add
                             ListBox1.Items.Remove(ListBox1.Items(0))
                             'Main.b = False
 
-                            If Main.SystemWebBrowserCookie = Nothing Then
-                                Main.b = False
+
+                            Main.b = False
                                 GeckoFX.WebBrowser1.Navigate(UriUsed)
                                 StatusLabel.Text = "Status: loading in browser"
                                 Main.Text = "Status: loading in browser"
-                            Else
-                                StatusLabel.Text = "Status: loading ..."
-                                Main.Text = "Status: loading ..."
-                                'MsgBox(Main.SystemWebBrowserCookie)
-                                ServicePointManager.Expect100Continue = True
-                                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-                                Try
-                                    Using client As New WebClient()
-                                        client.Headers.Add("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0")
-                                        client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
-                                        client.Headers.Add("Accept-Encoding: *")
-                                        client.Headers.Add("Cookie:" + Main.SystemWebBrowserCookie)
-                                        Dim HTMLString As String = "No Value"
 
-                                        Try
-                                            HTMLString = DecompressString(client.DownloadData(Main.WebbrowserURL))
-                                        Catch ex As Exception
-                                            HTMLString = client.DownloadString(Main.WebbrowserURL)
-                                        End Try
-
-                                        Dim Funimation_iFrame As String = Nothing
-                                        If InStr(HTMLString, My.Resources.Funimation_Player_ID) Then
-                                            Funimation_iFrame = My.Resources.Funimation_Player_ID
-                                        ElseIf InStr(HTMLString, My.Resources.Funimation_Player_ID_2) Then
-                                            Funimation_iFrame = My.Resources.Funimation_Player_ID_2
-                                        End If
-
-                                        If InStr(HTMLString, Funimation_iFrame) Then
-                                            Dim WebbrowserHeadTextSplit() As String = HTMLString.Split(New String() {"<head"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                            Dim WebbrowserHeadTextSplit2() As String = WebbrowserHeadTextSplit(1).Split(New String() {"</head>"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                                            Dim WebbrowserTitleSplit() As String = HTMLString.Split(New String() {"<title>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                            Dim WebbrowserTitleSplit2() As String = WebbrowserTitleSplit(1).Split(New String() {"</title>"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-
-                                            Main.WebbrowserText = HTMLString
-                                            Main.WebbrowserTitle = "<title>" + WebbrowserTitleSplit2(0) + "</title>"
-                                            Main.WebbrowserHeadText = "<head" + WebbrowserHeadTextSplit2(0) + "</head>"
-                                            Main.WebbrowserCookie = Main.SystemWebBrowserCookie
-
-                                            Dim t As Thread
-                                            t = New Thread(AddressOf Main.Funitmation_Grapp)
-                                            t.Priority = ThreadPriority.Normal
-                                            t.IsBackground = True
-                                            t.Start()
-
-                                        ElseIf HTMLString = "No Value" Then
-                                            Me.Invoke(New Action(Function()
-                                                                     Main.Text = "Status: Website error"
-                                                                     Me.StatusLabel.Text = "Status: no video found"
-                                                                     Return Nothing
-                                                                     Main.Funimation_Grapp_RDY = True
-                                                                 End Function))
-
-                                        Else
-
-                                            Me.Invoke(New Action(Function()
-                                                                     Main.Text = "Status: no video found"
-                                                                     Me.StatusLabel.Text = "Status: no video found"
-                                                                     My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\funimation.log", HTMLString, True)
-                                                                     Main.Funimation_Grapp_RDY = True
-                                                                     Return Nothing
-                                                                 End Function))
-
-                                        End If
-                                    End Using
-                                Catch ex As Exception
-                                    MsgBox(ex.ToString)
-
-                                    Main.Funimation_Grapp_RDY = True
-                                    Exit Sub
-                                End Try
-
-                            End If
-                            Main.Invalidate()
+                                Main.Invalidate()
                         End If
 
                     Else

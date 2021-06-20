@@ -43,16 +43,14 @@ Partial Class Einstellungen
         Me.GB_SubLanguage = New System.Windows.Forms.GroupBox()
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
         Me.TabPage2 = New MetroFramework.Controls.MetroTabPage()
+        Me.GB_Filename_Pre = New System.Windows.Forms.GroupBox()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
-        Me.KodiSupport = New MetroFramework.Controls.MetroToggle()
-        Me.MetroLink1 = New MetroFramework.Controls.MetroLink()
         Me.DD_Episode_Prefix = New MetroFramework.Controls.MetroComboBox()
         Me.DD_Season_Prefix = New MetroFramework.Controls.MetroComboBox()
         Me.CR_Filename = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.MergeMP4 = New MetroFramework.Controls.MetroCheckBox()
         Me.CB_Format = New MetroFramework.Controls.MetroComboBox()
-        Me.CheckBox1 = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
@@ -132,6 +130,8 @@ Partial Class Einstellungen
         Me.Label6 = New MetroFramework.Controls.MetroLabel()
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
+        Me.KodiSupport = New MetroFramework.Controls.MetroToggle()
+        Me.MetroLink1 = New MetroFramework.Controls.MetroLink()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
@@ -139,6 +139,7 @@ Partial Class Einstellungen
         Me.SoftSubs.SuspendLayout()
         Me.GB_SubLanguage.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.GB_Filename_Pre.SuspendLayout()
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -395,9 +396,9 @@ Partial Class Einstellungen
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
+        Me.TabPage2.Controls.Add(Me.GB_Filename_Pre)
         Me.TabPage2.Controls.Add(Me.GroupBox12)
         Me.TabPage2.Controls.Add(Me.GroupBox4)
-        Me.TabPage2.Controls.Add(Me.CheckBox1)
         Me.TabPage2.Controls.Add(Me.GroupBox2)
         Me.TabPage2.Controls.Add(Me.GB_Resolution)
         Me.TabPage2.HorizontalScrollbarBarColor = True
@@ -414,11 +415,23 @@ Partial Class Einstellungen
         Me.TabPage2.VerticalScrollbarSize = 10
         Me.TabPage2.Visible = False
         '
+        'GB_Filename_Pre
+        '
+        Me.GB_Filename_Pre.BackColor = System.Drawing.Color.Transparent
+        Me.GB_Filename_Pre.Controls.Add(Me.KodiSupport)
+        Me.GB_Filename_Pre.Controls.Add(Me.MetroLink1)
+        Me.GB_Filename_Pre.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GB_Filename_Pre.ForeColor = System.Drawing.Color.Black
+        Me.GB_Filename_Pre.Location = New System.Drawing.Point(5, 167)
+        Me.GB_Filename_Pre.Name = "GB_Filename_Pre"
+        Me.GB_Filename_Pre.Size = New System.Drawing.Size(490, 59)
+        Me.GB_Filename_Pre.TabIndex = 39
+        Me.GB_Filename_Pre.TabStop = False
+        Me.GB_Filename_Pre.Text = "Filename Prefix"
+        '
         'GroupBox12
         '
         Me.GroupBox12.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox12.Controls.Add(Me.KodiSupport)
-        Me.GroupBox12.Controls.Add(Me.MetroLink1)
         Me.GroupBox12.Controls.Add(Me.DD_Episode_Prefix)
         Me.GroupBox12.Controls.Add(Me.DD_Season_Prefix)
         Me.GroupBox12.Controls.Add(Me.CR_Filename)
@@ -431,29 +444,6 @@ Partial Class Einstellungen
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Filename"
         '
-        'KodiSupport
-        '
-        Me.KodiSupport.AutoSize = True
-        Me.KodiSupport.Location = New System.Drawing.Point(259, 120)
-        Me.KodiSupport.Name = "KodiSupport"
-        Me.KodiSupport.Size = New System.Drawing.Size(80, 20)
-        Me.KodiSupport.TabIndex = 38
-        Me.KodiSupport.Text = "Aus"
-        Me.KodiSupport.UseSelectable = True
-        '
-        'MetroLink1
-        '
-        Me.MetroLink1.FontSize = MetroFramework.MetroLinkSize.Medium
-        Me.MetroLink1.ForeColor = System.Drawing.Color.SteelBlue
-        Me.MetroLink1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.MetroLink1.Location = New System.Drawing.Point(97, 120)
-        Me.MetroLink1.Name = "MetroLink1"
-        Me.MetroLink1.Size = New System.Drawing.Size(145, 23)
-        Me.MetroLink1.TabIndex = 37
-        Me.MetroLink1.Text = "enable Kodi naming"
-        Me.MetroLink1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.MetroLink1.UseSelectable = True
-        '
         'DD_Episode_Prefix
         '
         Me.DD_Episode_Prefix.DropDownHeight = 250
@@ -463,7 +453,7 @@ Partial Class Einstellungen
         Me.DD_Episode_Prefix.IntegralHeight = False
         Me.DD_Episode_Prefix.ItemHeight = 23
         Me.DD_Episode_Prefix.Items.AddRange(New Object() {"[default episode prefix]"})
-        Me.DD_Episode_Prefix.Location = New System.Drawing.Point(248, 70)
+        Me.DD_Episode_Prefix.Location = New System.Drawing.Point(248, 94)
         Me.DD_Episode_Prefix.Name = "DD_Episode_Prefix"
         Me.DD_Episode_Prefix.Size = New System.Drawing.Size(225, 29)
         Me.DD_Episode_Prefix.TabIndex = 36
@@ -478,7 +468,7 @@ Partial Class Einstellungen
         Me.DD_Season_Prefix.IntegralHeight = False
         Me.DD_Season_Prefix.ItemHeight = 23
         Me.DD_Season_Prefix.Items.AddRange(New Object() {"[default season prefix]"})
-        Me.DD_Season_Prefix.Location = New System.Drawing.Point(6, 70)
+        Me.DD_Season_Prefix.Location = New System.Drawing.Point(6, 94)
         Me.DD_Season_Prefix.Name = "DD_Season_Prefix"
         Me.DD_Season_Prefix.Size = New System.Drawing.Size(225, 29)
         Me.DD_Season_Prefix.TabIndex = 35
@@ -492,7 +482,7 @@ Partial Class Einstellungen
         Me.CR_Filename.IntegralHeight = False
         Me.CR_Filename.ItemHeight = 23
         Me.CR_Filename.Items.AddRange(New Object() {"[episode number]", "[episode name]", "[episode number] [episode name]", "[episode name] [episode number]"})
-        Me.CR_Filename.Location = New System.Drawing.Point(6, 27)
+        Me.CR_Filename.Location = New System.Drawing.Point(6, 35)
         Me.CR_Filename.Name = "CR_Filename"
         Me.CR_Filename.Size = New System.Drawing.Size(467, 29)
         Me.CR_Filename.TabIndex = 34
@@ -505,7 +495,7 @@ Partial Class Einstellungen
         Me.GroupBox4.Controls.Add(Me.CB_Format)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox4.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox4.Location = New System.Drawing.Point(5, 230)
+        Me.GroupBox4.Location = New System.Drawing.Point(5, 285)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(490, 78)
         Me.GroupBox4.TabIndex = 42
@@ -536,27 +526,13 @@ Partial Class Einstellungen
         Me.CB_Format.TabIndex = 37
         Me.CB_Format.UseSelectable = True
         '
-        'CheckBox1
-        '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox1.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CheckBox1.ForeColor = System.Drawing.Color.Black
-        Me.CheckBox1.Location = New System.Drawing.Point(67, 320)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(369, 19)
-        Me.CheckBox1.TabIndex = 6
-        Me.CheckBox1.Text = "i know that re-encoding the video takes time and power"
-        Me.CheckBox1.UseSelectable = True
-        '
         'GroupBox2
         '
         Me.GroupBox2.BackColor = System.Drawing.Color.Transparent
         Me.GroupBox2.Controls.Add(Me.Panel1)
-        Me.GroupBox2.Enabled = False
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox2.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox2.Location = New System.Drawing.Point(5, 350)
+        Me.GroupBox2.Location = New System.Drawing.Point(5, 365)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(490, 63)
         Me.GroupBox2.TabIndex = 40
@@ -726,7 +702,7 @@ Partial Class Einstellungen
         Me.GB_Resolution.Controls.Add(Me.A1080p)
         Me.GB_Resolution.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Resolution.ForeColor = System.Drawing.Color.Black
-        Me.GB_Resolution.Location = New System.Drawing.Point(5, 165)
+        Me.GB_Resolution.Location = New System.Drawing.Point(5, 225)
         Me.GB_Resolution.Name = "GB_Resolution"
         Me.GB_Resolution.Size = New System.Drawing.Size(490, 59)
         Me.GB_Resolution.TabIndex = 38
@@ -811,10 +787,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(501, 461)
+        Me.TabPage1.Size = New System.Drawing.Size(501, 452)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1032,7 +1008,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 1
+        Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(509, 500)
         Me.TabControl1.TabIndex = 38
         Me.TabControl1.UseSelectable = True
@@ -1337,9 +1313,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 452)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 461)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = "About   "
         '
@@ -1455,6 +1431,29 @@ Partial Class Einstellungen
         'BackgroundWorker1
         '
         '
+        'KodiSupport
+        '
+        Me.KodiSupport.AutoSize = True
+        Me.KodiSupport.Location = New System.Drawing.Point(263, 24)
+        Me.KodiSupport.Name = "KodiSupport"
+        Me.KodiSupport.Size = New System.Drawing.Size(80, 20)
+        Me.KodiSupport.TabIndex = 40
+        Me.KodiSupport.Text = "Aus"
+        Me.KodiSupport.UseSelectable = True
+        '
+        'MetroLink1
+        '
+        Me.MetroLink1.FontSize = MetroFramework.MetroLinkSize.Medium
+        Me.MetroLink1.ForeColor = System.Drawing.Color.SteelBlue
+        Me.MetroLink1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.MetroLink1.Location = New System.Drawing.Point(101, 24)
+        Me.MetroLink1.Name = "MetroLink1"
+        Me.MetroLink1.Size = New System.Drawing.Size(145, 23)
+        Me.MetroLink1.TabIndex = 39
+        Me.MetroLink1.Text = "enable Kodi naming"
+        Me.MetroLink1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.MetroLink1.UseSelectable = True
+        '
         'Einstellungen
         '
         Me.ApplyImageInvert = True
@@ -1481,9 +1480,9 @@ Partial Class Einstellungen
         Me.SoftSubs.PerformLayout()
         Me.GB_SubLanguage.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
-        Me.TabPage2.PerformLayout()
+        Me.GB_Filename_Pre.ResumeLayout(False)
+        Me.GB_Filename_Pre.PerformLayout()
         Me.GroupBox12.ResumeLayout(False)
-        Me.GroupBox12.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
@@ -1595,7 +1594,6 @@ Partial Class Einstellungen
     Friend WithEvents CB_srt As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CB_vtt As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CB_dfxp As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents CheckBox1 As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents AAuto As MetroFramework.Controls.MetroRadioButton
     Friend WithEvents A480p As MetroFramework.Controls.MetroRadioButton
     Friend WithEvents A360p As MetroFramework.Controls.MetroRadioButton
@@ -1630,6 +1628,7 @@ Partial Class Einstellungen
     Friend WithEvents ListC6 As ToolStripMenuItem
     Friend WithEvents ListC7 As ToolStripMenuItem
     Friend WithEvents ListP3 As ToolStripMenuItem
+    Friend WithEvents GB_Filename_Pre As GroupBox
     Friend WithEvents KodiSupport As MetroFramework.Controls.MetroToggle
     Friend WithEvents MetroLink1 As MetroFramework.Controls.MetroLink
 End Class

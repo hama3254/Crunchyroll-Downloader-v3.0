@@ -17,7 +17,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Beta-U7"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Beta-U8"
         BackgroundWorker1.RunWorkerAsync()
 
 
@@ -329,7 +329,7 @@ Public Class Einstellungen
             Try
                 Port = CInt(http_support.Text)
                 rk.SetValue("ServerPort", Port, RegistryValueKind.String)
-                Main.StartServer = False
+                'Main.StartServer = False
             Catch ex As Exception
                 'If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
 
@@ -340,8 +340,12 @@ Public Class Einstellungen
                 MsgBox("The add-on support Port can only be numbers!", MsgBoxStyle.Exclamation)
                 Exit Sub
             End Try
-
+            If Main.StartServer = Port Then
+            Else
+                MsgBox("The add-on support needs a restart of the downloader.", MsgBoxStyle.Information)
+            End If
         End If
+
 
         If KodiSupport.Checked = True Then
             Main.KodiNaming = True
@@ -625,10 +629,8 @@ Public Class Einstellungen
 
 
 
-        If CheckBox1.Enabled = False Then
 
-        Else
-            Dim ffpmeg_cmd As String = Nothing
+        Dim ffpmeg_cmd As String = Nothing
             If FFMPEG_CommandP1.Text = "-c copy" Then
                 ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP4.Text
             ElseIf FFMPEG_CommandP2.Text = "[no Preset]" Then
@@ -638,7 +640,6 @@ Public Class Einstellungen
 
                 ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP2.Text + " " + FFMPEG_CommandP3.Text + " " + FFMPEG_CommandP4.Text
 
-            End If
             rk.SetValue("ffmpeg_command", ffpmeg_cmd, RegistryValueKind.String)
             Main.ffmpeg_command = ffpmeg_cmd
         End If
@@ -739,6 +740,18 @@ Public Class Einstellungen
         Return "CRD-Temp-File-" + HWID
     End Function
 
+    Public Function GeräteID2() As String
+        Dim rnd As New Random
+        Dim possible As String = "56789abcdefghijklmnopqrstuvwxyz01234ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        Dim HWID As String = Nothing
+
+        For i As Integer = 0 To 15
+            Dim ZufallsZahl As Integer = rnd.Next(1, 33)
+            HWID = HWID + possible(ZufallsZahl)
+        Next
+        Return "CRD-Temp-File-" + HWID
+    End Function
+
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles pictureBox1.Click
         Me.Close()
     End Sub
@@ -822,16 +835,7 @@ Public Class Einstellungen
 
 
 
-    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
-        GroupBox2.Enabled = CheckBox1.CheckState
-        If FFMPEG_CommandP1.Text = "-c copy" Then
-            FFMPEG_CommandP2.Enabled = False
-            FFMPEG_CommandP3.Enabled = False
-        Else
-            FFMPEG_CommandP2.Enabled = True
-            FFMPEG_CommandP3.Enabled = True
-        End If
-    End Sub
+
 
     Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles ListC1.Click, ListC2.Click, ListC3.Click, ListC4.Click, ListC5.Click, ListC6.Click, ListC7.Click
         Dim Button As ToolStripMenuItem = sender
@@ -895,10 +899,17 @@ Public Class Einstellungen
 
 
     Sub GroupBoxColor(ByVal color As Color)
+        NumericUpDown1.ForeColor = color
+        NumericUpDown2.ForeColor = color
+        FFMPEG_CommandP1.ForeColor = color
+        FFMPEG_CommandP2.ForeColor = color
+        FFMPEG_CommandP3.ForeColor = color
+        FFMPEG_CommandP4.ForeColor = color
         SoftSubs.ForeColor = color
         GB_SubLanguage.ForeColor = color
         DL_Count_simultaneous.ForeColor = color
         GB_Resolution.ForeColor = color
+        GB_Filename_Pre.ForeColor = color
         GroupBox1.ForeColor = color
         GroupBox2.ForeColor = color
         GroupBox5.ForeColor = color
@@ -913,9 +924,7 @@ Public Class Einstellungen
 
 
 
-    Private Sub GroupBox2_EnabledChanged(sender As Object, e As EventArgs) Handles GroupBox2.EnabledChanged
 
-    End Sub
 
     Private Sub DarkMode_CheckedChanged(sender As Object, e As EventArgs) Handles DarkMode.CheckedChanged
         Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
@@ -924,6 +933,8 @@ Public Class Einstellungen
             rk.SetValue("Dark_Mode", 1, RegistryValueKind.String)
             Manager.Theme = MetroThemeStyle.Dark
             GroupBoxColor(Color.FromArgb(150, 150, 150))
+            NumericUpDown1.BackColor = Color.FromArgb(17, 17, 17)
+            NumericUpDown2.BackColor = Color.FromArgb(17, 17, 17)
             Main.DarkMode()
             Main.DarkModeValue = True
             pictureBox1.Image = Main.CloseImg
@@ -933,6 +944,8 @@ Public Class Einstellungen
             Manager.Theme = MetroThemeStyle.Light
             Main.LightMode()
             GroupBoxColor(Color.FromArgb(0, 0, 0))
+            NumericUpDown1.BackColor = Color.FromArgb(243, 243, 243)
+            NumericUpDown2.BackColor = Color.FromArgb(243, 243, 243)
             pictureBox1.Image = Main.CloseImg
         End If
     End Sub
@@ -1144,7 +1157,7 @@ Public Class Einstellungen
         End If
     End Sub
 
-    Private Sub MetroLink1_Click(sender As Object, e As EventArgs) Handles MetroLink1.Click
+    Private Sub MetroLink1_Click(sender As Object, e As EventArgs)
         Process.Start("https://github.com/hama3254/Crunchyroll-Downloader-v3.0/discussions/276")
     End Sub
 

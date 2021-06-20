@@ -884,6 +884,7 @@ Public Class CRD_List_Item
 #End Region
 
     Public Function DownloadHybrid(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
+        LogText.Add(Date.Now + " " + DL_URL)
         Dim Folder As String = Einstellungen.GeräteID()
         Dim DL_URL_old As String = DL_URL
         Dim PauseTime As Integer = 0
@@ -897,11 +898,11 @@ Public Class CRD_List_Item
         Me.Invoke(New Action(Function()
                                  Label_percent.Text = "Checking input..."
                                  Return Nothing
-                                 End Function))
+                             End Function))
 
         For i As Integer = 0 To InuputStreams.Count - 1
             Dim int As Integer = i
-            Dim InputURL As String() = InuputStreams(i).Split(New [Char]() {Chr(34)})
+            Dim InputURL As String() = InuputStreams(int).Split(New [Char]() {Chr(34)})
             Dim InputClient As New WebClient
             InputClient.Encoding = Encoding.UTF8
             If Main.WebbrowserCookie = Nothing Then
@@ -909,6 +910,10 @@ Public Class CRD_List_Item
                 InputClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
             End If
             Dim SubsFile As String = Pfad2 + Einstellungen.GeräteID() + ".txt"
+
+            If File.Exists(SubsFile) Then
+                SubsFile = Pfad2 + Einstellungen.GeräteID2() + ".txt"
+            End If
 
             Try
                 Dim InputData As String = InputClient.DownloadString(InputURL(0))
@@ -941,6 +946,16 @@ Public Class CRD_List_Item
                     DL_URL = DL_URL.Replace("-i " + Chr(34) + InputURL(0), "-allowed_extensions ALL " + "-i " + Chr(34) + Pfad2 + "Stream-" + int.ToString + "\index.m3u8")
                 Else
                     'write string to file
+                    If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
+                        ' Nein! Jetzt erstellen...
+                        Try
+                            Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
+                        Catch ex As Exception
+                            Debug.WriteLine("folder issue")
+                            Return "Error"
+                            Exit Function
+                        End Try
+                    End If
                     Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
                     Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
                         sink.WriteLine(InputData)
@@ -984,7 +999,7 @@ Public Class CRD_List_Item
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
 
         Dim cmd As String = DL_URL + " " + DL_Pfad
-
+        LogText.Add(Date.Now + " " + cmd)
         If Debug2 = True Then
             MsgBox(cmd)
         End If
@@ -1065,10 +1080,7 @@ Public Class CRD_List_Item
         Catch ex As Exception
 
         End Try
-        'Me.Invoke(New Action(Function()
-        '                         Label_percent.Text = "Finished - event"
-        '                         Return Nothing
-        '                     End Function))
+
     End Sub
 
     Sub FFMPEGOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)

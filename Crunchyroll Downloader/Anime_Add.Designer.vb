@@ -244,8 +244,8 @@ Partial Class Anime_Add
         Me.groupBox2.Controls.Add(Me.comboBox4)
         Me.groupBox2.Controls.Add(Me.ComboBox1)
         Me.groupBox2.Controls.Add(Me.comboBox3)
-        Me.groupBox2.Controls.Add(Me.PictureBox1)
         Me.groupBox2.Controls.Add(Me.Add_Display)
+        Me.groupBox2.Controls.Add(Me.PictureBox1)
         Me.groupBox2.Location = New System.Drawing.Point(15, 70)
         Me.groupBox2.Name = "groupBox2"
         Me.groupBox2.Size = New System.Drawing.Size(720, 280)

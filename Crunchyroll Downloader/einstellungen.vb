@@ -17,7 +17,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Beta-U8"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Beta-U11"
         BackgroundWorker1.RunWorkerAsync()
 
 
@@ -234,6 +234,8 @@ Public Class Einstellungen
 
         If InStr(Main.ffmpeg_command, "-c copy") Then
             FFMPEG_CommandP1.Text = "-c copy"
+            FFMPEG_CommandP2.Enabled = False
+            FFMPEG_CommandP3.Enabled = False
             FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
         ElseIf InStr(Main.ffmpeg_command, "-c:a copy ") Then
             Dim ffmpegDisplayCurrent As String() = Main.ffmpeg_command.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -344,6 +346,13 @@ Public Class Einstellungen
             Else
                 MsgBox("The add-on support needs a restart of the downloader.", MsgBoxStyle.Information)
             End If
+        End If
+
+
+        If Main.KeepCache = True Then
+            rk.SetValue("Keep_Cache", 1, RegistryValueKind.String)
+        Else
+            rk.SetValue("Keep_Cache", 0, RegistryValueKind.String)
         End If
 
 
@@ -631,18 +640,18 @@ Public Class Einstellungen
 
 
         Dim ffpmeg_cmd As String = Nothing
-            If FFMPEG_CommandP1.Text = "-c copy" Then
-                ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP4.Text
-            ElseIf FFMPEG_CommandP2.Text = "[no Preset]" Then
+        If FFMPEG_CommandP1.Text = "-c copy" Then
+            ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP4.Text
+        ElseIf FFMPEG_CommandP2.Text = "[no Preset]" Then
 
-                ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP3.Text + " " + FFMPEG_CommandP4.Text
-            Else
+            ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP3.Text + " " + FFMPEG_CommandP4.Text
+        Else
 
-                ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP2.Text + " " + FFMPEG_CommandP3.Text + " " + FFMPEG_CommandP4.Text
-
-            rk.SetValue("ffmpeg_command", ffpmeg_cmd, RegistryValueKind.String)
-            Main.ffmpeg_command = ffpmeg_cmd
+            ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP2.Text + " " + FFMPEG_CommandP3.Text + " " + FFMPEG_CommandP4.Text
         End If
+
+        rk.SetValue("ffmpeg_command", ffpmeg_cmd, RegistryValueKind.String)
+        Main.ffmpeg_command = ffpmeg_cmd
 
         If InStr(FFMPEG_CommandP1.Text, "nvenc") Then
             If NumericUpDown1.Value > 2 Then
@@ -1150,6 +1159,13 @@ Public Class Einstellungen
 
     Private Sub HybridMode_CB_Click(sender As Object, e As EventArgs) Handles HybridMode_CB.Click
         If HybridMode_CB.Checked = True Then
+
+            If MessageBox.Show("Should the cached data be kept?" + vbNewLine + "Press 'No' to free the space after downloading.", "Keep cached files?", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+                Main.KeepCache = True
+            Else
+                Main.KeepCache = False
+            End If
+
             If AAuto.Checked = True Then
                 MsgBox("Resolution '[Auto]' and 'Hybride Mode' does not work together", MsgBoxStyle.Information)
                 HybridMode_CB.Checked = False
@@ -1183,6 +1199,7 @@ Public Class Einstellungen
             MergeMP4.Checked = False
         End If
     End Sub
+
 
 
 

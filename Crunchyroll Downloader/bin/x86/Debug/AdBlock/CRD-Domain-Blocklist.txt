@@ -13,3 +13,4 @@ www.googletagmanager.com
 googletagmanager.com
 ocsp.sca1b.amazontrust.com
 sa.etp-prod.com
+gum.criteo.com

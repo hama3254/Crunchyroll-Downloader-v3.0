@@ -41,6 +41,7 @@ Partial Class Main
         Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
         Me.Btn_min = New System.Windows.Forms.PictureBox()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
+        Me.Timer4 = New System.Windows.Forms.Timer(Me.components)
         CType(Me.Btn_add, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Btn_Settings, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -157,6 +158,11 @@ Partial Class Main
         'BackgroundWorker1
         '
         '
+        'Timer4
+        '
+        Me.Timer4.Enabled = True
+        Me.Timer4.Interval = 2500
+        '
         'Main
         '
         Me.ApplyImageInvert = True
@@ -207,4 +213,5 @@ Partial Class Main
     Friend WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
     Private WithEvents Btn_min As PictureBox
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
+    Friend WithEvents Timer4 As Timer
 End Class

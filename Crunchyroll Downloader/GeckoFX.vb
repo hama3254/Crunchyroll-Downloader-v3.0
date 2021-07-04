@@ -187,10 +187,27 @@ Public Class GeckoFX
                         t.Start()
 
                     Else
+                        Main.WebbrowserCookie = WebBrowser1.Document.Cookie
                         Main.Text = "Status: no video found"
                         Anime_Add.StatusLabel.Text = "Status: no video found"
                     End If
                 End If
+
+            ElseIf CBool(InStr(WebBrowser1.Url.ToString, "title-api.prd.funimationsvc.com")) Then
+
+                If Main.FunimationJsonBrowser = "SeasonJson" Then
+                    'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.OuterHtml)
+                    Main.GetFunimationJS_Seasons(Nothing, WebBrowser1.Document.Body.OuterHtml.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", ""))
+                    Main.FunimationJsonBrowser = Nothing
+                ElseIf Main.FunimationJsonBrowser = "EpisodeJson" Then
+                    Anime_Add.FillFunimationEpisodes(WebBrowser1.Document.Body.OuterHtml.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", ""))
+                    Main.FunimationJsonBrowser = Nothing
+                ElseIf Main.FunimationJsonBrowser = "v1Json" Then
+                    Main.GetFunimationJS_VideoProxy(Nothing, WebBrowser1.Document.Body.OuterHtml.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", ""))
+                    Main.FunimationJsonBrowser = Nothing
+                End If
+
+
             ElseIf CBool(InStr(WebBrowser1.Url.ToString, "anime-on-demand.de")) Then
                 If Main.b = False Then
                     Main.b = True
@@ -323,7 +340,8 @@ Public Class GeckoFX
         Catch ex As Exception
         End Try
 
-        'MsgBox(WebBrowser1.Document.Cookie)
+        'My.Computer.Clipboard.SetText(WebBrowser1.Document.Body.InnerHtml)
+
     End Sub
 
     Private Sub TextBox1_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBox1.KeyDown
@@ -421,22 +439,6 @@ Public Class GeckoFX
         'Debug_Mode.TopMost = False
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        If InStr(WebBrowser1.Url.ToString, "funimation.com") Then
-            Dim Funimation_List As New List(Of String)
-            Dim Funimation_list1() As String = WebBrowser1.Document.Body.OuterHtml.Split(New String() {My.Resources.Funimation_Split_1}, System.StringSplitOptions.RemoveEmptyEntries)
-
-            For i As Integer = 1 To Funimation_list1.Count - 1
-                Dim Funimation_list2() As String = Funimation_list1(i).Split(New String() {My.Resources.Funimation_Split_2}, System.StringSplitOptions.RemoveEmptyEntries)
-                Funimation_List.Add("https://www.funimation.com" + Funimation_list2(0))
-                Main.ListBoxList.Add("https://www.funimation.com" + Funimation_list2(0))
-            Next
-            MsgBox(Funimation_List.Count.ToString + " episodes added to Download queue")
-            'For ii As Integer = 0 To Funimation_List.Count - 1
-            '    MsgBox(Funimation_List.Item(ii))
-            'Next
-        End If
-    End Sub
 
 
     Private Sub ObserveHttpModifyRequest(sender As Object, e As GeckoObserveHttpModifyRequestEventArgs) Handles WebBrowser1.ObserveHttpModifyRequest
@@ -453,7 +455,7 @@ Public Class GeckoFX
             e.Cancel = True
             'Debug.WriteLine(requesturl)
             Exit Sub
-        ElseIf requesturl.Contains("ad_") Or requesturl.Contains("ads") Or requesturl.Contains(".swf") Or requesturl.Contains("unsupported") Then
+        ElseIf requesturl.Contains("ad_") Or requesturl.Contains("ads") Or requesturl.Contains(".swf") Or requesturl.Contains("unsupported") And Not requesturl = WebBrowser1.Url.ToString Then
             e.Cancel = True
             'Debug.WriteLine(requesturl)
             Exit Sub
@@ -480,6 +482,11 @@ Public Class GeckoFX
         End If
 
         If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com")) And CBool(InStr(requesturl, "?region=")) Then
+            Try
+                Main.WebbrowserCookie = WebBrowser1.Document.Cookie
+            Catch ex As Exception
+            End Try
+
             Dim parms As String() = requesturl.Split(New String() {"?region="}, System.StringSplitOptions.RemoveEmptyEntries)
             Main.FunimationAPIRegion = "?region=" + parms(1)
             If Main.b = False Then
@@ -589,7 +596,7 @@ Public Class GeckoFX
     End Sub
 
     Private Sub WebBrowser1_ConsoleMessage(sender As Object, e As ConsoleMessageEventArgs) Handles WebBrowser1.ConsoleMessage
-        ' Debug.WriteLine(e.Message)
+        Debug.WriteLine(e.Message)
         ' MsgBox(e.Message)
     End Sub
 End Class

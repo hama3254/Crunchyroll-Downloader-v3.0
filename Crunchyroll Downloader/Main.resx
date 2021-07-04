@@ -231,6 +231,12 @@
   <data name="&gt;&gt;Btn_Browser.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
+  <data name="Link.Text" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="Link.Width" type="System.Int32, mscorlib">
+    <value>818</value>
+  </data>
   <data name="ListView1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 93pt</value>
   </data>
@@ -260,12 +266,6 @@
   </data>
   <data name="&gt;&gt;ListView1.ZOrder" xml:space="preserve">
     <value>4</value>
-  </data>
-  <data name="Link.Text" xml:space="preserve">
-    <value>Link</value>
-  </data>
-  <data name="Link.Width" type="System.Int32, mscorlib">
-    <value>818</value>
   </data>
   <data name="PictureBox5.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Stretch</value>
@@ -378,6 +378,31 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>842, 630</value>
   </data>
+  <data name="Btn_min.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="Btn_min.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABoAAAAhCAYAAADH97ugAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        xAAADsQBlSsOGwAAAAd0SU1FB+QMDQ03N1b5UIAAAAApSURBVEhL7cyxCQAwDASx339pZ4EUcTC4keDa
+        CwDMqs/abpOXAGBZcgDKSBvlblfsRgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="Btn_min.Location" type="System.Drawing.Point, System.Drawing">
+    <value>764, 8</value>
+  </data>
+  <data name="Btn_min.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="Btn_min.Size" type="System.Drawing.Size, System.Drawing">
+    <value>25, 25</value>
+  </data>
+  <data name="Btn_min.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="Btn_min.TabIndex" type="System.Int32, mscorlib">
+    <value>71</value>
+  </data>
   <data name="&gt;&gt;Btn_min.Name" xml:space="preserve">
     <value>Btn_min</value>
   </data>
@@ -450,50 +475,22 @@
   <data name="&gt;&gt;BackgroundWorker1.Type" xml:space="preserve">
     <value>System.ComponentModel.BackgroundWorker, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;Timer4.Name" xml:space="preserve">
+    <value>Timer4</value>
+  </data>
+  <data name="&gt;&gt;Timer4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Main</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>MetroFramework.Forms.MetroForm, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="Btn_min.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="Btn_min.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABoAAAAhCAYAAADH97ugAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        xAAADsQBlSsOGwAAAAd0SU1FB+QMDQ03N1b5UIAAAAApSURBVEhL7cyxCQAwDASx339pZ4EUcTC4keDa
-        CwDMqs/abpOXAGBZcgDKSBvlblfsRgAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="Btn_min.Location" type="System.Drawing.Point, System.Drawing">
-    <value>764, 8</value>
-  </data>
-  <data name="Btn_min.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="Btn_min.Size" type="System.Drawing.Size, System.Drawing">
-    <value>25, 25</value>
-  </data>
-  <data name="Btn_min.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="Btn_min.TabIndex" type="System.Int32, mscorlib">
-    <value>71</value>
-  </data>
-  <data name="&gt;&gt;Btn_min.Name" xml:space="preserve">
-    <value>Btn_min</value>
-  </data>
-  <data name="&gt;&gt;Btn_min.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Btn_min.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Btn_min.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="BackgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>714, 17</value>
+  </metadata>
+  <metadata name="Timer4.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>877, 17</value>
   </metadata>
 </root>

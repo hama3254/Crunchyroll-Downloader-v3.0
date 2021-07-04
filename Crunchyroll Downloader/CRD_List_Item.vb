@@ -41,6 +41,8 @@ Public Class CRD_List_Item
     Dim HybrideLog As String = Nothing
     Dim Service As String = "CR"
     Dim ServiceSleep As Integer = 0
+    Dim KeepCacheFiles As Boolean = False
+    Dim NameP2 As String = Nothing
 
     Dim LastDate As Date = Date.Now
     Dim LastSize As Double = 0
@@ -113,12 +115,17 @@ Public Class CRD_List_Item
     Public Sub SetTheme(ByVal Theme As MetroThemeStyle)
         MetroStyleManager1.Theme = Theme
     End Sub
+    Public Sub SetCache(ByVal value As Boolean)
+        KeepCacheFiles = value
+    End Sub
+
 
     Public Sub SetTolerance(ByVal value As Integer)
         Item_ErrorTolerance = value
     End Sub
     Public Sub SetLabelAnimeTitel(ByVal Text As String)
         Label_Anime.Text = Text
+        NameP2 = Text
     End Sub
     Public Sub SetLabelResolution(ByVal Text As String)
         Label_Reso.Text = Text
@@ -619,7 +626,10 @@ Public Class CRD_List_Item
                         Thread.Sleep(250)
                     Else
                         Try
-                            System.IO.Directory.Delete(HybridModePath, True)
+                            If KeepCacheFiles = False Then
+                                System.IO.Directory.Delete(HybridModePath, True)
+                            End If
+
                         Catch ex As Exception
                         End Try
                         Me.Invoke(New Action(Function()
@@ -738,7 +748,9 @@ Public Class CRD_List_Item
 #Region "v3/v5"
     Public WithEvents WC_TS As WebClient
 
-    Private Function ProcessV3(ByVal url As String, ByVal InputData As String, ByVal Folder As String) As String
+    Private Function ProcessV3(ByVal url As String, ByVal InputData As String, ByVal Folder As String, ByVal DateiPfad As String, ByVal DL_URL As String) As String
+
+        Debug.WriteLine(Folder)
 
         If Not Directory.Exists(Path.GetDirectoryName(Folder)) Then
             ' Nein! Jetzt erstellen...
@@ -750,6 +762,36 @@ Public Class CRD_List_Item
                 Exit Function
             End Try
         End If
+
+
+        If Not Directory.Exists(Path.GetDirectoryName(Folder) + "\Retry") Then
+            ' Nein! Jetzt erstellen...
+            Try
+                Directory.CreateDirectory(Path.GetDirectoryName(Folder) + "\Retry")
+            Catch ex As Exception
+                Debug.WriteLine("folder issue")
+                Return "Error"
+                Exit Function
+            End Try
+        End If
+
+        Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+        Using sink As New StreamWriter(Folder + "Retry\retry.m3u8", False, utf8WithoutBom2)
+            sink.WriteLine(InputData)
+        End Using
+
+        Me.Invoke(New Action(Function()
+                                 Using sink As New StreamWriter(Folder + "Retry\retry.txt", False, utf8WithoutBom2)
+                                     sink.WriteLine(DL_URL)
+                                     sink.WriteLine(Label_website.Text)
+                                     sink.WriteLine(Label_Anime.Text)
+                                     sink.WriteLine(Label_Reso.Text)
+                                     sink.WriteLine(Label_Hardsub.Text)
+                                     sink.WriteLine(DateiPfad)
+                                 End Using
+                                 PB_Thumbnail.BackgroundImage.Save(Folder + "Retry\retry.jpg")
+                                 Return Nothing
+                             End Function))
 
         Dim LoadedKeys As New List(Of String)
         LoadedKeys.Add("Nothing")
@@ -771,7 +813,9 @@ Public Class CRD_List_Item
                         Thread.Sleep(250)
                     Else
                         Try
-                            System.IO.Directory.Delete(HybridModePath, True)
+                            If KeepCacheFiles = False Then
+                                System.IO.Directory.Delete(HybridModePath, True)
+                            End If
                         Catch ex As Exception
                         End Try
                         Me.Invoke(New Action(Function()
@@ -787,15 +831,16 @@ Public Class CRD_List_Item
                 Exit Function
             End If
             If InStr(textLenght(i), ".ts") Then
-
                 Dim File As String = Folder + String.Format("{0:00000}", Count)
                 Dim curi As String = GetFullUri(url, textLenght(i))
 
-                Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(curi, File))
-                Evaluator.Start()
-                ThreadList.Add(Evaluator)
-                m3u8FileContent = m3u8FileContent + File + vbLf
+                If Not System.IO.File.Exists(Folder + "Retry\" + String.Format("{0:00000}", Count)) Then
+                    Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(curi, File))
+                    Evaluator.Start()
+                    ThreadList.Add(Evaluator)
+                End If
 
+                m3u8FileContent = m3u8FileContent + File + vbLf
                 Dim FragmentsFinised = Count * 100 / FragmentsInt
                 Dim Update = New Thread(Sub() Me.TS_StatusAsync(FragmentsFinised, di, PauseTime))
                 Update.Start()
@@ -825,8 +870,17 @@ Public Class CRD_List_Item
                     Else
                         KeyLine = KeyFileUri(0) + "URI=" + Chr(34) + KeyFileCache + Chr(34)
                     End If
+
+                    If KeepCacheFiles = True Then
+                        'Dim Bytes() As Byte = File.ReadAllBytes(Application.StartupPath + "\" + KeyFile)
+                        'File.WriteAllBytes(Folder + "\" + KeyFile, Bytes)
+                        Dim Evaluator2 = New Thread(Sub() Me.TS_DownloadAsync(KeyFileUri3, Folder + "\" + KeyFile))
+                        Evaluator2.Start()
+                    End If
                 End If
                 m3u8FileContent = m3u8FileContent + KeyLine + vbLf
+
+
             Else
                 m3u8FileContent = m3u8FileContent + textLenght(i) + vbLf
             End If
@@ -840,6 +894,19 @@ Public Class CRD_List_Item
             sink.WriteLine(m3u8FileContent)
         End Using
 
+        'If File.Exists(Folder + "retry.m3u8") Then
+        '    My.Computer.FileSystem.DeleteFile(Folder + "retry.m3u8")
+        'End If
+
+        If KeepCacheFiles = True Then
+            Using sink As New StreamWriter(Folder + "\index-VLC.m3u8", False, utf8WithoutBom)
+                m3u8FileContent = m3u8FileContent.Replace(Folder, "file:///" + Folder.Replace("\", "/"))
+                m3u8FileContent = m3u8FileContent.Replace("URI=" + Chr(34), "URI=" + Chr(34) + "file:///" + Folder.Replace("\", "/"))
+                sink.WriteLine(m3u8FileContent)
+            End Using
+        End If
+
+
         Return Folder + "\index.m3u8"
 
     End Function
@@ -851,12 +918,29 @@ Public Class CRD_List_Item
             WC_TS = New WebClient
 
             WC_TS.DownloadFile(New Uri(DL_URL), DL_Pfad)
+            If Not CBool(InStr(DL_Pfad, Application.StartupPath)) Then
+                Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                Using sink As New StreamWriter(Path.GetDirectoryName(DL_Pfad) + "\Retry\" + Path.GetFileName(DL_Pfad), False, utf8WithoutBom2)
+                    sink.WriteLine(DL_Pfad)
+                End Using
+            End If
+
+
         Catch ex As Exception
 
             Debug.WriteLine("Download error #1: " + DL_Pfad)
             Try
                 Dim wc_ts As New WebClient
                 wc_ts.DownloadFile(New Uri(DL_URL), DL_Pfad)
+
+                If Not CBool(InStr(DL_Pfad, Application.StartupPath)) Then
+                    Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                    Using sink As New StreamWriter(Path.GetDirectoryName(DL_Pfad) + "\Retry\" + Path.GetFileName(DL_Pfad), False, utf8WithoutBom2)
+                        sink.WriteLine(DL_Pfad)
+                    End Using
+                End If
+
+
             Catch ex2 As Exception
                 FailedCount = FailedCount + 1
                 If Item_ErrorTolerance = 0 Then
@@ -874,9 +958,10 @@ Public Class CRD_List_Item
                 End If
 
 
-                Debug.WriteLine("Download error #2: " + DL_Pfad + vbNewLine + ex2.ToString + vbNewLine + DL_URL)
+                Debug.WriteLine("Download error #2: " + DL_URL + vbNewLine + DL_Pfad + vbNewLine + ex2.ToString + vbNewLine + DL_URL)
             End Try
         End Try
+
 
     End Sub
 
@@ -889,6 +974,11 @@ Public Class CRD_List_Item
         Dim DL_URL_old As String = DL_URL
         Dim PauseTime As Integer = 0
         Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
+        If InStr(DL_Pfad, "CRD-Temp-File-") Then
+            Pfad2 = DL_Pfad.Replace(Chr(34), "") + "\"
+            Dim DL_PfadSplit() As String = DL_Pfad.Split(New String() {"CRD-Temp-File-"}, System.StringSplitOptions.RemoveEmptyEntries)
+            DL_Pfad = Chr(34) + DL_PfadSplit(0) + Filename + Chr(34)
+        End If
         Dim di As New IO.DirectoryInfo(Pfad2)
         Dim m3u8_url As String() = DL_URL.Split(New [Char]() {Chr(34)})
         Dim m3u8FFmpeg As String = Nothing
@@ -937,7 +1027,11 @@ Public Class CRD_List_Item
 
                 If InStr(InputData, "#EXT-X-VERSION:3") Or InStr(InputData, "#EXT-X-VERSION:5") Then
 
-                    ProcessV3(InputURL(0), InputData, Pfad2)
+                    If KeepCacheFiles = True Then
+                        Pfad2 = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + NameP2.Replace(" ", "-") + "\"
+                    End If
+
+                    ProcessV3(InputURL(0), InputData, Pfad2, DL_Pfad, DL_URL)
 
                     DL_URL = DL_URL.Replace("-i " + Chr(34) + InputURL(0), "-allowed_extensions ALL " + "-i " + Chr(34) + Pfad2 + "index.m3u8")
 
@@ -1197,7 +1291,9 @@ Public Class CRD_List_Item
                 If HybridMode = True Then
                     Thread.Sleep(5000)
                     Try
-                        System.IO.Directory.Delete(HybridModePath, True)
+                        If KeepCacheFiles = False Then
+                            System.IO.Directory.Delete(HybridModePath, True)
+                        End If
                     Catch ex As Exception
                     End Try
                 End If

@@ -44,6 +44,8 @@ Partial Class Einstellungen
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
         Me.TabPage2 = New MetroFramework.Controls.MetroTabPage()
         Me.GB_Filename_Pre = New System.Windows.Forms.GroupBox()
+        Me.KodiSupport = New MetroFramework.Controls.MetroToggle()
+        Me.MetroLink1 = New MetroFramework.Controls.MetroLink()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
         Me.DD_Episode_Prefix = New MetroFramework.Controls.MetroComboBox()
         Me.DD_Season_Prefix = New MetroFramework.Controls.MetroComboBox()
@@ -130,8 +132,6 @@ Partial Class Einstellungen
         Me.Label6 = New MetroFramework.Controls.MetroLabel()
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
-        Me.KodiSupport = New MetroFramework.Controls.MetroToggle()
-        Me.MetroLink1 = New MetroFramework.Controls.MetroLink()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
@@ -404,10 +404,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 35)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(501, 452)
+        Me.TabPage2.Size = New System.Drawing.Size(501, 461)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -428,6 +428,29 @@ Partial Class Einstellungen
         Me.GB_Filename_Pre.TabIndex = 39
         Me.GB_Filename_Pre.TabStop = False
         Me.GB_Filename_Pre.Text = "Filename Prefix"
+        '
+        'KodiSupport
+        '
+        Me.KodiSupport.AutoSize = True
+        Me.KodiSupport.Location = New System.Drawing.Point(263, 24)
+        Me.KodiSupport.Name = "KodiSupport"
+        Me.KodiSupport.Size = New System.Drawing.Size(80, 20)
+        Me.KodiSupport.TabIndex = 40
+        Me.KodiSupport.Text = "Aus"
+        Me.KodiSupport.UseSelectable = True
+        '
+        'MetroLink1
+        '
+        Me.MetroLink1.FontSize = MetroFramework.MetroLinkSize.Medium
+        Me.MetroLink1.ForeColor = System.Drawing.Color.SteelBlue
+        Me.MetroLink1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.MetroLink1.Location = New System.Drawing.Point(101, 24)
+        Me.MetroLink1.Name = "MetroLink1"
+        Me.MetroLink1.Size = New System.Drawing.Size(145, 23)
+        Me.MetroLink1.TabIndex = 39
+        Me.MetroLink1.Text = "enable Kodi naming"
+        Me.MetroLink1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.MetroLink1.UseSelectable = True
         '
         'GroupBox12
         '
@@ -1430,29 +1453,6 @@ Partial Class Einstellungen
         '
         'BackgroundWorker1
         '
-        '
-        'KodiSupport
-        '
-        Me.KodiSupport.AutoSize = True
-        Me.KodiSupport.Location = New System.Drawing.Point(263, 24)
-        Me.KodiSupport.Name = "KodiSupport"
-        Me.KodiSupport.Size = New System.Drawing.Size(80, 20)
-        Me.KodiSupport.TabIndex = 40
-        Me.KodiSupport.Text = "Aus"
-        Me.KodiSupport.UseSelectable = True
-        '
-        'MetroLink1
-        '
-        Me.MetroLink1.FontSize = MetroFramework.MetroLinkSize.Medium
-        Me.MetroLink1.ForeColor = System.Drawing.Color.SteelBlue
-        Me.MetroLink1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.MetroLink1.Location = New System.Drawing.Point(101, 24)
-        Me.MetroLink1.Name = "MetroLink1"
-        Me.MetroLink1.Size = New System.Drawing.Size(145, 23)
-        Me.MetroLink1.TabIndex = 39
-        Me.MetroLink1.Text = "enable Kodi naming"
-        Me.MetroLink1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.MetroLink1.UseSelectable = True
         '
         'Einstellungen
         '

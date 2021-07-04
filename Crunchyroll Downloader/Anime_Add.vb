@@ -188,12 +188,12 @@ Public Class Anime_Add
 #Region "Funimation url parameter"
                     If CBool(InStr(textBox1.Text, "funimation.com")) Then
                         Main.WebbrowserURL = textBox1.Text
-                        If CBool(InStr(Main.FunimationAPIRegion, "?region=")) And CBool(InStr(textBox1.Text, "/shows/")) Then
+                        'If CBool(InStr(Main.FunimationAPIRegion, "?region=")) And CBool(InStr(textBox1.Text, "/shows/")) Then
 
-                            ProcessFunimationJS(textBox1.Text)
+                        'ProcessFunimationJS(textBox1.Text)
 
-                            Exit Sub
-                        End If
+                        'Exit Sub
+                        'End If
 
                         If Main.DubFunimation = "Disabled" Then
                         Else
@@ -260,9 +260,12 @@ Public Class Anime_Add
                             textBox1.Text = "URL"
                         Else
                             If Main.Grapp_RDY = True Then
-                                GeckoFX.WebBrowser1.Navigate(textBox1.Text)
-                                StatusLabel.Text = "Status: loading ..."
+
                                 Main.b = False
+                                Debug.WriteLine("Start loading: " + Date.Now)
+                                GeckoFX.WebBrowser1.Navigate(textBox1.Text)
+                                StatusLabel.Text = "Status: loading ...."
+
                             End If
                         End If
                     End If
@@ -608,6 +611,7 @@ Public Class Anime_Add
                 End Using
             Catch ex As Exception
                 Debug.WriteLine("error- getting EpisodeJson data")
+                Debug.WriteLine(ex.ToString)
                 Exit Sub
             End Try
             Main.CrBetaMassEpisodes = EpisodeJson
@@ -630,22 +634,12 @@ Public Class Anime_Add
                 End If
 
             Next
-        ElseIf main.WebbrowserURL = "funimation.com/js" Then
-
-            'MsgBox(Main.FunimtaionAPISeasonID.Item(ComboBox1.SelectedIndex))
-
+        ElseIf Main.WebbrowserURL = "funimation.com/js" Then
             comboBox3.Items.Clear()
             comboBox4.Items.Clear()
-            comboBox3.Enabled = True
-            comboBox4.Enabled = True
             comboBox3.Text = Nothing
             comboBox4.Text = Nothing
 
-            'Dim SeasonSplit() As String = Main.CrBetaMass.Split(New String() {Chr(34) + "id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-            'Dim SeasonSplit2() As String = SeasonSplit(ComboBox1.SelectedIndex + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            '
-            'https://title-api.prd.funimationsvc.com/v1/seasons/1007609?region=US&deviceType=web
 
 
             Dim EpisodeJsonURL As String = "https://title-api.prd.funimationsvc.com/v1/seasons/" + Main.FunimtaionAPISeasonID.Item(ComboBox1.SelectedIndex) + Main.FunimationAPIRegion
@@ -660,22 +654,13 @@ Public Class Anime_Add
                 End Using
             Catch ex As Exception
                 Debug.WriteLine("error- getting EpisodeJson data")
+                Debug.WriteLine(ex.ToString)
+                Main.FunimationJsonBrowser = "EpisodeJson"
+                GeckoFX.WebBrowser1.Navigate(EpisodeJsonURL)
                 Exit Sub
             End Try
 
-            Main.FunimationEpisodeJSON = EpisodeJson
-
-
-
-
-            Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episodeNumber" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            For i As Integer = 1 To EpisodeSplit.Count - 1
-                Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
-                comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
-            Next
-
-
+            FillFunimationEpisodes(EpisodeJson)
 
 
         ElseIf AoD_Mode = False Then
@@ -736,6 +721,23 @@ Public Class Anime_Add
         End If
     End Sub
 
+
+    Public Sub FillFunimationEpisodes(ByVal EpisodeJson As String)
+
+        Main.FunimationEpisodeJSON = EpisodeJson
+
+
+        comboBox3.Enabled = True
+        comboBox4.Enabled = True
+
+        Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episodeNumber" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        For i As Integer = 1 To EpisodeSplit.Count - 1
+            Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
+            comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
+        Next
+
+    End Sub
     Private Sub PictureBox1_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox1.MouseEnter
         PictureBox1.Image = My.Resources.add_mass_cancel_hover
     End Sub

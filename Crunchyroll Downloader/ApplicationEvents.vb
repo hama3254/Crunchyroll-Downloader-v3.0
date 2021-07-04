@@ -16,7 +16,7 @@ Namespace My
     Partial Friend Class MyApplication
         'Dim UseFirefoxProfile As Boolean = True
         Protected Overrides Function OnStartup(ByVal eventArgs As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) As Boolean
-            Dim ProfileDirectory As String = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Mozilla", "Firefox", "Profiles", "CRD")
+            'Dim ProfileDirectory As String = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Mozilla", "Firefox", "Profiles", "CRD")
             'If UseFirefoxProfile = True Then
             '    Dim di As New System.IO.DirectoryInfo(Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Mozilla", "Firefox", "Profiles"))
             '    Try
@@ -28,15 +28,15 @@ Namespace My
             '    End Try
             'End If
             'MsgBox(ProfileDirectory)
-            If Not Directory.Exists(ProfileDirectory) Then
-                Directory.CreateDirectory(ProfileDirectory)
-            End If
+            'If Not Directory.Exists(ProfileDirectory) Then
+            '    Directory.CreateDirectory(ProfileDirectory)
+            'End If
             Try
 
 
                 Dim sUserAgent As String = My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "").Replace(Chr(34), "") '"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0"
                 'sUserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
-                Xpcom.ProfileDirectory = ProfileDirectory
+                'Xpcom.ProfileDirectory = ProfileDirectory
                 Xpcom.Initialize("Firefox")
                 'MsgBox(Xpcom.XulRunnerVersion)
 

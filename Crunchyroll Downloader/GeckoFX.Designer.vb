@@ -36,7 +36,7 @@ Partial Class GeckoFX
         Me.WebBrowser1.Name = "WebBrowser1"
         Me.WebBrowser1.Size = New System.Drawing.Size(1280, 720)
         Me.WebBrowser1.TabIndex = 0
-        Me.WebBrowser1.UseHttpActivityObserver = False
+        Me.WebBrowser1.UseHttpActivityObserver = True
         '
         'TextBox1
         '

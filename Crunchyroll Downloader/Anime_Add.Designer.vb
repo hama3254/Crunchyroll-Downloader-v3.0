@@ -37,8 +37,8 @@ Partial Class Anime_Add
         Me.comboBox4 = New MetroFramework.Controls.MetroComboBox()
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
         Me.comboBox3 = New MetroFramework.Controls.MetroComboBox()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Add_Display = New MetroFramework.Controls.MetroLabel()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.ListBox1 = New System.Windows.Forms.ListBox()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
@@ -207,7 +207,7 @@ Partial Class Anime_Add
         Me.textBox2.CustomButton.Visible = False
         Me.textBox2.FontSize = MetroFramework.MetroTextBoxSize.Medium
         Me.textBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.textBox2.Lines = New String() {"Name of the Anime"}
+        Me.textBox2.Lines = New String() {"Use Custom Name"}
         Me.textBox2.Location = New System.Drawing.Point(18, 64)
         Me.textBox2.MaxLength = 32767
         Me.textBox2.Name = "textBox2"
@@ -220,7 +220,7 @@ Partial Class Anime_Add
         Me.textBox2.Size = New System.Drawing.Size(693, 29)
         Me.textBox2.TabIndex = 5
         Me.textBox2.TabStop = False
-        Me.textBox2.Text = "Name of the Anime"
+        Me.textBox2.Text = "Use Custom Name"
         Me.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.textBox2.UseSelectable = True
         Me.textBox2.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
@@ -286,18 +286,6 @@ Partial Class Anime_Add
         Me.comboBox3.TabIndex = 1
         Me.comboBox3.UseSelectable = True
         '
-        'PictureBox1
-        '
-        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox1.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.add_mass_cancel
-        Me.PictureBox1.Location = New System.Drawing.Point(159, 231)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(403, 36)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 45
-        Me.PictureBox1.TabStop = False
-        '
         'Add_Display
         '
         Me.Add_Display.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -313,6 +301,18 @@ Partial Class Anime_Add
         Me.Add_Display.TabIndex = 36
         Me.Add_Display.Text = "..."
         Me.Add_Display.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
+        Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureBox1.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.add_mass_cancel
+        Me.PictureBox1.Location = New System.Drawing.Point(159, 231)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(403, 36)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 45
+        Me.PictureBox1.TabStop = False
         '
         'GroupBox3
         '
@@ -383,9 +383,9 @@ Partial Class Anime_Add
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Close)
         Me.Controls.Add(Me.pictureBox4)
-        Me.Controls.Add(Me.groupBox2)
         Me.Controls.Add(Me.groupBox1)
         Me.Controls.Add(Me.GroupBox3)
+        Me.Controls.Add(Me.groupBox2)
         Me.Name = "Anime_Add"
         Me.Padding = New System.Windows.Forms.Padding(10, 60, 20, 20)
         Me.Text = "Add Video"

@@ -1344,7 +1344,7 @@ Public Class Main
 
 
 #End Region
-            If TextBox2_Text = Nothing Or TextBox2_Text = "Name of the Anime" Then
+            If TextBox2_Text = Nothing Or TextBox2_Text = "Use Custom Name" Then
 
             Else
                 CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)) 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
@@ -1889,7 +1889,7 @@ Public Class Main
             Dim CR_series_title As String = Nothing
             Dim CR_season_number As String = Nothing
             Dim CR_episode As String = Nothing
-            Dim CR_season_title As String = Nothing
+            'Dim CR_season_title As String = Nothing
             Dim CR_title As String = Nothing
             Dim CR_audio_locale As String = Nothing
 
@@ -1929,7 +1929,7 @@ Public Class Main
             Dim data As List(Of JToken) = ser.Children().ToList
 
 
-            If TextBox2_Text = Nothing Or TextBox2_Text = "Name of the Anime" Then
+            If TextBox2_Text = Nothing Or TextBox2_Text = "Use Custom Name" Then
 
 
 
@@ -1986,8 +1986,8 @@ Public Class Main
                                                 Select Case SubEntry.Name
                                                     Case "series_title"
                                                         CR_series_title = SubEntry.Value.ToString
-                                                    Case "season_title"
-                                                        CR_season_title = SubEntry.Value.ToString
+                                                    'Case "season_title"
+                                                    '    CR_season_title = SubEntry.Value.ToString
                                                     Case "season_number"
                                                         CR_season_number = SubEntry.Value.ToString
                                                     Case "episode"
@@ -2004,20 +2004,22 @@ Public Class Main
 
                 'My.Computer.Clipboard.SetText(ObjectJson)
                 '
-                If Season_Prefix = "[default season prefix]" Then
-                    If CR_season_title = CR_series_title Then
-                        If CR_episode = Nothing Then 'no episode number means most likey a movie 
-                            CR_season_number = Nothing
-                        Else
-                            CR_season_number = CR_series_title + " Season " + CR_season_number
-                        End If
 
+
+
+
+                If Season_Prefix = "[default season prefix]" Then
+                    If CR_episode = Nothing Then 'no episode number means most likey a movie 
+                        CR_season_number = Nothing
                     Else
-                        CR_season_number = CR_season_title
+                        CR_season_number = "Season " + CR_season_number
                     End If
                 Else
-
-                    CR_season_number = Season_Prefix + CR_season_number
+                    If CR_episode = Nothing Then 'no episode number means most likey a movie 
+                        CR_season_number = Nothing
+                    Else
+                        CR_season_number = Season_Prefix + CR_season_number
+                    End If
 
                 End If
 
@@ -2033,19 +2035,19 @@ Public Class Main
                     If CR_season_number = Nothing Then
                         CR_FilenName = CR_series_title + " " + CR_episode
                     Else
-                        CR_FilenName = CR_season_number + " " + CR_episode
+                        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_episode
                     End If
                 ElseIf CR_NameMethode = 1 Then 'name
                     If CR_season_number = Nothing Then
                         CR_FilenName = CR_series_title + " " + CR_title
                     Else
-                        CR_FilenName = CR_season_number + " " + CR_title
+                        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_title
                     End If
                 ElseIf CR_NameMethode = 2 Then ' nummer - name
                     If CR_season_number = Nothing Then
                         CR_FilenName = CR_series_title + " " + CR_episode + " " + CR_title
                     Else
-                        CR_FilenName = CR_season_number + " " + CR_episode + " " + CR_title
+                        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_episode + " " + CR_title
                     End If
                 ElseIf CR_NameMethode = 3 Then ' name - nummer
                     If CR_season_number = Nothing Then
@@ -2070,7 +2072,7 @@ Public Class Main
 
             'My.Computer.FileSystem.WriteAllText("log.log", WebbrowserText, False)
 
-            Pfad2 = UseSubfolder(CR_series_title, CR_season_title, Pfad)
+            Pfad2 = UseSubfolder(CR_series_title, CR_season_number, Pfad)
 
             If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
                 ' Nein! Jetzt erstellen...
@@ -2396,7 +2398,7 @@ Public Class Main
                                      ListItemAdd(Path.GetFileName(Pfad_DL.Replace(Chr(34), "")), L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL, Pfad_DL)
                                      Return Nothing
                                  End Function))
-            liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_title + " <br> " + CR_season_title + " " + CR_episode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
+            liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_title + " <br> " + CR_season_number + " " + CR_episode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
             'Form1.RichTextBox1.Text = My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_Anime_Titel + " <br> " + CR_Anime_Staffel + " " + CR_Anime_Folge + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->"
 #End Region
 
@@ -2937,7 +2939,7 @@ Public Class Main
                                      Return Nothing
                                  End Function))
 
-            If TextBox2_Text = Nothing Or TextBox2_Text = "Name of the Anime" Then
+            If TextBox2_Text = Nothing Or TextBox2_Text = "Use Custom Name" Then
 
             Else
                 Me.Invoke(New Action(Function()
@@ -3960,7 +3962,7 @@ Public Class Main
                                      Return Nothing
                                  End Function))
 
-            If TextBox2_Text = Nothing Or TextBox2_Text = "Name of the Anime" Then
+            If TextBox2_Text = Nothing Or TextBox2_Text = "Use Custom Name" Then
 
             Else
                 Me.Invoke(New Action(Function()

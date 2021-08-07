@@ -15,7 +15,7 @@ Public Class GeckoFX
     Dim t As Thread
     Public ScanTrue As Boolean = False
     Public ScanTime As Integer = 0
-
+    Dim ExcludeUrl As String = ""
 
 
     Private Sub GeckoWebBrowser1_DocumentCompleted(sender As Object, e As EventArgs) Handles WebBrowser1.DocumentCompleted
@@ -119,7 +119,7 @@ Public Class GeckoFX
 
                         ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "season-dropdown content-menu block")) Then
                             Main.b = True
-                            Anime_Add.textBox2.Text = "Name of the Anime"
+                            Anime_Add.textBox2.Text = "Use Custom Name"
                             Main.WebbrowserURL = WebBrowser1.Url.ToString
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
@@ -129,7 +129,7 @@ Public Class GeckoFX
 
                         ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "wrapper container-shadow hover-classes")) Then
                             Main.b = True
-                            Anime_Add.textBox2.Text = "Name of the Anime"
+                            Anime_Add.textBox2.Text = "Use Custom Name"
                             Main.WebbrowserURL = WebBrowser1.Url.ToString
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
@@ -140,10 +140,12 @@ Public Class GeckoFX
                             Main.b = True
                             MsgBox(Main.No_Stream, MsgBoxStyle.OkOnly)
                             Anime_Add.StatusLabel.Text = "Status: idle"
+                            Main.Text = "Crunchyroll Downloader"
                         End If
                     Catch ex As Exception
                         MsgBox(ex.ToString)
                         Anime_Add.StatusLabel.Text = "Status: idle"
+                        Main.Text = "Crunchyroll Downloader"
                     End Try
                 ElseIf Main.c = False Then
                     If CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "hardsub_lang")) Then
@@ -185,7 +187,6 @@ Public Class GeckoFX
                         t.Priority = ThreadPriority.Normal
                         t.IsBackground = True
                         t.Start()
-
                     Else
                         Main.WebbrowserCookie = WebBrowser1.Document.Cookie
                         Main.Text = "Status: no video found"
@@ -348,6 +349,7 @@ Public Class GeckoFX
         Try
             If e.KeyCode = Keys.Return Then
                 e.SuppressKeyPress = True
+                Debug.WriteLine("Start loading: " + Date.Now)
                 WebBrowser1.Navigate(TextBox1.Text)
             End If
 
@@ -455,9 +457,9 @@ Public Class GeckoFX
             e.Cancel = True
             'Debug.WriteLine(requesturl)
             Exit Sub
-        ElseIf requesturl.Contains("ad_") Or requesturl.Contains("ads") Or requesturl.Contains(".swf") Or requesturl.Contains("unsupported") And Not requesturl = WebBrowser1.Url.ToString Then
+        ElseIf requesturl.Contains("ad_") Or requesturl.Contains("unsupported") Then 'requesturl.Contains("ad_") Or requesturl.Contains("ads") Or requesturl.Contains(".swf") Or  And requesturl IsNot ExcludeUrl Then
             e.Cancel = True
-            'Debug.WriteLine(requesturl)
+            'Debug.WriteLine(requesturl) 
             Exit Sub
 
         End If
@@ -465,7 +467,9 @@ Public Class GeckoFX
 
             'Debug.WriteLine(requesturl)
         End If
+
         If CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "streams?")) Then
+            Debug.WriteLine(requesturl)
             If Main.b = False Then
                 Main.GetBetaVideoProxy(requesturl, Main.WebbrowserURL)
                 Main.b = True
@@ -530,6 +534,20 @@ Public Class GeckoFX
                 End If
             ElseIf InStr(requesturl, ".mpd") Then
                 Main.mpdList.Add(requesturl)
+            ElseIf CBool(InStr(requesturl, "googlevideo.com")) And CBool(InStr(requesturl, "&range=")) = True Then
+
+                Dim DecodedUrl As String = UrlDecode(requesturl)
+                'MsgBox(DecodedUrl)
+                Dim VideoUrl() As String = DecodedUrl.Split(New String() {"&range="}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim VideoUrl2() As String = VideoUrl(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim NewUrl As String = VideoUrl(0) + "&" + VideoUrl2(1)
+                'Debug.WriteLine(NewUrl)
+
+                If Not Main.mpdList.Contains(NewUrl) Then
+                    Main.mpdList.Add(NewUrl)
+                End If
+
+
             ElseIf InStr(requesturl, ".txt") Then
                 Main.txtList.Add(requesturl)
             ElseIf InStr(requesturl, ".vtt") Then
@@ -595,9 +613,14 @@ Public Class GeckoFX
         End If
     End Sub
 
-    Private Sub WebBrowser1_ConsoleMessage(sender As Object, e As ConsoleMessageEventArgs) Handles WebBrowser1.ConsoleMessage
-        Debug.WriteLine(e.Message)
-        ' MsgBox(e.Message)
+    'Private Sub WebBrowser1_ConsoleMessage(sender As Object, e As ConsoleMessageEventArgs) Handles WebBrowser1.ConsoleMessage
+    '    Debug.WriteLine(e.Message)
+    '    ' MsgBox(e.Message)
+    'End Sub
+
+    Private Sub WebBrowser1_Navigating(sender As Object, e As GeckoNavigatingEventArgs) Handles WebBrowser1.Navigating
+        ExcludeUrl = e.Uri.ToString
     End Sub
+
 End Class
 

@@ -53,13 +53,13 @@ Namespace My
                 GeckoPreferences.Default("plugin.state.flash") = 0
                 GeckoPreferences.Default("zoom.maxPercent") = 100
                 GeckoPreferences.Default("zoom.minPercent") = 100
-                'GeckoPreferences.Default("layers.geometry.d3d11.enabled") = False
-                'GeckoPreferences.Default("security.enterprise_roots.enabled") = True
-
-
+                'GeckoPreferences.Default("network.proxy.ssl") = InputBox("Set ssl proxy ip", "proxy")
+                'GeckoPreferences.Default("network.proxy.ssl_port") = CInt(InputBox("Set ssl proxy port", "proxy"))
+                'GeckoPreferences.Default("network.proxy.type") = 1
 
                 Return True
             Catch ex As Exception
+
                 MsgBox("if you see this you should install the x86 version from the Visual C++ redistributable" + vbNewLine + "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads" + vbNewLine + vbNewLine + ex.ToString)
                 Return False
             End Try

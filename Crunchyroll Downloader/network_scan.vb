@@ -12,6 +12,8 @@ Public Class network_scan
 
     Dim Manager As MetroStyleManager = Main.Manager
     Dim SubtitleFormat As String = Nothing
+    Dim VideoStreams As New List(Of String)
+    Dim AudioStreams As New List(Of String)
 
     Private Sub network_scan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ComboBox2.Enabled = False
@@ -28,6 +30,66 @@ Public Class network_scan
         pictureBox4.Image = My.Resources.main_button_download_deactivate
     End Sub
 
+    Sub CheckVideoAudio(ByVal url As String)
+        Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
+        Dim startinfo As New System.Diagnostics.ProcessStartInfo
+        Dim sr As StreamReader
+        Dim cmd As String = "-headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + url + Chr(34)                            'start ffmpeg with command strFFCMD string
+
+        'MsgBox(cmd)
+        Dim ffmpegOutput As String = Nothing
+        Dim ffmpegOutputLine As String = Nothing
+        Dim ffmpegOutputLine2 As String = Nothing
+
+        Dim NetworkScanTime As String = Nothing
+
+        ' all parameters required to run the process
+        startinfo.FileName = exepath
+        startinfo.Arguments = cmd
+        startinfo.UseShellExecute = False
+        startinfo.WindowStyle = ProcessWindowStyle.Hidden
+        startinfo.RedirectStandardError = True
+        startinfo.RedirectStandardOutput = True
+        startinfo.CreateNoWindow = True
+        Dim proc As New Process
+        proc.StartInfo = startinfo
+        proc.Start() ' start the process
+        sr = proc.StandardError 'standard error is used by ffmpeg
+
+        Do
+            ffmpegOutputLine = sr.ReadLine
+            ffmpegOutput = ffmpegOutput + vbNewLine + ffmpegOutputLine
+
+        Loop Until proc.HasExited 'And ffmpegOutputLine = Nothing Or ffmpegOutputLine = ""
+
+        Dim ffmpegOutput2() As String = ffmpegOutput.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
+        For i As Integer = 0 To ffmpegOutput2.Count - 1
+
+            If InStr(ffmpegOutput2(i), ": Video:") Then
+                Dim ZeileReso() As String = ffmpegOutput2(i).Split(New String() {" ["}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ZeileReso2() As String = ZeileReso(0).Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ZeileReso3() As String = ffmpegOutput2(i).Split(New String() {": Video:"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ZeileReso4() As String = ZeileReso3(0).Split(New String() {"Stream #"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                If InStr(ZeileReso2(ZeileReso2.Count - 1), ", ") Then
+                    Dim ZeileReso5() As String = ZeileReso2(ZeileReso2.Count - 1).Split(New String() {", "}, System.StringSplitOptions.RemoveEmptyEntries)
+                    ComboBox3.Items.Add(ZeileReso5(0).Trim + ":--:" + ZeileReso4(1))
+
+                Else
+                    ComboBox3.Items.Add(ZeileReso2(ZeileReso2.Count - 1).Trim + ":--:" + ZeileReso4(1))
+
+                End If
+            ElseIf InStr(ffmpegOutput2(i), ": Audio:") Then
+                Dim ZeileStream() As String = ffmpegOutput2(i).Split(New String() {": Audio:"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                ComboBox3.Items.Add("Audio:" + ZeileStream(1))
+
+
+            End If
+
+        Next
+    End Sub
 
     Private Sub PictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
         If pictureBox4.Enabled = True Then
@@ -174,6 +236,10 @@ Public Class network_scan
                 End If
 
 
+            ElseIf InStr(ffmpegOutput2(i), ": Audio:") Then
+                Dim ZeileStream() As String = ffmpegOutput2(i).Split(New String() {": Audio:"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                ComboBox3.Items.Add("Audio:" + ZeileStream(1))
 
             ElseIf InStr(ffmpegOutput2(i), "Duration: N/A, bitrate: N/A") Then
 
@@ -226,7 +292,30 @@ Public Class network_scan
         FileName = Main.RemoveExtraSpaces(String.Join(" ", FileName.Split(Main.invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)) 'System.Text.RegularExpressions.Regex.Replace(FileName, "[^\w\\-]", " "))
         Dim FilePfad As String = Main.Pfad + "\" + FileName
 
-        Dim client0 As New WebClient
+
+        If InStr(ComboBox3.Text, "Audio:") Then
+            FilePfad = FilePfad + ".mka"
+
+
+            Dim m3u8Final As String = "-i " + Chr(34) + ComboBox2.Text + Chr(34) + " -c:a copy"
+
+
+
+
+            'MsgBox(m3u8Final)
+            Dim DisplayReso As String = "Audio"
+            Dim Pfad2 As String = Chr(34) + FilePfad + Chr(34)
+            Dim Title As String = FileName '+ ".mp4"
+            Dim L1Name_Split As String() = Main.WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim L1Name As String = L1Name_Split(1)
+            Me.Invoke(New Action(Function()
+                                     Main.ListItemAdd(Main.Pfad, L1Name, Title, DisplayReso, "Unknown", "None", "", m3u8Final, Pfad2)
+                                     Main.liList.Add(My.Resources.htmlvorThumbnail + "" + My.Resources.htmlnachTumbnail + "<br>" + Title + My.Resources.htmlvorAufloesung + "[Auto]" + My.Resources.htmlvorSoftSubs + vbNewLine + "None" + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + Title + "-->")
+                                     Return Nothing
+                                 End Function))
+        Else
+
+            Dim client0 As New WebClient
         client0.Encoding = Encoding.UTF8
         If Main.WebbrowserCookie = Nothing Then
         Else
@@ -325,7 +414,6 @@ Public Class network_scan
                                      Main.liList.Add(My.Resources.htmlvorThumbnail + thumbnail4 + My.Resources.htmlnachTumbnail + "<br>" + Title + My.Resources.htmlvorAufloesung + "[Auto]" + My.Resources.htmlvorSoftSubs + vbNewLine + "None" + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + Title + "-->")
                                      Return Nothing
                                  End Function))
-
         ElseIf ComboBox1.SelectedItem.ToString = "Subtile" Then
             Dim CheckFile As String = Nothing
             Main.txtList.Remove(RequestURL)
@@ -365,6 +453,7 @@ Public Class network_scan
 
         End If
 
+        End If
     End Sub
 
     Private Sub ComboBox2_Click(sender As Object, e As EventArgs) Handles ComboBox2.Click

@@ -9,6 +9,7 @@ Public Class ErrorDialog
         Manager.Owner = Me
         Me.StyleManager = Manager
         pictureBox3.Image = Main.CloseImg
+        ComboBox1.Text = Nothing
 
         Try
             Me.Icon = My.Resources.icon
@@ -207,5 +208,8 @@ Public Class ErrorDialog
         PB.Image = Main.CloseImg
     End Sub
 
-
+    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+        PictureBox9.Enabled = True
+        PictureBox9.Cursor = Cursors.Hand
+    End Sub
 End Class

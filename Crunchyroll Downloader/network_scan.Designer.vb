@@ -80,7 +80,7 @@ Partial Class network_scan
         Me.ComboBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ComboBox1.FormattingEnabled = True
         Me.ComboBox1.ItemHeight = 23
-        Me.ComboBox1.Items.AddRange(New Object() {"Video Stream", "Subtile"})
+        Me.ComboBox1.Items.AddRange(New Object() {"Video Stream", "Audio Stream", "Subtile"})
         Me.ComboBox1.Location = New System.Drawing.Point(15, 20)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(650, 29)

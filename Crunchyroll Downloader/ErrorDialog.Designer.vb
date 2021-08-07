@@ -72,7 +72,8 @@ Partial Class ErrorDialog
         'PictureBox9
         '
         Me.PictureBox9.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox9.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureBox9.Cursor = System.Windows.Forms.Cursors.No
+        Me.PictureBox9.Enabled = False
         Me.PictureBox9.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.DialogNotFound_Submit
         Me.PictureBox9.Location = New System.Drawing.Point(100, 146)
         Me.PictureBox9.Name = "PictureBox9"
@@ -101,7 +102,6 @@ Partial Class ErrorDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        'Me.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.DialogNotFound_Background
         Me.ClientSize = New System.Drawing.Size(380, 280)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.pictureBox3)

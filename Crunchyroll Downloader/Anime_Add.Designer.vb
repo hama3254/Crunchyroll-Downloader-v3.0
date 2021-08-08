@@ -31,7 +31,7 @@ Partial Class Anime_Add
         Me.ComboBox2 = New MetroFramework.Controls.MetroComboBox()
         Me.TextBox4 = New MetroFramework.Controls.MetroTextBox()
         Me.textBox1 = New MetroFramework.Controls.MetroTextBox()
-        Me.textBox2 = New MetroFramework.Controls.MetroTextBox()
+        Me.TextBox2 = New MetroFramework.Controls.MetroTextBox()
         Me.pictureBox4 = New System.Windows.Forms.PictureBox()
         Me.groupBox2 = New System.Windows.Forms.GroupBox()
         Me.comboBox4 = New MetroFramework.Controls.MetroComboBox()
@@ -62,7 +62,7 @@ Partial Class Anime_Add
         Me.groupBox1.Controls.Add(Me.ComboBox2)
         Me.groupBox1.Controls.Add(Me.TextBox4)
         Me.groupBox1.Controls.Add(Me.textBox1)
-        Me.groupBox1.Controls.Add(Me.textBox2)
+        Me.groupBox1.Controls.Add(Me.TextBox2)
         Me.groupBox1.Location = New System.Drawing.Point(15, 70)
         Me.groupBox1.Name = "groupBox1"
         Me.groupBox1.Size = New System.Drawing.Size(720, 280)
@@ -189,42 +189,42 @@ Partial Class Anime_Add
         Me.textBox1.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
         Me.textBox1.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
-        'textBox2
+        'TextBox2
         '
-        Me.textBox2.BackColor = System.Drawing.Color.White
-        Me.textBox2.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.TextBox2.BackColor = System.Drawing.Color.White
+        Me.TextBox2.Cursor = System.Windows.Forms.Cursors.Hand
         '
         '
         '
-        Me.textBox2.CustomButton.Image = Nothing
-        Me.textBox2.CustomButton.Location = New System.Drawing.Point(665, 1)
-        Me.textBox2.CustomButton.Name = ""
-        Me.textBox2.CustomButton.Size = New System.Drawing.Size(27, 27)
-        Me.textBox2.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.textBox2.CustomButton.TabIndex = 1
-        Me.textBox2.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.textBox2.CustomButton.UseSelectable = True
-        Me.textBox2.CustomButton.Visible = False
-        Me.textBox2.FontSize = MetroFramework.MetroTextBoxSize.Medium
-        Me.textBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.textBox2.Lines = New String() {"Use Custom Name"}
-        Me.textBox2.Location = New System.Drawing.Point(18, 64)
-        Me.textBox2.MaxLength = 32767
-        Me.textBox2.Name = "textBox2"
-        Me.textBox2.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.textBox2.SelectedText = ""
-        Me.textBox2.SelectionLength = 0
-        Me.textBox2.SelectionStart = 0
-        Me.textBox2.ShortcutsEnabled = True
-        Me.textBox2.Size = New System.Drawing.Size(693, 29)
-        Me.textBox2.TabIndex = 5
-        Me.textBox2.TabStop = False
-        Me.textBox2.Text = "Use Custom Name"
-        Me.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.textBox2.UseSelectable = True
-        Me.textBox2.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.textBox2.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        Me.TextBox2.CustomButton.Image = Nothing
+        Me.TextBox2.CustomButton.Location = New System.Drawing.Point(665, 1)
+        Me.TextBox2.CustomButton.Name = ""
+        Me.TextBox2.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.TextBox2.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.TextBox2.CustomButton.TabIndex = 1
+        Me.TextBox2.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.TextBox2.CustomButton.UseSelectable = True
+        Me.TextBox2.CustomButton.Visible = False
+        Me.TextBox2.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.TextBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.TextBox2.Lines = New String() {"Use Custom Name"}
+        Me.TextBox2.Location = New System.Drawing.Point(18, 64)
+        Me.TextBox2.MaxLength = 32767
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.TextBox2.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.TextBox2.SelectedText = ""
+        Me.TextBox2.SelectionLength = 0
+        Me.TextBox2.SelectionStart = 0
+        Me.TextBox2.ShortcutsEnabled = True
+        Me.TextBox2.Size = New System.Drawing.Size(693, 29)
+        Me.TextBox2.TabIndex = 5
+        Me.TextBox2.TabStop = False
+        Me.TextBox2.Text = "Use Custom Name"
+        Me.TextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TextBox2.UseSelectable = True
+        Me.TextBox2.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.TextBox2.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'pictureBox4
         '
@@ -413,7 +413,7 @@ Partial Class Anime_Add
     Friend WithEvents MetroTextBox1 As MetroFramework.Controls.MetroTextBox
     Public WithEvents textBox1 As MetroFramework.Controls.MetroTextBox
     Public WithEvents TextBox4 As MetroFramework.Controls.MetroTextBox
-    Public WithEvents textBox2 As MetroFramework.Controls.MetroTextBox
+    Public WithEvents TextBox2 As MetroFramework.Controls.MetroTextBox
     Public WithEvents ComboBox2 As MetroFramework.Controls.MetroComboBox
     Public WithEvents comboBox4 As MetroFramework.Controls.MetroComboBox
     Public WithEvents ComboBox1 As MetroFramework.Controls.MetroComboBox

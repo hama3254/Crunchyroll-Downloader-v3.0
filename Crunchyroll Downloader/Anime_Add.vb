@@ -758,8 +758,11 @@ Public Class Anime_Add
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         If ListBox1.Items.Count > 0 Then
             If StatusLabel.Text = "Status: idle" Then
-                StatusLabel.Text = "Status: items in queue, click to work off."
+                StatusLabel.Cursor = Cursors.Hand
+                StatusLabel.Text = "Status: items in queue, click me to work off."
             End If
+        Else
+            StatusLabel.Cursor = Cursors.Default
         End If
     End Sub
 
@@ -874,7 +877,7 @@ Public Class Anime_Add
 
     End Sub
     Private Sub StatusLabel_Click(sender As Object, e As EventArgs) Handles StatusLabel.Click
-        If StatusLabel.Text = "Status: items in queue, click to work off." Then
+        If StatusLabel.Text = "Status: items in queue, click me to work off." Then
             groupBox1.Visible = False
             groupBox2.Visible = False
             GroupBox3.Visible = True
@@ -885,9 +888,9 @@ Public Class Anime_Add
     End Sub
 
 
-    Private Sub TextBox2_Click(sender As Object, e As EventArgs) Handles textBox2.Click
-        If textBox2.Text = "Use Custom Name" Then
-            textBox2.Text = Nothing
+    Private Sub TextBox2_Click(sender As Object, e As EventArgs) Handles TextBox2.Click
+        If TextBox2.Text = "Use Custom Name" Then
+            TextBox2.Text = Nothing
         End If
     End Sub
 
@@ -1471,4 +1474,10 @@ Public Class Anime_Add
     End Sub
 
 
+
+    Private Sub groupBox1_VisibleChanged(sender As Object, e As EventArgs) Handles groupBox1.VisibleChanged
+        If Not TextBox2.Text = "Use Custom Name" Then
+            TextBox2.Text = "Use Custom Name"
+        End If
+    End Sub
 End Class

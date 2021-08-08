@@ -1188,7 +1188,7 @@ Public Class Main
 
 
             Me.Invoke(New Action(Function()
-                                     TextBox2_Text = Anime_Add.textBox2.Text
+                                     TextBox2_Text = Anime_Add.TextBox2.Text
                                      ' My.Computer.Clipboard.SetText(WebbrowserText)
                                      Return Nothing
                                  End Function))
@@ -1889,7 +1889,8 @@ Public Class Main
             Dim CR_series_title As String = Nothing
             Dim CR_season_number As String = Nothing
             Dim CR_episode As String = Nothing
-            'Dim CR_season_title As String = Nothing
+            Dim CR_Anime_Staffel_int As String = Nothing
+            Dim CR_episode_int As String = Nothing
             Dim CR_title As String = Nothing
             Dim CR_audio_locale As String = Nothing
 
@@ -1900,7 +1901,7 @@ Public Class Main
             Dim ObjectJson As String = Nothing
 
             Me.Invoke(New Action(Function()
-                                     TextBox2_Text = Anime_Add.textBox2.Text
+                                     TextBox2_Text = Anime_Add.TextBox2.Text
                                      Return Nothing
                                  End Function))
 #Region "Name von Crunchyroll"
@@ -2004,9 +2005,8 @@ Public Class Main
 
                 'My.Computer.Clipboard.SetText(ObjectJson)
                 '
-
-
-
+                CR_Anime_Staffel_int = CR_season_number
+                CR_episode_int = CR_episode
 
                 If Season_Prefix = "[default season prefix]" Then
                     If CR_episode = Nothing Then 'no episode number means most likey a movie 
@@ -2057,6 +2057,17 @@ Public Class Main
                     End If
                 End If
 
+                If KodiNaming = True Then
+                    Dim KodiString As String = "[S"
+                    If CR_Anime_Staffel_int = "0" Then
+                        CR_Anime_Staffel_int = "01"
+                    Else
+                        CR_Anime_Staffel_int = "0" + CR_Anime_Staffel_int
+                    End If
+                    KodiString = KodiString + CR_Anime_Staffel_int + " E" + CR_episode_int
+                    KodiString = KodiString + "] "
+                    CR_FilenName = KodiString + CR_FilenName
+                End If
 
                 Debug.WriteLine(CR_FilenName)
 #End Region
@@ -2528,10 +2539,10 @@ Public Class Main
     Private Sub RetryWithCachedFiles()
 
         Try
-                Dim di As New System.IO.DirectoryInfo(Pfad)
-                For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
-                    If fi.Attributes.HasFlag(System.IO.FileAttributes.Hidden) Then
-                    Else
+            Dim di As New System.IO.DirectoryInfo(Pfad)
+            For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
+                If fi.Attributes.HasFlag(System.IO.FileAttributes.Hidden) Then
+                Else
                     If InStr(fi.Name, "CRD-Temp-File-") Then
                         If File.Exists(fi.FullName + "\Retry\retry.txt") Then
                             If MessageBox.Show("Cached data found, you can try to retry the download by pressing 'Yes'", "Retry?", MessageBoxButtons.YesNo) = DialogResult.Yes Then
@@ -2581,9 +2592,9 @@ Public Class Main
 
                     End If
                 End If
-                Next
-            Catch ex As Exception
-            End Try
+            Next
+        Catch ex As Exception
+        End Try
 
     End Sub
 
@@ -2935,7 +2946,7 @@ Public Class Main
 #Region "Pfad"
             Dim TextBox2_Text As String = Nothing
             Me.Invoke(New Action(Function()
-                                     TextBox2_Text = Anime_Add.textBox2.Text
+                                     TextBox2_Text = Anime_Add.TextBox2.Text
                                      Return Nothing
                                  End Function))
 
@@ -3885,29 +3896,29 @@ Public Class Main
                         Dim SubData As List(Of JToken) = item.Values.ToList()
 
 
-                            For Each SubItem As JProperty In SubData
+                        For Each SubItem As JProperty In SubData
 
-                                Select Case SubItem.Name
-                                    Case "name"
+                            Select Case SubItem.Name
+                                Case "name"
 
-                                        If Season_Prefix = "[default season prefix]" Then
+                                    If Season_Prefix = "[default season prefix]" Then
                                         FunimationSeason = SubItem.Value.ToString
                                         Debug.WriteLine("FunimationSeason: " + FunimationSeason)
                                     End If
-                                    Case "number"
+                                Case "number"
 
-                                        If Season_Prefix = "[default season prefix]" Then
-                                            'FunimationSeason = Entry("name")
-                                        Else
-                                            Dim EpisodeNumer As String = SubItem.Value.ToString
+                                    If Season_Prefix = "[default season prefix]" Then
+                                        'FunimationSeason = Entry("name")
+                                    Else
+                                        Dim EpisodeNumer As String = SubItem.Value.ToString
                                         FunimationSeason = Season_Prefix + " " + EpisodeNumer
                                         Debug.WriteLine("FunimationSeason: " + FunimationSeason)
 
                                     End If
 
 
-                                End Select
-                            Next
+                            End Select
+                        Next
 
 
 
@@ -3958,7 +3969,7 @@ Public Class Main
 #Region "Pfad"
             Dim TextBox2_Text As String = Nothing
             Me.Invoke(New Action(Function()
-                                     TextBox2_Text = Anime_Add.textBox2.Text
+                                     TextBox2_Text = Anime_Add.TextBox2.Text
                                      Return Nothing
                                  End Function))
 

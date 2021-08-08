@@ -119,7 +119,7 @@ Public Class GeckoFX
 
                         ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "season-dropdown content-menu block")) Then
                             Main.b = True
-                            Anime_Add.textBox2.Text = "Use Custom Name"
+                            Anime_Add.TextBox2.Text = "Use Custom Name"
                             Main.WebbrowserURL = WebBrowser1.Url.ToString
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle
@@ -129,7 +129,7 @@ Public Class GeckoFX
 
                         ElseIf CBool(InStr(WebBrowser1.Document.Body.OuterHtml, "wrapper container-shadow hover-classes")) Then
                             Main.b = True
-                            Anime_Add.textBox2.Text = "Use Custom Name"
+                            Anime_Add.TextBox2.Text = "Use Custom Name"
                             Main.WebbrowserURL = WebBrowser1.Url.ToString
                             Main.WebbrowserText = WebBrowser1.Document.Body.OuterHtml
                             Main.WebbrowserTitle = WebBrowser1.DocumentTitle

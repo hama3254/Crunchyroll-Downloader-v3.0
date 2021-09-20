@@ -1,4 +1,6 @@
-﻿Imports System.Net
+﻿Option Strict On
+
+Imports System.Net
 Imports System.Text
 Imports System.IO
 Imports System.Threading
@@ -55,7 +57,7 @@ Public Class CRD_List_Item
 
 
     Dim PauseTime As Integer = 0
-    Dim Threads As Integer = Environment.ProcessorCount / 2 - 1
+    Dim Threads As Integer = CInt(Environment.ProcessorCount / 2 - 1)
 
 #Region "Remove from list"
     Public Sub DisposeItem(ByVal Dispose As Boolean)
@@ -158,15 +160,15 @@ Public Class CRD_List_Item
         End If
 
     End Function
-    Public Function GetLabelPercent()
+    Public Function GetLabelPercent() As String
         Try
             Return Label_percent.Text
         Catch ex As Exception
-            Return 0
+            Return "0"
         End Try
 
     End Function
-    Public Function GetPercentValue()
+    Public Function GetPercentValue() As Integer
         Try
             Return ProgressBar1.Value
         Catch ex As Exception
@@ -175,7 +177,7 @@ Public Class CRD_List_Item
         End Try
 
     End Function
-    Public Function GetNameAnime()
+    Public Function GetNameAnime() As String
         Try
             Return Label_Anime.Text
         Catch ex As Exception
@@ -217,29 +219,29 @@ Public Class CRD_List_Item
     End Sub
 
     Private Sub BT_del_MouseEnter(sender As Object, e As EventArgs) Handles bt_del.MouseEnter
-        Dim p As PictureBox = sender
-        p.BackgroundImage = My.Resources.main_del_hover
+
+        bt_del.BackgroundImage = My.Resources.main_del
     End Sub
 
     Private Sub BT_del_MouseLeave(sender As Object, e As EventArgs) Handles bt_del.MouseLeave
-        Dim p As PictureBox = sender
-        p.BackgroundImage = My.Resources.main_del
+
+        bt_del.BackgroundImage = My.Resources.main_del
     End Sub
     Private Sub BT_pause_MouseEnter(sender As Object, e As EventArgs) Handles bt_pause.MouseEnter
-        Dim p As PictureBox = sender
+
         If StatusRunning = True Then
-            p.BackgroundImage = My.Resources.main_pause_hover
+            bt_pause.BackgroundImage = My.Resources.main_pause_hover
         Else
-            p.BackgroundImage = My.Resources.main_pause_play_hover
+            bt_pause.BackgroundImage = My.Resources.main_pause_play_hover
         End If
     End Sub
 
     Private Sub BT_pause_MouseLeave(sender As Object, e As EventArgs) Handles bt_pause.MouseLeave
-        Dim p As PictureBox = sender
+
         If StatusRunning = True Then
-            p.BackgroundImage = My.Resources.main_pause
+            bt_pause.BackgroundImage = My.Resources.main_pause
         Else
-            p.BackgroundImage = My.Resources.main_pause_play
+            bt_pause.BackgroundImage = My.Resources.main_pause_play
         End If
     End Sub
 
@@ -417,7 +419,7 @@ Public Class CRD_List_Item
         'MetroStyleManager1.Theme = Main.Manager.Theme
     End Sub
 
-    Public Function GetTextBound()
+    Public Function GetTextBound() As Integer
         'Return Label_website.Location.Y
         Return bt_del.Size.Height
     End Function
@@ -434,8 +436,8 @@ Public Class CRD_List_Item
         HistoryDL_URL = DL_URL
         HistoryDL_Pfad = DL_Pfad
         HistoryFilename = Filename
-        If InStr(DL_URL, "-i [Subtitles only]") Then
-            Me.Invoke(New Action(Function()
+        If CBool(InStr(DL_URL, "-i [Subtitles only]")) Then
+            Me.Invoke(New Action(Function() As Object
 
                                      ProgressBar1.Value = 100
                                      Label_percent.Text = "selected subtiles have been dowloaded"
@@ -461,7 +463,7 @@ Public Class CRD_List_Item
 
 
 
-    Private Function TS_StatusAsync(ByVal prozent As Integer, ByVal di As IO.DirectoryInfo, ByVal pausetime As Integer)
+    Private Function TS_StatusAsync(ByVal prozent As Integer, ByVal di As IO.DirectoryInfo, ByVal pausetime As Integer) As Object
         Dim FinishedSize As Double = 0
         Dim AproxFinalSize As Double = 0
 
@@ -476,7 +478,7 @@ Public Class CRD_List_Item
         End Try
 
         If prozent > 0 Then
-            AproxFinalSize = Math.Round((FinishedSize / 1048576) * 100 / prozent, 2, MidpointRounding.AwayFromZero).ToString() ' Math.Round( / 1048576, 2, MidpointRounding.AwayFromZero).ToString()
+            AproxFinalSize = Math.Round(FinishedSize / 1048576 * 100 / prozent, 2, MidpointRounding.AwayFromZero) ' Math.Round( / 1048576, 2, MidpointRounding.AwayFromZero).ToString()
         End If
         Dim duration As TimeSpan = Date.Now - LastDate
         Dim TimeinMilliSeconds As Integer = duration.Seconds * 1000 + duration.Milliseconds
@@ -504,7 +506,7 @@ Public Class CRD_List_Item
                 prozent = 0
             End If
             Try
-                Me.Invoke(New Action(Function()
+                Me.Invoke(New Action(Function() As Object
 
                                          ProgressBar1.Value = prozent 'ThreadList.Count.ToString + " " +
                                          Label_percent.Text = DataRateString + "MB\s " + Math.Round(FinishedSize / 1048576, 2, MidpointRounding.AwayFromZero).ToString + "MB/" + Math.Round(AproxFinalSize, 2, MidpointRounding.AwayFromZero).ToString + "MB " + prozent.ToString + "%"
@@ -540,12 +542,12 @@ Public Class CRD_List_Item
 
 #End Region
 
-    Private Function GetFullUri(ByVal MainUri As String, ByVal CurrentPath As String)
+    Private Function GetFullUri(ByVal MainUri As String, ByVal CurrentPath As String) As String
 
         Dim path As String = Nothing
-        If InStr(CurrentPath, "https://") Then
+        If CBool(InStr(CurrentPath, "https://")) Then
             path = CurrentPath
-        ElseIf InStr(CurrentPath, "../") Then
+        ElseIf CBool(InStr(CurrentPath, "../")) Then
             Dim countDot() As String = CurrentPath.Split(New String() {"./"}, System.StringSplitOptions.RemoveEmptyEntries)
 
             Dim c() As String = New Uri(MainUri).Segments
@@ -581,8 +583,8 @@ Public Class CRD_List_Item
             End Try
         End If
 
-        Dim KeyFile As String = Einstellungen.GeräteID + ".key"
-        Dim KeyFilePath As String = Application.StartupPath + "\" + KeyFile 'needs to be in the ffmpeg/downloader directory
+        Dim KeyFile As String = GeräteID() + ".key"
+        Dim KeyFilePath As String = Folder + "\" + KeyFile 'needs to be in the ffmpeg/downloader directory
         Dim Fragments() As String = InputData.Split(New String() {"#EXT-X-BYTERANGE:"}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim FragmentsInt As Integer = Fragments.Count - 2
 
@@ -632,7 +634,7 @@ Public Class CRD_List_Item
 
                         Catch ex As Exception
                         End Try
-                        Me.Invoke(New Action(Function()
+                        Me.Invoke(New Action(Function() As Object
                                                  ProgressBar1.Value = 0
                                                  Label_percent.Text = "canceled -%"
                                                  bt_pause.BackgroundImage = My.Resources.main_pause_play
@@ -659,7 +661,7 @@ Public Class CRD_List_Item
                 Count = Count + 1
                 Dim FragmentsFinised = Count * 100 / FragmentsInt
 
-                Dim Update = New Thread(Sub() Me.TS_StatusAsync(FragmentsFinised, di, PauseTime))
+                Dim Update = New Thread(Sub() Me.TS_StatusAsync(CInt(FragmentsFinised), di, PauseTime))
                 Update.Start()
 
             ElseIf zeile.Contains("URI=" + Chr(34)) Then
@@ -691,11 +693,12 @@ Public Class CRD_List_Item
     Private Sub DownloadTSv4(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal CurrentSize As Integer, ByVal NewBytes As Integer)
         Dim retry As Boolean = True
         Dim retryCount As Integer = 3
+        HybrideLog = HybrideLog + vbNewLine + Date.Now.ToString + ": " + DL_Pfad + " - " + DL_URL + " - " + CurrentSize.ToString
         While retry
             Try
 
 
-                Dim Request As Net.HttpWebRequest = Net.HttpWebRequest.Create(DL_URL)
+                Dim Request As HttpWebRequest = CType(WebRequest.Create(DL_URL), HttpWebRequest)
                 Dim Bytes(NewBytes) As Byte
                 Request.UserAgent = My.Resources.ffmpeg_user_agend.Replace(Chr(34), "").Replace("User-Agent: ", "")
                 Request.Timeout = 30000
@@ -703,8 +706,8 @@ Public Class CRD_List_Item
                 Request.AddRange(CurrentSize, CurrentSize + NewBytes)
 
 
-                Dim Response As Net.HttpWebResponse = Request.GetResponse()
-                If Response.StatusCode = Net.HttpStatusCode.PartialContent Or Net.HttpStatusCode.OK Then
+                Dim Response As Net.HttpWebResponse = CType(Request.GetResponse(), HttpWebResponse)
+                If CBool(CType(Response.StatusCode = Net.HttpStatusCode.PartialContent, HttpStatusCode) Or HttpStatusCode.OK) Then
 
                     Using binaryReader As New BinaryReader(Response.GetResponseStream())
                         Bytes = binaryReader.ReadBytes(NewBytes)
@@ -722,14 +725,14 @@ Public Class CRD_List_Item
             Catch ex As Exception
                 If retryCount > 0 Then
                     retryCount = retryCount - 1
-                    Me.Invoke(New Action(Function()
+                    Me.Invoke(New Action(Function() As Object
                                              Label_percent.Text = "Access Error - retrying"
                                              Debug.WriteLine(ex.ToString)
                                              Return Nothing
                                          End Function))
 
                 Else
-                    Me.Invoke(New Action(Function()
+                    Me.Invoke(New Action(Function() As Object
                                              Label_percent.Text = "Access Error - download canceled"
                                              Debug.WriteLine(ex.ToString)
                                              Return Nothing
@@ -780,7 +783,7 @@ Public Class CRD_List_Item
             sink.WriteLine(InputData)
         End Using
 
-        Me.Invoke(New Action(Function()
+        Me.Invoke(New Action(Function() As Object
                                  Using sink As New StreamWriter(Folder + "Retry\retry.txt", False, utf8WithoutBom2)
                                      sink.WriteLine(DL_URL)
                                      sink.WriteLine(Label_website.Text)
@@ -818,7 +821,7 @@ Public Class CRD_List_Item
                             End If
                         Catch ex As Exception
                         End Try
-                        Me.Invoke(New Action(Function()
+                        Me.Invoke(New Action(Function() As Object
                                                  ProgressBar1.Value = 0
                                                  Label_percent.Text = "canceled -%"
                                                  bt_pause.BackgroundImage = My.Resources.main_pause_play
@@ -830,7 +833,7 @@ Public Class CRD_List_Item
                 Return "Canceld"
                 Exit Function
             End If
-            If InStr(textLenght(i), ".ts") Then
+            If CBool(InStr(textLenght(i), ".ts")) Then
                 Dim File As String = Folder + String.Format("{0:00000}", Count)
                 Dim curi As String = GetFullUri(url, textLenght(i))
 
@@ -842,13 +845,13 @@ Public Class CRD_List_Item
 
                 m3u8FileContent = m3u8FileContent + File + vbLf
                 Dim FragmentsFinised = Count * 100 / FragmentsInt
-                Dim Update = New Thread(Sub() Me.TS_StatusAsync(FragmentsFinised, di, PauseTime))
+                Dim Update = New Thread(Sub() Me.TS_StatusAsync(CInt(FragmentsFinised), di, PauseTime))
                 Update.Start()
                 Count = Count + 1
 
             ElseIf textLenght(i) = "#EXT-X-PLAYLIST-TYPE:VOD" Then
 
-            ElseIf InStr(textLenght(i), "URI=" + Chr(34)) Then
+            ElseIf CBool(InStr(textLenght(i), "URI=" + Chr(34))) Then
                 Dim KeyLine As String = textLenght(i)
 
                 Dim KeyFileUri() As String = KeyLine.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -858,10 +861,10 @@ Public Class CRD_List_Item
                     KeyLine = KeyFileUri(0) + "URI=" + Chr(34) + KeyFileCache + Chr(34)
                 Else
 
-                    Dim KeyFile As String = Einstellungen.GeräteID() + ".key"
+                    Dim KeyFile As String = GeräteID() + ".key"
                     KeyFileCache = KeyFile
 
-                    Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(KeyFileUri3, Application.StartupPath + "\" + KeyFile))
+                    Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(KeyFileUri3, Folder + "\" + KeyFile))
                     Evaluator.Start()
 
                     LoadedKeys.Add(KeyFileUri3)
@@ -912,7 +915,7 @@ Public Class CRD_List_Item
     End Function
 
     Private Sub TS_DownloadAsync(ByVal DL_URL As String, ByVal DL_Pfad As String)
-        HybrideLog = HybrideLog + vbNewLine + DL_Pfad + " - " + DL_URL
+        HybrideLog = HybrideLog + vbNewLine + Date.Now.ToString + ": " + DL_Pfad + " - " + DL_URL
         Try
             'Dim wc_ts As New WebClient
             WC_TS = New WebClient
@@ -950,7 +953,7 @@ Public Class CRD_List_Item
                     Failed = True
                     StatusRunning = False
                     bt_pause.BackgroundImage = My.Resources.main_pause_play
-                    Me.Invoke(New Action(Function()
+                    Me.Invoke(New Action(Function() As Object
 
                                              Label_percent.Text = "Missing segment detected, retry or resume with the play button"
                                              Return Nothing
@@ -969,12 +972,12 @@ Public Class CRD_List_Item
 #End Region
 
     Public Function DownloadHybrid(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
-        LogText.Add(Date.Now + " " + DL_URL)
-        Dim Folder As String = Einstellungen.GeräteID()
+        LogText.Add(Date.Now.ToString + " " + DL_URL)
+        Dim Folder As String = GeräteID()
         Dim DL_URL_old As String = DL_URL
         Dim PauseTime As Integer = 0
         Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
-        If InStr(DL_Pfad, "CRD-Temp-File-") Then
+        If CBool(InStr(DL_Pfad, "CRD-Temp-File-")) Then
             Pfad2 = DL_Pfad.Replace(Chr(34), "") + "\"
             Dim DL_PfadSplit() As String = DL_Pfad.Split(New String() {"CRD-Temp-File-"}, System.StringSplitOptions.RemoveEmptyEntries)
             DL_Pfad = Chr(34) + DL_PfadSplit(0) + Filename + Chr(34)
@@ -985,7 +988,7 @@ Public Class CRD_List_Item
         HybridModePath = Pfad2
         Dim InuputStreams As String() = DL_URL.Split(New String() {"-i " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-        Me.Invoke(New Action(Function()
+        Me.Invoke(New Action(Function() As Object
                                  Label_percent.Text = "Checking input..."
                                  Return Nothing
                              End Function))
@@ -999,10 +1002,10 @@ Public Class CRD_List_Item
             Else
                 InputClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
             End If
-            Dim SubsFile As String = Pfad2 + Einstellungen.GeräteID() + ".txt"
+            Dim SubsFile As String = Pfad2 + GeräteID() + ".txt"
 
             If File.Exists(SubsFile) Then
-                SubsFile = Pfad2 + Einstellungen.GeräteID2() + ".txt"
+                SubsFile = Pfad2 + GeräteID2() + ".txt"
             End If
 
             Try
@@ -1025,7 +1028,7 @@ Public Class CRD_List_Item
                     Next
                 End If
 
-                If InStr(InputData, "#EXT-X-VERSION:3") Or InStr(InputData, "#EXT-X-VERSION:5") Then
+                If CBool(InStr(InputData, "#EXT-X-VERSION:3")) Or CBool(InStr(InputData, "#EXT-X-VERSION:5")) Then
 
                     If KeepCacheFiles = True Then
                         Pfad2 = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + NameP2.Replace(" ", "-") + "\"
@@ -1035,7 +1038,7 @@ Public Class CRD_List_Item
 
                     DL_URL = DL_URL.Replace("-i " + Chr(34) + InputURL(0), "-allowed_extensions ALL " + "-i " + Chr(34) + Pfad2 + "index.m3u8")
 
-                ElseIf InStr(InputData, "#EXT-X-VERSION:4") Then
+                ElseIf CBool(InStr(InputData, "#EXT-X-VERSION:4")) Then
                     ProcessV4(InputURL(0), InputData, Pfad2 + "Stream-" + int.ToString + "\")
                     DL_URL = DL_URL.Replace("-i " + Chr(34) + InputURL(0), "-allowed_extensions ALL " + "-i " + Chr(34) + Pfad2 + "Stream-" + int.ToString + "\index.m3u8")
                 Else
@@ -1093,7 +1096,7 @@ Public Class CRD_List_Item
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
 
         Dim cmd As String = DL_URL + " " + DL_Pfad
-        LogText.Add(Date.Now + " " + cmd)
+        LogText.Add(Date.Now.ToString + " " + cmd)
         If Debug2 = True Then
             MsgBox(cmd)
         End If
@@ -1134,7 +1137,7 @@ Public Class CRD_List_Item
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
         Dim cmd As String = "-user-agent " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
-        LogText.Add(Date.Now + " " + cmd)
+        LogText.Add(Date.Now.ToString + " " + cmd)
         If Debug2 = True Then
             MsgBox(cmd)
         End If
@@ -1179,7 +1182,7 @@ Public Class CRD_List_Item
 
     Sub FFMPEGOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
         Try
-            LogText.Add(Date.Now + " " + e.Data)
+            LogText.Add(Date.Now.ToString + " " + e.Data)
         Catch ex As Exception
         End Try
 
@@ -1190,13 +1193,13 @@ Public Class CRD_List_Item
             If MergeSubstoMP4 = False Then
                 If CBool(InStr(e.Data, "Stream #")) And CBool(InStr(e.Data, "Video")) = True Then
                     'MsgBox(True.ToString + vbNewLine + e.Data)
-                    'MsgBox(InStr(e.Data, "Stream #").ToString + vbNewLine + InStr(e.Data, "Video").ToString)
+                    'MsgBox(InStr(e.Data, "Stream #").ToString + vbNewLine + CBool(InStr(e.Data, "Video").ToString)
 
                     'MsgBox("with CBool" + vbNewLine + CBool(InStr(e.Data, "Stream #")).ToString + vbNewLine + CBool(InStr(e.Data, "Video")).ToString)
 
                     ListOfStreams.Add(e.Data)
                 End If
-                If InStr(e.Data, "Stream #") And InStr(e.Data, " -> ") Then
+                If CBool(InStr(e.Data, "Stream #")) And CBool(InStr(e.Data, " -> ")) Then
                     'UsesStreams.Add(e.Data)
                     'MsgBox(e.Data)
                     Dim StreamSearch() As String = e.Data.Split(New String() {" -> "}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1208,7 +1211,7 @@ Public Class CRD_List_Item
                             'MsgBox(ResoSearch(1))
                             If CBool(InStr(ResoSearch(2), " [")) = True Then
                                 Dim ResoSearch2() As String = ResoSearch(2).Split(New String() {" ["}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Me.Invoke(New Action(Function()
+                                Me.Invoke(New Action(Function() As Object
                                                          If Label_Reso.Text = "1080p+" Then
                                                          Else
                                                              Label_Reso.Text = ResoSearch2(0) + "p"
@@ -1223,9 +1226,9 @@ Public Class CRD_List_Item
             End If
 #End Region
 
-            If InStr(e.Data, "Duration: N/A, bitrate: N/A") Then
+            If CBool(InStr(e.Data, "Duration: N/A, bitrate: N/A")) Then
 
-            ElseIf InStr(e.Data, "Duration: ") Then
+            ElseIf CBool(InStr(e.Data, "Duration: ")) Then
                 Dim ZeitGesamt As String() = e.Data.Split(New String() {"Duration: "}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
                 Dim ZeitGesamtSplit() As String = ZeitGesamt2(0).Split(New [Char]() {System.Convert.ToChar(":")})
@@ -1234,21 +1237,21 @@ Public Class CRD_List_Item
 
 
 
-            ElseIf InStr(e.Data, " time=") Then
+            ElseIf CBool(InStr(e.Data, " time=")) Then
                 'MsgBox(e.Data)
                 Dim ZeitFertig As String() = e.Data.Split(New String() {" time="}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim ZeitFertig2 As String() = ZeitFertig(1).Split(New [Char]() {System.Convert.ToChar(".")})
                 Dim ZeitFertigSplit() As String = ZeitFertig2(0).Split(New [Char]() {System.Convert.ToChar(":")})
                 Dim ZeitFertigInteger As Integer = CInt(ZeitFertigSplit(0)) * 3600 + CInt(ZeitFertigSplit(1)) * 60 + CInt(ZeitFertigSplit(2))
-                Dim bitrate3 As String = 0
-                If InStr(e.Data, "bitrate=") Then
+                Dim bitrate3 As String = "0"
+                If CBool(InStr(e.Data, "bitrate=")) Then
                     Dim bitrate As String() = e.Data.Split(New String() {"bitrate="}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim bitrate2 As String() = bitrate(1).Split(New String() {"kbits/s"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                    If InStr(bitrate2(0), ".") Then
+                    If CBool(InStr(bitrate2(0), ".")) Then
                         Dim bitrateTemo As String() = bitrate2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
                         bitrate3 = bitrateTemo(0)
-                    ElseIf InStr(bitrate2(0), ",") Then
+                    ElseIf CBool(InStr(bitrate2(0), ",")) Then
                         Dim bitrateTemo As String() = bitrate2(0).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
                         bitrate3 = bitrateTemo(0)
                     End If
@@ -1256,8 +1259,8 @@ Public Class CRD_List_Item
                 Dim bitrateInt As Double = CInt(bitrate3) / 1024
                 Dim FileSize As Double = ZeitGesamtInteger * bitrateInt / 8
                 Dim DownloadFinished As Double = ZeitFertigInteger * bitrateInt / 8
-                Dim percent As Integer = ZeitFertigInteger / ZeitGesamtInteger * 100
-                Me.Invoke(New Action(Function()
+                Dim percent As Integer = CInt(ZeitFertigInteger / ZeitGesamtInteger * 100)
+                Me.Invoke(New Action(Function() As Object
                                          If percent > 100 Then
                                              percent = 100
                                          End If
@@ -1265,7 +1268,7 @@ Public Class CRD_List_Item
                                          Label_percent.Text = Math.Round(DownloadFinished, 2, MidpointRounding.AwayFromZero).ToString + "MB/" + Math.Round(FileSize, 2, MidpointRounding.AwayFromZero).ToString + "MB " + percent.ToString + "%"
                                          Return Nothing
                                      End Function))
-            ElseIf InStr(e.Data, "Failed to open segment") Then
+            ElseIf CBool(InStr(e.Data, "Failed to open segment")) Then
                 FailedCount = FailedCount + 1
                 If Item_ErrorTolerance = 0 Then
 
@@ -1274,16 +1277,16 @@ Public Class CRD_List_Item
                     StatusRunning = False
                     bt_pause.BackgroundImage = My.Resources.main_pause_play
                     SuspendProcess(proc)
-                    Me.Invoke(New Action(Function()
+                    Me.Invoke(New Action(Function() As Object
 
                                              Label_percent.Text = "Missing segment detected, retry or resume with the play button"
                                              Return Nothing
                                          End Function))
                 End If
 
-            ElseIf InStr(e.Data, "muxing overhead:") Then
+            ElseIf CBool(InStr(e.Data, "muxing overhead:")) Then
                 Finished = True
-                Me.Invoke(New Action(Function()
+                Me.Invoke(New Action(Function() As Object
                                          Dim Done As String() = Label_percent.Text.Split(New String() {"MB"}, System.StringSplitOptions.RemoveEmptyEntries)
                                          Label_percent.Text = "Finished - " + Done(0) + "MB"
                                          Return Nothing
@@ -1330,9 +1333,9 @@ Public Class CRD_List_Item
                 client.DownloadFile(BaseURL + SiteList(i), Pfad_DL + "\" + SiteList(i))
                 Pause(1)
             End Using
-            Me.Invoke(New Action(Function()
+            Me.Invoke(New Action(Function() As Object
                                      iWert = iWert + 1
-                                     Dim Prozent As Integer = iWert / SiteList.Count * 100
+                                     Dim Prozent As Integer = CInt(iWert / SiteList.Count * 100)
                                      Label_percent.Text = iWert.ToString + "/" + SiteList.Count.ToString + " " + Prozent.ToString + "%"
                                      ProgressBar1.Value = Prozent
                                      Return Nothing
@@ -1379,7 +1382,7 @@ Public Class CRD_List_Item
     Private Sub SuspendProcess(ByVal process As System.Diagnostics.Process)
         For Each t As ProcessThread In process.Threads
             Dim th As IntPtr
-            th = OpenThread(ThreadAccess.SUSPEND_RESUME, False, t.Id)
+            th = OpenThread(ThreadAccess.SUSPEND_RESUME, False, CUInt(t.Id))
             If th <> IntPtr.Zero Then
                 SuspendThread(th)
                 CloseHandle(th)
@@ -1391,7 +1394,7 @@ Public Class CRD_List_Item
     Private Sub ResumeProcess(ByVal process As System.Diagnostics.Process)
         For Each t As ProcessThread In process.Threads
             Dim th As IntPtr
-            th = OpenThread(ThreadAccess.SUSPEND_RESUME, False, t.Id)
+            th = OpenThread(ThreadAccess.SUSPEND_RESUME, False, CUInt(t.Id))
             If th <> IntPtr.Zero Then
                 ResumeThread(th)
                 CloseHandle(th)
@@ -1414,13 +1417,13 @@ Public Class CRD_List_Item
         End Try
     End Sub
 
-    Private Sub Label_Anime_Click(sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Label_Anime.Click, PB_Thumbnail.Click, Label_Reso.Click, Label_percent.Click, ProgressBar1.Click, Label_website.Click, Me.Click
-        If e.Button = MouseButtons.Right Then
-            'MsgBox("Right Button Clicked")
+    'Private Sub Label_Anime_Click(sender As Object, ByVal e As MouseEventArgs) Handles Label_Anime.MouseUp, PB_Thumbnail.MouseUp, Label_Reso.MouseUp, Label_percent.MouseUp, ProgressBar1.MouseUp, Label_website.MouseUp, Me.MouseUp
+    '    If e.Button = MouseButtons.Right Then
+    '        'MsgBox("Right Button Clicked")
 
-            ContextMenuStrip1.ContextMenu.Show(Me, MousePosition)
-        End If
-    End Sub
+    '        ContextMenuStrip1.ContextMenu.Show(Me, MousePosition)
+    '    End If
+    'End Sub
 
     Private Sub ViewInExplorerToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ViewInExplorerToolStripMenuItem.Click
         Process.Start(Path.GetDirectoryName(DownloadPfad.Replace(Chr(34), "")))
@@ -1436,6 +1439,22 @@ Public Class CRD_List_Item
     End Sub
 
     Private Sub SaveToFile_Click(sender As Object, e As EventArgs) Handles SaveToFile.Click
+        Try
+            If HybridMode = True Then
+                Try
+
+                    Dim logfile As String = DownloadPfad.Replace(Main.VideoFormat, ".log").Replace(Chr(34), "")
+
+                    File.WriteAllText(logfile, HybrideLog)
+
+                Catch ex As Exception
+                    MsgBox(ex.ToString)
+                End Try
+            End If
+        Catch ex As Exception
+
+        End Try
+
         Try
 
             Dim logfile As String = DownloadPfad.Replace(Main.VideoFormat, ".log").Replace(Chr(34), "")
@@ -1453,22 +1472,12 @@ Public Class CRD_List_Item
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
-        If HybridMode = True Then
-            Try
 
-                Dim logfile As String = DownloadPfad.Replace(Main.VideoFormat, ".log").Replace(Chr(34), "")
-
-                File.WriteAllText(logfile, HybrideLog)
-
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            End Try
-        End If
     End Sub
 
     Private Sub LogTocClipboard_Click(sender As Object, e As EventArgs) Handles LogTocClipboard.Click
         Try
-            Dim Text As String = LogText.Item(0) + vbNewLine
+            Dim Text As String = HybrideLog + vbNewLine + LogText.Item(0) + vbNewLine
             For i As Integer = 1 To LogText.Count - 1
                 Text = Text + vbNewLine + LogText.Item(i)
             Next
@@ -1477,16 +1486,17 @@ Public Class CRD_List_Item
         End Try
     End Sub
 
+
 End Class
 
 
 Public Class FailedSegemtsWithURL
-    Public path As String
-    Public url As String
+    Public Path As String
+    Public Url As String
 
-    Public Sub New(ByVal path As String, ByVal url As Integer)
-        Me.path = path
-        Me.url = url
+    Public Sub New(ByVal Path As String, ByVal Url As String)
+        Me.Path = Path
+        Me.Url = Url
     End Sub
 
     Public Overrides Function ToString() As String

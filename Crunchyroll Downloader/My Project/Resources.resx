@@ -145,9 +145,6 @@
   <data name="about_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\about_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="main_del_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-del-hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="AoD_Titel" xml:space="preserve">
     <value>"title":"</value>
   </data>
@@ -221,9 +218,6 @@
   </data>
   <data name="main_pause_play" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-pause-play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LoginSkip" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LoginSkip.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LoginSuccess" xml:space="preserve">
     <value>"error":false,"code":"ok"</value>
@@ -322,9 +316,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
 &lt;br&gt;
 &lt;span dir="auto" class="resotext"&gt;</value>
   </data>
-  <data name="crdsettings_setUScookie_button_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\crdsettings_setUScookie_button_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="softsubs_download_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\softsubs_download_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -353,9 +344,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="main_browser" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-browser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="add_mass_running_cancel_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\add_mass_running_cancel_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="main_button_download_hovert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main_button_download_hovert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -367,9 +355,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   </data>
   <data name="DialogNotFound_Submit_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DialogNotFound_Submit_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LoginSkipHover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LoginSkipHover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DialogNotFound_Submit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DialogNotFound_Submit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -406,17 +391,11 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="main_pause_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-pause-hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="add_mass_running_cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\add_mass_running_cancel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="thumbnailString" xml:space="preserve">
     <value>"thumbnail":{"url":"</value>
   </data>
   <data name="main_pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="crdsettings_setUScookie_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\crdsettings_setUScookie_button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="crdSettings_Button_SafeExit_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\crdSettings_Button_SafeExit_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -517,9 +496,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="main_browser_invert_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-browser_invert_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="main_close_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-close_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="main_setting_invert_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-setting_invert_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -546,5 +522,17 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   </data>
   <data name="AoD_MediaID" xml:space="preserve">
     <value>"mediaid":</value>
+  </data>
+  <data name="main_close_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-close_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_close_dark_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-close_dark_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_close_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main_close_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_mini_dark_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-mini_dark_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

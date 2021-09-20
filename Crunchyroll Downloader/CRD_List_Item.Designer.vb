@@ -149,7 +149,7 @@ Partial Class CRD_List_Item
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewInExplorerToolStripMenuItem, Me.PlaybackVideoFileToolStripMenuItem, Me.LogTocClipboard, Me.SaveToFile})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(190, 92)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(190, 114)
         '
         'ViewInExplorerToolStripMenuItem
         '

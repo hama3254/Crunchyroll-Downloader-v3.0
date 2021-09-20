@@ -32,4 +32,58 @@
         Return newPath.Replace("\\", "\")
     End Function
 
+
+
+    Public Function GeräteID() As String
+        Dim rnd As New Random
+        Dim possible As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+        Dim HWID As String = Nothing
+
+        For i As Integer = 0 To 15
+            Dim ZufallsZahl As Integer = rnd.Next(1, 33)
+            HWID = HWID + possible(ZufallsZahl)
+        Next
+        Return "CRD-Temp-File-" + HWID
+    End Function
+
+    Public Function GeräteID2() As String
+        Dim rnd As New Random
+        Dim possible As String = "56789abcdefghijklmnopqrstuvwxyz01234ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        Dim HWID As String = Nothing
+
+        For i As Integer = 0 To 15
+            Dim ZufallsZahl As Integer = rnd.Next(1, 33)
+            HWID = HWID + possible(ZufallsZahl)
+        Next
+        Return "CRD-Temp-File-" + HWID
+    End Function
+
+    Class TextBoxTraceListener
+        Inherits TraceListener
+
+        Private tBox As RichTextBox
+        Dim lastmsg As String = Nothing
+        Public Sub New(ByVal box As RichTextBox)
+            Me.tBox = box
+        End Sub
+
+        Public Overrides Sub Write(ByVal msg As String)
+            Try
+                tBox.Parent.Invoke(New MethodInvoker(Sub()
+                                                         If msg <> lastmsg Then
+                                                             lastmsg = msg
+                                                             tBox.AppendText(msg)
+
+                                                         End If
+                                                     End Sub))
+            Catch ex As Exception
+            End Try
+        End Sub
+
+        Public Overrides Sub WriteLine(ByVal msg As String)
+            Write(msg & vbCrLf)
+        End Sub
+    End Class
+
+
 End Module

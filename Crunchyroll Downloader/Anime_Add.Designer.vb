@@ -31,8 +31,11 @@ Partial Class Anime_Add
         Me.ComboBox2 = New MetroFramework.Controls.MetroComboBox()
         Me.TextBox4 = New MetroFramework.Controls.MetroTextBox()
         Me.textBox1 = New MetroFramework.Controls.MetroTextBox()
+
         Me.TextBox2 = New MetroFramework.Controls.MetroTextBox()
-        Me.pictureBox4 = New System.Windows.Forms.PictureBox()
+
+        Me.textBox2 = New MetroFramework.Controls.MetroTextBox()
+
         Me.groupBox2 = New System.Windows.Forms.GroupBox()
         Me.comboBox4 = New MetroFramework.Controls.MetroComboBox()
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
@@ -45,8 +48,10 @@ Partial Class Anime_Add
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Btn_min = New System.Windows.Forms.PictureBox()
         Me.Btn_Close = New System.Windows.Forms.PictureBox()
+        Me.btn_dl = New System.Windows.Forms.Button()
+        Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
+        Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.groupBox1.SuspendLayout()
-        CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.groupBox2.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
@@ -189,63 +194,51 @@ Partial Class Anime_Add
         Me.textBox1.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
         Me.textBox1.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
-        'TextBox2
+
         '
-        Me.TextBox2.BackColor = System.Drawing.Color.White
-        Me.TextBox2.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.textBox2.BackColor = System.Drawing.Color.White
+        Me.textBox2.Cursor = System.Windows.Forms.Cursors.Hand
         '
         '
         '
-        Me.TextBox2.CustomButton.Image = Nothing
-        Me.TextBox2.CustomButton.Location = New System.Drawing.Point(665, 1)
-        Me.TextBox2.CustomButton.Name = ""
-        Me.TextBox2.CustomButton.Size = New System.Drawing.Size(27, 27)
-        Me.TextBox2.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.TextBox2.CustomButton.TabIndex = 1
-        Me.TextBox2.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.TextBox2.CustomButton.UseSelectable = True
-        Me.TextBox2.CustomButton.Visible = False
-        Me.TextBox2.FontSize = MetroFramework.MetroTextBoxSize.Medium
-        Me.TextBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.TextBox2.Lines = New String() {"Use Custom Name"}
-        Me.TextBox2.Location = New System.Drawing.Point(18, 64)
-        Me.TextBox2.MaxLength = 32767
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.TextBox2.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.TextBox2.SelectedText = ""
-        Me.TextBox2.SelectionLength = 0
-        Me.TextBox2.SelectionStart = 0
-        Me.TextBox2.ShortcutsEnabled = True
-        Me.TextBox2.Size = New System.Drawing.Size(693, 29)
-        Me.TextBox2.TabIndex = 5
-        Me.TextBox2.TabStop = False
-        Me.TextBox2.Text = "Use Custom Name"
-        Me.TextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.TextBox2.UseSelectable = True
-        Me.TextBox2.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.TextBox2.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
-        '
-        'pictureBox4
-        '
-        Me.pictureBox4.BackColor = System.Drawing.Color.Transparent
-        Me.pictureBox4.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pictureBox4.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_button_download_default
-        Me.pictureBox4.Location = New System.Drawing.Point(106, 377)
-        Me.pictureBox4.Name = "pictureBox4"
-        Me.pictureBox4.Size = New System.Drawing.Size(538, 50)
-        Me.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pictureBox4.TabIndex = 42
-        Me.pictureBox4.TabStop = False
-        '
+        Me.textBox2.CustomButton.Image = Nothing
+        Me.textBox2.CustomButton.Location = New System.Drawing.Point(665, 1)
+        Me.textBox2.CustomButton.Name = ""
+        Me.textBox2.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.textBox2.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.textBox2.CustomButton.TabIndex = 1
+        Me.textBox2.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.textBox2.CustomButton.UseSelectable = True
+        Me.textBox2.CustomButton.Visible = False
+        Me.textBox2.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.textBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.textBox2.Lines = New String() {"Use Custom Name"}
+        Me.textBox2.Location = New System.Drawing.Point(18, 64)
+        Me.textBox2.MaxLength = 32767
+        Me.textBox2.Name = "textBox2"
+        Me.textBox2.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.textBox2.SelectedText = ""
+        Me.textBox2.SelectionLength = 0
+        Me.textBox2.SelectionStart = 0
+        Me.textBox2.ShortcutsEnabled = True
+        Me.textBox2.Size = New System.Drawing.Size(693, 29)
+        Me.textBox2.TabIndex = 5
+        Me.textBox2.TabStop = False
+        Me.textBox2.Text = "Use Custom Name"
+        Me.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.textBox2.UseSelectable = True
+        Me.textBox2.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.textBox2.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+
         'groupBox2
         '
         Me.groupBox2.BackColor = System.Drawing.Color.Transparent
         Me.groupBox2.Controls.Add(Me.comboBox4)
         Me.groupBox2.Controls.Add(Me.ComboBox1)
         Me.groupBox2.Controls.Add(Me.comboBox3)
-        Me.groupBox2.Controls.Add(Me.Add_Display)
         Me.groupBox2.Controls.Add(Me.PictureBox1)
+        Me.groupBox2.Controls.Add(Me.Add_Display)
         Me.groupBox2.Location = New System.Drawing.Point(15, 70)
         Me.groupBox2.Name = "groupBox2"
         Me.groupBox2.Size = New System.Drawing.Size(720, 280)
@@ -374,24 +367,48 @@ Partial Class Anime_Add
         Me.Btn_Close.TabIndex = 72
         Me.Btn_Close.TabStop = False
         '
+        'btn_dl
+        '
+        Me.btn_dl.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.main_button_download_default
+        Me.btn_dl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_dl.FlatAppearance.BorderSize = 0
+        Me.btn_dl.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btn_dl.Font = New System.Drawing.Font("Microsoft Sans Serif", 27.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btn_dl.ForeColor = System.Drawing.SystemColors.Control
+        Me.btn_dl.Location = New System.Drawing.Point(106, 377)
+        Me.btn_dl.Name = "btn_dl"
+        Me.btn_dl.Size = New System.Drawing.Size(538, 50)
+        Me.btn_dl.TabIndex = 75
+        Me.btn_dl.Text = "Download"
+        Me.btn_dl.UseVisualStyleBackColor = True
+        '
+        'Timer3
+        '
+        Me.Timer3.Enabled = True
+        '
+        'BackgroundWorker1
+        '
+        '
         'Anime_Add
         '
         Me.ApplyImageInvert = True
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle
         Me.ClientSize = New System.Drawing.Size(750, 450)
+        Me.Controls.Add(Me.btn_dl)
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Close)
-        Me.Controls.Add(Me.pictureBox4)
+
         Me.Controls.Add(Me.groupBox1)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.groupBox2)
+        Me.Font = New System.Drawing.Font("Arial", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+
         Me.Name = "Anime_Add"
         Me.Padding = New System.Windows.Forms.Padding(10, 60, 20, 20)
         Me.Text = "Add Video"
         Me.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center
         Me.groupBox1.ResumeLayout(False)
-        CType(Me.pictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         Me.groupBox2.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
@@ -400,7 +417,6 @@ Partial Class Anime_Add
         Me.ResumeLayout(False)
 
     End Sub
-    Public WithEvents pictureBox4 As PictureBox
     Public WithEvents groupBox2 As GroupBox
     Public WithEvents PictureBox1 As PictureBox
     Public WithEvents groupBox1 As GroupBox
@@ -421,4 +437,7 @@ Partial Class Anime_Add
     Private WithEvents Btn_min As PictureBox
     Private WithEvents Btn_Close As PictureBox
     Public WithEvents SubTitlesOnlyCB As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents btn_dl As Button
+    Friend WithEvents Timer3 As Timer
+    Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
 End Class

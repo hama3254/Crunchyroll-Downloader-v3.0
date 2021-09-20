@@ -24,10 +24,6 @@ Partial Class Main
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
-        Me.Btn_add = New System.Windows.Forms.PictureBox()
-        Me.Btn_Close = New System.Windows.Forms.PictureBox()
-        Me.Btn_Settings = New System.Windows.Forms.PictureBox()
-        Me.Btn_Browser = New System.Windows.Forms.PictureBox()
         Me.ListView1 = New System.Windows.Forms.ListView()
         Me.Link = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
@@ -39,54 +35,21 @@ Partial Class Main
         Me.PictureBox6 = New System.Windows.Forms.PictureBox()
         Me.MetroStyleExtender1 = New MetroFramework.Components.MetroStyleExtender(Me.components)
         Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
-        Me.Btn_min = New System.Windows.Forms.PictureBox()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Timer4 = New System.Windows.Forms.Timer(Me.components)
-        CType(Me.Btn_add, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Btn_Settings, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Btn_Browser, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Btn_add = New System.Windows.Forms.Button()
+        Me.Btn_Browser = New System.Windows.Forms.Button()
+        Me.Btn_Settings = New System.Windows.Forms.Button()
+        Me.Btn_min = New System.Windows.Forms.Button()
+        Me.Btn_Close = New System.Windows.Forms.Button()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ToggleDebugModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'Btn_add
-        '
-        Me.Btn_add.BackColor = System.Drawing.Color.Transparent
-        Me.Btn_add.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Btn_add.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_add
-        resources.ApplyResources(Me.Btn_add, "Btn_add")
-        Me.Btn_add.Name = "Btn_add"
-        Me.Btn_add.TabStop = False
-        '
-        'Btn_Close
-        '
-        Me.Btn_Close.BackColor = System.Drawing.Color.Transparent
-        resources.ApplyResources(Me.Btn_Close, "Btn_Close")
-        Me.Btn_Close.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Btn_Close.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_close
-        Me.Btn_Close.Name = "Btn_Close"
-        Me.Btn_Close.TabStop = False
-        '
-        'Btn_Settings
-        '
-        Me.Btn_Settings.BackColor = System.Drawing.Color.Transparent
-        Me.Btn_Settings.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Btn_Settings.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_settings
-        resources.ApplyResources(Me.Btn_Settings, "Btn_Settings")
-        Me.Btn_Settings.Name = "Btn_Settings"
-        Me.Btn_Settings.TabStop = False
-        '
-        'Btn_Browser
-        '
-        Me.Btn_Browser.BackColor = System.Drawing.Color.Transparent
-        Me.Btn_Browser.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Btn_Browser.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_browser
-        resources.ApplyResources(Me.Btn_Browser, "Btn_Browser")
-        Me.Btn_Browser.Name = "Btn_Browser"
-        Me.Btn_Browser.TabStop = False
         '
         'ListView1
         '
@@ -98,6 +61,7 @@ Partial Class Main
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.ListView1.HideSelection = False
         Me.ListView1.Name = "ListView1"
+        Me.ListView1.TabStop = False
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
         '
@@ -147,14 +111,6 @@ Partial Class Main
         Me.MetroStyleManager1.Owner = Me
         Me.MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Orange
         '
-        'Btn_min
-        '
-        Me.Btn_min.BackColor = System.Drawing.Color.Transparent
-        resources.ApplyResources(Me.Btn_min, "Btn_min")
-        Me.Btn_min.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Btn_min.Name = "Btn_min"
-        Me.Btn_min.TabStop = False
-        '
         'BackgroundWorker1
         '
         '
@@ -163,21 +119,94 @@ Partial Class Main
         Me.Timer4.Enabled = True
         Me.Timer4.Interval = 2500
         '
+        'Btn_add
+        '
+        Me.Btn_add.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.Btn_add, "Btn_add")
+        Me.Btn_add.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_add.FlatAppearance.BorderSize = 0
+        Me.Btn_add.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
+        Me.Btn_add.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_add
+        Me.Btn_add.Name = "Btn_add"
+        Me.Btn_add.UseVisualStyleBackColor = False
+        '
+        'Btn_Browser
+        '
+        Me.Btn_Browser.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.Btn_Browser, "Btn_Browser")
+        Me.Btn_Browser.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_Browser.FlatAppearance.BorderSize = 0
+        Me.Btn_Browser.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
+        Me.Btn_Browser.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_browser
+        Me.Btn_Browser.Name = "Btn_Browser"
+        Me.Btn_Browser.UseVisualStyleBackColor = False
+        '
+        'Btn_Settings
+        '
+        Me.Btn_Settings.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.Btn_Settings, "Btn_Settings")
+        Me.Btn_Settings.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_Settings.FlatAppearance.BorderSize = 0
+        Me.Btn_Settings.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
+        Me.Btn_Settings.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_settings
+        Me.Btn_Settings.Name = "Btn_Settings"
+        Me.Btn_Settings.UseVisualStyleBackColor = False
+        '
+        'Btn_min
+        '
+        Me.Btn_min.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.Btn_min, "Btn_min")
+        Me.Btn_min.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_min.FlatAppearance.BorderSize = 0
+        Me.Btn_min.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
+        Me.Btn_min.ForeColor = System.Drawing.Color.Transparent
+        Me.Btn_min.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_mini
+        Me.Btn_min.Name = "Btn_min"
+        Me.Btn_min.UseVisualStyleBackColor = False
+        '
+        'Btn_Close
+        '
+        Me.Btn_Close.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.Btn_Close, "Btn_Close")
+        Me.Btn_Close.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_Close.FlatAppearance.BorderSize = 0
+        Me.Btn_Close.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
+        Me.Btn_Close.ForeColor = System.Drawing.Color.Transparent
+        Me.Btn_Close.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_close
+        Me.Btn_Close.Name = "Btn_Close"
+        Me.Btn_Close.UseVisualStyleBackColor = False
+        '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
+        '
+        'ToggleDebugModeToolStripMenuItem
+        '
+        Me.ToggleDebugModeToolStripMenuItem.Name = "ToggleDebugModeToolStripMenuItem"
+        resources.ApplyResources(Me.ToggleDebugModeToolStripMenuItem, "ToggleDebugModeToolStripMenuItem")
+        '
+        'OpenSettingsToolStripMenuItem
+        '
+        Me.OpenSettingsToolStripMenuItem.Name = "OpenSettingsToolStripMenuItem"
+        resources.ApplyResources(Me.OpenSettingsToolStripMenuItem, "OpenSettingsToolStripMenuItem")
+        '
         'Main
         '
         Me.ApplyImageInvert = True
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle
         resources.ApplyResources(Me, "$this")
+        Me.Controls.Add(Me.Btn_Close)
         Me.Controls.Add(Me.Btn_min)
+        Me.Controls.Add(Me.Btn_Settings)
+        Me.Controls.Add(Me.Btn_Browser)
+        Me.Controls.Add(Me.Btn_add)
         Me.Controls.Add(Me.TheTextBox)
         Me.Controls.Add(Me.PictureBox6)
         Me.Controls.Add(Me.PictureBox5)
         Me.Controls.Add(Me.ListView1)
-        Me.Controls.Add(Me.Btn_add)
-        Me.Controls.Add(Me.Btn_Close)
-        Me.Controls.Add(Me.Btn_Settings)
-        Me.Controls.Add(Me.Btn_Browser)
         Me.ForeColor = System.Drawing.Color.Black
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -185,21 +214,13 @@ Partial Class Main
         Me.Resizable = True
         Me.Style = MetroFramework.MetroColorStyle.Orange
         Me.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center
-        CType(Me.Btn_add, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Btn_Settings, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Btn_Browser, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Private WithEvents Btn_add As PictureBox
-    Private WithEvents Btn_Close As PictureBox
-    Private WithEvents Btn_Settings As PictureBox
-    Private WithEvents Btn_Browser As PictureBox
     Friend WithEvents ListView1 As ListView
     Friend WithEvents Link As ColumnHeader
     Friend WithEvents PictureBox5 As PictureBox
@@ -211,7 +232,14 @@ Partial Class Main
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents MetroStyleExtender1 As MetroFramework.Components.MetroStyleExtender
     Friend WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
-    Private WithEvents Btn_min As PictureBox
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
     Friend WithEvents Timer4 As Timer
+    Friend WithEvents Btn_add As Button
+    Friend WithEvents Btn_Browser As Button
+    Friend WithEvents Btn_Settings As Button
+    Friend WithEvents Btn_min As Button
+    Friend WithEvents Btn_Close As Button
+    Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
+    Friend WithEvents ToggleDebugModeToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents OpenSettingsToolStripMenuItem As ToolStripMenuItem
 End Class

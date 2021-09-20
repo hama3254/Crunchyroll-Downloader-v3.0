@@ -1,4 +1,6 @@
-﻿Imports System.IO
+﻿Option Strict On
+
+Imports System.IO
 Imports System.IO.Compression
 Module ProcessSleep
     Public Enum ThreadAccess As Integer
@@ -23,7 +25,7 @@ Module ProcessSleep
         'Programmausführung verzögern *******************************************************
 
         Dim start, finish As Single
-        start = Microsoft.VisualBasic.DateAndTime.Timer
+        start = CSng(Microsoft.VisualBasic.DateAndTime.Timer)
 
         finish = start + pau
         Do While Microsoft.VisualBasic.DateAndTime.Timer < finish

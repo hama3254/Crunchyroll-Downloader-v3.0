@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    Files are no longer copied as part of this targets file.
+    For projects other than CefSharp define a target to copy the files.
+    Checkout the CefSharp.Common.targets file for an example
+    -->
+  
+  <!--
+    Using wildcard matching as per https://stackoverflow.com/a/17252671
+    -->
+  <ItemGroup>
+    <CefRedist32 Include="$(MSBuildThisFileDirectory)..\CEF\**\*.*" />
+  </ItemGroup>
+  
+  <Target Name="CefRedist32CopyResources">
+    <PropertyGroup>
+      <CefRedist32TargetDir Condition="'$(CefRedist32TargetDir)' == ''">$(TargetDir)</CefRedist32TargetDir>
+    </PropertyGroup>
+    <!--
+    Cannot gurantee access to the main CefRedist32 ItemGroup here
+    so we create a duplicate inside our target.
+    https://github.com/dotnet/project-system/issues/4158
+    -->
+    <ItemGroup>
+      <_CefRedist32 Include="$(MSBuildThisFileDirectory)..\CEF\**\*.*" />
+    </ItemGroup>
+    <Message Importance="high" Text="Copying CEF Redist x86 files from $(MSBuildThisFileDirectory)..\CEF to $(CefRedist32TargetDir)" />
+    <Copy SourceFiles="@(_CefRedist32)" DestinationFolder="$(CefRedist32TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

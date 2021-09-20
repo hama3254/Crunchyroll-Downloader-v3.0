@@ -1,4 +1,5 @@
-﻿Imports Gecko.Events
+﻿Option Strict On
+
 Imports Microsoft.Win32
 Imports System.Net
 Imports System.IO
@@ -17,7 +18,8 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Beta-U13"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-VRV-Test-U1"
+
         BackgroundWorker1.RunWorkerAsync()
 
 
@@ -25,9 +27,22 @@ Public Class Einstellungen
         'If GitHubLastTag1(0)
 
 
-
         Manager.Owner = Me
         Me.StyleManager = Manager
+
+
+        ProfileTextBox.Text = Main.ProfileFolder
+
+        If Main.IgnoreS1 = True Then
+            IgnoreS1.Checked = True
+        End If
+
+        If Main.IncludeLangName = True Then
+            CB_SoftSubSettings.SelectedIndex = 1
+        Else
+            CB_SoftSubSettings.SelectedIndex = 0
+        End If
+
         If Main.KodiNaming = True Then
             KodiSupport.Checked = True
         End If
@@ -90,7 +105,8 @@ Public Class Einstellungen
         Else
             CR_Filename.SelectedIndex = 0
         End If
-        Me.Location = New Point(Main.Location.X + Main.Width / 2 - Me.Width / 2, Main.Location.Y + Main.Height / 2 - Me.Height / 2)
+
+        Me.Location = New Point(CInt(Main.Location.X + Main.Width / 2 - Me.Width / 2), CInt(Main.Location.Y + Main.Height / 2 - Me.Height / 2))
         Try
             Me.Icon = My.Resources.icon
         Catch ex As Exception
@@ -232,12 +248,12 @@ Public Class Einstellungen
         NumericUpDown1.Value = Main.MaxDL
         TextBox1.Text = Main.Startseite
 
-        If InStr(Main.ffmpeg_command, "-c copy") Then
+        If CBool(InStr(Main.ffmpeg_command, "-c copy")) Then
             FFMPEG_CommandP1.Text = "-c copy"
             FFMPEG_CommandP2.Enabled = False
             FFMPEG_CommandP3.Enabled = False
             FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
-        ElseIf InStr(Main.ffmpeg_command, "-c:a copy ") Then
+        ElseIf CBool(InStr(Main.ffmpeg_command, "-c:a copy ")) Then
             Dim ffmpegDisplayCurrent As String() = Main.ffmpeg_command.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
             If ffmpegDisplayCurrent.Count > 8 Then
                 FFMPEG_CommandP1.Text = ffmpegDisplayCurrent(0) + " " + ffmpegDisplayCurrent(1)
@@ -271,7 +287,7 @@ Public Class Einstellungen
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             Dim ServerSetting As String = rkg.GetValue("ServerPort").ToString
 
-            If ServerSetting = 0 Then
+            If ServerSetting = "0" Then
                 http_support.Text = "add-on support disabled"
             Else
                 http_support.Text = ServerSetting
@@ -319,12 +335,12 @@ Public Class Einstellungen
 
     End Sub
 
-    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles pictureBox4.Click
+    Private Sub Btn_Save_Click(sender As Object, e As EventArgs) Handles Btn_Save.Click
         Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
 
         If http_support.Text = "add-on support disabled" Then
             rk.SetValue("ServerPort", 0, RegistryValueKind.String)
-            Main.StartServer = False
+            Main.StartServer = CInt(False)
 
         Else
             Dim Port As Integer = 0
@@ -355,6 +371,15 @@ Public Class Einstellungen
             rk.SetValue("Keep_Cache", 0, RegistryValueKind.String)
         End If
 
+        If IgnoreS1.Checked = True Then
+
+            Main.IgnoreS1 = True
+            rk.SetValue("IgnoreS1", 1, RegistryValueKind.String)
+        Else
+            Main.IgnoreS1 = False
+            rk.SetValue("IgnoreS1", 0, RegistryValueKind.String)
+
+        End If
 
         If KodiSupport.Checked = True Then
             Main.KodiNaming = True
@@ -365,7 +390,7 @@ Public Class Einstellungen
         End If
 
         '  MsgBox(Name_season.Text)
-        If InStr(TextBox1.Text, "https://") Then
+        If CBool(InStr(TextBox1.Text, "https://")) Then
             Main.Startseite = TextBox1.Text
             rk.SetValue("Startseite", Main.Startseite, RegistryValueKind.String)
         ElseIf TextBox1.Text = Nothing Then
@@ -653,21 +678,21 @@ Public Class Einstellungen
         rk.SetValue("ffmpeg_command", ffpmeg_cmd, RegistryValueKind.String)
         Main.ffmpeg_command = ffpmeg_cmd
 
-        If InStr(FFMPEG_CommandP1.Text, "nvenc") Then
+        If CBool(InStr(FFMPEG_CommandP1.Text, "nvenc")) Then
             If NumericUpDown1.Value > 2 Then
                 NumericUpDown1.Value = 2
             End If
 
-        ElseIf InStr(FFMPEG_CommandP1.Text, "libx26") Then
+        ElseIf CBool(InStr(FFMPEG_CommandP1.Text, "libx26")) Then
             If NumericUpDown1.Value > 1 Then
                 NumericUpDown1.Value = 1
             End If
         End If
         rk.SetValue("SL_DL", NumericUpDown1.Value, RegistryValueKind.String)
-        Main.MaxDL = NumericUpDown1.Value
+        Main.MaxDL = CInt(NumericUpDown1.Value)
 
         rk.SetValue("ErrorTolerance", NumericUpDown2.Value, RegistryValueKind.String)
-        Main.ErrorTolerance = NumericUpDown2.Value
+        Main.ErrorTolerance = CInt(NumericUpDown2.Value)
 
         If ListViewAdd_True.Checked = True Then
             rk.SetValue("QueueMode", 1, RegistryValueKind.String)
@@ -721,6 +746,17 @@ Public Class Einstellungen
         End If
         rk.SetValue("AddedSubs", SaveString, RegistryValueKind.String)
 #End Region
+
+        If CB_SoftSubSettings.SelectedIndex = 0 Then
+            Main.IncludeLangName = False
+            rk.SetValue("IncludeLangName", "0", RegistryValueKind.String)
+
+        Else
+            Main.IncludeLangName = True
+            rk.SetValue("IncludeLangName", "1", RegistryValueKind.String)
+
+        End If
+
         Me.Close()
     End Sub
 
@@ -737,29 +773,7 @@ Public Class Einstellungen
 
 
 
-    Public Function GeräteID() As String
-        Dim rnd As New Random
-        Dim possible As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-        Dim HWID As String = Nothing
 
-        For i As Integer = 0 To 15
-            Dim ZufallsZahl As Integer = rnd.Next(1, 33)
-            HWID = HWID + possible(ZufallsZahl)
-        Next
-        Return "CRD-Temp-File-" + HWID
-    End Function
-
-    Public Function GeräteID2() As String
-        Dim rnd As New Random
-        Dim possible As String = "56789abcdefghijklmnopqrstuvwxyz01234ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        Dim HWID As String = Nothing
-
-        For i As Integer = 0 To 15
-            Dim ZufallsZahl As Integer = rnd.Next(1, 33)
-            HWID = HWID + possible(ZufallsZahl)
-        Next
-        Return "CRD-Temp-File-" + HWID
-    End Function
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles pictureBox1.Click
         Me.Close()
@@ -767,26 +781,26 @@ Public Class Einstellungen
 #Region "UI"
 
     Private Sub Btn_Close_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox1.MouseEnter
-        Dim PB As PictureBox = sender
-        PB.Image = My.Resources.main_del
+
+        pictureBox1.Image = My.Resources.main_del
     End Sub
 
     Private Sub Btn_Close_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox1.MouseLeave
-        Dim PB As PictureBox = sender
-        PB.Image = Main.CloseImg
+
+        pictureBox1.Image = Main.CloseImg
     End Sub
 
-    Private Sub PictureBox4_MouseEnter(sender As Object, e As EventArgs) Handles pictureBox4.MouseEnter
-        pictureBox4.Image = My.Resources.crdSettings_Button_SafeExit_hover
+    Private Sub Btn_Save_MouseEnter(sender As Object, e As EventArgs) Handles Btn_Save.MouseEnter, Btn_Save.GotFocus
+        Btn_Save.Image = My.Resources.crdSettings_Button_SafeExit_hover
     End Sub
 
-    Private Sub PictureBox4_MouseLeave(sender As Object, e As EventArgs) Handles pictureBox4.MouseLeave
-        pictureBox4.Image = My.Resources.crdSettings_Button_SafeExit
+    Private Sub Btn_Save_MouseLeave(sender As Object, e As EventArgs) Handles Btn_Save.MouseLeave, Btn_Save.LostFocus
+        Btn_Save.Image = My.Resources.crdSettings_Button_SafeExit
     End Sub
 
 
     Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, CB_Fun_HardSubs.DrawItem, Fun_Dub_Over.DrawItem, CR_Filename.DrawItem
-        Dim CB As ComboBox = sender
+        Dim CB As ComboBox = CType(sender, ComboBox)
         CB.BackColor = Color.White
         If e.Index >= 0 Then
             Using st As New StringFormat With {.Alignment = StringAlignment.Center}
@@ -847,7 +861,7 @@ Public Class Einstellungen
 
 
     Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles ListC1.Click, ListC2.Click, ListC3.Click, ListC4.Click, ListC5.Click, ListC6.Click, ListC7.Click
-        Dim Button As ToolStripMenuItem = sender
+        Dim Button As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         If Button.Text = "-c copy" Then
             FFMPEG_CommandP1.Text = "-c copy"
             FFMPEG_CommandP2.Enabled = False
@@ -861,40 +875,23 @@ Public Class Einstellungen
     End Sub
 
     Private Sub ListP1_Click(sender As Object, e As EventArgs) Handles ListP1.Click, ListP2.Click, ListP3.Click
-        Dim Button As ToolStripMenuItem = sender
+        Dim Button As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         FFMPEG_CommandP2.Text = Button.Text
         FFMPEG_CommandP2.Enabled = True
         FFMPEG_CommandP3.Enabled = True
     End Sub
 
     Private Sub ListBit1_Click(sender As Object, e As EventArgs) Handles ListBit1.Click, ListBit2.Click, ListBit3.Click, ListBit4.Click, ListBit5.Click, ListBit6.Click, ListBit7.Click
-        Dim Button As ToolStripMenuItem = sender
+        Dim Button As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         FFMPEG_CommandP3.Text = Button.Text
         FFMPEG_CommandP2.Enabled = True
         FFMPEG_CommandP3.Enabled = True
     End Sub
 
 
-    Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
-        GeckoFX.Show()
-        Main.LoginOnly = "US_UnBlock"
-        Main.UserBowser = True
-        GeckoFX.WebBrowser1.Navigate("https://api.criater-stiftung.org/us-unlock.php")
-    End Sub
-
-    Private Sub PictureBox2_Enter(sender As Object, e As EventArgs) Handles PictureBox2.MouseEnter
-        PictureBox2.Image = My.Resources.crdsettings_setUScookie_button_hover
-    End Sub
-
-    Private Sub PictureBox2_Leave(sender As Object, e As EventArgs) Handles PictureBox2.MouseLeave
-        PictureBox2.Image = My.Resources.crdsettings_setUScookie_button
-
-    End Sub
-
-
 
     Private Sub Label7_Click(sender As Object, e As EventArgs)
-        Process.Start("https://bitbucket.org/geckofx/geckofx-60.0/src/default/")
+        Process.Start("https://github.com/cefsharp/CefSharp")
     End Sub
 
     Private Sub Label3_Click(sender As Object, e As EventArgs)
@@ -921,6 +918,7 @@ Public Class Einstellungen
         GB_Filename_Pre.ForeColor = color
         GroupBox1.ForeColor = color
         GroupBox2.ForeColor = color
+        GroupBox3.ForeColor = color
         GroupBox5.ForeColor = color
         GroupBox6.ForeColor = color
         GroupBox7.ForeColor = color
@@ -1199,6 +1197,23 @@ Public Class Einstellungen
             MergeMP4.Checked = False
         End If
     End Sub
+
+    Private Sub ProfileTextBox_Click(sender As Object, e As EventArgs) Handles ProfileTextBox.Click
+
+        Dim FolderBrowserDialog1 As New FolderBrowserDialog()
+        FolderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer
+        If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
+
+            Main.ProfileFolder = FolderBrowserDialog1.SelectedPath
+            ProfileTextBox.Text = FolderBrowserDialog1.SelectedPath
+            Dim rk0 As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
+            rk0.SetValue("ProfilFolder", Main.ProfileFolder, RegistryValueKind.String)
+
+
+        End If
+    End Sub
+
+
 
 
 

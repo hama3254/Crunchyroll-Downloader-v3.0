@@ -1,4 +1,7 @@
-﻿Public Class Debug_Mode
+﻿Option Strict On
+
+
+Public Class Debug_Mode
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
@@ -47,7 +50,7 @@
         Dim HTMLString As String = RichTextBox1.Text
         Dim HTMLSplit() As String = HTMLString.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
         For i As Integer = 0 To HTMLSplit.Count - 1
-            If InStr(HTMLSplit(i), ".mpd?") Then
+            If CBool(InStr(HTMLSplit(i), ".mpd?")) Then
                 Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim URLPart1() As String = HTMLSplit(i).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -55,7 +58,7 @@
                 'MsgBox(Main.NonCR_URL)
                 'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
                 Exit For
-            ElseIf InStr(HTMLSplit(i), ".m3u8?") Then
+            ElseIf CBool(InStr(HTMLSplit(i), ".m3u8?")) Then
                 Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim URLPart1() As String = HTMLSplit(i).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -63,7 +66,7 @@
                 'MsgBox(Main.NonCR_URL)
                 'RichTextBox1.Text = RichTextBox1.Text + vbNewLine + URL_Final
                 Exit For
-            ElseIf InStr(HTMLSplit(i), ".txt?") Then
+            ElseIf CBool(InStr(HTMLSplit(i), ".txt?")) Then
                 Dim URLPart2() As String = HTMLSplit(i).Split(New String() {"  GET "}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim URLPart2Split2() As String = URLPart2(1).Split(New String() {" HTTP/"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim URLPart1() As String = HTMLSplit(i).Split(New String() {" Host: "}, System.StringSplitOptions.RemoveEmptyEntries)

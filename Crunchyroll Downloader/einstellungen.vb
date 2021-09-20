@@ -19,10 +19,7 @@ Public Class Einstellungen
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-VRV-Test-U1"
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         BackgroundWorker1.RunWorkerAsync()
 
 

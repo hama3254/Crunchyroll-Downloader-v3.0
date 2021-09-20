@@ -27,13 +27,7 @@ Partial Class CefSharp_Browser
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Btn_Scan = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
-<<<<<<< Updated upstream:Crunchyroll Downloader/CefSharp_Browser.Designer.vb
         Me.WebBrowser1 = New CefSharp.WinForms.ChromiumWebBrowser()
-=======
-#Disable Warning BC40000 ' Der Typ oder Member ist veraltet.
-        Me.WebBrowser1 = New CefSharp.WinForms.ChromiumWebBrowser()
-#Enable Warning BC40000 ' Der Typ oder Member ist veraltet.
->>>>>>> Stashed changes:Crunchyroll Downloader/GeckoFX.Designer.vb
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -114,11 +108,6 @@ Partial Class CefSharp_Browser
     Friend WithEvents Button1 As Button
     Friend WithEvents Btn_Scan As Button
     Friend WithEvents Panel1 As Panel
-<<<<<<< Updated upstream:Crunchyroll Downloader/CefSharp_Browser.Designer.vb
     Friend WithEvents Timer1 As Timer
     Friend WithEvents WebBrowser1 As CefSharp.WinForms.ChromiumWebBrowser
-=======
-    Public WithEvents WebBrowser1 As CefSharp.WinForms.ChromiumWebBrowser
-    Friend WithEvents Timer1 As Timer
->>>>>>> Stashed changes:Crunchyroll Downloader/GeckoFX.Designer.vb
 End Class

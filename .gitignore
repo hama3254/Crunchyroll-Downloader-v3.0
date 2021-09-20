@@ -11,3 +11,5 @@ Crunchyroll Downloader/bin/x64/Debug/libcef.dll
 packages/cef.redist.x64.91.1.21/CEF/libcef.dll
 Crunchyroll Downloader/bin/x64/Debug/lib/libcef.dll
 Crunchyroll Downloader/bin/x64/Debug/ffmpeg.exe
+Crunchyroll Downloader/bin/x64/Crunchyroll-Downloader-Chromium/ffmpeg.exe
+packages/

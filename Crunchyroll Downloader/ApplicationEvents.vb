@@ -4,17 +4,16 @@ Imports System.IO
 
 Imports System.Environment
 Imports Microsoft.Win32
+
 Namespace My
-
-    ' The following events are available for MyApplication:
-    '
-    ' Startup: Raised when the application starts, before the startup form is created.
-    ' Shutdown: Raised after all application forms are closed.  This event is not raised if the application terminates abnormally.
-    ' UnhandledException: Raised if the application encounters an unhandled exception.
-    ' StartupNextInstance: Raised when launching a single-instance application and the application is already active.
-    ' NetworkAvailabilityChanged: Raised when the network connection is connected or disconnected.
+    ' Für MyApplication sind folgende Ereignisse verfügbar:
+    ' Startup: Wird beim Starten der Anwendung noch vor dem Erstellen des Startformulars ausgelöst.
+    ' Shutdown: Wird nach dem Schließen aller Anwendungsformulare ausgelöst.  Dieses Ereignis wird nicht ausgelöst, wenn die Anwendung mit einem Fehler beendet wird.
+    ' UnhandledException: Wird bei einem Ausnahmefehler ausgelöst.
+    ' StartupNextInstance: Wird beim Starten einer Einzelinstanzanwendung ausgelöst, wenn die Anwendung bereits aktiv ist. 
+    ' NetworkAvailabilityChanged: Wird beim Herstellen oder Trennen der Netzwerkverbindung ausgelöst.
     Partial Friend Class MyApplication
-
-        End Function
     End Class
 End Namespace
+
+

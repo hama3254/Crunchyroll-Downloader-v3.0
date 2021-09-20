@@ -210,12 +210,8 @@ Public Class ErrorDialog
         pictureBox3.Image = Main.CloseImg
     End Sub
 
-<<<<<<< Updated upstream
-        pictureBox3.Image = Main.CloseImg
-    End Sub
 
-=======
->>>>>>> Stashed changes
+
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
         PictureBox9.Enabled = True
         PictureBox9.Cursor = Cursors.Hand

@@ -21,6 +21,17 @@
             The browser initialized - boolean represented as 0 (false) and 1(true) as we use Interlocker to increment/reset
             </summary>
         </member>
+        <member name="F:CefSharp.WinForms.ChromiumWebBrowser.disposeSignaled">
+            <summary>
+            The value for disposal, if it's 1 (one) then this instance is either disposed
+            or in the process of getting disposed
+            </summary>
+        </member>
+        <member name="F:CefSharp.WinForms.ChromiumWebBrowser.browser">
+            <summary>
+            The browser
+            </summary>
+        </member>
         <member name="P:CefSharp.WinForms.ChromiumWebBrowser.CanExecuteJavascriptInMainFrame">
             <summary>
             A flag that indicates if you can execute javascript in the main frame.
@@ -97,6 +108,11 @@
         <member name="P:CefSharp.WinForms.ChromiumWebBrowser.AudioHandler">
             <summary>
             Implement <see cref="T:CefSharp.IAudioHandler" /> to handle audio events.
+            </summary>
+        </member>
+        <member name="P:CefSharp.WinForms.ChromiumWebBrowser.FrameHandler">
+            <summary>
+            Implement <see cref="T:CefSharp.IFrameHandler" /> to handle frame events.
             </summary>
         </member>
         <member name="P:CefSharp.WinForms.ChromiumWebBrowser.FocusHandler">
@@ -238,7 +254,13 @@
         <member name="M:CefSharp.WinForms.ChromiumWebBrowser.LoadUrlAsync(System.String,System.Threading.SynchronizationContext)">
             <inheritdoc/>
         </member>
-        <member name="M:CefSharp.WinForms.ChromiumWebBrowser.FreeHandlersExceptLifeSpan">
+        <member name="M:CefSharp.WinForms.ChromiumWebBrowser.OnAfterBrowserCreated(CefSharp.IBrowser)">
+            <summary>
+            Called after browser created.
+            </summary>
+            <param name="browser">The browser.</param>
+        </member>
+        <member name="M:CefSharp.WinForms.ChromiumWebBrowser.FreeHandlersExceptLifeSpanAndFocus">
             <summary>
             Sets the handler references to null.
             Where required also calls Dispose().
@@ -270,11 +292,6 @@
         <member name="F:CefSharp.WinForms.ChromiumWebBrowser.parentFormMessageInterceptor">
             <summary>
             The parent form message interceptor
-            </summary>
-        </member>
-        <member name="F:CefSharp.WinForms.ChromiumWebBrowser.browser">
-            <summary>
-            The browser
             </summary>
         </member>
         <member name="F:CefSharp.WinForms.ChromiumWebBrowser.designMode">
@@ -316,12 +333,6 @@
             <summary>
             The request context (we deliberately use a private variable so we can throw an exception if
             user attempts to set after browser created)
-            </summary>
-        </member>
-        <member name="F:CefSharp.WinForms.ChromiumWebBrowser.disposeSignaled">
-            <summary>
-            The value for disposal, if it's 1 (one) then this instance is either disposed
-            or in the process of getting disposed
             </summary>
         </member>
         <member name="F:CefSharp.WinForms.ChromiumWebBrowser.parkingControl">
@@ -547,12 +558,6 @@
              windowInfo.ExStyle &amp;= ~WS_EX_NOACTIVATE;
             </code>
              </example>
-        </member>
-        <member name="M:CefSharp.WinForms.ChromiumWebBrowser.CefSharp#Internals#IWebBrowserInternal#OnAfterBrowserCreated(CefSharp.IBrowser)">
-            <summary>
-            Called after browser created.
-            </summary>
-            <param name="browser">The browser.</param>
         </member>
         <member name="M:CefSharp.WinForms.ChromiumWebBrowser.CefSharp#Internals#IWebBrowserInternal#SetAddress(CefSharp.AddressChangedEventArgs)">
             <summary>

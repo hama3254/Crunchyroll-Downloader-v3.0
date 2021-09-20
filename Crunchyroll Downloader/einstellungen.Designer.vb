@@ -387,11 +387,7 @@ Partial Class Einstellungen
         Me.TabPage2.Location = New System.Drawing.Point(4, 44)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-<<<<<<< Updated upstream
         Me.TabPage2.Size = New System.Drawing.Size(501, 519)
-=======
-        Me.TabPage2.Size = New System.Drawing.Size(501, 528)
->>>>>>> Stashed changes
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -1090,11 +1086,7 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
         Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-<<<<<<< Updated upstream
         Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
-=======
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
->>>>>>> Stashed changes
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1143,11 +1135,7 @@ Partial Class Einstellungen
         Me.TabPage6.Location = New System.Drawing.Point(4, 44)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-<<<<<<< Updated upstream
         Me.TabPage6.Size = New System.Drawing.Size(501, 519)
-=======
-        Me.TabPage6.Size = New System.Drawing.Size(501, 528)
->>>>>>> Stashed changes
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = "Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1345,11 +1333,7 @@ Partial Class Einstellungen
         Me.TabPage8.Controls.Add(Me.GroupBox8)
         Me.TabPage8.Location = New System.Drawing.Point(4, 44)
         Me.TabPage8.Name = "TabPage8"
-<<<<<<< Updated upstream
         Me.TabPage8.Size = New System.Drawing.Size(501, 519)
-=======
-        Me.TabPage8.Size = New System.Drawing.Size(501, 528)
->>>>>>> Stashed changes
         Me.TabPage8.TabIndex = 6
         Me.TabPage8.Text = "  AoD"
         '
@@ -1421,11 +1405,7 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label5)
         Me.TabPage7.Location = New System.Drawing.Point(4, 44)
         Me.TabPage7.Name = "TabPage7"
-<<<<<<< Updated upstream
         Me.TabPage7.Size = New System.Drawing.Size(501, 519)
-=======
-        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
->>>>>>> Stashed changes
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = "About   "
         '

@@ -35,10 +35,7 @@ Partial Class Anime_Add
         Me.TextBox2 = New MetroFramework.Controls.MetroTextBox()
 
         Me.textBox2 = New MetroFramework.Controls.MetroTextBox()
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         Me.groupBox2 = New System.Windows.Forms.GroupBox()
         Me.comboBox4 = New MetroFramework.Controls.MetroComboBox()
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
@@ -233,11 +230,7 @@ Partial Class Anime_Add
         Me.textBox2.UseSelectable = True
         Me.textBox2.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
         Me.textBox2.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
-<<<<<<< Updated upstream
 
-=======
-        '
->>>>>>> Stashed changes
         'groupBox2
         '
         Me.groupBox2.BackColor = System.Drawing.Color.Transparent
@@ -405,18 +398,12 @@ Partial Class Anime_Add
         Me.Controls.Add(Me.btn_dl)
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Close)
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         Me.Controls.Add(Me.groupBox1)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.groupBox2)
         Me.Font = New System.Drawing.Font("Arial", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         Me.Name = "Anime_Add"
         Me.Padding = New System.Windows.Forms.Padding(10, 60, 20, 20)
         Me.Text = "Add Video"

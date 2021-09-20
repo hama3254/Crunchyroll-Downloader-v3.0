@@ -4912,7 +4912,7 @@ Public Class Main
                                      End Function))
             End If
 
-
+            DefaultName = DefaultName.Replace(":", "")
 
             DownloadPfad = UseSubfolder(FunimationTitle, FunimationSeason, Pfad)
 
@@ -4920,13 +4920,30 @@ Public Class Main
                 ' Nein! Jetzt erstellen...
                 Try
                     Directory.CreateDirectory(Path.GetDirectoryName(DownloadPfad))
+                    DownloadPfad = Chr(34) + DownloadPfad + DefaultName + VideoFormat + Chr(34)
+
                 Catch ex As Exception
                     ' Ordner wurde nich erstellt
-                    DownloadPfad = Pfad '+ "\" + DefaultName + VideoFormat
+                    DownloadPfad = Chr(34) + Pfad + DefaultName + VideoFormat + Chr(34)
                 End Try
+            Else
+                DownloadPfad = Chr(34) + DownloadPfad + DefaultName + VideoFormat + Chr(34)
             End If
 
-            DownloadPfad = DownloadPfad + DefaultName + VideoFormat
+
+            'DownloadPfad = UseSubfolder(FunimationTitle, FunimationSeason, Pfad)
+
+            'If Not Directory.Exists(Path.GetDirectoryName(DownloadPfad)) Then
+            '    ' Nein! Jetzt erstellen...
+            '    Try
+            '        Directory.CreateDirectory(Path.GetDirectoryName(DownloadPfad))
+            '    Catch ex As Exception
+            '        ' Ordner wurde nich erstellt
+            '        DownloadPfad = Pfad '+ "\" + DefaultName + VideoFormat
+            '    End Try
+            'End If
+
+            'DownloadPfad = DownloadPfad + DefaultName + VideoFormat
 
 
 #Region "lösche doppel download"
@@ -5577,7 +5594,7 @@ Public Class Main
             Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + FunimationDub
             Me.Invoke(New Action(Function() As Object
-                                     ListItemAdd(Pfad_DL, L1Name, DefaultName, ResoHTMLDisplay, "Unknown", SubValuesToDisplay(), thumbnail4, Funimation_m3u8_final, Chr(34) + DownloadPfad + Chr(34), "FM")
+                                     ListItemAdd(Pfad_DL, L1Name, DefaultName, ResoHTMLDisplay, "Unknown", SubValuesToDisplay(), thumbnail4, Funimation_m3u8_final, DownloadPfad, "FM")
                                      Return Nothing
                                  End Function))
             liList.Add(My.Resources.htmlvorThumbnail + thumbnail4 + My.Resources.htmlnachTumbnail + FunimationTitle + " <br> " + FunimationSeason + " " + FunimationEpisode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + DefaultName + "-->")
@@ -5676,7 +5693,7 @@ Public Class Main
             If b = False Then
                 Try
                     If Address = "https://www.crunchyroll.com/" Then
-                        b = True
+
                     ElseIf Address = "https://www.crunchyroll.com/en-gb" Then
                         b = True
                     ElseIf Address = "https://www.crunchyroll.com/es" Then
@@ -5922,6 +5939,12 @@ Public Class Main
                 End If
             End If
             If CBool(InStr(requesturl, "/data/v1/shows/")) Then
+
+                MsgBox("The new Funimation Overview is not supportet yet!", MsgBoxStyle.Information)
+                b = True
+                LoadedUrls.Clear()
+                Exit Sub
+
 
                 'Dim ShowJson As String = Nothing
 

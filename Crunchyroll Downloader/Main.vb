@@ -5923,18 +5923,18 @@ Public Class Main
             End If
             If CBool(InStr(requesturl, "/data/v1/shows/")) Then
 
-                Dim ShowJson As String = Nothing
+                'Dim ShowJson As String = Nothing
 
-                Try
-                    Using client As New WebClient()
-                        client.Encoding = System.Text.Encoding.UTF8
-                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                        ShowJson = client.DownloadString(requesturl)
-                    End Using
-                Catch ex As Exception
-                    Debug.WriteLine("error- getting ShowJson data")
+                'Try
+                '    Using client As New WebClient()
+                '        client.Encoding = System.Text.Encoding.UTF8
+                '        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                '        ShowJson = client.DownloadString(requesturl)
+                '    End Using
+                'Catch ex As Exception
+                '    Debug.WriteLine("error- getting ShowJson data")
 
-                End Try
+                'End Try
 
 
 

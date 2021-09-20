@@ -1,0 +1,258 @@
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe.config
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Core.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Winforms.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbprojAssemblyReference.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Anime_Add.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.einstellungen.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.GeckoFX.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.SoftSub.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Startup.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Main.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Resources.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Reso.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.GenerateResource.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CoreCompileInputs.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CopyComplete
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe.config
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Core.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Winforms.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbprojAssemblyReference.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Anime_Add.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.einstellungen.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.GeckoFX.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Main.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Resources.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.GenerateResource.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CoreCompileInputs.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CopyComplete
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Debug_Mode.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.CRD_List_Item.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbprojAssemblyReference.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Anime_Add.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.einstellungen.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Debug_Mode.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.GeckoFX.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.CRD_List_Item.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Login.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Startup.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Main.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Reso.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.GenerateResource.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Resources.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CoreCompileInputs.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe.config
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Core.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Winforms.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Kopie\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CopyComplete
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe.config
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Core.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Winforms.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbprojAssemblyReference.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Anime_Add.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.einstellungen.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Debug_Mode.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Form1.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.GeckoFX.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.CRD_List_Item.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Login.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Startup.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Main.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Resources.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Reso.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.GenerateResource.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CoreCompileInputs.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CopyComplete
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Core.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - http\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Winforms.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Core.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Winforms.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe.config
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Core.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Winforms.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Core.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Winforms.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbprojAssemblyReference.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Anime_Add.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.einstellungen.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Debug_Mode.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.GeckoFX.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.CRD_List_Item.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Startup.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Main.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Resources.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Reso.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.GenerateResource.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CoreCompileInputs.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CopyComplete
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.5\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe.config
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Core.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Winforms.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\MetroFramework.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbprojAssemblyReference.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Anime_Add.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.einstellungen.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Debug_Mode.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.FirstStartup.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.GeckoFX.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.CRD_List_Item.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Resources.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.GenerateResource.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CoreCompileInputs.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CopyComplete
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\MetroFramework.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.ErrorDialog.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Main.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Core.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - UI\Crunchyroll Downloader\bin\x86\Debug\Geckofx-Winforms.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\MetroFramework.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\MetroFramework.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.ErrorDialog.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.network_scan.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\Newtonsoft.Json.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0\Crunchyroll Downloader\bin\x86\Debug\Newtonsoft.Json.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.network_scan.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Anime_Add.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Einstellungen.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Debug_Mode.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.CRD_List_Item.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Main.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.Resources.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.ErrorDialog.resources
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.GenerateResource.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CoreCompileInputs.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.Core.Runtime.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.Core.Runtime.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.Core.Runtime.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\chrome_100_percent.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\chrome_200_percent.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\chrome_elf.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\d3dcompiler_47.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\icudtl.dat
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\libcef.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\libEGL.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\libGLESv2.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\LICENSE.txt
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\am.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\ar.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\bg.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\bn.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\ca.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\cs.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\da.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\de.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\el.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\en-GB.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\en-US.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\es-419.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\es.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\et.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\fa.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\fi.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\fil.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\fr.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\gu.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\he.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\hi.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\hr.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\hu.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\id.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\it.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\ja.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\kn.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\ko.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\lt.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\lv.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\ml.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\mr.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\ms.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\nb.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\nl.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\pl.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\pt-BR.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\pt-PT.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\ro.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\ru.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\sk.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\sl.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\sr.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\sv.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\sw.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\ta.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\te.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\th.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\tr.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\uk.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\vi.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\zh-CN.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\locales\zh-TW.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\README.txt
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\resources.pak
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\snapshot_blob.bin
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\swiftshader\libEGL.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\swiftshader\libGLESv2.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\v8_context_snapshot.bin
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.BrowserSubprocess.Core.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.BrowserSubprocess.Core.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.BrowserSubprocess.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.BrowserSubprocess.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe.config
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.exe
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\Crunchyroll Downloader.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CEFRequestHandler.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.Core.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.WinForms.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\MetroFramework.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\Newtonsoft.Json.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CEFRequestHandler.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.Core.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.Core.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.WinForms.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\CefSharp.WinForms.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\Newtonsoft.Json.xml
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbproj.CopyComplete
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x86\Debug\MetroFramework.pdb
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll Downloader.vbprojAssemblyReference.cache
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x86\Debug\Crunchyroll_Downloader.CefSharp_Browser.resources

@@ -948,21 +948,56 @@ Public Class Anime_Add
             comboBox4.Enabled = True
 
             If ComboBox1.Text = "OmU" Then
+<<<<<<< Updated upstream
 
                 For i As Integer = 0 To AoD_OmU_Episodes.Count - 1
                     comboBox3.Items.Add(AoD_OmU_Episodes.Item(i).Name)
                     comboBox4.Items.Add(AoD_OmU_Episodes.Item(i).Name)
 
+=======
+                For i As Integer = 0 To AoD_OmU_Episodes.Count - 1
+                    comboBox3.Items.Add(AoD_OmU_Episodes.Item(i).Name)
+                    comboBox4.Items.Add(AoD_OmU_Episodes.Item(i).Name)
+>>>>>>> Stashed changes
                 Next
+
+
+                'old
+                'For i As Integer = 0 To AoD_OmUList.Count - 1
+                '    Dim DropDownTitle As String() = AoD_OmUList(i).Split(New String() {My.Resources.AoD_Titel}, System.StringSplitOptions.RemoveEmptyEntries)
+                '    Dim DropDownTitle2 As String() = DropDownTitle(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                '    Dim Title As String = DropDownTitle2(0)
+                '    Title = Title.Replace("&amp;", "&").Replace("&amp", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
+                '    Title = System.Text.RegularExpressions.Regex.Replace(Title, "[^\w\\-]", " ").Trim(CType(" ", Char()))
+                '    Title = Main.RemoveExtraSpaces(Title)
+                '    comboBox3.Items.Add(Title)
+                '    comboBox4.Items.Add(Title)
+                'Next
 
             ElseIf ComboBox1.Text = "Dub" Then
 
                 For i As Integer = 0 To AoD_Dub_Episodes.Count - 1
                     comboBox3.Items.Add(AoD_Dub_Episodes.Item(i).Name)
                     comboBox4.Items.Add(AoD_Dub_Episodes.Item(i).Name)
+<<<<<<< Updated upstream
 
                 Next
 
+=======
+                Next
+
+                'old
+                'For i As Integer = 0 To AoD_DubList.Count - 1
+                '    Dim DropDownTitle As String() = AoD_DubList(i).Split(New String() {My.Resources.AoD_Titel}, System.StringSplitOptions.RemoveEmptyEntries)
+                '    Dim DropDownTitle2 As String() = DropDownTitle(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                '    Dim Title As String = DropDownTitle2(0)
+                '    Title = Title.Replace("&amp;", "&").Replace("&amp", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
+                '    Title = System.Text.RegularExpressions.Regex.Replace(Title, "[^\w\\-]", " ").Trim(CType(" ", Char()))
+                '    Title = Main.RemoveExtraSpaces(Title)
+                '    comboBox3.Items.Add(Title)
+                '    comboBox4.Items.Add(Title)
+                'Next
+>>>>>>> Stashed changes
             End If
 
         End If
@@ -1430,10 +1465,15 @@ Public Class Anime_Add
 
             End Try
 
+<<<<<<< Updated upstream
 
             AoDTitle = AoDTitle.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
             AoDTitle = System.Text.RegularExpressions.Regex.Replace(AoDTitle, "[^\w\\-]", " ").Trim(CType(" ", Char()))
 
+=======
+            AoDTitle = AoDTitle.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
+            AoDTitle = System.Text.RegularExpressions.Regex.Replace(AoDTitle, "[^\w\\-]", " ").Trim(CType(" ", Char()))
+>>>>>>> Stashed changes
             AoDTitle = Main.RemoveExtraSpaces(AoDTitle)
 
             Pfad2 = UseSubfolder(AoD_Anime_Title, AoD_Season, Pfad2)
@@ -1748,7 +1788,10 @@ Public Class Anime_Add
 
 
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     Private Sub GroupBox1_VisibleChanged(sender As Object, e As EventArgs) Handles groupBox1.VisibleChanged
         If Not textBox2.Text = "Use Custom Name" Then
             textBox2.Text = "Use Custom Name"

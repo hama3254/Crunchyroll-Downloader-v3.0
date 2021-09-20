@@ -236,6 +236,18 @@ Public Class CefSharp_Browser
         End If
     End Sub
 
+<<<<<<< Updated upstream
+=======
+    Private Sub WebBrowser1_GotFocus(sender As Object, e As EventArgs) Handles WebBrowser1.GotFocus
+        'Debug_Mode.ActiveForm = True
+    End Sub
+
+    Private Sub WebBrowser1_LostFocus(sender As Object, e As EventArgs) Handles WebBrowser1.LostFocus
+        'Debug_Mode.TopMost = False
+    End Sub
+
+
+>>>>>>> Stashed changes
 
     Private Sub ObserveHttp(e As RequestResourceEventArgs) 'Handles RequestResource.GetUrl
         'Debug.WriteLine(e.RequestUrl)
@@ -275,6 +287,7 @@ Public Class CefSharp_Browser
                 Main.LoadedUrls.Add(e.RequestUrl)
             End If
             Debug.WriteLine(e.RequestUrl)
+<<<<<<< Updated upstream
         ElseIf CBool(InStr(e.RequestUrl, "/data/v1/shows/")) Then
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
@@ -282,6 +295,8 @@ Public Class CefSharp_Browser
                 Main.LoadedUrls.Add(e.RequestUrl)
             End If
             Debug.WriteLine(e.RequestUrl)
+=======
+>>>>>>> Stashed changes
         End If
 
         Exit Sub
@@ -451,5 +466,9 @@ Public Class CefSharp_Browser
     End Sub
 
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 End Class
 

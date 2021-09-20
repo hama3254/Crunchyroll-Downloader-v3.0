@@ -77,18 +77,26 @@ Public Class network_scan
         Dim ffmpegOutput2() As String = ffmpegOutput.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
         For i As Integer = 0 To ffmpegOutput2.Count - 1
 
+<<<<<<< Updated upstream
 
             If CBool(InStr(ffmpegOutput2(i), ": Video:")) Then
 
+=======
+            If CBool(InStr(ffmpegOutput2(i), ": Video:")) Then
+>>>>>>> Stashed changes
                 Dim ZeileReso() As String = ffmpegOutput2(i).Split(New String() {" ["}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim ZeileReso2() As String = ZeileReso(0).Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim ZeileReso3() As String = ffmpegOutput2(i).Split(New String() {": Video:"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim ZeileReso4() As String = ZeileReso3(0).Split(New String() {"Stream #"}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
+<<<<<<< Updated upstream
 
                 If CBool(InStr(ZeileReso2(ZeileReso2.Count - 1), ", ")) Then
 
+=======
+                If CBool(InStr(ZeileReso2(ZeileReso2.Count - 1), ", ")) Then
+>>>>>>> Stashed changes
                     Dim ZeileReso5() As String = ZeileReso2(ZeileReso2.Count - 1).Split(New String() {", "}, System.StringSplitOptions.RemoveEmptyEntries)
                     ComboBox3.Items.Add(ZeileReso5(0).Trim + ":--:" + ZeileReso4(1))
 
@@ -97,7 +105,10 @@ Public Class network_scan
 
                 End If
             ElseIf CBool(InStr(ffmpegOutput2(i), ": Audio:")) Then
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
                 Dim ZeileStream() As String = ffmpegOutput2(i).Split(New String() {": Audio:"}, System.StringSplitOptions.RemoveEmptyEntries)
 
                 ComboBox3.Items.Add("Audio:" + ZeileStream(1))
@@ -253,13 +264,20 @@ Public Class network_scan
                 End If
 
 
+            ElseIf CBool(InStr(ffmpegOutput2(i), ": Audio:")) Then
+                Dim ZeileStream() As String = ffmpegOutput2(i).Split(New String() {": Audio:"}, System.StringSplitOptions.RemoveEmptyEntries)
 
+<<<<<<< Updated upstream
             ElseIf CBool(InStr(ffmpegOutput2(i), ": Audio:")) Then
                 Dim ZeileStream() As String = ffmpegOutput2(i).Split(New String() {": Audio:"}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
                 ComboBox3.Items.Add("Audio:" + ZeileStream(1))
 
+=======
+                ComboBox3.Items.Add("Audio:" + ZeileStream(1))
+
+>>>>>>> Stashed changes
             ElseIf CBool(InStr(ffmpegOutput2(i), "Duration: N/A, bitrate: N/A")) Then
 
             ElseIf CBool(InStr(ffmpegOutput2(i), "Subtitle: ")) Then
@@ -312,6 +330,7 @@ Public Class network_scan
         Dim FilePfad As String = Main.Pfad + "\" + FileName
 
 
+<<<<<<< Updated upstream
 
         If CBool(InStr(ComboBox3.Text, "Audio:")) Then
             FilePfad = FilePfad + ".mka"
@@ -344,6 +363,39 @@ Public Class network_scan
 
             Dim RequestURL As String = ComboBox2.Text
 
+=======
+        If CBool(InStr(ComboBox3.Text, "Audio:")) Then
+            FilePfad = FilePfad + ".mka"
+
+
+            Dim m3u8Final As String = "-i " + Chr(34) + ComboBox2.Text + Chr(34) + " -c:a copy"
+
+
+
+
+            'MsgBox(m3u8Final)
+            Dim DisplayReso As String = "Audio"
+            Dim Pfad2 As String = Chr(34) + FilePfad + Chr(34)
+            Dim Title As String = FileName '+ ".mp4"
+            Dim L1Name_Split As String() = Main.WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim L1Name As String = L1Name_Split(1)
+            Me.Invoke(New Action(Function() As Object
+                                     Main.ListItemAdd(Main.Pfad, L1Name, Title, DisplayReso, "Unknown", "None", "", m3u8Final, Pfad2)
+                                     Main.liList.Add(My.Resources.htmlvorThumbnail + "" + My.Resources.htmlnachTumbnail + "<br>" + Title + My.Resources.htmlvorAufloesung + "[Auto]" + My.Resources.htmlvorSoftSubs + vbNewLine + "None" + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + Title + "-->")
+                                     Return Nothing
+                                 End Function))
+        Else
+
+            Dim client0 As New WebClient
+            client0.Encoding = Encoding.UTF8
+            If Main.WebbrowserCookie = Nothing Then
+            Else
+                client0.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
+            End If
+
+            Dim RequestURL As String = ComboBox2.Text
+
+>>>>>>> Stashed changes
             ComboBox2.Text = Nothing
 
             Dim RequestReso As String = Nothing
@@ -423,7 +475,10 @@ Public Class network_scan
 
 
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
                 'MsgBox(m3u8Final)
                 Dim DisplayReso As String = RequestReso.ToString + "p"
                 Dim Pfad2 As String = Chr(34) + FilePfad + Main.VideoFormat + Chr(34)
@@ -460,7 +515,10 @@ Public Class network_scan
                     client0.DownloadFileAsync(New Uri(RequestURL), FilePfad + ".dfxp")
                     CheckFile = FilePfad + ".dfxp"
                 End If
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
                 Pause(5)
                 If File.Exists(CheckFile) Then
                     NetworkStatusLabel.Text = "Subtitles have been Downloaded"
@@ -476,8 +534,11 @@ Public Class network_scan
             End If
 
         End If
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
     End Sub
 
     Private Sub ComboBox2_Click(sender As Object, e As EventArgs) Handles ComboBox2.Click

@@ -883,10 +883,25 @@ Public Class Anime_Add
             comboBox4.Items.Clear()
             comboBox3.Text = Nothing
             comboBox4.Text = Nothing
+            Dim ContentID As String = Nothing
+
+            For i As Integer = 0 To Main.FunimtaionSeasonList.Count - 1
+                If ComboBox1.Text = Main.FunimtaionSeasonList.Item(i).Title Then
+                    ContentID = Main.FunimtaionSeasonList.Item(i).ID
+                    Exit For
+                End If
+            Next
+
+            If ContentID = Nothing Then
+                MsgBox("error during season selection")
+                Exit Sub
+            End If
+
+            Dim BaseUrl() As String = Main.FunimationSeasonAPIUrl.Split(New String() {"/shows/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
 
-            Dim EpisodeJsonURL As String = "https://title-api.prd.funimationsvc.com/v1/seasons/" + Main.FunimtaionAPISeasonID.Item(ComboBox1.SelectedIndex) + Main.FunimationAPIRegion
+            Dim EpisodeJsonURL As String = BaseUrl(0) + "/seasons/" + ContentID + ".json"
             Dim EpisodeJson As String = Nothing
             Debug.WriteLine(EpisodeJsonURL)
 
@@ -904,9 +919,28 @@ Public Class Anime_Add
                 Exit Sub
             End Try
 
-
-
             FillFunimationEpisodes(EpisodeJson)
+            'Dim EpisodeJsonURL As String = "https://title-api.prd.funimationsvc.com/v1/seasons/" + Main.FunimtaionAPISeasonID.Item(ComboBox1.SelectedIndex) + Main.FunimationAPIRegion
+            'Dim EpisodeJson As String = Nothing
+            'Debug.WriteLine(EpisodeJsonURL)
+
+            'Try
+            '    Using client As New WebClient()
+            '        client.Encoding = System.Text.Encoding.UTF8
+            '        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+            '        EpisodeJson = client.DownloadString(EpisodeJsonURL)
+            '    End Using
+            'Catch ex As Exception
+            '    Debug.WriteLine("error- getting EpisodeJson data")
+            '    Debug.WriteLine(ex.ToString)
+            '    Main.FunimationJsonBrowser = "EpisodeJson"
+            '    CefSharp_Browser.WebBrowser1.Load(EpisodeJsonURL)
+            '    Exit Sub
+            'End Try
+
+
+
+            'FillFunimationEpisodes(EpisodeJson)
 
 
         ElseIf AoD_Mode = False Then
@@ -972,18 +1006,18 @@ Public Class Anime_Add
     Public Sub FillFunimationEpisodes(ByVal EpisodeJson As String)
 
         Main.FunimationEpisodeJSON = EpisodeJson
-
-
         comboBox3.Enabled = True
         comboBox4.Enabled = True
 
-        Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episodeNumber" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episodeNumber" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        'EpisodeJson.Split(New String() {Chr(34) + "episodeNumber" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        Debug.WriteLine(EpisodeSplit.Count.ToString)
         For i As Integer = 1 To EpisodeSplit.Count - 1
             Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
             comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
         Next
-
+        Main.WebbrowserURL = "https://funimation.com/js"
     End Sub
     Private Sub PictureBox1_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox1.MouseEnter
         PictureBox1.Image = My.Resources.add_mass_cancel_hover

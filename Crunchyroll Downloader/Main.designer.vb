@@ -45,6 +45,7 @@ Partial Class Main
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ToggleDebugModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TestDownloadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -178,7 +179,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -191,6 +192,11 @@ Partial Class Main
         '
         Me.OpenSettingsToolStripMenuItem.Name = "OpenSettingsToolStripMenuItem"
         resources.ApplyResources(Me.OpenSettingsToolStripMenuItem, "OpenSettingsToolStripMenuItem")
+        '
+        'TestDownloadToolStripMenuItem
+        '
+        Me.TestDownloadToolStripMenuItem.Name = "TestDownloadToolStripMenuItem"
+        resources.ApplyResources(Me.TestDownloadToolStripMenuItem, "TestDownloadToolStripMenuItem")
         '
         'Main
         '
@@ -242,4 +248,5 @@ Partial Class Main
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
     Friend WithEvents ToggleDebugModeToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OpenSettingsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents TestDownloadToolStripMenuItem As ToolStripMenuItem
 End Class

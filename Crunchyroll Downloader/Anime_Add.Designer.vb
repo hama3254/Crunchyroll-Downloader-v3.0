@@ -34,7 +34,7 @@ Partial Class Anime_Add
 
         Me.TextBox2 = New MetroFramework.Controls.MetroTextBox()
 
-        Me.textBox2 = New MetroFramework.Controls.MetroTextBox()
+      
 
         Me.groupBox2 = New System.Windows.Forms.GroupBox()
         Me.comboBox4 = New MetroFramework.Controls.MetroComboBox()

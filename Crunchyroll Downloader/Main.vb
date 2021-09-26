@@ -42,6 +42,8 @@ Public Class Main
     Public FunimationShowPath As String = Nothing
     Public FunimationEpisodeJSON As String = Nothing
     Public FunimtaionAPISeasonID As New List(Of String)
+    Public FunimtaionSeasonList As New List(Of FunimationOverview)
+    Public FunimationSeasonAPIUrl As String = Nothing
     Public FunimationJsonBrowser As String = Nothing
 
     Public Manager As New MetroStyleManager
@@ -375,11 +377,12 @@ Public Class Main
     Private Sub Form8_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.ContextMenuStrip = ContextMenuStrip1
 
-
         Dim tbtl As TextBoxTraceListener = New TextBoxTraceListener(TheTextBox)
 
         Trace.Listeners.Add(tbtl)
         b = True
+        Thread.CurrentThread.Name = "Main"
+        Debug.WriteLine("Thread Name: " + Thread.CurrentThread.Name)
 
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
@@ -2148,17 +2151,7 @@ Public Class Main
                     End If
                 End If
 
-                If KodiNaming = True Then
-                    Dim KodiString As String = "[S"
-                    If CR_Anime_Staffel_int = "0" Then
-                        CR_Anime_Staffel_int = "01"
-                    Else
-                        CR_Anime_Staffel_int = "0" + CR_Anime_Staffel_int
-                    End If
-                    KodiString = KodiString + CR_Anime_Staffel_int + " E" + CR_episode_int
-                    KodiString = KodiString + "] "
-                    CR_FilenName = KodiString + CR_FilenName
-                End If
+
 
 
                 If KodiNaming = True Then
@@ -4476,9 +4469,102 @@ Public Class Main
     End Sub
 
 #Region "Funimation JS "
-
-
     Public Sub GetFunimationJS_Seasons(Optional ByVal JsonUrl As String = Nothing, Optional ByVal Json As String = Nothing)
+
+        Dim SeasonJson As String = Nothing
+        Debug.WriteLine("JsonUrl: " + JsonUrl)
+        If JsonUrl = Nothing Then
+            SeasonJson = Json
+        Else
+            FunimationSeasonAPIUrl = JsonUrl
+            'Navigate(JsonUrl)
+            'FunimationJsonBrowser = "SeasonJson"
+            'Exit Sub
+
+            Try
+                Using client As New WebClient()
+                    client.Encoding = System.Text.Encoding.UTF8
+                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    SeasonJson = client.DownloadString(JsonUrl)
+
+
+                End Using
+            Catch ex As Exception
+                Debug.WriteLine("error- getting funimation SeasonJson data")
+                FunimationJsonBrowser = "SeasonJson"
+                Navigate(JsonUrl)
+                'Navigate(JsonUrl)
+                Exit Sub
+            End Try
+        End If
+
+
+
+        Dim ser As JObject = JObject.Parse(SeasonJson)
+        Dim data As List(Of JToken) = ser.Children().ToList
+        Dim Slug As String = Nothing
+        Dim Title As String = Nothing
+        Dim ID As String = Nothing
+
+        For Each item As JProperty In data
+            item.CreateReader()
+            'MsgBox(item.Name)
+            Select Case item.Name
+                Case "slug"
+                    Slug = item.Value.ToString
+
+                Case "index" 'each record is inside the entries array
+
+                    Dim SubData2 As List(Of JToken) = item.Values("seasons").Children().ToList
+
+                    For i As Integer = 0 To SubData2.Count - 1
+                        Dim SubItem As JToken = SubData2.Item(i)
+                        Dim SeasonSubData As List(Of JToken) = SubItem.Children().ToList
+
+                        For Each SeasonSubItem As JProperty In SeasonSubData
+                            SeasonSubItem.CreateReader()
+                            Select Case SeasonSubItem.Name
+                                Case "contentId"
+                                    'MsgBox(SeasonSubItem.Value.ToString)
+                                    ID = SeasonSubItem.Value.ToString
+                                Case "title"
+                                    ' MsgBox(SeasonSubItem.Value.Item("en").ToString)
+                                    Title = SeasonSubItem.Value.Item("en").ToString
+                                    FunimtaionSeasonList.Add(New FunimationOverview(Slug, ID, Title))
+                            End Select
+                        Next
+                    Next
+            End Select
+
+
+
+        Next
+
+
+        Anime_Add.groupBox2.Visible = True
+        Anime_Add.PictureBox1.Enabled = True
+        Anime_Add.PictureBox1.Visible = True
+        Anime_Add.groupBox1.Visible = False
+        Anime_Add.ComboBox1.Items.Clear()
+        Anime_Add.comboBox3.Items.Clear()
+        Anime_Add.comboBox4.Items.Clear()
+        Anime_Add.ComboBox1.Text = Nothing
+        Anime_Add.comboBox3.Text = Nothing
+        Anime_Add.comboBox4.Text = Nothing
+        Anime_Add.ComboBox1.Enabled = True
+        Anime_Add.comboBox3.Enabled = False
+        Anime_Add.comboBox4.Enabled = False
+        WebbrowserURL = "https://funimation.com/js"
+
+        Debug.WriteLine("Count: " + FunimtaionSeasonList.Count.ToString)
+        For i As Integer = 1 To FunimtaionSeasonList.Count - 1
+            Debug.WriteLine(FunimtaionSeasonList.Item(i).Title)
+            Anime_Add.ComboBox1.Items.Add(FunimtaionSeasonList.Item(i).Title)
+        Next
+
+    End Sub
+
+    Public Sub GetFunimationJS_SeasonsOld(Optional ByVal JsonUrl As String = Nothing, Optional ByVal Json As String = Nothing)
 
 
         FunimtaionAPISeasonID.Clear()
@@ -4565,14 +4651,14 @@ Public Class Main
             Debug.WriteLine("EpisodeJson: " + FunimationEpisodeJSON)
             Anime_Add.Add_Display.Text = "preparing ...."
             Dim ListOfEpisodes As New List(Of String)
-            Dim BaseURL As String = "https://www.funimation.com/shows/"
-            If FunimationRegion IsNot Nothing Then
+            Dim BaseURL As String = "https://www.funimation.com/v/" + FunimtaionSeasonList.Item(0).Slug + "/"
+            'If FunimationRegion IsNot Nothing Then
 
-                BaseURL = "https://www.funimation.com/" + FunimationRegion + "/shows/"
-            Else
+            '    BaseURL = "https://www.funimation.com/" + FunimationRegion + "/shows/"
+            'Else
 
-                BaseURL = "https://www.funimation.com/en/shows/"
-            End If
+            '    BaseURL = "https://www.funimation.com/en/shows/"
+            'End If
 
             'Dim EpisodeSplit() As String = FunimationEpisodeJSON.Split(New String() {Chr(34) + "slug" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
@@ -4595,8 +4681,12 @@ Public Class Main
                         For Each Entry As JObject In item.Values
                             Dim slug As String = Entry("slug").ToString
 
-                            Debug.WriteLine(BaseURL + FunimationShowPath + slug)
-                            ListOfEpisodes.Add(BaseURL + FunimationShowPath + slug) '+ FunimationAPIRegion)
+                            'Debug.WriteLine(BaseURL + FunimationShowPath + slug)
+                            'ListOfEpisodes.Add(BaseURL + FunimationShowPath + slug) '+ FunimationAPIRegion)
+
+                            Debug.WriteLine(BaseURL + slug)
+                            ListOfEpisodes.Add(BaseURL + slug)
+
 
                         Next
 
@@ -4707,6 +4797,7 @@ Public Class Main
         End If
     End Function
     Public Sub GetFunimationJS_VideoProxy(Optional ByVal v1JsonURL As String = Nothing, Optional ByVal v1JsonData As String = Nothing)
+        LoadedUrls.Clear()
         Dim Evaluator = New Thread(Sub() Me.GetFunimationJS_Video(v1JsonURL, v1JsonData))
         Evaluator.Start()
     End Sub
@@ -4718,6 +4809,7 @@ Public Class Main
             v1Json = v1JsonData
         Else
             Try
+                'Throw New Exception("TEst")
                 Using client As New WebClient()
                     client.Encoding = System.Text.Encoding.UTF8
                     client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
@@ -5673,12 +5765,40 @@ Public Class Main
 #Region "process html"
 
     Public Sub ProcessHTML(ByVal document As String, ByVal Address As String, ByVal DocumentTitle As String)
-        If b = True Then
-            Exit Sub
-        End If
         Dim localHTML As String = document
         Debug.WriteLine(Date.Now.ToString + "." + Date.Now.Millisecond.ToString)
         Debug.WriteLine(Address)
+
+        If CBool(InStr(Address, "title-api.prd.funimationsvc.com")) Then
+
+            If FunimationJsonBrowser = "EpisodeJson" Then
+                Anime_Add.FillFunimationEpisodes(localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace("<html><head></head><pre style=" + Chr(34) + "word-wrap: break-word; white-space: pre-wrap;" + Chr(34) + ">", "")) '
+                FunimationJsonBrowser = Nothing
+                WebbrowserURL = "https://funimation.com/js"
+            ElseIf FunimationJsonBrowser = "v1Json" Then
+                GetFunimationJS_VideoProxy(Nothing, localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace("<html><head></head><pre style=" + Chr(34) + "word-wrap: break-word; white-space: pre-wrap;" + Chr(34) + ">", "")) '
+                FunimationJsonBrowser = Nothing
+                WebbrowserURL = "https://funimation.com/js"
+            End If
+
+            Exit Sub
+        ElseIf CBool(InStr(Address, "/data/v2/shows/")) Then
+
+            If FunimationJsonBrowser = "SeasonJson" Then
+                'My.Computer.Clipboard.SetText(localHTML)
+                FunimationSeasonAPIUrl = Address
+                GetFunimationJS_Seasons(Nothing, localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace("<html><head></head><pre style=" + Chr(34) + "word-wrap: break-word; white-space: pre-wrap;" + Chr(34) + ">", "")) '
+                FunimationJsonBrowser = Nothing
+                WebbrowserURL = "https://funimation.com/js"
+            End If
+            Exit Sub
+        End If
+
+
+        If b = True Then
+            Exit Sub
+        End If
+
 
         'MsgBox("loaded!")
 
@@ -5734,7 +5854,7 @@ Public Class Main
                         Exit Sub
                     ElseIf CBool(InStr(localHTML, "season-dropdown content-menu block")) Then
                         b = True
-                        Anime_Add.textBox2.Text = "Use Custom Name"
+                        Anime_Add.TextBox2.Text = "Use Custom Name"
                         WebbrowserURL = Address
                         WebbrowserText = localHTML
                         WebbrowserTitle = DocumentTitle
@@ -5744,7 +5864,7 @@ Public Class Main
                         Exit Sub
                     ElseIf CBool(InStr(localHTML, "wrapper container-shadow hover-classes")) Then
                         b = True
-                        Anime_Add.textBox2.Text = "Use Custom Name"
+                        Anime_Add.TextBox2.Text = "Use Custom Name"
                         WebbrowserURL = Address
                         WebbrowserText = localHTML
                         WebbrowserTitle = DocumentTitle
@@ -5816,29 +5936,14 @@ Public Class Main
                         Anime_Add.StatusLabel.Text = "Status: checking traffic - " + i.ToString
                         Pause(1)
                     Next
-                    ProcessUrls()
+                    Dim Evaluator = New Thread(Sub() Me.ProcessUrls())
+                    Evaluator.Start()
+
                     Exit Sub
                 End If
             End If
 
-        ElseIf CBool(InStr(Address, "title-api.prd.funimationsvc.com")) Then
 
-            If FunimationJsonBrowser = "SeasonJson" Then
-                'My.Computer.Clipboard.SetText(localHTML)
-                GetFunimationJS_Seasons(Nothing, localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace("<html><head></head><pre style=" + Chr(34) + "word-wrap: break-word; white-space: pre-wrap;" + Chr(34) + ">", "")) '
-                FunimationJsonBrowser = Nothing
-                WebbrowserURL = "https://funimation.com/js"
-            ElseIf FunimationJsonBrowser = "EpisodeJson" Then
-                Anime_Add.FillFunimationEpisodes(localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace("<html><head></head><pre style=" + Chr(34) + "word-wrap: break-word; white-space: pre-wrap;" + Chr(34) + ">", "")) '
-                FunimationJsonBrowser = Nothing
-                WebbrowserURL = "https://funimation.com/js"
-            ElseIf FunimationJsonBrowser = "v1Json" Then
-                GetFunimationJS_VideoProxy(Nothing, localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace("<html><head></head><pre style=" + Chr(34) + "word-wrap: break-word; white-space: pre-wrap;" + Chr(34) + ">", "")) '
-                FunimationJsonBrowser = Nothing
-                WebbrowserURL = "https://funimation.com/js"
-            End If
-
-            Exit Sub
         ElseIf CBool(InStr(Address, "anime-on-demand.de")) Then
             Dim Collector As New TaskCookieVisitor
             Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
@@ -5892,6 +5997,7 @@ Public Class Main
     Public Sub ProcessUrls()
 
         Debug.WriteLine(LoadedUrls.Count.ToString)
+        Debug.WriteLine("Thread Name: " + Thread.CurrentThread.Name)
 
         Dim VRVSeason As String = Nothing
 
@@ -5938,10 +6044,11 @@ Public Class Main
                     'Exit Sub
                 End If
             End If
-            If CBool(InStr(requesturl, "/data/v1/shows/")) Then
-
-                MsgBox("The new Funimation Overview is not supportet yet!", MsgBoxStyle.Information)
+            If CBool(InStr(requesturl, "/data/v2/shows/")) Then
                 b = True
+                'MsgBox("The new Funimation Overview is not supportet yet!", MsgBoxStyle.Information)
+                GetFunimationJS_Seasons(requesturl)
+
                 LoadedUrls.Clear()
                 Exit Sub
 
@@ -6001,24 +6108,26 @@ Public Class Main
 
                     'Else
                     If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com/v1/show")) And CBool(InStr(requesturl, "/episodes/")) Then
+                        b = True
                         GetFunimationJS_VideoProxy(requesturl)
                         Debug.WriteLine("processing :" + requesturl)
-                        b = True
+
                         LoadedUrls.Clear()
+
                         Exit Sub
 
-                    Else
-                        If FunimationEpisodeJSON = Nothing Then
-                            Debug.WriteLine("processing overview")
-                            Me.Invoke(New Action(Function() As Object
-                                                     'MsgBox(WebbrowserURL)
-                                                     Anime_Add.ProcessFunimationJS(WebbrowserURL)
-                                                     Return Nothing
-                                                 End Function))
-                            b = True
-                            LoadedUrls.Clear()
-                            Exit Sub
-                        End If
+                        'Else
+                        '    If FunimationEpisodeJSON = Nothing Then
+                        '        Debug.WriteLine("processing overview")
+                        '        Me.Invoke(New Action(Function() As Object
+                        '                                 'MsgBox(WebbrowserURL)
+                        '                                 Anime_Add.ProcessFunimationJS(WebbrowserURL)
+                        '                                 Return Nothing
+                        '                             End Function))
+                        '        b = True
+                        '        LoadedUrls.Clear()
+                        '        Exit Sub
+                        'End If
 
                     End If
 
@@ -6721,11 +6830,34 @@ Public Class Main
         ListView1.Select()
     End Sub
 
+    Private Sub TestDownloadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TestDownloadToolStripMenuItem.Click
+        For i2 As Integer = 0 To LoadedUrls.Count - 1
+            Debug.WriteLine(LoadedUrls.Item(i2))
+        Next
+    End Sub
+
 #End Region
 
 
 End Class
 
+Public Class FunimationOverview
+    Public ID As String
+    Public Title As String
+    Public Slug As String
+
+    Public Sub New(ByVal Slug As String, ByVal ID As String, ByVal Title As String)
+        Me.ID = ID
+        Me.Title = Title
+        Me.Slug = Slug
+    End Sub
+
+    Public Overrides Function ToString() As String
+        Return String.Format("{0}, {1}, {2}", Me.Slug, Me.ID, Me.Title)
+    End Function
+
+
+End Class
 
 
 

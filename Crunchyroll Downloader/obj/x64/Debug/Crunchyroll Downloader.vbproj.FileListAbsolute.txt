@@ -106,3 +106,4 @@ D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - Ce
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x64\Debug\Crunchyroll Downloader.pdb
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x64\Debug\Crunchyroll Downloader.vbprojAssemblyReference.cache
 D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x64\Debug\libcef.dll
+D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\obj\x64\Debug\Crunchyroll_Downloader.ErrorBrowser.resources

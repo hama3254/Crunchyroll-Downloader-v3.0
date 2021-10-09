@@ -152,6 +152,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="ErrorBrowser.Designer.vb">
+      <DependentUpon>ErrorBrowser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorBrowser.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GlobalSuppressions.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -220,6 +226,9 @@
     <Compile Include="Subfolder.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ErrorBrowser.resx">
+      <DependentUpon>ErrorBrowser.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="network_scan.resx">
       <DependentUpon>network_scan.vb</DependentUpon>
     </EmbeddedResource>

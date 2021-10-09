@@ -84,6 +84,9 @@ Public Class Main
     Public NonCR_URL As String = Nothing
     Public DlSoftSubsRDY As Boolean = True
     Public DialogTaskString As String
+    Public ErrorBrowserString As String
+    Public ErrorBrowserUrl As String
+    Public ErrorBrowserBackString As String
     Public UserCloseDialog As Boolean = False
     Dim Aktuell As String
     Dim Gesamt As String
@@ -3915,10 +3918,9 @@ Public Class Main
                 ElseIf Not SystemWebBrowserCookie = Nothing Then
                     client0.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
                 End If
-
                 Dim str0 As String = client0.DownloadString("https://www.funimation.com/api/showexperience/" + Player_ID2(0) + "/?pinst_id=fzQc9p9f")
-                'MsgBox("https://www.funimation.com/api/showexperience/" + Player_ID2(0) + "/?pinst_id=fzQc9p9f")
-                'MsgBox(str0)
+
+
                 Dim Funimation_m3u8() As String = str0.Split(New String() {My.Resources.Funimation_src_string}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim Funimation_m3u8_Main As String = Nothing
                 For i As Integer = 0 To Funimation_m3u8.Count - 1
@@ -5123,18 +5125,44 @@ Public Class Main
                                          Return Nothing
                                      End Function))
 
+                Dim showexperience As String = Nothing
+                Try
+                    'Throw New System.Exception("Test")
+                    Using client As New WebClient()
+                        client.Encoding = System.Text.Encoding.UTF8
+                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                        showexperience = client.DownloadString("https://www.funimation.com/api/showexperience/" + ExperienceID + "/?pinst_id=fzQc9p9f")
 
 
-                If Not WebbrowserCookie = Nothing Then
-                    client0.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
-                ElseIf Not SystemWebBrowserCookie = Nothing Then
-                    client0.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
-                End If
+                    End Using
+                Catch ex As Exception
+                    Debug.WriteLine("error- getting funimation showexperience data")
+                    Me.Invoke(New Action(Function() As Object
+                                             'Me.Text = "Status: Resolution not found!"
+                                             'Me.Invalidate()
+                                             ErrorBrowserString = "Funimation_showexperience"
+                                             ErrorBrowserUrl = "https://www.funimation.com/api/showexperience/" + ExperienceID + "/?pinst_id=fzQc9p9f"
+                                             ErrorBrowser.ShowDialog()
+                                             Return Nothing
+                                         End Function))
+                    showexperience = ErrorBrowserBackString
 
-                Dim str0 As String = client0.DownloadString("https://www.funimation.com/api/showexperience/" + ExperienceID + "/?pinst_id=fzQc9p9f")
-                'MsgBox("https://www.funimation.com/api/showexperience/" + Player_ID2(0) + "/?pinst_id=fzQc9p9f")
-                'MsgBox(str0)
-                Dim Funimation_m3u8() As String = str0.Split(New String() {My.Resources.Funimation_src_string}, System.StringSplitOptions.RemoveEmptyEntries)
+                End Try
+
+
+
+
+                'If Not WebbrowserCookie = Nothing Then
+                '    client0.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                'ElseIf Not SystemWebBrowserCookie = Nothing Then
+                '    client0.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
+                'End If
+
+                'Dim str0 As String = client0.DownloadString("")
+                ''MsgBox("https://www.funimation.com/api/showexperience/" + Player_ID2(0) + "/?pinst_id=fzQc9p9f")
+                ''MsgBox(str0)
+
+                Dim Funimation_m3u8() As String = showexperience.Split(New String() {My.Resources.Funimation_src_string}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim Funimation_m3u8_Main As String = Nothing
                 For i As Integer = 0 To Funimation_m3u8.Count - 1
                     If CBool(InStr(Funimation_m3u8(i), "m3u8?")) Then
@@ -5145,7 +5173,7 @@ Public Class Main
                 Next
                 If Funimation_m3u8_Main = Nothing Then
 
-                    If MessageBox.Show("No media found in:" + vbNewLine + str0, "No media", MessageBoxButtons.RetryCancel) = DialogResult.Retry Then
+                    If MessageBox.Show("No media found in:" + vbNewLine + showexperience, "No media", MessageBoxButtons.RetryCancel) = DialogResult.Retry Then
                         Me.Invoke(New Action(Function() As Object
                                                  Navigate(WebbrowserURL)
                                                  Try

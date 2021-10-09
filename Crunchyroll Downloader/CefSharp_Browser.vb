@@ -113,11 +113,9 @@ Public Class CefSharp_Browser
         End If
 
         If WebBrowser1.Address = "about:blank" Or WebBrowser1.Address = Nothing Then
-            If Main.LoginOnly = "US_UnBlock" Then
-                WebBrowser1.Load("https://www.crunchyroll.com/login")
-            Else
-                WebBrowser1.Load(Main.Startseite)
-            End If
+
+            WebBrowser1.Load(Main.Startseite)
+
         End If
         Try
             Me.Icon = My.Resources.icon

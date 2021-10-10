@@ -5025,21 +5025,6 @@ Public Class Main
             End If
 
 
-            'DownloadPfad = UseSubfolder(FunimationTitle, FunimationSeason, Pfad)
-
-            'If Not Directory.Exists(Path.GetDirectoryName(DownloadPfad)) Then
-            '    ' Nein! Jetzt erstellen...
-            '    Try
-            '        Directory.CreateDirectory(Path.GetDirectoryName(DownloadPfad))
-            '    Catch ex As Exception
-            '        ' Ordner wurde nich erstellt
-            '        DownloadPfad = Pfad '+ "\" + DefaultName + VideoFormat
-            '    End Try
-            'End If
-
-            'DownloadPfad = DownloadPfad + DefaultName + VideoFormat
-
-
 #Region "lösche doppel download"
 
             Dim Pfad5 As String = DownloadPfad.Replace(Chr(34), "")
@@ -5126,28 +5111,31 @@ Public Class Main
                                      End Function))
 
                 Dim showexperience As String = Nothing
-                Try
-                    'Throw New System.Exception("Test")
-                    Using client As New WebClient()
-                        client.Encoding = System.Text.Encoding.UTF8
-                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                        showexperience = client.DownloadString("https://www.funimation.com/api/showexperience/" + ExperienceID + "/?pinst_id=fzQc9p9f")
+                'Try
+                '    'Throw New System.Exception("Test")
+                '    Using client As New WebClient()
+                '        client.Encoding = System.Text.Encoding.UTF8
+                '        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                '        showexperience = client.DownloadString("https://www.funimation.com/api/showexperience/" + ExperienceID + "/?pinst_id=fzQc9p9f")
 
 
-                    End Using
-                Catch ex As Exception
-                    Debug.WriteLine("error- getting funimation showexperience data")
-                    Me.Invoke(New Action(Function() As Object
-                                             'Me.Text = "Status: Resolution not found!"
-                                             'Me.Invalidate()
-                                             ErrorBrowserString = "Funimation_showexperience"
-                                             ErrorBrowserUrl = "https://www.funimation.com/api/showexperience/" + ExperienceID + "/?pinst_id=fzQc9p9f"
-                                             ErrorBrowser.ShowDialog()
-                                             Return Nothing
-                                         End Function))
-                    showexperience = ErrorBrowserBackString
+                '    End Using
+                'Catch ex As Exception
+                Debug.WriteLine("showexperience data via browser")
+                Me.Invoke(New Action(Function() As Object
+                                         Me.Text = "Status: Resolution not found!"
+                                         Me.Invalidate()
+                                         ErrorBrowserString = "Funimation_showexperience"
+                                         ErrorBrowserUrl = "https://www.funimation.com/api/showexperience/" + ExperienceID + "/?pinst_id=fzQc9p9f"
+                                         Debug.WriteLine("2-showexperience data via browser")
+                                         ErrorBrowser.ShowDialog()
+                                         Debug.WriteLine("3-showexperience data via browser")
+                                         showexperience = ErrorBrowserBackString
+                                         Return Nothing
+                                     End Function))
 
-                End Try
+
+                'End Try
 
 
 
@@ -5425,7 +5413,36 @@ Public Class Main
             ElseIf Not SystemWebBrowserCookie = Nothing Then
                 SubsClient.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
             End If
-            Dim PlayerPage As String = SubsClient.DownloadString("https://www.funimation.com/player/" + ExperienceID + "/?bdub=0&qid=")
+            ' Dim PlayerPage As String = SubsClient.DownloadString("https://www.funimation.com/player/" + ExperienceID + "/?bdub=0&qid=")
+
+            Dim PlayerPage As String = Nothing
+            Try
+                'Throw New System.Exception("Test")
+                Using client As New WebClient()
+                    client.Encoding = System.Text.Encoding.UTF8
+                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    PlayerPage = SubsClient.DownloadString("https://www.funimation.com/player/" + ExperienceID + "/?bdub=0&qid=")
+
+
+                End Using
+            Catch ex As Exception
+                Debug.WriteLine("error- getting funimation PlayerPage")
+                Me.Invoke(New Action(Function() As Object
+                                         'Me.Text = "Status: Resolution not found!"
+                                         'Me.Invalidate()
+                                         ErrorBrowserString = "Funimation_showexperience"
+                                         ErrorBrowserUrl = "https://www.funimation.com/player/" + ExperienceID + "/?bdub=0&qid="
+                                         Debug.WriteLine("error-2-getting funimation PlayerPage")
+                                         ErrorBrowser.ShowDialog()
+                                         Debug.WriteLine("error-3-getting funimation PlayerPage")
+                                         PlayerPage = ErrorBrowserBackString
+                                         Return Nothing
+                                     End Function))
+
+
+            End Try
+
+
 
             Dim Subs_in_srt As New List(Of String)
             Dim Subs_in_vtt As New List(Of String)
@@ -5446,13 +5463,17 @@ Public Class Main
 
                 Next
                 If SoftSubs2.Count = 0 Then
+
                     Me.Invoke(New Action(Function() As Object
                                              Me.Text = "No Subtitles found..."
                                              Me.Invalidate()
                                              Return Nothing
                                          End Function))
-                    File.WriteAllText(DownloadPfad.Replace(VideoFormat, "-subtitle_error.log"), PlayerPage, Encoding.UTF8)
-
+                    Try
+                        File.WriteAllText(DownloadPfad.Replace(Chr(34), "").Replace(VideoFormat, "-subtitle_error.log"), PlayerPage, Encoding.UTF8)
+                    Catch ex As Exception
+                        Debug.WriteLine("Error writing 'subtitle_error.log'")
+                    End Try
                 End If
 
             End If
@@ -6859,9 +6880,13 @@ Public Class Main
     End Sub
 
     Private Sub TestDownloadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TestDownloadToolStripMenuItem.Click
-        For i2 As Integer = 0 To LoadedUrls.Count - 1
-            Debug.WriteLine(LoadedUrls.Item(i2))
-        Next
+        'For i2 As Integer = 0 To LoadedUrls.Count - 1
+        '    Debug.WriteLine(LoadedUrls.Item(i2))
+        'Next
+        'ErrorBrowserString = "Funimation_showexperience"
+        'ErrorBrowserUrl = "beta.crunchyroll.com"
+        'ErrorBrowser.Show()
+
     End Sub
 
 #End Region

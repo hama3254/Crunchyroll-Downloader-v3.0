@@ -998,9 +998,11 @@ Public Class CRD_List_Item
             Dim InputURL As String() = InuputStreams(int).Split(New [Char]() {Chr(34)})
             Dim InputClient As New WebClient
             InputClient.Encoding = Encoding.UTF8
+
             If Main.WebbrowserCookie = Nothing Then
             Else
                 InputClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
+
             End If
             Dim SubsFile As String = Pfad2 + GeräteID() + ".txt"
 
@@ -1009,8 +1011,17 @@ Public Class CRD_List_Item
             End If
 
             Try
-                Dim InputData As String = InputClient.DownloadString(InputURL(0))
+                Dim InputData As String = Nothing
+                Try
+                    InputData = InputClient.DownloadString(InputURL(0))
+                Catch ex As Exception
+                    InputClient.Headers.Add(HttpRequestHeader.AcceptEncoding, "*")
+                    InputData = DecompressString(InputClient.DownloadData(InputURL(0)))
+                End Try
 
+                If InputData = Nothing Then
+                    Throw New System.Exception("No Input Data...")
+                End If
 
                 If CBool(InStr(InputData, "RESOLUTION=")) = True And CBool(InStr(InputData, "#EXT-X-BYTERANGE:")) = False Then 'master m3u8 no fragments 
 
@@ -1330,6 +1341,7 @@ Public Class CRD_List_Item
             Dim iWert As Integer = i
             Using client As New WebClient()
                 client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                client.Headers.Add(HttpRequestHeader.AcceptEncoding, "*")
                 client.DownloadFile(BaseURL + SiteList(i), Pfad_DL + "\" + SiteList(i))
                 Pause(1)
             End Using

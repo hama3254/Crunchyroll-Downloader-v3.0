@@ -5716,22 +5716,22 @@ Public Class Main
 
 #Region "ffmpeg command"
 
-        Dim DubMetatata As String = Nothing
-        If FunimationDub = "japanese" Then
-            DubMetatata = " -metadata:s:a:0 language=jpn"
+            Dim DubMetatata As String = Nothing
+            If FunimationDub = "Japanese" Then
+                DubMetatata = " -metadata:s:a:0 language=jpn"
 
-        ElseIf FunimationDub = "portuguese-brazil" Then
-            DubMetatata = " -metadata:s:a:0 language=por"
+            ElseIf FunimationDub = "Portuguese (Brazil)" Then
+                DubMetatata = " -metadata:s:a:0 language=por"
 
-        ElseIf FunimationDub = "spanish-latin-am" Then
-            DubMetatata = " -metadata:s:a:0 language=spa"
+            ElseIf FunimationDub = "Spanish (Latin Am)" Then
+                DubMetatata = " -metadata:s:a:0 language=spa"
 
-        Else '
-            DubMetatata = " -metadata:s:a:0 language=eng"
+            Else '
+                DubMetatata = " -metadata:s:a:0 language=eng"
 
-        End If
+            End If
 
-        If HardSubFound = True And CBool(InStr(VideoFormat, ".aac")) = False Then
+            If HardSubFound = True And CBool(InStr(VideoFormat, ".aac")) = False Then
             Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + FunimationAudioMap + " -vf subtitles=" + Chr(34) + UsedSub + Chr(34) + " " + ffmpeg_hardsub
 
         ElseIf MergeSubs = True Then

@@ -4987,6 +4987,9 @@ Public Class Main
                 End Select
             Next
 
+            FunimationTitle = String.Join(" ", FunimationTitle.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+            FunimationEpisodeTitle = String.Join(" ", FunimationEpisodeTitle.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+
             FunimationDub = ConvertFunimationDub(DubFunimation) 'FunimationDub2(0)
 
             Dim DefaultName As String = RemoveExtraSpaces(FunimationTitle + " " + FunimationSeason + " " + FunimationEpisode)
@@ -5000,6 +5003,9 @@ Public Class Main
             End If
 
             DefaultName = DefaultName.Replace("&#x27;", "'")
+
+
+
 
             'Dim DefaultPath As String = Pfad + "\" + DefaultName + VideoFormat
             'DefaultPath = DefaultPath.Replace("\\", "\")
@@ -5704,8 +5710,9 @@ Public Class Main
                         'MsgBox(FN)
                     End If
                     Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
-                    'MsgBox(Pfad4)
-                    File.WriteAllText(Pfad4, Subfile, Encoding.UTF8)
+                        'MsgBox(Pfad4)
+                        Debug.WriteLine(Pfad4)
+                        File.WriteAllText(Pfad4, Subfile, Encoding.UTF8)
                     Pause(1)
                 Next
 
@@ -5873,6 +5880,36 @@ Public Class Main
 
             End If
             Exit Sub
+
+        ElseIf CBool(InStr(Address, "wakanim.tv")) Then
+
+            If CBool(InStr(document, "var tracks = [{" + Chr(34) + "file" + Chr(34) + ":" + Chr(34))) Then
+                Dim WakanimSub() As String = document.Split(New String() {"var tracks = [{" + Chr(34) + "file" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim WakanimSub2() As String = WakanimSub(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Try
+                    Using client As New WebClient()
+                        client.Encoding = System.Text.Encoding.UTF8
+                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+
+                        Dim SaveName As String = System.Text.RegularExpressions.Regex.Replace(DocumentTitle.Replace(" - Schaue legal auf Wakanim.TV", ""), "[^\w\\-]", " ").Replace(":", "")
+                        SaveName = RemoveExtraSpaces(SaveName)
+
+
+                        client.DownloadFile(WakanimSub2(0), Pfad + "\" + SaveName + ".vtt")
+
+
+                    End Using
+                Catch ex As Exception
+                    'Debug.WriteLine("error- getting funimation SeasonJson data")
+                    'FunimationJsonBrowser = "SeasonJson"
+                    'Navigate(JsonUrl)
+                    ''Navigate(JsonUrl)
+
+                    Exit Sub
+                End Try
+            End If
+
         End If
 
 

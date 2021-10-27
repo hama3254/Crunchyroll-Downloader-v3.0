@@ -68,13 +68,14 @@ Partial Class Einstellungen
         Me.ListP2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListP3 = New System.Windows.Forms.ToolStripMenuItem()
         Me.FFMPEG_CommandP3 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListBit1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListBit2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListBit3 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListBit4 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListBit5 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListBit6 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListBit7 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_7000 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_6000 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_5000 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_4000 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_3000 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_2000 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_1500 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_1000 = New System.Windows.Forms.ToolStripMenuItem()
         Me.FFMPEG_CommandP4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.GB_Resolution = New System.Windows.Forms.GroupBox()
         Me.AAuto = New MetroFramework.Controls.MetroRadioButton()
@@ -136,6 +137,11 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
+        Me.ListBit_6500 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_5500 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_4500 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_3500 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListBit_2500 = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -651,53 +657,59 @@ Partial Class Einstellungen
         '
         'FFMPEG_CommandP3
         '
-        Me.FFMPEG_CommandP3.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListBit1, Me.ListBit2, Me.ListBit3, Me.ListBit4, Me.ListBit5, Me.ListBit6, Me.ListBit7})
+        Me.FFMPEG_CommandP3.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListBit_7000, Me.ListBit_6500, Me.ListBit_6000, Me.ListBit_5500, Me.ListBit_5000, Me.ListBit_4500, Me.ListBit_4000, Me.ListBit_3500, Me.ListBit_3000, Me.ListBit_2500, Me.ListBit_2000, Me.ListBit_1500, Me.ListBit_1000})
         Me.FFMPEG_CommandP3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FFMPEG_CommandP3.Name = "FFMPEG_CommandP3"
         Me.FFMPEG_CommandP3.Size = New System.Drawing.Size(80, 20)
         Me.FFMPEG_CommandP3.Text = "-b:v 7000k"
         '
-        'ListBit1
+        'ListBit_7000
         '
-        Me.ListBit1.Name = "ListBit1"
-        Me.ListBit1.Size = New System.Drawing.Size(136, 22)
-        Me.ListBit1.Text = "-b:v 7000k"
+        Me.ListBit_7000.Name = "ListBit_7000"
+        Me.ListBit_7000.Size = New System.Drawing.Size(196, 22)
+        Me.ListBit_7000.Text = "-b:v 7000k"
         '
-        'ListBit2
+        'ListBit_6000
         '
-        Me.ListBit2.Name = "ListBit2"
-        Me.ListBit2.Size = New System.Drawing.Size(136, 22)
-        Me.ListBit2.Text = "-b:v 6000k"
+        Me.ListBit_6000.Name = "ListBit_6000"
+        Me.ListBit_6000.Size = New System.Drawing.Size(196, 22)
+        Me.ListBit_6000.Text = "-b:v 6000k"
         '
-        'ListBit3
+        'ListBit_5000
         '
-        Me.ListBit3.Name = "ListBit3"
-        Me.ListBit3.Size = New System.Drawing.Size(136, 22)
-        Me.ListBit3.Text = "-b:v 5000k"
+        Me.ListBit_5000.Name = "ListBit_5000"
+        Me.ListBit_5000.Size = New System.Drawing.Size(196, 22)
+        Me.ListBit_5000.Text = "-b:v 5000k"
         '
-        'ListBit4
+        'ListBit_4000
         '
-        Me.ListBit4.Name = "ListBit4"
-        Me.ListBit4.Size = New System.Drawing.Size(136, 22)
-        Me.ListBit4.Text = "-b:v 4000k"
+        Me.ListBit_4000.Name = "ListBit_4000"
+        Me.ListBit_4000.Size = New System.Drawing.Size(196, 22)
+        Me.ListBit_4000.Text = "-b:v 4000k"
         '
-        'ListBit5
+        'ListBit_3000
         '
-        Me.ListBit5.Name = "ListBit5"
-        Me.ListBit5.Size = New System.Drawing.Size(136, 22)
-        Me.ListBit5.Text = "-b:v 3000k"
+        Me.ListBit_3000.Name = "ListBit_3000"
+        Me.ListBit_3000.Size = New System.Drawing.Size(196, 22)
+        Me.ListBit_3000.Text = "-b:v 3000k"
         '
-        'ListBit6
+        'ListBit_2000
         '
-        Me.ListBit6.Name = "ListBit6"
-        Me.ListBit6.Size = New System.Drawing.Size(136, 22)
-        Me.ListBit6.Text = "-b:v 2000k"
+        Me.ListBit_2000.Name = "ListBit_2000"
+        Me.ListBit_2000.Size = New System.Drawing.Size(196, 22)
+        Me.ListBit_2000.Text = "-b:v 2000k"
         '
-        'ListBit7
+        'ListBit_1500
         '
-        Me.ListBit7.Name = "ListBit7"
-        Me.ListBit7.Size = New System.Drawing.Size(136, 22)
-        Me.ListBit7.Text = "-b:v 1000k"
+        Me.ListBit_1500.Name = "ListBit_1500"
+        Me.ListBit_1500.Size = New System.Drawing.Size(196, 22)
+        Me.ListBit_1500.Text = "-b:v 1500k"
+        '
+        'ListBit_1000
+        '
+        Me.ListBit_1000.Name = "ListBit_1000"
+        Me.ListBit_1000.Size = New System.Drawing.Size(196, 22)
+        Me.ListBit_1000.Text = "-b:v 1000k"
         '
         'FFMPEG_CommandP4
         '
@@ -802,10 +814,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage1.Size = New System.Drawing.Size(501, 528)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1070,7 +1082,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.SelectedIndex = 1
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1084,9 +1096,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1132,10 +1144,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage6.Size = New System.Drawing.Size(501, 528)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = "Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1331,9 +1343,9 @@ Partial Class Einstellungen
         '
         Me.TabPage8.BackColor = System.Drawing.Color.Transparent
         Me.TabPage8.Controls.Add(Me.GroupBox8)
-        Me.TabPage8.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage8.Location = New System.Drawing.Point(4, 35)
         Me.TabPage8.Name = "TabPage8"
-        Me.TabPage8.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage8.Size = New System.Drawing.Size(501, 528)
         Me.TabPage8.TabIndex = 6
         Me.TabPage8.Text = "  AoD"
         '
@@ -1403,9 +1415,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = "About   "
         '
@@ -1537,6 +1549,36 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
+        'ListBit_6500
+        '
+        Me.ListBit_6500.Name = "ListBit_6500"
+        Me.ListBit_6500.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit_6500.Text = "-b:v 6500k"
+        '
+        'ListBit_5500
+        '
+        Me.ListBit_5500.Name = "ListBit_5500"
+        Me.ListBit_5500.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit_5500.Text = "-b:v 5500k"
+        '
+        'ListBit_4500
+        '
+        Me.ListBit_4500.Name = "ListBit_4500"
+        Me.ListBit_4500.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit_4500.Text = "-b:v 4500k"
+        '
+        'ListBit_3500
+        '
+        Me.ListBit_3500.Name = "ListBit_3500"
+        Me.ListBit_3500.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit_3500.Text = "-b:v 3500k"
+        '
+        'ListBit_2500
+        '
+        Me.ListBit_2500.Name = "ListBit_2500"
+        Me.ListBit_2500.Size = New System.Drawing.Size(180, 22)
+        Me.ListBit_2500.Text = "-b:v 2500k"
+        '
         'Einstellungen
         '
         Me.ApplyImageInvert = True
@@ -1619,13 +1661,13 @@ Partial Class Einstellungen
     Friend WithEvents ListP1 As ToolStripMenuItem
     Friend WithEvents ListP2 As ToolStripMenuItem
     Friend WithEvents FFMPEG_CommandP3 As ToolStripMenuItem
-    Friend WithEvents ListBit1 As ToolStripMenuItem
-    Friend WithEvents ListBit2 As ToolStripMenuItem
-    Friend WithEvents ListBit3 As ToolStripMenuItem
-    Friend WithEvents ListBit4 As ToolStripMenuItem
-    Friend WithEvents ListBit5 As ToolStripMenuItem
-    Friend WithEvents ListBit6 As ToolStripMenuItem
-    Friend WithEvents ListBit7 As ToolStripMenuItem
+    Friend WithEvents ListBit_7000 As ToolStripMenuItem
+    Friend WithEvents ListBit_6000 As ToolStripMenuItem
+    Friend WithEvents ListBit_5000 As ToolStripMenuItem
+    Friend WithEvents ListBit_4000 As ToolStripMenuItem
+    Friend WithEvents ListBit_3000 As ToolStripMenuItem
+    Friend WithEvents ListBit_2000 As ToolStripMenuItem
+    Friend WithEvents ListBit_1000 As ToolStripMenuItem
     Friend WithEvents FFMPEG_CommandP4 As ToolStripMenuItem
     Friend WithEvents GB_Resolution As GroupBox
     Friend WithEvents GroupBox5 As GroupBox
@@ -1717,4 +1759,10 @@ Partial Class Einstellungen
     Friend WithEvents CB_SoftSubSettings As MetroFramework.Controls.MetroComboBox
     Friend WithEvents MetroLabel2 As MetroFramework.Controls.MetroLabel
     Friend WithEvents ProfileTextBox As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents ListBit_1500 As ToolStripMenuItem
+    Friend WithEvents ListBit_6500 As ToolStripMenuItem
+    Friend WithEvents ListBit_5500 As ToolStripMenuItem
+    Friend WithEvents ListBit_4500 As ToolStripMenuItem
+    Friend WithEvents ListBit_3500 As ToolStripMenuItem
+    Friend WithEvents ListBit_2500 As ToolStripMenuItem
 End Class

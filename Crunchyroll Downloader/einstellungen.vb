@@ -18,7 +18,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U6"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U6.1"
 
         BackgroundWorker1.RunWorkerAsync()
 
@@ -881,7 +881,7 @@ Public Class Einstellungen
         FFMPEG_CommandP3.Enabled = True
     End Sub
 
-    Private Sub ListBit1_Click(sender As Object, e As EventArgs) Handles ListBit1.Click, ListBit2.Click, ListBit3.Click, ListBit4.Click, ListBit5.Click, ListBit6.Click, ListBit7.Click
+    Private Sub ListBit1_Click(sender As Object, e As EventArgs) Handles ListBit_7000.Click, ListBit_6500.Click, ListBit_6000.Click, ListBit_5500.Click, ListBit_5000.Click, ListBit_4500.Click, ListBit_4000.Click, ListBit_3500.Click, ListBit_3000.Click, ListBit_2500.Click, ListBit_2000.Click, ListBit_1500.Click, ListBit_1000.Click
         Dim Button As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         FFMPEG_CommandP3.Text = Button.Text
         FFMPEG_CommandP2.Enabled = True

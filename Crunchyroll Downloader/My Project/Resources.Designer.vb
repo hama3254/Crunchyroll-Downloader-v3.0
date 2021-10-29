@@ -319,7 +319,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0&quot; ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36&quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property ffmpeg_user_agend() As String
             Get

@@ -134,7 +134,6 @@ Public Class CefSharp_Browser
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-
         Try
             My.Computer.Clipboard.SetText(WebBrowser1.Address)
             MsgBox("copied: " + Chr(34) + WebBrowser1.Address + Chr(34))
@@ -247,7 +246,12 @@ Public Class CefSharp_Browser
                 Exit Sub
             End If
         End If
+        '
+        If CBool(InStr(e.RequestUrl, "?deviceType=web")) Then
+            Dim parms As String() = e.RequestUrl.Split(New String() {"?deviceType="}, System.StringSplitOptions.RemoveEmptyEntries)
+            Main.FunimationDeviceRegion = "?deviceType=" + parms(1)
 
+        End If
         If CBool(InStr(e.RequestUrl, "https://title-api.prd.funimationsvc.com")) Then
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
@@ -266,6 +270,16 @@ Public Class CefSharp_Browser
                 Exit Sub
             End If
             Debug.WriteLine(e.RequestUrl)
+        ElseIf CBool(InStr(e.RequestUrl, "/data/v1/episodes/")) Then
+            If (Me.InvokeRequired) Then
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Exit Sub
+            Else
+                Main.LoadedUrls.Add(e.RequestUrl)
+                Exit Sub
+            End If
+            Debug.WriteLine(e.RequestUrl)
+
         ElseIf CBool(InStr(e.RequestUrl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(e.RequestUrl, "streams?")) Then
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))

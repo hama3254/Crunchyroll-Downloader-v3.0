@@ -921,7 +921,7 @@ Public Class CRD_List_Item
             WC_TS = New WebClient
 
             WC_TS.DownloadFile(New Uri(DL_URL), DL_Pfad)
-            If Not CBool(InStr(DL_Pfad, Application.StartupPath)) Then
+            If Not CBool(InStr(DL_Pfad, "Stream-")) Then
                 Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
                 Using sink As New StreamWriter(Path.GetDirectoryName(DL_Pfad) + "\Retry\" + Path.GetFileName(DL_Pfad), False, utf8WithoutBom2)
                     sink.WriteLine(DL_Pfad)

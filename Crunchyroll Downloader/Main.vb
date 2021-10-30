@@ -1183,13 +1183,14 @@ Public Class Main
 
     Public Function HardSubValuesToDisplay(ByVal HardSub As String) As String
         Try
+            HardSub = HardSub.Replace(Chr(34), "")
             If HardSub = "deDE" Then
                 Return "Deutsch"
-            ElseIf HardSub = "enUS" Then
+            ElseIf HardSub = "enUS" Or HardSub = "en" Then
                 Return "English"
-            ElseIf HardSub = "ptBR" Then
+            ElseIf HardSub = "ptBR" Or HardSub = "pt" Then
                 Return "Português (Brasil)"
-            ElseIf HardSub = "esLA" Then
+            ElseIf HardSub = "esLA" Or HardSub = "es" Then
                 Return "Español (LA)"
             ElseIf HardSub = "frFR" Then
                 Return "Français (France)"
@@ -4945,9 +4946,7 @@ Public Class Main
             Dim FunimationDub As String = Nothing
             Dim FunimationAudioMap As String = Nothing
             Dim FunimationEpisodeJson As String = Nothing
-
-
-
+            Dim thumbnail4 As String = ""
 
             Dim ser As JObject = JObject.Parse(v1Json)
 
@@ -4958,6 +4957,19 @@ Public Class Main
             For Each item As JProperty In data
                 item.CreateReader()
                 Select Case item.Name
+                    Case "images" 'each record is inside the entries array
+                        For Each Entry As JObject In item.Values
+
+                            Dim key As String = Entry("key").ToString
+
+                            If key = "Key Art - Official Video Image" Or key = "Episode Thumbnail" Then
+                                Dim path As String = Entry("path").ToString
+                                thumbnail4 = path
+
+                            End If
+
+
+                        Next
                     Case "id"  'id.json for video
 
                         FunimationEpisodeJson = item.Value.ToString
@@ -5563,39 +5575,7 @@ Public Class Main
             End If
             'MsgBox(FunimationName3)
             'MsgBox(Funimation_m3u8_final)
-#Region "thumbnail"
 
-            'Dim thumbnail As String() = v1Json.Split(New String() {"episodeThumbnail"}, System.StringSplitOptions.RemoveEmptyEntries)
-            'Dim thumbnail2 As String() = thumbnail(1).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-            'Dim thumbnail3 As String() = thumbnail2(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-            Dim thumbnail4 As String = ""
-            For Each item As JProperty In data
-                item.CreateReader()
-                Select Case item.Name
-                    Case "images" 'each record is inside the entries array
-                        For Each Entry As JObject In item.Values
-
-                            Dim key As String = Entry("key").ToString
-
-                            If key = "episodeThumbnail" Then
-                                Dim path As String = Entry("path").ToString
-                                thumbnail4 = path
-                                Exit Select
-                            End If
-
-
-                            'Dim factor As String = Entry("factor").ToList.Item(0)
-                            ' you can continue listing the array items untill you reach the end of you array
-
-                        Next
-
-
-
-                End Select
-            Next
-
-
-#End Region
             Dim ResoHTMLDisplay As String = Reso.ToString + "p"
 
 #Region "Subs"

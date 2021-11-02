@@ -4822,8 +4822,10 @@ Public Class Main
             Return "es"
         ElseIf Dub = "portuguese(Brazil)" Then
             Return "pt"
-        Else
+        ElseIf Dub = "japanese" Then 'japanese
             Return "ja"
+        Else
+            Return "N/A"
         End If
     End Function
     Private Function ConvertJsonToFunimationDub(ByVal Dub As String) As String
@@ -5222,9 +5224,10 @@ Public Class Main
                 Pause(2)
                 Debug.WriteLine("showexperience data via browser")
                 'Me.Invoke(New Action(Function() As Object
-                PlayerClient.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip")
+                'PlayerClient.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip")
 
-                EpisodeJsonString = DecompressString(PlayerClient.DownloadData(BaseUrl + FunimationEpisodeJson + FunimationDeviceRegion))
+                'EpisodeJsonString = DecompressString(PlayerClient.DownloadData(BaseUrl + FunimationEpisodeJson + FunimationDeviceRegion))
+                EpisodeJsonString = PlayerClient.DownloadString(BaseUrl + FunimationEpisodeJson + FunimationDeviceRegion)
 
                 'Debug.WriteLine("Thread Name: " + Thread.CurrentThread.Name)
 
@@ -5347,7 +5350,8 @@ Public Class Main
 
 #Region "m3u8 URL"
             Dim Funimation_m3u8_Main As String = Nothing
-
+            Dim Funimation_m3u8_MainVersion As String = Nothing
+            Dim Funimation_m3u8_Primary As String = Nothing
             Dim Funimation_m3u8_final As String = Nothing
             Dim client0 As New WebClient
             client0.Encoding = Encoding.UTF8
@@ -5355,18 +5359,24 @@ Public Class Main
             If SubsOnly = False Then
 
                 For i As Integer = 0 To VideoStreams.Count - 1
-                    If DubFunimation = "Disabled" Then
-                        If VideoStreams(i).Primary = True Then
-                            Funimation_m3u8_Main = VideoStreams(i).Url
-                            Exit For
-                        End If
-                    Else
-                        If VideoStreams(i).audioLanguage = ConvertFunimationDubToJson(DubFunimation) Then
-                            Funimation_m3u8_Main = VideoStreams(i).Url
-                            Exit For
-                        End If
+
+                    If VideoStreams(i).Primary = True Then
+                        Funimation_m3u8_Primary = VideoStreams(i).Url
                     End If
+
+                    If VideoStreams(i).audioLanguage = ConvertFunimationDubToJson(DubFunimation) And Funimation_m3u8_Main = Nothing Then
+                        Funimation_m3u8_Main = VideoStreams(i).Url
+                        Funimation_m3u8_MainVersion = VideoStreams(i).version
+                    ElseIf VideoStreams(i).audioLanguage = ConvertFunimationDubToJson(DubFunimation) And VideoStreams(i).version = "uncut" Then
+                        Funimation_m3u8_Main = VideoStreams(i).Url
+                        Funimation_m3u8_MainVersion = VideoStreams(i).version
+                    End If
+
                 Next
+
+                If Funimation_m3u8_Main = Nothing Then
+                    Funimation_m3u8_Main = Funimation_m3u8_Primary
+                End If
 
                 If Funimation_m3u8_Main = Nothing Then
 
@@ -5382,11 +5392,11 @@ Public Class Main
                         Exit Sub
                     Else
                         Funimation_Grapp_RDY = True
-                            Exit Sub
-                        End If
-
+                        Exit Sub
                     End If
-                    Me.Invoke(New Action(Function() As Object
+
+                End If
+                Me.Invoke(New Action(Function() As Object
                                              Me.Text = "Status: Video found!"
                                              Me.Invalidate()
                                              Return Nothing
@@ -5746,7 +5756,7 @@ Public Class Main
             Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + FunimationDub
             Me.Invoke(New Action(Function() As Object
-                                     ListItemAdd(Pfad_DL, L1Name, DefaultName, ResoHTMLDisplay, "Unknown", SubValuesToDisplay(), thumbnail4, Funimation_m3u8_final, DownloadPfad, "FM")
+                                     ListItemAdd(Pfad_DL, L1Name, DefaultName, ResoHTMLDisplay, Funimation_m3u8_MainVersion, SubValuesToDisplay(), thumbnail4, Funimation_m3u8_final, DownloadPfad, "FM")
                                      Return Nothing
                                  End Function))
             liList.Add(My.Resources.htmlvorThumbnail + thumbnail4 + My.Resources.htmlnachTumbnail + FunimationTitle + " <br> " + FunimationSeason + " " + FunimationEpisode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + DefaultName + "-->")

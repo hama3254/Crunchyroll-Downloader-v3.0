@@ -691,10 +691,9 @@ Public Class CRD_List_Item
     End Function
 
     Private Sub DownloadTSv4(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal CurrentSize As Integer, ByVal NewBytes As Integer)
-        Dim retry As Boolean = True
         Dim retryCount As Integer = 3
         HybrideLog = HybrideLog + vbNewLine + Date.Now.ToString + ": " + DL_Pfad + " - " + DL_URL + " - " + CurrentSize.ToString
-        While retry
+        While CBool(retryCount > 0)
             Try
 
 
@@ -721,20 +720,22 @@ Public Class CRD_List_Item
 
 
 
-                retry = False
+                retryCount = 0
             Catch ex As Exception
                 If retryCount > 0 Then
                     retryCount = retryCount - 1
                     Me.Invoke(New Action(Function() As Object
-                                             Label_percent.Text = "Access Error - retrying"
+                                             'Label_percent.Text = "Access Error - retrying"
                                              Debug.WriteLine(ex.ToString)
+                                             Debug.WriteLine("retrying...")
                                              Return Nothing
                                          End Function))
 
                 Else
                     Me.Invoke(New Action(Function() As Object
-                                             Label_percent.Text = "Access Error - download canceled"
+                                             'Label_percent.Text = "Access Error - download canceled"
                                              Debug.WriteLine(ex.ToString)
+                                             Debug.WriteLine("retrying failed...")
                                              Return Nothing
                                          End Function))
 

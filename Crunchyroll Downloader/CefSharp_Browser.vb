@@ -248,6 +248,7 @@ Public Class CefSharp_Browser
         End If
         '
         If CBool(InStr(e.RequestUrl, "?deviceType=web")) Then
+            'Debug.WriteLine(e.RequestUrl)
             Dim parms As String() = e.RequestUrl.Split(New String() {"?deviceType="}, System.StringSplitOptions.RemoveEmptyEntries)
             Main.FunimationDeviceRegion = "?deviceType=" + parms(1)
 

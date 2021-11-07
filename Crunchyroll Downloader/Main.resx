@@ -535,7 +535,7 @@
     <value>181, 22</value>
   </data>
   <data name="TestDownloadToolStripMenuItem.Text" xml:space="preserve">
-    <value>Check Urls</value>
+    <value>Check Token</value>
   </data>
   <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
     <value>182, 92</value>

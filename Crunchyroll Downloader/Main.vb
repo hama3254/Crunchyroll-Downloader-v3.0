@@ -5190,7 +5190,7 @@ Public Class Main
             PlayerClient.Encoding = Encoding.UTF8
             PlayerClient.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
             PlayerClient.Headers.Add(HttpRequestHeader.Accept, "application/json, text/plain, */*")
-            PlayerClient.Headers.Add("origin: https://www.funimation.com")
+            PlayerClient.Headers.Add("origin: https://www.funimation.com/")
             PlayerClient.Headers.Add(HttpRequestHeader.Referer, "https://www.funimation.com/")
 
             Dim BaseUrl As String = "https://playback.prd.funimationsvc.com/v1/play/"
@@ -5202,7 +5202,12 @@ Public Class Main
 
             'FunimationToken
             'MsgBox(WebbrowserCookie)
+            'BaseUrl + FunimationEpisodeJson + FunimationDeviceRegion
             Debug.WriteLine(PlayerClient.Headers.ToString)
+            If FunimationDeviceRegion = Nothing Then
+                FunimationDeviceRegion = "?deviceType=web"
+            End If
+            Debug.WriteLine(BaseUrl + FunimationEpisodeJson + FunimationDeviceRegion)
             If WebbrowserCookie = Nothing Then
             Else
                 PlayerClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
@@ -5220,6 +5225,7 @@ Public Class Main
                 EpisodeJsonString = PlayerClient.DownloadString(BaseUrl + FunimationEpisodeJson + FunimationDeviceRegion)
 
             Catch ex As Exception
+
                 Debug.WriteLine(ex.ToString)
                 Pause(2)
                 Debug.WriteLine("showexperience data via browser")
@@ -7978,14 +7984,44 @@ Public Class Main
     End Sub
 
     Private Sub TestDownloadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TestDownloadToolStripMenuItem.Click
-        'For i2 As Integer = 0 To LoadedUrls.Count - 1
-        '    Debug.WriteLine(LoadedUrls.Item(i2))
-        'Next
-        'ErrorBrowserString = "Funimation_showexperience"
-        'ErrorBrowserUrl = "beta.crunchyroll.com"
-        'ErrorBrowser.Show()
+
+        Dim Collector As New TaskCookieVisitor
+        Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
+        CM.VisitAllCookies(Collector)
+        Dim Token As String = Nothing
+        Dim DeviceRegion As String = Nothing
+        Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
+        Dim Cookie As String = ""
+        For i As Integer = 0 To list.Count - 1
+
+            If CBool(InStr(list.Item(i).Domain, "funimation.com")) Then 'list.Item(i).Domain = "funimation.com" Then
+                'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
+
+                Cookie = Cookie + list.Item(i).Name + "=" + list.Item(i).Value + ";"
+            End If
+
+            If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "src_token")) Then 'list.Item(i).Domain = "funimation.com" Then
+                'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
+
+                Token = "Token " + list.Item(i).Value
+            End If
+            If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "region")) Then 'list.Item(i).Domain = "funimation.com" Then
+                'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
+
+                DeviceRegion = "?deviceType=web&" + list.Item(i).Name + "=" + list.Item(i).Value
+            End If
+        Next
+        ' region=US;
+        If Token = Nothing Then
+            MsgBox("No Token has been found...", MsgBoxStyle.Exclamation)
+        Else
+            FunimationToken = Token
+            MsgBox("Token found!", MsgBoxStyle.Information)
+
+        End If
 
     End Sub
+
 
 #End Region
 

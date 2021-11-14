@@ -18,7 +18,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-#389"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U9"
 
         BackgroundWorker1.RunWorkerAsync()
 
@@ -132,11 +132,6 @@ Public Class Einstellungen
             CB_vtt.Checked = False
         End If
 
-        If Main.Funimation_dfxp = True Then
-            CB_dfxp.Checked = True
-        Else
-            CB_dfxp.Checked = False
-        End If
 
         If Main.HardSubFunimation = "en" Then
             CB_Fun_HardSubs.SelectedItem = "English"
@@ -570,27 +565,7 @@ Public Class Einstellungen
         End If
 #Region "funimation"
 
-        If CB_srt.Checked = True Then
-            Main.Funimation_srt = True
-            rk.SetValue("Funimation_srt", "1", RegistryValueKind.String)
-        Else
-            Main.Funimation_srt = False
-            rk.SetValue("Funimation_srt", "0", RegistryValueKind.String)
-        End If
-        If CB_vtt.Checked = True Then
-            Main.Funimation_vtt = True
-            rk.SetValue("Funimation_vtt", "1", RegistryValueKind.String)
-        Else
-            Main.Funimation_vtt = False
-            rk.SetValue("Funimation_vtt", "0", RegistryValueKind.String)
-        End If
-        If CB_dfxp.Checked = True Then
-            Main.Funimation_dfxp = True
-            rk.SetValue("Funimation_dfxp", "1", RegistryValueKind.String)
-        Else
-            Main.Funimation_dfxp = False
-            rk.SetValue("Funimation_dfxp", "0", RegistryValueKind.String)
-        End If
+
 
 
         Main.DubFunimation = Fun_Dub_Over.SelectedItem.ToString
@@ -638,13 +613,36 @@ Public Class Einstellungen
         If CB_fun_eng.Checked = True Then
             Main.SubFunimation.Add("en")
         End If
+
         If CB_fun_es.Checked = True Then
             Main.SubFunimation.Add("es")
 
         End If
+
         If CB_fun_ptbr.Checked = True Then
             Main.SubFunimation.Add("pt")
         End If
+
+        If Main.SubFunimation.Count > 0 And CB_vtt.Checked = False And CB_srt.Checked = False Then
+            CB_vtt.Checked = True
+        End If
+
+
+        If CB_srt.Checked = True Then
+            Main.Funimation_srt = True
+            rk.SetValue("Funimation_srt", "1", RegistryValueKind.String)
+        Else
+            Main.Funimation_srt = False
+            rk.SetValue("Funimation_srt", "0", RegistryValueKind.String)
+        End If
+        If CB_vtt.Checked = True Then
+            Main.Funimation_vtt = True
+            rk.SetValue("Funimation_vtt", "1", RegistryValueKind.String)
+        Else
+            Main.Funimation_vtt = False
+            rk.SetValue("Funimation_vtt", "0", RegistryValueKind.String)
+        End If
+
 
         Dim FunimationSaveString As String = Nothing
         For ii As Integer = 0 To Main.SubFunimation.Count - 1
@@ -1211,6 +1209,10 @@ Public Class Einstellungen
 
 
         End If
+    End Sub
+
+    Private Sub TabPage6_Click(sender As Object, e As EventArgs) Handles TabPage6.Click
+
     End Sub
 
 

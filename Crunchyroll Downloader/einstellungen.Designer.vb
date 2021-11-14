@@ -116,7 +116,6 @@ Partial Class Einstellungen
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.CB_srt = New MetroFramework.Controls.MetroCheckBox()
         Me.CB_vtt = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_dfxp = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox10 = New System.Windows.Forms.GroupBox()
         Me.Fun_Dub_Over = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
@@ -390,10 +389,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 35)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage2.Size = New System.Drawing.Size(501, 528)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -1126,9 +1125,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1218,7 +1217,6 @@ Partial Class Einstellungen
         Me.GroupBox11.BackColor = System.Drawing.Color.Transparent
         Me.GroupBox11.Controls.Add(Me.CB_srt)
         Me.GroupBox11.Controls.Add(Me.CB_vtt)
-        Me.GroupBox11.Controls.Add(Me.CB_dfxp)
         Me.GroupBox11.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox11.Location = New System.Drawing.Point(5, 182)
         Me.GroupBox11.Name = "GroupBox11"
@@ -1232,7 +1230,7 @@ Partial Class Einstellungen
         Me.CB_srt.AutoSize = True
         Me.CB_srt.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CB_srt.ForeColor = System.Drawing.Color.Black
-        Me.CB_srt.Location = New System.Drawing.Point(66, 41)
+        Me.CB_srt.Location = New System.Drawing.Point(139, 42)
         Me.CB_srt.Name = "CB_srt"
         Me.CB_srt.Size = New System.Drawing.Size(41, 19)
         Me.CB_srt.TabIndex = 36
@@ -1244,24 +1242,12 @@ Partial Class Einstellungen
         Me.CB_vtt.AutoSize = True
         Me.CB_vtt.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CB_vtt.ForeColor = System.Drawing.Color.Black
-        Me.CB_vtt.Location = New System.Drawing.Point(188, 41)
+        Me.CB_vtt.Location = New System.Drawing.Point(261, 42)
         Me.CB_vtt.Name = "CB_vtt"
         Me.CB_vtt.Size = New System.Drawing.Size(42, 19)
         Me.CB_vtt.TabIndex = 37
         Me.CB_vtt.Text = "vtt"
         Me.CB_vtt.UseSelectable = True
-        '
-        'CB_dfxp
-        '
-        Me.CB_dfxp.AutoSize = True
-        Me.CB_dfxp.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_dfxp.ForeColor = System.Drawing.Color.Black
-        Me.CB_dfxp.Location = New System.Drawing.Point(302, 41)
-        Me.CB_dfxp.Name = "CB_dfxp"
-        Me.CB_dfxp.Size = New System.Drawing.Size(51, 19)
-        Me.CB_dfxp.TabIndex = 38
-        Me.CB_dfxp.Text = "dfxp"
-        Me.CB_dfxp.UseSelectable = True
         '
         'GroupBox10
         '
@@ -1716,7 +1702,6 @@ Partial Class Einstellungen
     Friend WithEvents CB_fun_eng As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CB_srt As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CB_vtt As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents CB_dfxp As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents AAuto As MetroFramework.Controls.MetroRadioButton
     Friend WithEvents A480p As MetroFramework.Controls.MetroRadioButton
     Friend WithEvents A360p As MetroFramework.Controls.MetroRadioButton

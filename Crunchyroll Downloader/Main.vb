@@ -4465,7 +4465,7 @@ Public Class Main
 
 #Region "Funimation JS "
     Public Sub GetFunimationJS_Seasons(Optional ByVal JsonUrl As String = Nothing, Optional ByVal Json As String = Nothing)
-
+        FunimtaionSeasonList.Clear()
         Dim SeasonJson As String = Nothing
         Debug.WriteLine("JsonUrl: " + JsonUrl)
         If JsonUrl = Nothing Then
@@ -4535,7 +4535,7 @@ Public Class Main
 
         Next
 
-        Debug.WriteLine("SeasonJson: ")
+        'Debug.WriteLine("SeasonJson: ")
 
         Anime_Add.groupBox2.Visible = True
         Anime_Add.PictureBox1.Enabled = True

@@ -5508,15 +5508,14 @@ Public Class Main
                                     keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
                                 End If
 
-                                'MsgBox(keyfileurl3)
-                                Try
-                                    Dim CheckClient2 As New WebClient
-                                    CheckClient2.Encoding = System.Text.Encoding.UTF8
-                                    Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
-                                    FunimationBackupm3u8 = StreamURL
-                                    Exit For
-                                Catch ex As Exception
-                                    Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
+                            'MsgBox(keyfileurl3)
+                            Try
+                                Dim CheckClient2 As New WebClient
+                                CheckClient2.Encoding = System.Text.Encoding.UTF8
+                                Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
+                                FunimationBackupm3u8 = StreamURL
+                            Catch ex As Exception
+                                Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
                                 End Try
 
                             End If
@@ -5538,52 +5537,52 @@ Public Class Main
                                                  Return Nothing
                                              End Function))
                         ResoFunBackup = ResoBackString
-                        For i As Integer = 0 To Streams.Length - 1
-                            If CBool(InStr(Streams(i), ResoBackString)) Then
-                                Dim Streams2() As String = Streams(i).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim Streams3() As String = Streams2(1).Split(New String() {"#EXT-"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim StreamURL As String = "https://" + Streams3(0).Trim
-                                Dim CheckClient As New WebClient
-                                CheckClient.Encoding = Encoding.UTF8
+                    For i As Integer = 0 To Streams.Length - 1
+                        If CBool(InStr(Streams(i), ResoBackString)) Then
+                            Dim Streams2() As String = Streams(i).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim Streams3() As String = Streams2(1).Split(New String() {"#EXT-"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim StreamURL As String = "https://" + Streams3(0).Trim
+                            Dim CheckClient As New WebClient
+                            CheckClient.Encoding = Encoding.UTF8
 
-                                If Not WebbrowserCookie = Nothing Then
-                                    CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
-                                ElseIf Not SystemWebBrowserCookie = Nothing Then
-                                    CheckClient.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
-                                End If
-
-                                Dim m3u8String As String = CheckClient.DownloadString(StreamURL)
-                                'MsgBox(textLenght(i))
-                                Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl3 As String = keyfileurl2(0)
-                                If CBool(InStr(keyfileurl2(0), "https://")) Then
-                                Else
-                                    Dim c() As String = New Uri(StreamURL).Segments
-                                    Dim path As String = "https://" + New Uri(StreamURL).Host
-
-                                    For i3 As Integer = 0 To c.Count - 2
-                                        path = path + c(i3)
-                                    Next
-                                    keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
-                                End If
-                                Try
-                                    Dim CheckClient2 As New WebClient
-                                    CheckClient2.Encoding = System.Text.Encoding.UTF8
-                                    Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
-                                    Funimation_m3u8_final = StreamURL
-                                    Exit For
-                                Catch ex As Exception
-                                    Debug.WriteLine(keyfileurl3 + vbNewLine + ex.ToString)
-                                End Try
-
-
-                                'Funimation_m3u8_final = textLenght(i)
-                                'Exit For
-
+                            If Not WebbrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                            ElseIf Not SystemWebBrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
                             End If
-                        Next
-                    ElseIf Funimation_m3u8_final = Nothing Then
+
+                            Dim m3u8String As String = CheckClient.DownloadString(StreamURL)
+                            'MsgBox(textLenght(i))
+                            Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl3 As String = keyfileurl2(0)
+                            If CBool(InStr(keyfileurl2(0), "https://")) Then
+                            Else
+                                Dim c() As String = New Uri(StreamURL).Segments
+                                Dim path As String = "https://" + New Uri(StreamURL).Host
+
+                                For i3 As Integer = 0 To c.Count - 2
+                                    path = path + c(i3)
+                                Next
+                                keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
+                            End If
+                            Try
+                                Dim CheckClient2 As New WebClient
+                                CheckClient2.Encoding = System.Text.Encoding.UTF8
+                                Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
+                                Funimation_m3u8_final = StreamURL
+                                Exit For
+                            Catch ex As Exception
+                                Debug.WriteLine(keyfileurl3 + vbNewLine + ex.ToString)
+                            End Try
+
+
+                            'Funimation_m3u8_final = textLenght(i)
+                            'Exit For
+
+                        End If
+                    Next
+                ElseIf Funimation_m3u8_final = Nothing Then
                         Funimation_m3u8_final = FunimationBackupm3u8
                     Else
                         Me.Invoke(New Action(Function() As Object

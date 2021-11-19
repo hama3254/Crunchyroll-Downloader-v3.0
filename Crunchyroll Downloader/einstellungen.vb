@@ -18,7 +18,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U9.2"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U9.3"
 
         BackgroundWorker1.RunWorkerAsync()
 

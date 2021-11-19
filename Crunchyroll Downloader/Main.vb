@@ -5131,6 +5131,7 @@ Public Class Main
             If My.Computer.FileSystem.FileExists(Pfad5) Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
                 Me.Invoke(New Action(Function() As Object
                                          Me.Text = "Status: File already exists."
+                                         Anime_Add.StatusLabel.Text = "Status: File already exists."
                                          Me.Invalidate()
                                          Return Nothing
                                      End Function))
@@ -5140,6 +5141,7 @@ Public Class Main
                         My.Computer.FileSystem.DeleteFile(Pfad5)
                         Me.Invoke(New Action(Function() As Object
                                                  Me.Text = "Status: Old file overwritten."
+                                                 Anime_Add.StatusLabel.Text = "Status: Old file overwritten."
                                                  Me.Invalidate()
                                                  Return Nothing
                                              End Function))
@@ -5149,6 +5151,7 @@ Public Class Main
                 Else
                     Me.Invoke(New Action(Function() As Object
                                              Me.Text = "Crunchyroll Downloader"
+                                             Anime_Add.StatusLabel.Text = "idle"
                                              Me.Invalidate()
                                              Return Nothing
                                          End Function))
@@ -5414,99 +5417,100 @@ Public Class Main
 
                 End If
                 Me.Invoke(New Action(Function() As Object
-                                             Me.Text = "Status: Video found!"
-                                             Me.Invalidate()
-                                             Return Nothing
-                                         End Function))
+                                         Me.Text = "Status: Video found!"
+                                         Anime_Add.StatusLabel.Text = "Status: Video found!"
+                                         Me.Invalidate()
+                                         Return Nothing
+                                     End Function))
 
-                    Dim str1 As String = client0.DownloadString(Funimation_m3u8_Main.Replace(Chr(34), ""))
+                Dim str1 As String = client0.DownloadString(Funimation_m3u8_Main.Replace(Chr(34), ""))
 
-                    If CBool(InStr(str1, "# AUDIO groups")) Then
-                        Dim FunimationAudio() As String = str1.Split(New String() {"# AUDIO groups"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim FunimationAudio2() As String = FunimationAudio(1).Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim FunimationAudio3() As String = FunimationAudio2(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                        FunimationAudioMap = " -headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + FunimationAudio3(0) + Chr(34)
-                    End If
+                If CBool(InStr(str1, "# AUDIO groups")) Then
+                    Dim FunimationAudio() As String = str1.Split(New String() {"# AUDIO groups"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim FunimationAudio2() As String = FunimationAudio(1).Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim FunimationAudio3() As String = FunimationAudio2(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    FunimationAudioMap = " -headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + FunimationAudio3(0) + Chr(34)
+                End If
 
-                    Dim Streams() As String = str1.Split(New String() {"RESOLUTION="}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Streams() As String = str1.Split(New String() {"RESOLUTION="}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
-                    'MsgBox(Funimation_m3u8_Main)
-                    Dim FunimationBackupm3u8 As String = Nothing
-                    For i As Integer = 0 To Streams.Length - 1
+                'MsgBox(Funimation_m3u8_Main)
+                Dim FunimationBackupm3u8 As String = Nothing
+                For i As Integer = 0 To Streams.Length - 1
 
-                        Try
+                    Try
 
-                            If CBool(InStr(Streams(i), "x" + Reso.ToString)) Then
-                                Dim Streams2() As String = Streams(i).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim Streams3() As String = Streams2(1).Split(New String() {"#EXT-"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim StreamURL As String = "https://" + Streams3(0).Trim
+                        If CBool(InStr(Streams(i), "x" + Reso.ToString)) Then
+                            Dim Streams2() As String = Streams(i).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim Streams3() As String = Streams2(1).Split(New String() {"#EXT-"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim StreamURL As String = "https://" + Streams3(0).Trim
 
-                                Dim CheckClient As New WebClient
-                                CheckClient.Encoding = Encoding.UTF8
-                                If Not WebbrowserCookie = Nothing Then
-                                    CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
-                                ElseIf Not SystemWebBrowserCookie = Nothing Then
-                                    CheckClient.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
-                                End If
+                            Dim CheckClient As New WebClient
+                            CheckClient.Encoding = Encoding.UTF8
+                            If Not WebbrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                            ElseIf Not SystemWebBrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
+                            End If
 
-                                Dim m3u8String As String = CheckClient.DownloadString(StreamURL)
-                                'MsgBox(m3u8String)
-                                Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl3 As String = keyfileurl2(0)
+                            Dim m3u8String As String = CheckClient.DownloadString(StreamURL)
+                            'MsgBox(m3u8String)
+                            Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl3 As String = keyfileurl2(0)
 
-                                If CBool(InStr(keyfileurl2(0), "https://")) Then
+                            If CBool(InStr(keyfileurl2(0), "https://")) Then
 
-                                Else
-                                    Dim c() As String = New Uri(StreamURL).Segments
-                                    Dim path As String = "https://" + New Uri(StreamURL).Host
+                            Else
+                                Dim c() As String = New Uri(StreamURL).Segments
+                                Dim path As String = "https://" + New Uri(StreamURL).Host
 
-                                    For i3 As Integer = 0 To c.Count - 2
-                                        path = path + c(i3)
-                                    Next
-                                    keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
-                                End If
+                                For i3 As Integer = 0 To c.Count - 2
+                                    path = path + c(i3)
+                                Next
+                                keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
+                            End If
 
-                                'MsgBox(keyfileurl3)
-                                Try
-                                    Dim CheckClient2 As New WebClient
-                                    CheckClient2.Encoding = System.Text.Encoding.UTF8
-                                    Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
-                                    Funimation_m3u8_final = StreamURL
-                                    FunimationBackupm3u8 = StreamURL
-                                    Exit For
-                                Catch ex As Exception
-                                    Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
-                                End Try
-                            ElseIf CBool(InStr(Streams(i), ResoFunBackup)) Then
-                                Dim Streams2() As String = Streams(i).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim Streams3() As String = Streams2(1).Split(New String() {"#EXT-"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim StreamURL As String = "https://" + Streams3(0).Trim
+                            'MsgBox(keyfileurl3)
+                            Try
+                                Dim CheckClient2 As New WebClient
+                                CheckClient2.Encoding = System.Text.Encoding.UTF8
+                                Dim testdl As String = CheckClient2.DownloadString(keyfileurl3)
+                                Funimation_m3u8_final = StreamURL
+                                FunimationBackupm3u8 = StreamURL
+                                Exit For
+                            Catch ex As Exception
+                                Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
+                            End Try
+                        ElseIf CBool(InStr(Streams(i), ResoFunBackup)) And FunimationBackupm3u8 = Nothing Then
+                            Dim Streams2() As String = Streams(i).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim Streams3() As String = Streams2(1).Split(New String() {"#EXT-"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim StreamURL As String = "https://" + Streams3(0).Trim
 
-                                Dim CheckClient As New WebClient
-                                CheckClient.Encoding = Encoding.UTF8
-                                If Not WebbrowserCookie = Nothing Then
-                                    CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
-                                ElseIf Not SystemWebBrowserCookie = Nothing Then
-                                    CheckClient.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
-                                End If
-                                Dim m3u8String As String = CheckClient.DownloadString(StreamURL)
-                                Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim keyfileurl3 As String = keyfileurl2(0)
+                            Dim CheckClient As New WebClient
+                            CheckClient.Encoding = Encoding.UTF8
+                            If Not WebbrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, WebbrowserCookie)
+                            ElseIf Not SystemWebBrowserCookie = Nothing Then
+                                CheckClient.Headers.Add(HttpRequestHeader.Cookie, SystemWebBrowserCookie)
+                            End If
+                            Dim m3u8String As String = CheckClient.DownloadString(StreamURL)
+                            Dim keyfileurl() As String = m3u8String.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl2() As String = keyfileurl(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim keyfileurl3 As String = keyfileurl2(0)
 
-                                If CBool(InStr(keyfileurl2(0), "https://")) Then
+                            If CBool(InStr(keyfileurl2(0), "https://")) Then
 
-                                Else
-                                    Dim c() As String = New Uri(StreamURL).Segments
-                                    Dim path As String = "https://" + New Uri(StreamURL).Host
+                            Else
+                                Dim c() As String = New Uri(StreamURL).Segments
+                                Dim path As String = "https://" + New Uri(StreamURL).Host
 
-                                    For i3 As Integer = 0 To c.Count - 2
-                                        path = path + c(i3)
-                                    Next
-                                    keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
-                                End If
+                                For i3 As Integer = 0 To c.Count - 2
+                                    path = path + c(i3)
+                                Next
+                                keyfileurl3 = path + keyfileurl2(0) 'New Uri(textLenght(i)).LocalPath + keyfileurl2(0)
+                            End If
 
                             'MsgBox(keyfileurl3)
                             Try
@@ -5516,27 +5520,28 @@ Public Class Main
                                 FunimationBackupm3u8 = StreamURL
                             Catch ex As Exception
                                 Debug.WriteLine(keyfileurl3 + vbNewLine + vbNewLine + ex.ToString)
-                                End Try
+                            End Try
 
-                            End If
+                        End If
 
-                        Catch ex As Exception
+                    Catch ex As Exception
 
-                        End Try
-                    Next
+                    End Try
+                Next
 
 
-                    If Funimation_m3u8_final = Nothing And FunimationBackupm3u8 = Nothing Then
+                If Funimation_m3u8_final = Nothing And FunimationBackupm3u8 = Nothing Then
 
-                        Me.Invoke(New Action(Function() As Object
-                                                 Me.Text = "Status: Resolution not found!"
-                                                 Me.Invalidate()
-                                                 DialogTaskString = "Funimation_Resolution"
-                                                 ResoNotFoundString = str1
-                                                 ErrorDialog.ShowDialog()
-                                                 Return Nothing
-                                             End Function))
-                        ResoFunBackup = ResoBackString
+                    Me.Invoke(New Action(Function() As Object
+                                             Me.Text = "Status: Resolution not found!"
+                                             Anime_Add.StatusLabel.Text = "Status: Resolution not found!"
+                                             Me.Invalidate()
+                                             DialogTaskString = "Funimation_Resolution"
+                                             ResoNotFoundString = str1
+                                             ErrorDialog.ShowDialog()
+                                             Return Nothing
+                                         End Function))
+                    ResoFunBackup = ResoBackString
                     For i As Integer = 0 To Streams.Length - 1
                         If CBool(InStr(Streams(i), ResoBackString)) Then
                             Dim Streams2() As String = Streams(i).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -5583,24 +5588,28 @@ Public Class Main
                         End If
                     Next
                 ElseIf Funimation_m3u8_final = Nothing Then
-                        Funimation_m3u8_final = FunimationBackupm3u8
-                    Else
-                        Me.Invoke(New Action(Function() As Object
-                                                 Me.Text = "Status: Resolution found!"
-                                                 Me.Invalidate()
-                                                 Return Nothing
-                                             End Function))
-
-                    End If
+                    Funimation_m3u8_final = FunimationBackupm3u8
                 Else
                     Me.Invoke(New Action(Function() As Object
-                                         Me.Text = "Status: Substitles only mode - skipped video"
+                                             Me.Text = "Status: Resolution found!"
+                                             Anime_Add.StatusLabel.Text = "Status: Resolution found!"
                                              Me.Invalidate()
                                              Return Nothing
+                                         End Function))
+
+                End If
+            Else
+                Me.Invoke(New Action(Function() As Object
+                                         Me.Text = "Status: Substitles only mode - skipped video"
+                                         Anime_Add.StatusLabel.Text = "Status: Substitles only mode - skipped video"
+                                         Me.Invalidate()
+                                         Return Nothing
                                      End Function))
             End If
             'MsgBox(FunimationName3)
-            'MsgBox(Funimation_m3u8_final)
+            Debug.WriteLine("Funimation_m3u8_final: " + Funimation_m3u8_final)
+
+            Funimation_m3u8_final = Funimation_m3u8_final.Replace(Chr(34), "")
 
             Dim ResoHTMLDisplay As String = Reso.ToString + "p"
 
@@ -5724,6 +5733,8 @@ Public Class Main
 
 #Region "ffmpeg command"
 
+
+
             Dim DubMetatata As String = Nothing
             If FunimationDub = "Japanese" Then
                 DubMetatata = " -metadata:s:a:0 language=jpn"
@@ -5780,6 +5791,7 @@ Public Class Main
 #End Region
             Me.Invoke(New Action(Function() As Object
                                      Me.Text = "Crunchyroll Downloader"
+                                     Anime_Add.StatusLabel.Text = "idle"
                                      Me.Invalidate()
                                      Return Nothing
                                  End Function))
@@ -5787,6 +5799,7 @@ Public Class Main
         Catch ex As Exception
             Me.Invoke(New Action(Function() As Object
                                      Me.Text = "Crunchyroll Downloader!"
+                                     Anime_Add.StatusLabel.Text = "idle"
                                      Me.Invalidate()
                                      Return Nothing
                                  End Function))

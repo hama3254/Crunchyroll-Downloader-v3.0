@@ -124,11 +124,6 @@ Partial Class Einstellungen
         Me.CB_fun_eng = New MetroFramework.Controls.MetroCheckBox()
         Me.CB_fun_es = New MetroFramework.Controls.MetroCheckBox()
         Me.CB_fun_ptbr = New MetroFramework.Controls.MetroCheckBox()
-        Me.TabPage8 = New System.Windows.Forms.TabPage()
-        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        Me.AoD_0p = New MetroFramework.Controls.MetroRadioButton()
-        Me.AoD_576p = New MetroFramework.Controls.MetroRadioButton()
-        Me.AoD_1080_Plus = New MetroFramework.Controls.MetroRadioButton()
         Me.TabPage7 = New System.Windows.Forms.TabPage()
         Me.LastVersion = New MetroFramework.Controls.MetroLabel()
         Me.Label8 = New MetroFramework.Controls.MetroLabel()
@@ -169,8 +164,6 @@ Partial Class Einstellungen
         Me.GroupBox10.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
-        Me.TabPage8.SuspendLayout()
-        Me.GroupBox8.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -389,10 +382,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage2.Size = New System.Drawing.Size(501, 519)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -843,10 +836,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage1.Size = New System.Drawing.Size(501, 519)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1105,13 +1098,12 @@ Partial Class Einstellungen
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.MetroTabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage6)
-        Me.TabControl1.Controls.Add(Me.TabPage8)
         Me.TabControl1.Controls.Add(Me.TabPage7)
         Me.TabControl1.FontSize = MetroFramework.MetroTabControlSize.Tall
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 3
+        Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1125,9 +1117,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1356,70 +1348,6 @@ Partial Class Einstellungen
         Me.CB_fun_ptbr.Text = "Português (Brasil)"
         Me.CB_fun_ptbr.UseSelectable = True
         '
-        'TabPage8
-        '
-        Me.TabPage8.BackColor = System.Drawing.Color.Transparent
-        Me.TabPage8.Controls.Add(Me.GroupBox8)
-        Me.TabPage8.Location = New System.Drawing.Point(4, 35)
-        Me.TabPage8.Name = "TabPage8"
-        Me.TabPage8.Size = New System.Drawing.Size(501, 528)
-        Me.TabPage8.TabIndex = 6
-        Me.TabPage8.Text = "  AoD"
-        '
-        'GroupBox8
-        '
-        Me.GroupBox8.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox8.Controls.Add(Me.AoD_0p)
-        Me.GroupBox8.Controls.Add(Me.AoD_576p)
-        Me.GroupBox8.Controls.Add(Me.AoD_1080_Plus)
-        Me.GroupBox8.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox8.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox8.Location = New System.Drawing.Point(5, 15)
-        Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(490, 74)
-        Me.GroupBox8.TabIndex = 90
-        Me.GroupBox8.TabStop = False
-        Me.GroupBox8.Text = "Anime on Demand unique resolution "
-        '
-        'AoD_0p
-        '
-        Me.AoD_0p.AutoSize = True
-        Me.AoD_0p.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.AoD_0p.ForeColor = System.Drawing.Color.Black
-        Me.AoD_0p.Location = New System.Drawing.Point(348, 32)
-        Me.AoD_0p.Name = "AoD_0p"
-        Me.AoD_0p.Size = New System.Drawing.Size(65, 19)
-        Me.AoD_0p.TabIndex = 44
-        Me.AoD_0p.TabStop = True
-        Me.AoD_0p.Text = "Ignore"
-        Me.AoD_0p.UseSelectable = True
-        '
-        'AoD_576p
-        '
-        Me.AoD_576p.AutoSize = True
-        Me.AoD_576p.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.AoD_576p.ForeColor = System.Drawing.Color.Black
-        Me.AoD_576p.Location = New System.Drawing.Point(210, 32)
-        Me.AoD_576p.Name = "AoD_576p"
-        Me.AoD_576p.Size = New System.Drawing.Size(57, 19)
-        Me.AoD_576p.TabIndex = 43
-        Me.AoD_576p.TabStop = True
-        Me.AoD_576p.Text = "576p"
-        Me.AoD_576p.UseSelectable = True
-        '
-        'AoD_1080_Plus
-        '
-        Me.AoD_1080_Plus.AutoSize = True
-        Me.AoD_1080_Plus.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.AoD_1080_Plus.ForeColor = System.Drawing.Color.Black
-        Me.AoD_1080_Plus.Location = New System.Drawing.Point(62, 32)
-        Me.AoD_1080_Plus.Name = "AoD_1080_Plus"
-        Me.AoD_1080_Plus.Size = New System.Drawing.Size(75, 19)
-        Me.AoD_1080_Plus.TabIndex = 42
-        Me.AoD_1080_Plus.TabStop = True
-        Me.AoD_1080_Plus.Text = "1080p+"
-        Me.AoD_1080_Plus.UseSelectable = True
-        '
         'TabPage7
         '
         Me.TabPage7.BackColor = System.Drawing.Color.Transparent
@@ -1432,9 +1360,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = "About   "
         '
@@ -1623,9 +1551,6 @@ Partial Class Einstellungen
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox9.ResumeLayout(False)
         Me.GroupBox9.PerformLayout()
-        Me.TabPage8.ResumeLayout(False)
-        Me.GroupBox8.ResumeLayout(False)
-        Me.GroupBox8.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -1672,8 +1597,6 @@ Partial Class Einstellungen
     Private WithEvents TabPage6 As MetroFramework.Controls.MetroTabPage
     Friend WithEvents TabPage7 As TabPage
     Friend WithEvents PictureBox7 As PictureBox
-    Friend WithEvents TabPage8 As TabPage
-    Friend WithEvents GroupBox8 As GroupBox
     Friend WithEvents GroupBox7 As GroupBox
     Friend WithEvents GroupBox9 As GroupBox
     Friend WithEvents GroupBox10 As GroupBox
@@ -1707,9 +1630,6 @@ Partial Class Einstellungen
     Friend WithEvents A360p As MetroFramework.Controls.MetroRadioButton
     Friend WithEvents A720p As MetroFramework.Controls.MetroRadioButton
     Friend WithEvents A1080p As MetroFramework.Controls.MetroRadioButton
-    Friend WithEvents AoD_0p As MetroFramework.Controls.MetroRadioButton
-    Friend WithEvents AoD_576p As MetroFramework.Controls.MetroRadioButton
-    Friend WithEvents AoD_1080_Plus As MetroFramework.Controls.MetroRadioButton
     Public WithEvents Label8 As MetroFramework.Controls.MetroLabel
     Public WithEvents Label9 As MetroFramework.Controls.MetroLabel
     Public WithEvents Label7 As MetroFramework.Controls.MetroLabel

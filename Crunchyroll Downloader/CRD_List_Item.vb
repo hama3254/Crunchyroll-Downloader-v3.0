@@ -86,10 +86,7 @@ Public Class CRD_List_Item
         PictureBox5.Location = New Point(0, 136)
         PictureBox5.Height = 6
 
-        If Service = "AoD" Then
-            MetroStyleManager1.Style = MetroColorStyle.LightGreen
-            ServiceSleep = 500
-        ElseIf Service = "FM" Then
+        If Service = "FM" Then
             MetroStyleManager1.Style = MetroColorStyle.DarkPurple
         Else
             MetroStyleManager1.Style = MetroColorStyle.Orange

@@ -386,7 +386,7 @@ Public Class CefSharp_Browser
 
             If Main.b = False Then
                 If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com/v1/show")) And CBool(InStr(requesturl, "/episodes/")) Then
-                    Main.GetFunimationJS_VideoProxy(requesturl)
+                    Main.GetFunimationNewJS_VideoProxy(requesturl)
                     Main.b = True
                     Exit Sub
                 Else
@@ -487,5 +487,10 @@ Public Class CefSharp_Browser
     End Sub
 
 
+
+
+    'Private Sub WebBrowser1_ConsoleMessage(sender As Object, e As ConsoleMessageEventArgs) Handles WebBrowser1.ConsoleMessage
+    '    Debug.WriteLine(e.Message)
+    'End Sub
 End Class
 

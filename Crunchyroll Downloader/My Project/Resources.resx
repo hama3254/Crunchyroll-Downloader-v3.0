@@ -145,9 +145,6 @@
   <data name="about_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\about_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AoD_Titel" xml:space="preserve">
-    <value>"title":"</value>
-  </data>
   <data name="Funimation_Subtitle_String2" xml:space="preserve">
     <value>", "kind": "subtitle", "type": "Full", "language": "</value>
   </data>
@@ -225,9 +222,6 @@
   <data name="main_button_download_deactivate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main_button_download-deactivate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AoD_Image" xml:space="preserve">
-    <value>"image":"</value>
-  </data>
   <data name="Funimation_Subtitle_String" xml:space="preserve">
     <value>", "kind": "subtitle", "type": "CC", "language": "</value>
   </data>
@@ -256,10 +250,6 @@ setInterval(function loadXMLDoc() {
   </data>
   <data name="Funimation_src_string" xml:space="preserve">
     <value>"src":</value>
-  </data>
-  <data name="US_ToolTip" xml:space="preserve">
-    <value>US cookies can't be used as long you are logged in.
-I delete the curremt session with the unlock, if you want to be logged in with the US cookie you need to enter you data on the left.</value>
   </data>
   <data name="ass_template" xml:space="preserve">
     <value>[Script Info]
@@ -426,9 +416,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AoD_files" xml:space="preserve">
-    <value>{"sources":[{"file":"</value>
-  </data>
   <data name="CR_Head_Url_Split" xml:space="preserve">
     <value>&lt;meta property="og:url" content="</value>
   </data>
@@ -478,12 +465,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="Funimation_subs_src" xml:space="preserve">
     <value>{"src": "</value>
   </data>
-  <data name="AoD_HTML_Anime_Title" xml:space="preserve">
-    <value>&lt;h1 itemprop="name"&gt;</value>
-  </data>
-  <data name="AoD_HTML_Episode_Title" xml:space="preserve">
-    <value>&lt;h3 class="episodebox-title" title="</value>
-  </data>
   <data name="CR_MediaName" xml:space="preserve">
     <value>&lt;h4 id="showmedia_about_name" class="strong"&gt;“</value>
   </data>
@@ -519,9 +500,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   </data>
   <data name="Funimation_Player_ID_2" xml:space="preserve">
     <value>src="https://www.funimation.com/player/</value>
-  </data>
-  <data name="AoD_MediaID" xml:space="preserve">
-    <value>"mediaid":</value>
   </data>
   <data name="main_close_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-close_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

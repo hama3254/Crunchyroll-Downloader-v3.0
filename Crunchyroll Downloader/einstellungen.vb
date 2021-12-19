@@ -18,7 +18,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U9.3"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U10"
 
         BackgroundWorker1.RunWorkerAsync()
 
@@ -190,13 +190,7 @@ Public Class Einstellungen
         ElseIf Main.Reso = 42 Then
             AAuto.Checked = True
         End If
-        If Main.AoD_Reso = 1080 Then
-            AoD_1080_Plus.Checked = True
-        ElseIf Main.AoD_Reso = 576 Then
-            AoD_576p.Checked = True
-        ElseIf Main.AoD_Reso = 0 Then
-            AoD_0p.Checked = True
-        End If
+
 
         If Check_CB() = False Then
             ComboBox1.Items.Add(Main.CB_SuB_Nothing)
@@ -426,17 +420,7 @@ Public Class Einstellungen
             Main.Reso = 42
             rk.SetValue("Resu", 42, RegistryValueKind.String)
         End If
-        If AoD_1080_Plus.Checked Then
-            Main.AoD_Reso = 1080
-            rk.SetValue("AoD_Reso", 1080, RegistryValueKind.String)
-        ElseIf AoD_576p.Checked Then
-            Main.AoD_Reso = 576
-            rk.SetValue("AoD_Reso", 576, RegistryValueKind.String)
-        ElseIf AoD_0p.Checked Then
-            Main.AoD_Reso = 0
-            rk.SetValue("AoD_Reso", 0, RegistryValueKind.String)
 
-        End If
         If ComboBox1.SelectedItem.ToString = "English" Then
             Main.SubSprache = "enUS"
             rk.SetValue("Sub", "enUS", RegistryValueKind.String)
@@ -920,7 +904,7 @@ Public Class Einstellungen
         GroupBox5.ForeColor = color
         GroupBox6.ForeColor = color
         GroupBox7.ForeColor = color
-        GroupBox8.ForeColor = color
+
         GroupBox9.ForeColor = color
         GroupBox10.ForeColor = color
         GroupBox11.ForeColor = color

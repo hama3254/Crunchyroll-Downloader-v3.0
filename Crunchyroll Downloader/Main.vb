@@ -112,6 +112,7 @@ Public Class Main
     Public Grapp_non_cr_RDY As Boolean = True
     Public Grapp_Abord As Boolean = False
     Public CR_NameMethode As Integer = 0
+    Public LeadingZero As Integer = 1
     Public MaxDL As Integer
     Public ResoNotFoundString As String
     Public ResoBackString As String
@@ -321,6 +322,29 @@ Public Class Main
         Einstellungen.Theme = Manager.Theme
     End Sub
 
+    Function AddLeadingZeros(ByVal txt As String) As String
+
+        txt = txt.Replace(",", ".")
+        Dim Post As String = Nothing
+        If CBool(InStr(txt, ".")) = True Then
+            Dim txt_split As String() = txt.Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+            txt = txt_split(0)
+            Post = "." + txt_split(1)
+        End If
+
+        For i As Integer = 0 To LeadingZero + 1
+            If txt.Count = LeadingZero + 1 Then
+                Exit For
+            Else
+                txt = "0" + txt
+            End If
+        Next
+
+        Dim Output As String = txt + Post
+
+        Return Output
+    End Function
+
     Private Sub Form8_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.ContextMenuStrip = ContextMenuStrip1
         Dim tbtl As TextBoxTraceListener = New TextBoxTraceListener(TheTextBox)
@@ -356,6 +380,7 @@ Public Class Main
         settings.LogFile = Path.Combine(Application.StartupPath, "lib", "browser.log")
         'Initialize Cef with the provided settings
         Cef.Initialize(settings)
+
 
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
@@ -459,6 +484,12 @@ Public Class Main
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             Reso = Integer.Parse(rkg.GetValue("Resu").ToString)
+            'MsgBox(Resu)
+        Catch ex As Exception
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            LeadingZero = Integer.Parse(rkg.GetValue("LeadingZero").ToString)
             'MsgBox(Resu)
         Catch ex As Exception
         End Try
@@ -597,6 +628,8 @@ Public Class Main
         BlockList = New List(Of String)
         BackgroundWorker1.RunWorkerAsync()
         RetryWithCachedFiles()
+
+
     End Sub
 
     Private Sub BackgroundWorker1_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorker1.DoWork
@@ -1122,26 +1155,7 @@ Public Class Main
                     Dim CR_Episode_2 As String() = CR_Episode_1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
                     CR_Anime_Folge_int = String.Join(" ", CR_Episode_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
                     CR_Anime_Folge_int = RemoveExtraSpaces(CR_Anime_Folge_int)
-                    Dim CleanedNumber As String = Nothing
-                    Dim myChars() As Char = CR_Anime_Folge_int.ToCharArray()
-                    For Each ch As Char In myChars
-                        If Char.IsDigit(ch) Then
-                            CleanedNumber = CleanedNumber + ch.ToString
-                        ElseIf ch = "." Then
-                            CleanedNumber = CleanedNumber + ch.ToString
-                        ElseIf ch = "," Then
-                            CleanedNumber = CleanedNumber + "."
-                        End If
-                    Next
-                    If CleanedNumber = Nothing Then
-                    ElseIf CBool(InStr(CleanedNumber, ".")) Then
-                        Dim Folge_Double As Double = Double.Parse(CleanedNumber, CultureInfo.InvariantCulture)
-                        If Folge_Double < 10 Then
-                            CR_Anime_Folge_int = String.Format("{0:00.0}", Folge_Double)
-                        End If
-                    ElseIf Integer.Parse(CleanedNumber) < 10 Then
-                        CR_Anime_Folge_int = "0" + CleanedNumber
-                    End If
+                    'CR_Anime_Folge_int = AddLeadingZeros(CR_Anime_Folge_int)
                 End If
                 If CBool(InStr(CR_Anime_Folge_int, ",")) Then
                     CR_Anime_Folge_int = CR_Anime_Folge_int.Replace(",", ".")
@@ -1174,7 +1188,7 @@ Public Class Main
             End If
             If Episode_Prefix = "[default episode prefix]" Then
             Else
-                CR_Anime_Folge = Episode_Prefix + CR_Anime_Folge_int
+                CR_Anime_Folge = Episode_Prefix + AddLeadingZeros(CR_Anime_Folge_int)
             End If
             If CR_Anime_Titel = Nothing Then
                 CR_FilenName = CR_Anime_Name
@@ -1773,9 +1787,9 @@ Public Class Main
                 End If
                 If CR_episode = Nothing Then
                 ElseIf Episode_Prefix = "[default episode prefix]" Then
-                    CR_episode = "Episode " + CR_episode
+                    CR_episode = "Episode " + AddLeadingZeros(CR_episode)
                 Else
-                    CR_episode = Episode_Prefix + CR_episode
+                    CR_episode = Episode_Prefix + AddLeadingZeros(CR_episode)
                 End If
                 If CR_NameMethode = 0 Then 'nummer
                     If CR_season_number = Nothing Then
@@ -2279,9 +2293,9 @@ Public Class Main
                 End If
                 If CR_episode = Nothing Then
                 ElseIf Episode_Prefix = "[default episode prefix]" Then
-                    CR_episode = "Episode " + CR_episode
+                    CR_episode = "Episode " + AddLeadingZeros(CR_episode)
                 Else
-                    CR_episode = Episode_Prefix + CR_episode
+                    CR_episode = Episode_Prefix + AddLeadingZeros(CR_episode)
                 End If
                 If CR_NameMethode = 0 Then 'nummer
                     If CR_season_number = Nothing Then
@@ -2882,6 +2896,14 @@ Public Class Main
     End Sub
 
     Private Sub Btn_add_Click(sender As Object, e As EventArgs) Handles Btn_add.Click
+
+
+        If Application.OpenForms().OfType(Of CefSharp_Browser).Any = True Then
+        Else
+            UserBowser = False
+            CefSharp_Browser.Show()
+        End If
+
         If Anime_Add.WindowState = System.Windows.Forms.FormWindowState.Minimized Then
             Anime_Add.WindowState = System.Windows.Forms.FormWindowState.Normal
         Else
@@ -2930,12 +2952,17 @@ Public Class Main
     End Sub
 
     Private Sub Btn_Browser_Click(sender As Object, e As EventArgs) Handles Btn_Browser.Click
-        If Application.OpenForms().OfType(Of CefSharp_Browser).Any = True Then
-            CefSharp_Browser.Location = Me.Location
-        End If
         Debug.WriteLine(Date.Now.ToString + "." + Date.Now.Millisecond.ToString)
         UserBowser = True
-        CefSharp_Browser.Show()
+
+        If Application.OpenForms().OfType(Of CefSharp_Browser).Any = True Then
+            CefSharp_Browser.Location = Me.Location
+        Else
+            CefSharp_Browser.Location = Me.Location
+            CefSharp_Browser.Show()
+        End If
+
+
     End Sub
 
     Public Function RemoveExtraSpaces(input_text As String) As String
@@ -3390,25 +3417,30 @@ Public Class Main
         End If
     End Function
     Public Sub GetFunimationNewJS_VideoProxy(Optional ByVal v1JsonURL As String = Nothing, Optional ByVal v1JsonData As String = Nothing)
-        Dim Collector As New TaskCookieVisitor
-        Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
-        CM.VisitAllCookies(Collector)
-        Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
-        Dim Cookie As String = ""
-        For i As Integer = 0 To list.Count - 1
-            If CBool(InStr(list.Item(i).Domain, "funimation.com")) Then 'list.Item(i).Domain = "funimation.com" Then
-                'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
-                Cookie = Cookie + list.Item(i).Name + "=" + list.Item(i).Value + ";"
-            End If
-            If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "src_token")) Then 'list.Item(i).Domain = "funimation.com" Then
-                'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
-                FunimationToken = "Token " + list.Item(i).Value
-            End If
-            If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "region")) Then 'list.Item(i).Domain = "funimation.com" Then
-                'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
-                FunimationDeviceRegion = "?deviceType=web&" + list.Item(i).Name + "=" + list.Item(i).Value
-            End If
-        Next
+        Try
+            Dim Collector As New TaskCookieVisitor
+            Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
+            CM.VisitAllCookies(Collector)
+            Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
+            Dim Cookie As String = ""
+            For i As Integer = 0 To list.Count - 1
+                If CBool(InStr(list.Item(i).Domain, "funimation.com")) Then 'list.Item(i).Domain = "funimation.com" Then
+                    'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
+                    Cookie = Cookie + list.Item(i).Name + "=" + list.Item(i).Value + ";"
+                End If
+                If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "src_token")) Then 'list.Item(i).Domain = "funimation.com" Then
+                    'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
+                    FunimationToken = "Token " + list.Item(i).Value
+                End If
+                If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "region")) Then 'list.Item(i).Domain = "funimation.com" Then
+                    'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
+                    FunimationDeviceRegion = "?deviceType=web&" + list.Item(i).Name + "=" + list.Item(i).Value
+                End If
+            Next
+
+        Catch ex As Exception
+
+        End Try
         ' region=US;
         LoadedUrls.Clear()
         Dim Evaluator = New Thread(Sub() Me.GetFunimationNewJS_Video(v1JsonURL, v1JsonData))
@@ -3493,9 +3525,9 @@ Public Class Main
                     Case "episodeNumber"
                         Dim FunimationEpisode3 As String = RemoveExtraSpaces(item.Value.ToString)
                         If Episode_Prefix = "[default episode prefix]" Then
-                            FunimationEpisode = "Episode " + FunimationEpisode3
+                            FunimationEpisode = "Episode " + AddLeadingZeros(FunimationEpisode3)
                         Else
-                            FunimationEpisode = Episode_Prefix + FunimationEpisode3
+                            FunimationEpisode = Episode_Prefix + AddLeadingZeros(FunimationEpisode3)
                         End If
                     Case "name"
                         Dim NameData As List(Of JToken) = item.Values.ToList()
@@ -5002,27 +5034,31 @@ Public Class Main
     End Sub
 
     Private Sub TestDownloadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TestDownloadToolStripMenuItem.Click
-        Dim Collector As New TaskCookieVisitor
-        Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
-        CM.VisitAllCookies(Collector)
         Dim Token As String = Nothing
-        Dim DeviceRegion As String = Nothing
-        Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
-        Dim Cookie As String = ""
-        For i As Integer = 0 To list.Count - 1
-            If CBool(InStr(list.Item(i).Domain, "funimation.com")) Then 'list.Item(i).Domain = "funimation.com" Then
-                'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
-                Cookie = Cookie + list.Item(i).Name + "=" + list.Item(i).Value + ";"
-            End If
-            If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "src_token")) Then 'list.Item(i).Domain = "funimation.com" Then
-                'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
-                Token = "Token " + list.Item(i).Value
-            End If
-            If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "region")) Then 'list.Item(i).Domain = "funimation.com" Then
-                'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
-                DeviceRegion = "?deviceType=web&" + list.Item(i).Name + "=" + list.Item(i).Value
-            End If
-        Next
+        Try
+            Dim Collector As New TaskCookieVisitor
+            Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
+            CM.VisitAllCookies(Collector)
+            Dim DeviceRegion As String = Nothing
+            Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
+            Dim Cookie As String = ""
+            For i As Integer = 0 To list.Count - 1
+                If CBool(InStr(list.Item(i).Domain, "funimation.com")) Then 'list.Item(i).Domain = "funimation.com" Then
+                    'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
+                    Cookie = Cookie + list.Item(i).Name + "=" + list.Item(i).Value + ";"
+                End If
+                If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "src_token")) Then 'list.Item(i).Domain = "funimation.com" Then
+                    'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
+                    Token = "Token " + list.Item(i).Value
+                End If
+                If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "region")) Then 'list.Item(i).Domain = "funimation.com" Then
+                    'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
+                    DeviceRegion = "?deviceType=web&" + list.Item(i).Name + "=" + list.Item(i).Value
+                End If
+            Next
+        Catch ex As Exception
+
+        End Try
         ' region=US;
         If Token = Nothing Then
             MsgBox("No Token has been found...", MsgBoxStyle.Exclamation)

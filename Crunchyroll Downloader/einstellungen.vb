@@ -18,7 +18,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U10"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U10.1"
 
         BackgroundWorker1.RunWorkerAsync()
 
@@ -32,7 +32,7 @@ Public Class Einstellungen
 
 
         ProfileTextBox.Text = Main.ProfileFolder
-
+        LeadingZeroDD.SelectedIndex = Main.LeadingZero
         If Main.IgnoreS1 = True Then
             IgnoreS1.Checked = True
         End If
@@ -326,6 +326,9 @@ Public Class Einstellungen
 
     Private Sub Btn_Save_Click(sender As Object, e As EventArgs) Handles Btn_Save.Click
         Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
+
+        Main.LeadingZero = LeadingZeroDD.SelectedIndex
+        rk.SetValue("LeadingZero", LeadingZeroDD.SelectedIndex, RegistryValueKind.String)
 
         If http_support.Text = "add-on support disabled" Then
             rk.SetValue("ServerPort", 0, RegistryValueKind.String)

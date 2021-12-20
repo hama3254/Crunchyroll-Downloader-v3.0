@@ -11,6 +11,9 @@ Imports System.Text
 Imports AdapterRequestHandler
 
 Public Class CefSharp_Browser
+
+
+
     Public keks As String = Nothing
     'Public c As Boolean = True
     Dim t As Thread
@@ -122,15 +125,20 @@ Public Class CefSharp_Browser
         Catch ex As Exception
 
         End Try
+
         If Main.UserBowser = False Then
-            Me.Location = New Point(-10000, -1000)
+            Me.Location = New Point(-10000, -10000)
+
         End If
     End Sub
 
-    Private Sub GeckoFX_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+    Private Sub CefSharp_Browser_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         Main.UserBowser = False
-        Main.ProcessUrls()
+        Me.Location = New Point(-10000, -10000)
+
+        e.Cancel = True
     End Sub
+
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
@@ -299,7 +307,7 @@ Public Class CefSharp_Browser
                 Exit Sub
             End If
             Debug.WriteLine(e.RequestUrl)
-        ElseIf CBool(InStr(e.requesturl, "https://api.vrv.co")) And CBool(InStr(e.requesturl, "streams?")) Then
+        ElseIf CBool(InStr(e.RequestUrl, "https://api.vrv.co")) And CBool(InStr(e.RequestUrl, "streams?")) Then
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
                 Exit Sub
@@ -308,7 +316,7 @@ Public Class CefSharp_Browser
                 Exit Sub
             End If
             Debug.WriteLine(e.RequestUrl)
-        ElseIf CBool(InStr(e.requesturl, "https://api.vrv.co")) And CBool(InStr(e.requesturl, "seasons?series_id=")) Then
+        ElseIf CBool(InStr(e.RequestUrl, "https://api.vrv.co")) And CBool(InStr(e.RequestUrl, "seasons?series_id=")) Then
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
                 Exit Sub
@@ -318,7 +326,7 @@ Public Class CefSharp_Browser
             End If
             Debug.WriteLine(e.RequestUrl)
 
-            End If
+        End If
 
         Exit Sub
 
@@ -489,8 +497,10 @@ Public Class CefSharp_Browser
 
 
 
+
     'Private Sub WebBrowser1_ConsoleMessage(sender As Object, e As ConsoleMessageEventArgs) Handles WebBrowser1.ConsoleMessage
     '    Debug.WriteLine(e.Message)
     'End Sub
+
 End Class
 

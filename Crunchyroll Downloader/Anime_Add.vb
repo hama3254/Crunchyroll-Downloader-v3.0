@@ -177,6 +177,8 @@ Public Class Anime_Add
 
 
     Private Sub Btn_dl_Click(sender As Object, e As EventArgs) Handles btn_dl.Click
+
+
         CefSharp_Browser.Show()
         Main.LoginOnly = "Download Mode!"
         'MsgBox(Main.WebbrowserURL)
@@ -190,81 +192,6 @@ Public Class Anime_Add
             Try
                 If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Or CBool(InStr(textBox1.Text, "vrv.co/series/")) Or CBool(InStr(textBox1.Text, "vrv.co/watch/")) Then
 
-#Region "Funimation url parameter"
-                    If CBool(InStr(textBox1.Text, "funimation.com")) Then
-
-                        Main.WebbrowserURL = textBox1.Text
-
-                        If CBool(InStr(textBox1.Text, "funimation.com/v/")) Then
-                            Dim Episode() As String = textBox1.Text.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim v1JsonUrl As String = "https://d33et77evd9bgg.cloudfront.net/data/v1/episodes/" + Episode(Episode.Length - 1) + ".json"
-                            Dim v1Json As String = Nothing
-                            Try
-                                Using client As New WebClient()
-                                    client.Encoding = System.Text.Encoding.UTF8
-                                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                                    v1Json = client.DownloadString(v1JsonUrl)
-                                End Using
-                                Main.GetFunimationNewJS_VideoProxy(Nothing, v1Json)
-                                Exit Sub
-                            Catch ex As Exception
-                                Debug.WriteLine("error- getting v1Json data for the bypasss")
-                                Debug.WriteLine(ex.ToString)
-                            End Try
-
-                        End If
-
-
-
-
-                        If Main.DubFunimation = "Disabled" Then
-                        Else
-                            If CBool(InStr(textBox1.Text, "?lang=")) Then
-                                Dim ClearUri As String() = textBox1.Text.Split(New String() {"?lang="}, System.StringSplitOptions.RemoveEmptyEntries)
-                                If ClearUri.Count > 1 Then
-                                    If CBool(InStr(ClearUri(1), "&")) Then
-                                        Dim ClearUri2 As String() = ClearUri(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                        Dim Parms As String = Nothing
-                                        For i As Integer = 1 To ClearUri2.Count - 1
-                                            Parms = Parms + "&" + ClearUri2(i)
-                                        Next
-                                        textBox1.Text = ClearUri(0) + "?lang=" + Main.DubFunimation + Parms
-                                    Else
-                                        textBox1.Text = ClearUri(0) + "?lang=" + Main.DubFunimation
-                                    End If
-                                Else
-                                    textBox1.Text = ClearUri(0) + "?lang=" + Main.DubFunimation
-                                End If
-                            ElseIf CBool(InStr(textBox1.Text, "&lang=")) Then
-                                Dim ClearUri As String() = textBox1.Text.Split(New String() {"&lang="}, System.StringSplitOptions.RemoveEmptyEntries)
-                                If ClearUri.Count > 1 Then
-
-                                    If CBool(InStr(ClearUri(1), "&")) Then
-                                        Dim ClearUri2 As String() = ClearUri(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                        Dim Parms As String = Nothing
-                                        For i As Integer = 1 To ClearUri2.Count - 1
-                                            Parms = Parms + "&" + ClearUri2(i)
-                                        Next
-                                        textBox1.Text = ClearUri(0) + "&lang=" + Main.DubFunimation + Parms
-                                    Else
-                                        textBox1.Text = ClearUri(0) + "&lang=" + Main.DubFunimation
-                                    End If
-                                Else
-                                    textBox1.Text = ClearUri(0) + "&lang=" + Main.DubFunimation
-                                End If
-
-                            ElseIf CBool(InStr(textBox1.Text, "?")) Then
-                                textBox1.AppendText("&lang=" + Main.DubFunimation)
-                            Else
-                                textBox1.AppendText("?lang=" + Main.DubFunimation)
-                            End If
-                        End If
-                        'ElseIf CBool(InStr(textBox1.Text, "vrv.co/series/")) Then
-
-
-
-                    End If
-#End Region
 
                     If StatusLabel.Text = "Status: waiting for episode selection" Then
                         If MessageBox.Show("Are you sure you want cancel the advanced download?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
@@ -284,6 +211,32 @@ Public Class Anime_Add
                             textBox1.ForeColor = Color.Black
                             textBox1.Text = "URL"
                         Else
+
+                            If CBool(InStr(textBox1.Text, "funimation.com")) Then
+
+                                Main.WebbrowserURL = textBox1.Text
+
+                                If CBool(InStr(textBox1.Text, "funimation.com/v/")) Then
+                                    Dim Episode() As String = textBox1.Text.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                    Dim v1JsonUrl As String = "https://d33et77evd9bgg.cloudfront.net/data/v1/episodes/" + Episode(Episode.Length - 1) + ".json"
+                                    Dim v1Json As String = Nothing
+                                    Try
+                                        Using client As New WebClient()
+                                            client.Encoding = System.Text.Encoding.UTF8
+                                            client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                                            v1Json = client.DownloadString(v1JsonUrl)
+                                        End Using
+                                        Main.GetFunimationNewJS_VideoProxy(Nothing, v1Json)
+                                        Exit Sub
+                                    Catch ex As Exception
+                                        Debug.WriteLine("error- getting v1Json data for the bypasss")
+                                        Debug.WriteLine(ex.ToString)
+                                    End Try
+
+                                End If
+
+                            End If
+
                             If Main.Grapp_RDY = True Then
 
                                 Main.b = False
@@ -730,6 +683,11 @@ Public Class Anime_Add
                                         client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
                                         v1Json = client.DownloadString(v1JsonUrl)
                                     End Using
+                                    Main.Funimation_Grapp_RDY = False
+                                    Main.WebbrowserURL = UriUsed
+                                    ListBox1.Items.Remove(ListBox1.Items(0))
+                                    Main.b = False
+                                    Main.Invalidate()
                                     Main.GetFunimationNewJS_VideoProxy(Nothing, v1Json)
                                     Exit Sub
                                 Catch ex As Exception
@@ -739,57 +697,9 @@ Public Class Anime_Add
 
                             End If
 
-
-                            If Main.DubFunimation = "Disabled" Then
-                            Else
-                                If CBool(InStr(UriUsed, "?lang=")) Then
-                                    Dim ClearUri As String() = UriUsed.Split(New String() {"?lang="}, System.StringSplitOptions.RemoveEmptyEntries)
-                                    If ClearUri.Count > 1 Then
-                                        If CBool(InStr(ClearUri(1), "&")) Then
-                                            Dim ClearUri2 As String() = ClearUri(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                            Dim Parms As String = Nothing
-                                            For i As Integer = 1 To ClearUri2.Count - 1
-                                                Parms = Parms + "&" + ClearUri2(i)
-                                            Next
-                                            UriUsed = ClearUri(0) + "?lang=" + Main.DubFunimation + Parms
-                                        Else
-                                            UriUsed = ClearUri(0) + "?lang=" + Main.DubFunimation
-                                        End If
-                                    Else
-                                        UriUsed = ClearUri(0) + "?lang=" + Main.DubFunimation
-                                    End If
-                                ElseIf CBool(InStr(UriUsed, "&lang=")) Then
-                                    Dim ClearUri As String() = UriUsed.Split(New String() {"&lang="}, System.StringSplitOptions.RemoveEmptyEntries)
-                                    If ClearUri.Count > 1 Then
-
-                                        If CBool(InStr(ClearUri(1), "&")) Then
-                                            Dim ClearUri2 As String() = ClearUri(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                            Dim Parms As String = Nothing
-                                            For i As Integer = 1 To ClearUri2.Count - 1
-                                                Parms = Parms + "&" + ClearUri2(i)
-                                            Next
-                                            UriUsed = ClearUri(0) + "&lang=" + Main.DubFunimation + Parms
-                                        Else
-                                            UriUsed = ClearUri(0) + "&lang=" + Main.DubFunimation
-                                        End If
-                                    Else
-                                        UriUsed = ClearUri(0) + "&lang=" + Main.DubFunimation
-                                    End If
-
-                                ElseIf CBool(InStr(UriUsed, "?")) Then
-                                    UriUsed = UriUsed + "&lang=" + Main.DubFunimation
-                                Else
-                                    UriUsed = UriUsed + "?lang=" + Main.DubFunimation
-                                End If
-                            End If
-
                             Main.Funimation_Grapp_RDY = False
                             Main.WebbrowserURL = UriUsed
-                            'MsgBox(UriUsed)
                             ListBox1.Items.Remove(ListBox1.Items(0))
-                            'Main.b = False
-
-
                             Main.b = False
                             CefSharp_Browser.WebBrowser1.Load(UriUsed)
                             StatusLabel.Text = "Status: loading in browser"

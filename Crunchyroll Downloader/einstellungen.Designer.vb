@@ -136,6 +136,7 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
+        Me.LeadingZeroDD = New MetroFramework.Controls.MetroComboBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -400,7 +401,7 @@ Partial Class Einstellungen
         Me.GB_Filename_Pre.Controls.Add(Me.MetroLink1)
         Me.GB_Filename_Pre.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Filename_Pre.ForeColor = System.Drawing.Color.Black
-        Me.GB_Filename_Pre.Location = New System.Drawing.Point(5, 182)
+        Me.GB_Filename_Pre.Location = New System.Drawing.Point(5, 220)
         Me.GB_Filename_Pre.Name = "GB_Filename_Pre"
         Me.GB_Filename_Pre.Size = New System.Drawing.Size(490, 59)
         Me.GB_Filename_Pre.TabIndex = 20
@@ -433,6 +434,7 @@ Partial Class Einstellungen
         'GroupBox12
         '
         Me.GroupBox12.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox12.Controls.Add(Me.LeadingZeroDD)
         Me.GroupBox12.Controls.Add(Me.IgnoreS1)
         Me.GroupBox12.Controls.Add(Me.DD_Episode_Prefix)
         Me.GroupBox12.Controls.Add(Me.DD_Season_Prefix)
@@ -441,7 +443,7 @@ Partial Class Einstellungen
         Me.GroupBox12.ForeColor = System.Drawing.Color.Black
         Me.GroupBox12.Location = New System.Drawing.Point(5, 11)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(490, 165)
+        Me.GroupBox12.Size = New System.Drawing.Size(490, 203)
         Me.GroupBox12.TabIndex = 10
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Filename"
@@ -450,7 +452,7 @@ Partial Class Einstellungen
         '
         Me.IgnoreS1.AutoSize = True
         Me.IgnoreS1.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.IgnoreS1.Location = New System.Drawing.Point(133, 135)
+        Me.IgnoreS1.Location = New System.Drawing.Point(248, 155)
         Me.IgnoreS1.Name = "IgnoreS1"
         Me.IgnoreS1.Size = New System.Drawing.Size(227, 19)
         Me.IgnoreS1.TabIndex = 19
@@ -508,7 +510,7 @@ Partial Class Einstellungen
         Me.GroupBox4.Controls.Add(Me.CB_Format)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox4.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox4.Location = New System.Drawing.Point(5, 300)
+        Me.GroupBox4.Location = New System.Drawing.Point(5, 340)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(490, 78)
         Me.GroupBox4.TabIndex = 40
@@ -545,7 +547,7 @@ Partial Class Einstellungen
         Me.GroupBox2.Controls.Add(Me.Panel1)
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox2.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox2.Location = New System.Drawing.Point(5, 380)
+        Me.GroupBox2.Location = New System.Drawing.Point(5, 420)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(490, 63)
         Me.GroupBox2.TabIndex = 50
@@ -751,7 +753,7 @@ Partial Class Einstellungen
         Me.GB_Resolution.Controls.Add(Me.A1080p)
         Me.GB_Resolution.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Resolution.ForeColor = System.Drawing.Color.Black
-        Me.GB_Resolution.Location = New System.Drawing.Point(5, 240)
+        Me.GB_Resolution.Location = New System.Drawing.Point(5, 280)
         Me.GB_Resolution.Name = "GB_Resolution"
         Me.GB_Resolution.Size = New System.Drawing.Size(490, 59)
         Me.GB_Resolution.TabIndex = 30
@@ -1103,7 +1105,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.SelectedIndex = 1
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1117,9 +1119,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1165,10 +1167,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage6.Size = New System.Drawing.Size(501, 528)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = "Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1360,9 +1362,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = "About   "
         '
@@ -1493,6 +1495,20 @@ Partial Class Einstellungen
         Me.Btn_Save.Size = New System.Drawing.Size(355, 30)
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
+        '
+        'LeadingZeroDD
+        '
+        Me.LeadingZeroDD.DropDownHeight = 250
+        Me.LeadingZeroDD.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LeadingZeroDD.FormattingEnabled = True
+        Me.LeadingZeroDD.IntegralHeight = False
+        Me.LeadingZeroDD.ItemHeight = 23
+        Me.LeadingZeroDD.Items.AddRange(New Object() {"1", "01", "001", "0001"})
+        Me.LeadingZeroDD.Location = New System.Drawing.Point(6, 151)
+        Me.LeadingZeroDD.Name = "LeadingZeroDD"
+        Me.LeadingZeroDD.Size = New System.Drawing.Size(225, 29)
+        Me.LeadingZeroDD.TabIndex = 20
+        Me.LeadingZeroDD.UseSelectable = True
         '
         'Einstellungen
         '
@@ -1671,4 +1687,5 @@ Partial Class Einstellungen
     Friend WithEvents ListBit_4500 As ToolStripMenuItem
     Friend WithEvents ListBit_3500 As ToolStripMenuItem
     Friend WithEvents ListBit_2500 As ToolStripMenuItem
+    Friend WithEvents LeadingZeroDD As MetroFramework.Controls.MetroComboBox
 End Class

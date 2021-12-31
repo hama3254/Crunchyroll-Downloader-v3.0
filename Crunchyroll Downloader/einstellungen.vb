@@ -18,7 +18,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U10.1"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U11"
 
         BackgroundWorker1.RunWorkerAsync()
 
@@ -33,6 +33,9 @@ Public Class Einstellungen
 
         ProfileTextBox.Text = Main.ProfileFolder
         LeadingZeroDD.SelectedIndex = Main.LeadingZero
+
+        Bitrate_Funi.SelectedIndex = Main.Funimation_Bitrate
+
         If Main.IgnoreS1 = True Then
             IgnoreS1.Checked = True
         End If
@@ -329,6 +332,10 @@ Public Class Einstellungen
 
         Main.LeadingZero = LeadingZeroDD.SelectedIndex
         rk.SetValue("LeadingZero", LeadingZeroDD.SelectedIndex, RegistryValueKind.String)
+
+        Main.Funimation_Bitrate = Bitrate_Funi.SelectedIndex
+        rk.SetValue("Funimation_Bitrate", Bitrate_Funi.SelectedIndex, RegistryValueKind.String)
+
 
         If http_support.Text = "add-on support disabled" Then
             rk.SetValue("ServerPort", 0, RegistryValueKind.String)
@@ -907,11 +914,14 @@ Public Class Einstellungen
         GroupBox5.ForeColor = color
         GroupBox6.ForeColor = color
         GroupBox7.ForeColor = color
-
+        GroupBox8.ForeColor = color
         GroupBox9.ForeColor = color
         GroupBox10.ForeColor = color
         GroupBox11.ForeColor = color
         GroupBox12.ForeColor = color
+        GroupBox13.ForeColor = color
+        GroupBox14.ForeColor = color
+        GroupBox15.ForeColor = color
     End Sub
 
 
@@ -1197,13 +1207,6 @@ Public Class Einstellungen
 
         End If
     End Sub
-
-    Private Sub TabPage6_Click(sender As Object, e As EventArgs) Handles TabPage6.Click
-
-    End Sub
-
-
-
 
 
 

@@ -45,6 +45,7 @@ Partial Class Einstellungen
         Me.KodiSupport = New MetroFramework.Controls.MetroToggle()
         Me.MetroLink1 = New MetroFramework.Controls.MetroLink()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
+        Me.LeadingZeroDD = New MetroFramework.Controls.MetroComboBox()
         Me.IgnoreS1 = New MetroFramework.Controls.MetroCheckBox()
         Me.DD_Episode_Prefix = New MetroFramework.Controls.MetroComboBox()
         Me.DD_Season_Prefix = New MetroFramework.Controls.MetroComboBox()
@@ -111,19 +112,20 @@ Partial Class Einstellungen
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.CB_SoftSubSettings = New MetroFramework.Controls.MetroComboBox()
         Me.TabPage6 = New MetroFramework.Controls.MetroTabPage()
-        Me.GroupBox13 = New System.Windows.Forms.GroupBox()
-        Me.FunSubDef = New MetroFramework.Controls.MetroComboBox()
-        Me.GroupBox11 = New System.Windows.Forms.GroupBox()
-        Me.CB_srt = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_vtt = New MetroFramework.Controls.MetroCheckBox()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.CB_fun_eng = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_fun_es = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_fun_ptbr = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox10 = New System.Windows.Forms.GroupBox()
         Me.Fun_Dub_Over = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.CB_Fun_HardSubs = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox9 = New System.Windows.Forms.GroupBox()
-        Me.CB_fun_eng = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_fun_es = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_fun_ptbr = New MetroFramework.Controls.MetroCheckBox()
+        Me.GroupBox13 = New System.Windows.Forms.GroupBox()
+        Me.FunSubDef = New MetroFramework.Controls.MetroComboBox()
+        Me.GroupBox11 = New System.Windows.Forms.GroupBox()
+        Me.CB_srt = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_vtt = New MetroFramework.Controls.MetroCheckBox()
         Me.TabPage7 = New System.Windows.Forms.TabPage()
         Me.LastVersion = New MetroFramework.Controls.MetroLabel()
         Me.Label8 = New MetroFramework.Controls.MetroLabel()
@@ -136,7 +138,8 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.LeadingZeroDD = New MetroFramework.Controls.MetroComboBox()
+        Me.GroupBox15 = New System.Windows.Forms.GroupBox()
+        Me.Bitrate_Funi = New MetroFramework.Controls.MetroComboBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -160,13 +163,15 @@ Partial Class Einstellungen
         Me.MetroTabPage1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.TabPage6.SuspendLayout()
-        Me.GroupBox13.SuspendLayout()
-        Me.GroupBox11.SuspendLayout()
+        Me.GroupBox8.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
+        Me.GroupBox13.SuspendLayout()
+        Me.GroupBox11.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox15.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolTip1
@@ -447,6 +452,20 @@ Partial Class Einstellungen
         Me.GroupBox12.TabIndex = 10
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Filename"
+        '
+        'LeadingZeroDD
+        '
+        Me.LeadingZeroDD.DropDownHeight = 250
+        Me.LeadingZeroDD.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LeadingZeroDD.FormattingEnabled = True
+        Me.LeadingZeroDD.IntegralHeight = False
+        Me.LeadingZeroDD.ItemHeight = 23
+        Me.LeadingZeroDD.Items.AddRange(New Object() {"1", "01", "001", "0001"})
+        Me.LeadingZeroDD.Location = New System.Drawing.Point(6, 151)
+        Me.LeadingZeroDD.Name = "LeadingZeroDD"
+        Me.LeadingZeroDD.Size = New System.Drawing.Size(225, 29)
+        Me.LeadingZeroDD.TabIndex = 20
+        Me.LeadingZeroDD.UseSelectable = True
         '
         'IgnoreS1
         '
@@ -1105,7 +1124,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 1
+        Me.TabControl1.SelectedIndex = 3
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1119,9 +1138,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1159,18 +1178,17 @@ Partial Class Einstellungen
         'TabPage6
         '
         Me.TabPage6.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
-        Me.TabPage6.Controls.Add(Me.GroupBox13)
-        Me.TabPage6.Controls.Add(Me.GroupBox11)
+        Me.TabPage6.Controls.Add(Me.GroupBox15)
         Me.TabPage6.Controls.Add(Me.GroupBox10)
         Me.TabPage6.Controls.Add(Me.GroupBox7)
         Me.TabPage6.Controls.Add(Me.GroupBox9)
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage6.Size = New System.Drawing.Size(501, 519)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = "Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1178,18 +1196,139 @@ Partial Class Einstellungen
         Me.TabPage6.VerticalScrollbarSize = 10
         Me.TabPage6.Visible = False
         '
+        'GroupBox8
+        '
+        Me.GroupBox8.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox8.Controls.Add(Me.CB_fun_eng)
+        Me.GroupBox8.Controls.Add(Me.CB_fun_es)
+        Me.GroupBox8.Controls.Add(Me.CB_fun_ptbr)
+        Me.GroupBox8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox8.Location = New System.Drawing.Point(10, 21)
+        Me.GroupBox8.Name = "GroupBox8"
+        Me.GroupBox8.Size = New System.Drawing.Size(474, 82)
+        Me.GroupBox8.TabIndex = 61
+        Me.GroupBox8.TabStop = False
+        Me.GroupBox8.Text = "Language"
+        '
+        'CB_fun_eng
+        '
+        Me.CB_fun_eng.AutoSize = True
+        Me.CB_fun_eng.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_fun_eng.ForeColor = System.Drawing.Color.Black
+        Me.CB_fun_eng.Location = New System.Drawing.Point(34, 35)
+        Me.CB_fun_eng.Name = "CB_fun_eng"
+        Me.CB_fun_eng.Size = New System.Drawing.Size(68, 19)
+        Me.CB_fun_eng.TabIndex = 33
+        Me.CB_fun_eng.Text = "English"
+        Me.CB_fun_eng.UseSelectable = True
+        '
+        'CB_fun_es
+        '
+        Me.CB_fun_es.AutoSize = True
+        Me.CB_fun_es.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_fun_es.ForeColor = System.Drawing.Color.Black
+        Me.CB_fun_es.Location = New System.Drawing.Point(148, 35)
+        Me.CB_fun_es.Name = "CB_fun_es"
+        Me.CB_fun_es.Size = New System.Drawing.Size(100, 19)
+        Me.CB_fun_es.TabIndex = 34
+        Me.CB_fun_es.Text = "Español (LA)"
+        Me.CB_fun_es.UseSelectable = True
+        '
+        'CB_fun_ptbr
+        '
+        Me.CB_fun_ptbr.AutoSize = True
+        Me.CB_fun_ptbr.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_fun_ptbr.ForeColor = System.Drawing.Color.Black
+        Me.CB_fun_ptbr.Location = New System.Drawing.Point(270, 35)
+        Me.CB_fun_ptbr.Name = "CB_fun_ptbr"
+        Me.CB_fun_ptbr.Size = New System.Drawing.Size(131, 19)
+        Me.CB_fun_ptbr.TabIndex = 35
+        Me.CB_fun_ptbr.Text = "Português (Brasil)"
+        Me.CB_fun_ptbr.UseSelectable = True
+        '
+        'GroupBox10
+        '
+        Me.GroupBox10.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox10.Controls.Add(Me.Fun_Dub_Over)
+        Me.GroupBox10.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox10.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox10.Location = New System.Drawing.Point(0, 6)
+        Me.GroupBox10.Name = "GroupBox10"
+        Me.GroupBox10.Size = New System.Drawing.Size(490, 69)
+        Me.GroupBox10.TabIndex = 80
+        Me.GroupBox10.TabStop = False
+        Me.GroupBox10.Text = "Funimation Dub"
+        '
+        'Fun_Dub_Over
+        '
+        Me.Fun_Dub_Over.DropDownHeight = 250
+        Me.Fun_Dub_Over.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Fun_Dub_Over.FormattingEnabled = True
+        Me.Fun_Dub_Over.IntegralHeight = False
+        Me.Fun_Dub_Over.ItemHeight = 23
+        Me.Fun_Dub_Over.Items.AddRange(New Object() {"Disabled", "english", "japanese", "portuguese(Brazil)", "spanish(Mexico)"})
+        Me.Fun_Dub_Over.Location = New System.Drawing.Point(79, 30)
+        Me.Fun_Dub_Over.Name = "Fun_Dub_Over"
+        Me.Fun_Dub_Over.Size = New System.Drawing.Size(326, 29)
+        Me.Fun_Dub_Over.Sorted = True
+        Me.Fun_Dub_Over.TabIndex = 40
+        Me.Fun_Dub_Over.UseSelectable = True
+        '
+        'GroupBox7
+        '
+        Me.GroupBox7.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox7.Controls.Add(Me.CB_Fun_HardSubs)
+        Me.GroupBox7.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox7.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox7.Location = New System.Drawing.Point(0, 450)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(490, 69)
+        Me.GroupBox7.TabIndex = 40
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "Hard Subtitle (post-processed)"
+        '
+        'CB_Fun_HardSubs
+        '
+        Me.CB_Fun_HardSubs.DropDownHeight = 250
+        Me.CB_Fun_HardSubs.Enabled = False
+        Me.CB_Fun_HardSubs.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_Fun_HardSubs.FormattingEnabled = True
+        Me.CB_Fun_HardSubs.IntegralHeight = False
+        Me.CB_Fun_HardSubs.ItemHeight = 23
+        Me.CB_Fun_HardSubs.Items.AddRange(New Object() {"Disabled", "English", "Español (LA)", "Português (Brasil)"})
+        Me.CB_Fun_HardSubs.Location = New System.Drawing.Point(79, 30)
+        Me.CB_Fun_HardSubs.Name = "CB_Fun_HardSubs"
+        Me.CB_Fun_HardSubs.Size = New System.Drawing.Size(326, 29)
+        Me.CB_Fun_HardSubs.Sorted = True
+        Me.CB_Fun_HardSubs.TabIndex = 32
+        Me.CB_Fun_HardSubs.UseSelectable = True
+        '
+        'GroupBox9
+        '
+        Me.GroupBox9.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox9.Controls.Add(Me.GroupBox13)
+        Me.GroupBox9.Controls.Add(Me.GroupBox11)
+        Me.GroupBox9.Controls.Add(Me.GroupBox8)
+        Me.GroupBox9.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox9.Location = New System.Drawing.Point(0, 80)
+        Me.GroupBox9.Name = "GroupBox9"
+        Me.GroupBox9.Size = New System.Drawing.Size(490, 288)
+        Me.GroupBox9.TabIndex = 50
+        Me.GroupBox9.TabStop = False
+        Me.GroupBox9.Text = "Soft-Subtitle"
+        '
         'GroupBox13
         '
         Me.GroupBox13.BackColor = System.Drawing.Color.Transparent
         Me.GroupBox13.Controls.Add(Me.FunSubDef)
         Me.GroupBox13.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox13.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox13.Location = New System.Drawing.Point(5, 270)
+        Me.GroupBox13.Location = New System.Drawing.Point(10, 193)
         Me.GroupBox13.Name = "GroupBox13"
-        Me.GroupBox13.Size = New System.Drawing.Size(490, 69)
+        Me.GroupBox13.Size = New System.Drawing.Size(474, 82)
         Me.GroupBox13.TabIndex = 70
         Me.GroupBox13.TabStop = False
-        Me.GroupBox13.Text = "default subtitle"
+        Me.GroupBox13.Text = "Default Subtitle"
         '
         'FunSubDef
         '
@@ -1212,12 +1351,12 @@ Partial Class Einstellungen
         Me.GroupBox11.Controls.Add(Me.CB_srt)
         Me.GroupBox11.Controls.Add(Me.CB_vtt)
         Me.GroupBox11.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox11.Location = New System.Drawing.Point(5, 182)
+        Me.GroupBox11.Location = New System.Drawing.Point(10, 105)
         Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Size = New System.Drawing.Size(490, 82)
+        Me.GroupBox11.Size = New System.Drawing.Size(474, 82)
         Me.GroupBox11.TabIndex = 60
         Me.GroupBox11.TabStop = False
-        Me.GroupBox11.Text = "Soft-Subtitle Format"
+        Me.GroupBox11.Text = "Format"
         '
         'CB_srt
         '
@@ -1243,113 +1382,6 @@ Partial Class Einstellungen
         Me.CB_vtt.Text = "vtt"
         Me.CB_vtt.UseSelectable = True
         '
-        'GroupBox10
-        '
-        Me.GroupBox10.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox10.Controls.Add(Me.Fun_Dub_Over)
-        Me.GroupBox10.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox10.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox10.Location = New System.Drawing.Point(5, 345)
-        Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(490, 69)
-        Me.GroupBox10.TabIndex = 80
-        Me.GroupBox10.TabStop = False
-        Me.GroupBox10.Text = "Funimation Dub"
-        '
-        'Fun_Dub_Over
-        '
-        Me.Fun_Dub_Over.DropDownHeight = 250
-        Me.Fun_Dub_Over.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Fun_Dub_Over.FormattingEnabled = True
-        Me.Fun_Dub_Over.IntegralHeight = False
-        Me.Fun_Dub_Over.ItemHeight = 23
-        Me.Fun_Dub_Over.Items.AddRange(New Object() {"Disabled", "english", "japanese", "portuguese(Brazil)", "spanish(Mexico)"})
-        Me.Fun_Dub_Over.Location = New System.Drawing.Point(69, 30)
-        Me.Fun_Dub_Over.Name = "Fun_Dub_Over"
-        Me.Fun_Dub_Over.Size = New System.Drawing.Size(326, 29)
-        Me.Fun_Dub_Over.Sorted = True
-        Me.Fun_Dub_Over.TabIndex = 40
-        Me.Fun_Dub_Over.UseSelectable = True
-        '
-        'GroupBox7
-        '
-        Me.GroupBox7.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox7.Controls.Add(Me.CB_Fun_HardSubs)
-        Me.GroupBox7.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox7.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox7.Location = New System.Drawing.Point(5, 6)
-        Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(490, 69)
-        Me.GroupBox7.TabIndex = 40
-        Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "Hard Subtitle (post-processed)"
-        '
-        'CB_Fun_HardSubs
-        '
-        Me.CB_Fun_HardSubs.DropDownHeight = 250
-        Me.CB_Fun_HardSubs.Enabled = False
-        Me.CB_Fun_HardSubs.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CB_Fun_HardSubs.FormattingEnabled = True
-        Me.CB_Fun_HardSubs.IntegralHeight = False
-        Me.CB_Fun_HardSubs.ItemHeight = 23
-        Me.CB_Fun_HardSubs.Items.AddRange(New Object() {"Disabled", "English", "Español (LA)", "Português (Brasil)"})
-        Me.CB_Fun_HardSubs.Location = New System.Drawing.Point(69, 30)
-        Me.CB_Fun_HardSubs.Name = "CB_Fun_HardSubs"
-        Me.CB_Fun_HardSubs.Size = New System.Drawing.Size(326, 29)
-        Me.CB_Fun_HardSubs.Sorted = True
-        Me.CB_Fun_HardSubs.TabIndex = 32
-        Me.CB_Fun_HardSubs.UseSelectable = True
-        '
-        'GroupBox9
-        '
-        Me.GroupBox9.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox9.Controls.Add(Me.CB_fun_eng)
-        Me.GroupBox9.Controls.Add(Me.CB_fun_es)
-        Me.GroupBox9.Controls.Add(Me.CB_fun_ptbr)
-        Me.GroupBox9.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox9.Location = New System.Drawing.Point(5, 81)
-        Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(490, 95)
-        Me.GroupBox9.TabIndex = 50
-        Me.GroupBox9.TabStop = False
-        Me.GroupBox9.Text = "Soft-Subtitle"
-        '
-        'CB_fun_eng
-        '
-        Me.CB_fun_eng.AutoSize = True
-        Me.CB_fun_eng.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_fun_eng.ForeColor = System.Drawing.Color.Black
-        Me.CB_fun_eng.Location = New System.Drawing.Point(51, 50)
-        Me.CB_fun_eng.Name = "CB_fun_eng"
-        Me.CB_fun_eng.Size = New System.Drawing.Size(68, 19)
-        Me.CB_fun_eng.TabIndex = 33
-        Me.CB_fun_eng.Text = "English"
-        Me.CB_fun_eng.UseSelectable = True
-        '
-        'CB_fun_es
-        '
-        Me.CB_fun_es.AutoSize = True
-        Me.CB_fun_es.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_fun_es.ForeColor = System.Drawing.Color.Black
-        Me.CB_fun_es.Location = New System.Drawing.Point(165, 50)
-        Me.CB_fun_es.Name = "CB_fun_es"
-        Me.CB_fun_es.Size = New System.Drawing.Size(100, 19)
-        Me.CB_fun_es.TabIndex = 34
-        Me.CB_fun_es.Text = "Español (LA)"
-        Me.CB_fun_es.UseSelectable = True
-        '
-        'CB_fun_ptbr
-        '
-        Me.CB_fun_ptbr.AutoSize = True
-        Me.CB_fun_ptbr.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_fun_ptbr.ForeColor = System.Drawing.Color.Black
-        Me.CB_fun_ptbr.Location = New System.Drawing.Point(287, 50)
-        Me.CB_fun_ptbr.Name = "CB_fun_ptbr"
-        Me.CB_fun_ptbr.Size = New System.Drawing.Size(131, 19)
-        Me.CB_fun_ptbr.TabIndex = 35
-        Me.CB_fun_ptbr.Text = "Português (Brasil)"
-        Me.CB_fun_ptbr.UseSelectable = True
-        '
         'TabPage7
         '
         Me.TabPage7.BackColor = System.Drawing.Color.Transparent
@@ -1362,9 +1394,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = "About   "
         '
@@ -1496,19 +1528,33 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'LeadingZeroDD
+        'GroupBox15
         '
-        Me.LeadingZeroDD.DropDownHeight = 250
-        Me.LeadingZeroDD.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LeadingZeroDD.FormattingEnabled = True
-        Me.LeadingZeroDD.IntegralHeight = False
-        Me.LeadingZeroDD.ItemHeight = 23
-        Me.LeadingZeroDD.Items.AddRange(New Object() {"1", "01", "001", "0001"})
-        Me.LeadingZeroDD.Location = New System.Drawing.Point(6, 151)
-        Me.LeadingZeroDD.Name = "LeadingZeroDD"
-        Me.LeadingZeroDD.Size = New System.Drawing.Size(225, 29)
-        Me.LeadingZeroDD.TabIndex = 20
-        Me.LeadingZeroDD.UseSelectable = True
+        Me.GroupBox15.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox15.Controls.Add(Me.Bitrate_Funi)
+        Me.GroupBox15.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox15.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox15.Location = New System.Drawing.Point(0, 375)
+        Me.GroupBox15.Name = "GroupBox15"
+        Me.GroupBox15.Size = New System.Drawing.Size(490, 69)
+        Me.GroupBox15.TabIndex = 41
+        Me.GroupBox15.TabStop = False
+        Me.GroupBox15.Text = "Bitrate"
+        '
+        'Bitrate_Funi
+        '
+        Me.Bitrate_Funi.DropDownHeight = 250
+        Me.Bitrate_Funi.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Bitrate_Funi.FormattingEnabled = True
+        Me.Bitrate_Funi.IntegralHeight = False
+        Me.Bitrate_Funi.ItemHeight = 23
+        Me.Bitrate_Funi.Items.AddRange(New Object() {"prefer high bitrate", "prefer low bitrate"})
+        Me.Bitrate_Funi.Location = New System.Drawing.Point(79, 24)
+        Me.Bitrate_Funi.Name = "Bitrate_Funi"
+        Me.Bitrate_Funi.Size = New System.Drawing.Size(326, 29)
+        Me.Bitrate_Funi.Sorted = True
+        Me.Bitrate_Funi.TabIndex = 32
+        Me.Bitrate_Funi.UseSelectable = True
         '
         'Einstellungen
         '
@@ -1560,15 +1606,17 @@ Partial Class Einstellungen
         Me.MetroTabPage1.ResumeLayout(False)
         Me.GroupBox3.ResumeLayout(False)
         Me.TabPage6.ResumeLayout(False)
-        Me.GroupBox13.ResumeLayout(False)
-        Me.GroupBox11.ResumeLayout(False)
-        Me.GroupBox11.PerformLayout()
+        Me.GroupBox8.ResumeLayout(False)
+        Me.GroupBox8.PerformLayout()
         Me.GroupBox10.ResumeLayout(False)
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox9.ResumeLayout(False)
-        Me.GroupBox9.PerformLayout()
+        Me.GroupBox13.ResumeLayout(False)
+        Me.GroupBox11.ResumeLayout(False)
+        Me.GroupBox11.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox15.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1688,4 +1736,7 @@ Partial Class Einstellungen
     Friend WithEvents ListBit_3500 As ToolStripMenuItem
     Friend WithEvents ListBit_2500 As ToolStripMenuItem
     Friend WithEvents LeadingZeroDD As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents GroupBox8 As GroupBox
+    Friend WithEvents GroupBox15 As GroupBox
+    Friend WithEvents Bitrate_Funi As MetroFramework.Controls.MetroComboBox
 End Class

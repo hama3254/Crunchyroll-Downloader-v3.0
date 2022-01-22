@@ -1,4 +1,7 @@
-﻿Module Subfolder
+﻿Imports System.IO
+Imports System.Text
+
+Module Subfolder
     Public SubFolder_automatic As String = "[automatic by Series and Season]"
     Public SubFolder_automatic2 As String = "[automatic by Series]"
     Public SubFolder_automatic_old As String = "[automatic: Series/Season]"
@@ -33,6 +36,16 @@
     End Function
 
 
+
+    Public Sub WriteText(ByVal Pfad As String, ByVal Content As String)
+
+        If Pfad.Length > 255 Then
+            Pfad = "\\?\" + Pfad
+        End If
+
+        File.WriteAllText(Pfad, Content, Encoding.UTF8)
+
+    End Sub
 
     Public Function GeräteID() As String
         Dim rnd As New Random

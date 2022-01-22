@@ -280,7 +280,7 @@ Public Class CRD_List_Item
                     If FailedSegments.Count > 0 Then
                         For i As Integer = 0 To FailedSegments.Count - 1
                             Dim ii As Integer = i
-                            Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(FailedSegments.Item(ii).url, FailedSegments.Item(ii).path))
+                            Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(FailedSegments.Item(ii).Url, FailedSegments.Item(ii).Path))
                             FailedSegments.RemoveAt(i)
                             Evaluator.Start()
                             ThreadList.Add(Evaluator)
@@ -751,6 +751,8 @@ Public Class CRD_List_Item
 
     Private Function ProcessV3(ByVal url As String, ByVal InputData As String, ByVal Folder As String, ByVal DateiPfad As String, ByVal DL_URL As String) As String
 
+
+
         Debug.WriteLine(Folder)
 
         If Not Directory.Exists(Path.GetDirectoryName(Folder)) Then
@@ -781,18 +783,37 @@ Public Class CRD_List_Item
             sink.WriteLine(InputData)
         End Using
 
+
+        Dim Label_websiteText As String = Nothing
+        Dim Label_AnimeText As String = Nothing
+        Dim Label_ResoText As String = Nothing
+        Dim Label_HardsubText As String = Nothing
+
+
+
+
         Me.Invoke(New Action(Function() As Object
-                                 Using sink As New StreamWriter(Folder + "Retry\retry.txt", False, utf8WithoutBom2)
-                                     sink.WriteLine(DL_URL)
-                                     sink.WriteLine(Label_website.Text)
-                                     sink.WriteLine(Label_Anime.Text)
-                                     sink.WriteLine(Label_Reso.Text)
-                                     sink.WriteLine(Label_Hardsub.Text)
-                                     sink.WriteLine(DateiPfad)
-                                 End Using
-                                 PB_Thumbnail.BackgroundImage.Save(Folder + "Retry\retry.jpg")
+                                 Label_websiteText = Label_website.Text
+                                 Label_AnimeText = Label_Anime.Text
+                                 Label_ResoText = Label_Reso.Text
+                                 Label_HardsubText = Label_Hardsub.Text
+                                 Try
+                                     PB_Thumbnail.BackgroundImage.Save(Folder + "Retry\retry.jpg")
+                                 Catch ex As Exception
+                                 End Try
                                  Return Nothing
                              End Function))
+
+
+
+        Using sink As New StreamWriter(Folder + "Retry\retry.txt", False, utf8WithoutBom2)
+            sink.WriteLine(DL_URL)
+            sink.WriteLine(Label_websiteText)
+            sink.WriteLine(Label_AnimeText)
+            sink.WriteLine(Label_ResoText)
+            sink.WriteLine(Label_HardsubText)
+            sink.WriteLine(DateiPfad)
+        End Using
 
         Dim LoadedKeys As New List(Of String)
         LoadedKeys.Add("Nothing")
@@ -909,6 +930,7 @@ Public Class CRD_List_Item
 
 
         Return Folder + "\index.m3u8"
+
 
     End Function
 
@@ -1145,7 +1167,7 @@ Public Class CRD_List_Item
 
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
-        Dim cmd As String = "-user-agent " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        Dim cmd As String = "-user_agent " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
         LogText.Add(Date.Now.ToString + " " + cmd)
         If Debug2 = True Then
             MsgBox(cmd)
@@ -1455,8 +1477,8 @@ Public Class CRD_List_Item
 
                     Dim logfile As String = DownloadPfad.Replace(Main.VideoFormat, ".log").Replace(Chr(34), "")
 
-                    File.WriteAllText(logfile, HybrideLog)
-
+                    'File.WriteAllText(logfile, HybrideLog)
+                    WriteText(logfile, HybrideLog)
                 Catch ex As Exception
                     MsgBox(ex.ToString)
                 End Try
@@ -1510,7 +1532,7 @@ Public Class FailedSegemtsWithURL
     End Sub
 
     Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}", Me.path, Me.url)
+        Return String.Format("{0}, {1}", Me.Path, Me.Url)
     End Function
 
 

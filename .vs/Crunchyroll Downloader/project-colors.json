@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "9b604819-2db7-4be1-ba43-43babebb5ec3": {
+      "ProjectGuid": "9b604819-2db7-4be1-ba43-43babebb5ec3",
+      "DisplayName": "Crunchyroll Downloader",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

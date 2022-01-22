@@ -709,6 +709,13 @@ Public Class Main
         If CBool(InStr(URL_DL, ".mpd")) Then
             TempHybridMode = False
         End If
+
+        If Pfad_DL.Length > 255 Then
+            MsgBox(Pfad_DL.Length.ToString)
+            Pfad_DL = Chr(34) + "\\?\" + Pfad_DL.Replace(Chr(34), "") + Chr(34)
+        End If
+
+
         'MsgBox(URL_DL + vbNewLine + Pfad_DL + vbNewLine + NameKomplett + vbNewLine + TempHybridMode.ToString)
         Item.StartDownload(URL_DL, Pfad_DL, NameKomplett, TempHybridMode)
     End Sub
@@ -1426,7 +1433,8 @@ Public Class Main
                         End If
                         Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
                         'MsgBox(Pfad4)
-                        File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                        'File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                        WriteText(Pfad4, str0)
                         Pause(3)
                     Next
                 End If
@@ -1956,7 +1964,8 @@ Public Class Main
                         End If
                         Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
                         'MsgBox(Pfad4)
-                        File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                        'File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                        WriteText(Pfad4, str0)
                         Pause(3)
                     Next
                 End If
@@ -2467,7 +2476,8 @@ Public Class Main
                         End If
                         Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
                         'MsgBox(Pfad4)
-                        File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                        'File.WriteAllText(Pfad4, str0, Encoding.UTF8)
+                        WriteText(Pfad4, str0)
                         Pause(3)
                     Next
                 End If
@@ -4099,7 +4109,8 @@ Public Class Main
                         Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
                         'MsgBox(Pfad4)
                         Debug.WriteLine(Pfad4)
-                        File.WriteAllText(Pfad4, Subfile, Encoding.UTF8)
+                        'File.WriteAllText(Pfad4, Subfile, Encoding.UTF8)
+                        WriteText(Pfad4, Subfile)
                         Pause(1)
                     Next
                 End If
@@ -4581,8 +4592,8 @@ Public Class Main
     End Sub
 
     Sub ProcessRequest(ByVal stream As NetworkStream, ByVal htmlReq As String)
-        ' Debug.WriteLine(htmlReq)
-        Dim recvBytes(1048576) As Byte
+        Debug.WriteLine(htmlReq)
+        ' Dim recvBytes(1048576) As Byte
         Try
             Dim rootPath As String = Directory.GetCurrentDirectory() & "\WebInterface\"
             ' Set default page

@@ -711,7 +711,7 @@ Public Class Main
         End If
 
         If Pfad_DL.Length > 255 Then
-            MsgBox(Pfad_DL.Length.ToString)
+            'MsgBox(Pfad_DL.Length.ToString)
             Pfad_DL = Chr(34) + "\\?\" + Pfad_DL.Replace(Chr(34), "") + Chr(34)
         End If
 

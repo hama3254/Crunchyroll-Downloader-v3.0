@@ -18,7 +18,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U11-LongPathTest"
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString + " Chromium-U12"
 
         BackgroundWorker1.RunWorkerAsync()
 
@@ -44,6 +44,14 @@ Public Class Einstellungen
             CB_SoftSubSettings.SelectedIndex = 1
         Else
             CB_SoftSubSettings.SelectedIndex = 0
+        End If
+
+        If Main.LangNameType = 1 Then
+            LangNameType_DD.SelectedIndex = 1
+        ElseIf Main.LangNameType = 2 Then
+            LangNameType_DD.SelectedIndex = 2
+        Else
+            LangNameType_DD.SelectedIndex = 0
         End If
 
         If Main.KodiNaming = True Then
@@ -119,8 +127,13 @@ Public Class Einstellungen
         If Main.MergeSubs = True Then
             MergeMP4.Checked = True
         End If
-        If Main.HybridMode = True Then
-            HybridMode_CB.Checked = True
+
+        If Main.HybridMode = True And Main.KeepCache = True Then
+            DD_DLMode.SelectedIndex = 2
+        ElseIf Main.HybridMode = True Then
+            DD_DLMode.SelectedIndex = 1
+        Else
+            DD_DLMode.SelectedIndex = 0
         End If
 
         If Main.Funimation_srt = True Then
@@ -364,11 +377,7 @@ Public Class Einstellungen
         End If
 
 
-        If Main.KeepCache = True Then
-            rk.SetValue("Keep_Cache", 1, RegistryValueKind.String)
-        Else
-            rk.SetValue("Keep_Cache", 0, RegistryValueKind.String)
-        End If
+
 
         If IgnoreS1.Checked = True Then
 
@@ -550,13 +559,28 @@ Public Class Einstellungen
             Main.MergeSubs = False
             rk.SetValue("MergeSubs", "0", RegistryValueKind.String)
         End If
-        If HybridMode_CB.Checked = True Then
+
+
+        If DD_DLMode.SelectedIndex = 2 Then
             Main.HybridMode = True
+            Main.KeepCache = True
+            rk.SetValue("HybridMode", "1", RegistryValueKind.String)
+        ElseIf DD_DLMode.SelectedIndex = 1 Then
+            Main.HybridMode = True
+            Main.KeepCache = False
             rk.SetValue("HybridMode", "1", RegistryValueKind.String)
         Else
             Main.HybridMode = False
+            Main.KeepCache = False
             rk.SetValue("HybridMode", "0", RegistryValueKind.String)
         End If
+
+        If Main.KeepCache = True Then
+            rk.SetValue("Keep_Cache", 1, RegistryValueKind.String)
+        Else
+            rk.SetValue("Keep_Cache", 0, RegistryValueKind.String)
+        End If
+
 #Region "funimation"
 
 
@@ -749,6 +773,19 @@ Public Class Einstellungen
 
         End If
 
+        If LangNameType_DD.SelectedIndex = 1 Then
+            Main.LangNameType = 1
+            rk.SetValue("LangNameType", "1", RegistryValueKind.String)
+        ElseIf LangNameType_DD.SelectedIndex = 2 Then
+            Main.LangNameType = 2
+            rk.SetValue("LangNameType", "2", RegistryValueKind.String)
+        Else
+            Main.LangNameType = 0
+            rk.SetValue("LangNameType", "0", RegistryValueKind.String)
+        End If
+
+
+
         Me.Close()
     End Sub
 
@@ -791,7 +828,7 @@ Public Class Einstellungen
     End Sub
 
 
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, CB_Fun_HardSubs.DrawItem, Fun_Dub_Over.DrawItem, CR_Filename.DrawItem
+    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, CB_Fun_HardSubs.DrawItem, Fun_Dub_Over.DrawItem
         Dim CB As ComboBox = CType(sender, ComboBox)
         CB.BackColor = Color.White
         If e.Index >= 0 Then
@@ -820,12 +857,12 @@ Public Class Einstellungen
                     A360p.Checked = True
                 End If
             End If
-        ElseIf HybridMode_CB.Checked = True Then
-            If AAuto.Checked = True Then
-                MsgBox("Resolution '[Auto]' and 'Hybride Mode' does not work together", MsgBoxStyle.Information)
-                AAuto.Checked = False
-                A1080p.Checked = True
-            End If
+            'ElseIf HybridMode_CB.Checked = True Then
+            '    If AAuto.Checked = True Then
+            '        MsgBox("Resolution '[Auto]' and 'Hybride Mode' does not work together", MsgBoxStyle.Information)
+            '        AAuto.Checked = False
+            '        A1080p.Checked = True
+            '    End If
         End If
     End Sub
 
@@ -911,6 +948,7 @@ Public Class Einstellungen
         GroupBox1.ForeColor = color
         GroupBox2.ForeColor = color
         GroupBox3.ForeColor = color
+        GroupBox4.ForeColor = color
         GroupBox5.ForeColor = color
         GroupBox6.ForeColor = color
         GroupBox7.ForeColor = color
@@ -922,6 +960,9 @@ Public Class Einstellungen
         GroupBox13.ForeColor = color
         GroupBox14.ForeColor = color
         GroupBox15.ForeColor = color
+        GroupBox16.ForeColor = color
+        GroupBox17.ForeColor = color
+        GroupBox18.ForeColor = color
     End Sub
 
 
@@ -1150,21 +1191,21 @@ Public Class Einstellungen
     End Sub
 
 
-    Private Sub HybridMode_CB_Click(sender As Object, e As EventArgs) Handles HybridMode_CB.Click
-        If HybridMode_CB.Checked = True Then
+    'Private Sub HybridMode_CB_Click(sender As Object, e As EventArgs)
+    '    If HybridMode_CB.Checked = True Then
 
-            If MessageBox.Show("Should the cached data be kept?" + vbNewLine + "Press 'No' to free the space after downloading.", "Keep cached files?", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                Main.KeepCache = True
-            Else
-                Main.KeepCache = False
-            End If
+    '        If MessageBox.Show("Should the cached data be kept?" + vbNewLine + "Press 'No' to free the space after downloading.", "Keep cached files?", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+    '            Main.KeepCache = True
+    '        Else
+    '            Main.KeepCache = False
+    '        End If
 
-            If AAuto.Checked = True Then
-                MsgBox("Resolution '[Auto]' and 'Hybride Mode' does not work together", MsgBoxStyle.Information)
-                HybridMode_CB.Checked = False
-            End If
-        End If
-    End Sub
+    '        If AAuto.Checked = True Then
+    '            MsgBox("Resolution '[Auto]' and 'Hybride Mode' does not work together", MsgBoxStyle.Information)
+    '            HybridMode_CB.Checked = False
+    '        End If
+    '    End If
+    'End Sub
 
     Private Sub MetroLink1_Click(sender As Object, e As EventArgs)
         Process.Start("https://github.com/hama3254/Crunchyroll-Downloader-v3.0/discussions/276")

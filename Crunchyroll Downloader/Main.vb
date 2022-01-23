@@ -97,6 +97,7 @@ Public Class Main
     Public SubSprache As String
     Public SoftSubs As New List(Of String)
     Public IncludeLangName As Boolean = False
+    Public LangNameType As Integer = 0
     Public TempSoftSubs As New List(Of String)
     Public AbourtList As New List(Of String)
     Public watingList As New List(Of String)
@@ -566,6 +567,13 @@ Public Class Main
             IncludeLangName = CBool(Integer.Parse(rkg.GetValue("IncludeLangName").ToString))
         Catch ex As Exception
         End Try
+
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            LangNameType = Integer.Parse(rkg.GetValue("LangNameType").ToString)
+        Catch ex As Exception
+        End Try
+
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             IgnoreS1 = CBool(Integer.Parse(rkg.GetValue("IgnoreS1").ToString))
@@ -1031,6 +1039,22 @@ Public Class Main
             Return Nothing
         End Try
     End Function
+
+    Public Function GetSubFileLangName(ByVal HardSub As String) As String
+
+        HardSub = HardSub.Replace(Chr(34), "")
+
+        If LangNameType = 1 Then
+            Return CCtoMP4CC(HardSub)
+        ElseIf LangNameType = 2 Then
+            Dim RS As String = HardSubValuesToDisplay(HardSub) + "." + CCtoMP4CC(HardSub)
+            Return RS
+        Else
+            Return HardSubValuesToDisplay(HardSub)
+        End If
+
+
+    End Function
     Public Function HardSubValuesToDisplay(ByVal HardSub As String) As String
         Try
             HardSub = HardSub.Replace(Chr(34), "")
@@ -1425,7 +1449,7 @@ Public Class Main
                         client0.Encoding = Encoding.UTF8
                         Dim str0 As String = client0.DownloadString(SoftSub_3)
                         Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
-                        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + "." + HardSubValuesToDisplay(SoftSubs2(i)) + Path.GetExtension(Pfad3)), "ass")
+                        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + "." + GetSubFileLangName(SoftSubs2(i)) + Path.GetExtension(Pfad3)), "ass")
                         'MsgBox(FN)
                         If i = 0 And IncludeLangName = False Then
                             FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
@@ -1956,7 +1980,7 @@ Public Class Main
                         client0.Encoding = Encoding.UTF8
                         Dim str0 As String = client0.DownloadString(SoftSub_3)
                         Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
-                        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + "." + HardSubValuesToDisplay(SoftSubs2(i)) + Path.GetExtension(Pfad3)), "ass")
+                        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + "." + GetSubFileLangName(SoftSubs2(i)) + Path.GetExtension(Pfad3)), "ass")
                         'MsgBox(FN)
                         If i = 0 And IncludeLangName = False Then
                             FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")
@@ -2468,7 +2492,7 @@ Public Class Main
                         client0.Encoding = Encoding.UTF8
                         Dim str0 As String = client0.DownloadString(SoftSub_3)
                         Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
-                        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + "." + HardSubValuesToDisplay(SoftSubs2(i)) + Path.GetExtension(Pfad3)), "ass")
+                        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + "." + GetSubFileLangName(SoftSubs2(i)) + Path.GetExtension(Pfad3)), "ass")
                         'MsgBox(FN)
                         If i = 0 And IncludeLangName = False Then
                             FN = Path.ChangeExtension(Path.GetFileName(Pfad3), "ass")

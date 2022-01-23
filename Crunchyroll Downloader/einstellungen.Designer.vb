@@ -41,15 +41,8 @@ Partial Class Einstellungen
         Me.GB_SubLanguage = New System.Windows.Forms.GroupBox()
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
         Me.TabPage2 = New MetroFramework.Controls.MetroTabPage()
-        Me.GB_Filename_Pre = New System.Windows.Forms.GroupBox()
-        Me.KodiSupport = New MetroFramework.Controls.MetroToggle()
-        Me.MetroLink1 = New MetroFramework.Controls.MetroLink()
-        Me.GroupBox12 = New System.Windows.Forms.GroupBox()
-        Me.LeadingZeroDD = New MetroFramework.Controls.MetroComboBox()
-        Me.IgnoreS1 = New MetroFramework.Controls.MetroCheckBox()
-        Me.DD_Episode_Prefix = New MetroFramework.Controls.MetroComboBox()
-        Me.DD_Season_Prefix = New MetroFramework.Controls.MetroComboBox()
-        Me.CR_Filename = New MetroFramework.Controls.MetroComboBox()
+        Me.GroupBox16 = New System.Windows.Forms.GroupBox()
+        Me.DD_DLMode = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.MergeMP4 = New MetroFramework.Controls.MetroCheckBox()
         Me.CB_Format = New MetroFramework.Controls.MetroComboBox()
@@ -96,10 +89,8 @@ Partial Class Einstellungen
         Me.Label2 = New MetroFramework.Controls.MetroLabel()
         Me.NumericUpDown2 = New System.Windows.Forms.NumericUpDown()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.HybridMode_CB = New MetroFramework.Controls.MetroCheckBox()
         Me.http_support = New MetroFramework.Controls.MetroComboBox()
         Me.DarkMode = New MetroFramework.Controls.MetroCheckBox()
-        Me.ListViewAdd_True = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.MetroLabel2 = New MetroFramework.Controls.MetroLabel()
         Me.ProfileTextBox = New MetroFramework.Controls.MetroTextBox()
@@ -108,14 +99,24 @@ Partial Class Einstellungen
         Me.DL_Count_simultaneous = New System.Windows.Forms.GroupBox()
         Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
         Me.TabControl1 = New MetroFramework.Controls.MetroTabControl()
-        Me.MetroTabPage1 = New MetroFramework.Controls.MetroTabPage()
+        Me.MetroTabPage2 = New MetroFramework.Controls.MetroTabPage()
+        Me.GroupBox17 = New System.Windows.Forms.GroupBox()
+        Me.LeadingZeroDD = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.LangNameType_DD = New MetroFramework.Controls.MetroComboBox()
         Me.CB_SoftSubSettings = New MetroFramework.Controls.MetroComboBox()
+        Me.GB_Filename_Pre = New System.Windows.Forms.GroupBox()
+        Me.KodiSupport = New MetroFramework.Controls.MetroToggle()
+        Me.IgnoreS1 = New MetroFramework.Controls.MetroCheckBox()
+        Me.MetroLink1 = New MetroFramework.Controls.MetroLink()
+        Me.GroupBox12 = New System.Windows.Forms.GroupBox()
+        Me.DD_Episode_Prefix = New MetroFramework.Controls.MetroComboBox()
+        Me.DD_Season_Prefix = New MetroFramework.Controls.MetroComboBox()
+        Me.CR_Filename = New MetroFramework.Controls.MetroComboBox()
+        Me.MetroTabPage1 = New MetroFramework.Controls.MetroTabPage()
         Me.TabPage6 = New MetroFramework.Controls.MetroTabPage()
-        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        Me.CB_fun_eng = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_fun_es = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_fun_ptbr = New MetroFramework.Controls.MetroCheckBox()
+        Me.GroupBox15 = New System.Windows.Forms.GroupBox()
+        Me.Bitrate_Funi = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox10 = New System.Windows.Forms.GroupBox()
         Me.Fun_Dub_Over = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
@@ -126,6 +127,10 @@ Partial Class Einstellungen
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.CB_srt = New MetroFramework.Controls.MetroCheckBox()
         Me.CB_vtt = New MetroFramework.Controls.MetroCheckBox()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.CB_fun_eng = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_fun_es = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_fun_ptbr = New MetroFramework.Controls.MetroCheckBox()
         Me.TabPage7 = New System.Windows.Forms.TabPage()
         Me.LastVersion = New MetroFramework.Controls.MetroLabel()
         Me.Label8 = New MetroFramework.Controls.MetroLabel()
@@ -138,15 +143,14 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.GroupBox15 = New System.Windows.Forms.GroupBox()
-        Me.Bitrate_Funi = New MetroFramework.Controls.MetroComboBox()
+        Me.GroupBox18 = New System.Windows.Forms.GroupBox()
+        Me.ListViewAdd_True = New MetroFramework.Controls.MetroCheckBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
         Me.GB_SubLanguage.SuspendLayout()
         Me.TabPage2.SuspendLayout()
-        Me.GB_Filename_Pre.SuspendLayout()
-        Me.GroupBox12.SuspendLayout()
+        Me.GroupBox16.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -160,18 +164,23 @@ Partial Class Einstellungen
         Me.DL_Count_simultaneous.SuspendLayout()
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
-        Me.MetroTabPage1.SuspendLayout()
+        Me.MetroTabPage2.SuspendLayout()
+        Me.GroupBox17.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
+        Me.GB_Filename_Pre.SuspendLayout()
+        Me.GroupBox12.SuspendLayout()
+        Me.MetroTabPage1.SuspendLayout()
         Me.TabPage6.SuspendLayout()
-        Me.GroupBox8.SuspendLayout()
+        Me.GroupBox15.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox13.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
+        Me.GroupBox8.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox15.SuspendLayout()
+        Me.GroupBox18.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolTip1
@@ -380,8 +389,8 @@ Partial Class Einstellungen
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
-        Me.TabPage2.Controls.Add(Me.GB_Filename_Pre)
-        Me.TabPage2.Controls.Add(Me.GroupBox12)
+        Me.TabPage2.Controls.Add(Me.GroupBox18)
+        Me.TabPage2.Controls.Add(Me.GroupBox16)
         Me.TabPage2.Controls.Add(Me.GroupBox4)
         Me.TabPage2.Controls.Add(Me.GroupBox2)
         Me.TabPage2.Controls.Add(Me.GB_Resolution)
@@ -399,128 +408,32 @@ Partial Class Einstellungen
         Me.TabPage2.VerticalScrollbarSize = 10
         Me.TabPage2.Visible = False
         '
-        'GB_Filename_Pre
+        'GroupBox16
         '
-        Me.GB_Filename_Pre.BackColor = System.Drawing.Color.Transparent
-        Me.GB_Filename_Pre.Controls.Add(Me.KodiSupport)
-        Me.GB_Filename_Pre.Controls.Add(Me.MetroLink1)
-        Me.GB_Filename_Pre.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GB_Filename_Pre.ForeColor = System.Drawing.Color.Black
-        Me.GB_Filename_Pre.Location = New System.Drawing.Point(5, 220)
-        Me.GB_Filename_Pre.Name = "GB_Filename_Pre"
-        Me.GB_Filename_Pre.Size = New System.Drawing.Size(490, 59)
-        Me.GB_Filename_Pre.TabIndex = 20
-        Me.GB_Filename_Pre.TabStop = False
-        Me.GB_Filename_Pre.Text = "Filename Prefix"
+        Me.GroupBox16.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox16.Controls.Add(Me.DD_DLMode)
+        Me.GroupBox16.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox16.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox16.Location = New System.Drawing.Point(5, 11)
+        Me.GroupBox16.Name = "GroupBox16"
+        Me.GroupBox16.Size = New System.Drawing.Size(490, 59)
+        Me.GroupBox16.TabIndex = 31
+        Me.GroupBox16.TabStop = False
+        Me.GroupBox16.Text = "Download Mode"
         '
-        'KodiSupport
+        'DD_DLMode
         '
-        Me.KodiSupport.AutoSize = True
-        Me.KodiSupport.Location = New System.Drawing.Point(263, 24)
-        Me.KodiSupport.Name = "KodiSupport"
-        Me.KodiSupport.Size = New System.Drawing.Size(80, 20)
-        Me.KodiSupport.TabIndex = 11
-        Me.KodiSupport.Text = "Aus"
-        Me.KodiSupport.UseSelectable = True
-        '
-        'MetroLink1
-        '
-        Me.MetroLink1.FontSize = MetroFramework.MetroLinkSize.Medium
-        Me.MetroLink1.ForeColor = System.Drawing.Color.SteelBlue
-        Me.MetroLink1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.MetroLink1.Location = New System.Drawing.Point(101, 24)
-        Me.MetroLink1.Name = "MetroLink1"
-        Me.MetroLink1.Size = New System.Drawing.Size(145, 23)
-        Me.MetroLink1.TabIndex = 39
-        Me.MetroLink1.Text = "enable Kodi naming"
-        Me.MetroLink1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.MetroLink1.UseSelectable = True
-        '
-        'GroupBox12
-        '
-        Me.GroupBox12.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox12.Controls.Add(Me.LeadingZeroDD)
-        Me.GroupBox12.Controls.Add(Me.IgnoreS1)
-        Me.GroupBox12.Controls.Add(Me.DD_Episode_Prefix)
-        Me.GroupBox12.Controls.Add(Me.DD_Season_Prefix)
-        Me.GroupBox12.Controls.Add(Me.CR_Filename)
-        Me.GroupBox12.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox12.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox12.Location = New System.Drawing.Point(5, 11)
-        Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(490, 203)
-        Me.GroupBox12.TabIndex = 10
-        Me.GroupBox12.TabStop = False
-        Me.GroupBox12.Text = "Filename"
-        '
-        'LeadingZeroDD
-        '
-        Me.LeadingZeroDD.DropDownHeight = 250
-        Me.LeadingZeroDD.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LeadingZeroDD.FormattingEnabled = True
-        Me.LeadingZeroDD.IntegralHeight = False
-        Me.LeadingZeroDD.ItemHeight = 23
-        Me.LeadingZeroDD.Items.AddRange(New Object() {"1", "01", "001", "0001"})
-        Me.LeadingZeroDD.Location = New System.Drawing.Point(6, 151)
-        Me.LeadingZeroDD.Name = "LeadingZeroDD"
-        Me.LeadingZeroDD.Size = New System.Drawing.Size(225, 29)
-        Me.LeadingZeroDD.TabIndex = 20
-        Me.LeadingZeroDD.UseSelectable = True
-        '
-        'IgnoreS1
-        '
-        Me.IgnoreS1.AutoSize = True
-        Me.IgnoreS1.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.IgnoreS1.Location = New System.Drawing.Point(248, 155)
-        Me.IgnoreS1.Name = "IgnoreS1"
-        Me.IgnoreS1.Size = New System.Drawing.Size(227, 19)
-        Me.IgnoreS1.TabIndex = 19
-        Me.IgnoreS1.Text = "ignore Season 1 for the file name"
-        Me.IgnoreS1.UseSelectable = True
-        '
-        'DD_Episode_Prefix
-        '
-        Me.DD_Episode_Prefix.DropDownHeight = 250
-        Me.DD_Episode_Prefix.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
-        Me.DD_Episode_Prefix.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DD_Episode_Prefix.FormattingEnabled = True
-        Me.DD_Episode_Prefix.IntegralHeight = False
-        Me.DD_Episode_Prefix.ItemHeight = 23
-        Me.DD_Episode_Prefix.Items.AddRange(New Object() {"[default episode prefix]"})
-        Me.DD_Episode_Prefix.Location = New System.Drawing.Point(248, 94)
-        Me.DD_Episode_Prefix.Name = "DD_Episode_Prefix"
-        Me.DD_Episode_Prefix.Size = New System.Drawing.Size(225, 29)
-        Me.DD_Episode_Prefix.TabIndex = 10
-        Me.DD_Episode_Prefix.UseSelectable = True
-        '
-        'DD_Season_Prefix
-        '
-        Me.DD_Season_Prefix.DropDownHeight = 250
-        Me.DD_Season_Prefix.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
-        Me.DD_Season_Prefix.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DD_Season_Prefix.FormattingEnabled = True
-        Me.DD_Season_Prefix.IntegralHeight = False
-        Me.DD_Season_Prefix.ItemHeight = 23
-        Me.DD_Season_Prefix.Items.AddRange(New Object() {"[default season prefix]"})
-        Me.DD_Season_Prefix.Location = New System.Drawing.Point(6, 94)
-        Me.DD_Season_Prefix.Name = "DD_Season_Prefix"
-        Me.DD_Season_Prefix.Size = New System.Drawing.Size(225, 29)
-        Me.DD_Season_Prefix.TabIndex = 9
-        Me.DD_Season_Prefix.UseSelectable = True
-        '
-        'CR_Filename
-        '
-        Me.CR_Filename.DropDownHeight = 250
-        Me.CR_Filename.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CR_Filename.FormattingEnabled = True
-        Me.CR_Filename.IntegralHeight = False
-        Me.CR_Filename.ItemHeight = 23
-        Me.CR_Filename.Items.AddRange(New Object() {"[episode number]", "[episode name]", "[episode number] [episode name]", "[episode name] [episode number]"})
-        Me.CR_Filename.Location = New System.Drawing.Point(6, 35)
-        Me.CR_Filename.Name = "CR_Filename"
-        Me.CR_Filename.Size = New System.Drawing.Size(467, 29)
-        Me.CR_Filename.TabIndex = 8
-        Me.CR_Filename.UseSelectable = True
+        Me.DD_DLMode.DropDownHeight = 250
+        Me.DD_DLMode.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DD_DLMode.FormattingEnabled = True
+        Me.DD_DLMode.IntegralHeight = False
+        Me.DD_DLMode.ItemHeight = 23
+        Me.DD_DLMode.Items.AddRange(New Object() {"Default - ffmpeg", "Hybrid Mode", "Hybrid Mode - keep cache"})
+        Me.DD_DLMode.Location = New System.Drawing.Point(119, 21)
+        Me.DD_DLMode.Name = "DD_DLMode"
+        Me.DD_DLMode.Size = New System.Drawing.Size(225, 29)
+        Me.DD_DLMode.TabIndex = 18
+        Me.DD_DLMode.UseSelectable = True
         '
         'GroupBox4
         '
@@ -529,11 +442,12 @@ Partial Class Einstellungen
         Me.GroupBox4.Controls.Add(Me.CB_Format)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox4.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox4.Location = New System.Drawing.Point(5, 340)
+        Me.GroupBox4.Location = New System.Drawing.Point(5, 200)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(490, 78)
         Me.GroupBox4.TabIndex = 40
         Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Format"
         '
         'MergeMP4
         '
@@ -566,7 +480,7 @@ Partial Class Einstellungen
         Me.GroupBox2.Controls.Add(Me.Panel1)
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox2.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox2.Location = New System.Drawing.Point(5, 420)
+        Me.GroupBox2.Location = New System.Drawing.Point(5, 280)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(490, 63)
         Me.GroupBox2.TabIndex = 50
@@ -597,49 +511,49 @@ Partial Class Einstellungen
         Me.FFMPEG_CommandP1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListC1, Me.ListC2, Me.ListC3, Me.ListC4, Me.ListC5, Me.ListC6, Me.ListC7})
         Me.FFMPEG_CommandP1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FFMPEG_CommandP1.Name = "FFMPEG_CommandP1"
-        Me.FFMPEG_CommandP1.Size = New System.Drawing.Size(64, 20)
+        Me.FFMPEG_CommandP1.Size = New System.Drawing.Size(63, 20)
         Me.FFMPEG_CommandP1.Text = "-c copy"
         '
         'ListC1
         '
         Me.ListC1.Name = "ListC1"
-        Me.ListC1.Size = New System.Drawing.Size(174, 22)
+        Me.ListC1.Size = New System.Drawing.Size(172, 22)
         Me.ListC1.Text = "-c copy"
         '
         'ListC2
         '
         Me.ListC2.Name = "ListC2"
-        Me.ListC2.Size = New System.Drawing.Size(174, 22)
+        Me.ListC2.Size = New System.Drawing.Size(172, 22)
         Me.ListC2.Text = "-c:v h264_nvenc "
         '
         'ListC3
         '
         Me.ListC3.Name = "ListC3"
-        Me.ListC3.Size = New System.Drawing.Size(174, 22)
+        Me.ListC3.Size = New System.Drawing.Size(172, 22)
         Me.ListC3.Text = "-c:v hevc_nvenc"
         '
         'ListC4
         '
         Me.ListC4.Name = "ListC4"
-        Me.ListC4.Size = New System.Drawing.Size(174, 22)
+        Me.ListC4.Size = New System.Drawing.Size(172, 22)
         Me.ListC4.Text = "-c:v libx264"
         '
         'ListC5
         '
         Me.ListC5.Name = "ListC5"
-        Me.ListC5.Size = New System.Drawing.Size(174, 22)
+        Me.ListC5.Size = New System.Drawing.Size(172, 22)
         Me.ListC5.Text = "-c:v libx265"
         '
         'ListC6
         '
         Me.ListC6.Name = "ListC6"
-        Me.ListC6.Size = New System.Drawing.Size(174, 22)
+        Me.ListC6.Size = New System.Drawing.Size(172, 22)
         Me.ListC6.Text = "-c:v h264_amf"
         '
         'ListC7
         '
         Me.ListC7.Name = "ListC7"
-        Me.ListC7.Size = New System.Drawing.Size(174, 22)
+        Me.ListC7.Size = New System.Drawing.Size(172, 22)
         Me.ListC7.Text = "-c:v hevc_amf"
         '
         'FFMPEG_CommandP2
@@ -647,25 +561,25 @@ Partial Class Einstellungen
         Me.FFMPEG_CommandP2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListP1, Me.ListP2, Me.ListP3})
         Me.FFMPEG_CommandP2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FFMPEG_CommandP2.Name = "FFMPEG_CommandP2"
-        Me.FFMPEG_CommandP2.Size = New System.Drawing.Size(86, 20)
+        Me.FFMPEG_CommandP2.Size = New System.Drawing.Size(85, 20)
         Me.FFMPEG_CommandP2.Text = "-preset fast"
         '
         'ListP1
         '
         Me.ListP1.Name = "ListP1"
-        Me.ListP1.Size = New System.Drawing.Size(148, 22)
+        Me.ListP1.Size = New System.Drawing.Size(146, 22)
         Me.ListP1.Text = "-preset fast"
         '
         'ListP2
         '
         Me.ListP2.Name = "ListP2"
-        Me.ListP2.Size = New System.Drawing.Size(148, 22)
+        Me.ListP2.Size = New System.Drawing.Size(146, 22)
         Me.ListP2.Text = "-preset slow"
         '
         'ListP3
         '
         Me.ListP3.Name = "ListP3"
-        Me.ListP3.Size = New System.Drawing.Size(148, 22)
+        Me.ListP3.Size = New System.Drawing.Size(146, 22)
         Me.ListP3.Text = "[no Preset]"
         '
         'FFMPEG_CommandP3
@@ -673,85 +587,85 @@ Partial Class Einstellungen
         Me.FFMPEG_CommandP3.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListBit_7000, Me.ListBit_6500, Me.ListBit_6000, Me.ListBit_5500, Me.ListBit_5000, Me.ListBit_4500, Me.ListBit_4000, Me.ListBit_3500, Me.ListBit_3000, Me.ListBit_2500, Me.ListBit_2000, Me.ListBit_1500, Me.ListBit_1000})
         Me.FFMPEG_CommandP3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FFMPEG_CommandP3.Name = "FFMPEG_CommandP3"
-        Me.FFMPEG_CommandP3.Size = New System.Drawing.Size(80, 20)
+        Me.FFMPEG_CommandP3.Size = New System.Drawing.Size(79, 20)
         Me.FFMPEG_CommandP3.Text = "-b:v 7000k"
         '
         'ListBit_7000
         '
         Me.ListBit_7000.Name = "ListBit_7000"
-        Me.ListBit_7000.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_7000.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_7000.Text = "-b:v 7000k"
         '
         'ListBit_6500
         '
         Me.ListBit_6500.Name = "ListBit_6500"
-        Me.ListBit_6500.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_6500.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_6500.Text = "-b:v 6500k"
         '
         'ListBit_6000
         '
         Me.ListBit_6000.Name = "ListBit_6000"
-        Me.ListBit_6000.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_6000.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_6000.Text = "-b:v 6000k"
         '
         'ListBit_5500
         '
         Me.ListBit_5500.Name = "ListBit_5500"
-        Me.ListBit_5500.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_5500.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_5500.Text = "-b:v 5500k"
         '
         'ListBit_5000
         '
         Me.ListBit_5000.Name = "ListBit_5000"
-        Me.ListBit_5000.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_5000.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_5000.Text = "-b:v 5000k"
         '
         'ListBit_4500
         '
         Me.ListBit_4500.Name = "ListBit_4500"
-        Me.ListBit_4500.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_4500.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_4500.Text = "-b:v 4500k"
         '
         'ListBit_4000
         '
         Me.ListBit_4000.Name = "ListBit_4000"
-        Me.ListBit_4000.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_4000.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_4000.Text = "-b:v 4000k"
         '
         'ListBit_3500
         '
         Me.ListBit_3500.Name = "ListBit_3500"
-        Me.ListBit_3500.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_3500.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_3500.Text = "-b:v 3500k"
         '
         'ListBit_3000
         '
         Me.ListBit_3000.Name = "ListBit_3000"
-        Me.ListBit_3000.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_3000.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_3000.Text = "-b:v 3000k"
         '
         'ListBit_2500
         '
         Me.ListBit_2500.Name = "ListBit_2500"
-        Me.ListBit_2500.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_2500.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_2500.Text = "-b:v 2500k"
         '
         'ListBit_2000
         '
         Me.ListBit_2000.Name = "ListBit_2000"
-        Me.ListBit_2000.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_2000.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_2000.Text = "-b:v 2000k"
         '
         'ListBit_1500
         '
         Me.ListBit_1500.Name = "ListBit_1500"
-        Me.ListBit_1500.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_1500.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_1500.Text = "-b:v 1500k"
         '
         'ListBit_1000
         '
         Me.ListBit_1000.Name = "ListBit_1000"
-        Me.ListBit_1000.Size = New System.Drawing.Size(136, 22)
+        Me.ListBit_1000.Size = New System.Drawing.Size(134, 22)
         Me.ListBit_1000.Text = "-b:v 1000k"
         '
         'FFMPEG_CommandP4
@@ -759,7 +673,7 @@ Partial Class Einstellungen
         Me.FFMPEG_CommandP4.Enabled = False
         Me.FFMPEG_CommandP4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FFMPEG_CommandP4.Name = "FFMPEG_CommandP4"
-        Me.FFMPEG_CommandP4.Size = New System.Drawing.Size(203, 20)
+        Me.FFMPEG_CommandP4.Size = New System.Drawing.Size(202, 20)
         Me.FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
         '
         'GB_Resolution
@@ -772,7 +686,7 @@ Partial Class Einstellungen
         Me.GB_Resolution.Controls.Add(Me.A1080p)
         Me.GB_Resolution.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Resolution.ForeColor = System.Drawing.Color.Black
-        Me.GB_Resolution.Location = New System.Drawing.Point(5, 280)
+        Me.GB_Resolution.Location = New System.Drawing.Point(5, 135)
         Me.GB_Resolution.Name = "GB_Resolution"
         Me.GB_Resolution.Size = New System.Drawing.Size(490, 59)
         Me.GB_Resolution.TabIndex = 30
@@ -877,7 +791,7 @@ Partial Class Einstellungen
         Me.GroupBox6.Controls.Add(Me.NumericUpDown2)
         Me.GroupBox6.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox6.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox6.Location = New System.Drawing.Point(3, 363)
+        Me.GroupBox6.Location = New System.Drawing.Point(3, 320)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(490, 150)
         Me.GroupBox6.TabIndex = 80
@@ -926,30 +840,16 @@ Partial Class Einstellungen
         'GroupBox5
         '
         Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox5.Controls.Add(Me.HybridMode_CB)
         Me.GroupBox5.Controls.Add(Me.http_support)
         Me.GroupBox5.Controls.Add(Me.DarkMode)
-        Me.GroupBox5.Controls.Add(Me.ListViewAdd_True)
         Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox5.ForeColor = System.Drawing.Color.Black
         Me.GroupBox5.Location = New System.Drawing.Point(3, 240)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(490, 117)
+        Me.GroupBox5.Size = New System.Drawing.Size(490, 67)
         Me.GroupBox5.TabIndex = 70
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Other"
-        '
-        'HybridMode_CB
-        '
-        Me.HybridMode_CB.AutoSize = True
-        Me.HybridMode_CB.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.HybridMode_CB.ForeColor = System.Drawing.Color.Blue
-        Me.HybridMode_CB.Location = New System.Drawing.Point(45, 38)
-        Me.HybridMode_CB.Name = "HybridMode_CB"
-        Me.HybridMode_CB.Size = New System.Drawing.Size(128, 19)
-        Me.HybridMode_CB.TabIndex = 3
-        Me.HybridMode_CB.Text = "hybrid download"
-        Me.HybridMode_CB.UseSelectable = True
         '
         'http_support
         '
@@ -960,7 +860,7 @@ Partial Class Einstellungen
         Me.http_support.IntegralHeight = False
         Me.http_support.ItemHeight = 23
         Me.http_support.Items.AddRange(New Object() {"add-on support disabled", "80", "8080"})
-        Me.http_support.Location = New System.Drawing.Point(214, 70)
+        Me.http_support.Location = New System.Drawing.Point(214, 21)
         Me.http_support.Name = "http_support"
         Me.http_support.Size = New System.Drawing.Size(237, 29)
         Me.http_support.TabIndex = 45
@@ -969,23 +869,12 @@ Partial Class Einstellungen
         'DarkMode
         '
         Me.DarkMode.AutoSize = True
-        Me.DarkMode.Location = New System.Drawing.Point(45, 79)
+        Me.DarkMode.Location = New System.Drawing.Point(41, 30)
         Me.DarkMode.Name = "DarkMode"
         Me.DarkMode.Size = New System.Drawing.Size(118, 15)
         Me.DarkMode.TabIndex = 5
         Me.DarkMode.Text = "enable dark mode"
         Me.DarkMode.UseSelectable = True
-        '
-        'ListViewAdd_True
-        '
-        Me.ListViewAdd_True.AutoSize = True
-        Me.ListViewAdd_True.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.ListViewAdd_True.Location = New System.Drawing.Point(214, 38)
-        Me.ListViewAdd_True.Name = "ListViewAdd_True"
-        Me.ListViewAdd_True.Size = New System.Drawing.Size(255, 19)
-        Me.ListViewAdd_True.TabIndex = 4
-        Me.ListViewAdd_True.Text = "redirect multi-download to the queue"
-        Me.ListViewAdd_True.UseSelectable = True
         '
         'GroupBox1
         '
@@ -1117,6 +1006,7 @@ Partial Class Einstellungen
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Controls.Add(Me.MetroTabPage2)
         Me.TabControl1.Controls.Add(Me.MetroTabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage6)
         Me.TabControl1.Controls.Add(Me.TabPage7)
@@ -1124,14 +1014,208 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 3
+        Me.TabControl1.SelectedIndex = 4
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
         '
+        'MetroTabPage2
+        '
+        Me.MetroTabPage2.Controls.Add(Me.GroupBox17)
+        Me.MetroTabPage2.Controls.Add(Me.GroupBox3)
+        Me.MetroTabPage2.Controls.Add(Me.GB_Filename_Pre)
+        Me.MetroTabPage2.Controls.Add(Me.GroupBox12)
+        Me.MetroTabPage2.HorizontalScrollbarBarColor = True
+        Me.MetroTabPage2.HorizontalScrollbarHighlightOnWheel = False
+        Me.MetroTabPage2.HorizontalScrollbarSize = 10
+        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage2.Name = "MetroTabPage2"
+        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage2.TabIndex = 8
+        Me.MetroTabPage2.Text = "Naming"
+        Me.MetroTabPage2.VerticalScrollbarBarColor = True
+        Me.MetroTabPage2.VerticalScrollbarHighlightOnWheel = False
+        Me.MetroTabPage2.VerticalScrollbarSize = 10
+        '
+        'GroupBox17
+        '
+        Me.GroupBox17.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox17.Controls.Add(Me.LeadingZeroDD)
+        Me.GroupBox17.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox17.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox17.Location = New System.Drawing.Point(5, 212)
+        Me.GroupBox17.Name = "GroupBox17"
+        Me.GroupBox17.Size = New System.Drawing.Size(490, 67)
+        Me.GroupBox17.TabIndex = 40
+        Me.GroupBox17.TabStop = False
+        Me.GroupBox17.Text = "Filename Prefix"
+        '
+        'LeadingZeroDD
+        '
+        Me.LeadingZeroDD.DropDownHeight = 250
+        Me.LeadingZeroDD.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LeadingZeroDD.FormattingEnabled = True
+        Me.LeadingZeroDD.IntegralHeight = False
+        Me.LeadingZeroDD.ItemHeight = 23
+        Me.LeadingZeroDD.Items.AddRange(New Object() {"1", "01", "001", "0001"})
+        Me.LeadingZeroDD.Location = New System.Drawing.Point(123, 21)
+        Me.LeadingZeroDD.Name = "LeadingZeroDD"
+        Me.LeadingZeroDD.Size = New System.Drawing.Size(225, 29)
+        Me.LeadingZeroDD.TabIndex = 20
+        Me.LeadingZeroDD.UseSelectable = True
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox3.Controls.Add(Me.LangNameType_DD)
+        Me.GroupBox3.Controls.Add(Me.CB_SoftSubSettings)
+        Me.GroupBox3.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox3.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox3.Location = New System.Drawing.Point(5, 285)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(490, 129)
+        Me.GroupBox3.TabIndex = 52
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Subtitle File naming"
+        '
+        'LangNameType_DD
+        '
+        Me.LangNameType_DD.DropDownHeight = 250
+        Me.LangNameType_DD.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LangNameType_DD.FormattingEnabled = True
+        Me.LangNameType_DD.IntegralHeight = False
+        Me.LangNameType_DD.ItemHeight = 23
+        Me.LangNameType_DD.Items.AddRange(New Object() {"Crunchyroll language names", "ISO639-2 language codes", "Crunchyroll + ISO639-2 language codes"})
+        Me.LangNameType_DD.Location = New System.Drawing.Point(69, 80)
+        Me.LangNameType_DD.Name = "LangNameType_DD"
+        Me.LangNameType_DD.Size = New System.Drawing.Size(326, 29)
+        Me.LangNameType_DD.TabIndex = 31
+        Me.LangNameType_DD.UseSelectable = True
+        '
+        'CB_SoftSubSettings
+        '
+        Me.CB_SoftSubSettings.DropDownHeight = 250
+        Me.CB_SoftSubSettings.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_SoftSubSettings.FormattingEnabled = True
+        Me.CB_SoftSubSettings.IntegralHeight = False
+        Me.CB_SoftSubSettings.ItemHeight = 23
+        Me.CB_SoftSubSettings.Items.AddRange(New Object() {"Exclude language name in first subtitle file", "Include language name in first subtitle file"})
+        Me.CB_SoftSubSettings.Location = New System.Drawing.Point(69, 30)
+        Me.CB_SoftSubSettings.Name = "CB_SoftSubSettings"
+        Me.CB_SoftSubSettings.Size = New System.Drawing.Size(326, 29)
+        Me.CB_SoftSubSettings.TabIndex = 30
+        Me.CB_SoftSubSettings.UseSelectable = True
+        '
+        'GB_Filename_Pre
+        '
+        Me.GB_Filename_Pre.BackColor = System.Drawing.Color.Transparent
+        Me.GB_Filename_Pre.Controls.Add(Me.KodiSupport)
+        Me.GB_Filename_Pre.Controls.Add(Me.IgnoreS1)
+        Me.GB_Filename_Pre.Controls.Add(Me.MetroLink1)
+        Me.GB_Filename_Pre.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GB_Filename_Pre.ForeColor = System.Drawing.Color.Black
+        Me.GB_Filename_Pre.Location = New System.Drawing.Point(5, 144)
+        Me.GB_Filename_Pre.Name = "GB_Filename_Pre"
+        Me.GB_Filename_Pre.Size = New System.Drawing.Size(490, 62)
+        Me.GB_Filename_Pre.TabIndex = 22
+        Me.GB_Filename_Pre.TabStop = False
+        Me.GB_Filename_Pre.Text = "Filename Extras"
+        '
+        'KodiSupport
+        '
+        Me.KodiSupport.AutoSize = True
+        Me.KodiSupport.Location = New System.Drawing.Point(125, 27)
+        Me.KodiSupport.Name = "KodiSupport"
+        Me.KodiSupport.Size = New System.Drawing.Size(80, 20)
+        Me.KodiSupport.TabIndex = 11
+        Me.KodiSupport.Text = "Aus"
+        Me.KodiSupport.UseSelectable = True
+        '
+        'IgnoreS1
+        '
+        Me.IgnoreS1.AutoSize = True
+        Me.IgnoreS1.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.IgnoreS1.Location = New System.Drawing.Point(250, 27)
+        Me.IgnoreS1.Name = "IgnoreS1"
+        Me.IgnoreS1.Size = New System.Drawing.Size(227, 19)
+        Me.IgnoreS1.TabIndex = 19
+        Me.IgnoreS1.Text = "ignore Season 1 for the file name"
+        Me.IgnoreS1.UseSelectable = True
+        '
+        'MetroLink1
+        '
+        Me.MetroLink1.FontSize = MetroFramework.MetroLinkSize.Medium
+        Me.MetroLink1.ForeColor = System.Drawing.Color.SteelBlue
+        Me.MetroLink1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.MetroLink1.Location = New System.Drawing.Point(17, 21)
+        Me.MetroLink1.Name = "MetroLink1"
+        Me.MetroLink1.Size = New System.Drawing.Size(102, 32)
+        Me.MetroLink1.TabIndex = 39
+        Me.MetroLink1.Text = "Kodi naming"
+        Me.MetroLink1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.MetroLink1.UseSelectable = True
+        '
+        'GroupBox12
+        '
+        Me.GroupBox12.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox12.Controls.Add(Me.DD_Episode_Prefix)
+        Me.GroupBox12.Controls.Add(Me.DD_Season_Prefix)
+        Me.GroupBox12.Controls.Add(Me.CR_Filename)
+        Me.GroupBox12.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox12.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox12.Location = New System.Drawing.Point(5, 11)
+        Me.GroupBox12.Name = "GroupBox12"
+        Me.GroupBox12.Size = New System.Drawing.Size(490, 127)
+        Me.GroupBox12.TabIndex = 21
+        Me.GroupBox12.TabStop = False
+        Me.GroupBox12.Text = "Filename"
+        '
+        'DD_Episode_Prefix
+        '
+        Me.DD_Episode_Prefix.DropDownHeight = 250
+        Me.DD_Episode_Prefix.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
+        Me.DD_Episode_Prefix.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DD_Episode_Prefix.FormattingEnabled = True
+        Me.DD_Episode_Prefix.IntegralHeight = False
+        Me.DD_Episode_Prefix.ItemHeight = 23
+        Me.DD_Episode_Prefix.Items.AddRange(New Object() {"[default episode prefix]"})
+        Me.DD_Episode_Prefix.Location = New System.Drawing.Point(248, 85)
+        Me.DD_Episode_Prefix.Name = "DD_Episode_Prefix"
+        Me.DD_Episode_Prefix.Size = New System.Drawing.Size(225, 29)
+        Me.DD_Episode_Prefix.TabIndex = 10
+        Me.DD_Episode_Prefix.UseSelectable = True
+        '
+        'DD_Season_Prefix
+        '
+        Me.DD_Season_Prefix.DropDownHeight = 250
+        Me.DD_Season_Prefix.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
+        Me.DD_Season_Prefix.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DD_Season_Prefix.FormattingEnabled = True
+        Me.DD_Season_Prefix.IntegralHeight = False
+        Me.DD_Season_Prefix.ItemHeight = 23
+        Me.DD_Season_Prefix.Items.AddRange(New Object() {"[default season prefix]"})
+        Me.DD_Season_Prefix.Location = New System.Drawing.Point(6, 85)
+        Me.DD_Season_Prefix.Name = "DD_Season_Prefix"
+        Me.DD_Season_Prefix.Size = New System.Drawing.Size(225, 29)
+        Me.DD_Season_Prefix.TabIndex = 9
+        Me.DD_Season_Prefix.UseSelectable = True
+        '
+        'CR_Filename
+        '
+        Me.CR_Filename.DropDownHeight = 250
+        Me.CR_Filename.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CR_Filename.FormattingEnabled = True
+        Me.CR_Filename.IntegralHeight = False
+        Me.CR_Filename.ItemHeight = 23
+        Me.CR_Filename.Items.AddRange(New Object() {"[episode number]", "[episode name]", "[episode number] [episode name]", "[episode name] [episode number]"})
+        Me.CR_Filename.Location = New System.Drawing.Point(6, 35)
+        Me.CR_Filename.Name = "CR_Filename"
+        Me.CR_Filename.Size = New System.Drawing.Size(467, 29)
+        Me.CR_Filename.TabIndex = 8
+        Me.CR_Filename.UseSelectable = True
+        '
         'MetroTabPage1
         '
-        Me.MetroTabPage1.Controls.Add(Me.GroupBox3)
         Me.MetroTabPage1.Controls.Add(Me.GroupBox14)
         Me.MetroTabPage1.Controls.Add(Me.GB_SubLanguage)
         Me.MetroTabPage1.Controls.Add(Me.SoftSubs)
@@ -1146,34 +1230,6 @@ Partial Class Einstellungen
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
         Me.MetroTabPage1.VerticalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.VerticalScrollbarSize = 10
-        '
-        'GroupBox3
-        '
-        Me.GroupBox3.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox3.Controls.Add(Me.CB_SoftSubSettings)
-        Me.GroupBox3.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox3.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox3.Location = New System.Drawing.Point(5, 325)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(490, 69)
-        Me.GroupBox3.TabIndex = 31
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Subtitle File naming"
-        '
-        'CB_SoftSubSettings
-        '
-        Me.CB_SoftSubSettings.DropDownHeight = 250
-        Me.CB_SoftSubSettings.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CB_SoftSubSettings.FormattingEnabled = True
-        Me.CB_SoftSubSettings.IntegralHeight = False
-        Me.CB_SoftSubSettings.ItemHeight = 23
-        Me.CB_SoftSubSettings.Items.AddRange(New Object() {"Exclude language name in first subtitle file", "Include language name in first subtitle file"})
-        Me.CB_SoftSubSettings.Location = New System.Drawing.Point(69, 30)
-        Me.CB_SoftSubSettings.Name = "CB_SoftSubSettings"
-        Me.CB_SoftSubSettings.Size = New System.Drawing.Size(326, 29)
-        Me.CB_SoftSubSettings.Sorted = True
-        Me.CB_SoftSubSettings.TabIndex = 30
-        Me.CB_SoftSubSettings.UseSelectable = True
         '
         'TabPage6
         '
@@ -1190,11 +1246,175 @@ Partial Class Einstellungen
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage6.Size = New System.Drawing.Size(501, 519)
         Me.TabPage6.TabIndex = 4
-        Me.TabPage6.Text = "Funimation"
+        Me.TabPage6.Text = " Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
         Me.TabPage6.VerticalScrollbarHighlightOnWheel = False
         Me.TabPage6.VerticalScrollbarSize = 10
         Me.TabPage6.Visible = False
+        '
+        'GroupBox15
+        '
+        Me.GroupBox15.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox15.Controls.Add(Me.Bitrate_Funi)
+        Me.GroupBox15.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox15.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox15.Location = New System.Drawing.Point(0, 365)
+        Me.GroupBox15.Name = "GroupBox15"
+        Me.GroupBox15.Size = New System.Drawing.Size(490, 69)
+        Me.GroupBox15.TabIndex = 41
+        Me.GroupBox15.TabStop = False
+        Me.GroupBox15.Text = "Bitrate"
+        '
+        'Bitrate_Funi
+        '
+        Me.Bitrate_Funi.DropDownHeight = 250
+        Me.Bitrate_Funi.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Bitrate_Funi.FormattingEnabled = True
+        Me.Bitrate_Funi.IntegralHeight = False
+        Me.Bitrate_Funi.ItemHeight = 23
+        Me.Bitrate_Funi.Items.AddRange(New Object() {"prefer high bitrate", "prefer low bitrate"})
+        Me.Bitrate_Funi.Location = New System.Drawing.Point(79, 24)
+        Me.Bitrate_Funi.Name = "Bitrate_Funi"
+        Me.Bitrate_Funi.Size = New System.Drawing.Size(326, 29)
+        Me.Bitrate_Funi.Sorted = True
+        Me.Bitrate_Funi.TabIndex = 32
+        Me.Bitrate_Funi.UseSelectable = True
+        '
+        'GroupBox10
+        '
+        Me.GroupBox10.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox10.Controls.Add(Me.Fun_Dub_Over)
+        Me.GroupBox10.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox10.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox10.Location = New System.Drawing.Point(0, 6)
+        Me.GroupBox10.Name = "GroupBox10"
+        Me.GroupBox10.Size = New System.Drawing.Size(490, 69)
+        Me.GroupBox10.TabIndex = 80
+        Me.GroupBox10.TabStop = False
+        Me.GroupBox10.Text = "Funimation Dub"
+        '
+        'Fun_Dub_Over
+        '
+        Me.Fun_Dub_Over.DropDownHeight = 250
+        Me.Fun_Dub_Over.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Fun_Dub_Over.FormattingEnabled = True
+        Me.Fun_Dub_Over.IntegralHeight = False
+        Me.Fun_Dub_Over.ItemHeight = 23
+        Me.Fun_Dub_Over.Items.AddRange(New Object() {"Disabled", "english", "japanese", "portuguese(Brazil)", "spanish(Mexico)"})
+        Me.Fun_Dub_Over.Location = New System.Drawing.Point(79, 30)
+        Me.Fun_Dub_Over.Name = "Fun_Dub_Over"
+        Me.Fun_Dub_Over.Size = New System.Drawing.Size(326, 29)
+        Me.Fun_Dub_Over.Sorted = True
+        Me.Fun_Dub_Over.TabIndex = 40
+        Me.Fun_Dub_Over.UseSelectable = True
+        '
+        'GroupBox7
+        '
+        Me.GroupBox7.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox7.Controls.Add(Me.CB_Fun_HardSubs)
+        Me.GroupBox7.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox7.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox7.Location = New System.Drawing.Point(0, 440)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(490, 69)
+        Me.GroupBox7.TabIndex = 40
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "Hard Subtitle (post-processed)"
+        '
+        'CB_Fun_HardSubs
+        '
+        Me.CB_Fun_HardSubs.DropDownHeight = 250
+        Me.CB_Fun_HardSubs.Enabled = False
+        Me.CB_Fun_HardSubs.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_Fun_HardSubs.FormattingEnabled = True
+        Me.CB_Fun_HardSubs.IntegralHeight = False
+        Me.CB_Fun_HardSubs.ItemHeight = 23
+        Me.CB_Fun_HardSubs.Items.AddRange(New Object() {"Disabled", "English", "Español (LA)", "Português (Brasil)"})
+        Me.CB_Fun_HardSubs.Location = New System.Drawing.Point(79, 30)
+        Me.CB_Fun_HardSubs.Name = "CB_Fun_HardSubs"
+        Me.CB_Fun_HardSubs.Size = New System.Drawing.Size(326, 29)
+        Me.CB_Fun_HardSubs.Sorted = True
+        Me.CB_Fun_HardSubs.TabIndex = 32
+        Me.CB_Fun_HardSubs.UseSelectable = True
+        '
+        'GroupBox9
+        '
+        Me.GroupBox9.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox9.Controls.Add(Me.GroupBox13)
+        Me.GroupBox9.Controls.Add(Me.GroupBox11)
+        Me.GroupBox9.Controls.Add(Me.GroupBox8)
+        Me.GroupBox9.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox9.Location = New System.Drawing.Point(0, 80)
+        Me.GroupBox9.Name = "GroupBox9"
+        Me.GroupBox9.Size = New System.Drawing.Size(490, 275)
+        Me.GroupBox9.TabIndex = 50
+        Me.GroupBox9.TabStop = False
+        Me.GroupBox9.Text = "Soft-Subtitle"
+        '
+        'GroupBox13
+        '
+        Me.GroupBox13.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox13.Controls.Add(Me.FunSubDef)
+        Me.GroupBox13.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox13.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox13.Location = New System.Drawing.Point(10, 180)
+        Me.GroupBox13.Name = "GroupBox13"
+        Me.GroupBox13.Size = New System.Drawing.Size(474, 82)
+        Me.GroupBox13.TabIndex = 70
+        Me.GroupBox13.TabStop = False
+        Me.GroupBox13.Text = "Default Subtitle"
+        '
+        'FunSubDef
+        '
+        Me.FunSubDef.DropDownHeight = 250
+        Me.FunSubDef.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FunSubDef.FormattingEnabled = True
+        Me.FunSubDef.IntegralHeight = False
+        Me.FunSubDef.ItemHeight = 23
+        Me.FunSubDef.Items.AddRange(New Object() {"[Disabled]"})
+        Me.FunSubDef.Location = New System.Drawing.Point(69, 30)
+        Me.FunSubDef.Name = "FunSubDef"
+        Me.FunSubDef.Size = New System.Drawing.Size(326, 29)
+        Me.FunSubDef.Sorted = True
+        Me.FunSubDef.TabIndex = 39
+        Me.FunSubDef.UseSelectable = True
+        '
+        'GroupBox11
+        '
+        Me.GroupBox11.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox11.Controls.Add(Me.CB_srt)
+        Me.GroupBox11.Controls.Add(Me.CB_vtt)
+        Me.GroupBox11.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox11.Location = New System.Drawing.Point(10, 100)
+        Me.GroupBox11.Name = "GroupBox11"
+        Me.GroupBox11.Size = New System.Drawing.Size(474, 75)
+        Me.GroupBox11.TabIndex = 60
+        Me.GroupBox11.TabStop = False
+        Me.GroupBox11.Text = "Format"
+        '
+        'CB_srt
+        '
+        Me.CB_srt.AutoSize = True
+        Me.CB_srt.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_srt.ForeColor = System.Drawing.Color.Black
+        Me.CB_srt.Location = New System.Drawing.Point(139, 35)
+        Me.CB_srt.Name = "CB_srt"
+        Me.CB_srt.Size = New System.Drawing.Size(41, 19)
+        Me.CB_srt.TabIndex = 36
+        Me.CB_srt.Text = "srt"
+        Me.CB_srt.UseSelectable = True
+        '
+        'CB_vtt
+        '
+        Me.CB_vtt.AutoSize = True
+        Me.CB_vtt.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_vtt.ForeColor = System.Drawing.Color.Black
+        Me.CB_vtt.Location = New System.Drawing.Point(261, 35)
+        Me.CB_vtt.Name = "CB_vtt"
+        Me.CB_vtt.Size = New System.Drawing.Size(42, 19)
+        Me.CB_vtt.TabIndex = 37
+        Me.CB_vtt.Text = "vtt"
+        Me.CB_vtt.UseSelectable = True
         '
         'GroupBox8
         '
@@ -1205,7 +1425,7 @@ Partial Class Einstellungen
         Me.GroupBox8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox8.Location = New System.Drawing.Point(10, 21)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(474, 82)
+        Me.GroupBox8.Size = New System.Drawing.Size(474, 75)
         Me.GroupBox8.TabIndex = 61
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Language"
@@ -1246,142 +1466,6 @@ Partial Class Einstellungen
         Me.CB_fun_ptbr.Text = "Português (Brasil)"
         Me.CB_fun_ptbr.UseSelectable = True
         '
-        'GroupBox10
-        '
-        Me.GroupBox10.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox10.Controls.Add(Me.Fun_Dub_Over)
-        Me.GroupBox10.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox10.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox10.Location = New System.Drawing.Point(0, 6)
-        Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(490, 69)
-        Me.GroupBox10.TabIndex = 80
-        Me.GroupBox10.TabStop = False
-        Me.GroupBox10.Text = "Funimation Dub"
-        '
-        'Fun_Dub_Over
-        '
-        Me.Fun_Dub_Over.DropDownHeight = 250
-        Me.Fun_Dub_Over.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Fun_Dub_Over.FormattingEnabled = True
-        Me.Fun_Dub_Over.IntegralHeight = False
-        Me.Fun_Dub_Over.ItemHeight = 23
-        Me.Fun_Dub_Over.Items.AddRange(New Object() {"Disabled", "english", "japanese", "portuguese(Brazil)", "spanish(Mexico)"})
-        Me.Fun_Dub_Over.Location = New System.Drawing.Point(79, 30)
-        Me.Fun_Dub_Over.Name = "Fun_Dub_Over"
-        Me.Fun_Dub_Over.Size = New System.Drawing.Size(326, 29)
-        Me.Fun_Dub_Over.Sorted = True
-        Me.Fun_Dub_Over.TabIndex = 40
-        Me.Fun_Dub_Over.UseSelectable = True
-        '
-        'GroupBox7
-        '
-        Me.GroupBox7.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox7.Controls.Add(Me.CB_Fun_HardSubs)
-        Me.GroupBox7.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox7.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox7.Location = New System.Drawing.Point(0, 450)
-        Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(490, 69)
-        Me.GroupBox7.TabIndex = 40
-        Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "Hard Subtitle (post-processed)"
-        '
-        'CB_Fun_HardSubs
-        '
-        Me.CB_Fun_HardSubs.DropDownHeight = 250
-        Me.CB_Fun_HardSubs.Enabled = False
-        Me.CB_Fun_HardSubs.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CB_Fun_HardSubs.FormattingEnabled = True
-        Me.CB_Fun_HardSubs.IntegralHeight = False
-        Me.CB_Fun_HardSubs.ItemHeight = 23
-        Me.CB_Fun_HardSubs.Items.AddRange(New Object() {"Disabled", "English", "Español (LA)", "Português (Brasil)"})
-        Me.CB_Fun_HardSubs.Location = New System.Drawing.Point(79, 30)
-        Me.CB_Fun_HardSubs.Name = "CB_Fun_HardSubs"
-        Me.CB_Fun_HardSubs.Size = New System.Drawing.Size(326, 29)
-        Me.CB_Fun_HardSubs.Sorted = True
-        Me.CB_Fun_HardSubs.TabIndex = 32
-        Me.CB_Fun_HardSubs.UseSelectable = True
-        '
-        'GroupBox9
-        '
-        Me.GroupBox9.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox9.Controls.Add(Me.GroupBox13)
-        Me.GroupBox9.Controls.Add(Me.GroupBox11)
-        Me.GroupBox9.Controls.Add(Me.GroupBox8)
-        Me.GroupBox9.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox9.Location = New System.Drawing.Point(0, 80)
-        Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(490, 288)
-        Me.GroupBox9.TabIndex = 50
-        Me.GroupBox9.TabStop = False
-        Me.GroupBox9.Text = "Soft-Subtitle"
-        '
-        'GroupBox13
-        '
-        Me.GroupBox13.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox13.Controls.Add(Me.FunSubDef)
-        Me.GroupBox13.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox13.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox13.Location = New System.Drawing.Point(10, 193)
-        Me.GroupBox13.Name = "GroupBox13"
-        Me.GroupBox13.Size = New System.Drawing.Size(474, 82)
-        Me.GroupBox13.TabIndex = 70
-        Me.GroupBox13.TabStop = False
-        Me.GroupBox13.Text = "Default Subtitle"
-        '
-        'FunSubDef
-        '
-        Me.FunSubDef.DropDownHeight = 250
-        Me.FunSubDef.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FunSubDef.FormattingEnabled = True
-        Me.FunSubDef.IntegralHeight = False
-        Me.FunSubDef.ItemHeight = 23
-        Me.FunSubDef.Items.AddRange(New Object() {"[Disabled]"})
-        Me.FunSubDef.Location = New System.Drawing.Point(69, 30)
-        Me.FunSubDef.Name = "FunSubDef"
-        Me.FunSubDef.Size = New System.Drawing.Size(326, 29)
-        Me.FunSubDef.Sorted = True
-        Me.FunSubDef.TabIndex = 39
-        Me.FunSubDef.UseSelectable = True
-        '
-        'GroupBox11
-        '
-        Me.GroupBox11.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox11.Controls.Add(Me.CB_srt)
-        Me.GroupBox11.Controls.Add(Me.CB_vtt)
-        Me.GroupBox11.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox11.Location = New System.Drawing.Point(10, 105)
-        Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Size = New System.Drawing.Size(474, 82)
-        Me.GroupBox11.TabIndex = 60
-        Me.GroupBox11.TabStop = False
-        Me.GroupBox11.Text = "Format"
-        '
-        'CB_srt
-        '
-        Me.CB_srt.AutoSize = True
-        Me.CB_srt.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_srt.ForeColor = System.Drawing.Color.Black
-        Me.CB_srt.Location = New System.Drawing.Point(139, 42)
-        Me.CB_srt.Name = "CB_srt"
-        Me.CB_srt.Size = New System.Drawing.Size(41, 19)
-        Me.CB_srt.TabIndex = 36
-        Me.CB_srt.Text = "srt"
-        Me.CB_srt.UseSelectable = True
-        '
-        'CB_vtt
-        '
-        Me.CB_vtt.AutoSize = True
-        Me.CB_vtt.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_vtt.ForeColor = System.Drawing.Color.Black
-        Me.CB_vtt.Location = New System.Drawing.Point(261, 42)
-        Me.CB_vtt.Name = "CB_vtt"
-        Me.CB_vtt.Size = New System.Drawing.Size(42, 19)
-        Me.CB_vtt.TabIndex = 37
-        Me.CB_vtt.Text = "vtt"
-        Me.CB_vtt.UseSelectable = True
-        '
         'TabPage7
         '
         Me.TabPage7.BackColor = System.Drawing.Color.Transparent
@@ -1398,7 +1482,7 @@ Partial Class Einstellungen
         Me.TabPage7.Name = "TabPage7"
         Me.TabPage7.Size = New System.Drawing.Size(501, 519)
         Me.TabPage7.TabIndex = 5
-        Me.TabPage7.Text = "About   "
+        Me.TabPage7.Text = " About  "
         '
         'LastVersion
         '
@@ -1528,33 +1612,29 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'GroupBox15
+        'GroupBox18
         '
-        Me.GroupBox15.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox15.Controls.Add(Me.Bitrate_Funi)
-        Me.GroupBox15.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox15.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox15.Location = New System.Drawing.Point(0, 375)
-        Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(490, 69)
-        Me.GroupBox15.TabIndex = 41
-        Me.GroupBox15.TabStop = False
-        Me.GroupBox15.Text = "Bitrate"
+        Me.GroupBox18.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox18.Controls.Add(Me.ListViewAdd_True)
+        Me.GroupBox18.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox18.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox18.Location = New System.Drawing.Point(5, 76)
+        Me.GroupBox18.Name = "GroupBox18"
+        Me.GroupBox18.Size = New System.Drawing.Size(490, 59)
+        Me.GroupBox18.TabIndex = 32
+        Me.GroupBox18.TabStop = False
+        Me.GroupBox18.Text = "Multi-Download"
         '
-        'Bitrate_Funi
+        'ListViewAdd_True
         '
-        Me.Bitrate_Funi.DropDownHeight = 250
-        Me.Bitrate_Funi.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Bitrate_Funi.FormattingEnabled = True
-        Me.Bitrate_Funi.IntegralHeight = False
-        Me.Bitrate_Funi.ItemHeight = 23
-        Me.Bitrate_Funi.Items.AddRange(New Object() {"prefer high bitrate", "prefer low bitrate"})
-        Me.Bitrate_Funi.Location = New System.Drawing.Point(79, 24)
-        Me.Bitrate_Funi.Name = "Bitrate_Funi"
-        Me.Bitrate_Funi.Size = New System.Drawing.Size(326, 29)
-        Me.Bitrate_Funi.Sorted = True
-        Me.Bitrate_Funi.TabIndex = 32
-        Me.Bitrate_Funi.UseSelectable = True
+        Me.ListViewAdd_True.AutoSize = True
+        Me.ListViewAdd_True.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.ListViewAdd_True.Location = New System.Drawing.Point(119, 21)
+        Me.ListViewAdd_True.Name = "ListViewAdd_True"
+        Me.ListViewAdd_True.Size = New System.Drawing.Size(255, 19)
+        Me.ListViewAdd_True.TabIndex = 5
+        Me.ListViewAdd_True.Text = "redirect multi-download to the queue"
+        Me.ListViewAdd_True.UseSelectable = True
         '
         'Einstellungen
         '
@@ -1580,10 +1660,7 @@ Partial Class Einstellungen
         Me.SoftSubs.PerformLayout()
         Me.GB_SubLanguage.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
-        Me.GB_Filename_Pre.ResumeLayout(False)
-        Me.GB_Filename_Pre.PerformLayout()
-        Me.GroupBox12.ResumeLayout(False)
-        Me.GroupBox12.PerformLayout()
+        Me.GroupBox16.ResumeLayout(False)
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
@@ -1603,20 +1680,27 @@ Partial Class Einstellungen
         Me.DL_Count_simultaneous.ResumeLayout(False)
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
-        Me.MetroTabPage1.ResumeLayout(False)
+        Me.MetroTabPage2.ResumeLayout(False)
+        Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox3.ResumeLayout(False)
+        Me.GB_Filename_Pre.ResumeLayout(False)
+        Me.GB_Filename_Pre.PerformLayout()
+        Me.GroupBox12.ResumeLayout(False)
+        Me.MetroTabPage1.ResumeLayout(False)
         Me.TabPage6.ResumeLayout(False)
-        Me.GroupBox8.ResumeLayout(False)
-        Me.GroupBox8.PerformLayout()
+        Me.GroupBox15.ResumeLayout(False)
         Me.GroupBox10.ResumeLayout(False)
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox9.ResumeLayout(False)
         Me.GroupBox13.ResumeLayout(False)
         Me.GroupBox11.ResumeLayout(False)
         Me.GroupBox11.PerformLayout()
+        Me.GroupBox8.ResumeLayout(False)
+        Me.GroupBox8.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox15.ResumeLayout(False)
+        Me.GroupBox18.ResumeLayout(False)
+        Me.GroupBox18.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1665,9 +1749,7 @@ Partial Class Einstellungen
     Friend WithEvents GroupBox9 As GroupBox
     Friend WithEvents GroupBox10 As GroupBox
     Friend WithEvents GroupBox11 As GroupBox
-    Friend WithEvents GroupBox12 As GroupBox
     Friend WithEvents Button1 As Button
-    Friend WithEvents ListViewAdd_True As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents Label1 As MetroFramework.Controls.MetroLabel
     Friend WithEvents MergeMP4 As MetroFramework.Controls.MetroCheckBox
     Public WithEvents CBesES As MetroFramework.Controls.MetroCheckBox
@@ -1704,29 +1786,19 @@ Partial Class Einstellungen
     Friend WithEvents ComboBox1 As MetroFramework.Controls.MetroComboBox
     Friend WithEvents CB_Fun_HardSubs As MetroFramework.Controls.MetroComboBox
     Friend WithEvents Fun_Dub_Over As MetroFramework.Controls.MetroComboBox
-    Friend WithEvents CR_Filename As MetroFramework.Controls.MetroComboBox
     Public WithEvents LastVersion As MetroFramework.Controls.MetroLabel
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
-    Friend WithEvents DD_Episode_Prefix As MetroFramework.Controls.MetroComboBox
-    Friend WithEvents DD_Season_Prefix As MetroFramework.Controls.MetroComboBox
     Friend WithEvents http_support As MetroFramework.Controls.MetroComboBox
     Friend WithEvents GroupBox13 As GroupBox
     Friend WithEvents FunSubDef As MetroFramework.Controls.MetroComboBox
     Friend WithEvents GroupBox14 As GroupBox
     Friend WithEvents CR_SoftSubDefault As MetroFramework.Controls.MetroComboBox
     Friend WithEvents CB_Format As MetroFramework.Controls.MetroComboBox
-    Friend WithEvents HybridMode_CB As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents MetroTabPage1 As MetroFramework.Controls.MetroTabPage
     Friend WithEvents ListC6 As ToolStripMenuItem
     Friend WithEvents ListC7 As ToolStripMenuItem
     Friend WithEvents ListP3 As ToolStripMenuItem
-    Friend WithEvents GB_Filename_Pre As GroupBox
-    Friend WithEvents KodiSupport As MetroFramework.Controls.MetroToggle
-    Friend WithEvents MetroLink1 As MetroFramework.Controls.MetroLink
     Friend WithEvents Btn_Save As Button
-    Friend WithEvents IgnoreS1 As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents GroupBox3 As GroupBox
-    Friend WithEvents CB_SoftSubSettings As MetroFramework.Controls.MetroComboBox
     Friend WithEvents MetroLabel2 As MetroFramework.Controls.MetroLabel
     Friend WithEvents ProfileTextBox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents ListBit_1500 As ToolStripMenuItem
@@ -1735,8 +1807,25 @@ Partial Class Einstellungen
     Friend WithEvents ListBit_4500 As ToolStripMenuItem
     Friend WithEvents ListBit_3500 As ToolStripMenuItem
     Friend WithEvents ListBit_2500 As ToolStripMenuItem
-    Friend WithEvents LeadingZeroDD As MetroFramework.Controls.MetroComboBox
     Friend WithEvents GroupBox8 As GroupBox
     Friend WithEvents GroupBox15 As GroupBox
     Friend WithEvents Bitrate_Funi As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents GroupBox16 As GroupBox
+    Friend WithEvents DD_DLMode As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents MetroTabPage2 As MetroFramework.Controls.MetroTabPage
+    Friend WithEvents GB_Filename_Pre As GroupBox
+    Friend WithEvents KodiSupport As MetroFramework.Controls.MetroToggle
+    Friend WithEvents MetroLink1 As MetroFramework.Controls.MetroLink
+    Friend WithEvents GroupBox12 As GroupBox
+    Friend WithEvents LeadingZeroDD As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents IgnoreS1 As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents DD_Episode_Prefix As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents DD_Season_Prefix As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents CR_Filename As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents GroupBox17 As GroupBox
+    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents LangNameType_DD As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents CB_SoftSubSettings As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents GroupBox18 As GroupBox
+    Friend WithEvents ListViewAdd_True As MetroFramework.Controls.MetroCheckBox
 End Class

@@ -2075,6 +2075,8 @@ Public Class Main
                 End If
             End If
 #End Region
+
+
             If SubsOnly = False Then
                 If Reso = 42 And HybridMode = False Then
                     If MergeSubs = True Then
@@ -2157,6 +2159,9 @@ Public Class Main
             If SubsOnly = True Then
                 URL_DL = "-i [Subtitles only]"
             End If
+
+
+
             Me.Invoke(New Action(Function() As Object
                                      ListItemAdd(Path.GetFileName(Pfad_DL.Replace(Chr(34), "")), L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL, Pfad_DL)
                                      Return Nothing
@@ -3322,18 +3327,32 @@ Public Class Main
                         Next
                 End Select
             Next
+
             Dim First As Integer = 0
             Dim Last As Integer = 0
+            Dim Anzahl As Integer = 0
+
             If Anime_Add.comboBox4.SelectedIndex > Anime_Add.comboBox3.SelectedIndex Then
                 First = Anime_Add.comboBox3.SelectedIndex
                 Last = Anime_Add.comboBox4.SelectedIndex
+                Anzahl = Last - First + 1
+            ElseIf Anime_Add.comboBox4.SelectedIndex < Anime_Add.comboBox3.SelectedIndex Then
+                First = Anime_Add.comboBox4.SelectedIndex
+                Last = Anime_Add.comboBox3.SelectedIndex
+
+                Anime_Add.comboBox4.SelectedIndex = Last
+                Anime_Add.comboBox3.SelectedIndex = First
+                Anzahl = Last - First + 1
             ElseIf Anime_Add.comboBox4.SelectedIndex = Anime_Add.comboBox3.SelectedIndex Then
-                Exit Sub
-            Else
+
                 First = Anime_Add.comboBox4.SelectedIndex
                 Last = Anime_Add.comboBox4.SelectedIndex
+
+                Anzahl = Last - First + 1
             End If
-            Dim Anzahl As Integer = Anime_Add.comboBox4.SelectedIndex - Anime_Add.comboBox3.SelectedIndex
+
+            Anime_Add.Add_Display.Text = Anzahl.ToString + " episodes selected"
+
             For i As Integer = First To Last
                 For e As Integer = 0 To Integer.MaxValue
                     If Funimation_Grapp_RDY = True Then
@@ -5107,8 +5126,12 @@ Public Class Main
             MsgBox("No Token has been found...", MsgBoxStyle.Exclamation)
         Else
             FunimationToken = Token
-            MsgBox("Token found!", MsgBoxStyle.Information)
+            MsgBox("Token found!" + vbNewLine + Token, MsgBoxStyle.Information)
         End If
+    End Sub
+
+    Private Sub ContextMenuStrip1_Opening(sender As Object, e As CancelEventArgs) Handles ContextMenuStrip1.Opening
+
     End Sub
 
 #End Region

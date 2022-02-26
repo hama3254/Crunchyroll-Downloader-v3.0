@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\cef.redist.x86.98.1.21\build\cef.redist.x86.props" Condition="Exists('..\packages\cef.redist.x86.98.1.21\build\cef.redist.x86.props')" />
+  <Import Project="..\packages\cef.redist.x64.98.1.21\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.98.1.21\build\cef.redist.x64.props')" />
   <Import Project="..\packages\CefSharp.Common.93.1.140\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.93.1.140\build\CefSharp.Common.props')" />
-  <Import Project="..\packages\cef.redist.x86.93.1.14\build\cef.redist.x86.props" Condition="Exists('..\packages\cef.redist.x86.93.1.14\build\cef.redist.x86.props')" />
-  <Import Project="..\packages\cef.redist.x64.93.1.14\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.93.1.14\build\cef.redist.x64.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -421,10 +421,10 @@
     <PropertyGroup>
       <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\cef.redist.x64.93.1.14\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x64.93.1.14\build\cef.redist.x64.props'))" />
-    <Error Condition="!Exists('..\packages\cef.redist.x86.93.1.14\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x86.93.1.14\build\cef.redist.x86.props'))" />
     <Error Condition="!Exists('..\packages\CefSharp.Common.93.1.140\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.93.1.140\build\CefSharp.Common.props'))" />
     <Error Condition="!Exists('..\packages\CefSharp.Common.93.1.140\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.93.1.140\build\CefSharp.Common.targets'))" />
+    <Error Condition="!Exists('..\packages\cef.redist.x64.98.1.21\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x64.98.1.21\build\cef.redist.x64.props'))" />
+    <Error Condition="!Exists('..\packages\cef.redist.x86.98.1.21\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x86.98.1.21\build\cef.redist.x86.props'))" />
   </Target>
   <Import Project="..\packages\CefSharp.Common.93.1.140\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.93.1.140\build\CefSharp.Common.targets')" />
 </Project>

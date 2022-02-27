@@ -1058,51 +1058,25 @@ Public Class Main
     Public Function HardSubValuesToDisplay(ByVal HardSub As String) As String
         Try
             HardSub = HardSub.Replace(Chr(34), "")
-            If HardSub = "deDE" Then
+            If HardSub = "deDE" Or HardSub = "de-DE" Then
                 Return "Deutsch"
-            ElseIf HardSub = "enUS" Or HardSub = "en" Then
+            ElseIf HardSub = "enUS" Or HardSub = "en" Or HardSub = "en-US" Then
                 Return "English"
-            ElseIf HardSub = "ptBR" Or HardSub = "pt" Then
+            ElseIf HardSub = "ptBR" Or HardSub = "pt" Or HardSub = "pt-BR" Then
                 Return "Português (Brasil)"
-            ElseIf HardSub = "esLA" Or HardSub = "es" Then
+            ElseIf HardSub = "esLA" Or HardSub = "es" Or HardSub = "es-419" Or HardSub = "es-LA" Then
                 Return "Español (LA)"
-            ElseIf HardSub = "frFR" Then
+            ElseIf HardSub = "frFR" Or HardSub = "fr-FR" Then
                 Return "Français (France)"
-            ElseIf HardSub = "arME" Then
+            ElseIf HardSub = "arME" Or HardSub = "ar-ME" Then
                 Return "العربية (Arabic)"
-            ElseIf HardSub = "ruRU" Then
+            ElseIf HardSub = "ruRU" Or HardSub = "ru-RU" Then
                 Return "Русский (Russian)"
-            ElseIf HardSub = "itIT" Then
+            ElseIf HardSub = "itIT" Or HardSub = "it-IT" Then
                 Return "Italiano (Italian)"
-            ElseIf HardSub = "esES" Then
+            ElseIf HardSub = "esES" Or HardSub = "es-ES" Then
                 Return "Español (España)"
-            ElseIf HardSub = "jaJP" Then
-                Return "Japanese"
-            ElseIf HardSub = "en" Then
-                Return "English"
-            ElseIf HardSub = "pt" Then
-                Return "Português (Brasil)"
-            ElseIf HardSub = "es" Then
-                Return "Español (LA)"
-            ElseIf HardSub = "de-DE" Then
-                Return "Deutsch"
-            ElseIf HardSub = "en-US" Then
-                Return "English"
-            ElseIf HardSub = "pt-BR" Then
-                Return "Português (Brasil)"
-            ElseIf HardSub = "es-LA" Then
-                Return "Español (LA)"
-            ElseIf HardSub = "fr-FR" Then
-                Return "Français (France)"
-            ElseIf HardSub = "ar-ME" Then
-                Return "العربية (Arabic)"
-            ElseIf HardSub = "ru-RU" Then
-                Return "Русский (Russian)"
-            ElseIf HardSub = "it-IT" Then
-                Return "Italiano (Italian)"
-            ElseIf HardSub = "es-ES" Then
-                Return "Español (España)"
-            ElseIf HardSub = "ja-JP" Then
+            ElseIf HardSub = "jaJP" Or HardSub = "ja-JP" Then
                 Return "Japanese"
             Else
                 Return CB_SuB_Nothing
@@ -1119,7 +1093,7 @@ Public Class Main
                 Return "eng"
             ElseIf HardSub = "ptBR" Or HardSub = "pt-BR" Or HardSub = "pt" Then
                 Return "por"
-            ElseIf HardSub = "esLA" Or HardSub = "es-LA" Or HardSub = "es" Then
+            ElseIf HardSub = "esLA" Or HardSub = "es-LA" Or HardSub = "es" Or HardSub = "es-419" Then
                 Return "spa"
             ElseIf HardSub = "frFR" Or HardSub = "fr-FR" Then
                 Return "fre"
@@ -1933,7 +1907,8 @@ Public Class Main
                     If CBool(InStr(VideoJson, Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + ConvertCC(SoftSubs(i)) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) Then
                         SoftSubs2.Add(SoftSubs(i))
                     Else
-                        MsgBox("Softsubtitle for " + SoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
+                        '
+                        'MsgBox("Softsubtitle for " + SoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
                     End If
                 Next
             End If

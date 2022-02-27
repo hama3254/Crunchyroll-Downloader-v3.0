@@ -114,9 +114,9 @@ Public Class CefSharp_Browser
             Debug_Mode.Show()
             Debug_Mode.Location = New Point(Me.Location.X + Me.Width - 15, Me.Location.Y)
         End If
-
+        'MsgBox(WebBrowser1.Address)
         If WebBrowser1.Address = "about:blank" Or WebBrowser1.Address = Nothing Then
-
+            TextBox1.Text = Main.Startseite
             WebBrowser1.Load(Main.Startseite)
 
         End If

@@ -1,15 +1,15 @@
 Chromium Embedded Framework (CEF) Standard Binary Distribution for Windows
 -------------------------------------------------------------------------------
 
-Date:             September 17, 2021
+Date:             February 16, 2022
 
-CEF Version:      93.1.14+gf38ce34+chromium-93.0.4577.82
+CEF Version:      98.1.21+g9782362+chromium-98.0.4758.102
 CEF URL:          https://bitbucket.org/chromiumembedded/cef.git
-                  @f38ce3409c5cfc5dcadbf1e219ffaaf7e720b609
+                  @9782362fea64d6317166cb091a3afe4155f386db
 
-Chromium Version: 93.0.4577.82
+Chromium Version: 98.0.4758.102
 Chromium URL:     https://chromium.googlesource.com/chromium/src.git
-                  @f2d6656bdf16198c04b70efd1952dace3ed7dd8f
+                  @5fcc32e77f5fd4aeea4b58321d18b4561e95bc68
 
 This distribution contains all components necessary to build and distribute an
 application using CEF on the Windows platform. Please see the LICENSING
@@ -120,18 +120,35 @@ run but any related functionality may become broken or disabled.
     These files contain non-localized resources used by CEF, Chromium and Blink.
     Without these files arbitrary Web components may display incorrectly.
 
-* Angle and Direct3D support.
-  * d3dcompiler_47.dll (required for Windows Vista and newer)
+* Direct3D support.
+  * d3dcompiler_47.dll
+  Support for GPU accelerated rendering of HTML5 content like 2D canvas, 3D CSS
+  and WebGL. Without this file the aforementioned capabilities may fail when GPU
+  acceleration is enabled (default in most cases). Use of this bundled version
+  is recommended instead of relying on the possibly old and untested system
+  installed version.
+
+* ANGLE support.
   * libEGL.dll
   * libGLESv2.dll
-  Without these files HTML5 accelerated content like 2D canvas, 3D CSS and WebGL
-  will not function.
+  Support for rendering of HTML5 content like 2D canvas, 3D CSS and WebGL.
+  Without these files the aforementioned capabilities may fail.
 
-* SwiftShader support.
+* SwANGLE support.
+  * vk_swiftshader.dll
+  * vk_swiftshader_icd.json
+  * vulkan-1.dll
+  Support for software rendering of HTML5 content like 2D canvas, 3D CSS and
+  WebGL using SwiftShader's Vulkan library as ANGLE's Vulkan backend. Without
+  these files the aforementioned capabilities may fail when GPU acceleration is
+  disabled or unavailable.
+
+* SwiftShader support
   * swiftshader/libEGL.dll
   * swiftshader/libGLESv2.dll
-  Without these files WebGL will not function in software-only mode when the GPU
-  is not available or disabled.
+  Deprecated support for software rendering using SwiftShader's GL libraries.
+  Used as an alternative to SwANGLE when the `--use-gl=swiftshader-webgl`
+  command-line flag is specified.
 
 
 LICENSING

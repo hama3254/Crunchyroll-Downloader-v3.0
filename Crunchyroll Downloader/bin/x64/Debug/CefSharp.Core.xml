@@ -61,12 +61,6 @@
         <member name="P:CefSharp.BrowserSettings.Plugins">
             <inheritdoc/>
         </member>
-        <member name="P:CefSharp.BrowserSettings.UniversalAccessFromFileUrls">
-            <inheritdoc/>
-        </member>
-        <member name="P:CefSharp.BrowserSettings.FileAccessFromFileUrls">
-            <inheritdoc/>
-        </member>
         <member name="P:CefSharp.BrowserSettings.ImageLoading">
             <inheritdoc/>
         </member>
@@ -83,9 +77,6 @@
             <inheritdoc/>
         </member>
         <member name="P:CefSharp.BrowserSettings.Databases">
-            <inheritdoc/>
-        </member>
-        <member name="P:CefSharp.BrowserSettings.ApplicationCache">
             <inheritdoc/>
         </member>
         <member name="P:CefSharp.BrowserSettings.WebGl">
@@ -208,6 +199,14 @@
             </summary>
             <value>The Git Commit Hash</value>
         </member>
+        <member name="M:CefSharp.Cef.ParseUrl(System.String)">
+            <summary>
+            Parse the specified url into its component parts.
+            Uses a GURL to parse the Url. GURL is Google's URL parsing library.
+            </summary>
+            <param name="url">url</param>
+            <returns>Returns null if the URL is empty or invalid.</returns>
+        </member>
         <member name="M:CefSharp.Cef.Initialize(CefSharp.CefSettingsBase)">
             <summary>
             Initializes CefSharp with user-provided settings.
@@ -252,6 +251,23 @@
             <param name="performDependencyCheck">Check that all relevant dependencies available, throws exception if any are missing</param>
             <param name="cefApp">Implement this interface to provide handler implementations. Null if you don't wish to handle these events</param>
             <returns>true if successful; otherwise, false.</returns>
+        </member>
+        <member name="M:CefSharp.Cef.InitializeAsync(CefSharp.CefSettingsBase,System.Boolean,CefSharp.IBrowserProcessHandler)">
+            <summary>
+            Initializes CefSharp with user-provided settings. This method allows you to wait for
+            <see cref="M:CefSharp.IBrowserProcessHandler.OnContextInitialized"/> to be called before continuing. 
+            It's important to note that Initialize and Shutdown <strong>MUST</strong> be called on your main
+            application thread (typically the UI thread). If you call them on different
+            threads, your application will hang. See the documentation for Cef.Shutdown() for more details.
+            </summary>
+            <param name="settings">CefSharp configuration settings.</param>
+            <param name="performDependencyCheck">Check that all relevant dependencies available, throws exception if any are missing</param>
+            <param name="browserProcessHandler">The handler for functionality specific to the browser process. Null if you don't wish to handle these events</param>
+            <returns>returns a Task that can be awaited. true if successful; otherwise, false. If false check the log file for possible errors</returns>
+            <remarks>
+            If successful then the Task will be completed successfully when <see cref="M:CefSharp.IBrowserProcessHandler.OnContextInitialized"/> is called.
+            If successful then the continuation will happen syncrionously on the CEF UI thread.
+            </remarks>
         </member>
         <member name="M:CefSharp.Cef.RunMessageLoop">
             <summary>
@@ -597,6 +613,11 @@
             Free the unmanaged CefSettingsBase instance.
             Under normal circumstances you shouldn't need to call this
             The unmanaged resource will be freed after <see cref="M:CefSharp.Cef.Initialize(CefSharp.CefSettingsBase)"/> (or one of the overloads) is called.
+            </summary>
+        </member>
+        <member name="P:CefSharp.CefSettingsBase.IsDisposed">
+            <summary>
+            Gets a value indicating if the CefSettings has been disposed.
             </summary>
         </member>
         <member name="P:CefSharp.CefSettingsBase.CefCustomSchemes">
@@ -1121,6 +1142,75 @@
             Avoids having to P/Invoke as we can call the C++ API directly.
             </summary>
         </member>
+        <member name="T:CefSharp.Core.ObjectFactory">
+            <summary>
+            Create instances of Public Api classes, <see cref="T:CefSharp.IBrowserSettings"/>,
+            <see cref="T:CefSharp.IWindowInfo"/> etc.
+            </summary>
+        </member>
+        <member name="M:CefSharp.Core.ObjectFactory.CreateBrowserSettings(System.Boolean)">
+            <summary>
+            Create a new instance of <see cref="T:CefSharp.IBrowserSettings"/>
+            </summary>
+            <param name="autoDispose">Dispose of browser setings after it has been used to create a browser</param>
+            <returns>returns new instance of <see cref="T:CefSharp.IBrowserSettings"/></returns>
+        </member>
+        <member name="M:CefSharp.Core.ObjectFactory.CreateWindowInfo">
+            <summary>
+            Create a new instance of <see cref="T:CefSharp.IWindowInfo"/>
+            </summary>
+            <returns>returns new instance of <see cref="T:CefSharp.IWindowInfo"/></returns>
+        </member>
+        <member name="M:CefSharp.Core.ObjectFactory.CreatePostData">
+            <summary>
+            Create a new instance of <see cref="T:CefSharp.IPostData"/>
+            </summary>
+            <returns>returns new instance of <see cref="T:CefSharp.IPostData"/></returns>
+        </member>
+        <member name="M:CefSharp.Core.ObjectFactory.CreatePostDataElement">
+            <summary>
+            Create a new instance of <see cref="T:CefSharp.IPostDataElement"/>
+            </summary>
+            <returns>returns new instance of <see cref="T:CefSharp.IPostDataElement"/></returns>
+        </member>
+        <member name="M:CefSharp.Core.ObjectFactory.CreateRequest">
+            <summary>
+            Create a new instance of <see cref="T:CefSharp.IRequest"/>
+            </summary>
+            <returns>returns new instance of <see cref="T:CefSharp.IRequest"/></returns>
+        </member>
+        <member name="M:CefSharp.Core.ObjectFactory.CreateUrlRequest(CefSharp.IRequest,CefSharp.IUrlRequestClient)">
+            <summary>
+            Create a new instance of <see cref="T:CefSharp.IUrlRequest"/>
+            </summary>
+            <param name="request">request</param>
+            <param name="urlRequestClient">url request client</param>
+            <returns>returns new instance of <see cref="T:CefSharp.IUrlRequest"/></returns>
+        </member>
+        <member name="M:CefSharp.Core.ObjectFactory.CreateUrlRequest(CefSharp.IRequest,CefSharp.IUrlRequestClient,CefSharp.IRequestContext)">
+            <summary>
+            Create a new instance of <see cref="T:CefSharp.IUrlRequest"/>
+            </summary>
+            <param name="request">request</param>
+            <param name="urlRequestClient">url request client</param>
+            <param name="requestContext">request context</param>
+            <returns>returns new instance of <see cref="T:CefSharp.IUrlRequest"/></returns>
+        </member>
+        <member name="M:CefSharp.Core.ObjectFactory.CreateDragData">
+            <summary>
+            Create a new instance of <see cref="T:CefSharp.IDragData"/>
+            </summary>
+            <returns>returns new instance of <see cref="T:CefSharp.IDragData"/></returns>
+        </member>
+        <member name="M:CefSharp.Core.ObjectFactory.ConfigureRequestContext">
+            <summary>
+            Create a new <see cref="T:CefSharp.RequestContextBuilder"/> which can be used to
+            create a new <see cref="T:CefSharp.IRequestContext"/> in a fluent flashion.
+            Call <see cref="M:CefSharp.RequestContextBuilder.Create"/> to create the actual
+            <see cref="T:CefSharp.IRequestContext"/> instance
+            </summary>
+            <returns>RequestContextBuilder</returns>
+        </member>
         <member name="T:CefSharp.PostData">
             <inheritdoc/>
         </member>
@@ -1200,75 +1290,6 @@
             Create a new instance of <see cref="T:CefSharp.IPostDataElement"/>
             </summary>
             <returns>PostDataElement</returns>
-        </member>
-        <member name="T:CefSharp.Core.ObjectFactory">
-            <summary>
-            Create instances of Public Api classes, <see cref="T:CefSharp.IBrowserSettings"/>,
-            <see cref="T:CefSharp.IWindowInfo"/> etc.
-            </summary>
-        </member>
-        <member name="M:CefSharp.Core.ObjectFactory.CreateBrowserSettings(System.Boolean)">
-            <summary>
-            Create a new instance of <see cref="T:CefSharp.IBrowserSettings"/>
-            </summary>
-            <param name="autoDispose">Dispose of browser setings after it has been used to create a browser</param>
-            <returns>returns new instance of <see cref="T:CefSharp.IBrowserSettings"/></returns>
-        </member>
-        <member name="M:CefSharp.Core.ObjectFactory.CreateWindowInfo">
-            <summary>
-            Create a new instance of <see cref="T:CefSharp.IWindowInfo"/>
-            </summary>
-            <returns>returns new instance of <see cref="T:CefSharp.IWindowInfo"/></returns>
-        </member>
-        <member name="M:CefSharp.Core.ObjectFactory.CreatePostData">
-            <summary>
-            Create a new instance of <see cref="T:CefSharp.IPostData"/>
-            </summary>
-            <returns>returns new instance of <see cref="T:CefSharp.IPostData"/></returns>
-        </member>
-        <member name="M:CefSharp.Core.ObjectFactory.CreatePostDataElement">
-            <summary>
-            Create a new instance of <see cref="T:CefSharp.IPostDataElement"/>
-            </summary>
-            <returns>returns new instance of <see cref="T:CefSharp.IPostDataElement"/></returns>
-        </member>
-        <member name="M:CefSharp.Core.ObjectFactory.CreateRequest">
-            <summary>
-            Create a new instance of <see cref="T:CefSharp.IRequest"/>
-            </summary>
-            <returns>returns new instance of <see cref="T:CefSharp.IRequest"/></returns>
-        </member>
-        <member name="M:CefSharp.Core.ObjectFactory.CreateUrlRequest(CefSharp.IRequest,CefSharp.IUrlRequestClient)">
-            <summary>
-            Create a new instance of <see cref="T:CefSharp.IUrlRequest"/>
-            </summary>
-            <param name="request">request</param>
-            <param name="urlRequestClient">url request client</param>
-            <returns>returns new instance of <see cref="T:CefSharp.IUrlRequest"/></returns>
-        </member>
-        <member name="M:CefSharp.Core.ObjectFactory.CreateUrlRequest(CefSharp.IRequest,CefSharp.IUrlRequestClient,CefSharp.IRequestContext)">
-            <summary>
-            Create a new instance of <see cref="T:CefSharp.IUrlRequest"/>
-            </summary>
-            <param name="request">request</param>
-            <param name="urlRequestClient">url request client</param>
-            <param name="requestContext">request context</param>
-            <returns>returns new instance of <see cref="T:CefSharp.IUrlRequest"/></returns>
-        </member>
-        <member name="M:CefSharp.Core.ObjectFactory.CreateDragData">
-            <summary>
-            Create a new instance of <see cref="T:CefSharp.IDragData"/>
-            </summary>
-            <returns>returns new instance of <see cref="T:CefSharp.IDragData"/></returns>
-        </member>
-        <member name="M:CefSharp.Core.ObjectFactory.ConfigureRequestContext">
-            <summary>
-            Create a new <see cref="T:CefSharp.RequestContextBuilder"/> which can be used to
-            create a new <see cref="T:CefSharp.IRequestContext"/> in a fluent flashion.
-            Call <see cref="M:CefSharp.RequestContextBuilder.Create"/> to create the actual
-            <see cref="T:CefSharp.IRequestContext"/> instance
-            </summary>
-            <returns>RequestContextBuilder</returns>
         </member>
         <member name="T:CefSharp.Request">
             <inheritdoc/>
@@ -1387,9 +1408,6 @@
             <inheritdoc/>
         </member>
         <member name="M:CefSharp.RequestContext.ClearSchemeHandlerFactories">
-            <inheritdoc/>
-        </member>
-        <member name="M:CefSharp.RequestContext.PurgePluginListCache(System.Boolean)">
             <inheritdoc/>
         </member>
         <member name="M:CefSharp.RequestContext.HasPreference(System.String)">
@@ -1586,16 +1604,6 @@
             ignored if CachePath matches the CefSettings.CachePath value.
             </summary>
         </member>
-        <member name="P:CefSharp.RequestContextSettings.IgnoreCertificateErrors">
-            <summary>
-            Set to true to ignore errors related to invalid SSL certificates.
-            Enabling this setting can lead to potential security vulnerabilities like
-            "man in the middle" attacks. Applications that load content from the
-            internet should not enable this setting. Can be set globally using the
-            CefSettings.IgnoreCertificateErrors value. This value will be ignored if
-            CachePath matches the CefSettings.cache_path value.
-            </summary>
-        </member>
         <member name="P:CefSharp.RequestContextSettings.CookieableSchemesList">
             <summary>
             Comma delimited list of schemes supported by the associated
@@ -1685,7 +1693,7 @@
             Extended WebBrowserExtensions
             </summary>
         </member>
-        <member name="M:CefSharp.WebBrowserExtensionsEx.GetVisibleNavigationEntryAsync(CefSharp.IWebBrowser)">
+        <member name="M:CefSharp.WebBrowserExtensionsEx.GetVisibleNavigationEntryAsync(CefSharp.IChromiumWebBrowserBase)">
             <summary>
             Retrieve the current <see cref="T:CefSharp.NavigationEntry"/>. Contains information like
             <see cref="P:CefSharp.NavigationEntry.HttpStatusCode"/> and <see cref="P:CefSharp.NavigationEntry.SslStatus"/>
@@ -1753,6 +1761,9 @@
             <inheritdoc/>
         </member>
         <member name="M:CefSharp.WindowInfo.SetAsChild(System.IntPtr)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.WindowInfo.SetAsChild(System.IntPtr,CefSharp.Structs.Rect)">
             <inheritdoc/>
         </member>
         <member name="M:CefSharp.WindowInfo.SetAsChild(System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32)">

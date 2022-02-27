@@ -504,6 +504,14 @@ threads, your application will hang. See the documentation for Cef.Shutdown() fo
             <param name="cefSettings">CefSharp configuration settings.</param>
             <returns>true if successful; otherwise, false.</returns>
         </member>
+        <member name="M:CefSharp.Core.Cef.ParseUrl(System.String)">
+            <summary>
+Parse the specified url into its component parts.
+Uses a GURL to parse the Url. GURL is Google's URL parsing library.
+</summary>
+            <param name="url">url</param>
+            <returns>Returns null if the URL is empty or invalid.</returns>
+        </member>
         <member name="P:CefSharp.Core.Cef.CefCommitHash">
             <summary>
 Gets a value that indicates the Git Hash for CEF version currently being used.
@@ -684,11 +692,6 @@ command-line switch.
             <summary>
 The locale string that will be passed to WebKit. If empty the default locale of "en-US" will be used. Also configurable using
 the "lang" command-line switch.
-</summary>
-        </member>
-        <member name="P:CefSharp.Core.CefSettingsBase.IgnoreCertificateErrors">
-            <summary>
-Set to true in order to completely ignore SSL certificate errors. This is NOT recommended.
 </summary>
         </member>
         <member name="P:CefSharp.Core.CefSettingsBase.UserDataPath">
@@ -965,12 +968,6 @@ support and may not work on all systems even when enabled. Also
 configurable using the "disable-webgl" command-line switch.
 </summary>
         </member>
-        <member name="P:CefSharp.Core.BrowserSettings.ApplicationCache">
-            <summary>
-Controls whether the application cache can be used. Also configurable using
-the "disable-application-cache" command-line switch.
-</summary>
-        </member>
         <member name="P:CefSharp.Core.BrowserSettings.Databases">
             <summary>
 Controls whether databases can be used. Also configurable using the
@@ -1007,18 +1004,6 @@ switch.
 Controls whether image URLs will be loaded from the network. A cached image
 will still be rendered if requested. Also configurable using the
 "disable-image-loading" command-line switch.
-</summary>
-        </member>
-        <member name="P:CefSharp.Core.BrowserSettings.FileAccessFromFileUrls">
-            <summary>
-Controls whether file URLs will have access to other file URLs. Also
-configurable using the "allow-access-from-files" command-line switch.
-</summary>
-        </member>
-        <member name="P:CefSharp.Core.BrowserSettings.UniversalAccessFromFileUrls">
-            <summary>
-Controls whether file URLs will have access to all URLs. Also configurable
-using the "allow-universal-access-from-files" command-line switch.
 </summary>
         </member>
         <member name="P:CefSharp.Core.BrowserSettings.Plugins">
@@ -1349,15 +1334,6 @@ executed on the CEF UI thread, so can be called directly.
 When CefSettings.MultiThreadedMessageLoop == false (the default is true) then the main
 application thread will be the CEF UI thread.</remarks>
         </member>
-        <member name="M:CefSharp.Core.RequestContext.PurgePluginListCache(System.Boolean)">
-            <summary>
-Tells all renderer processes associated with this context to throw away
-their plugin list cache. If reloadPages is true they will also reload
-all pages with plugins. RequestContextHandler.OnBeforePluginLoad may
-be called to rebuild the plugin list cache.
-</summary>
-            <param name="reloadPages">reload any pages with pluginst</param>
-        </member>
         <member name="P:CefSharp.Core.RequestContext.CachePath">
             <summary>
 Returns the cache path for this object. If empty an "incognito mode"
@@ -1462,16 +1438,6 @@ Specifying a CookieableSchemesList value and setting
 CookieableSchemesExcludeDefaults to true will disable all loading
 and saving of cookies for this manager. This value will be ignored if
 <see cref="P:CefSharp.Core.RequestContextSettings.CachePath" /> matches the <see cref="!:CefSettingsBase.CachePath" /> value.
-</summary>
-        </member>
-        <member name="P:CefSharp.Core.RequestContextSettings.IgnoreCertificateErrors">
-            <summary>
-Set to true to ignore errors related to invalid SSL certificates.
-Enabling this setting can lead to potential security vulnerabilities like
-"man in the middle" attacks. Applications that load content from the
-internet should not enable this setting. Can be set globally using the
-CefSettings.IgnoreCertificateErrors value. This value will be ignored if
-CachePath matches the CefSettings.cache_path value.
 </summary>
         </member>
         <member name="P:CefSharp.Core.RequestContextSettings.AcceptLanguageList">

@@ -732,6 +732,7 @@ Public Class Einstellungen
         End If
         If CBesLA.Checked = True Then
             Main.SoftSubs.Add("esLA")
+            Main.SoftSubs.Add("es-419")
         End If
         If CBfrFR.Checked = True Then
             Main.SoftSubs.Add("frFR")

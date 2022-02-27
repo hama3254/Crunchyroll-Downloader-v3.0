@@ -381,7 +381,7 @@ Public Class Main
         'settings.CefCommandLineArgs("autoplay-policy") = "no-user-gesture-required"
         settings.LogFile = Path.Combine(Application.StartupPath, "lib", "browser.log")
         'Initialize Cef with the provided settings
-        Cef.Initialize(settings)
+        Cef.Initialize(settings) ', performDependencyCheck:=True, browserProcessHandler:=Nothing)
 
 
         Try
@@ -1918,7 +1918,11 @@ Public Class Main
                 MsgBox("No download stream avalible", MsgBoxStyle.Critical)
                 Exit Sub
             End If
-            'My.Computer.Clipboard.SetText(VideoJson)
+            'Me.Invoke(New Action(Function() As Object
+            '                         My.Computer.Clipboard.SetText(VideoJson)
+            '                         Return Nothing
+            '                     End Function))
+
             'MsgBox(SubSprache)
             Dim LangNew As String = ConvertCC(SubSprache)
 #End Region
@@ -1929,7 +1933,7 @@ Public Class Main
                     If CBool(InStr(VideoJson, Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + ConvertCC(SoftSubs(i)) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) Then
                         SoftSubs2.Add(SoftSubs(i))
                     Else
-                        'MsgBox("Softsubtitle for " + SoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
+                        MsgBox("Softsubtitle for " + SoftSubs(i) + " is not avalible.", MsgBoxStyle.Information)
                     End If
                 Next
             End If
@@ -2117,9 +2121,8 @@ Public Class Main
                     Dim ffmpeg_url_3 As String() = Nothing
                     Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
                     ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
-                    Debug.WriteLine(CR_audio_locale)
+                    Debug.WriteLine("Line 2120-CR_audio_locale: " + CR_audio_locale)
                     If MergeSubs = True Then
-                        Debug.WriteLine(ConvertCC(CR_audio_locale))
                         URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
                         'URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command
                     Else
@@ -2210,6 +2213,8 @@ Public Class Main
                 Return "pt-BR"
             ElseIf CC = "esLA" Then
                 Return "es-LA"
+            ElseIf CC = "es-419" Then
+                Return "es-419"
             ElseIf CC = "frFR" Then
                 Return "fr-FR"
             ElseIf CC = "arME" Then

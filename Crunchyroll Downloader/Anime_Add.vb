@@ -147,6 +147,7 @@ Public Class Anime_Add
             ComboBox2.Items.AddRange(Result.ToArray)
             ComboBox2.SelectedItem = SubFolder_Value
         Catch ex As Exception
+
         End Try
     End Sub
 

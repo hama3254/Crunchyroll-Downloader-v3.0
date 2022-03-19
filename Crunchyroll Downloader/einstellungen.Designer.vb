@@ -41,6 +41,8 @@ Partial Class Einstellungen
         Me.GB_SubLanguage = New System.Windows.Forms.GroupBox()
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
         Me.TabPage2 = New MetroFramework.Controls.MetroTabPage()
+        Me.GroupBox18 = New System.Windows.Forms.GroupBox()
+        Me.ListViewAdd_True = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox16 = New System.Windows.Forms.GroupBox()
         Me.DD_DLMode = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
@@ -143,13 +145,14 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.GroupBox18 = New System.Windows.Forms.GroupBox()
-        Me.ListViewAdd_True = New MetroFramework.Controls.MetroCheckBox()
+        Me.MetroLabel3 = New MetroFramework.Controls.MetroLabel()
+        Me.TempTB = New MetroFramework.Controls.MetroTextBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
         Me.GB_SubLanguage.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox18.SuspendLayout()
         Me.GroupBox16.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -180,7 +183,6 @@ Partial Class Einstellungen
         Me.GroupBox8.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox18.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolTip1
@@ -408,15 +410,41 @@ Partial Class Einstellungen
         Me.TabPage2.VerticalScrollbarSize = 10
         Me.TabPage2.Visible = False
         '
+        'GroupBox18
+        '
+        Me.GroupBox18.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox18.Controls.Add(Me.ListViewAdd_True)
+        Me.GroupBox18.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox18.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox18.Location = New System.Drawing.Point(5, 150)
+        Me.GroupBox18.Name = "GroupBox18"
+        Me.GroupBox18.Size = New System.Drawing.Size(490, 59)
+        Me.GroupBox18.TabIndex = 32
+        Me.GroupBox18.TabStop = False
+        Me.GroupBox18.Text = "Multi-Download"
+        '
+        'ListViewAdd_True
+        '
+        Me.ListViewAdd_True.AutoSize = True
+        Me.ListViewAdd_True.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.ListViewAdd_True.Location = New System.Drawing.Point(119, 21)
+        Me.ListViewAdd_True.Name = "ListViewAdd_True"
+        Me.ListViewAdd_True.Size = New System.Drawing.Size(255, 19)
+        Me.ListViewAdd_True.TabIndex = 5
+        Me.ListViewAdd_True.Text = "redirect multi-download to the queue"
+        Me.ListViewAdd_True.UseSelectable = True
+        '
         'GroupBox16
         '
         Me.GroupBox16.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox16.Controls.Add(Me.MetroLabel3)
+        Me.GroupBox16.Controls.Add(Me.TempTB)
         Me.GroupBox16.Controls.Add(Me.DD_DLMode)
         Me.GroupBox16.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox16.ForeColor = System.Drawing.Color.Black
         Me.GroupBox16.Location = New System.Drawing.Point(5, 11)
         Me.GroupBox16.Name = "GroupBox16"
-        Me.GroupBox16.Size = New System.Drawing.Size(490, 59)
+        Me.GroupBox16.Size = New System.Drawing.Size(490, 133)
         Me.GroupBox16.TabIndex = 31
         Me.GroupBox16.TabStop = False
         Me.GroupBox16.Text = "Download Mode"
@@ -442,7 +470,7 @@ Partial Class Einstellungen
         Me.GroupBox4.Controls.Add(Me.CB_Format)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox4.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox4.Location = New System.Drawing.Point(5, 200)
+        Me.GroupBox4.Location = New System.Drawing.Point(5, 270)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(490, 78)
         Me.GroupBox4.TabIndex = 40
@@ -480,7 +508,7 @@ Partial Class Einstellungen
         Me.GroupBox2.Controls.Add(Me.Panel1)
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox2.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox2.Location = New System.Drawing.Point(5, 280)
+        Me.GroupBox2.Location = New System.Drawing.Point(5, 350)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(490, 63)
         Me.GroupBox2.TabIndex = 50
@@ -686,7 +714,7 @@ Partial Class Einstellungen
         Me.GB_Resolution.Controls.Add(Me.A1080p)
         Me.GB_Resolution.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Resolution.ForeColor = System.Drawing.Color.Black
-        Me.GB_Resolution.Location = New System.Drawing.Point(5, 135)
+        Me.GB_Resolution.Location = New System.Drawing.Point(5, 210)
         Me.GB_Resolution.Name = "GB_Resolution"
         Me.GB_Resolution.Size = New System.Drawing.Size(490, 59)
         Me.GB_Resolution.TabIndex = 30
@@ -1014,7 +1042,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 4
+        Me.TabControl1.SelectedIndex = 1
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1028,9 +1056,9 @@ Partial Class Einstellungen
         Me.MetroTabPage2.HorizontalScrollbarBarColor = True
         Me.MetroTabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage2.HorizontalScrollbarSize = 10
-        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage2.Name = "MetroTabPage2"
-        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage2.TabIndex = 8
         Me.MetroTabPage2.Text = "Naming"
         Me.MetroTabPage2.VerticalScrollbarBarColor = True
@@ -1222,9 +1250,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1478,9 +1506,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = " About  "
         '
@@ -1612,29 +1640,49 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'GroupBox18
+        'MetroLabel3
         '
-        Me.GroupBox18.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox18.Controls.Add(Me.ListViewAdd_True)
-        Me.GroupBox18.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox18.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox18.Location = New System.Drawing.Point(5, 76)
-        Me.GroupBox18.Name = "GroupBox18"
-        Me.GroupBox18.Size = New System.Drawing.Size(490, 59)
-        Me.GroupBox18.TabIndex = 32
-        Me.GroupBox18.TabStop = False
-        Me.GroupBox18.Text = "Multi-Download"
+        Me.MetroLabel3.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.MetroLabel3.Location = New System.Drawing.Point(6, 64)
+        Me.MetroLabel3.Name = "MetroLabel3"
+        Me.MetroLabel3.Size = New System.Drawing.Size(469, 22)
+        Me.MetroLabel3.TabIndex = 19
+        Me.MetroLabel3.Text = "Temporary Folder"
+        Me.MetroLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'ListViewAdd_True
+        'TempTB
         '
-        Me.ListViewAdd_True.AutoSize = True
-        Me.ListViewAdd_True.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.ListViewAdd_True.Location = New System.Drawing.Point(119, 21)
-        Me.ListViewAdd_True.Name = "ListViewAdd_True"
-        Me.ListViewAdd_True.Size = New System.Drawing.Size(255, 19)
-        Me.ListViewAdd_True.TabIndex = 5
-        Me.ListViewAdd_True.Text = "redirect multi-download to the queue"
-        Me.ListViewAdd_True.UseSelectable = True
+        '
+        '
+        '
+        Me.TempTB.CustomButton.Image = Nothing
+        Me.TempTB.CustomButton.Location = New System.Drawing.Point(445, 1)
+        Me.TempTB.CustomButton.Name = ""
+        Me.TempTB.CustomButton.Size = New System.Drawing.Size(23, 23)
+        Me.TempTB.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.TempTB.CustomButton.TabIndex = 1
+        Me.TempTB.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.TempTB.CustomButton.UseSelectable = True
+        Me.TempTB.CustomButton.Visible = False
+        Me.TempTB.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.TempTB.Lines = New String() {"https://www.crunchyroll.com/"}
+        Me.TempTB.Location = New System.Drawing.Point(6, 90)
+        Me.TempTB.MaxLength = 32767
+        Me.TempTB.Name = "TempTB"
+        Me.TempTB.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.TempTB.ReadOnly = True
+        Me.TempTB.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.TempTB.SelectedText = ""
+        Me.TempTB.SelectionLength = 0
+        Me.TempTB.SelectionStart = 0
+        Me.TempTB.ShortcutsEnabled = True
+        Me.TempTB.Size = New System.Drawing.Size(469, 25)
+        Me.TempTB.TabIndex = 20
+        Me.TempTB.Text = "https://www.crunchyroll.com/"
+        Me.TempTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TempTB.UseSelectable = True
+        Me.TempTB.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.TempTB.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'Einstellungen
         '
@@ -1660,6 +1708,8 @@ Partial Class Einstellungen
         Me.SoftSubs.PerformLayout()
         Me.GB_SubLanguage.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
+        Me.GroupBox18.ResumeLayout(False)
+        Me.GroupBox18.PerformLayout()
         Me.GroupBox16.ResumeLayout(False)
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
@@ -1699,8 +1749,6 @@ Partial Class Einstellungen
         Me.GroupBox8.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox18.ResumeLayout(False)
-        Me.GroupBox18.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1828,4 +1876,6 @@ Partial Class Einstellungen
     Friend WithEvents CB_SoftSubSettings As MetroFramework.Controls.MetroComboBox
     Friend WithEvents GroupBox18 As GroupBox
     Friend WithEvents ListViewAdd_True As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents MetroLabel3 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents TempTB As MetroFramework.Controls.MetroTextBox
 End Class

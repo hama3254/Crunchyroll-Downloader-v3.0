@@ -28,6 +28,7 @@ Public Class CRD_List_Item
     Dim Debug2 As Boolean = False
     Dim MergeSubstoMP4 As Boolean = False
 
+    Dim TempFolder As String = Nothing
     Dim DownloadPfad As String = Nothing
     Dim ToDispose As Boolean = False
     Dim Failed As Boolean = False
@@ -259,7 +260,7 @@ Public Class CRD_List_Item
             '    Catch ex As Exception
             '    End Try
             'End If
-            StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode)
+            StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode, TempFolder)
             StatusRunning = True
             Label_website.Text = Label_website_Text
             Exit Sub
@@ -318,7 +319,7 @@ Public Class CRD_List_Item
                             Catch ex As Exception
                             End Try
                         End If
-                        StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode)
+                        StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode, TempFolder)
                         StatusRunning = True
                         Label_website.Text = Label_website_Text
                     Else
@@ -359,7 +360,7 @@ Public Class CRD_List_Item
                         End Try
 
                         If proc.HasExited Then
-                            StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode)
+                            StartDownload(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename, HybridMode, TempFolder)
                             StatusRunning = True
                             Label_website.Text = Label_website_Text
                             bt_pause.BackgroundImage = My.Resources.main_pause
@@ -424,11 +425,11 @@ Public Class CRD_List_Item
 
 #Region "Download + Update UI"
 
-    Public Sub StartDownload(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String, ByVal DownloadHybridMode As Boolean)
+    Public Sub StartDownload(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String, ByVal DownloadHybridMode As Boolean, ByVal TempFolder As String)
         'MsgBox(DL_URL)
 
         Me.StyleManager = MetroStyleManager1
-
+        Me.TempFolder = TempFolder
         DownloadPfad = DL_Pfad
         HistoryDL_URL = DL_URL
         HistoryDL_Pfad = DL_Pfad
@@ -996,7 +997,7 @@ Public Class CRD_List_Item
         Dim Folder As String = GeräteID()
         Dim DL_URL_old As String = DL_URL
         Dim PauseTime As Integer = 0
-        Dim Pfad2 As String = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
+        Dim Pfad2 As String = TempFolder + "\" + Folder + "\" 'Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
         If CBool(InStr(DL_Pfad, "CRD-Temp-File-")) Then
             Pfad2 = DL_Pfad.Replace(Chr(34), "") + "\"
             Dim DL_PfadSplit() As String = DL_Pfad.Split(New String() {"CRD-Temp-File-"}, System.StringSplitOptions.RemoveEmptyEntries)

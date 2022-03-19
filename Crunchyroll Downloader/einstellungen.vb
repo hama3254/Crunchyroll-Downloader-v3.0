@@ -32,6 +32,7 @@ Public Class Einstellungen
 
 
         ProfileTextBox.Text = Main.ProfileFolder
+        TempTB.Text = Main.TempFolder
         LeadingZeroDD.SelectedIndex = Main.LeadingZero
 
         Bitrate_Funi.SelectedIndex = Main.Funimation_Bitrate
@@ -1249,6 +1250,35 @@ Public Class Einstellungen
 
         End If
     End Sub
+
+    Private Sub DD_DLMode_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_DLMode.SelectedIndexChanged
+
+        If DD_DLMode.SelectedIndex > 0 Then
+            TempTB.Enabled = True
+        Else
+            TempTB.Enabled = False
+        End If
+
+    End Sub
+
+    Private Sub TempTB_Click(sender As Object, e As EventArgs) Handles TempTB.Click
+
+        Dim FolderBrowserDialog1 As New FolderBrowserDialog()
+        FolderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer
+        If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
+
+            Main.TempFolder = FolderBrowserDialog1.SelectedPath
+            TempTB.Text = FolderBrowserDialog1.SelectedPath
+            Dim rk0 As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
+            rk0.SetValue("TempFolder", Main.TempFolder, RegistryValueKind.String)
+
+
+        End If
+
+    End Sub
+
+
+
 
 
 

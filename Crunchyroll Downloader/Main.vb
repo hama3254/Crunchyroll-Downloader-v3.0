@@ -86,6 +86,7 @@ Public Class Main
     Public c As Boolean = True
     Public LoginOnly As String = "False"
     Public Pfad As String = My.Computer.FileSystem.CurrentDirectory
+    Public TempFolder As String = Pfad
     Public ProfileFolder As String = Path.Combine(My.Computer.FileSystem.SpecialDirectories.MyDocuments, "CRD-Profile")
     Public ffmpeg_command As String = " -c copy -bsf:a aac_adtstoasc" '" -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " 
     Public Reso As Integer
@@ -433,6 +434,14 @@ Public Class Main
             Pfad = rkg.GetValue("Ordner").ToString
         Catch ex As Exception
         End Try
+
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            TempFolder = rkg.GetValue("TempFolder").ToString
+        Catch ex As Exception
+            TempFolder = Pfad
+        End Try
+
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             Episode_Prefix = rkg.GetValue("Prefix_E").ToString
@@ -725,7 +734,7 @@ Public Class Main
 
 
         'MsgBox(URL_DL + vbNewLine + Pfad_DL + vbNewLine + NameKomplett + vbNewLine + TempHybridMode.ToString)
-        Item.StartDownload(URL_DL, Pfad_DL, NameKomplett, TempHybridMode)
+        Item.StartDownload(URL_DL, Pfad_DL, NameKomplett, TempHybridMode, TempFolder)
     End Sub
 
 #Region "Manga DL"

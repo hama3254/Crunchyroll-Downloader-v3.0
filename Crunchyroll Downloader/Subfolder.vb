@@ -10,7 +10,7 @@ Module Subfolder
     Public SubFolder_Value As String = "[ ignore subfolder ]"
 
     Public Function CleanJSON(ByVal JSON As String) As String
-
+        JSON = JSON.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
         While CBool(InStr(JSON, "\"))
             Dim index As Integer = InStr(JSON, "\")
             Dim myName As New StringBuilder(JSON)

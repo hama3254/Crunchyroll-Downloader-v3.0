@@ -1157,16 +1157,16 @@ Public Class Main
                     CR_Name_Staffel0_Folge1 = CR_Name_2(0).Split(New [Char]() {System.Convert.ToChar(",")}, System.StringSplitOptions.RemoveEmptyEntries)
                     CR_Anime_Staffel = CR_Name_Staffel0_Folge1(0).Trim()
                     CR_Anime_Folge = CR_Name_Staffel0_Folge1(1)
-                    CR_Anime_Folge = String.Join(" ", CR_Anime_Folge.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
+                    CR_Anime_Folge = String.Join(" ", CR_Anime_Folge.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
                 Else
                     CR_Anime_Staffel = Nothing
                     CR_Anime_Folge = CR_Name_2(0).Trim()
                     'MsgBox(CR_Anime_Folge)
-                    CR_Anime_Folge = String.Join(" ", CR_Anime_Folge.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
+                    CR_Anime_Folge = String.Join(" ", CR_Anime_Folge.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_Anime_Folge, "[^\w\\-]", " ")
                 End If
                 Dim CR_Name_4 As String() = CR_Name_1(0).Split(New String() {"class=" + Chr(34) + "text-link" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
                 Dim CR_Name_Anime0 As String() = CR_Name_4(CR_Name_4.Length - 1).Split(New String() {"</a>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                CR_Name_Anime0(0) = String.Join(" ", CR_Name_Anime0(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_Name_Anime0(0), "[^\w\\-]", " ")
+                CR_Name_Anime0(0) = String.Join(" ", CR_Name_Anime0(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_Name_Anime0(0), "[^\w\\-]", " ")
                 CR_Anime_Titel = CR_Name_Anime0(0).Trim
                 'CR_FilenName_Backup = RemoveExtraSpaces(CR_FilenName)
             End If
@@ -1176,7 +1176,7 @@ Public Class Main
                 Else
                     Dim CR_Episode_1 As String() = WebbrowserText.Split(New String() {My.Resources.CR_Episode_Nr}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim CR_Episode_2 As String() = CR_Episode_1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                    CR_Anime_Folge_int = String.Join(" ", CR_Episode_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
+                    CR_Anime_Folge_int = String.Join(" ", CR_Episode_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
                     CR_Anime_Folge_int = RemoveExtraSpaces(CR_Anime_Folge_int)
                     'CR_Anime_Folge_int = AddLeadingZeros(CR_Anime_Folge_int)
                 End If
@@ -1190,7 +1190,7 @@ Public Class Main
                 Else
                     Dim CR_Season_1 As String() = WebbrowserHeadText.Split(New String() {My.Resources.CR_Season_Nr}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim CR_Season_2 As String() = CR_Season_1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                    CR_Anime_Staffel_int = String.Join(" ", CR_Season_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
+                    CR_Anime_Staffel_int = String.Join(" ", CR_Season_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
                     CR_Anime_Staffel_int = RemoveExtraSpaces(CR_Anime_Staffel_int)
                 End If
             Else
@@ -1199,7 +1199,7 @@ Public Class Main
             If CBool(InStr(WebbrowserText, My.Resources.CR_MediaName)) = True Then ' And CBool(InStr(WebbrowserText, "&rdquo;</h4>")) 
                 Dim CR_Name_1 As String() = WebbrowserText.Split(New String() {My.Resources.CR_MediaName}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim CR_Name_2 As String() = CR_Name_1(1).Split(New String() {My.Resources.CR_MediaName2}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                CR_Anime_Name = String.Join(" ", CR_Name_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
+                CR_Anime_Name = String.Join(" ", CR_Name_2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_Name_2(0), "[^\w\\-]", " ")
                 CR_Anime_Name = RemoveExtraSpaces(CR_Anime_Name)
             End If
             If Season_Prefix = "[default season prefix]" Then
@@ -1255,12 +1255,12 @@ Public Class Main
 #End Region
             If TextBox2_Text = Nothing Or TextBox2_Text = "Use Custom Name" Then
             Else
-                CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)) 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
+                CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
             End If
             If CR_FilenName = Nothing Then
                 CR_FilenName = WebbrowserTitle
             End If
-            CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
+            CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = RemoveExtraSpaces(CR_FilenName)
             'My.Computer.FileSystem.WriteAllText("log.log", WebbrowserText, False)
             Pfad2 = UseSubfolder(CR_Anime_Titel, CR_Anime_Staffel, Pfad)
@@ -1534,7 +1534,7 @@ Public Class Main
                     ResoHTMLDisplay = ResoHTML(0) + "p"
                 End If
             End If
-            Dim L2Name As String = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName_Backup, "[^\w\\-]", " ")
+            Dim L2Name As String = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName_Backup, "[^\w\\-]", " ")
             If Reso = 42 And HybridMode = False Then
                 ResoHTMLDisplay = "[Auto]"
             ElseIf Reso = 42 And HybridMode = False Then
@@ -1692,6 +1692,7 @@ Public Class Main
         Catch ex As Exception
             Debug.WriteLine("error- getting SeasonJson data")
         End Try
+        SeasonJson = CleanJSON(SeasonJson)
         Dim ParameterSplit() As String = JsonUrl.Split(New String() {"&locale="}, System.StringSplitOptions.RemoveEmptyEntries)
         CrBetaMassParameters = ParameterSplit(1)
         CrBetaMass = SeasonJson
@@ -1750,6 +1751,12 @@ Public Class Main
                 Debug.WriteLine("error- getting name data")
                 Exit Sub
             End Try
+
+            'Filter JSON esqaped characters
+            Debug.WriteLine(Date.Now.ToString + "before:" + ObjectJson)
+            ObjectJson = CleanJSON(ObjectJson)
+            Debug.WriteLine(Date.Now.ToString + "after:" + ObjectJson)
+
             Dim ser As JObject = JObject.Parse(ObjectJson)
             Dim data As List(Of JToken) = ser.Children().ToList
             If TextBox2_Text = Nothing Or TextBox2_Text = "Use Custom Name" Then
@@ -1760,7 +1767,7 @@ Public Class Main
                             For Each Entry As JObject In item.Values
                                 Try
                                     Dim Title As String = Entry("title").ToString
-                                    CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+                                    CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "")
                                 Catch ex As Exception
                                 End Try
                                 Dim SubData As List(Of JToken) = Entry.Children().ToList
@@ -1771,13 +1778,13 @@ Public Class Main
                                             For Each SubEntry As JProperty In SubItem.Values
                                                 Select Case SubEntry.Name
                                                     Case "series_title"
-                                                        CR_series_title = SubEntry.Value.ToString
+                                                        CR_series_title = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "")
                                                     'Case "season_title"
                                                     '    CR_season_title = SubEntry.Value.ToString
                                                     Case "season_number"
-                                                        CR_season_number = SubEntry.Value.ToString
+                                                        CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "")
                                                     Case "episode"
-                                                        CR_episode = SubEntry.Value.ToString
+                                                        CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "")
                                                 End Select
                                             Next
                                     End Select
@@ -1858,9 +1865,9 @@ Public Class Main
                 Debug.WriteLine(CR_FilenName)
 #End Region
             Else
-                CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)) 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
+                CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
             End If
-            CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
+            CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = RemoveExtraSpaces(CR_FilenName)
             'My.Computer.FileSystem.WriteAllText("log.log", WebbrowserText, False)
             Pfad2 = UseSubfolder(CR_series_title, CR_season_number, Pfad)
@@ -2278,7 +2285,7 @@ Public Class Main
                             For Each Entry As JObject In item.Values
                                 Try
                                     Dim Title As String = Entry("title").ToString
-                                    CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+                                    CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "")
                                 Catch ex As Exception
                                 End Try
                                 Dim SubData As List(Of JToken) = Entry.Children().ToList
@@ -2381,9 +2388,9 @@ Public Class Main
                 Debug.WriteLine(CR_FilenName)
 #End Region
             Else
-                CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)) 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
+                CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
             End If
-            CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
+            CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = RemoveExtraSpaces(CR_FilenName)
             'My.Computer.FileSystem.WriteAllText("log.log", WebbrowserText, False)
             Pfad2 = UseSubfolder(CR_series_title, CR_season_number, Pfad)
@@ -3116,7 +3123,7 @@ Public Class Main
         Video_Title = RemoveExtraSpaces(Video_Title)
 #Region "Name + Pfad"
         Dim Video_FilenName As String = Video_Title
-        Video_FilenName = String.Join(" ", Video_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(Video_FilenName, "[^\w\\-]", " ")
+        Video_FilenName = String.Join(" ", Video_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(Video_FilenName, "[^\w\\-]", " ")
         Video_FilenName = RemoveExtraSpaces(Video_FilenName + VideoFormat)
         Pfad_DL = Chr(34) + Pfad + "\" + Video_FilenName + Chr(34)
 #End Region
@@ -3631,8 +3638,8 @@ Public Class Main
                         Next
                 End Select
             Next
-            FunimationTitle = RemoveExtraSpaces(String.Join(" ", FunimationTitle.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c))
-            FunimationEpisodeTitle = String.Join(" ", FunimationEpisodeTitle.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+            FunimationTitle = RemoveExtraSpaces(String.Join(" ", FunimationTitle.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)).Replace(Chr(34), "").Replace("\", "").Replace("/", "")
+            FunimationEpisodeTitle = String.Join(" ", FunimationEpisodeTitle.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "")
             FunimationDub = ConvertFunimationDub(DubFunimation) 'FunimationDub2(0)
             Dim DefaultName As String = RemoveExtraSpaces(FunimationTitle + " " + FunimationSeason + " " + FunimationEpisode)
             If CR_NameMethode = 1 Then

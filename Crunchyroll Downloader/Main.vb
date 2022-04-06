@@ -1146,6 +1146,7 @@ Public Class Main
             Dim CR_FilenName As String = Nothing
             Me.Invoke(New Action(Function() As Object
                                      ' My.Computer.Clipboard.SetText(WebbrowserText)
+                                     TextBox2_Text = Anime_Add.TextBox2.Text
                                      Return Nothing
                                  End Function))
 #Region "Name von Crunchyroll"

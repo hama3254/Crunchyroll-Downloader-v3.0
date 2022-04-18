@@ -267,29 +267,6 @@ Older versions of Windows should be left DPI-unaware because they do not
 support DirectWrite and GDI fonts are kerned very badly.
 </summary>
         </member>
-        <member name="M:CefSharp.Core.Cef.UnregisterInternalWebPlugin(System.String)">
-            <summary>
-Unregister an internal plugin. This may be undone the next time RefreshWebPlugins() is called. 
-</summary>
-            <param name="path">Path (directory + file).</param>
-        </member>
-        <member name="M:CefSharp.Core.Cef.RefreshWebPlugins">
-            <summary>
-Cause the plugin list to refresh the next time it is accessed regardless of whether it has already been loaded.
-</summary>
-        </member>
-        <member name="M:CefSharp.Core.Cef.GetPlugins">
-            <summary>
-Async returns a list containing Plugin Information
-(Wrapper around CefVisitWebPluginInfo)
-</summary>
-            <returns>Returns List of <see cref="T:CefSharp.WebPluginInfo" /> structs.</returns>
-        </member>
-        <member name="M:CefSharp.Core.Cef.VisitWebPluginInfo(CefSharp.IWebPluginInfoVisitor)">
-            <summary>
-Visit web plugin information. Can be called on any thread in the browser process.
-</summary>
-        </member>
         <member name="M:CefSharp.Core.Cef.ClearSchemeHandlerFactories">
             <summary>
 Clear all scheme handler factories registered with the global request context.
@@ -1004,12 +981,6 @@ switch.
 Controls whether image URLs will be loaded from the network. A cached image
 will still be rendered if requested. Also configurable using the
 "disable-image-loading" command-line switch.
-</summary>
-        </member>
-        <member name="P:CefSharp.Core.BrowserSettings.Plugins">
-            <summary>
-Controls whether any plugins will be loaded. Also configurable using the
-"disable-plugins" command-line switch.
 </summary>
         </member>
         <member name="P:CefSharp.Core.BrowserSettings.JavascriptDomPaste">

@@ -319,6 +319,15 @@
             Added to workaround a CEF bug as per https://github.com/cefsharp/CefSharp/issues/2957#issuecomment-555285400
             </summary>
         </member>
+        <member name="M:CefSharp.Callback.NoOpCompletionCallback.CefSharp#ICompletionCallback#OnComplete">
+            <inheritdoc/>
+        </member>
+        <member name="P:CefSharp.Callback.NoOpCompletionCallback.CefSharp#ICompletionCallback#IsDisposed">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Callback.NoOpCompletionCallback.System#IDisposable#Dispose">
+            <inheritdoc/>
+        </member>
         <member name="T:CefSharp.IDownloadItemCallback">
             <summary>
             Callback interface used to asynchronously cancel a download.
@@ -1353,7 +1362,7 @@
             </summary>
             <param name="type">Object type</param>
             <param name="stream">JSON stream</param>
-            <returns>object of type <typeparamref name="type"/></returns>
+            <returns>object of type <paramref name="type"/></returns>
         </member>
         <member name="P:CefSharp.DevTools.DevToolsClient.Accessibility">
             <summary>
@@ -2912,6 +2921,11 @@
             MixedContentResourceType
             </summary>
         </member>
+        <member name="F:CefSharp.DevTools.Audits.MixedContentResourceType.AttributionSrc">
+            <summary>
+            AttributionSrc
+            </summary>
+        </member>
         <member name="F:CefSharp.DevTools.Audits.MixedContentResourceType.Audio">
             <summary>
             Audio
@@ -3659,31 +3673,6 @@
             Location
             </summary>
         </member>
-        <member name="T:CefSharp.DevTools.Audits.WasmCrossOriginModuleSharingIssueDetails">
-            <summary>
-            WasmCrossOriginModuleSharingIssueDetails
-            </summary>
-        </member>
-        <member name="P:CefSharp.DevTools.Audits.WasmCrossOriginModuleSharingIssueDetails.WasmModuleUrl">
-            <summary>
-            WasmModuleUrl
-            </summary>
-        </member>
-        <member name="P:CefSharp.DevTools.Audits.WasmCrossOriginModuleSharingIssueDetails.SourceOrigin">
-            <summary>
-            SourceOrigin
-            </summary>
-        </member>
-        <member name="P:CefSharp.DevTools.Audits.WasmCrossOriginModuleSharingIssueDetails.TargetOrigin">
-            <summary>
-            TargetOrigin
-            </summary>
-        </member>
-        <member name="P:CefSharp.DevTools.Audits.WasmCrossOriginModuleSharingIssueDetails.IsWarning">
-            <summary>
-            IsWarning
-            </summary>
-        </member>
         <member name="T:CefSharp.DevTools.Audits.GenericIssueErrorType">
             <summary>
             GenericIssueErrorType
@@ -3740,6 +3729,165 @@
             around January 2022. Please use Web Storage or Indexed Database
             instead. This standard was abandoned in January, 1970. See
             https://www.chromestatus.com/feature/5684870116278272 for more details.&quot;
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Audits.DeprecationIssueDetails.DeprecationType">
+            <summary>
+            DeprecationType
+            </summary>
+        </member>
+        <member name="T:CefSharp.DevTools.Audits.ClientHintIssueReason">
+            <summary>
+            ClientHintIssueReason
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.ClientHintIssueReason.MetaTagAllowListInvalidOrigin">
+            <summary>
+            MetaTagAllowListInvalidOrigin
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.ClientHintIssueReason.MetaTagModifiedHTML">
+            <summary>
+            MetaTagModifiedHTML
+            </summary>
+        </member>
+        <member name="T:CefSharp.DevTools.Audits.FederatedAuthRequestIssueDetails">
+            <summary>
+            FederatedAuthRequestIssueDetails
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Audits.FederatedAuthRequestIssueDetails.FederatedAuthRequestIssueReason">
+            <summary>
+            FederatedAuthRequestIssueReason
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Audits.FederatedAuthRequestIssueDetails.federatedAuthRequestIssueReason">
+            <summary>
+            FederatedAuthRequestIssueReason
+            </summary>
+        </member>
+        <member name="T:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason">
+            <summary>
+            Represents the failure reason when a federated authentication reason fails.
+            Should be updated alongside RequestIdTokenStatus in
+            third_party/blink/public/mojom/devtools/inspector_issue.mojom to include
+            all cases except for success.
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.ApprovalDeclined">
+            <summary>
+            ApprovalDeclined
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.TooManyRequests">
+            <summary>
+            TooManyRequests
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.ManifestHttpNotFound">
+            <summary>
+            ManifestHttpNotFound
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.ManifestNoResponse">
+            <summary>
+            ManifestNoResponse
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.ManifestInvalidResponse">
+            <summary>
+            ManifestInvalidResponse
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.ClientMetadataHttpNotFound">
+            <summary>
+            ClientMetadataHttpNotFound
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.ClientMetadataNoResponse">
+            <summary>
+            ClientMetadataNoResponse
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.ClientMetadataInvalidResponse">
+            <summary>
+            ClientMetadataInvalidResponse
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.ErrorFetchingSignin">
+            <summary>
+            ErrorFetchingSignin
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.InvalidSigninResponse">
+            <summary>
+            InvalidSigninResponse
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.AccountsHttpNotFound">
+            <summary>
+            AccountsHttpNotFound
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.AccountsNoResponse">
+            <summary>
+            AccountsNoResponse
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.AccountsInvalidResponse">
+            <summary>
+            AccountsInvalidResponse
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.IdTokenHttpNotFound">
+            <summary>
+            IdTokenHttpNotFound
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.IdTokenNoResponse">
+            <summary>
+            IdTokenNoResponse
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.IdTokenInvalidResponse">
+            <summary>
+            IdTokenInvalidResponse
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.IdTokenInvalidRequest">
+            <summary>
+            IdTokenInvalidRequest
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.ErrorIdToken">
+            <summary>
+            ErrorIdToken
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.FederatedAuthRequestIssueReason.Canceled">
+            <summary>
+            Canceled
+            </summary>
+        </member>
+        <member name="T:CefSharp.DevTools.Audits.ClientHintIssueDetails">
+            <summary>
+            This issue tracks client hints related issues. It&apos;s used to deprecate old
+            features, encourage the use of new ones, and provide general guidance.
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Audits.ClientHintIssueDetails.SourceCodeLocation">
+            <summary>
+            SourceCodeLocation
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Audits.ClientHintIssueDetails.ClientHintIssueReason">
+            <summary>
+            ClientHintIssueReason
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Audits.ClientHintIssueDetails.clientHintIssueReason">
+            <summary>
+            ClientHintIssueReason
             </summary>
         </member>
         <member name="T:CefSharp.DevTools.Audits.InspectorIssueCode">
@@ -3809,11 +3957,6 @@
             NavigatorUserAgentIssue
             </summary>
         </member>
-        <member name="F:CefSharp.DevTools.Audits.InspectorIssueCode.WasmCrossOriginModuleSharingIssue">
-            <summary>
-            WasmCrossOriginModuleSharingIssue
-            </summary>
-        </member>
         <member name="F:CefSharp.DevTools.Audits.InspectorIssueCode.GenericIssue">
             <summary>
             GenericIssue
@@ -3822,6 +3965,16 @@
         <member name="F:CefSharp.DevTools.Audits.InspectorIssueCode.DeprecationIssue">
             <summary>
             DeprecationIssue
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.InspectorIssueCode.ClientHintIssue">
+            <summary>
+            ClientHintIssue
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Audits.InspectorIssueCode.FederatedAuthRequestIssue">
+            <summary>
+            FederatedAuthRequestIssue
             </summary>
         </member>
         <member name="T:CefSharp.DevTools.Audits.InspectorIssueDetails">
@@ -3891,11 +4044,6 @@
             NavigatorUserAgentIssueDetails
             </summary>
         </member>
-        <member name="P:CefSharp.DevTools.Audits.InspectorIssueDetails.WasmCrossOriginModuleSharingIssue">
-            <summary>
-            WasmCrossOriginModuleSharingIssue
-            </summary>
-        </member>
         <member name="P:CefSharp.DevTools.Audits.InspectorIssueDetails.GenericIssueDetails">
             <summary>
             GenericIssueDetails
@@ -3904,6 +4052,16 @@
         <member name="P:CefSharp.DevTools.Audits.InspectorIssueDetails.DeprecationIssueDetails">
             <summary>
             DeprecationIssueDetails
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Audits.InspectorIssueDetails.ClientHintIssueDetails">
+            <summary>
+            ClientHintIssueDetails
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Audits.InspectorIssueDetails.FederatedAuthRequestIssueDetails">
+            <summary>
+            FederatedAuthRequestIssueDetails
             </summary>
         </member>
         <member name="T:CefSharp.DevTools.Audits.InspectorIssue">
@@ -5090,6 +5248,12 @@
             The array enumerates container queries starting with the innermost one, going outwards.
             </summary>
         </member>
+        <member name="P:CefSharp.DevTools.CSS.CSSRule.Supports">
+            <summary>
+            @supports CSS at-rule array.
+            The array enumerates @supports at-rules starting with the innermost one, going outwards.
+            </summary>
+        </member>
         <member name="T:CefSharp.DevTools.CSS.RuleUsage">
             <summary>
             CSS coverage information.
@@ -5396,6 +5560,27 @@
         <member name="P:CefSharp.DevTools.CSS.CSSContainerQuery.Name">
             <summary>
             Optional name for the container.
+            </summary>
+        </member>
+        <member name="T:CefSharp.DevTools.CSS.CSSSupports">
+            <summary>
+            CSS Supports at-rule descriptor.
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.CSS.CSSSupports.Text">
+            <summary>
+            Supports rule text.
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.CSS.CSSSupports.Range">
+            <summary>
+            The associated rule header range in the enclosing stylesheet (if
+            available).
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.CSS.CSSSupports.StyleSheetId">
+            <summary>
+            Identifier of the stylesheet containing this object (if exists).
             </summary>
         </member>
         <member name="T:CefSharp.DevTools.CSS.PlatformFontUsage">
@@ -5786,6 +5971,16 @@
             containerQuery
             </summary>
         </member>
+        <member name="T:CefSharp.DevTools.CSS.SetSupportsTextResponse">
+            <summary>
+            SetSupportsTextResponse
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.CSS.SetSupportsTextResponse.Supports">
+            <summary>
+            supports
+            </summary>
+        </member>
         <member name="T:CefSharp.DevTools.CSS.SetRuleSelectorResponse">
             <summary>
             SetRuleSelectorResponse
@@ -6034,6 +6229,15 @@
             <param name = "range">range</param>
             <param name = "text">text</param>
             <returns>returns System.Threading.Tasks.Task&lt;SetContainerQueryTextResponse&gt;</returns>
+        </member>
+        <member name="M:CefSharp.DevTools.CSS.CSSClient.SetSupportsTextAsync(System.String,CefSharp.DevTools.CSS.SourceRange,System.String)">
+            <summary>
+            Modifies the expression of a supports at-rule.
+            </summary>
+            <param name = "styleSheetId">styleSheetId</param>
+            <param name = "range">range</param>
+            <param name = "text">text</param>
+            <returns>returns System.Threading.Tasks.Task&lt;SetSupportsTextResponse&gt;</returns>
         </member>
         <member name="M:CefSharp.DevTools.CSS.CSSClient.SetRuleSelectorAsync(System.String,CefSharp.DevTools.CSS.SourceRange,System.String)">
             <summary>
@@ -6539,6 +6743,26 @@
         <member name="F:CefSharp.DevTools.DOM.PseudoType.InputListButton">
             <summary>
             input-list-button
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.DOM.PseudoType.Transition">
+            <summary>
+            transition
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.DOM.PseudoType.TransitionContainer">
+            <summary>
+            transition-container
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.DOM.PseudoType.TransitionOldContent">
+            <summary>
+            transition-old-content
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.DOM.PseudoType.TransitionNewContent">
+            <summary>
+            transition-new-content
             </summary>
         </member>
         <member name="T:CefSharp.DevTools.DOM.ShadowRootType">
@@ -7357,6 +7581,21 @@
             nodeIds
             </summary>
         </member>
+        <member name="T:CefSharp.DevTools.DOM.EnableIncludeWhitespace">
+            <summary>
+            Whether to include whitespaces in the children array of returned Nodes.
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.DOM.EnableIncludeWhitespace.None">
+            <summary>
+            none
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.DOM.EnableIncludeWhitespace.All">
+            <summary>
+            all
+            </summary>
+        </member>
         <member name="T:CefSharp.DevTools.DOM.DOMClient">
             <summary>
             This domain exposes DOM read/write operations. Each DOM Node is represented with its mirror object
@@ -7500,10 +7739,11 @@
             <param name = "searchId">Unique search session identifier.</param>
             <returns>returns System.Threading.Tasks.Task&lt;DevToolsMethodResponse&gt;</returns>
         </member>
-        <member name="M:CefSharp.DevTools.DOM.DOMClient.EnableAsync">
+        <member name="M:CefSharp.DevTools.DOM.DOMClient.EnableAsync(System.Nullable{CefSharp.DevTools.DOM.EnableIncludeWhitespace})">
             <summary>
             Enables DOM agent for the given page.
             </summary>
+            <param name = "includeWhitespace">Whether to include whitespaces in the children array of returned Nodes.</param>
             <returns>returns System.Threading.Tasks.Task&lt;DevToolsMethodResponse&gt;</returns>
         </member>
         <member name="M:CefSharp.DevTools.DOM.DOMClient.FocusAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
@@ -9362,7 +9602,7 @@
             <param name = "maxTouchPoints">Maximum touch points supported. Defaults to one.</param>
             <returns>returns System.Threading.Tasks.Task&lt;DevToolsMethodResponse&gt;</returns>
         </member>
-        <member name="M:CefSharp.DevTools.Emulation.EmulationClient.SetVirtualTimePolicyAsync(CefSharp.DevTools.Emulation.VirtualTimePolicy,System.Nullable{System.Double},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Double})">
+        <member name="M:CefSharp.DevTools.Emulation.EmulationClient.SetVirtualTimePolicyAsync(CefSharp.DevTools.Emulation.VirtualTimePolicy,System.Nullable{System.Double},System.Nullable{System.Int32},System.Nullable{System.Double})">
             <summary>
             Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets
             the current virtual time policy.  Note this supersedes any previous time budget.
@@ -9370,7 +9610,6 @@
             <param name = "policy">policy</param>
             <param name = "budget">If set, after this many virtual milliseconds have elapsed virtual time will be paused and avirtualTimeBudgetExpired event is sent.</param>
             <param name = "maxVirtualTimeTaskStarvationCount">If set this specifies the maximum number of tasks that can be run before virtual is forcedforwards to prevent deadlock.</param>
-            <param name = "waitForNavigation">If set the virtual time policy change should be deferred until any frame starts navigating.Note any previous deferred policy change is superseded.</param>
             <param name = "initialVirtualTime">If set, base::Time::Now will be overridden to initially return this value.</param>
             <returns>returns System.Threading.Tasks.Task&lt;SetVirtualTimePolicyResponse&gt;</returns>
         </member>
@@ -10222,7 +10461,7 @@
             <param name = "isKeypad">Whether the event was generated from the keypad (default: false).</param>
             <param name = "isSystemKey">Whether the event was a system key event (default: false).</param>
             <param name = "location">Whether the event was from the left or right side of the keyboard. 1=Left, 2=Right (default:0).</param>
-            <param name = "commands">Editing commands to send with the key event (e.g., 'selectAll') (default: []).These are related to but not equal the command names used in `document.execCommand` and NSStandardKeyBindingResponding.See https://source.chromium.org/chromium/chromium/src/+/master:third_party/blink/renderer/core/editing/commands/editor_command_names.h for valid command names.</param>
+            <param name = "commands">Editing commands to send with the key event (e.g., 'selectAll') (default: []).These are related to but not equal the command names used in `document.execCommand` and NSStandardKeyBindingResponding.See https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/editing/commands/editor_command_names.h for valid command names.</param>
             <returns>returns System.Threading.Tasks.Task&lt;DevToolsMethodResponse&gt;</returns>
         </member>
         <member name="M:CefSharp.DevTools.Input.InputClient.InsertTextAsync(System.String)">
@@ -13445,6 +13684,11 @@
             SameOriginPlusCoep
             </summary>
         </member>
+        <member name="F:CefSharp.DevTools.Network.CrossOriginOpenerPolicyValue.SameOriginAllowPopupsPlusCoep">
+            <summary>
+            SameOriginAllowPopupsPlusCoep
+            </summary>
+        </member>
         <member name="T:CefSharp.DevTools.Network.CrossOriginOpenerPolicyStatus">
             <summary>
             CrossOriginOpenerPolicyStatus
@@ -15121,6 +15365,12 @@
             Initializes a new instance of the Headers class.
             </summary>
         </member>
+        <member name="M:CefSharp.DevTools.Network.Headers.ToDictionary">
+            <summary>
+            Returns itself
+            </summary>
+            <returns>Dictionary of headers</returns>
+        </member>
         <member name="M:CefSharp.DevTools.Network.Headers.TryGetValues(System.String,System.String[]@)">
             <summary>
             Gets an array of values for the specified key. Values are comma seperated and will be split into a string[].
@@ -15988,13 +16238,6 @@
             <param name = "show">True for showing scroll bottleneck rects</param>
             <returns>returns System.Threading.Tasks.Task&lt;DevToolsMethodResponse&gt;</returns>
         </member>
-        <member name="M:CefSharp.DevTools.Overlay.OverlayClient.SetShowHitTestBordersAsync(System.Boolean)">
-            <summary>
-            Requests that backend shows hit-test borders on layers
-            </summary>
-            <param name = "show">True for showing hit-test borders</param>
-            <returns>returns System.Threading.Tasks.Task&lt;DevToolsMethodResponse&gt;</returns>
-        </member>
         <member name="M:CefSharp.DevTools.Overlay.OverlayClient.SetShowWebVitalsAsync(System.Boolean)">
             <summary>
             Request that backend shows an overlay with web vital metrics.
@@ -16249,6 +16492,11 @@
             ch-ua-mobile
             </summary>
         </member>
+        <member name="F:CefSharp.DevTools.Page.PermissionsPolicyFeature.ChUaFull">
+            <summary>
+            ch-ua-full
+            </summary>
+        </member>
         <member name="F:CefSharp.DevTools.Page.PermissionsPolicyFeature.ChUaFullVersion">
             <summary>
             ch-ua-full-version
@@ -16269,6 +16517,11 @@
             ch-ua-reduced
             </summary>
         </member>
+        <member name="F:CefSharp.DevTools.Page.PermissionsPolicyFeature.ChUaWow64">
+            <summary>
+            ch-ua-wow64
+            </summary>
+        </member>
         <member name="F:CefSharp.DevTools.Page.PermissionsPolicyFeature.ChViewportHeight">
             <summary>
             ch-viewport-height
@@ -16282,6 +16535,11 @@
         <member name="F:CefSharp.DevTools.Page.PermissionsPolicyFeature.ChWidth">
             <summary>
             ch-width
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Page.PermissionsPolicyFeature.ChPartitionedCookies">
+            <summary>
+            ch-partitioned-cookies
             </summary>
         </member>
         <member name="F:CefSharp.DevTools.Page.PermissionsPolicyFeature.ClipboardRead">
@@ -16367,11 +16625,6 @@
         <member name="F:CefSharp.DevTools.Page.PermissionsPolicyFeature.IdleDetection">
             <summary>
             idle-detection
-            </summary>
-        </member>
-        <member name="F:CefSharp.DevTools.Page.PermissionsPolicyFeature.InterestCohort">
-            <summary>
-            interest-cohort
             </summary>
         </member>
         <member name="F:CefSharp.DevTools.Page.PermissionsPolicyFeature.JoinAdInterestGroup">
@@ -16492,6 +16745,11 @@
         <member name="F:CefSharp.DevTools.Page.PermissionsPolicyBlockReason.IframeAttribute">
             <summary>
             IframeAttribute
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Page.PermissionsPolicyBlockReason.InFencedFrameTree">
+            <summary>
+            InFencedFrameTree
             </summary>
         </member>
         <member name="T:CefSharp.DevTools.Page.PermissionsPolicyBlockLocator">
@@ -17254,6 +17512,21 @@
             The pictograph font-family.
             </summary>
         </member>
+        <member name="T:CefSharp.DevTools.Page.ScriptFontFamilies">
+            <summary>
+            Font families collection for a script.
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Page.ScriptFontFamilies.Script">
+            <summary>
+            Name of the script which these font families are defined for.
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Page.ScriptFontFamilies.FontFamilies">
+            <summary>
+            Generic font families collection for the script.
+            </summary>
+        </member>
         <member name="T:CefSharp.DevTools.Page.FontSizes">
             <summary>
             Default font sizes.
@@ -17450,9 +17723,9 @@
             List of not restored reasons for back-forward cache.
             </summary>
         </member>
-        <member name="F:CefSharp.DevTools.Page.BackForwardCacheNotRestoredReason.NotMainFrame">
+        <member name="F:CefSharp.DevTools.Page.BackForwardCacheNotRestoredReason.NotPrimaryMainFrame">
             <summary>
-            NotMainFrame
+            NotPrimaryMainFrame
             </summary>
         </member>
         <member name="F:CefSharp.DevTools.Page.BackForwardCacheNotRestoredReason.BackForwardCacheDisabled">
@@ -18110,6 +18383,26 @@
             Not restored reason
             </summary>
         </member>
+        <member name="T:CefSharp.DevTools.Page.BackForwardCacheNotRestoredExplanationTree">
+            <summary>
+            BackForwardCacheNotRestoredExplanationTree
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Page.BackForwardCacheNotRestoredExplanationTree.Url">
+            <summary>
+            URL of each frame
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Page.BackForwardCacheNotRestoredExplanationTree.Explanations">
+            <summary>
+            Not restored reasons of each frame
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Page.BackForwardCacheNotRestoredExplanationTree.Children">
+            <summary>
+            Array of children frame
+            </summary>
+        </member>
         <member name="T:CefSharp.DevTools.Page.DomContentEventFiredEventArgs">
             <summary>
             domContentEventFired
@@ -18519,6 +18812,11 @@
         <member name="P:CefSharp.DevTools.Page.BackForwardCacheNotUsedEventArgs.NotRestoredExplanations">
             <summary>
             Array of reasons why the page could not be cached. This must not be empty.
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Page.BackForwardCacheNotUsedEventArgs.NotRestoredExplanationsTree">
+            <summary>
+            Tree structure of reasons why the page could not be cached for each frame.
             </summary>
         </member>
         <member name="T:CefSharp.DevTools.Page.LoadEventFiredEventArgs">
@@ -19319,11 +19617,12 @@
             <param name = "frameId">frameId</param>
             <returns>returns System.Threading.Tasks.Task&lt;GetOriginTrialsResponse&gt;</returns>
         </member>
-        <member name="M:CefSharp.DevTools.Page.PageClient.SetFontFamiliesAsync(CefSharp.DevTools.Page.FontFamilies)">
+        <member name="M:CefSharp.DevTools.Page.PageClient.SetFontFamiliesAsync(CefSharp.DevTools.Page.FontFamilies,System.Collections.Generic.IList{CefSharp.DevTools.Page.ScriptFontFamilies})">
             <summary>
             Set generic font families.
             </summary>
             <param name = "fontFamilies">Specifies font families to set. If a font family is not specified, it won't be changed.</param>
+            <param name = "forScripts">Specifies font families to set for individual scripts.</param>
             <returns>returns System.Threading.Tasks.Task&lt;DevToolsMethodResponse&gt;</returns>
         </member>
         <member name="M:CefSharp.DevTools.Page.PageClient.SetFontSizesAsync(CefSharp.DevTools.Page.FontSizes)">
@@ -20509,6 +20808,11 @@
             cache_storage
             </summary>
         </member>
+        <member name="F:CefSharp.DevTools.Storage.StorageType.InterestGroups">
+            <summary>
+            interest_groups
+            </summary>
+        </member>
         <member name="F:CefSharp.DevTools.Storage.StorageType.All">
             <summary>
             all
@@ -20553,6 +20857,116 @@
         <member name="P:CefSharp.DevTools.Storage.TrustTokens.Count">
             <summary>
             Count
+            </summary>
+        </member>
+        <member name="T:CefSharp.DevTools.Storage.InterestGroupAccessType">
+            <summary>
+            Enum of interest group access types.
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Storage.InterestGroupAccessType.Join">
+            <summary>
+            join
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Storage.InterestGroupAccessType.Leave">
+            <summary>
+            leave
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Storage.InterestGroupAccessType.Update">
+            <summary>
+            update
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Storage.InterestGroupAccessType.Bid">
+            <summary>
+            bid
+            </summary>
+        </member>
+        <member name="F:CefSharp.DevTools.Storage.InterestGroupAccessType.Win">
+            <summary>
+            win
+            </summary>
+        </member>
+        <member name="T:CefSharp.DevTools.Storage.InterestGroupAd">
+            <summary>
+            Ad advertising element inside an interest group.
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupAd.RenderUrl">
+            <summary>
+            RenderUrl
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupAd.Metadata">
+            <summary>
+            Metadata
+            </summary>
+        </member>
+        <member name="T:CefSharp.DevTools.Storage.InterestGroupDetails">
+            <summary>
+            The full details of an interest group.
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.OwnerOrigin">
+            <summary>
+            OwnerOrigin
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.ExpirationTime">
+            <summary>
+            ExpirationTime
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.JoiningOrigin">
+            <summary>
+            JoiningOrigin
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.BiddingUrl">
+            <summary>
+            BiddingUrl
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.BiddingWasmHelperUrl">
+            <summary>
+            BiddingWasmHelperUrl
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.UpdateUrl">
+            <summary>
+            UpdateUrl
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.TrustedBiddingSignalsUrl">
+            <summary>
+            TrustedBiddingSignalsUrl
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.TrustedBiddingSignalsKeys">
+            <summary>
+            TrustedBiddingSignalsKeys
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.UserBiddingSignals">
+            <summary>
+            UserBiddingSignals
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.Ads">
+            <summary>
+            Ads
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupDetails.AdComponents">
+            <summary>
+            AdComponents
             </summary>
         </member>
         <member name="T:CefSharp.DevTools.Storage.CacheStorageContentUpdatedEventArgs">
@@ -20610,6 +21024,36 @@
             Origin to update.
             </summary>
         </member>
+        <member name="T:CefSharp.DevTools.Storage.InterestGroupAccessedEventArgs">
+            <summary>
+            One of the interest groups was accessed by the associated page.
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupAccessedEventArgs.AccessTime">
+            <summary>
+            AccessTime
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupAccessedEventArgs.Type">
+            <summary>
+            Type
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupAccessedEventArgs.type">
+            <summary>
+            Type
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupAccessedEventArgs.OwnerOrigin">
+            <summary>
+            OwnerOrigin
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.InterestGroupAccessedEventArgs.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
         <member name="T:CefSharp.DevTools.Storage.GetCookiesResponse">
             <summary>
             GetCookiesResponse
@@ -20665,6 +21109,16 @@
             didDeleteTokens
             </summary>
         </member>
+        <member name="T:CefSharp.DevTools.Storage.GetInterestGroupDetailsResponse">
+            <summary>
+            GetInterestGroupDetailsResponse
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Storage.GetInterestGroupDetailsResponse.Details">
+            <summary>
+            details
+            </summary>
+        </member>
         <member name="T:CefSharp.DevTools.Storage.StorageClient">
             <summary>
             Storage
@@ -20694,6 +21148,11 @@
         <member name="E:CefSharp.DevTools.Storage.StorageClient.IndexedDBListUpdated">
             <summary>
             The origin&apos;s IndexedDB database list has been modified.
+            </summary>
+        </member>
+        <member name="E:CefSharp.DevTools.Storage.StorageClient.InterestGroupAccessed">
+            <summary>
+            One of the interest groups was accessed by the associated page.
             </summary>
         </member>
         <member name="M:CefSharp.DevTools.Storage.StorageClient.ClearDataForOriginAsync(System.String,System.String)">
@@ -20783,6 +21242,21 @@
             </summary>
             <param name = "issuerOrigin">issuerOrigin</param>
             <returns>returns System.Threading.Tasks.Task&lt;ClearTrustTokensResponse&gt;</returns>
+        </member>
+        <member name="M:CefSharp.DevTools.Storage.StorageClient.GetInterestGroupDetailsAsync(System.String,System.String)">
+            <summary>
+            Gets details for a named interest group.
+            </summary>
+            <param name = "ownerOrigin">ownerOrigin</param>
+            <param name = "name">name</param>
+            <returns>returns System.Threading.Tasks.Task&lt;GetInterestGroupDetailsResponse&gt;</returns>
+        </member>
+        <member name="M:CefSharp.DevTools.Storage.StorageClient.SetInterestGroupTrackingAsync(System.Boolean)">
+            <summary>
+            Enables/Disables issuing of interestGroupAccessed events.
+            </summary>
+            <param name = "enable">enable</param>
+            <returns>returns System.Threading.Tasks.Task&lt;DevToolsMethodResponse&gt;</returns>
         </member>
         <member name="T:CefSharp.DevTools.SystemInfo.GPUDevice">
             <summary>
@@ -21910,6 +22384,11 @@
             <param name = "perfettoConfig">Base64-encoded serialized perfetto.protos.TraceConfig protobuf messageWhen specified, the parameters `categories`, `options`, `traceConfig`are ignored.</param>
             <param name = "tracingBackend">Backend type (defaults to `auto`)</param>
             <returns>returns System.Threading.Tasks.Task&lt;DevToolsMethodResponse&gt;</returns>
+        </member>
+        <member name="T:CefSharp.DevTools.Tracing.MemoryDumpConfig">
+            <summary>
+            MemoryDumpConfig
+            </summary>
         </member>
         <member name="T:CefSharp.DevTools.Fetch.RequestStage">
             <summary>
@@ -23051,6 +23530,13 @@
             Defaults to false.
             </summary>
         </member>
+        <member name="P:CefSharp.DevTools.WebAuthn.VirtualAuthenticatorOptions.HasMinPinLength">
+            <summary>
+            If set to true, the authenticator will support the minPinLength extension.
+            https://fidoalliance.org/specs/fido-v2.1-ps-20210615/fido-client-to-authenticator-protocol-v2.1-ps-20210615.html#sctn-minpinlength-extension
+            Defaults to false.
+            </summary>
+        </member>
         <member name="P:CefSharp.DevTools.WebAuthn.VirtualAuthenticatorOptions.AutomaticPresenceSimulation">
             <summary>
             If set to true, tests of user presence will succeed immediately.
@@ -23582,6 +24068,8 @@
         <member name="P:CefSharp.DevTools.Debugger.CallFrame.Url">
             <summary>
             JavaScript script name or url.
+            Deprecated in favor of using the `location.scriptId` to resolve the URL via a previously
+            sent `Debugger.scriptParsed` event.
             </summary>
         </member>
         <member name="P:CefSharp.DevTools.Debugger.CallFrame.ScopeChain">
@@ -26596,6 +27084,16 @@
             exceptionDetails
             </summary>
         </member>
+        <member name="T:CefSharp.DevTools.Runtime.GetExceptionDetailsResponse">
+            <summary>
+            GetExceptionDetailsResponse
+            </summary>
+        </member>
+        <member name="P:CefSharp.DevTools.Runtime.GetExceptionDetailsResponse.ExceptionDetails">
+            <summary>
+            exceptionDetails
+            </summary>
+        </member>
         <member name="T:CefSharp.DevTools.Runtime.RuntimeClient">
             <summary>
             Runtime domain exposes JavaScript runtime by means of remote evaluation and mirror objects.
@@ -26854,6 +27352,17 @@
             <param name = "name">name</param>
             <returns>returns System.Threading.Tasks.Task&lt;DevToolsMethodResponse&gt;</returns>
         </member>
+        <member name="M:CefSharp.DevTools.Runtime.RuntimeClient.GetExceptionDetailsAsync(System.String)">
+            <summary>
+            This method tries to lookup and populate exception details for a
+            JavaScript Error object.
+            Note that the stackTrace portion of the resulting exceptionDetails will
+            only be populated if the Runtime domain was enabled at the time when the
+            Error was thrown.
+            </summary>
+            <param name = "errorObjectId">The error object for which to resolve the exception details.</param>
+            <returns>returns System.Threading.Tasks.Task&lt;GetExceptionDetailsResponse&gt;</returns>
+        </member>
         <member name="T:CefSharp.DevTools.EventBreakpoints.EventBreakpointsClient">
             <summary>
             EventBreakpoints permits setting breakpoints on particular operations and
@@ -27009,6 +27518,15 @@
             <param name="message">message</param>
             <param name="inner">inner exception</param>
         </member>
+        <member name="M:CefSharp.DevTools.DevToolsClientException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <inheritdoc/>
+        </member>
+        <member name="T:CefSharp.DevTools.DevToolsDomainBase">
+            <summary>
+            DevTools Domain base class
+            Provides some basic helper methods
+            </summary>
+        </member>
         <member name="T:CefSharp.DevTools.DevToolsDomainEntityBase">
             <summary>
             Common Base class for DevTools Domain Model classes
@@ -27034,6 +27552,23 @@
             <summary>
             Error Message
             </summary>
+        </member>
+        <member name="T:CefSharp.DevTools.DevToolsDomainEventArgsBase">
+            <summary>
+            DevToolsDomainEventArgsBase
+            </summary>
+        </member>
+        <member name="T:CefSharp.DevTools.DevToolsDomainResponseBase">
+            <summary>
+            DevToolsDomainResponseBase
+            </summary>
+        </member>
+        <member name="M:CefSharp.DevTools.DevToolsDomainResponseBase.Convert(System.String)">
+            <summary>
+            Convert from string to base64 byte array
+            </summary>
+            <param name="data">string data</param>
+            <returns>byte array</returns>
         </member>
         <member name="T:CefSharp.DevTools.DevToolsErrorEventArgs">
             <summary>
@@ -28441,15 +28976,6 @@
             unsupported method.
             </summary>
         </member>
-        <member name="F:CefSharp.CefErrorCode.CertErrorInSslRenegotiation">
-             <summary>
-             During SSL renegotiation (rehandshake), the server sent a certificate with
-             an error.
-            
-             Note: this error is not in the -2xx range so that it won't be handled as a
-             certificate error.
-             </summary>
-        </member>
         <member name="F:CefSharp.CefErrorCode.BadSslClientAuthCert">
             <summary>
             The SSL handshake failed because of a bad or missing client certificate.
@@ -28933,11 +29459,6 @@
             <summary>
             The certificate is known to be used for interception by an entity other
             the device owner.
-            </summary>
-        </member>
-        <member name="F:CefSharp.CefErrorCode.SslObsoleteVersion">
-            <summary>
-            The connection uses an obsolete version of SSL/TLS.
             </summary>
         </member>
         <member name="F:CefSharp.CefErrorCode.CertEnd">
@@ -29586,6 +30107,11 @@
             https or wss.
             </summary>
         </member>
+        <member name="F:CefSharp.CefErrorCode.DnsRequestCancelled">
+            <summary>
+            All DNS requests associated with this job have been cancelled.
+            </summary>
+        </member>
         <member name="T:CefSharp.CefEventFlags">
             <summary>
             Supported event bit flags.
@@ -29673,13 +30199,13 @@
         </member>
         <member name="F:CefSharp.CefMenuCommand.CustomFirst">
             <summary>
-            Custom menu items originating from the renderer process. For example, plugin placeholder menu items or Flash menu items.
+            Custom menu items originating from the renderer process
             This is the first entry
             </summary>
         </member>
         <member name="F:CefSharp.CefMenuCommand.CustomLast">
             <summary>
-            Custom menu items originating from the renderer process. For example, plugin placeholder menu items or Flash menu items.
+            Custom menu items originating from the renderer process
             This is the last entry
             </summary>
         </member>
@@ -29985,9 +30511,16 @@
             A binary constant representing the can translate flag.
             </summary>
         </member>
+        <member name="F:CefSharp.ContextMenuEditState.CanEditRichly">
+            <summary>
+            A binary constant representing the can edit richly flag.
+            </summary>
+        </member>
         <member name="T:CefSharp.ContextMenuMediaState">
             <summary>
-            Supported context menu media state bit flags.
+            Supported context menu media state bit flags. These constants match their
+            equivalents in Chromium's ContextMenuData::MediaFlags and should not be
+            renumbered.
             </summary>
         </member>
         <member name="F:CefSharp.ContextMenuMediaState.None">
@@ -30025,14 +30558,14 @@
             HasAudio
             </summary>
         </member>
-        <member name="F:CefSharp.ContextMenuMediaState.HasVideo">
+        <member name="F:CefSharp.ContextMenuMediaState.CanToggleControls">
             <summary>
-            HasVideo
+            Can Toggle Controls
             </summary>
         </member>
-        <member name="F:CefSharp.ContextMenuMediaState.ControlRootElement">
+        <member name="F:CefSharp.ContextMenuMediaState.Controls">
             <summary>
-            ControlRootElement
+            Controls
             </summary>
         </member>
         <member name="F:CefSharp.ContextMenuMediaState.CanPrint">
@@ -30043,6 +30576,21 @@
         <member name="F:CefSharp.ContextMenuMediaState.CanRotate">
             <summary>
             CanRotate
+            </summary>
+        </member>
+        <member name="F:CefSharp.ContextMenuMediaState.CanPictureInPicture">
+            <summary>
+            CanPictureInPicture
+            </summary>
+        </member>
+        <member name="F:CefSharp.ContextMenuMediaState.PictureInPicture">
+            <summary>
+            PictureInPicture
+            </summary>
+        </member>
+        <member name="F:CefSharp.ContextMenuMediaState.CanLoop">
+            <summary>
+            CanLoop
             </summary>
         </member>
         <member name="T:CefSharp.ContextMenuMediaType">
@@ -30068,6 +30616,11 @@
         <member name="F:CefSharp.ContextMenuMediaType.Audio">
             <summary>
             An audio node is selected.
+            </summary>
+        </member>
+        <member name="F:CefSharp.ContextMenuMediaType.Canvas">
+            <summary>
+            An canvas node is selected
             </summary>
         </member>
         <member name="F:CefSharp.ContextMenuMediaType.File">
@@ -31895,7 +32448,7 @@
         </member>
         <member name="M:CefSharp.Handler.FindHandler.CefSharp#IFindHandler#OnFindResult(CefSharp.IWebBrowser,CefSharp.IBrowser,System.Int32,System.Int32,CefSharp.Structs.Rect,System.Int32,System.Boolean)">
             <summary>
-            Called to report find results returned by <see cref="M:CefSharp.IBrowserHost.Find(System.Int32,System.String,System.Boolean,System.Boolean,System.Boolean)"/>
+            Called to report find results returned by <see cref="M:CefSharp.IBrowserHost.Find(System.String,System.Boolean,System.Boolean,System.Boolean)"/>
             </summary>
             <param name="chromiumWebBrowser">the ChromiumWebBrowser control</param>
             <param name="browser">the browser object</param>
@@ -31907,7 +32460,7 @@
         </member>
         <member name="M:CefSharp.Handler.FindHandler.OnFindResult(CefSharp.IWebBrowser,CefSharp.IBrowser,System.Int32,System.Int32,CefSharp.Structs.Rect,System.Int32,System.Boolean)">
             <summary>
-            Called to report find results returned by <see cref="M:CefSharp.IBrowserHost.Find(System.Int32,System.String,System.Boolean,System.Boolean,System.Boolean)"/>
+            Called to report find results returned by <see cref="M:CefSharp.IBrowserHost.Find(System.String,System.Boolean,System.Boolean,System.Boolean)"/>
             </summary>
             <param name="chromiumWebBrowser">the ChromiumWebBrowser control</param>
             <param name="browser">the browser object</param>
@@ -32499,7 +33052,7 @@
             <summary>
             Implement this interface to provide handler implementations. The handler
             instance will not be released until all objects related to the context have
-            been destroyed. Implement this interface to cancel loading of specific plugins
+            been destroyed.
             </summary>
         </member>
         <member name="M:CefSharp.Handler.RequestContextHandler.OnInitialize(System.Action{CefSharp.IRequestContext})">
@@ -32576,9 +33129,9 @@
         </member>
         <member name="M:CefSharp.Handler.RequestHandler.OnBeforeBrowse(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,System.Boolean,System.Boolean)">
             <summary>
-            Called before browser navigation. If the navigation is allowed <see cref="!:IWebBrowser.FrameLoadStart"/> and
-            <see cref="!:IWebBrowser.FrameLoadEnd"/>
-            will be called. If the navigation is canceled <see cref="!:IWebBrowser.LoadError"/> will be called with an ErrorCode value of
+            Called before browser navigation. If the navigation is allowed <see cref="E:CefSharp.IChromiumWebBrowserBase.FrameLoadStart"/> and
+            <see cref="E:CefSharp.IChromiumWebBrowserBase.FrameLoadEnd"/>
+            will be called. If the navigation is canceled <see cref="E:CefSharp.IChromiumWebBrowserBase.LoadError"/> will be called with an ErrorCode value of
             <see cref="F:CefSharp.CefErrorCode.Aborted"/>.
             </summary>
             <param name="chromiumWebBrowser">the ChromiumWebBrowser control.</param>
@@ -32717,17 +33270,6 @@
             authentication. Return false to use the default behavior where the browser selects the first certificate from the list.
             
             </returns>
-        </member>
-        <member name="M:CefSharp.Handler.RequestHandler.CefSharp#IRequestHandler#OnPluginCrashed(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CefSharp.Handler.RequestHandler.OnPluginCrashed(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String)">
-            <summary>
-            Called when a plugin has crashed.
-            </summary>
-            <param name="chromiumWebBrowser">the ChromiumWebBrowser control.</param>
-            <param name="browser">the browser object.</param>
-            <param name="pluginPath">path of the plugin that crashed.</param>
         </member>
         <member name="M:CefSharp.Handler.RequestHandler.CefSharp#IRequestHandler#OnRenderViewReady(CefSharp.IWebBrowser,CefSharp.IBrowser)">
             <inheritdoc/>
@@ -33478,7 +34020,7 @@
         </member>
         <member name="M:CefSharp.IFindHandler.OnFindResult(CefSharp.IWebBrowser,CefSharp.IBrowser,System.Int32,System.Int32,CefSharp.Structs.Rect,System.Int32,System.Boolean)">
             <summary>
-            Called to report find results returned by <see cref="M:CefSharp.IBrowserHost.Find(System.Int32,System.String,System.Boolean,System.Boolean,System.Boolean)"/>
+            Called to report find results returned by <see cref="M:CefSharp.IBrowserHost.Find(System.String,System.Boolean,System.Boolean,System.Boolean)"/>
             </summary>
             <param name="chromiumWebBrowser">the ChromiumWebBrowser control</param>
             <param name="browser">the browser object</param>
@@ -33916,7 +34458,7 @@
             <summary>
             Implement this interface to provide handler implementations. The handler
             instance will not be released until all objects related to the context have
-            been destroyed. Implement this interface to cancel loading of specific plugins
+            been destroyed.
             </summary>
         </member>
         <member name="M:CefSharp.IRequestContextHandler.OnRequestContextInitialized(CefSharp.IRequestContext)">
@@ -33951,8 +34493,8 @@
         <member name="M:CefSharp.IRequestHandler.OnBeforeBrowse(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,System.Boolean,System.Boolean)">
             <summary>
             Called before browser navigation.
-            If the navigation is allowed <see cref="!:IWebBrowser.FrameLoadStart"/> and <see cref="!:IWebBrowser.FrameLoadEnd"/>
-            will be called. If the navigation is canceled <see cref="!:IWebBrowser.LoadError"/> will be called with an ErrorCode
+            If the navigation is allowed <see cref="E:CefSharp.IChromiumWebBrowserBase.FrameLoadStart"/> and <see cref="E:CefSharp.IChromiumWebBrowserBase.FrameLoadEnd"/>
+            will be called. If the navigation is canceled <see cref="E:CefSharp.IChromiumWebBrowserBase.LoadError"/> will be called with an ErrorCode
             value of <see cref="F:CefSharp.CefErrorCode.Aborted"/>. 
             </summary>
             <param name="chromiumWebBrowser">the ChromiumWebBrowser control</param>
@@ -34066,14 +34608,6 @@
             <param name="callback">Callback interface used for asynchronous continuation of client certificate selection for authentication requests.</param>
             <returns>Return true to continue the request and call ISelectClientCertificateCallback.Select() with the selected certificate for authentication. 
             Return false to use the default behavior where the browser selects the first certificate from the list. </returns>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnPluginCrashed(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String)">
-            <summary>
-            Called when a plugin has crashed
-            </summary>
-            <param name="chromiumWebBrowser">the ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="pluginPath">path of the plugin that crashed</param>
         </member>
         <member name="M:CefSharp.IRequestHandler.OnRenderViewReady(CefSharp.IWebBrowser,CefSharp.IBrowser)">
             <summary>
@@ -34660,14 +35194,10 @@
             This method is only used when window rendering is disabled. 
             </summary>
         </member>
-        <member name="M:CefSharp.IBrowserHost.Find(System.Int32,System.String,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:CefSharp.IBrowserHost.Find(System.String,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Search for <paramref name="searchText"/>.
             </summary>
-            <param name="identifier">must be a unique ID and these IDs
-            must strictly increase so that newer requests always have greater IDs than
-            older requests. If identifier is zero or less than the previous ID value
-            then it will be automatically assigned a new valid ID. </param>
             <param name="searchText">text to search for</param>
             <param name="forward">indicates whether to search forward or backward within the page</param>
             <param name="matchCase">indicates whether the search should be case-sensitive</param>
@@ -35099,12 +35629,6 @@
             command-line switch.
             </summary>
         </member>
-        <member name="P:CefSharp.IBrowserSettings.Plugins">
-            <summary>
-            Controls whether any plugins will be loaded. Also configurable using the
-            "disable-plugins" command-line switch.
-            </summary>
-        </member>
         <member name="P:CefSharp.IBrowserSettings.ImageLoading">
             <summary>
             Controls whether image URLs will be loaded from the network. A cached image
@@ -35459,7 +35983,7 @@
         <member name="P:CefSharp.IContextMenuParams.IsCustomMenu">
             <summary>
             Returns true if the context menu contains items specified by the renderer
-            process (for example, plugin placeholder or pepper plugin menu items).
+            process.
             </summary>
         </member>
         <member name="P:CefSharp.IContextMenuParams.IsDisposed">
@@ -36615,6 +37139,21 @@
             raise the MethodInvocationComplete event
             </summary>
         </member>
+        <member name="E:CefSharp.Internals.ConcurrentMethodRunnerQueue.MethodInvocationComplete">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.ConcurrentMethodRunnerQueue.#ctor(CefSharp.Internals.IJavascriptObjectRepositoryInternal)">
+            <summary>
+            Default constructor
+            </summary>
+            <param name="repository">javascript object repository</param>
+        </member>
+        <member name="M:CefSharp.Internals.ConcurrentMethodRunnerQueue.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.ConcurrentMethodRunnerQueue.Enqueue(CefSharp.Internals.MethodInvocation)">
+            <inheritdoc/>
+        </member>
         <member name="T:CefSharp.Internals.CookieManagerDecorator">
             <summary>
             CookieManager with additional checks to ensure the store is initialized.
@@ -36683,6 +37222,22 @@
             Interface to convert a JavascriptCallback dto to a callable implementation.
             </summary>
         </member>
+        <member name="T:CefSharp.Internals.IMethodRunnerQueue">
+            <summary>
+            Run (execute) calls made from Javascript to .Net methods
+            </summary>
+        </member>
+        <member name="E:CefSharp.Internals.IMethodRunnerQueue.MethodInvocationComplete">
+            <summary>
+            Method invocation was completed.
+            </summary>
+        </member>
+        <member name="M:CefSharp.Internals.IMethodRunnerQueue.Enqueue(CefSharp.Internals.MethodInvocation)">
+            <summary>
+            Enqueue a method invocation
+            </summary>
+            <param name="methodInvocation">method invocation</param>
+        </member>
         <member name="T:CefSharp.Internals.InitializeAsyncBrowserProcessHandler">
             <summary>
             BrowserProcessHandler implementation that takes a <see cref="!:TaskCompletionSource&lt;bool&gt;"/>
@@ -36696,6 +37251,45 @@
             <param name="tcs">task complection source</param>
         </member>
         <member name="M:CefSharp.Internals.InitializeAsyncBrowserProcessHandler.OnContextInitialized">
+            <inheritdoc/>
+        </member>
+        <member name="T:CefSharp.Internals.InMemoryResourceRequestHandler">
+            <summary>
+            InMemoryResourceRequestHandler
+            </summary>
+        </member>
+        <member name="M:CefSharp.Internals.InMemoryResourceRequestHandler.#ctor(System.Byte[],System.String)">
+            <summary>
+            Default constructor
+            </summary>
+            <param name="data">data</param>
+            <param name="mimeType">mime (content) type</param>
+        </member>
+        <member name="M:CefSharp.Internals.InMemoryResourceRequestHandler.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.InMemoryResourceRequestHandler.CefSharp#IResourceRequestHandler#GetCookieAccessFilter(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.InMemoryResourceRequestHandler.CefSharp#IResourceRequestHandler#GetResourceHandler(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.InMemoryResourceRequestHandler.CefSharp#IResourceRequestHandler#GetResourceResponseFilter(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.InMemoryResourceRequestHandler.CefSharp#IResourceRequestHandler#OnBeforeResourceLoad(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IRequestCallback)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.InMemoryResourceRequestHandler.CefSharp#IResourceRequestHandler#OnProtocolExecution(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.InMemoryResourceRequestHandler.CefSharp#IResourceRequestHandler#OnResourceLoadComplete(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse,CefSharp.UrlRequestStatus,System.Int64)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.InMemoryResourceRequestHandler.CefSharp#IResourceRequestHandler#OnResourceRedirect(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse,System.String@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.InMemoryResourceRequestHandler.CefSharp#IResourceRequestHandler#OnResourceResponse(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse)">
             <inheritdoc/>
         </member>
         <member name="M:CefSharp.Internals.IntPtrExtensions.CastToInt32(System.IntPtr)">
@@ -37042,6 +37636,27 @@
             Gets or sets the property value
             Only primative types can be stored in this property
             </summary>
+        </member>
+        <member name="T:CefSharp.Internals.MethodRunnerQueue">
+            <summary>
+            MethodRunnerQueue - Async Javascript Binding methods are run
+            on the ThreadPool sequentially
+            </summary>
+        </member>
+        <member name="E:CefSharp.Internals.MethodRunnerQueue.MethodInvocationComplete">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.MethodRunnerQueue.#ctor(CefSharp.Internals.IJavascriptObjectRepositoryInternal)">
+            <summary>
+            Default constructor
+            </summary>
+            <param name="repository">javascript object repository</param>
+        </member>
+        <member name="M:CefSharp.Internals.MethodRunnerQueue.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:CefSharp.Internals.MethodRunnerQueue.Enqueue(CefSharp.Internals.MethodInvocation)">
+            <inheritdoc/>
         </member>
         <member name="T:CefSharp.Internals.MimeTypeMapping">
             <summary>
@@ -39913,6 +40528,9 @@
             </summary>
             <param name="stream">a writable stream</param>
         </member>
+        <member name="M:CefSharp.ResponseFilter.StreamResponseFilter.Dispose">
+            <inheritdoc/>
+        </member>
         <member name="T:CefSharp.SchemeHandler.FolderSchemeHandlerFactory">
             <summary>
             FolderSchemeHandlerFactory is a very simple scheme handler that allows you
@@ -40754,23 +41372,6 @@
             </summary>
             <param name="str">string (result of async execution)</param>
         </member>
-        <member name="T:CefSharp.IWebPluginInfoVisitor">
-            <summary>
-            Interface to implement for visiting web plugin information.
-            The methods of this class will be called on the CEF UI thread,
-            which by default is not the same as your application UI 
-            </summary>
-        </member>
-        <member name="M:CefSharp.IWebPluginInfoVisitor.Visit(CefSharp.WebPluginInfo,System.Int32,System.Int32)">
-            <summary>
-            Method that will be called once for each plugin. 
-            This method may never be called if no plugins are found.
-            </summary>
-            <param name="plugin">plugin information</param>
-            <param name="count">is the 0-based index for the current plugin</param>
-            <param name="total">total is the total number of plugins.</param>
-            <returns>Return false to stop visiting plugins otherwise true</returns>
-        </member>
         <member name="T:CefSharp.TaskCookieVisitor">
             <summary>
             Cookie Visitor implementation that uses a TaskCompletionSource
@@ -40833,21 +41434,6 @@
             <param name="str">string (result of async execution)</param>
         </member>
         <member name="P:CefSharp.TaskStringVisitor.Task">
-            <summary>
-            Task that can be awaited for the result to be retrieved async
-            </summary>
-        </member>
-        <member name="T:CefSharp.TaskWebPluginInfoVisitor">
-            <summary>
-            Provides a visitor implementation of <see cref="T:CefSharp.IWebPluginInfoVisitor"/>
-            </summary>
-        </member>
-        <member name="M:CefSharp.TaskWebPluginInfoVisitor.#ctor">
-            <summary>
-            Default constructor
-            </summary>
-        </member>
-        <member name="P:CefSharp.TaskWebPluginInfoVisitor.Task">
             <summary>
             Task that can be awaited for the result to be retrieved async
             </summary>
@@ -41317,23 +41903,21 @@
             <param name="browser">The ChromiumWebBrowser instance this method extends.</param>
             <param name="zoomLevel">zoom level.</param>
         </member>
-        <member name="M:CefSharp.WebBrowserExtensions.Find(CefSharp.IBrowser,System.Int32,System.String,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:CefSharp.WebBrowserExtensions.Find(CefSharp.IBrowser,System.String,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Search for text within the current page.
             </summary>
             <param name="cefBrowser">The ChromiumWebBrowser instance this method extends.</param>
-            <param name="identifier">Can be used in can conjunction with searchText to have multiple searches running simultaneously.</param>
             <param name="searchText">search text.</param>
             <param name="forward">indicates whether to search forward or backward within the page.</param>
             <param name="matchCase">indicates whether the search should be case-sensitive.</param>
             <param name="findNext">indicates whether this is the first request or a follow-up.</param>
         </member>
-        <member name="M:CefSharp.WebBrowserExtensions.Find(CefSharp.IChromiumWebBrowserBase,System.Int32,System.String,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:CefSharp.WebBrowserExtensions.Find(CefSharp.IChromiumWebBrowserBase,System.String,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Search for text within the current page.
             </summary>
             <param name="browser">The ChromiumWebBrowser instance this method extends.</param>
-            <param name="identifier">Can be used in can conjunction with searchText to have multiple searches running simultaneously.</param>
             <param name="searchText">search text.</param>
             <param name="forward">indicates whether to search forward or backward within the page.</param>
             <param name="matchCase">indicates whether the search should be case-sensitive.</param>
@@ -41692,40 +42276,6 @@
             Throw exception if can execute javascript in main frame false.
             </summary>
             <exception cref="T:System.Exception">Thrown when an exception error condition occurs.</exception>
-        </member>
-        <member name="T:CefSharp.WebPluginInfo">
-            <summary>
-            Information about a specific web plugin.
-            </summary>
-        </member>
-        <member name="P:CefSharp.WebPluginInfo.Name">
-            <summary>
-            Gets or sets the plugin name (i.e. Flash).
-            </summary>
-        </member>
-        <member name="P:CefSharp.WebPluginInfo.Description">
-            <summary>
-            Gets or sets tge description of the plugin from the version information.
-            </summary>
-        </member>
-        <member name="P:CefSharp.WebPluginInfo.Path">
-            <summary>
-            Gets or sets the plugin file path (DLL/bundle/library).
-            </summary>
-        </member>
-        <member name="P:CefSharp.WebPluginInfo.Version">
-            <summary>
-            Gets or sets the version of the plugin (may be OS-specific).
-            </summary>
-        </member>
-        <member name="M:CefSharp.WebPluginInfo.#ctor(System.String,System.String,System.String,System.String)">
-            <summary>
-            WebPluginInfo
-            </summary>
-            <param name="name">name</param>
-            <param name="description">description</param>
-            <param name="path">path</param>
-            <param name="version">version</param>
         </member>
         <member name="T:CefSharp.Web.HtmlString">
             <summary>

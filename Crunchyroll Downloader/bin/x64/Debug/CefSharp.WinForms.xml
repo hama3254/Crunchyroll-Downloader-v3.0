@@ -202,6 +202,7 @@
         </member>
         <member name="M:CefSharp.WinForms.ChromiumWebBrowser.#ctor">
             <summary>
+            <strong>Important!!!</strong>
             This constructor exists as the WinForms designer requires a parameterless constructor, if you are instantiating
             an instance of this class in code then use the <see cref="M:CefSharp.WinForms.ChromiumWebBrowser.#ctor(System.String,CefSharp.IRequestContext)"/>
             constructor overload instead. Using this constructor in code is unsupported and you may experience <see cref="T:System.NullReferenceException"/>'s
@@ -256,6 +257,12 @@
         <member name="P:CefSharp.WinForms.ChromiumWebBrowser.JavascriptObjectRepository">
             <summary>
             The javascript object repository, one repository per ChromiumWebBrowser instance.
+            </summary>
+        </member>
+        <member name="M:CefSharp.WinForms.ChromiumWebBrowser.IsParentInDesignMode(System.Windows.Forms.Control)">
+            <summary>
+             Indicates if one of the Ancestors of this control is sited
+             and that site in DesignMode.
             </summary>
         </member>
         <member name="M:CefSharp.WinForms.ChromiumWebBrowser.OnHandleCreated(System.EventArgs)">
@@ -708,7 +715,7 @@
             Helper function used to find the child HWND with the ClassName matching <paramref name="chromeRenderWidgetHostClassName"/>
             Chromium's message-loop Window isn't created synchronously, so this may not find it.
             If so, you need to wait and try again later.
-            In most cases you should use the <see cref="!:TryFindHandle(ChromiumWebBrowser, out IntPtr)"/> overload.
+            In most cases you should use the <see cref="M:CefSharp.WinForms.Experimental.ChromiumRenderWidgetHandleFinder.TryFindHandle(CefSharp.IWebBrowser,System.IntPtr@)"/> overload.
             </summary>
             <param name="chromiumWebBrowserHandle"><see cref="T:CefSharp.WinForms.ChromiumWebBrowser"/> control Handle</param>
             <param name="chromeRenderWidgetHostClassName">class name used to match</param>
@@ -893,6 +900,15 @@
             Fluent <see cref="T:CefSharp.WinForms.Handler.LifeSpanHandler"/> Builder
             </summary>
         </member>
+        <member name="M:CefSharp.WinForms.Handler.LifeSpanHandlerBuilder.#ctor(CefSharp.WinForms.Handler.CreatePopupChromiumHostControl)">
+            <summary>
+            LifeSpanHandlerBuilder
+            </summary>
+            <param name="chromiumHostControlCreatedDelegate">
+            When specified the delegate will be used to create the <see cref="T:CefSharp.WinForms.Host.ChromiumHostControl"/>
+            instance. Allowing users to create their own custom instance that extends <see cref="T:CefSharp.WinForms.Host.ChromiumHostControl"/>
+            </param>
+        </member>
         <member name="M:CefSharp.WinForms.Handler.LifeSpanHandlerBuilder.OnBeforePopupCreated(CefSharp.WinForms.Handler.OnBeforePopupCreatedDelegate)">
             <summary>
             The <see cref="T:CefSharp.WinForms.Handler.OnBeforePopupCreatedDelegate"/> will be called <b>before</b> the popup has been created and
@@ -903,9 +919,9 @@
         </member>
         <member name="M:CefSharp.WinForms.Handler.LifeSpanHandlerBuilder.OnPopupCreated(CefSharp.WinForms.Handler.OnPopupCreatedDelegate)">
             <summary>
-            The <see cref="T:CefSharp.WinForms.Handler.OnPopupCreatedDelegate"/> will be called when the<see cref="!:ChromiumHostControl"/> has been
+            The <see cref="T:CefSharp.WinForms.Handler.OnPopupCreatedDelegate"/> will be called when the<see cref="T:CefSharp.WinForms.Host.ChromiumHostControl"/> has been
             created. When the <see cref="T:CefSharp.WinForms.Handler.OnPopupCreatedDelegate"/> is called you must add the control to it's intended parent
-            so the <see cref="!:Control.ClientRectangle"/> can be calculated to set the initial
+            so the <see cref="P:System.Windows.Forms.Control.ClientRectangle"/> can be calculated to set the initial
             size correctly.
             </summary>
             <param name="onPopupCreated">Action to be invoked when the Popup is to be destroyed.</param>
@@ -923,9 +939,9 @@
         </member>
         <member name="M:CefSharp.WinForms.Handler.LifeSpanHandlerBuilder.OnPopupDestroyed(CefSharp.WinForms.Handler.OnPopupDestroyedDelegate)">
             <summary>
-            The <see cref="T:CefSharp.WinForms.Handler.OnPopupDestroyedDelegate"/> will be called when the <see cref="!:ChromiumHostControl"/> is to be
+            The <see cref="T:CefSharp.WinForms.Handler.OnPopupDestroyedDelegate"/> will be called when the <see cref="T:CefSharp.WinForms.Host.ChromiumHostControl"/> is to be
             removed from it's parent.
-            When the <see cref="T:CefSharp.WinForms.Handler.OnPopupDestroyedDelegate"/> is called you must remove/dispose of the <see cref="!:ChromiumHostControl"/>.
+            When the <see cref="T:CefSharp.WinForms.Handler.OnPopupDestroyedDelegate"/> is called you must remove/dispose of the <see cref="T:CefSharp.WinForms.Host.ChromiumHostControl"/>.
             </summary>
             <param name="onPopupDestroyed">Action to be invoked when the Popup is to be destroyed.</param>
             <returns><see cref="T:CefSharp.WinForms.Handler.LifeSpanHandlerBuilder"/> instance allowing you to chain method calls together</returns>
@@ -1161,11 +1177,17 @@
             </summary>
             <param name="url">The URL to be loaded.</param>
         </member>
+        <member name="M:CefSharp.WinForms.Host.ChromiumHostControl.LoadUrlAsync(System.String)">
+            <inheritdoc/>
+        </member>
         <member name="M:CefSharp.WinForms.Host.ChromiumHostControl.GetMainFrame">
             <summary>
             Returns the main (top-level) frame for the browser window.
             </summary>
             <returns> the main frame</returns>
+        </member>
+        <member name="M:CefSharp.WinForms.Host.ChromiumHostControl.Dispose(System.Boolean)">
+            <inheritdoc/>
         </member>
         <member name="M:CefSharp.WinForms.Host.ChromiumHostControl.FromBrowser(CefSharp.IBrowser)">
             <summary>
@@ -1549,6 +1571,8 @@
             </summary>
             <param name="chromiumWebBrowser"><see cref="T:CefSharp.WinForms.ChromiumWebBrowser"/> instance</param>
             <param name="parentControl">Control used as the parent for DevTools (a custom control will be added to the <see cref="P:System.Windows.Forms.Control.Controls"/> collection)</param>
+            <param name="controlName">Control name</param>
+            <param name="dockStyle">Dock Style</param>
             <param name="inspectElementAtX">x coordinate (used for inspectElement)</param>
             <param name="inspectElementAtY">y coordinate (used for inspectElement)</param>
             <returns>Returns the <see cref="T:System.Windows.Forms.Control"/> that hosts the DevTools instance if successful, otherwise returns null on error.</returns>
@@ -1565,6 +1589,8 @@
             Action that is Invoked when the DevTools Host Control has been created and needs to be added to it's parent.
             It's important the control is added to it's intended parent at this point so the <see cref="P:System.Windows.Forms.Control.ClientRectangle"/>
             can be calculated to set the initial display size.</param>
+            <param name="controlName">control name</param>
+            <param name="dockStyle">Dock Style</param>
             <param name="inspectElementAtX">x coordinate (used for inspectElement)</param>
             <param name="inspectElementAtY">y coordinate (used for inspectElement)</param>
             <returns>Returns the <see cref="T:System.Windows.Forms.Control"/> that hosts the DevTools instance if successful, otherwise returns null on error.</returns>

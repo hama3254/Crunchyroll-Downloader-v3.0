@@ -58,9 +58,6 @@
         <member name="P:CefSharp.BrowserSettings.JavascriptDomPaste">
             <inheritdoc/>
         </member>
-        <member name="P:CefSharp.BrowserSettings.Plugins">
-            <inheritdoc/>
-        </member>
         <member name="P:CefSharp.BrowserSettings.ImageLoading">
             <inheritdoc/>
         </member>
@@ -152,7 +149,7 @@
         <member name="M:CefSharp.BrowserSubprocess.SelfHost.Main(System.String[])">
             <summary>
             This function should be called from the application entry point function (typically Program.Main)
-            to execute a secondary process e.g. gpu, plugin, renderer, utility
+            to execute a secondary process e.g. gpu, renderer, utility
             This overload is specifically used for .Net Core. For hosting your own BrowserSubProcess
             it's preferable to use the Main method provided by this class.
             - Pass in command line args
@@ -427,29 +424,6 @@
             </summary>
             <returns>Returns false on error.</returns>
         </member>
-        <member name="M:CefSharp.Cef.VisitWebPluginInfo(CefSharp.IWebPluginInfoVisitor)">
-            <summary>
-            Visit web plugin information. Can be called on any thread in the browser process.
-            </summary>
-        </member>
-        <member name="M:CefSharp.Cef.GetPlugins">
-            <summary>
-            Async returns a list containing Plugin Information
-            (Wrapper around CefVisitWebPluginInfo)
-            </summary>
-            <returns>Returns List of <see cref="T:CefSharp.WebPluginInfo"/> structs.</returns>
-        </member>
-        <member name="M:CefSharp.Cef.RefreshWebPlugins">
-            <summary>
-            Cause the plugin list to refresh the next time it is accessed regardless of whether it has already been loaded.
-            </summary>
-        </member>
-        <member name="M:CefSharp.Cef.UnregisterInternalWebPlugin(System.String)">
-            <summary>
-            Unregister an internal plugin. This may be undone the next time RefreshWebPlugins() is called. 
-            </summary>
-            <param name="path">Path (directory + file).</param>
-        </member>
         <member name="M:CefSharp.Cef.EnableHighDPISupport">
             <summary>
             Call during process startup to enable High-DPI support on Windows 7 or newer.
@@ -565,6 +539,8 @@
             <summary>
             Sets or clears a specific key-value pair from the crash metadata.
             </summary>
+            <param name="key">key</param>
+            <param name="value">value</param>
         </member>
         <member name="M:CefSharp.Cef.GetMinLogLevel">
             <summary>
@@ -657,7 +633,7 @@
         </member>
         <member name="P:CefSharp.CefSettingsBase.MultiThreadedMessageLoop">
             <summary>
-            Set to true to have the browser process message loop run in a separate thread. If false than the CefDoMessageLoopWork()
+            Set to true to have the browser process message loop run in a separate thread. If false then the CefDoMessageLoopWork()
             function must be called from your application message loop. This option is only supported on Windows. The default value is
             true.
             </summary>

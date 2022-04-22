@@ -379,6 +379,7 @@ Public Class Main
         settings.CefCommandLineArgs.Add("disable-gpu-vsync")
         settings.CefCommandLineArgs.Add("disable-d3d11")
         settings.CefCommandLineArgs.Add("disable-gpu-rasterization")
+        settings.DisableGpuAcceleration()
         'settings.CefCommandLineArgs("autoplay-policy") = "no-user-gesture-required"
         settings.LogFile = Path.Combine(Application.StartupPath, "lib", "browser.log")
         'Initialize Cef with the provided settings

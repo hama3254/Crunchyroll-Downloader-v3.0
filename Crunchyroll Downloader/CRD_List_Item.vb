@@ -583,6 +583,7 @@ Public Class CRD_List_Item
 
         Dim KeyFile As String = GeräteID() + ".key"
         Dim KeyFilePath As String = Folder + "\" + KeyFile 'needs to be in the ffmpeg/downloader directory
+        KeyFilePath = KeyFilePath.Replace("\\", "\")
         Dim Fragments() As String = InputData.Split(New String() {"#EXT-X-BYTERANGE:"}, System.StringSplitOptions.RemoveEmptyEntries)
         Dim FragmentsInt As Integer = Fragments.Count - 2
 
@@ -884,7 +885,10 @@ Public Class CRD_List_Item
                     Dim KeyFile As String = GeräteID() + ".key"
                     KeyFileCache = KeyFile
 
-                    Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(KeyFileUri3, Folder + "\" + KeyFile))
+
+                    Dim KeyFilePath As String = Folder + "\" + KeyFile
+                    KeyFilePath = KeyFilePath.Replace("\\", "\")
+                    Dim Evaluator = New Thread(Sub() Me.TS_DownloadAsync(KeyFileUri3, KeyFilePath))
                     Evaluator.Start()
 
                     LoadedKeys.Add(KeyFileUri3)

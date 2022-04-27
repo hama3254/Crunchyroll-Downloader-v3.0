@@ -740,6 +740,7 @@ Public Class Einstellungen
         End If
         If CBarME.Checked = True Then
             Main.SoftSubs.Add("arME")
+            Main.SoftSubs.Add("ar-SA")
         End If
         If CBruRU.Checked = True Then
             Main.SoftSubs.Add("ruRU")

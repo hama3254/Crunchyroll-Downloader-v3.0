@@ -1212,6 +1212,7 @@ Public Class Main
                 End If
             End If
             If Episode_Prefix = "[default episode prefix]" Then
+                CR_Anime_Folge = CR_Anime_Folge.Replace(CR_Anime_Folge_int, AddLeadingZeros(CR_Anime_Folge_int))
             Else
                 CR_Anime_Folge = Episode_Prefix + AddLeadingZeros(CR_Anime_Folge_int)
             End If
@@ -1249,7 +1250,7 @@ Public Class Main
                 Else
                     CR_Anime_Staffel_int = "0" + CR_Anime_Staffel_int
                 End If
-                KodiString = KodiString + CR_Anime_Staffel_int + " E" + CR_Anime_Folge_int
+                KodiString = KodiString + CR_Anime_Staffel_int + " E" + AddLeadingZeros(CR_Anime_Folge_int)
                 KodiString = KodiString + "] "
                 CR_FilenName = KodiString + CR_FilenName
             End If
@@ -1856,11 +1857,11 @@ Public Class Main
                     Else
                         CR_Anime_Staffel_int = "0" + CR_Anime_Staffel_int
                     End If
-                    Dim CR_episode_nr As String = CR_episode_int
-                    If CR_episode_nr.Length = 1 Then
-                        CR_episode_nr = "0" + CR_episode_nr
-                    End If
-                    KodiString = KodiString + CR_Anime_Staffel_int + " E" + CR_episode_nr
+                    'Dim CR_episode_nr As String = CR_episode_int
+                    'If CR_episode_nr.Length = 1 Then
+                    '    CR_episode_nr = "0" + CR_episode_nr
+                    'End If
+                    KodiString = KodiString + CR_Anime_Staffel_int + " E" + AddLeadingZeros(CR_episode_int) ' CR_episode_nr
                     KodiString = KodiString + "] "
                     CR_FilenName = KodiString + CR_FilenName
                 End If
@@ -2212,6 +2213,8 @@ Public Class Main
                 Return "fr-FR"
             ElseIf CC = "arME" Then
                 Return "ar-ME"
+            ElseIf CC = "ar-SA" Then
+                Return "ar-SA"
             ElseIf CC = "ruRU" Then
                 Return "ru-RU"
             ElseIf CC = "itIT" Then
@@ -2375,13 +2378,15 @@ Public Class Main
                         Else
                             CR_Anime_Staffel_int = "0" + CR_Anime_Staffel_int
                         End If
-                        Dim CR_episode_nr As String = CR_episode_int
-                        If CR_episode_nr.Length = 1 Then
-                            CR_episode_nr = "0" + CR_episode_nr
-                        ElseIf CR_episode_nr.Length = 0 Then
-                            Throw New System.Exception("no episode")
-                        End If
-                        KodiString = KodiString + CR_Anime_Staffel_int + " E" + CR_episode_nr
+
+                        'Dim CR_episode_nr As String = CR_episode_int
+                        'If CR_episode_nr.Length = 1 Then
+                        '    CR_episode_nr = "0" + CR_episode_nr
+                        'ElseIf CR_episode_nr.Length = 0 Then
+                        '    Throw New System.Exception("no episode")
+                        'End If
+
+                        KodiString = KodiString + CR_Anime_Staffel_int + " E" + AddLeadingZeros(CR_episode_int)
                         KodiString = KodiString + "] "
                         CR_FilenName = KodiString + CR_FilenName
                     End If

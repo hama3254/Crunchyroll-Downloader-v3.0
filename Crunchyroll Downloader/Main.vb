@@ -4702,7 +4702,7 @@ Public Class Main
                                 End If
                             End If
                             strRequest = rootPath & "Post_Single_Sucess.html" 'PostPage
-                            SendHTMLResponse(strRequest, stream)
+                            SendHTMLResponse(stream, strRequest)
                         Else
                             Me.Invoke(New Action(Function() As Object
                                                      Me.Text = "Status: no video found"
@@ -4710,17 +4710,21 @@ Public Class Main
                                                      Return Nothing
                                                  End Function))
                             Dim ErrorPage As String = My.Resources.Post_error_Top + "no video found" + My.Resources.Post_error_Bottom
-                            My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
-                            strRequest = rootPath & "error_Page.html" 'PostPage
-                            SendHTMLResponse(strRequest, stream)
+                            ' My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
+                            '   strRequest = rootPath & "error_Page.html" 'PostPage
+                            'SendHTMLResponse(stream, strRequest)
+                            SendHTMLResponse(stream, Nothing, New ServerResponse(ErrorPage, "html"))
+
                         End If
                     Catch abort As ThreadAbortException
                         Exit Sub
                     Catch ex As Exception
                         Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
-                        My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
-                        strRequest = rootPath & "error_Page.html" 'PostPage
-                        SendHTMLResponse(strRequest, stream)
+                        'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
+                        'strRequest = rootPath & "error_Page.html" 'PostPage
+                        'SendHTMLResponse(stream, strRequest)
+                        SendHTMLResponse(stream, Nothing, New ServerResponse(ErrorPage, "html"))
+
                     End Try
 #End Region
 #Region "mass-dl"
@@ -4754,14 +4758,16 @@ Public Class Main
                                                  End Function))
                         End If
                         strRequest = rootPath & "Post_Mass_Sucess.html" 'PostPage
-                        SendHTMLResponse(strRequest, stream)
+                        SendHTMLResponse(stream, strRequest)
                     Catch abort As ThreadAbortException
                         Exit Sub
                     Catch ex As Exception
                         Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
-                        My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
-                        strRequest = rootPath & "error_Page.html" 'PostPage
-                        SendHTMLResponse(strRequest, stream)
+                        'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
+                        'strRequest = rootPath & "error_Page.html" 'PostPage
+                        'SendHTMLResponse(stream, strRequest)
+                        SendHTMLResponse(stream, Nothing, New ServerResponse(ErrorPage, "html"))
+
                     End Try
 #End Region
 #Region "Funimation-mass"
@@ -4798,15 +4804,17 @@ Public Class Main
                                                      End Function))
                             End If
                             strRequest = rootPath & "Post_Mass_Sucess.html" 'PostPage
-                            SendHTMLResponse(strRequest, stream)
+                            SendHTMLResponse(stream, strRequest)
                         End If
                     Catch abort As ThreadAbortException
                         Exit Sub
                     Catch ex As Exception
                         Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
-                        My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
-                        strRequest = rootPath & "error_Page.html" 'PostPage
-                        SendHTMLResponse(strRequest, stream)
+                        'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
+                        'strRequest = rootPath & "error_Page.html" 'PostPage
+                        'SendHTMLResponse(stream, strRequest)
+                        SendHTMLResponse(stream, Nothing, New ServerResponse(ErrorPage, "html"))
+
                     End Try
 #End Region
 #Region "funimation Einzeln"
@@ -4898,23 +4906,23 @@ Public Class Main
                             End If
                         End If
                         strRequest = rootPath & "Post_Single_Sucess.html" 'PostPage
-                        SendHTMLResponse(strRequest, stream)
+                        SendHTMLResponse(stream, strRequest)
                     Catch abort As ThreadAbortException
                         Exit Sub
                     Catch ex As Exception
                         Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
-                        My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
-                        strRequest = rootPath & "error_Page.html" 'PostPage
-                        SendHTMLResponse(strRequest, stream)
+                        'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
+                        'strRequest = rootPath & "error_Page.html" 'PostPage
+                        'SendHTMLResponse(stream, strRequest)
+                        SendHTMLResponse(stream, Nothing, New ServerResponse(ErrorPage, "html"))
+
                     End Try
 #End Region
                 Else
                     strRequest = rootPath & "error_Page_default.html" 'PostPage
-                    SendHTMLResponse(strRequest, stream)
+                    SendHTMLResponse(stream, strRequest)
                 End If
             ElseIf strArray(0).Trim().ToUpper.Equals("GET") Then
-                'Debug.WriteLine(Date.Now + " " + "found GET while procesing")
-                'Debug.WriteLine(Date.Now + " " + strArray(1))
                 strRequest = strArray(1).Trim
                 If strRequest.StartsWith("/") Then
                     strRequest = strRequest.Substring(1)
@@ -4923,34 +4931,43 @@ Public Class Main
                     'Debug.WriteLine(Date.Now + " " + "it's index.html")
                     strRequest = strRequest & defaultPage '"HTMLString" 'strRequest & defaultPage
                 End If
-                'If CBool(InStr(htmlReq, "CRD_Handshake") Then
-                '    'Debug.WriteLine(Date.Now + " " + "it's a handshake")
-                '    SendHTMLResponse("Handshake_Confirm", stream)
-                'Else
-                '    
-                'End If
+
                 strRequest = rootPath & strRequest
-                SendHTMLResponse(strRequest, stream)
+                SendHTMLResponse(stream, strRequest)
             Else ' Not HTTP GET method
-                'Debug.WriteLine(Date.Now + " " + "empty request, returning index.html")
-                'Debug.WriteLine(Date.Now + " " + strArray(0))
+
                 strRequest = rootPath & defaultPage
-                SendHTMLResponse(strRequest, stream)
+                SendHTMLResponse(stream, strRequest)
             End If
         Catch ex As Exception
             Debug.WriteLine(ex.ToString())
             Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
-            My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
-            'strRequest = rootPath & "error_Page.html" 'PostPage
-            SendHTMLResponse(Application.StartupPath + "\WebInterface\error_Page.html", stream)
+            ' My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\WebInterface\error_Page.html", ErrorPage, False)
+            SendHTMLResponse(stream, Nothing, New ServerResponse(ErrorPage, "html"))
+
         End Try
     End Sub
 
     ' Send HTTP Response
-    Private Sub SendHTMLResponse(ByVal httpRequest As String, ByVal stream As NetworkStream)
+    Private Sub SendHTMLResponse(ByVal stream As NetworkStream, Optional ByVal httpRequest As String = Nothing, Optional ByVal Response As ServerResponse = Nothing)
         Try
             Dim respByte() As Byte
-            If CBool(InStr(httpRequest, "index.html")) Then
+            If httpRequest = Nothing Then
+                Debug.WriteLine(httpRequest)
+                respByte = System.Text.Encoding.UTF8.GetBytes(Response.Content) 'File.ReadAllBytes("") '
+                ' Set HTML Header
+                Dim htmlHeader As String =
+                    "HTTP/1.0 200 OK" & ControlChars.CrLf &
+                    "Server: CRD 1.0" & ControlChars.CrLf &
+                   "Content-Length: " & respByte.Length & ControlChars.CrLf &
+                    "Content-Type: " & GetContentType(Response.Type) &
+                    ControlChars.CrLf & ControlChars.CrLf
+                ' The content Length of HTML Header
+                Dim headerByte() As Byte = Encoding.UTF8.GetBytes(htmlHeader)
+                stream.Write(headerByte, 0, headerByte.Length)
+                stream.Write(respByte, 0, respByte.Length)
+
+            ElseIf CBool(InStr(httpRequest, "index.html")) Then
                 Debug.WriteLine(httpRequest)
                 respByte = System.Text.Encoding.UTF8.GetBytes(HTML) 'File.ReadAllBytes("") '
                 ' Set HTML Header
@@ -5184,5 +5201,20 @@ Public Class FunimationStream
 
     Public Overrides Function ToString() As String
         Return String.Format("{0}, {1}, {2}", Me.audioLanguage, Me.version, Me.Url)
+    End Function
+End Class
+
+Public Class ServerResponse
+
+    Public Type As String
+    Public Content As String
+    Public Sub New(ByVal Content As String, ByVal Type As String)
+        Me.Content = Content
+        Me.Type = Type
+
+    End Sub
+
+    Public Overrides Function ToString() As String
+        Return String.Format("{0}, {1}", Me.Content, Me.Type)
     End Function
 End Class

@@ -179,6 +179,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;/span&gt; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property CR_MovieBT() As String
+            Get
+                Return ResourceManager.GetString("CR_MovieBT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;span itemprop=&quot;name&quot;&gt; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property CR_MovieTop() As String
+            Get
+                Return ResourceManager.GetString("CR_MovieTop", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die seasonNumber&quot;:&quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property CR_Season_Nr() As String

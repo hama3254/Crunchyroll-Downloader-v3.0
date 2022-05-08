@@ -1,17 +1,15 @@
+#Folder
+Crunchyroll Downloader/bin/
+Crunchyroll Downloader/bin
+Crunchyroll Downloader/obj/
+Crunchyroll Downloader/obj
+CRD-addon/
+packages/
+.vs/
 
-Crunchyroll Downloader/bin/x86/Debug/Crunchyroll-Downloader-v3.0.zip
+#Files
 *.zip
 *.mp4
 *.log
 *.key
-CRD-addon/CRD-add-on-firefox-v0.6-2/.web-extension-id
-Crunchyroll Downloader/bin/x64/Crunchyroll-Downloader-Chromium/lib/libcef.dll
-packages/cef.redist.x86.91.1.21/CEF/libcef.dll
-Crunchyroll Downloader/bin/x64/Debug/libcef.dll
-packages/cef.redist.x64.91.1.21/CEF/libcef.dll
-Crunchyroll Downloader/bin/x64/Debug/lib/libcef.dll
-Crunchyroll Downloader/bin/x64/Debug/ffmpeg.exe
-Crunchyroll Downloader/bin/x64/Crunchyroll-Downloader-Chromium/ffmpeg.exe
-packages/
-Crunchyroll Downloader/bin/x64/Crunchyroll-Downloader-Chromium-release/
-Crunchyroll Downloader/bin/x64/Debug - Kopie/WebInterface/inject_funimation.js
+*.bak

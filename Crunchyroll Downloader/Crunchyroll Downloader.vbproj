@@ -105,10 +105,6 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CEFRequestHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\CEFRequestHandler\CEFRequestHandler\bin\x64\Debug\CEFRequestHandler.dll</HintPath>
-    </Reference>
     <Reference Include="CefSharp, Version=101.0.150.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
       <HintPath>..\packages\CefSharp.Common.101.0.150\lib\net452\CefSharp.dll</HintPath>
     </Reference>
@@ -124,6 +120,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RequestHandler">
+      <HintPath>..\..\RequestHandler\RequestHandler\bin\x64\Debug\RequestHandler.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

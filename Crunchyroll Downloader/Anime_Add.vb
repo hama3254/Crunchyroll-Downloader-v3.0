@@ -636,7 +636,15 @@ Public Class Anime_Add
                 StatusLabel.Cursor = Cursors.Hand
                 StatusLabel.Text = "Status: items in queue, click me to work off."
             End If
+
+            If CBool(InStr(Main.Text, "Crunchyroll Downloader")) Or CBool(InStr(Main.Text, " downloads in queue")) Then
+                Main.Text = "Status: " + ListBox1.Items.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
+            End If
+
         Else
+            If CBool(InStr(Main.Text, " downloads in queue")) Then
+                Main.Text = "Crunchyroll Downloader"
+            End If
             StatusLabel.Cursor = Cursors.Default
         End If
     End Sub

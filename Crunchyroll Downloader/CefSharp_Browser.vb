@@ -94,7 +94,7 @@ Public Class CefSharp_Browser
 
     Private Sub GeckoFX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         AddHandler RequestResource.GetUrl, AddressOf ObserveHttp
-        WebBrowser1.RequestHandler = New CEFRequestHandler()
+        WebBrowser1.RequestHandler = New RequestEventHandler()
         Main.waveOutSetVolume(0, 0)
         If Me.Width > My.Computer.Screen.Bounds.Width Then
             Me.Width = My.Computer.Screen.Bounds.Width

@@ -1581,6 +1581,7 @@ Public Class Main
                                      Anime_Add.StatusLabel.Text = "Status: idle"
                                      Me.Text = "Crunchyroll Downloader"
                                      Me.Invalidate()
+                                     ResoBackString = Nothing
                                      Return Nothing
                                  End Function))
         Catch ex As Exception
@@ -2190,6 +2191,7 @@ Public Class Main
             Me.Invoke(New Action(Function() As Object
                                      Anime_Add.StatusLabel.Text = "Status: idle"
                                      Me.Text = "Crunchyroll Downloader"
+                                     ResoBackString = Nothing
                                      Me.Invalidate()
                                      Return Nothing
                                  End Function))
@@ -2197,6 +2199,7 @@ Public Class Main
             Me.Invoke(New Action(Function() As Object
                                      Anime_Add.StatusLabel.Text = "Status: idle"
                                      Me.Text = "Crunchyroll Downloader"
+                                     ResoBackString = Nothing
                                      Me.Invalidate()
                                      Return Nothing
                                  End Function))
@@ -4224,6 +4227,7 @@ Public Class Main
             Me.Invoke(New Action(Function() As Object
                                      Me.Text = "Crunchyroll Downloader"
                                      Anime_Add.StatusLabel.Text = "idle"
+                                     ResoBackString = Nothing
                                      Me.Invalidate()
                                      Return Nothing
                                  End Function))
@@ -4231,6 +4235,7 @@ Public Class Main
             Me.Invoke(New Action(Function() As Object
                                      Me.Text = "Crunchyroll Downloader!"
                                      Anime_Add.StatusLabel.Text = "idle"
+                                     ResoBackString = Nothing
                                      Me.Invalidate()
                                      Return Nothing
                                  End Function))
@@ -5124,8 +5129,8 @@ Public Class Main
 
     Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
         If ListBoxList.Count > 0 Then
-            If CBool(InStr(Me.Text, "Crunchyroll Downloader")) Then
-                Me.Text = "Status: " + ListBoxList.Count.ToString + " Downloads in queue" + vbNewLine + "open the add window to continue"
+            If CBool(InStr(Me.Text, "Crunchyroll Downloader")) Or CBool(InStr(Me.Text, " downloads in queue")) Then
+                Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
             End If
         End If
     End Sub

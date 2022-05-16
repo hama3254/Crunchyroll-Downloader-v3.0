@@ -4480,7 +4480,21 @@ Public Class Main
                     LoadedUrls.Clear()
                     Exit Sub
                 End If
+            ElseIf CBool(InStr(requesturl, "https://beta.crunchyroll.com/")) And CBool(InStr(requesturl, "streams?")) Then
+                If b = False Then
+                    GetBetaVideoProxy(requesturl, WebbrowserURL)
+                    b = True
+                    LoadedUrls.Clear()
+                    Exit Sub
+                End If
             ElseIf CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
+                If b = False Then
+                    GetBetaSeasons(requesturl)
+                    b = True
+                    LoadedUrls.Clear()
+                    Exit Sub
+                End If
+            ElseIf CBool(InStr(requesturl, "https://beta.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
                 If b = False Then
                     GetBetaSeasons(requesturl)
                     b = True

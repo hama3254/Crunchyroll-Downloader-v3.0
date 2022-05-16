@@ -255,6 +255,8 @@ Public Class CefSharp_Browser
             End If
         End If
         '
+        'Debug.WriteLine(e.RequestUrl)
+
         If CBool(InStr(e.RequestUrl, "?deviceType=web")) Then
             'Debug.WriteLine(e.RequestUrl)
             Dim parms As String() = e.RequestUrl.Split(New String() {"?deviceType="}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -298,7 +300,25 @@ Public Class CefSharp_Browser
                 Exit Sub
             End If
             Debug.WriteLine(e.RequestUrl)
+        ElseIf CBool(InStr(e.RequestUrl, "https://beta.crunchyroll.com/")) And CBool(InStr(e.RequestUrl, "streams?")) Then
+            If (Me.InvokeRequired) Then
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Exit Sub
+            Else
+                Main.LoadedUrls.Add(e.RequestUrl)
+                Exit Sub
+            End If
+            Debug.WriteLine(e.RequestUrl)
         ElseIf CBool(InStr(e.RequestUrl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(e.RequestUrl, "seasons?series_id=")) Then
+            If (Me.InvokeRequired) Then
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Exit Sub
+            Else
+                Main.LoadedUrls.Add(e.RequestUrl)
+                Exit Sub
+            End If
+            Debug.WriteLine(e.RequestUrl)
+        ElseIf CBool(InStr(e.RequestUrl, "https://beta.crunchyroll.com/")) And CBool(InStr(e.RequestUrl, "seasons?series_id=")) Then
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
                 Exit Sub
@@ -366,13 +386,26 @@ Public Class CefSharp_Browser
                 Main.b = True
             End If
 
-        ElseIf CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
+        ElseIf CBool(InStr(requesturl, "https://beta.crunchyroll.com/")) And CBool(InStr(requesturl, "streams?")) Then
+
+            If Main.b = False Then
+                Main.GetBetaVideoProxy(requesturl, Main.WebbrowserURL)
+                Main.b = True
+            End If
+
+        ElseIf CBool(InStr(requesturl, "https://beta.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
 
             If Main.b = False Then
                 Main.GetBetaSeasons(requesturl)
                 Main.b = True
             End If
 
+        ElseIf CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
+
+            If Main.b = False Then
+                Main.GetBetaSeasons(requesturl)
+                Main.b = True
+            End If
         End If
 
 

@@ -4791,7 +4791,7 @@ Public Class Main
                                 End If
                             Next
                             Me.Invoke(New Action(Function() As Object
-                                                     Me.Text = "Status: " + ListBoxList.Count.ToString + " Downloads in queue" + vbNewLine + "open the add window to continue"
+                                                     Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
                                                      Me.Invalidate()
                                                      Return Nothing
                                                  End Function))
@@ -4837,7 +4837,7 @@ Public Class Main
                                     End If
                                 Next
                                 Me.Invoke(New Action(Function() As Object
-                                                         Me.Text = "Status: " + ListBoxList.Count.ToString + " Downloads in queue" + vbNewLine + "open the add window to continue"
+                                                         Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
                                                          Me.Invalidate()
                                                          Return Nothing
                                                      End Function))
@@ -4938,7 +4938,7 @@ Public Class Main
                                     ListBoxList.Add(WebbrowserURL)
                                 End If
                                 Me.Invoke(New Action(Function() As Object
-                                                         Me.Text = "Status: " + ListBoxList.Count.ToString + " Downloads in queue"
+                                                         Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue"
                                                          Me.Invalidate()
                                                          Return Nothing
                                                      End Function))
@@ -5142,11 +5142,15 @@ Public Class Main
     End Sub
 
     Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
-        If ListBoxList.Count > 0 Then
-            If CBool(InStr(Me.Text, "Crunchyroll Downloader")) Or CBool(InStr(Me.Text, " downloads in queue")) Then
-                Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
+
+        If Application.OpenForms().OfType(Of Anime_Add).Any = False Then
+            If ListBoxList.Count > 0 Then
+                If CBool(InStr(Me.Text, "Crunchyroll Downloader")) Or CBool(InStr(Me.Text, " downloads in queue")) Then
+                    Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
+                End If
             End If
         End If
+
     End Sub
 
     Private Sub Main_Shown(sender As Object, e As EventArgs) Handles Me.Shown

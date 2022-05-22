@@ -749,9 +749,9 @@ Public Class Anime_Add
 
 
 
-    Private Sub TextBox2_Click(sender As Object, e As EventArgs) Handles textBox2.Click
-        If textBox2.Text = "Use Custom Name" Then
-            textBox2.Text = Nothing
+    Private Sub TextBox2_Click(sender As Object, e As EventArgs) Handles TextBox2.Click
+        If TextBox2.Text = "Use Custom Name" Then
+            TextBox2.Text = Nothing
 
         End If
     End Sub
@@ -859,8 +859,8 @@ Public Class Anime_Add
 
 
     Private Sub GroupBox1_VisibleChanged(sender As Object, e As EventArgs) Handles groupBox1.VisibleChanged
-        If Not textBox2.Text = "Use Custom Name" Then
-            textBox2.Text = "Use Custom Name"
+        If Not TextBox2.Text = "Use Custom Name" Then
+            TextBox2.Text = "Use Custom Name"
         End If
     End Sub
 

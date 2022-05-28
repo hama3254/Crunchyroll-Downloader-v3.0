@@ -24,6 +24,7 @@ Public Class Main
     Public CrBetaMassEpisodes As String = Nothing
     Public CrBetaMassParameters As String = Nothing
     Public CrBetaMassBaseURL As String = Nothing
+    Public CrBetaBasic As String = Nothing
     Public BlockList As List(Of String)
     Public LoadedUrls As New List(Of String)
     Public VRVMass As String = Nothing
@@ -1735,6 +1736,9 @@ Public Class Main
     End Sub
 
     Public Sub GetBetaVideo(ByVal Streams As String, ByVal WebsiteURL As String)
+        Debug.WriteLine(Streams)
+        Debug.WriteLine(vbCrLf)
+        Debug.WriteLine(WebsiteURL)
         Try
             Grapp_RDY = False
             Dim ffmpeg_command_temp As String = ffmpeg_command
@@ -5193,8 +5197,13 @@ Public Class Main
         End If
     End Sub
 
-    Private Sub ContextMenuStrip1_Opening(sender As Object, e As CancelEventArgs) Handles ContextMenuStrip1.Opening
 
+    Private Sub CheckCRBetaTokenToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckCRBetaTokenToolStripMenuItem.Click
+        If CrBetaBasic = Nothing Then
+            MsgBox("No CR Beta Basic Token has been found...", MsgBoxStyle.Exclamation)
+        Else
+            MsgBox("CR Beta Basic Token found!" + vbNewLine + CrBetaBasic, MsgBoxStyle.Information)
+        End If
     End Sub
 
 #End Region

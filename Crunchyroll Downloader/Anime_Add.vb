@@ -7,6 +7,8 @@ Imports System.Threading
 Imports MetroFramework.Forms
 Imports MetroFramework
 Imports MetroFramework.Components
+Imports CefSharp
+Imports System.Text
 
 Public Class Anime_Add
     Public Mass_DL_Cancel As Boolean = False
@@ -15,12 +17,160 @@ Public Class Anime_Add
     Public ThreadList As New List(Of Thread)
 
 
-
-
-
-
     Public Authorization As String = Nothing
     Public AuthorizationCookie As String = Nothing
+
+
+    Private Sub LoadBrowser(ByVal Url As String)
+        Dim locale As String = "en-US"
+        If CBool(InStr(Url, "beta.crunchyroll.com")) = True And CBool(InStr(Url, "watch")) = True And CBool(Main.CrBetaBasic = Nothing) = False Then
+#Region "Get Cookies"
+            Dim Cookies As String = "Cookie: "
+            Try
+                Dim Collector As New TaskCookieVisitor
+                Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
+                CM.VisitAllCookies(Collector)
+                Dim DeviceRegion As String = Nothing
+                Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
+                For i As Integer = 0 To list.Count - 1
+                    If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "_evidon_suppress")) = False Then
+                        Cookies = Cookies + list.Item(i).Name + "=" + list.Item(i).Value + ";"
+                    End If
+                    If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "c_locale")) Then
+                        locale = list.Item(i).Value
+                    End If
+                Next
+            Catch ex As Exception
+                CefSharp_Browser.WebBrowser1.Load(Url)
+                Exit Sub
+            End Try
+
+#End Region
+            Dim CRBetaBearer As String = "Bearer "
+            Try
+
+                Dim Request As HttpWebRequest = CType(WebRequest.Create("https://beta.crunchyroll.com/auth/v1/token"), HttpWebRequest)
+                Request.Method = "POST"
+                Request.ContentType = "application/x-www-form-urlencoded"
+                Request.Accept = "application/json, text/plain, */*"
+                'Request.Headers.Add("Accept-Language: de,en-US;q=0.7,en;q=0.3")
+                Request.Headers.Add("Accept-Encoding: identity")
+                Request.Headers.Add("Authorization: " + Main.CrBetaBasic)
+                'Request.Headers.Add("Referer:  " + Url)
+                Request.Referer = Url
+                Request.Headers.Add("Origin: https://beta.crunchyroll.com")
+                Request.Headers.Add(Cookies)
+                Dim Post As String = "grant_type=etp_rt_cookie"
+                Dim byteArray() As Byte = Encoding.UTF8.GetBytes(Post)
+                Request.ContentLength = byteArray.Length
+                Dim DataStream As Stream = Request.GetRequestStream()
+                DataStream.Write(byteArray, 0, byteArray.Length)
+                DataStream.Close()
+                Dim Response As HttpWebResponse = CType(Request.GetResponse(), HttpWebResponse)
+                DataStream = Response.GetResponseStream()
+                Dim reader As New StreamReader(DataStream)
+                Dim ServerResponseString As String = reader.ReadToEnd()
+                reader.Close()
+                DataStream.Close()
+                Response.Close()
+                'Debug.WriteLine(ServerResponseString)
+                Dim Token() As String = ServerResponseString.Split(New String() {Chr(34) + "access_token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Token2() As String = Token(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                CRBetaBearer = CRBetaBearer + Token2(0)
+            Catch ex As Exception
+                Debug.WriteLine(ex.ToString)
+                CefSharp_Browser.WebBrowser1.Load(Url)
+                Exit Sub
+            End Try
+
+            Dim ObjectsUrl As String = Nothing
+
+            Try
+                Using client As New WebClient()
+                    client.Encoding = System.Text.Encoding.UTF8
+                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    client.Headers.Add("ACCEPT: application/json, text/javascript, */*; q=0.01")
+                    client.Headers.Add("Accept-Encoding: identity")
+                    client.Headers.Add("Referer:  " + Url)
+                    client.Headers.Add("Authorization: " + CRBetaBearer)
+                    client.Headers.Add(Cookies) '+ WebBrowser1.Document.Cookie)
+                    'MsgBox(OmUStreamSplitEpisodeIndex(1))
+                    Dim v2Content As String = client.DownloadString("https://beta.crunchyroll.com/index/v2")
+                    'Debug.WriteLine(v2Content)
+
+                    Dim v2ContentBeta() As String = v2Content.Split(New String() {Chr(34) + "cms_beta" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                    Dim bucket() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "bucket" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim bucket2() As String = bucket(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim policy() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "policy" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim policy2() As String = policy(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim signature() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "signature" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim signature2() As String = signature(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim key_pair_id() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "key_pair_id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim key_pair_id2() As String = key_pair_id(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim ObjectsURLBuilder3() As String = Url.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                    ObjectsUrl = "https://beta.crunchyroll.com/cms/v2" + bucket2(0) + "/objects/" + ObjectsURLBuilder4(0) + "?locale=" + locale + "&Signature=" + signature2(0) + "&Policy=" + policy2(0) + "&Key-Pair-Id=" + key_pair_id2(0)
+                End Using
+
+
+                'Debug.WriteLine(ObjectsUrl)
+
+            Catch ex As Exception
+                CefSharp_Browser.WebBrowser1.Load(Url)
+                Exit Sub
+            End Try
+
+            Dim StreamsUrl As String = Nothing
+            Dim ObjectJson As String
+            Try
+                Try
+                    Using client As New WebClient()
+                        client.Encoding = System.Text.Encoding.UTF8
+                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                        ObjectJson = client.DownloadString(ObjectsUrl)
+                    End Using
+                Catch ex As Exception
+                    Debug.WriteLine("error- getting name data")
+                    Exit Sub
+                End Try
+
+            Catch ex As Exception
+                CefSharp_Browser.WebBrowser1.Load(Url)
+                Exit Sub
+            End Try
+
+            Try
+                Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim StreamsUrlBuilder3() As String = ObjectsUrl.Split(New String() {"objects/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim StreamsUrlBuilder4() As String = StreamsUrlBuilder3(1).Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                StreamsUrl = StreamsUrlBuilder3(0) + "videos/" + StreamsUrlBuilder2(0) + "/streams?" + StreamsUrlBuilder4(1)
+
+                ' Debug.WriteLine(StreamsUrl)
+            Catch ex As Exception
+                CefSharp_Browser.WebBrowser1.Load(Url)
+                Exit Sub
+            End Try
+
+            Main.GetBetaVideoProxy(StreamsUrl, Url)
+
+
+        Else
+            CefSharp_Browser.WebBrowser1.Load(Url)
+        End If
+
+
+    End Sub
 
     Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
         Try
@@ -242,7 +392,7 @@ Public Class Anime_Add
 
                                 Main.b = False
                                 Debug.WriteLine("Start loading: " + Date.Now.ToString)
-                                CefSharp_Browser.WebBrowser1.Load(textBox1.Text)
+                                LoadBrowser(textBox1.Text)
                                 StatusLabel.Text = "Status: loading ...."
 
                             End If
@@ -251,12 +401,12 @@ Public Class Anime_Add
 
 
                 ElseIf CBool(InStr(textBox1.Text, "Test=true")) Then
-                    CefSharp_Browser.WebBrowser1.Load(textBox1.Text)
+                    LoadBrowser(textBox1.Text)
                     'Else 'If CBool(InStr(textBox1.Text, "vrv.co")) Then
                 ElseIf CBool(InStr(textBox1.Text, "https://")) Then
                     If MessageBox.Show("This in NOT a Crunchyroll URL, try anyway?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         Main.b = False
-                        CefSharp_Browser.WebBrowser1.Load(textBox1.Text)
+                        LoadBrowser(textBox1.Text)
                         StatusLabel.Text = "Status: looking for non CR video file"
 
                     Else
@@ -562,7 +712,7 @@ Public Class Anime_Add
                 Debug.WriteLine("error- getting EpisodeJson data")
                 Debug.WriteLine(ex.ToString)
                 Main.FunimationJsonBrowser = "EpisodeJson"
-                CefSharp_Browser.WebBrowser1.Load(EpisodeJsonURL)
+                LoadBrowser(EpisodeJsonURL)
                 Exit Sub
             End Try
 
@@ -710,7 +860,7 @@ Public Class Anime_Add
                             Main.WebbrowserURL = UriUsed
                             ListBox1.Items.Remove(ListBox1.Items(0))
                             Main.b = False
-                            CefSharp_Browser.WebBrowser1.Load(UriUsed)
+                            LoadBrowser(UriUsed)
                             StatusLabel.Text = "Status: loading in browser"
                             Main.Text = "Status: loading in browser"
 
@@ -720,7 +870,7 @@ Public Class Anime_Add
                     Else
                         If Main.Grapp_RDY = True Then
                             Main.Grapp_RDY = False
-                            CefSharp_Browser.WebBrowser1.Load(ListBox1.GetItemText(ListBox1.Items(0)))
+                            LoadBrowser(ListBox1.GetItemText(ListBox1.Items(0)))
                             ListBox1.Items.Remove(ListBox1.Items(0))
                             Main.b = False
                             StatusLabel.Text = "Status: loading ..."

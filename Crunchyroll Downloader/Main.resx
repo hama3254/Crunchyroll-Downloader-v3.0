@@ -504,6 +504,12 @@
   <data name="&gt;&gt;TestDownloadToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;CheckCRBetaTokenToolStripMenuItem.Name" xml:space="preserve">
+    <value>CheckCRBetaTokenToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;CheckCRBetaTokenToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Main</value>
   </data>
@@ -520,25 +526,31 @@
     <value>966, 17</value>
   </metadata>
   <data name="ToggleDebugModeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>205, 22</value>
   </data>
   <data name="ToggleDebugModeToolStripMenuItem.Text" xml:space="preserve">
     <value>Toggle Debug Mode</value>
   </data>
   <data name="OpenSettingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>205, 22</value>
   </data>
   <data name="OpenSettingsToolStripMenuItem.Text" xml:space="preserve">
     <value>Open Settings</value>
   </data>
   <data name="TestDownloadToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>205, 22</value>
   </data>
   <data name="TestDownloadToolStripMenuItem.Text" xml:space="preserve">
-    <value>Check Token</value>
+    <value>Check Funimation Token</value>
+  </data>
+  <data name="CheckCRBetaTokenToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>205, 22</value>
+  </data>
+  <data name="CheckCRBetaTokenToolStripMenuItem.Text" xml:space="preserve">
+    <value>Check CR Beta Token</value>
   </data>
   <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 70</value>
+    <value>206, 92</value>
   </data>
   <data name="&gt;&gt;ContextMenuStrip1.Name" xml:space="preserve">
     <value>ContextMenuStrip1</value>

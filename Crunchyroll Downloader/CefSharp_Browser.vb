@@ -243,7 +243,7 @@ Public Class CefSharp_Browser
 
 
     Private Sub ObserveHttp(e As RequestResourceEventArgs) 'Handles RequestResource.GetUrl
-        'Debug.WriteLine(e.RequestUrl)
+        'Debug.WriteLine(e.Request.Url)
 
         If (Me.InvokeRequired) Then
             If Main.b = True And Main.FunimationJsonBrowser = Nothing Then
@@ -254,97 +254,119 @@ Public Class CefSharp_Browser
                 Exit Sub
             End If
         End If
-        '
-        'Debug.WriteLine(e.RequestUrl)
 
-        If CBool(InStr(e.RequestUrl, "?deviceType=web")) Then
-            'Debug.WriteLine(e.RequestUrl)
-            Dim parms As String() = e.RequestUrl.Split(New String() {"?deviceType="}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+        If (Me.InvokeRequired) Then
+            Me.Invoke(Sub()
+                          If CBool(InStr(e.Request.Url, "beta.crunchyroll.com")) = True And CBool(InStr(e.Request.Headers, "Basic ")) = True And Main.CrBetaBasic = Nothing Then
+                              Dim Basic As String() = e.Request.Headers.Split(New String() {"Basic "}, System.StringSplitOptions.RemoveEmptyEntries)
+                              Dim Basic2 As String() = Basic(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                              Main.CrBetaBasic = "Basic " + Basic2(0)
+                              Debug.WriteLine(Main.CrBetaBasic)
+                          End If
+                      End Sub)
+        Else
+            If CBool(InStr(e.Request.Url, "beta.crunchyroll.com")) = True And CBool(InStr(e.Request.Headers, "Basic ")) = True And Main.CrBetaBasic = Nothing Then
+                Dim Basic As String() = e.Request.Headers.Split(New String() {"Basic "}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Basic2 As String() = Basic(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                Main.CrBetaBasic = "Basic " + Basic2(0)
+                Debug.WriteLine(Main.CrBetaBasic)
+            End If
+        End If
+
+
+        '
+        'Debug.WriteLine(e.Request.Url)
+
+        If CBool(InStr(e.Request.Url, "?deviceType=web")) Then
+            'Debug.WriteLine(e.Request.Url)
+            Dim parms As String() = e.Request.Url.Split(New String() {"?deviceType="}, System.StringSplitOptions.RemoveEmptyEntries)
             Main.FunimationDeviceRegion = "?deviceType=" + parms(1)
 
         End If
-        If CBool(InStr(e.RequestUrl, "https://title-api.prd.funimationsvc.com")) Then
+        If CBool(InStr(e.Request.Url, "https://title-api.prd.funimationsvc.com")) Then
             If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
             Else
-                Main.LoadedUrls.Add(e.RequestUrl)
+                Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.RequestUrl)
-        ElseIf CBool(InStr(e.RequestUrl, "/data/v2/shows/")) Then
+            Debug.WriteLine(e.Request.Url)
+        ElseIf CBool(InStr(e.Request.Url, "/data/v2/shows/")) Then
             If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
             Else
-                Main.LoadedUrls.Add(e.RequestUrl)
+                Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.RequestUrl)
-        ElseIf CBool(InStr(e.RequestUrl, "/data/v1/episodes/")) Then
+            Debug.WriteLine(e.Request.Url)
+        ElseIf CBool(InStr(e.Request.Url, "/data/v1/episodes/")) Then
             If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
             Else
-                Main.LoadedUrls.Add(e.RequestUrl)
+                Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.RequestUrl)
+            Debug.WriteLine(e.Request.Url)
 
-        ElseIf CBool(InStr(e.RequestUrl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(e.RequestUrl, "streams?")) Then
+        ElseIf CBool(InStr(e.Request.Url, "https://beta-api.crunchyroll.com/")) And CBool(InStr(e.Request.Url, "streams?")) Then
             If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
             Else
-                Main.LoadedUrls.Add(e.RequestUrl)
+                Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.RequestUrl)
-        ElseIf CBool(InStr(e.RequestUrl, "https://beta.crunchyroll.com/")) And CBool(InStr(e.RequestUrl, "streams?")) Then
+            Debug.WriteLine(e.Request.Url)
+        ElseIf CBool(InStr(e.Request.Url, "https://beta.crunchyroll.com/")) And CBool(InStr(e.Request.Url, "streams?")) Then
             If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
             Else
-                Main.LoadedUrls.Add(e.RequestUrl)
+                Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.RequestUrl)
-        ElseIf CBool(InStr(e.RequestUrl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(e.RequestUrl, "seasons?series_id=")) Then
+            Debug.WriteLine(e.Request.Url)
+        ElseIf CBool(InStr(e.Request.Url, "https://beta-api.crunchyroll.com/")) And CBool(InStr(e.Request.Url, "seasons?series_id=")) Then
             If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
             Else
-                Main.LoadedUrls.Add(e.RequestUrl)
+                Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.RequestUrl)
-        ElseIf CBool(InStr(e.RequestUrl, "https://beta.crunchyroll.com/")) And CBool(InStr(e.RequestUrl, "seasons?series_id=")) Then
+            Debug.WriteLine(e.Request.Url)
+        ElseIf CBool(InStr(e.Request.Url, "https://beta.crunchyroll.com/")) And CBool(InStr(e.Request.Url, "seasons?series_id=")) Then
             If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
             Else
-                Main.LoadedUrls.Add(e.RequestUrl)
+                Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.RequestUrl)
-        ElseIf CBool(InStr(e.RequestUrl, "https://api.vrv.co")) And CBool(InStr(e.RequestUrl, "streams?")) Then
+            Debug.WriteLine(e.Request.Url)
+        ElseIf CBool(InStr(e.Request.Url, "https://api.vrv.co")) And CBool(InStr(e.Request.Url, "streams?")) Then
             If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
             Else
-                Main.LoadedUrls.Add(e.RequestUrl)
+                Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.RequestUrl)
-        ElseIf CBool(InStr(e.RequestUrl, "https://api.vrv.co")) And CBool(InStr(e.RequestUrl, "seasons?series_id=")) Then
+            Debug.WriteLine(e.Request.Url)
+        ElseIf CBool(InStr(e.Request.Url, "https://api.vrv.co")) And CBool(InStr(e.Request.Url, "seasons?series_id=")) Then
             If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.RequestUrl))
+                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
             Else
-                Main.LoadedUrls.Add(e.RequestUrl)
+                Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.RequestUrl)
+            Debug.WriteLine(e.Request.Url)
 
         End If
 
@@ -353,7 +375,7 @@ Public Class CefSharp_Browser
 
         Dim requesturl As String = Nothing
         Try
-            requesturl = e.RequestUrl
+            requesturl = e.Request.Url
         Catch ex As Exception
             Exit Sub
         End Try

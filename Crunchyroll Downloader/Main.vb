@@ -1749,6 +1749,7 @@ Public Class Main
             Dim CR_series_title As String = Nothing
             Dim CR_season_number As String = Nothing
             Dim CR_episode As String = Nothing
+            Dim CR_episode2 As String = Nothing
             Dim CR_Anime_Staffel_int As String = Nothing
             Dim CR_episode_int As String = Nothing
             Dim CR_title As String = Nothing
@@ -1796,6 +1797,7 @@ Public Class Main
                                 Try
                                     Dim Title As String = Entry("title").ToString
                                     CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "")
+                                    Debug.WriteLine(Date.Now.ToString + " CR-Title: " + CR_title)
                                 Catch ex As Exception
                                 End Try
                                 Dim SubData As List(Of JToken) = Entry.Children().ToList
@@ -1811,6 +1813,8 @@ Public Class Main
                                                     '    CR_season_title = SubEntry.Value.ToString
                                                     Case "season_number"
                                                         CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "")
+                                                    Case "episode_number"
+                                                        CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "")
                                                     Case "episode"
                                                         CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "")
                                                 End Select
@@ -1828,7 +1832,15 @@ Public Class Main
                         CR_season_number = Nothing
                     End If
                 End If
-                CR_episode_int = CR_episode
+
+                If CR_episode = Nothing And CR_episode2 = Nothing Then
+                ElseIf CR_episode = Nothing Then
+                    CR_episode_int = CR_episode2
+                ElseIf CR_episode2 = Nothing Then
+                    CR_episode_int = CR_episode
+                End If
+
+
                 If Season_Prefix = "[default season prefix]" Then
                     If CR_episode = Nothing Then 'no episode number means most likey a movie 
                         CR_season_number = Nothing
@@ -1844,14 +1856,30 @@ Public Class Main
                         CR_season_number = Season_Prefix + CR_season_number
                     End If
                 End If
-                If CR_episode = Nothing Then
-                ElseIf Episode_Prefix = "[default episode prefix]" Then
-                    CR_episode = "Episode " + AddLeadingZeros(CR_episode)
+
+
+
+
+                If Episode_Prefix = "[default episode prefix]" Then
+                    If CR_episode = Nothing And CR_episode2 = Nothing Then
+                        '    CR_episode = CR_title
+                    ElseIf CR_episode = Nothing Then
+                        CR_episode = "Episode " + AddLeadingZeros(CR_episode2)
+                    ElseIf CR_episode2 = Nothing Then
+                        CR_episode = "Episode " + AddLeadingZeros(CR_episode)
+                    End If
+                    'CR_episode = "Episode " + AddLeadingZeros(CR_episode)
                 Else
                     CR_episode = Episode_Prefix + AddLeadingZeros(CR_episode)
                 End If
+
+
                 If CR_NameMethode = 0 Then 'nummer
-                    If CR_season_number = Nothing Then
+                    If CR_season_number = Nothing And CR_episode = Nothing Then
+                        CR_FilenName = CR_series_title + " " + CR_title
+                    ElseIf CR_episode = Nothing Then
+                        CR_FilenName = CR_series_title + " " + CR_title
+                    ElseIf CR_season_number = Nothing Then
                         CR_FilenName = CR_series_title + " " + CR_episode
                     Else
                         CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_episode
@@ -1863,18 +1891,25 @@ Public Class Main
                         CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_title
                     End If
                 ElseIf CR_NameMethode = 2 Then ' nummer - name
-                    If CR_season_number = Nothing Then
+                    If CR_season_number = Nothing And CR_episode = Nothing Then
+                        CR_FilenName = CR_series_title + " " + CR_title
+                    ElseIf CR_season_number = Nothing Then
                         CR_FilenName = CR_series_title + " " + CR_episode + " " + CR_title
                     Else
                         CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_episode + " " + CR_title
                     End If
                 ElseIf CR_NameMethode = 3 Then ' name - nummer
-                    If CR_season_number = Nothing Then
+                    If CR_season_number = Nothing And CR_episode = Nothing Then
+                        CR_FilenName = CR_series_title + " " + CR_title
+                    ElseIf CR_season_number = Nothing Then
                         CR_FilenName = CR_series_title + " " + CR_title + " " + CR_episode
                     Else
                         CR_FilenName = CR_series_title + " " + CR_title + " " + CR_season_number + " " + CR_episode
                     End If
                 End If
+
+
+
                 If KodiNaming = True Then
                     Dim KodiString As String = "[S"
                     If CR_Anime_Staffel_int = "0" Then

@@ -1834,10 +1834,11 @@ Public Class Main
                 End If
 
                 If CR_episode = Nothing And CR_episode2 = Nothing Then
-                ElseIf CR_episode = Nothing Then
-                    CR_episode_int = CR_episode2
-                ElseIf CR_episode2 = Nothing Then
+                    CR_episode_int = "0"
+                ElseIf CR_episode IsNot Nothing Then
                     CR_episode_int = CR_episode
+                ElseIf CR_episode2 IsNot Nothing Then
+                    CR_episode_int = CR_episode2
                 End If
 
 
@@ -1862,11 +1863,11 @@ Public Class Main
 
                 If Episode_Prefix = "[default episode prefix]" Then
                     If CR_episode = Nothing And CR_episode2 = Nothing Then
-                        '    CR_episode = CR_title
-                    ElseIf CR_episode = Nothing Then
-                        CR_episode = "Episode " + AddLeadingZeros(CR_episode2)
-                    ElseIf CR_episode2 = Nothing Then
+                        CR_episode = CR_title
+                    ElseIf CR_episode IsNot Nothing Then
                         CR_episode = "Episode " + AddLeadingZeros(CR_episode)
+                    ElseIf CR_episode2 IsNot Nothing Then
+                        CR_episode = "Episode " + AddLeadingZeros(CR_episode2)
                     End If
                     'CR_episode = "Episode " + AddLeadingZeros(CR_episode)
                 Else

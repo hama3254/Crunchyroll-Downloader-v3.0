@@ -1796,7 +1796,7 @@ Public Class Main
                             For Each Entry As JObject In item.Values
                                 Try
                                     Dim Title As String = Entry("title").ToString
-                                    CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "")
+                                    CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                     Debug.WriteLine(Date.Now.ToString + " CR-Title: " + CR_title)
                                 Catch ex As Exception
                                 End Try
@@ -1808,15 +1808,15 @@ Public Class Main
                                             For Each SubEntry As JProperty In SubItem.Values
                                                 Select Case SubEntry.Name
                                                     Case "series_title"
-                                                        CR_series_title = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "")
+                                                        CR_series_title = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                     'Case "season_title"
                                                     '    CR_season_title = SubEntry.Value.ToString
                                                     Case "season_number"
-                                                        CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "")
+                                                        CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                     Case "episode_number"
-                                                        CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "")
+                                                        CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                     Case "episode"
-                                                        CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "")
+                                                        CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                 End Select
                                             Next
                                     End Select

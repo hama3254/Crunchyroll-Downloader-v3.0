@@ -37,10 +37,15 @@ Public Class ErrorDialog
             Dim lang_avalibe As String() = Main.ResoNotFoundString.Split(New String() {"hardsub_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
             For i As Integer = 1 To lang_avalibe.Count - 1
+                If CBool(InStr(lang_avalibe(i), "https://")) Then
+                Else
+                    Continue For
+                End If
                 If lang_avalibe(i).Substring(0, 1) = Chr(34) Then
                     ComboBox1.Items.Add("No Hardsubs")
                     Continue For 'Chr(34) +
                 End If
+                'MsgBox(lang_avalibe(i))
                 Dim langsplit As String() = lang_avalibe(i).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
                 ComboBox1.Items.Add(Main.HardSubValuesToDisplay(langsplit(0)))
             Next

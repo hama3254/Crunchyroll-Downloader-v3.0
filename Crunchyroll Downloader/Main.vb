@@ -2069,11 +2069,17 @@ Public Class Main
             Debug.WriteLine(CR_VideoJsonHardSubs.Count.ToString)
             Dim hls_List As New List(Of String)
             For i As Integer = 0 To CR_VideoJsonHardSubs.Count - 1
-                If CBool(InStr(CR_VideoJsonHardSubs(i), LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) Then
+                If LangNew = "" And CR_VideoJsonHardSubs(i).Substring(0, 1) = Chr(34) And CBool(InStr(CR_VideoJsonHardSubs(i), "https://")) Then
                     CR_URI_Master = CR_VideoJsonHardSubs(i).Replace(LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34), "").Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)(0)
+                    Debug.WriteLine("Nothing+works")
+                    Exit For
+                ElseIf LangNew IsNot "" And CBool(InStr(CR_VideoJsonHardSubs(i), LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) And CBool(InStr(CR_VideoJsonHardSubs(i), "https://")) Then
+                    CR_URI_Master = CR_VideoJsonHardSubs(i).Replace(LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34), "").Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)(0)
+                    Debug.WriteLine("Why are we here again?")
                     Exit For
                 End If
             Next
+
             If CR_URI_Master = Nothing Then
                 Me.Invoke(New Action(Function() As Object
                                          ResoNotFoundString = VideoJson
@@ -2095,6 +2101,7 @@ Public Class Main
                 End If
             End If
             CR_URI_Master = CR_URI_Master.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
+
             If CBool(InStr(CR_URI_Master, "master.m3u8")) Then
                 Me.Invoke(New Action(Function() As Object
                                          Anime_Add.StatusLabel.Text = "Status: m3u8 found, looking for resolution"
@@ -5238,7 +5245,10 @@ Public Class Main
         If CrBetaBasic = Nothing Then
             MsgBox("No CR Beta Basic Token has been found...", MsgBoxStyle.Exclamation)
         Else
-            MsgBox("CR Beta Basic Token found!" + vbNewLine + CrBetaBasic, MsgBoxStyle.Information)
+            If CBool(MessageBox.Show("CR Beta Basic Token found!" + vbNewLine + CrBetaBasic, "Token", MessageBoxButtons.YesNo) = DialogResult.Yes) Then
+                CrBetaBasic = Nothing
+            End If
+
         End If
     End Sub
 

@@ -37,9 +37,7 @@ Public Class Einstellungen
 
         Bitrate_Funi.SelectedIndex = Main.Funimation_Bitrate
 
-        If Main.IgnoreS1 = True Then
-            IgnoreS1.Checked = True
-        End If
+        CB_Ignore.SelectedIndex = Main.IgnoreSeason
 
         If Main.IncludeLangName = True Then
             CB_SoftSubSettings.SelectedIndex = 1
@@ -380,15 +378,11 @@ Public Class Einstellungen
 
 
 
-        If IgnoreS1.Checked = True Then
 
-            Main.IgnoreS1 = True
-            rk.SetValue("IgnoreS1", 1, RegistryValueKind.String)
-        Else
-            Main.IgnoreS1 = False
-            rk.SetValue("IgnoreS1", 0, RegistryValueKind.String)
 
-        End If
+        Main.IgnoreSeason = CB_Ignore.SelectedIndex
+        rk.SetValue("IgnoreS1", CB_Ignore.SelectedIndex, RegistryValueKind.String)
+
 
         If KodiSupport.Checked = True Then
             Main.KodiNaming = True

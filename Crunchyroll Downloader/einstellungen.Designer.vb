@@ -44,6 +44,8 @@ Partial Class Einstellungen
         Me.GroupBox18 = New System.Windows.Forms.GroupBox()
         Me.ListViewAdd_True = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox16 = New System.Windows.Forms.GroupBox()
+        Me.MetroLabel3 = New MetroFramework.Controls.MetroLabel()
+        Me.TempTB = New MetroFramework.Controls.MetroTextBox()
         Me.DD_DLMode = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.MergeMP4 = New MetroFramework.Controls.MetroCheckBox()
@@ -109,7 +111,6 @@ Partial Class Einstellungen
         Me.CB_SoftSubSettings = New MetroFramework.Controls.MetroComboBox()
         Me.GB_Filename_Pre = New System.Windows.Forms.GroupBox()
         Me.KodiSupport = New MetroFramework.Controls.MetroToggle()
-        Me.IgnoreS1 = New MetroFramework.Controls.MetroCheckBox()
         Me.MetroLink1 = New MetroFramework.Controls.MetroLink()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
         Me.DD_Episode_Prefix = New MetroFramework.Controls.MetroComboBox()
@@ -145,8 +146,7 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.MetroLabel3 = New MetroFramework.Controls.MetroLabel()
-        Me.TempTB = New MetroFramework.Controls.MetroTextBox()
+        Me.CB_Ignore = New MetroFramework.Controls.MetroComboBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -449,6 +449,50 @@ Partial Class Einstellungen
         Me.GroupBox16.TabStop = False
         Me.GroupBox16.Text = "Download Mode"
         '
+        'MetroLabel3
+        '
+        Me.MetroLabel3.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.MetroLabel3.Location = New System.Drawing.Point(6, 64)
+        Me.MetroLabel3.Name = "MetroLabel3"
+        Me.MetroLabel3.Size = New System.Drawing.Size(469, 22)
+        Me.MetroLabel3.TabIndex = 19
+        Me.MetroLabel3.Text = "Temporary Folder"
+        Me.MetroLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'TempTB
+        '
+        '
+        '
+        '
+        Me.TempTB.CustomButton.Image = Nothing
+        Me.TempTB.CustomButton.Location = New System.Drawing.Point(445, 1)
+        Me.TempTB.CustomButton.Name = ""
+        Me.TempTB.CustomButton.Size = New System.Drawing.Size(23, 23)
+        Me.TempTB.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.TempTB.CustomButton.TabIndex = 1
+        Me.TempTB.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.TempTB.CustomButton.UseSelectable = True
+        Me.TempTB.CustomButton.Visible = False
+        Me.TempTB.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.TempTB.Lines = New String() {"https://www.crunchyroll.com/"}
+        Me.TempTB.Location = New System.Drawing.Point(6, 90)
+        Me.TempTB.MaxLength = 32767
+        Me.TempTB.Name = "TempTB"
+        Me.TempTB.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.TempTB.ReadOnly = True
+        Me.TempTB.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.TempTB.SelectedText = ""
+        Me.TempTB.SelectionLength = 0
+        Me.TempTB.SelectionStart = 0
+        Me.TempTB.ShortcutsEnabled = True
+        Me.TempTB.Size = New System.Drawing.Size(469, 25)
+        Me.TempTB.TabIndex = 20
+        Me.TempTB.Text = "https://www.crunchyroll.com/"
+        Me.TempTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TempTB.UseSelectable = True
+        Me.TempTB.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.TempTB.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        '
         'DD_DLMode
         '
         Me.DD_DLMode.DropDownHeight = 250
@@ -545,43 +589,43 @@ Partial Class Einstellungen
         'ListC1
         '
         Me.ListC1.Name = "ListC1"
-        Me.ListC1.Size = New System.Drawing.Size(172, 22)
+        Me.ListC1.Size = New System.Drawing.Size(180, 22)
         Me.ListC1.Text = "-c copy"
         '
         'ListC2
         '
         Me.ListC2.Name = "ListC2"
-        Me.ListC2.Size = New System.Drawing.Size(172, 22)
+        Me.ListC2.Size = New System.Drawing.Size(180, 22)
         Me.ListC2.Text = "-c:v h264_nvenc "
         '
         'ListC3
         '
         Me.ListC3.Name = "ListC3"
-        Me.ListC3.Size = New System.Drawing.Size(172, 22)
+        Me.ListC3.Size = New System.Drawing.Size(180, 22)
         Me.ListC3.Text = "-c:v hevc_nvenc"
         '
         'ListC4
         '
         Me.ListC4.Name = "ListC4"
-        Me.ListC4.Size = New System.Drawing.Size(172, 22)
+        Me.ListC4.Size = New System.Drawing.Size(180, 22)
         Me.ListC4.Text = "-c:v libx264"
         '
         'ListC5
         '
         Me.ListC5.Name = "ListC5"
-        Me.ListC5.Size = New System.Drawing.Size(172, 22)
+        Me.ListC5.Size = New System.Drawing.Size(180, 22)
         Me.ListC5.Text = "-c:v libx265"
         '
         'ListC6
         '
         Me.ListC6.Name = "ListC6"
-        Me.ListC6.Size = New System.Drawing.Size(172, 22)
+        Me.ListC6.Size = New System.Drawing.Size(180, 22)
         Me.ListC6.Text = "-c:v h264_amf"
         '
         'ListC7
         '
         Me.ListC7.Name = "ListC7"
-        Me.ListC7.Size = New System.Drawing.Size(172, 22)
+        Me.ListC7.Size = New System.Drawing.Size(180, 22)
         Me.ListC7.Text = "-c:v hevc_amf"
         '
         'FFMPEG_CommandP2
@@ -799,10 +843,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage1.Size = New System.Drawing.Size(501, 528)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1042,7 +1086,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 1
+        Me.TabControl1.SelectedIndex = 2
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1056,9 +1100,9 @@ Partial Class Einstellungen
         Me.MetroTabPage2.HorizontalScrollbarBarColor = True
         Me.MetroTabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage2.HorizontalScrollbarSize = 10
-        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 35)
+        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 44)
         Me.MetroTabPage2.Name = "MetroTabPage2"
-        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 528)
+        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 519)
         Me.MetroTabPage2.TabIndex = 8
         Me.MetroTabPage2.Text = "Naming"
         Me.MetroTabPage2.VerticalScrollbarBarColor = True
@@ -1137,8 +1181,8 @@ Partial Class Einstellungen
         'GB_Filename_Pre
         '
         Me.GB_Filename_Pre.BackColor = System.Drawing.Color.Transparent
+        Me.GB_Filename_Pre.Controls.Add(Me.CB_Ignore)
         Me.GB_Filename_Pre.Controls.Add(Me.KodiSupport)
-        Me.GB_Filename_Pre.Controls.Add(Me.IgnoreS1)
         Me.GB_Filename_Pre.Controls.Add(Me.MetroLink1)
         Me.GB_Filename_Pre.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Filename_Pre.ForeColor = System.Drawing.Color.Black
@@ -1158,17 +1202,6 @@ Partial Class Einstellungen
         Me.KodiSupport.TabIndex = 11
         Me.KodiSupport.Text = "Aus"
         Me.KodiSupport.UseSelectable = True
-        '
-        'IgnoreS1
-        '
-        Me.IgnoreS1.AutoSize = True
-        Me.IgnoreS1.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.IgnoreS1.Location = New System.Drawing.Point(250, 27)
-        Me.IgnoreS1.Name = "IgnoreS1"
-        Me.IgnoreS1.Size = New System.Drawing.Size(227, 19)
-        Me.IgnoreS1.TabIndex = 19
-        Me.IgnoreS1.Text = "ignore Season 1 for the file name"
-        Me.IgnoreS1.UseSelectable = True
         '
         'MetroLink1
         '
@@ -1269,10 +1302,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage6.Size = New System.Drawing.Size(501, 528)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = " Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1640,49 +1673,19 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'MetroLabel3
+        'CB_Ignore
         '
-        Me.MetroLabel3.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel3.Location = New System.Drawing.Point(6, 64)
-        Me.MetroLabel3.Name = "MetroLabel3"
-        Me.MetroLabel3.Size = New System.Drawing.Size(469, 22)
-        Me.MetroLabel3.TabIndex = 19
-        Me.MetroLabel3.Text = "Temporary Folder"
-        Me.MetroLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'TempTB
-        '
-        '
-        '
-        '
-        Me.TempTB.CustomButton.Image = Nothing
-        Me.TempTB.CustomButton.Location = New System.Drawing.Point(445, 1)
-        Me.TempTB.CustomButton.Name = ""
-        Me.TempTB.CustomButton.Size = New System.Drawing.Size(23, 23)
-        Me.TempTB.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.TempTB.CustomButton.TabIndex = 1
-        Me.TempTB.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.TempTB.CustomButton.UseSelectable = True
-        Me.TempTB.CustomButton.Visible = False
-        Me.TempTB.FontSize = MetroFramework.MetroTextBoxSize.Medium
-        Me.TempTB.Lines = New String() {"https://www.crunchyroll.com/"}
-        Me.TempTB.Location = New System.Drawing.Point(6, 90)
-        Me.TempTB.MaxLength = 32767
-        Me.TempTB.Name = "TempTB"
-        Me.TempTB.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.TempTB.ReadOnly = True
-        Me.TempTB.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.TempTB.SelectedText = ""
-        Me.TempTB.SelectionLength = 0
-        Me.TempTB.SelectionStart = 0
-        Me.TempTB.ShortcutsEnabled = True
-        Me.TempTB.Size = New System.Drawing.Size(469, 25)
-        Me.TempTB.TabIndex = 20
-        Me.TempTB.Text = "https://www.crunchyroll.com/"
-        Me.TempTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.TempTB.UseSelectable = True
-        Me.TempTB.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.TempTB.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        Me.CB_Ignore.DropDownHeight = 250
+        Me.CB_Ignore.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_Ignore.FormattingEnabled = True
+        Me.CB_Ignore.IntegralHeight = False
+        Me.CB_Ignore.ItemHeight = 23
+        Me.CB_Ignore.Items.AddRange(New Object() {"[Default] use season numbers", "ignore Season 1", "ignore all season numbers"})
+        Me.CB_Ignore.Location = New System.Drawing.Point(248, 21)
+        Me.CB_Ignore.Name = "CB_Ignore"
+        Me.CB_Ignore.Size = New System.Drawing.Size(225, 29)
+        Me.CB_Ignore.TabIndex = 40
+        Me.CB_Ignore.UseSelectable = True
         '
         'Einstellungen
         '
@@ -1866,7 +1869,6 @@ Partial Class Einstellungen
     Friend WithEvents MetroLink1 As MetroFramework.Controls.MetroLink
     Friend WithEvents GroupBox12 As GroupBox
     Friend WithEvents LeadingZeroDD As MetroFramework.Controls.MetroComboBox
-    Friend WithEvents IgnoreS1 As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents DD_Episode_Prefix As MetroFramework.Controls.MetroComboBox
     Friend WithEvents DD_Season_Prefix As MetroFramework.Controls.MetroComboBox
     Friend WithEvents CR_Filename As MetroFramework.Controls.MetroComboBox
@@ -1878,4 +1880,5 @@ Partial Class Einstellungen
     Friend WithEvents ListViewAdd_True As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents MetroLabel3 As MetroFramework.Controls.MetroLabel
     Friend WithEvents TempTB As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents CB_Ignore As MetroFramework.Controls.MetroComboBox
 End Class

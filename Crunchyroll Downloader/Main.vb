@@ -65,7 +65,8 @@ Public Class Main
     Public LogBrowserData As Boolean = False
     Public Thumbnail As String = Nothing
     Public MergeSubs As Boolean = False
-    Public IgnoreS1 As Boolean = False
+    'Public IgnoreS1 As Boolean = False
+    Public IgnoreSeason As Integer = 0
     Public KeepCache As Boolean = False
     Public SubsOnly As Boolean = False
     Public VideoFormat As String = ".mp4"
@@ -587,11 +588,11 @@ Public Class Main
 
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            IgnoreS1 = CBool(Integer.Parse(rkg.GetValue("IgnoreS1").ToString))
+            IgnoreSeason = Integer.Parse(rkg.GetValue("IgnoreS1").ToString)
         Catch ex As Exception
             Try
                 Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-                IgnoreS1 = CBool(Integer.Parse(rkg.GetValue("IgnoreS1").ToString))
+                IgnoreSeason = Integer.Parse(rkg.GetValue("IgnoreS1").ToString)
             Catch ex2 As Exception
             End Try
         End Try
@@ -1746,8 +1747,10 @@ Public Class Main
                 Dim ffmpeg_command_Builder() As String = ffmpeg_command.Split(New String() {"-c:a copy"}, System.StringSplitOptions.RemoveEmptyEntries)
                 ffmpeg_command_temp = "-c:a copy" + ffmpeg_command_Builder(1)
             End If
+            Dim CR_Streams As New List(Of CR_Beta_Stream)
             Dim CR_series_title As String = Nothing
             Dim CR_season_number As String = Nothing
+            Dim CR_season_number2 As String = Nothing
             Dim CR_episode As String = Nothing
             Dim CR_episode2 As String = Nothing
             Dim CR_Anime_Staffel_int As String = Nothing
@@ -1827,11 +1830,8 @@ Public Class Main
                 'My.Computer.Clipboard.SetText(ObjectJson)
                 '
                 CR_Anime_Staffel_int = CR_season_number
-                If IgnoreS1 = True Then
-                    If CR_season_number = "1" Or CR_season_number = "0" Then
-                        CR_season_number = Nothing
-                    End If
-                End If
+
+
 
                 If CR_episode = Nothing And CR_episode2 = Nothing Then
                     CR_episode_int = "0"
@@ -1858,7 +1858,13 @@ Public Class Main
                     End If
                 End If
 
+                CR_season_number2 = CR_season_number
 
+                If IgnoreSeason = 1 And CR_season_number = "1" Or IgnoreSeason = 1 And CR_season_number = "0" Then
+                    CR_season_number = Nothing
+                ElseIf IgnoreSeason = 2 Then
+                    CR_season_number = Nothing
+                End If
 
 
                 If Episode_Prefix = "[default episode prefix]" Then
@@ -1918,10 +1924,7 @@ Public Class Main
                     Else
                         CR_Anime_Staffel_int = "0" + CR_Anime_Staffel_int
                     End If
-                    'Dim CR_episode_nr As String = CR_episode_int
-                    'If CR_episode_nr.Length = 1 Then
-                    '    CR_episode_nr = "0" + CR_episode_nr
-                    'End If
+
                     KodiString = KodiString + CR_Anime_Staffel_int + " E" + AddLeadingZeros(CR_episode_int) ' CR_episode_nr
                     KodiString = KodiString + "] "
                     CR_FilenName = KodiString + CR_FilenName
@@ -1934,7 +1937,7 @@ Public Class Main
             CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = RemoveExtraSpaces(CR_FilenName)
             'My.Computer.FileSystem.WriteAllText("log.log", WebbrowserText, False)
-            Pfad2 = UseSubfolder(CR_series_title, CR_season_number, Pfad)
+            Pfad2 = UseSubfolder(CR_series_title, CR_season_number2, Pfad)
             If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
                 ' Nein! Jetzt erstellen...
                 Try
@@ -1961,17 +1964,17 @@ Public Class Main
                 Debug.WriteLine("error- getting stream data")
                 Exit Sub
             End Try
-            Dim hls_type As String = Nothing
-            If CBool(InStr(VideoJson, Chr(34) + "adaptive_hls")) = True Then
-                hls_type = "adaptive_hls"
-            ElseIf CBool(InStr(VideoJson, Chr(34) + "multitrack_adaptive_hls_v2")) = True Then
-                hls_type = "multitrack_adaptive_hls_v2"
-            ElseIf CBool(InStr(VideoJson, Chr(34) + "vo_adaptive_hls")) = True Then
-                hls_type = "vo_adaptive_hls"
-            Else
-                MsgBox("No download stream avalible", MsgBoxStyle.Critical)
-                Exit Sub
-            End If
+            'Dim hls_type As String = Nothing
+            'If CBool(InStr(VideoJson, Chr(34) + "adaptive_hls")) = True Then
+            '    hls_type = "adaptive_hls"
+            'ElseIf CBool(InStr(VideoJson, Chr(34) + "multitrack_adaptive_hls_v2")) = True Then
+            '    hls_type = "multitrack_adaptive_hls_v2"
+            'ElseIf CBool(InStr(VideoJson, Chr(34) + "vo_adaptive_hls")) = True Then
+            '    hls_type = "vo_adaptive_hls"
+            'Else
+            '    MsgBox("No download stream avalible", MsgBoxStyle.Critical)
+            '    Exit Sub
+            'End If
             'Me.Invoke(New Action(Function() As Object
             '                         My.Computer.Clipboard.SetText(VideoJson)
             '                         Return Nothing
@@ -2055,30 +2058,66 @@ Public Class Main
             End If
 #End Region
 #Region "m3u8 suche"
-            If CBool(InStr(VideoJson, "audio_locale")) Then
-                Dim CR_audio As String() = VideoJson.Split(New String() {"audio_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim CR_audio2 As String() = CR_audio(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                CR_audio_locale = String.Join(" ", CR_audio2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
-            End If
-            Dim CR_URI_Master As String = Nothing
-            'If SubsOnly = False Then
-            Dim ii As Integer = 0
-            Dim CR_VideoJson As String() = VideoJson.Split(New String() {hls_type}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim CR_VideoJsonHardSubs As String() = CR_VideoJson(1).Split(New String() {"hardsub_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Debug.WriteLine(LangNew)
-            Debug.WriteLine(CR_VideoJsonHardSubs.Count.ToString)
-            Dim hls_List As New List(Of String)
-            For i As Integer = 0 To CR_VideoJsonHardSubs.Count - 1
-                If LangNew = "" And CR_VideoJsonHardSubs(i).Substring(0, 1) = Chr(34) And CBool(InStr(CR_VideoJsonHardSubs(i), "https://")) Then
-                    CR_URI_Master = CR_VideoJsonHardSubs(i).Replace(LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34), "").Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)(0)
-                    Debug.WriteLine("Nothing+works")
-                    Exit For
-                ElseIf LangNew IsNot "" And CBool(InStr(CR_VideoJsonHardSubs(i), LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) And CBool(InStr(CR_VideoJsonHardSubs(i), "https://")) Then
-                    CR_URI_Master = CR_VideoJsonHardSubs(i).Replace(LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34), "").Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)(0)
-                    Debug.WriteLine("Why are we here again?")
-                    Exit For
-                End If
+
+
+            VideoJson = CleanJSON(VideoJson)
+            Dim VideoJObject As JObject = JObject.Parse(VideoJson)
+            Dim VideoData As List(Of JToken) = VideoJObject.Children().ToList
+            For Each item As JProperty In VideoData
+                item.CreateReader()
+                Select Case item.Name
+                    Case "audio_locale"
+                        Dim Title As String = item.Value.ToString
+                        CR_audio_locale = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+
+                    Case "streams" 'each record is inside the entries array
+                        For Each Entry As JProperty In item.Values
+
+                            Dim JsonEntryFormat As String = Entry.Name
+                            If CBool(InStr(JsonEntryFormat, "drm")) Or CBool(InStr(JsonEntryFormat, "dash")) Or CBool(InStr(JsonEntryFormat, "download")) Then
+                                Continue For
+                            End If
+
+
+                            Dim SubData As List(Of JToken) = Entry.Children().ToList
+                            For Each SubItem As JObject In SubData
+                                SubItem.CreateReader()
+
+                                Dim StreamFormats As List(Of JToken) = SubItem.Children().ToList
+
+
+                                For Each HardsubStreams As JProperty In StreamFormats
+                                    HardsubStreams.CreateReader()
+                                    Dim SubLang As String = HardsubStreams.Name
+                                    Dim Url As String = HardsubStreams.Value("url").ToString
+                                    If SubLang = Nothing Or SubLang = "" Then
+                                        SubLang = ""
+                                    End If
+                                    CR_Streams.Add(New CR_Beta_Stream(CR_audio_locale, SubLang, JsonEntryFormat, Url))
+
+                                Next
+                            Next
+                        Next
+                End Select
             Next
+
+            Dim CR_URI_Master As String = Nothing
+
+            'Me.Invoke(New Action(Function() As Object
+            '                         MsgBox(CR_Streams.Count.ToString + vbNewLine + LangNew)
+            '                         Return Nothing
+            '                     End Function))
+
+
+
+            For i As Integer = 0 To CR_Streams.Count - 1
+                Debug.WriteLine(CR_Streams.Item(i).subLang)
+                If CR_Streams.Item(i).subLang = LangNew Then
+                    CR_URI_Master = CR_Streams.Item(i).Url
+                End If
+
+            Next
+
 
             If CR_URI_Master = Nothing Then
                 Me.Invoke(New Action(Function() As Object
@@ -2092,12 +2131,15 @@ Public Class Main
                 Else
                     LangNew = ResoBackString
                     ResoBackString = Nothing
-                    For i As Integer = 0 To CR_VideoJsonHardSubs.Count - 1
-                        If CBool(InStr(CR_VideoJsonHardSubs(i), LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) Then
-                            CR_URI_Master = CR_VideoJsonHardSubs(i).Replace(LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34), "").Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)(0)
-                            Exit For
+
+                    For i As Integer = 0 To CR_Streams.Count - 1
+                        Debug.WriteLine(CR_Streams.Item(i).subLang)
+                        If CR_Streams.Item(i).subLang = LangNew Then
+                            CR_URI_Master = CR_Streams.Item(i).Url
                         End If
+
                     Next
+
                 End If
             End If
             CR_URI_Master = CR_URI_Master.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
@@ -2317,6 +2359,7 @@ Public Class Main
                 Dim ffmpeg_command_Builder() As String = ffmpeg_command.Split(New String() {"-c:a copy"}, System.StringSplitOptions.RemoveEmptyEntries)
                 ffmpeg_command_temp = "-c:a copy" + ffmpeg_command_Builder(1)
             End If
+            Dim CR_Streams As New List(Of CR_Beta_Stream)
             Dim CR_series_title As String = Nothing
             Dim CR_season_number As String = Nothing
             Dim CR_episode As String = Nothing
@@ -2388,10 +2431,10 @@ Public Class Main
                 'My.Computer.Clipboard.SetText(ObjectJson)
                 '
                 CR_Anime_Staffel_int = CR_season_number
-                If IgnoreS1 = True Then
-                    If CR_season_number = "1" Or CR_season_number = "0" Then
-                        CR_season_number = Nothing
-                    End If
+                If IgnoreSeason = 1 And CR_season_number = "1" Or IgnoreSeason = 1 And CR_season_number = "0" Then
+                    CR_season_number = Nothing
+                ElseIf IgnoreSeason = 2 Then
+                    CR_season_number = Nothing
                 End If
                 CR_episode_int = CR_episode
                 If Season_Prefix = "[default season prefix]" Then
@@ -2497,19 +2540,7 @@ Public Class Main
                 Debug.WriteLine("error- getting stream data")
                 Exit Sub
             End Try
-            Dim hls_type As String = Nothing
-            If CBool(InStr(VideoJson, Chr(34) + "adaptive_hls")) = True Then
-                hls_type = "adaptive_hls"
-            ElseIf CBool(InStr(VideoJson, Chr(34) + "multitrack_adaptive_hls_v2")) = True Then
-                hls_type = "multitrack_adaptive_hls_v2"
-            ElseIf CBool(InStr(VideoJson, Chr(34) + "vo_adaptive_hls")) = True Then
-                hls_type = "vo_adaptive_hls"
-            Else
-                MsgBox("No download stream avalible", MsgBoxStyle.Critical)
-                Exit Sub
-            End If
-            'My.Computer.Clipboard.SetText(VideoJson)
-            'MsgBox(SubSprache)
+
             Dim LangNew As String = ConvertCC(SubSprache)
 #End Region
 #Region "Download softsub file or build ffmpeg cmd"
@@ -2586,45 +2617,62 @@ Public Class Main
             End If
 #End Region
 #Region "m3u8 suche"
-            If CBool(InStr(VideoJson, "audio_locale")) Then
-                Dim CR_audio As String() = VideoJson.Split(New String() {"audio_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim CR_audio2 As String() = CR_audio(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                CR_audio_locale = String.Join(" ", CR_audio2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
-            End If
-            Dim CR_URI_Master As String = Nothing
-            'If SubsOnly = False Then
-            Dim ii As Integer = 0
-            Dim CR_VideoJson As String() = VideoJson.Split(New String() {hls_type}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim CR_VideoJsonHardSubs As String() = CR_VideoJson(1).Split(New String() {"hardsub_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Debug.WriteLine(LangNew)
-            Debug.WriteLine(CR_VideoJsonHardSubs.Count.ToString)
-            Dim hls_List As New List(Of String)
-            For i As Integer = 0 To CR_VideoJsonHardSubs.Count - 1
-                If CBool(InStr(CR_VideoJsonHardSubs(i), LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) Then
-                    CR_URI_Master = CR_VideoJsonHardSubs(i).Replace(LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34), "").Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)(0)
-                    Exit For
-                End If
+
+            VideoJson = CleanJSON(VideoJson)
+            Dim VideoJObject As JObject = JObject.Parse(VideoJson)
+            Dim VideoData As List(Of JToken) = VideoJObject.Children().ToList
+            For Each item As JProperty In VideoData
+                item.CreateReader()
+                Select Case item.Name
+                    Case "audio_locale"
+                        Dim Title As String = item.Value.ToString
+                        CR_audio_locale = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+
+                    Case "streams" 'each record is inside the entries array
+                        For Each Entry As JProperty In item.Values
+
+                            Dim JsonEntryFormat As String = Entry.Name
+                            If CBool(InStr(JsonEntryFormat, "drm")) Or CBool(InStr(JsonEntryFormat, "dash")) Or CBool(InStr(JsonEntryFormat, "download")) Then
+                                Continue For
+                            End If
+
+
+                            Dim SubData As List(Of JToken) = Entry.Children().ToList
+                            For Each SubItem As JObject In SubData
+                                SubItem.CreateReader()
+
+                                Dim StreamFormats As List(Of JToken) = SubItem.Children().ToList
+
+
+                                For Each HardsubStreams As JProperty In StreamFormats
+                                    HardsubStreams.CreateReader()
+                                    Dim SubLang As String = HardsubStreams.Name
+                                    Dim Url As String = HardsubStreams.Value.ToString
+                                    If SubLang = Nothing Or SubLang = "" Then
+                                        SubLang = "null"
+                                    End If
+                                    CR_Streams.Add(New CR_Beta_Stream(CR_audio_locale, SubLang, JsonEntryFormat, Url))
+
+                                Next
+                            Next
+                        Next
+                End Select
             Next
-            If CR_URI_Master = Nothing Then
-                Me.Invoke(New Action(Function() As Object
-                                         ResoNotFoundString = VideoJson
-                                         DialogTaskString = "Language_CR_Beta"
-                                         ErrorDialog.ShowDialog()
-                                         Return Nothing
-                                     End Function))
-                If UserCloseDialog = True Then
-                    Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
-                Else
-                    LangNew = ResoBackString
-                    ResoBackString = Nothing
-                    For i As Integer = 0 To CR_VideoJsonHardSubs.Count - 1
-                        If CBool(InStr(CR_VideoJsonHardSubs(i), LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) Then
-                            CR_URI_Master = CR_VideoJsonHardSubs(i).Replace(LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34), "").Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)(0)
-                            Exit For
-                        End If
-                    Next
+
+            Dim CR_URI_Master As String = Nothing
+
+
+            For i As Integer = 0 To CR_Streams.Count - 1
+
+                If CR_Streams.Item(i).subLang = LangNew Then
+                    Debug.WriteLine(CR_Streams.Item(i).subLang)
+                    CR_URI_Master = CR_Streams.Item(i).Url
                 End If
-            End If
+
+            Next
+
+
+
             CR_URI_Master = CR_URI_Master.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
             If CBool(InStr(CR_URI_Master, "master.m3u8")) Then
                 Me.Invoke(New Action(Function() As Object
@@ -5302,6 +5350,23 @@ Public Class FunimationStream
     End Function
 End Class
 
+Public Class CR_Beta_Stream
+    Public audioLanguage As String
+    Public Url As String
+    Public subLang As String
+    Public Format As String
+    Public Sub New(ByVal audioLanguage As String, ByVal subLang As String, ByVal Format As String, ByVal Url As String)
+        Me.subLang = subLang
+        Me.Url = Url
+        Me.audioLanguage = audioLanguage
+        Me.Format = Format
+    End Sub
+
+    Public Overrides Function ToString() As String
+        Return String.Format("{0}, {1}, {2}", Me.audioLanguage, Me.subLang, Me.Format, Me.Url)
+    End Function
+
+End Class
 Public Class ServerResponse
 
     Public Type As String

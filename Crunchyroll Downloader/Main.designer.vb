@@ -47,6 +47,8 @@ Partial Class Main
         Me.OpenSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TestDownloadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckCRBetaTokenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AddonHTMLToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Timer3OffToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -180,7 +182,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -203,6 +205,16 @@ Partial Class Main
         '
         Me.CheckCRBetaTokenToolStripMenuItem.Name = "CheckCRBetaTokenToolStripMenuItem"
         resources.ApplyResources(Me.CheckCRBetaTokenToolStripMenuItem, "CheckCRBetaTokenToolStripMenuItem")
+        '
+        'AddonHTMLToolStripMenuItem
+        '
+        Me.AddonHTMLToolStripMenuItem.Name = "AddonHTMLToolStripMenuItem"
+        resources.ApplyResources(Me.AddonHTMLToolStripMenuItem, "AddonHTMLToolStripMenuItem")
+        '
+        'Timer3OffToolStripMenuItem
+        '
+        Me.Timer3OffToolStripMenuItem.Name = "Timer3OffToolStripMenuItem"
+        resources.ApplyResources(Me.Timer3OffToolStripMenuItem, "Timer3OffToolStripMenuItem")
         '
         'Main
         '
@@ -256,4 +268,6 @@ Partial Class Main
     Friend WithEvents OpenSettingsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TestDownloadToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CheckCRBetaTokenToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AddonHTMLToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Timer3OffToolStripMenuItem As ToolStripMenuItem
 End Class

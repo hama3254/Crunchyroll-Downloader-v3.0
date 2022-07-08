@@ -330,7 +330,7 @@ Public Class network_scan
             Dim L1Name As String = L1Name_Split(1)
             Me.Invoke(New Action(Function() As Object
                                      Main.ListItemAdd(Main.Pfad, L1Name, Title, DisplayReso, "Unknown", "None", "", m3u8Final, Pfad2)
-                                     Main.liList.Add(My.Resources.htmlvorThumbnail + "" + My.Resources.htmlnachTumbnail + "<br>" + Title + My.Resources.htmlvorAufloesung + "[Auto]" + My.Resources.htmlvorSoftSubs + vbNewLine + "None" + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + Title + "-->")
+                                     'Main.liList.Add(My.Resources.htmlvorThumbnail + "" + My.Resources.htmlnachTumbnail + "<br>" + Title + My.Resources.htmlvorAufloesung + "[Auto]" + My.Resources.htmlvorSoftSubs + vbNewLine + "None" + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + Title + "-->")
                                      Return Nothing
                                  End Function))
         Else
@@ -432,7 +432,7 @@ Public Class network_scan
                 Dim L1Name As String = L1Name_Split(1)
                 Me.Invoke(New Action(Function() As Object
                                          Main.ListItemAdd(Main.Pfad, L1Name, Title, DisplayReso, "Unknown", "None", thumbnail4, m3u8Final, Pfad2)
-                                         Main.liList.Add(My.Resources.htmlvorThumbnail + thumbnail4 + My.Resources.htmlnachTumbnail + "<br>" + Title + My.Resources.htmlvorAufloesung + "[Auto]" + My.Resources.htmlvorSoftSubs + vbNewLine + "None" + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + Title + "-->")
+                                         'Main.liList.Add(My.Resources.htmlvorThumbnail + thumbnail4 + My.Resources.htmlnachTumbnail + "<br>" + Title + My.Resources.htmlvorAufloesung + "[Auto]" + My.Resources.htmlvorSoftSubs + vbNewLine + "None" + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + Title + "-->")
                                          Return Nothing
                                      End Function))
             ElseIf ComboBox1.SelectedItem.ToString = "Subtile" Then

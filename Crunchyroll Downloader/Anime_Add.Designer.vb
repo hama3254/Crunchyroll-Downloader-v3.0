@@ -33,10 +33,10 @@ Partial Class Anime_Add
         Me.textBox1 = New MetroFramework.Controls.MetroTextBox()
         Me.TextBox2 = New MetroFramework.Controls.MetroTextBox()
         Me.groupBox2 = New System.Windows.Forms.GroupBox()
+        Me.bt_Cancel_mass = New System.Windows.Forms.Button()
         Me.comboBox4 = New MetroFramework.Controls.MetroComboBox()
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
         Me.comboBox3 = New MetroFramework.Controls.MetroComboBox()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Add_Display = New MetroFramework.Controls.MetroLabel()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.ListBox1 = New System.Windows.Forms.ListBox()
@@ -49,7 +49,6 @@ Partial Class Anime_Add
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.groupBox1.SuspendLayout()
         Me.groupBox2.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -230,10 +229,10 @@ Partial Class Anime_Add
         'groupBox2
         '
         Me.groupBox2.BackColor = System.Drawing.Color.Transparent
+        Me.groupBox2.Controls.Add(Me.bt_Cancel_mass)
         Me.groupBox2.Controls.Add(Me.comboBox4)
         Me.groupBox2.Controls.Add(Me.ComboBox1)
         Me.groupBox2.Controls.Add(Me.comboBox3)
-        Me.groupBox2.Controls.Add(Me.PictureBox1)
         Me.groupBox2.Controls.Add(Me.Add_Display)
         Me.groupBox2.Location = New System.Drawing.Point(15, 70)
         Me.groupBox2.Name = "groupBox2"
@@ -241,6 +240,20 @@ Partial Class Anime_Add
         Me.groupBox2.TabIndex = 44
         Me.groupBox2.TabStop = False
         Me.groupBox2.Visible = False
+        '
+        'bt_Cancel_mass
+        '
+        Me.bt_Cancel_mass.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.add_mass_cancel
+        Me.bt_Cancel_mass.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.bt_Cancel_mass.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.bt_Cancel_mass.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.bt_Cancel_mass.ForeColor = System.Drawing.SystemColors.Control
+        Me.bt_Cancel_mass.Location = New System.Drawing.Point(159, 231)
+        Me.bt_Cancel_mass.Name = "bt_Cancel_mass"
+        Me.bt_Cancel_mass.Size = New System.Drawing.Size(403, 36)
+        Me.bt_Cancel_mass.TabIndex = 37
+        Me.bt_Cancel_mass.Text = "Cancel"
+        Me.bt_Cancel_mass.UseVisualStyleBackColor = True
         '
         'comboBox4
         '
@@ -274,18 +287,6 @@ Partial Class Anime_Add
         Me.comboBox3.Size = New System.Drawing.Size(693, 29)
         Me.comboBox3.TabIndex = 1
         Me.comboBox3.UseSelectable = True
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox1.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.add_mass_cancel
-        Me.PictureBox1.Location = New System.Drawing.Point(159, 231)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(403, 36)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 45
-        Me.PictureBox1.TabStop = False
         '
         'Add_Display
         '
@@ -401,7 +402,6 @@ Partial Class Anime_Add
         Me.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center
         Me.groupBox1.ResumeLayout(False)
         Me.groupBox2.ResumeLayout(False)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).EndInit()
@@ -409,7 +409,6 @@ Partial Class Anime_Add
 
     End Sub
     Public WithEvents groupBox2 As GroupBox
-    Public WithEvents PictureBox1 As PictureBox
     Public WithEvents groupBox1 As GroupBox
     Public WithEvents GroupBox3 As GroupBox
     Friend WithEvents Timer1 As Timer
@@ -431,4 +430,5 @@ Partial Class Anime_Add
     Friend WithEvents btn_dl As Button
     Friend WithEvents Timer3 As Timer
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
+    Friend WithEvents bt_Cancel_mass As Button
 End Class

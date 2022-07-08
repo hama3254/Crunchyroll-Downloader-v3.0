@@ -47,7 +47,7 @@ Public Class Main
     Dim ServerThread As Thread
     Public KodiNaming As Boolean = False
     Public ErrorTolerance As Integer = 0
-    Public liList As New List(Of String)
+    'Public liList As New List(Of String)
     Public HTMLString As String = My.Resources.Startuphtml
     Public ListBoxList As New List(Of String)
     Public ItemList As New List(Of CRD_List_Item)
@@ -676,22 +676,13 @@ Public Class Main
     End Sub
 
     Public Sub ListItemAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String, Optional Service As String = "CR") ', ByVal AudioLang As String)
-        Dim Thumbnail As Image = My.Resources.main_del
-        Debug.WriteLine("ThumbnialURL: " + ThumbnialURL)
-        Try
-            Dim wc As New WebClient()
-            Dim bytes As Byte() = wc.DownloadData(ThumbnialURL)
-            Dim ms As New MemoryStream(bytes)
-            Thumbnail = System.Drawing.Image.FromStream(ms)
-        Catch ex As Exception
-            'MsgBox(ex.ToString)
-        End Try
+
         With ListView1.Items.Add("0")
-            ItemConstructor(NameKomplett, NameP1, NameP2, Reso, HardSub, SoftSubs, Thumbnail, URL_DL, Pfad_DL, Service)
+            ItemConstructor(NameKomplett, NameP1, NameP2, Reso, HardSub, SoftSubs, ThumbnialURL, URL_DL, Pfad_DL, Service)
         End With
     End Sub
 
-    Public Sub ItemConstructor(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal DisplayReso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal Thumbnail As Image, ByVal URL_DL As String, ByVal Pfad_DL As String, ByVal Service As String)
+    Public Sub ItemConstructor(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal DisplayReso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String, ByVal Service As String)
         Dim Item As New CRD_List_Item
         Item.Visible = False
         Item.Parent = ListView1
@@ -716,7 +707,7 @@ Public Class Main
         Item.SetLabelAnimeTitel(NameP2)
         Item.SetLabelResolution(DisplayReso)
         Item.SetLabelHardsub(HardSub)
-        Item.SetThumbnailImage(Thumbnail)
+        Item.SetThumbnailImage(ThumbnialURL)
         Item.SetLabelPercent("0%")
         Item.SetToolTip("Softsubs: " + SoftSubs)
         'MsgBox(Item.GetTextBound.ToString)
@@ -742,23 +733,12 @@ Public Class Main
 
 #Region "Manga DL"
     Public Sub MangaListItemAdd(ByVal NameP2 As String, ByVal ThumbnialURL As String, ByVal BaseURL As String, ByVal SiteList As List(Of String))
-        Dim Thumbnail As Image = My.Resources.main_del
-        Try
-            Dim wc As New WebClient()
-            wc.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-            Dim bytes As Byte() = wc.DownloadData(ThumbnialURL)
-            Dim ms As New MemoryStream(bytes)
-            Thumbnail = System.Drawing.Image.FromStream(ms)
-        Catch ex As Exception
-            'MsgBox(ex.ToString)
-            'MsgBox(ThumbnialURL)
-        End Try
         With ListView1.Items.Add("0")
-            MangaItemConstructor("proxer.me", NameP2, Thumbnail, BaseURL, SiteList)
+            MangaItemConstructor("proxer.me", NameP2, ThumbnialURL, BaseURL, SiteList)
         End With
     End Sub
 
-    Public Sub MangaItemConstructor(ByVal NameP1 As String, ByVal NameP2 As String, ByVal Thumbnail As Image, ByVal BaseURL As String, ByVal SiteList As List(Of String))
+    Public Sub MangaItemConstructor(ByVal NameP1 As String, ByVal NameP2 As String, ByVal ThumbnialURL As String, ByVal BaseURL As String, ByVal SiteList As List(Of String))
         Dim Item As New CRD_List_Item
         Item.Visible = False
         Item.Parent = ListView1
@@ -776,7 +756,7 @@ Public Class Main
         Item.SetLabelAnimeTitel(NameP2)
         Item.SetLabelResolution("Manga")
         Item.SetLabelHardsub("Manga")
-        Item.SetThumbnailImage(Thumbnail)
+        Item.SetThumbnailImage(ThumbnialURL)
         Item.SetLabelPercent("0%")
         'MsgBox(Item.GetTextBound.ToString)
         ItemList.Add(Item)
@@ -791,8 +771,8 @@ Public Class Main
 #Region "Season DL"
     Public Sub MassGrapp()
         Anime_Add.groupBox2.Visible = True
-        Anime_Add.PictureBox1.Enabled = True
-        Anime_Add.PictureBox1.Visible = True
+        Anime_Add.bt_Cancel_mass.Enabled = True
+        Anime_Add.bt_Cancel_mass.Visible = True
         Anime_Add.groupBox1.Visible = False
         Anime_Add.ComboBox1.Items.Clear()
         Anime_Add.comboBox3.Items.Clear()
@@ -821,8 +801,8 @@ Public Class Main
 
     Public Sub SeasonDropdownGrapp()
         Anime_Add.groupBox2.Visible = True
-        Anime_Add.PictureBox1.Enabled = True
-        Anime_Add.PictureBox1.Visible = True
+        Anime_Add.bt_Cancel_mass.Enabled = True
+        Anime_Add.bt_Cancel_mass.Visible = True
         Anime_Add.groupBox1.Visible = False
         Anime_Add.ComboBox1.Items.Clear()
         Anime_Add.comboBox3.Items.Clear()
@@ -1575,7 +1555,7 @@ Public Class Main
                                      ListItemAdd(Pfad_DL, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL, Pfad_DL)
                                      Return Nothing
                                  End Function))
-            liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_Anime_Titel + " <br> " + CR_Anime_Staffel + " " + CR_Anime_Folge + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
+            'liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_Anime_Titel + " <br> " + CR_Anime_Staffel + " " + CR_Anime_Folge + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
             'Form1.RichTextBox1.Text = My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_Anime_Titel + " <br> " + CR_Anime_Staffel + " " + CR_Anime_Folge + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->"
 #End Region
             Grapp_RDY = True
@@ -1696,8 +1676,8 @@ Public Class Main
 
     Public Sub GetBetaSeasons(ByVal JsonUrl As String)
         Anime_Add.groupBox2.Visible = True
-        Anime_Add.PictureBox1.Enabled = True
-        Anime_Add.PictureBox1.Visible = True
+        Anime_Add.bt_Cancel_mass.Enabled = True
+        Anime_Add.bt_Cancel_mass.Visible = True
         Anime_Add.groupBox1.Visible = False
         Anime_Add.ComboBox1.Items.Clear()
         Anime_Add.comboBox3.Items.Clear()
@@ -2273,7 +2253,7 @@ Public Class Main
                                      ListItemAdd(Path.GetFileName(Pfad_DL.Replace(Chr(34), "")), L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL, Pfad_DL)
                                      Return Nothing
                                  End Function))
-            liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_title + " <br> " + CR_season_number + " " + CR_episode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
+            'liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_title + " <br> " + CR_season_number + " " + CR_episode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
             'Form1.RichTextBox1.Text = My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_Anime_Titel + " <br> " + CR_Anime_Staffel + " " + CR_Anime_Folge + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->"
 #End Region
             Grapp_RDY = True
@@ -2359,9 +2339,9 @@ Public Class Main
                 Dim ffmpeg_command_Builder() As String = ffmpeg_command.Split(New String() {"-c:a copy"}, System.StringSplitOptions.RemoveEmptyEntries)
                 ffmpeg_command_temp = "-c:a copy" + ffmpeg_command_Builder(1)
             End If
-            Dim CR_Streams As New List(Of CR_Beta_Stream)
             Dim CR_series_title As String = Nothing
             Dim CR_season_number As String = Nothing
+            Dim CR_season_number2 As String = Nothing
             Dim CR_episode As String = Nothing
             Dim CR_Anime_Staffel_int As String = Nothing
             Dim CR_episode_int As String = Nothing
@@ -2431,11 +2411,8 @@ Public Class Main
                 'My.Computer.Clipboard.SetText(ObjectJson)
                 '
                 CR_Anime_Staffel_int = CR_season_number
-                If IgnoreSeason = 1 And CR_season_number = "1" Or IgnoreSeason = 1 And CR_season_number = "0" Then
-                    CR_season_number = Nothing
-                ElseIf IgnoreSeason = 2 Then
-                    CR_season_number = Nothing
-                End If
+
+
                 CR_episode_int = CR_episode
                 If Season_Prefix = "[default season prefix]" Then
                     If CR_episode = Nothing Then 'no episode number means most likey a movie 
@@ -2452,6 +2429,17 @@ Public Class Main
                         CR_season_number = Season_Prefix + CR_season_number
                     End If
                 End If
+
+                CR_season_number2 = CR_season_number
+
+
+                If IgnoreSeason = 1 And CR_season_number = "1" Or IgnoreSeason = 1 And CR_season_number = "0" Then
+                    CR_season_number = Nothing
+                ElseIf IgnoreSeason = 2 Then
+                    CR_season_number = Nothing
+                End If
+
+
                 If CR_episode = Nothing Then
                 ElseIf Episode_Prefix = "[default episode prefix]" Then
                     CR_episode = "Episode " + AddLeadingZeros(CR_episode)
@@ -2513,7 +2501,7 @@ Public Class Main
             CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
             CR_FilenName = RemoveExtraSpaces(CR_FilenName)
             'My.Computer.FileSystem.WriteAllText("log.log", WebbrowserText, False)
-            Pfad2 = UseSubfolder(CR_series_title, CR_season_number, Pfad)
+            Pfad2 = UseSubfolder(CR_series_title, CR_season_number2, Pfad)
             If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
                 ' Nein! Jetzt erstellen...
                 Try
@@ -2540,7 +2528,19 @@ Public Class Main
                 Debug.WriteLine("error- getting stream data")
                 Exit Sub
             End Try
-
+            Dim hls_type As String = Nothing
+            If CBool(InStr(VideoJson, Chr(34) + "adaptive_hls")) = True Then
+                hls_type = "adaptive_hls"
+            ElseIf CBool(InStr(VideoJson, Chr(34) + "multitrack_adaptive_hls_v2")) = True Then
+                hls_type = "multitrack_adaptive_hls_v2"
+            ElseIf CBool(InStr(VideoJson, Chr(34) + "vo_adaptive_hls")) = True Then
+                hls_type = "vo_adaptive_hls"
+            Else
+                MsgBox("No download stream avalible", MsgBoxStyle.Critical)
+                Exit Sub
+            End If
+            'My.Computer.Clipboard.SetText(VideoJson)
+            'MsgBox(SubSprache)
             Dim LangNew As String = ConvertCC(SubSprache)
 #End Region
 #Region "Download softsub file or build ffmpeg cmd"
@@ -2617,62 +2617,50 @@ Public Class Main
             End If
 #End Region
 #Region "m3u8 suche"
-
-            VideoJson = CleanJSON(VideoJson)
-            Dim VideoJObject As JObject = JObject.Parse(VideoJson)
-            Dim VideoData As List(Of JToken) = VideoJObject.Children().ToList
-            For Each item As JProperty In VideoData
-                item.CreateReader()
-                Select Case item.Name
-                    Case "audio_locale"
-                        Dim Title As String = item.Value.ToString
-                        CR_audio_locale = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-
-                    Case "streams" 'each record is inside the entries array
-                        For Each Entry As JProperty In item.Values
-
-                            Dim JsonEntryFormat As String = Entry.Name
-                            If CBool(InStr(JsonEntryFormat, "drm")) Or CBool(InStr(JsonEntryFormat, "dash")) Or CBool(InStr(JsonEntryFormat, "download")) Then
-                                Continue For
-                            End If
-
-
-                            Dim SubData As List(Of JToken) = Entry.Children().ToList
-                            For Each SubItem As JObject In SubData
-                                SubItem.CreateReader()
-
-                                Dim StreamFormats As List(Of JToken) = SubItem.Children().ToList
-
-
-                                For Each HardsubStreams As JProperty In StreamFormats
-                                    HardsubStreams.CreateReader()
-                                    Dim SubLang As String = HardsubStreams.Name
-                                    Dim Url As String = HardsubStreams.Value.ToString
-                                    If SubLang = Nothing Or SubLang = "" Then
-                                        SubLang = "null"
-                                    End If
-                                    CR_Streams.Add(New CR_Beta_Stream(CR_audio_locale, SubLang, JsonEntryFormat, Url))
-
-                                Next
-                            Next
-                        Next
-                End Select
-            Next
-
+            If CBool(InStr(VideoJson, "audio_locale")) Then
+                Dim CR_audio As String() = VideoJson.Split(New String() {"audio_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim CR_audio2 As String() = CR_audio(1).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                CR_audio_locale = String.Join(" ", CR_audio2(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)
+            End If
             Dim CR_URI_Master As String = Nothing
-
-
-            For i As Integer = 0 To CR_Streams.Count - 1
-
-                If CR_Streams.Item(i).subLang = LangNew Then
-                    Debug.WriteLine(CR_Streams.Item(i).subLang)
-                    CR_URI_Master = CR_Streams.Item(i).Url
+            'If SubsOnly = False Then
+            Dim ii As Integer = 0
+            Dim CR_VideoJson As String() = VideoJson.Split(New String() {hls_type}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim CR_VideoJsonHardSubs As String() = CR_VideoJson(1).Split(New String() {"hardsub_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Debug.WriteLine(LangNew)
+            Debug.WriteLine(CR_VideoJsonHardSubs.Count.ToString)
+            Dim hls_List As New List(Of String)
+            For i As Integer = 0 To CR_VideoJsonHardSubs.Count - 1
+                If LangNew = "" And CR_VideoJsonHardSubs(i).Substring(0, 1) = Chr(34) And CBool(InStr(CR_VideoJsonHardSubs(i), "https://")) Then
+                    CR_URI_Master = CR_VideoJsonHardSubs(i).Replace(LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34), "").Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)(0)
+                    Debug.WriteLine("Nothing+works")
+                    Exit For
+                ElseIf LangNew IsNot "" And CBool(InStr(CR_VideoJsonHardSubs(i), LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) And CBool(InStr(CR_VideoJsonHardSubs(i), "https://")) Then
+                    CR_URI_Master = CR_VideoJsonHardSubs(i).Replace(LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34), "").Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)(0)
+                    Debug.WriteLine("Why are we here again?")
+                    Exit For
                 End If
-
             Next
-
-
-
+            If CR_URI_Master = Nothing Then
+                Me.Invoke(New Action(Function() As Object
+                                         ResoNotFoundString = VideoJson
+                                         DialogTaskString = "Language_CR_Beta"
+                                         ErrorDialog.ShowDialog()
+                                         Return Nothing
+                                     End Function))
+                If UserCloseDialog = True Then
+                    Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
+                Else
+                    LangNew = ResoBackString
+                    ResoBackString = Nothing
+                    For i As Integer = 0 To CR_VideoJsonHardSubs.Count - 1
+                        If CBool(InStr(CR_VideoJsonHardSubs(i), LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) Then
+                            CR_URI_Master = CR_VideoJsonHardSubs(i).Replace(LangNew + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34), "").Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)(0)
+                            Exit For
+                        End If
+                    Next
+                End If
+            End If
             CR_URI_Master = CR_URI_Master.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
             If CBool(InStr(CR_URI_Master, "master.m3u8")) Then
                 Me.Invoke(New Action(Function() As Object
@@ -2800,7 +2788,7 @@ Public Class Main
                                      ListItemAdd(Path.GetFileName(Pfad_DL.Replace(Chr(34), "")), L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL, Pfad_DL)
                                      Return Nothing
                                  End Function))
-            liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_title + " <br> " + CR_season_number + " " + CR_episode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
+            ' li 'liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_title + " <br> " + CR_season_number + " " + CR_episode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
             'Form1.RichTextBox1.Text = My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_Anime_Titel + " <br> " + CR_Anime_Staffel + " " + CR_Anime_Folge + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->"
 #End Region
             Grapp_RDY = True
@@ -2833,11 +2821,10 @@ Public Class Main
             End If
         End Try
     End Sub
-
     Public Sub Get_VRV_Seasons(ByVal JsonUrl As String)
         Anime_Add.groupBox2.Visible = True
-        Anime_Add.PictureBox1.Enabled = True
-        Anime_Add.PictureBox1.Visible = True
+        Anime_Add.bt_Cancel_mass.Enabled = True
+        Anime_Add.bt_Cancel_mass.Visible = True
         Anime_Add.groupBox1.Visible = False
         Anime_Add.ComboBox1.Items.Clear()
         Anime_Add.comboBox3.Items.Clear()
@@ -3048,7 +3035,7 @@ Public Class Main
                                                          ListItemAdd(Filename, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL2, Pfad2)
                                                          Return Nothing
                                                      End Function))
-                                liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + L1Name + " <br> " + L2Name + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
+                                ' liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + L1Name + " <br> " + L2Name + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
                             Else
                                 Grapp_non_cr_RDY = True
                                 System.IO.Directory.Delete(fi.FullName, True)
@@ -3395,8 +3382,8 @@ Public Class Main
         Next
         'Debug.WriteLine("SeasonJson: ")
         Anime_Add.groupBox2.Visible = True
-        Anime_Add.PictureBox1.Enabled = True
-        Anime_Add.PictureBox1.Visible = True
+        Anime_Add.bt_Cancel_mass.Enabled = True
+        Anime_Add.bt_Cancel_mass.Visible = True
         Anime_Add.groupBox1.Visible = False
         Anime_Add.ComboBox1.Items.Clear()
         Anime_Add.comboBox3.Items.Clear()
@@ -4317,7 +4304,7 @@ Public Class Main
                                      ListItemAdd(Pfad_DL, L1Name, DefaultName, ResoHTMLDisplay, Funimation_m3u8_MainVersion, SubValuesToDisplay(), thumbnail4, Funimation_m3u8_final, DownloadPfad, "FM")
                                      Return Nothing
                                  End Function))
-            liList.Add(My.Resources.htmlvorThumbnail + thumbnail4 + My.Resources.htmlnachTumbnail + FunimationTitle + " <br> " + FunimationSeason + " " + FunimationEpisode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + DefaultName + "-->")
+            'liList.Add(My.Resources.htmlvorThumbnail + thumbnail4 + My.Resources.htmlnachTumbnail + FunimationTitle + " <br> " + FunimationSeason + " " + FunimationEpisode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + DefaultName + "-->")
 #End Region
             Me.Invoke(New Action(Function() As Object
                                      Me.Text = "Crunchyroll Downloader"
@@ -4341,46 +4328,68 @@ Public Class Main
 
 #End Region
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
-        Me.Invalidate()
-        Try
-            Dim GeckoHTML As String = My.Resources.htmlTop + vbNewLine + My.Resources.htmlTitlel.Replace("Placeholder", Me.Text.Replace("open the add window to continue", ""))
-            Dim LiAdd As String = Nothing
-            For ii As Integer = 0 To ItemList.Count - 1
-                For i As Integer = 0 To liList.Count - 1
-                    If CBool(InStr(liList(i), "<!-- " + ItemList.Item(ii).GetNameAnime + "-->")) Then
-                        If CBool(InStr(liList(i), "Finished - ")) Then
-                            If LiAdd = Nothing Then
-                                LiAdd = liList(i)
-                            Else
-                                LiAdd = LiAdd + vbNewLine + liList(i)
-                            End If
-                        Else
-                            Dim ProzentBalken As String() = liList(i).Split(New String() {"width:"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim ProzentBalken2 As String() = ProzentBalken(1).Split(New String() {"%" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim ProzentZahl As String() = ProzentBalken2(1).Split(New String() {"'percenttext'>"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            Dim ProzentZahl2 As String() = ProzentZahl(1).Split(New String() {"%<"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            liList(i) = ProzentBalken(0) + "width:" + ItemList.Item(ii).GetPercentValue.ToString + "%" + Chr(34) + ProzentZahl(0) + "'percenttext'>" + ItemList.Item(ii).GetLabelPercent.ToString + "<" + ProzentZahl2(1)
-                            If LiAdd = Nothing Then
-                                LiAdd = liList(i)
-                            Else
-                                LiAdd = LiAdd + vbNewLine + liList(i)
-                            End If
-                            Exit For
-                        End If
-                    End If
-                Next
-            Next
-            Dim c As String = GeckoHTML + vbNewLine + LiAdd + vbNewLine + My.Resources.htmlEnd
-            Dim Balken As String = "balken.png"
-            c = c.Replace("balken1.png", Balken)
-            Dim CC As String = "cc.png"
-            c = c.Replace("cc1.png", CC)
-            HTML = c
-        Catch ex As Exception
-            'Debug.WriteLine(ex.ToString)
-            'MsgBox(ex.ToString)
-        End Try
+        ' PrepareHTML()
+        Dim GeckoHTML As String = My.Resources.htmlTop + vbNewLine + My.Resources.htmlTitlel.Replace("Placeholder", Me.Text.Replace("open the add window to continue", ""))
+
+        For i As Integer = 0 To ItemList.Count - 1
+            Dim Item As String = My.Resources.htmlvorThumbnail + ItemList.Item(i).GetThumbnailSource + My.Resources.htmlnachTumbnail + ItemList.Item(i).Label_website.Text + " <br> " + ItemList.Item(i).Label_Anime.Text + My.Resources.htmlvorAufloesung.Replace("0%", ItemList.Item(i).Label_percent.Text).Replace("width:0%", ItemList.Item(i).GetPercentValue.ToString + "%") + ItemList.Item(i).Label_Reso.Text + My.Resources.htmlvorSoftSubs + vbNewLine + My.Resources.htmlvorHardSubs + ItemList.Item(i).Label_Hardsub.Text + My.Resources.htmlnachHardSubs
+            GeckoHTML = GeckoHTML + vbNewLine + Item
+        Next
+
+
+
+        Dim c As String = GeckoHTML + vbNewLine + My.Resources.htmlEnd
+        Dim Balken As String = "balken.png"
+        c = c.Replace("balken1.png", Balken)
+        Dim CC As String = "cc.png"
+        c = c.Replace("cc1.png", CC)
+        HTML = c
+
     End Sub
+
+    Private Sub PrepareHTML()
+        'Me.Invalidate()
+        'Try
+        Dim GeckoHTML As String = My.Resources.htmlTop + vbNewLine + My.Resources.htmlTitlel.Replace("Placeholder", Me.Text.Replace("open the add window to continue", ""))
+        Dim LiAdd As String = Nothing
+        For i As Integer = 0 To ItemList.Count - 1
+            'For i As Integer = 0 To liList.Count - 1
+            'MsgBox(liList.Item(i))
+            'MsgBox(liList(i))
+            '
+            Dim Item As String = My.Resources.htmlvorThumbnail + ItemList.Item(i).GetThumbnailSource + My.Resources.htmlnachTumbnail + ItemList.Item(i).Label_website.Text + " <br> " + ItemList.Item(i).Label_Anime.Text + My.Resources.htmlvorAufloesung.Replace("0%", ItemList.Item(i).GetPercentValue.ToString + "%") + ItemList.Item(i).Label_Reso.Text + My.Resources.htmlvorSoftSubs + vbNewLine + My.Resources.htmlvorHardSubs + ItemList.Item(i).Label_Hardsub.Text + My.Resources.htmlnachHardSubs
+
+            'If CBool(InStr(liList(i), "<!-- " + ItemList.Item(ii).GetNameAnime + "-->")) Then
+            '    If CBool(InStr(liList(i), "Finished - ")) Then
+            '        If LiAdd = Nothing Then
+            '            LiAdd = liList(i)
+            '        Else
+            '            LiAdd = LiAdd + vbNewLine + liList(i)
+            '        End If
+            '    Else
+            '        Dim ProzentBalken As String() = liList(i).Split(New String() {"width:"}, System.StringSplitOptions.RemoveEmptyEntries)
+            '        Dim ProzentBalken2 As String() = ProzentBalken(1).Split(New String() {"%" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            '        Dim ProzentZahl As String() = ProzentBalken2(1).Split(New String() {"'percenttext'>"}, System.StringSplitOptions.RemoveEmptyEntries)
+            '        Dim ProzentZahl2 As String() = ProzentZahl(1).Split(New String() {"%<"}, System.StringSplitOptions.RemoveEmptyEntries)
+            '        Dim ReAdd As String = ProzentBalken(0) + "width:" + ItemList.Item(i).GetPercentValue.ToString + "%" + Chr(34) + ProzentZahl(0) + "'percenttext'>" + ItemList.Item(ii).GetLabelPercent.ToString + "<" + ProzentZahl2(1)
+            '     
+            '        Exit For
+            '    End If
+            'End If
+            'Next
+        Next
+        Dim c As String = GeckoHTML + vbNewLine + LiAdd + vbNewLine + My.Resources.htmlEnd
+        Dim Balken As String = "balken.png"
+        c = c.Replace("balken1.png", Balken)
+        Dim CC As String = "cc.png"
+        c = c.Replace("cc1.png", CC)
+        HTML = c
+        'Catch ex As Exception
+        '    Debug.WriteLine(ex.ToString)
+        '    MsgBox(ex.ToString)
+        'End Try
+    End Sub
+
 
 #Region "process html"
     Public Sub ProcessHTML(ByVal document As String, ByVal Address As String, ByVal DocumentTitle As String)
@@ -5299,6 +5308,16 @@ Public Class Main
 
         End If
     End Sub
+
+    Private Sub AddonHTMLToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddonHTMLToolStripMenuItem.Click
+        My.Computer.Clipboard.SetText(HTML)
+    End Sub
+
+    Private Sub Timer3OffToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Timer3OffToolStripMenuItem.Click
+        Timer3.Enabled = False
+    End Sub
+
+
 
 #End Region
 End Class

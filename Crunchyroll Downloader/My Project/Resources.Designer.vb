@@ -337,7 +337,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0&quot; ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0&quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property ffmpeg_user_agend() As String
             Get
@@ -918,36 +918,6 @@ Namespace My.Resources
         Friend ReadOnly Property Post_error_Top() As String
             Get
                 Return ResourceManager.GetString("Post_error_Top", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property softsubs_download() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("softsubs_download", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property softsubs_download_gray() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("softsubs_download_gray", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property softsubs_download_hover() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("softsubs_download_hover", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

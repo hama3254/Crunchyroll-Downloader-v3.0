@@ -22,6 +22,8 @@ Public Class Anime_Add
 
 
     Private Sub LoadBrowser(ByVal Url As String)
+
+
         Dim locale As String = "en-US"
         If CBool(InStr(Url, "beta.crunchyroll.com")) = True And CBool(InStr(Url, "watch")) = True And CBool(Main.CrBetaBasic = Nothing) = False Then
 #Region "Get Cookies"
@@ -440,8 +442,8 @@ Public Class Anime_Add
                 'btn_dl.BackgroundImage = My.Resources.add_mass_running_cancel
                 btn_dl.Text = "Cancel"
                 Mass_DL_Cancel = True
-                PictureBox1.Enabled = False
-                PictureBox1.Visible = False
+                bt_Cancel_mass.Enabled = False
+                bt_Cancel_mass.Visible = False
                 Main.DownloadFunimationJS_Seasons()
                 comboBox4.Enabled = False
                 comboBox3.Enabled = False
@@ -453,8 +455,8 @@ Public Class Anime_Add
                 'btn_dl.BackgroundImage = My.Resources.add_mass_running_cancel
                 btn_dl.Text = "Cancel"
                 Mass_DL_Cancel = True
-                PictureBox1.Enabled = False
-                PictureBox1.Visible = False
+                bt_Cancel_mass.Enabled = False
+                bt_Cancel_mass.Visible = False
 
                 Main.DownloadBetaSeasons()
                 comboBox4.Enabled = False
@@ -466,8 +468,8 @@ Public Class Anime_Add
                 'btn_dl.BackgroundImage = My.Resources.add_mass_running_cancel
                 btn_dl.Text = "Cancel"
                 Mass_DL_Cancel = True
-                PictureBox1.Enabled = False
-                PictureBox1.Visible = False
+                bt_Cancel_mass.Enabled = False
+                bt_Cancel_mass.Visible = False
 
                 Main.Download_VRV_Seasons()
                 comboBox4.Enabled = False
@@ -480,8 +482,8 @@ Public Class Anime_Add
                 'btn_dl.BackgroundImage = My.Resources.add_mass_running_cancel
                 btn_dl.Text = "Cancel"
                 Mass_DL_Cancel = True
-                PictureBox1.Enabled = False
-                PictureBox1.Visible = False
+                bt_Cancel_mass.Enabled = False
+                bt_Cancel_mass.Visible = False
                 Main.MassDL()
                 comboBox4.Enabled = False
                 comboBox3.Enabled = False
@@ -577,9 +579,21 @@ Public Class Anime_Add
         End If
     End Sub
 
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+
+    Private Sub bt_Cancel_mass_Click(sender As Object, e As EventArgs) Handles bt_Cancel_mass.Click
         groupBox1.Visible = True
         groupBox2.Visible = False
+    End Sub
+
+    Private Sub bt_Cancel_mass_MouseEnter(sender As Object, e As EventArgs) Handles bt_Cancel_mass.MouseEnter
+
+        bt_Cancel_mass.BackgroundImage = My.Resources.add_mass_cancel_hover
+
+
+    End Sub
+    Private Sub bt_Cancel_mass_MouseLeave(sender As Object, e As EventArgs) Handles bt_Cancel_mass.MouseLeave
+        bt_Cancel_mass.BackgroundImage = My.Resources.add_mass_cancel
+
     End Sub
 
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
@@ -629,40 +643,48 @@ Public Class Anime_Add
                 End If
 
             Next
+
+            If comboBox3.Items.Count > 0 Then
+                comboBox3.SelectedIndex = 0
+                comboBox4.SelectedIndex = comboBox4.Items.Count - 1
+            End If
+
+
+
         ElseIf CBool(InStr(Main.WebbrowserURL, "vrv.co")) = True Then
-            comboBox3.Items.Clear()
-            comboBox4.Items.Clear()
-            comboBox3.Enabled = True
-            comboBox4.Enabled = True
-            comboBox3.Text = Nothing
-            comboBox4.Text = Nothing
-            Dim SeasonSplit() As String = Main.VRVMass.Split(New String() {Chr(34) + "id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                comboBox3.Items.Clear()
+                comboBox4.Items.Clear()
+                comboBox3.Enabled = True
+                comboBox4.Enabled = True
+                comboBox3.Text = Nothing
+                comboBox4.Text = Nothing
+                Dim SeasonSplit() As String = Main.VRVMass.Split(New String() {Chr(34) + "id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-            Dim SeasonSplit2() As String = SeasonSplit(ComboBox1.SelectedIndex + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim SeasonSplit2() As String = SeasonSplit(ComboBox1.SelectedIndex + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-            Dim EpisodeJsonURL As String = Main.VRVMassBaseURL + "episodes?season_id=" + SeasonSplit2(0) + "&Policy=" + Main.VRVMassParameters
-            Dim EpisodeJson As String = Nothing
-            Debug.WriteLine(EpisodeJsonURL)
+                Dim EpisodeJsonURL As String = Main.VRVMassBaseURL + "episodes?season_id=" + SeasonSplit2(0) + "&Policy=" + Main.VRVMassParameters
+                Dim EpisodeJson As String = Nothing
+                Debug.WriteLine(EpisodeJsonURL)
 
-            Try
-                Using client As New WebClient()
-                    client.Encoding = System.Text.Encoding.UTF8
-                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                    EpisodeJson = client.DownloadString(EpisodeJsonURL)
-                End Using
-            Catch ex As Exception
-                Debug.WriteLine("error- getting EpisodeJson data")
-                Debug.WriteLine(ex.ToString)
-                Exit Sub
-            End Try
-            Main.VRVMassEpisodes = EpisodeJson
-
-
-
-            Dim EpisodeNameSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Try
+                    Using client As New WebClient()
+                        client.Encoding = System.Text.Encoding.UTF8
+                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                        EpisodeJson = client.DownloadString(EpisodeJsonURL)
+                    End Using
+                Catch ex As Exception
+                    Debug.WriteLine("error- getting EpisodeJson data")
+                    Debug.WriteLine(ex.ToString)
+                    Exit Sub
+                End Try
+                Main.VRVMassEpisodes = EpisodeJson
 
 
-            Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim EpisodeNameSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             For i As Integer = 1 To EpisodeSplit.Count - 1
                 Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim EpisodeNameSplit2() As String = EpisodeNameSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -675,55 +697,66 @@ Public Class Anime_Add
                 End If
 
             Next
-        ElseIf Main.WebbrowserURL = "https://funimation.com/js" Then
-            comboBox3.Items.Clear()
-            comboBox4.Items.Clear()
-            comboBox3.Text = Nothing
-            comboBox4.Text = Nothing
-            Dim ContentID As String = Nothing
 
-            For i As Integer = 0 To Main.FunimtaionSeasonList.Count - 1
-                If ComboBox1.Text = Main.FunimtaionSeasonList.Item(i).Title Then
-                    ContentID = Main.FunimtaionSeasonList.Item(i).ID
-                    Exit For
-                End If
-            Next
-
-            If ContentID = Nothing Then
-                MsgBox("error during season selection")
-                Exit Sub
+            If comboBox3.Items.Count > 0 Then
+                comboBox3.SelectedIndex = 0
+                comboBox4.SelectedIndex = comboBox4.Items.Count - 1
             End If
 
-            Dim BaseUrl() As String = Main.FunimationSeasonAPIUrl.Split(New String() {"/shows/"}, System.StringSplitOptions.RemoveEmptyEntries)
+        ElseIf Main.WebbrowserURL = "https://funimation.com/js" Then
+                comboBox3.Items.Clear()
+                comboBox4.Items.Clear()
+                comboBox3.Text = Nothing
+                comboBox4.Text = Nothing
+                Dim ContentID As String = Nothing
+
+                For i As Integer = 0 To Main.FunimtaionSeasonList.Count - 1
+                    If ComboBox1.Text = Main.FunimtaionSeasonList.Item(i).Title Then
+                        ContentID = Main.FunimtaionSeasonList.Item(i).ID
+                        Exit For
+                    End If
+                Next
+
+                If ContentID = Nothing Then
+                    MsgBox("error during season selection")
+                    Exit Sub
+                End If
+
+                Dim BaseUrl() As String = Main.FunimationSeasonAPIUrl.Split(New String() {"/shows/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
 
-            Dim EpisodeJsonURL As String = BaseUrl(0) + "/seasons/" + ContentID + ".json"
-            Dim EpisodeJson As String = Nothing
-            Debug.WriteLine(EpisodeJsonURL)
+                Dim EpisodeJsonURL As String = BaseUrl(0) + "/seasons/" + ContentID + ".json"
+                Dim EpisodeJson As String = Nothing
+                Debug.WriteLine(EpisodeJsonURL)
 
-            Try
-                Using client As New WebClient()
-                    client.Encoding = System.Text.Encoding.UTF8
-                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                    EpisodeJson = client.DownloadString(EpisodeJsonURL)
-                End Using
-            Catch ex As Exception
-                Debug.WriteLine("error- getting EpisodeJson data")
-                Debug.WriteLine(ex.ToString)
-                Main.FunimationJsonBrowser = "EpisodeJson"
-                LoadBrowser(EpisodeJsonURL)
-                Exit Sub
-            End Try
+                Try
+                    Using client As New WebClient()
+                        client.Encoding = System.Text.Encoding.UTF8
+                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                        EpisodeJson = client.DownloadString(EpisodeJsonURL)
+                    End Using
+                Catch ex As Exception
+                    Debug.WriteLine("error- getting EpisodeJson data")
+                    Debug.WriteLine(ex.ToString)
+                    Main.FunimationJsonBrowser = "EpisodeJson"
+                    LoadBrowser(EpisodeJsonURL)
+                    Exit Sub
+                End Try
 
-            FillFunimationEpisodes(EpisodeJson)
+                FillFunimationEpisodes(EpisodeJson)
 
+
+            If comboBox3.Items.Count > 0 Then
+                comboBox3.SelectedIndex = 0
+                comboBox4.SelectedIndex = comboBox4.Items.Count - 1
+            End If
 
 
         Else
 
-            'MsgBox(Main.WebbrowserURL)
-            comboBox3.Items.Clear()
+                'MsgBox(Main.WebbrowserURL)
+                comboBox3.Items.Clear()
             comboBox4.Items.Clear()
             comboBox3.Enabled = True
             comboBox4.Enabled = True
@@ -751,6 +784,11 @@ Public Class Anime_Add
                 comboBox4.Items.Add(URLGrapp2(0))
             Next
 
+            If comboBox3.Items.Count > 0 Then
+                comboBox3.SelectedIndex = 0
+                comboBox4.SelectedIndex = comboBox4.Items.Count - 1
+            End If
+
 
         End If
     End Sub
@@ -772,13 +810,7 @@ Public Class Anime_Add
         Next
         Main.WebbrowserURL = "https://funimation.com/js"
     End Sub
-    Private Sub PictureBox1_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox1.MouseEnter
-        PictureBox1.Image = My.Resources.add_mass_cancel_hover
-    End Sub
 
-    Private Sub PictureBox1_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox1.MouseLeave
-        PictureBox1.Image = My.Resources.add_mass_cancel
-    End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         If ListBox1.Items.Count > 0 Then

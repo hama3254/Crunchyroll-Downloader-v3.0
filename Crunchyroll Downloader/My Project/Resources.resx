@@ -222,9 +222,6 @@
   <data name="LoginSuccess" xml:space="preserve">
     <value>"error":false,"code":"ok"</value>
   </data>
-  <data name="main_button_download_deactivate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main_button_download-deactivate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="AoD_Image" xml:space="preserve">
     <value>"image":"</value>
   </data>
@@ -316,9 +313,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
 &lt;br&gt;
 &lt;span dir="auto" class="resotext"&gt;</value>
   </data>
-  <data name="softsubs_download_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\softsubs_download_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Startuphtml" xml:space="preserve">
     <value>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -368,9 +362,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="download_subs_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\download_subs_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="softsubs_download_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\softsubs_download_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="main_close" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -401,7 +392,7 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
     <value>..\Resources\crdSettings_Button_SafeExit_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ffmpeg_user_agend" xml:space="preserve">
-    <value>"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"</value>
+    <value>"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0"</value>
   </data>
   <data name="crdSettings_Button_SafeExit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\crdSettings_Button_SafeExit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -419,9 +410,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   </data>
   <data name="add_mass_cancel_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\add_mass_cancel_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="softsubs_download" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\softsubs_download.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -540,5 +528,8 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   </data>
   <data name="CR_MovieTop" xml:space="preserve">
     <value>&lt;span itemprop="name"&gt;</value>
+  </data>
+  <data name="main_button_download_deactivate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main_button_download-deactivate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

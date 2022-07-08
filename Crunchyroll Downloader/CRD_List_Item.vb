@@ -30,6 +30,7 @@ Public Class CRD_List_Item
 
     Dim TempFolder As String = Nothing
     Dim DownloadPfad As String = Nothing
+    Dim ThumbnailSource As String = Nothing
     Dim ToDispose As Boolean = False
     Dim Failed As Boolean = False
     Dim FailedCount As Integer = 0
@@ -136,7 +137,18 @@ Public Class CRD_List_Item
     Public Sub SetLabelPercent(ByVal Text As String)
         Label_percent.Text = Text
     End Sub
-    Public Sub SetThumbnailImage(ByVal Thumbnail As Image)
+    Public Sub SetThumbnailImage(ByVal ThumbnialURL As String)
+        ThumbnailSource = ThumbnialURL
+        Dim Thumbnail As Image = My.Resources.main_del
+        Debug.WriteLine("ThumbnialURL: " + ThumbnialURL)
+        Try
+            Dim wc As New WebClient()
+            Dim bytes As Byte() = wc.DownloadData(ThumbnialURL)
+            Dim ms As New MemoryStream(bytes)
+            Thumbnail = System.Drawing.Image.FromStream(ms)
+        Catch ex As Exception
+            'MsgBox(ex.ToString)
+        End Try
         PB_Thumbnail.BackgroundImage = Thumbnail
     End Sub
 #End Region
@@ -156,6 +168,14 @@ Public Class CRD_List_Item
                 Return False
             End If
         End If
+
+    End Function
+    Public Function GetThumbnailSource() As String
+        Try
+            Return ThumbnailSource
+        Catch ex As Exception
+            Return "0"
+        End Try
 
     End Function
     Public Function GetLabelPercent() As String
@@ -522,6 +542,15 @@ Public Class CRD_List_Item
 #Region "ThreadChecker"
 
     Private Sub CheckThreadCount()
+        'Try
+        '    Me.Invoke(New Action(Function() As Object
+
+        '                             Label_Reso.Text = ThreadList.Count.ToString
+        '                             Return Nothing
+        '                         End Function))
+        'Catch ex As Exception
+        'End Try
+
         For w As Integer = 0 To Integer.MaxValue
 
             If StatusRunning = False Then

@@ -1208,11 +1208,16 @@ Public Class Main
             If Episode_Prefix = "[default episode prefix]" Then
                 If CR_Anime_Folge_int = Nothing Then
 
+                ElseIf CR_Anime_Folge = Nothing = True And CR_Anime_Folge_int = Nothing = False Then
+                    CR_Anime_Folge = "Episode " + AddLeadingZeros(CR_Anime_Folge_int)
                 Else
                     CR_Anime_Folge = CR_Anime_Folge.Replace(CR_Anime_Folge_int, AddLeadingZeros(CR_Anime_Folge_int))
                 End If
             Else
                 If CR_Anime_Folge_int = Nothing Then
+
+                ElseIf CR_Anime_Folge = Nothing = True And CR_Anime_Folge_int = Nothing = False Then
+                    CR_Anime_Folge = "Episode " + AddLeadingZeros(CR_Anime_Folge_int)
                 Else
                     CR_Anime_Folge = Episode_Prefix + AddLeadingZeros(CR_Anime_Folge_int)
                 End If

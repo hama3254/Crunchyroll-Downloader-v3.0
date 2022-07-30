@@ -110,6 +110,7 @@ Partial Class Einstellungen
         Me.LangNameType_DD = New MetroFramework.Controls.MetroComboBox()
         Me.CB_SoftSubSettings = New MetroFramework.Controls.MetroComboBox()
         Me.GB_Filename_Pre = New System.Windows.Forms.GroupBox()
+        Me.CB_Ignore = New MetroFramework.Controls.MetroComboBox()
         Me.KodiSupport = New MetroFramework.Controls.MetroToggle()
         Me.MetroLink1 = New MetroFramework.Controls.MetroLink()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
@@ -146,7 +147,8 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.CB_Ignore = New MetroFramework.Controls.MetroComboBox()
+        Me.ListC8 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListC9 = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -580,7 +582,7 @@ Partial Class Einstellungen
         '
         'FFMPEG_CommandP1
         '
-        Me.FFMPEG_CommandP1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListC1, Me.ListC2, Me.ListC3, Me.ListC4, Me.ListC5, Me.ListC6, Me.ListC7})
+        Me.FFMPEG_CommandP1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListC1, Me.ListC2, Me.ListC3, Me.ListC4, Me.ListC5, Me.ListC6, Me.ListC7, Me.ListC8, Me.ListC9})
         Me.FFMPEG_CommandP1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FFMPEG_CommandP1.Name = "FFMPEG_CommandP1"
         Me.FFMPEG_CommandP1.Size = New System.Drawing.Size(63, 20)
@@ -1086,7 +1088,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 2
+        Me.TabControl1.SelectedIndex = 1
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1192,6 +1194,20 @@ Partial Class Einstellungen
         Me.GB_Filename_Pre.TabIndex = 22
         Me.GB_Filename_Pre.TabStop = False
         Me.GB_Filename_Pre.Text = "Filename Extras"
+        '
+        'CB_Ignore
+        '
+        Me.CB_Ignore.DropDownHeight = 250
+        Me.CB_Ignore.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_Ignore.FormattingEnabled = True
+        Me.CB_Ignore.IntegralHeight = False
+        Me.CB_Ignore.ItemHeight = 23
+        Me.CB_Ignore.Items.AddRange(New Object() {"[Default] use season numbers", "ignore Season 1", "ignore all season numbers"})
+        Me.CB_Ignore.Location = New System.Drawing.Point(248, 21)
+        Me.CB_Ignore.Name = "CB_Ignore"
+        Me.CB_Ignore.Size = New System.Drawing.Size(225, 29)
+        Me.CB_Ignore.TabIndex = 40
+        Me.CB_Ignore.UseSelectable = True
         '
         'KodiSupport
         '
@@ -1673,19 +1689,17 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'CB_Ignore
+        'ListC8
         '
-        Me.CB_Ignore.DropDownHeight = 250
-        Me.CB_Ignore.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CB_Ignore.FormattingEnabled = True
-        Me.CB_Ignore.IntegralHeight = False
-        Me.CB_Ignore.ItemHeight = 23
-        Me.CB_Ignore.Items.AddRange(New Object() {"[Default] use season numbers", "ignore Season 1", "ignore all season numbers"})
-        Me.CB_Ignore.Location = New System.Drawing.Point(248, 21)
-        Me.CB_Ignore.Name = "CB_Ignore"
-        Me.CB_Ignore.Size = New System.Drawing.Size(225, 29)
-        Me.CB_Ignore.TabIndex = 40
-        Me.CB_Ignore.UseSelectable = True
+        Me.ListC8.Name = "ListC8"
+        Me.ListC8.Size = New System.Drawing.Size(180, 22)
+        Me.ListC8.Text = "-c:v h264_qsv"
+        '
+        'ListC9
+        '
+        Me.ListC9.Name = "ListC9"
+        Me.ListC9.Size = New System.Drawing.Size(180, 22)
+        Me.ListC9.Text = "-c:v hevc_qsv"
         '
         'Einstellungen
         '
@@ -1881,4 +1895,6 @@ Partial Class Einstellungen
     Friend WithEvents MetroLabel3 As MetroFramework.Controls.MetroLabel
     Friend WithEvents TempTB As MetroFramework.Controls.MetroTextBox
     Friend WithEvents CB_Ignore As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents ListC8 As ToolStripMenuItem
+    Friend WithEvents ListC9 As ToolStripMenuItem
 End Class

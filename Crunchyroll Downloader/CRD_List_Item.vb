@@ -59,7 +59,7 @@ Public Class CRD_List_Item
 
 
     Dim PauseTime As Integer = 0
-    Dim Threads As Integer = CInt(Environment.ProcessorCount / 2 - 1)
+    Dim Threads As Integer = Main.HybridThread 'CInt(Environment.ProcessorCount / 2 - 1)
 
 #Region "Remove from list"
     Public Sub DisposeItem(ByVal Dispose As Boolean)

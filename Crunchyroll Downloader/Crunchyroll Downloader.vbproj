@@ -150,6 +150,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Trackbar.Designer.vb">
+      <DependentUpon>Trackbar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Trackbar.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GlobalSuppressions.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -219,6 +225,9 @@
     <Compile Include="Subfolder.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Trackbar.resx">
+      <DependentUpon>Trackbar.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="network_scan.resx">
       <DependentUpon>network_scan.vb</DependentUpon>
     </EmbeddedResource>

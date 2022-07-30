@@ -101,6 +101,7 @@ Public Class Main
     Public SoftSubs As New List(Of String)
     Public IncludeLangName As Boolean = False
     Public LangNameType As Integer = 0
+    Public HybridThread As Integer = CInt(Environment.ProcessorCount / 2 - 1)
     Public TempSoftSubs As New List(Of String)
     Public AbourtList As New List(Of String)
     Public watingList As New List(Of String)
@@ -585,7 +586,11 @@ Public Class Main
             LangNameType = Integer.Parse(rkg.GetValue("LangNameType").ToString)
         Catch ex As Exception
         End Try
-
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            HybridThread = Integer.Parse(rkg.GetValue("HybridThread").ToString)
+        Catch ex As Exception
+        End Try
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             IgnoreSeason = Integer.Parse(rkg.GetValue("IgnoreS1").ToString)
@@ -5320,6 +5325,10 @@ Public Class Main
 
     Private Sub Timer3OffToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Timer3OffToolStripMenuItem.Click
         Timer3.Enabled = False
+    End Sub
+
+    Private Sub ThreadCount_Click(sender As Object, e As EventArgs) Handles ThreadCount.Click
+        Trackbar.ShowDialog()
     End Sub
 
 

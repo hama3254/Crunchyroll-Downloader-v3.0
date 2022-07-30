@@ -49,6 +49,7 @@ Partial Class Main
         Me.CheckCRBetaTokenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AddonHTMLToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Timer3OffToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ThreadCount = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -182,7 +183,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -215,6 +216,11 @@ Partial Class Main
         '
         Me.Timer3OffToolStripMenuItem.Name = "Timer3OffToolStripMenuItem"
         resources.ApplyResources(Me.Timer3OffToolStripMenuItem, "Timer3OffToolStripMenuItem")
+        '
+        'ThreadCount
+        '
+        Me.ThreadCount.Name = "ThreadCount"
+        resources.ApplyResources(Me.ThreadCount, "ThreadCount")
         '
         'Main
         '
@@ -270,4 +276,5 @@ Partial Class Main
     Friend WithEvents CheckCRBetaTokenToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AddonHTMLToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Timer3OffToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ThreadCount As ToolStripMenuItem
 End Class

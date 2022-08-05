@@ -57,6 +57,10 @@ Public Class Einstellungen
             KodiSupport.Checked = True
         End If
 
+        If Main.DubMode = True Then
+            DubMode.Checked = True
+        End If
+
         If Main.DarkModeValue = True Then
             DarkMode.Checked = True
             GroupBoxColor(Color.FromArgb(150, 150, 150))
@@ -383,6 +387,14 @@ Public Class Einstellungen
         Main.IgnoreSeason = CB_Ignore.SelectedIndex
         rk.SetValue("IgnoreS1", CB_Ignore.SelectedIndex, RegistryValueKind.String)
 
+
+        If DubMode.Checked = True Then
+            Main.DubMode = True
+            rk.SetValue("DubMode", 1, RegistryValueKind.String)
+        Else
+            Main.DubMode = False
+            rk.SetValue("DubMode", 0, RegistryValueKind.String)
+        End If
 
         If KodiSupport.Checked = True Then
             Main.KodiNaming = True
@@ -960,6 +972,7 @@ Public Class Einstellungen
         GroupBox16.ForeColor = color
         GroupBox17.ForeColor = color
         GroupBox18.ForeColor = color
+        GroupBox19.ForeColor = color
     End Sub
 
 

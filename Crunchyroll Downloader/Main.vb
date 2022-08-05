@@ -139,7 +139,7 @@ Public Class Main
     Public SubFunimation As New List(Of String)
     Public DefaultSubFunimation As String = "Disabled"
     Public DefaultSubCR As String = "Disabled"
-
+    Public DubMode As Boolean = True
 #Region "Sprachen Vairablen"
     Public URL_Invaild As String = "something is wrong here..."
     Dim DL_Path_String As String = "Please choose download directory."
@@ -485,6 +485,13 @@ Public Class Main
             KodiNaming = CBool(Integer.Parse(rkg.GetValue("KodiSupport").ToString))
         Catch ex As Exception
         End Try
+
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            DubMode = CBool(Integer.Parse(rkg.GetValue("DubMode").ToString))
+        Catch ex As Exception
+        End Try
+
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             KeepCache = CBool(Integer.Parse(rkg.GetValue("Keep_Cache").ToString))
@@ -1823,7 +1830,7 @@ Public Class Main
 
 
 
-                If CR_episode = Nothing And CR_episode2 = Nothing Then
+                If CR_episode = Nothing Or CR_episode = "" And CR_episode2 = Nothing Then
                     CR_episode_int = "0"
                 ElseIf CR_episode IsNot Nothing And CR_episode IsNot "" Then
                     CR_episode_int = CR_episode
@@ -1858,7 +1865,7 @@ Public Class Main
 
 
                 If Episode_Prefix = "[default episode prefix]" Then
-                    If CR_episode = Nothing And CR_episode2 = Nothing Then
+                    If CR_episode = Nothing Or CR_episode = "" And CR_episode2 = Nothing Then
                         CR_episode = CR_title
                     ElseIf CR_episode IsNot Nothing And CR_episode IsNot "" Then
                         CR_episode = "Episode " + AddLeadingZeros(CR_episode)
@@ -2098,18 +2105,23 @@ Public Class Main
             '                         Return Nothing
             '                     End Function))
 
+            Dim RawStream As String = ""
+
 
 
             For i As Integer = 0 To CR_Streams.Count - 1
                 Debug.WriteLine(CR_Streams.Item(i).subLang)
                 If CR_Streams.Item(i).subLang = LangNew Then
                     CR_URI_Master = CR_Streams.Item(i).Url
+                ElseIf CR_Streams.Item(i).subLang = "" And CR_audio_locale IsNot "ja-JP" And DubMode = True Then 'nothing/raw
+                    RawStream = CR_Streams.Item(i).Url
                 End If
-
             Next
 
+            If CR_URI_Master = Nothing And RawStream IsNot "" Then
+                CR_URI_Master = RawStream
 
-            If CR_URI_Master = Nothing Then
+            ElseIf CR_URI_Master = Nothing Then
                 Me.Invoke(New Action(Function() As Object
                                          ResoNotFoundString = VideoJson
                                          DialogTaskString = "Language_CR_Beta"

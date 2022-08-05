@@ -35,11 +35,13 @@ Public Class Anime_Add
                 Dim DeviceRegion As String = Nothing
                 Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
                 For i As Integer = 0 To list.Count - 1
+                    'MsgBox(list.Item(i).Name + ":" + vbNewLine + list.Item(i).Value)
                     If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "_evidon_suppress")) = False Then
                         Cookies = Cookies + list.Item(i).Name + "=" + list.Item(i).Value + ";"
                     End If
                     If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "c_locale")) Then
                         locale = list.Item(i).Value
+
                     End If
                 Next
             Catch ex As Exception

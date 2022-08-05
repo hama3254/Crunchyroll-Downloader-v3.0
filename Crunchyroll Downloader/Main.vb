@@ -1825,7 +1825,7 @@ Public Class Main
 
                 If CR_episode = Nothing And CR_episode2 = Nothing Then
                     CR_episode_int = "0"
-                ElseIf CR_episode IsNot Nothing Then
+                ElseIf CR_episode IsNot Nothing And CR_episode IsNot "" Then
                     CR_episode_int = CR_episode
                 ElseIf CR_episode2 IsNot Nothing Then
                     CR_episode_int = CR_episode2
@@ -1833,14 +1833,14 @@ Public Class Main
 
 
                 If Season_Prefix = "[default season prefix]" Then
-                    If CR_episode = Nothing Then 'no episode number means most likey a movie 
+                    If CR_episode = Nothing And CR_episode2 = Nothing Then 'no episode number means most likey a movie 
                         CR_season_number = Nothing
                     ElseIf CR_season_number = Nothing Then
                     Else
                         CR_season_number = "Season " + CR_season_number
                     End If
                 Else
-                    If CR_episode = Nothing Then 'no episode number means most likey a movie 
+                    If CR_episode = Nothing And CR_episode2 = Nothing Then 'no episode number means most likey a movie 
                         CR_season_number = Nothing
                     ElseIf CR_season_number = Nothing Then
                     Else
@@ -1860,7 +1860,7 @@ Public Class Main
                 If Episode_Prefix = "[default episode prefix]" Then
                     If CR_episode = Nothing And CR_episode2 = Nothing Then
                         CR_episode = CR_title
-                    ElseIf CR_episode IsNot Nothing Then
+                    ElseIf CR_episode IsNot Nothing And CR_episode IsNot "" Then
                         CR_episode = "Episode " + AddLeadingZeros(CR_episode)
                     ElseIf CR_episode2 IsNot Nothing Then
                         CR_episode = "Episode " + AddLeadingZeros(CR_episode2)

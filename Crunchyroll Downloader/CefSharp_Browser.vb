@@ -245,15 +245,25 @@ Public Class CefSharp_Browser
     Private Sub ObserveHttp(e As RequestResourceEventArgs) 'Handles RequestResource.GetUrl
         'Debug.WriteLine(e.Request.Url)
 
-        If (Me.InvokeRequired) Then
-            If Main.b = True And Main.FunimationJsonBrowser = Nothing Then
-                Exit Sub
-            End If
-        Else
-            If Main.b = True And Main.FunimationJsonBrowser = Nothing Then
-                Exit Sub
-            End If
-        End If
+        'If (Me.InvokeRequired) Then
+        '    If Main.b = True And Main.FunimationJsonBrowser = Nothing Then
+
+        '        Exit Sub
+        '    Else
+        '        Debug.WriteLine("false i guess?")
+        '        Debug.WriteLine(Main.b.ToString)
+        '        Debug.WriteLine(Main.FunimationJsonBrowser)
+        '    End If
+
+        'Else
+        '    If Main.b = True And Main.FunimationJsonBrowser = Nothing Then
+        '        Exit Sub
+        '    Else
+        '        Debug.WriteLine("false i guess?")
+        '        Debug.WriteLine(Main.b.ToString)
+        '        Debug.WriteLine(Main.FunimationJsonBrowser)
+        '    End If
+        'End If
 
 
 

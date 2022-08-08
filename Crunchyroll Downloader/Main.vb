@@ -4463,6 +4463,10 @@ Public Class Main
             End If
         End If
         If b = True Then
+            'LoadedUrls
+            'Debug.WriteLine(LoadedUrls.Count.ToString)
+            LoadedUrls.Clear()
+            Debug.WriteLine("Just Browsing, exiting...")
             Exit Sub
         End If
         'MsgBox("loaded!")

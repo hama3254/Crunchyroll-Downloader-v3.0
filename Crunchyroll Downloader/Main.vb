@@ -15,11 +15,12 @@ Imports Newtonsoft.Json.Linq
 Imports System.Runtime.InteropServices
 Imports CefSharp.WinForms
 Imports CefSharp
-Imports MetroFramework.Controls
+
 Public Class Main
     Inherits MetroForm
     Dim t As Thread
     Dim HTML As String = Nothing
+    Public LoadedUrl As String = Nothing
     Public CrBetaMass As String = Nothing
     Public CrBetaMassEpisodes As String = Nothing
     Public CrBetaMassParameters As String = Nothing
@@ -572,9 +573,25 @@ Public Class Main
         Catch ex As Exception
             ErrorTolerance = 0
         End Try
+
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            MergeSubs = CBool(Integer.Parse(rkg.GetValue("MergeSubs").ToString))
+            MergeSubsFormat = rkg.GetValue("MergeSubs").ToString
+
+            If MergeSubsFormat = "1" Then 'old setting should work as before
+
+                If VideoFormat = ".mkv" Then
+                    MergeSubsFormat = "copy"
+                Else
+                    VideoFormat = ".mp4"
+                    MergeSubsFormat = "mov_text"
+                End If
+
+            ElseIf MergeSubsFormat = "None" Or MergeSubsFormat = "0" Then
+                MergeSubs = False
+            Else
+                MergeSubs = True
+            End If
         Catch ex As Exception
             Try
                 Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
@@ -582,6 +599,7 @@ Public Class Main
             Catch ex2 As Exception
             End Try
         End Try
+
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             IncludeLangName = CBool(Integer.Parse(rkg.GetValue("IncludeLangName").ToString))
@@ -4479,26 +4497,38 @@ Public Class Main
             If b = False Then
                 Try
                     If Address = "https://www.crunchyroll.com/" Then
+                        MainPageLoaded()
+                        Exit Sub
                     ElseIf Address = "https://www.crunchyroll.com/en-gb" Then
-                        b = True
+                        MainPageLoaded()
+                        Exit Sub
                     ElseIf Address = "https://www.crunchyroll.com/es" Then
-                        b = True
+                        MainPageLoaded()
+                        Exit Sub
                     ElseIf Address = "https://www.crunchyroll.com/es-es" Then
-                        b = True
+                        MainPageLoaded()
+                        Exit Sub
                     ElseIf Address = "https://www.crunchyroll.com/pt-br" Then
-                        b = True
+                        MainPageLoaded()
+                        Exit Sub
                     ElseIf Address = "https://www.crunchyroll.com/pt-pt" Then
-                        b = True
+                        MainPageLoaded()
+                        Exit Sub
                     ElseIf Address = "https://www.crunchyroll.com/fr" Then
-                        b = True
+                        MainPageLoaded()
+                        Exit Sub
                     ElseIf Address = "https://www.crunchyroll.com/de" Then
-                        b = True
+                        MainPageLoaded()
+                        Exit Sub
                     ElseIf Address = "https://www.crunchyroll.com/ar" Then
-                        b = True
+                        MainPageLoaded()
+                        Exit Sub
                     ElseIf Address = "https://www.crunchyroll.com/it" Then
-                        b = True
+                        MainPageLoaded()
+                        Exit Sub
                     ElseIf Address = "https://www.crunchyroll.com/ru" Then
-                        b = True
+                        MainPageLoaded()
+                        Exit Sub
                     ElseIf CBool(InStr(localHTML, "hardsub_lang")) Then
                         Debug.WriteLine("starting grabber")
                         WebbrowserURL = Address
@@ -4595,6 +4625,32 @@ Public Class Main
         End If
         'End If
     End Sub
+
+    Sub MainPageLoaded()
+
+        b = True
+        If CBool(InStr(LoadedUrl, "beta.crunchyroll.com")) Then
+            Me.Invoke(New Action(Function() As Object
+                                     Anime_Add.StatusLabel.Text = "Status: invalid redirection, check beta login"
+                                     Me.Text = "Crunchyroll Downloader"
+                                     Me.Invalidate()
+                                     Return Nothing
+                                 End Function))
+            LoadedUrl = Nothing
+        Else
+            Me.Invoke(New Action(Function() As Object
+                                     Anime_Add.StatusLabel.Text = "Status: idle"
+                                     Me.Text = "Crunchyroll Downloader"
+                                     Me.Invalidate()
+                                     Return Nothing
+                                 End Function))
+            LoadedUrl = Nothing
+        End If
+
+
+
+    End Sub
+
 
 #End Region
     Public Sub ProcessUrls()
@@ -5326,11 +5382,14 @@ Public Class Main
 
     Private Sub CheckCRBetaTokenToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckCRBetaTokenToolStripMenuItem.Click
         If CrBetaBasic = Nothing Then
-            MsgBox("No CR Beta Basic Token has been found...", MsgBoxStyle.Exclamation)
-        Else
-            If CBool(MessageBox.Show("CR Beta Basic Token found!" + vbNewLine + CrBetaBasic, "Token", MessageBoxButtons.YesNo) = DialogResult.Yes) Then
-                CrBetaBasic = Nothing
+            If CBool(MessageBox.Show("No CR Beta Basic Token has been found..." + vbNewLine + "Press 'Yes' to manuel edit the Token", "Token", MessageBoxButtons.YesNo) = DialogResult.Yes) Then
+                CrBetaBasic = InputBox("Please enter a valid Token", "Token")
             End If
+
+        Else
+            MsgBox("CR Beta Basic Token found!" + vbNewLine + CrBetaBasic, MsgBoxStyle.Information)
+            ' CrBetaBasic = Nothing
+
 
         End If
     End Sub
@@ -5346,6 +5405,8 @@ Public Class Main
     Private Sub ThreadCount_Click(sender As Object, e As EventArgs) Handles ThreadCount.Click
         Trackbar.ShowDialog()
     End Sub
+
+
 
 
 

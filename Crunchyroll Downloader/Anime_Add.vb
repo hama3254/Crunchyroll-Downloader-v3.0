@@ -17,12 +17,14 @@ Public Class Anime_Add
     Public ThreadList As New List(Of Thread)
 
 
+
     Public Authorization As String = Nothing
     Public AuthorizationCookie As String = Nothing
 
 
     Private Sub LoadBrowser(ByVal Url As String)
 
+        Main.LoadedUrl = Url
 
         Dim locale As String = "en-US"
         If CBool(InStr(Url, "beta.crunchyroll.com")) = True And CBool(InStr(Url, "watch")) = True And CBool(Main.CrBetaBasic = Nothing) = False Then

@@ -127,10 +127,6 @@ Public Class Einstellungen
 
         End Try
 
-        If Main.MergeSubs = True Then
-            MergeMP4.Checked = True
-        End If
-
         If Main.HybridMode = True And Main.KeepCache = True Then
             DD_DLMode.SelectedIndex = 2
         ElseIf Main.HybridMode = True Then
@@ -547,24 +543,23 @@ Public Class Einstellungen
 
         If CB_Format.Text = "MKV" Then
             Main.VideoFormat = ".mkv"
-            Main.MergeSubsFormat = "copy"
             rk.SetValue("VideoFormat", ".mkv", RegistryValueKind.String)
         ElseIf CB_Format.Text = "AAC (Audio only)" Then
             Main.VideoFormat = ".aac"
-            Main.MergeSubsFormat = "mov_text"
             rk.SetValue("VideoFormat", ".aac", RegistryValueKind.String)
         Else
             Main.VideoFormat = ".mp4"
-            Main.MergeSubsFormat = "mov_text"
             rk.SetValue("VideoFormat", ".mp4", RegistryValueKind.String)
         End If
 
-        If MergeMP4.Checked = True Then
+        If CB_Merge.SelectedIndex > 0 Then
             Main.MergeSubs = True
-            rk.SetValue("MergeSubs", "1", RegistryValueKind.String)
+            Main.MergeSubsFormat = CB_Merge.SelectedItem.ToString
+            rk.SetValue("MergeSubs", CB_Merge.SelectedItem.ToString, RegistryValueKind.String)
         Else
+            Main.MergeSubsFormat = CB_Merge.SelectedItem.ToString
             Main.MergeSubs = False
-            rk.SetValue("MergeSubs", "0", RegistryValueKind.String)
+            rk.SetValue("MergeSubs", "None", RegistryValueKind.String)
         End If
 
 
@@ -857,7 +852,7 @@ Public Class Einstellungen
 
 
     Private Sub AAuto_Click(sender As Object, e As EventArgs) Handles AAuto.Click
-        If MergeMP4.Checked = True Then
+        If CB_Merge.SelectedIndex > 0 Then
             If AAuto.Checked = True Then
                 If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
 
@@ -875,13 +870,13 @@ Public Class Einstellungen
         End If
     End Sub
 
-    Private Sub MergeMP4_Click(sender As Object, e As EventArgs) Handles MergeMP4.Click
-        If MergeMP4.Checked = True Then
+    Private Sub MergeMP4_Click(sender As Object, e As EventArgs)
+        If CB_Merge.SelectedIndex > 0 Then
             If AAuto.Checked = True Then
                 If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
 
                 Else
-                    MergeMP4.Checked = False
+                    CB_Merge.SelectedIndex = 0
                 End If
             End If
         End If
@@ -1228,19 +1223,34 @@ Public Class Einstellungen
 
     Private Sub CB_Format_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CB_Format.SelectedIndexChanged
         If CB_Format.Text = "AAC (Audio only)" Then
-            If MergeMP4.Checked = True Then
+            If CB_Merge.SelectedIndex > 0 Then
                 MsgBox("Merged subs are not avalible with audio only!", MsgBoxStyle.Information)
             End If
-            MergeMP4.Checked = False
+            CB_Merge.SelectedIndex = 0
+        ElseIf CB_Format.Text = "MP4" Then
+            CB_Merge.SelectedIndex = 0
+            CB_Merge.Items.Clear()
+            CB_Merge.Items.Add("[Merge Disabeld]") 'mov_text
+            CB_Merge.Items.Add("mov_text")
+            'CB_Merge.Items.Add("srt")
+            CB_Merge.SelectedItem = Main.MergeSubsFormat
+        ElseIf CB_Format.Text = "MKV" Then
+            CB_Merge.SelectedIndex = 0
+            CB_Merge.Items.Clear()
+            CB_Merge.Items.Add("[Merge Disabeld]")
+            CB_Merge.Items.Add("copy")
+            CB_Merge.Items.Add("srt")
+            CB_Merge.SelectedItem = Main.MergeSubsFormat
         End If
+
     End Sub
 
-    Private Sub MergeMP4_CheckedChanged(sender As Object, e As EventArgs) Handles MergeMP4.CheckedChanged
+    Private Sub MergeMP4_CheckedChanged(sender As Object, e As EventArgs)
         If CB_Format.Text = "AAC (Audio only)" Then
-            If MergeMP4.Checked = True Then
+            If CB_Merge.SelectedIndex > 0 Then
                 MsgBox("Merged subs are not avalible with audio only!", MsgBoxStyle.Information)
             End If
-            MergeMP4.Checked = False
+            CB_Merge.SelectedIndex = 0
         End If
     End Sub
 
@@ -1284,8 +1294,6 @@ Public Class Einstellungen
         End If
 
     End Sub
-
-
 
 
 

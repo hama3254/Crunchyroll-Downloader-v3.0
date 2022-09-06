@@ -48,7 +48,7 @@ Partial Class Einstellungen
         Me.TempTB = New MetroFramework.Controls.MetroTextBox()
         Me.DD_DLMode = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.MergeMP4 = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_Merge = New MetroFramework.Controls.MetroComboBox()
         Me.CB_Format = New MetroFramework.Controls.MetroComboBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
@@ -120,6 +120,8 @@ Partial Class Einstellungen
         Me.DD_Season_Prefix = New MetroFramework.Controls.MetroComboBox()
         Me.CR_Filename = New MetroFramework.Controls.MetroComboBox()
         Me.MetroTabPage1 = New MetroFramework.Controls.MetroTabPage()
+        Me.GroupBox19 = New System.Windows.Forms.GroupBox()
+        Me.DubMode = New MetroFramework.Controls.MetroCheckBox()
         Me.TabPage6 = New MetroFramework.Controls.MetroTabPage()
         Me.GroupBox15 = New System.Windows.Forms.GroupBox()
         Me.Bitrate_Funi = New MetroFramework.Controls.MetroComboBox()
@@ -149,8 +151,6 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.GroupBox19 = New System.Windows.Forms.GroupBox()
-        Me.DubMode = New MetroFramework.Controls.MetroCheckBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -177,6 +177,7 @@ Partial Class Einstellungen
         Me.GB_Filename_Pre.SuspendLayout()
         Me.GroupBox12.SuspendLayout()
         Me.MetroTabPage1.SuspendLayout()
+        Me.GroupBox19.SuspendLayout()
         Me.TabPage6.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
@@ -187,7 +188,6 @@ Partial Class Einstellungen
         Me.GroupBox8.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox19.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolTip1
@@ -515,27 +515,30 @@ Partial Class Einstellungen
         'GroupBox4
         '
         Me.GroupBox4.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox4.Controls.Add(Me.MergeMP4)
+        Me.GroupBox4.Controls.Add(Me.CB_Merge)
         Me.GroupBox4.Controls.Add(Me.CB_Format)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox4.ForeColor = System.Drawing.Color.Black
         Me.GroupBox4.Location = New System.Drawing.Point(5, 270)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(490, 78)
+        Me.GroupBox4.Size = New System.Drawing.Size(490, 70)
         Me.GroupBox4.TabIndex = 40
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Format"
         '
-        'MergeMP4
+        'CB_Merge
         '
-        Me.MergeMP4.AutoSize = True
-        Me.MergeMP4.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.MergeMP4.Location = New System.Drawing.Point(248, 35)
-        Me.MergeMP4.Name = "MergeMP4"
-        Me.MergeMP4.Size = New System.Drawing.Size(214, 19)
-        Me.MergeMP4.TabIndex = 18
-        Me.MergeMP4.Text = "Merge soft-subs with video file"
-        Me.MergeMP4.UseSelectable = True
+        Me.CB_Merge.DropDownHeight = 250
+        Me.CB_Merge.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_Merge.FormattingEnabled = True
+        Me.CB_Merge.IntegralHeight = False
+        Me.CB_Merge.ItemHeight = 23
+        Me.CB_Merge.Items.AddRange(New Object() {"[Merge Disabeld]"})
+        Me.CB_Merge.Location = New System.Drawing.Point(249, 31)
+        Me.CB_Merge.Name = "CB_Merge"
+        Me.CB_Merge.Size = New System.Drawing.Size(175, 29)
+        Me.CB_Merge.TabIndex = 19
+        Me.CB_Merge.UseSelectable = True
         '
         'CB_Format
         '
@@ -545,9 +548,9 @@ Partial Class Einstellungen
         Me.CB_Format.IntegralHeight = False
         Me.CB_Format.ItemHeight = 23
         Me.CB_Format.Items.AddRange(New Object() {"MP4", "MKV", "AAC (Audio only)"})
-        Me.CB_Format.Location = New System.Drawing.Point(6, 30)
+        Me.CB_Format.Location = New System.Drawing.Point(25, 31)
         Me.CB_Format.Name = "CB_Format"
-        Me.CB_Format.Size = New System.Drawing.Size(225, 29)
+        Me.CB_Format.Size = New System.Drawing.Size(175, 29)
         Me.CB_Format.TabIndex = 17
         Me.CB_Format.UseSelectable = True
         '
@@ -860,10 +863,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage1.Size = New System.Drawing.Size(501, 528)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1103,7 +1106,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 3
+        Me.TabControl1.SelectedIndex = 1
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1117,9 +1120,9 @@ Partial Class Einstellungen
         Me.MetroTabPage2.HorizontalScrollbarBarColor = True
         Me.MetroTabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage2.HorizontalScrollbarSize = 10
-        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage2.Name = "MetroTabPage2"
-        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage2.TabIndex = 8
         Me.MetroTabPage2.Text = "Naming"
         Me.MetroTabPage2.VerticalScrollbarBarColor = True
@@ -1315,14 +1318,38 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
         Me.MetroTabPage1.VerticalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.VerticalScrollbarSize = 10
+        '
+        'GroupBox19
+        '
+        Me.GroupBox19.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox19.Controls.Add(Me.DubMode)
+        Me.GroupBox19.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox19.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox19.Location = New System.Drawing.Point(5, 14)
+        Me.GroupBox19.Name = "GroupBox19"
+        Me.GroupBox19.Size = New System.Drawing.Size(490, 59)
+        Me.GroupBox19.TabIndex = 33
+        Me.GroupBox19.TabStop = False
+        Me.GroupBox19.Text = "Dubbed"
+        '
+        'DubMode
+        '
+        Me.DubMode.AutoSize = True
+        Me.DubMode.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.DubMode.Location = New System.Drawing.Point(115, 21)
+        Me.DubMode.Name = "DubMode"
+        Me.DubMode.Size = New System.Drawing.Size(258, 19)
+        Me.DubMode.TabIndex = 5
+        Me.DubMode.Text = "accept no hardsubs for dubbed shows"
+        Me.DubMode.UseSelectable = True
         '
         'TabPage6
         '
@@ -1334,10 +1361,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage6.Size = New System.Drawing.Size(501, 528)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = " Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1571,9 +1598,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = " About  "
         '
@@ -1705,30 +1732,6 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'GroupBox19
-        '
-        Me.GroupBox19.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox19.Controls.Add(Me.DubMode)
-        Me.GroupBox19.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox19.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox19.Location = New System.Drawing.Point(5, 14)
-        Me.GroupBox19.Name = "GroupBox19"
-        Me.GroupBox19.Size = New System.Drawing.Size(490, 59)
-        Me.GroupBox19.TabIndex = 33
-        Me.GroupBox19.TabStop = False
-        Me.GroupBox19.Text = "Dubbed"
-        '
-        'DubMode
-        '
-        Me.DubMode.AutoSize = True
-        Me.DubMode.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.DubMode.Location = New System.Drawing.Point(115, 21)
-        Me.DubMode.Name = "DubMode"
-        Me.DubMode.Size = New System.Drawing.Size(258, 19)
-        Me.DubMode.TabIndex = 5
-        Me.DubMode.Text = "accept no hardsubs for dubbed shows"
-        Me.DubMode.UseSelectable = True
-        '
         'Einstellungen
         '
         Me.ApplyImageInvert = True
@@ -1757,7 +1760,6 @@ Partial Class Einstellungen
         Me.GroupBox18.PerformLayout()
         Me.GroupBox16.ResumeLayout(False)
         Me.GroupBox4.ResumeLayout(False)
-        Me.GroupBox4.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
@@ -1782,6 +1784,8 @@ Partial Class Einstellungen
         Me.GB_Filename_Pre.PerformLayout()
         Me.GroupBox12.ResumeLayout(False)
         Me.MetroTabPage1.ResumeLayout(False)
+        Me.GroupBox19.ResumeLayout(False)
+        Me.GroupBox19.PerformLayout()
         Me.TabPage6.ResumeLayout(False)
         Me.GroupBox15.ResumeLayout(False)
         Me.GroupBox10.ResumeLayout(False)
@@ -1794,8 +1798,6 @@ Partial Class Einstellungen
         Me.GroupBox8.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox19.ResumeLayout(False)
-        Me.GroupBox19.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1846,7 +1848,6 @@ Partial Class Einstellungen
     Friend WithEvents GroupBox11 As GroupBox
     Friend WithEvents Button1 As Button
     Friend WithEvents Label1 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents MergeMP4 As MetroFramework.Controls.MetroCheckBox
     Public WithEvents CBesES As MetroFramework.Controls.MetroCheckBox
     Public WithEvents CBitIT As MetroFramework.Controls.MetroCheckBox
     Public WithEvents CBruRU As MetroFramework.Controls.MetroCheckBox
@@ -1929,4 +1930,5 @@ Partial Class Einstellungen
     Friend WithEvents ListC9 As ToolStripMenuItem
     Friend WithEvents GroupBox19 As GroupBox
     Friend WithEvents DubMode As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents CB_Merge As MetroFramework.Controls.MetroComboBox
 End Class

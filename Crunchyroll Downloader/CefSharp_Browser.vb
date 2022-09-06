@@ -563,6 +563,7 @@ Public Class CefSharp_Browser
 
 
 
+
     'Private Sub WebBrowser1_ConsoleMessage(sender As Object, e As ConsoleMessageEventArgs) Handles WebBrowser1.ConsoleMessage
     '    Debug.WriteLine(e.Message)
     'End Sub

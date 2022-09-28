@@ -1762,11 +1762,13 @@ Public Class Main
                 Dim ffmpeg_command_Builder() As String = ffmpeg_command.Split(New String() {"-c:a copy"}, System.StringSplitOptions.RemoveEmptyEntries)
                 ffmpeg_command_temp = "-c:a copy" + ffmpeg_command_Builder(1)
             End If
+            Dim CR_MetadataUsage As Boolean = False
             Dim CR_Streams As New List(Of CR_Beta_Stream)
             Dim CR_series_title As String = Nothing
             Dim CR_season_number As String = Nothing
             Dim CR_season_number2 As String = Nothing
             Dim CR_episode As String = Nothing
+            Dim CR_episode_duration_ms As String = "60000000"
             Dim CR_episode2 As String = Nothing
             Dim CR_Anime_Staffel_int As String = Nothing
             Dim CR_episode_int As String = Nothing
@@ -1835,6 +1837,8 @@ Public Class Main
                                                         CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                     Case "episode"
                                                         CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                    Case "duration_ms"
+                                                        CR_episode_duration_ms = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                 End Select
                                             Next
                                     End Select
@@ -1967,6 +1971,66 @@ Public Class Main
                 Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
             End If
 #End Region
+#Region "Chapters"
+            'MsgBox(ObjectsURLBuilder4(0))
+
+            Dim ChaptersUrl As String = "https://static.crunchyroll.com/datalab-intro-v2/" + ObjectsURLBuilder4(0) + ".json"
+            Dim ChaptersJson As String = Nothing
+
+            Try
+                Using client As New WebClient()
+                    client.Encoding = System.Text.Encoding.UTF8
+                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    ChaptersJson = client.DownloadString(ChaptersUrl)
+                End Using
+            Catch ex As Exception
+                Debug.WriteLine("no Chapter data... ignoring")
+
+            End Try
+            'MsgBox(ChaptersJson)
+            Dim Mdata_File As String = Application.StartupPath + "\" + ObjectsURLBuilder4(0) + "-mdata.txt"
+            If ChaptersJson IsNot Nothing Then
+
+                Dim StartTime As String() = ChaptersJson.Split(New String() {Chr(34) + "startTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim StartTime2 As String() = StartTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim StartTime3 As String() = StartTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim StartTime4 As String = StartTime3(1)
+
+                For i As Integer = StartTime4.Length To 2
+                    StartTime4 = StartTime4 + "0"
+                Next
+
+                Dim StartTime_ms As String = StartTime3(0) + StartTime4
+
+
+                Dim EndTime As String() = ChaptersJson.Split(New String() {Chr(34) + "endTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim EndTime2 As String() = EndTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim EndTime3 As String() = EndTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim EndTime4 As String = EndTime3(1)
+                Dim AfterTime As String = Nothing
+
+                For i As Integer = EndTime4.Length To 2
+                    If EndTime4.Length = 2 Then
+                        AfterTime = EndTime4 + "1"
+                    End If
+                    EndTime4 = EndTime4 + "0"
+                Next
+
+                Dim EndTime_ms As String = EndTime3(0) + EndTime4
+                Dim AfterTime_ms As String = EndTime3(0) + AfterTime
+
+                Dim Metadata As String = My.Resources.ffmpeg_metadata.Replace("[Titel]", CR_FilenName).Replace("[Start]", StartTime_ms).Replace("[END]", EndTime_ms).Replace("[after]", AfterTime_ms).Replace("[duration_ms]", CR_episode_duration_ms.ToString)
+
+                Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                Using sink As New StreamWriter(Mdata_File, False, utf8WithoutBom2)
+                    sink.WriteLine(Metadata)
+                    CR_MetadataUsage = True
+                End Using
+
+            End If
+
+#End Region
 #Region "VideoJson"
             Dim VideoJson As String = Nothing
             Try
@@ -2013,13 +2077,19 @@ Public Class Main
             Dim SoftSubMergeURLs As String = Nothing
             Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a"
             Dim SoftSubMergeMetatata As String = Nothing
+            Dim IndexMoveMap As Integer = 1
+            Dim IndexMoveI As Integer = 0
+            If CR_MetadataUsage = True Then
+                IndexMoveMap = 2
+                IndexMoveI = 1
+            End If
             If SoftSubs2.Count > 0 Then
                 If MergeSubs = True And SubsOnly = False Then
                     Dim DispositionIndex As Integer
                     For i As Integer = 0 To SoftSubs2.Count - 1
                         Debug.WriteLine(SoftSubs2(i))
                         If SoftSubs2(i) = DefaultSubCR Then
-                            DispositionIndex = i
+                            DispositionIndex = i + IndexMoveI
                         End If
                         Dim SoftSub As String() = VideoJson.Split(New String() {Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + ConvertCC(SoftSubs2(i)) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
@@ -2029,11 +2099,11 @@ Public Class Main
                         Else
                             SoftSubMergeURLs = SoftSubMergeURLs + " -i " + Chr(34) + SoftSub_3 + Chr(34)
                         End If
-                        SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + 1).ToString
+                        SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + IndexMoveMap).ToString
                         If SoftSubMergeMetatata = Nothing Then
-                            SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
+                            SoftSubMergeMetatata = " -metadata:s:s:" + (i + IndexMoveI).ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + (i + IndexMoveI).ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + (i + IndexMoveI).ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
                         Else
-                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
+                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + (i + IndexMoveI).ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + (i + IndexMoveI).ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + (i + IndexMoveI).ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
                         End If
                     Next
                     If DispositionIndex = Nothing Then
@@ -2207,10 +2277,15 @@ Public Class Main
 
             If SubsOnly = False Then
                 If Reso = 42 And HybridMode = False Then
-                    If MergeSubs = True Then
+                    If MergeSubs = True And CR_MetadataUsage = False Then
                         URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
-                    Else
+                    ElseIf MergeSubs = False And CR_MetadataUsage = False Then
                         URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                    ElseIf MergeSubs = True And CR_MetadataUsage = True Then
+                        URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + "-i " + Chr(34) + Mdata_File + Chr(34) + "-map_metadata 1" + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
+                    ElseIf MergeSubs = False And CR_MetadataUsage = True Then
+                        URL_DL = "-i " + Chr(34) + CR_URI_Master + Chr(34) + "-i " + Chr(34) + Mdata_File + Chr(34) + "-map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+
                     End If
                     'MsgBox(URL_DL)
                 Else
@@ -2246,12 +2321,23 @@ Public Class Main
                     Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
                     ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
                     Debug.WriteLine("Line 2120-CR_audio_locale: " + CR_audio_locale)
-                    If MergeSubs = True Then
-                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
-                        'URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command
-                    Else
+
+                    If MergeSubs = True And CR_MetadataUsage = False Then
+                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
+                    ElseIf MergeSubs = False And CR_MetadataUsage = False Then
                         URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                    ElseIf MergeSubs = True And CR_MetadataUsage = True Then
+                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -i " + Chr(34) + Mdata_File + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " -map_metadata 1" + " " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
+                    ElseIf MergeSubs = False And CR_MetadataUsage = True Then
+                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+
                     End If
+
+                    'If MergeSubs = True And CR_MetadataUsage = False Then
+                    '    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
+                    'Else
+                    '    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                    'End If
                 End If
             End If
 #Region "thumbnail"

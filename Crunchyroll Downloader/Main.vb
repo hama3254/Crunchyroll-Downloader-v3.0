@@ -2078,10 +2078,8 @@ Public Class Main
             Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a"
             Dim SoftSubMergeMetatata As String = Nothing
             Dim IndexMoveMap As Integer = 1
-            Dim IndexMoveI As Integer = 0
             If CR_MetadataUsage = True Then
                 IndexMoveMap = 2
-                IndexMoveI = 1
             End If
             If SoftSubs2.Count > 0 Then
                 If MergeSubs = True And SubsOnly = False Then
@@ -2089,7 +2087,7 @@ Public Class Main
                     For i As Integer = 0 To SoftSubs2.Count - 1
                         Debug.WriteLine(SoftSubs2(i))
                         If SoftSubs2(i) = DefaultSubCR Then
-                            DispositionIndex = i + IndexMoveI
+                            DispositionIndex = i
                         End If
                         Dim SoftSub As String() = VideoJson.Split(New String() {Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + ConvertCC(SoftSubs2(i)) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
@@ -2101,9 +2099,9 @@ Public Class Main
                         End If
                         SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + IndexMoveMap).ToString
                         If SoftSubMergeMetatata = Nothing Then
-                            SoftSubMergeMetatata = " -metadata:s:s:" + (i + IndexMoveI).ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + (i + IndexMoveI).ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + (i + IndexMoveI).ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
+                            SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
                         Else
-                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + (i + IndexMoveI).ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + (i + IndexMoveI).ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + (i + IndexMoveI).ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
+                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
                         End If
                     Next
                     If DispositionIndex = Nothing Then

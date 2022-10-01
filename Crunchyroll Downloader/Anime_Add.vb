@@ -350,60 +350,62 @@ Public Class Anime_Add
                 If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Or CBool(InStr(textBox1.Text, "vrv.co/series/")) Or CBool(InStr(textBox1.Text, "vrv.co/watch/")) Then
 
 
-                    If StatusLabel.Text = "Status: waiting for episode selection" Then
-                        If MessageBox.Show("Are you sure you want cancel the advanced download?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                            StatusLabel.Text = "Status: idle"
-                        Else
-                            Exit Sub
-                            btn_dl.Enabled = True
-                        End If
-                        'ElseIf LabelUpdate = "Status: looking for video file" Then
-                        '    Exit Sub
-                        '    pictureBox4.Enabled = True
+                    'If StatusLabel.Text = "Status: waiting for episode selection" Then
+                    '    If MessageBox.Show("Are you sure you want cancel the advanced download?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                    '        StatusLabel.Text = "Status: idle"
+                    '    Else
+                    '        Exit Sub
+                    '        btn_dl.Enabled = True
+                    '    End If
+                    '    'ElseIf LabelUpdate = "Status: looking for video file" Then
+                    '    '    Exit Sub
+                    '    '    pictureBox4.Enabled = True
+                    'Else
+                    If Main.RunningDownloads >= Main.MaxDL Then
+                        Debug.WriteLine("Max_Dl")
+                        ListBox1.Items.Add(textBox1.Text)
+                        textBox1.ForeColor = Color.FromArgb(9248044)
+                        Pause(2)
+                        textBox1.ForeColor = Color.Black
+                        textBox1.Text = "URL"
                     Else
-                        If Main.RunningDownloads >= Main.MaxDL Then
-                            ListBox1.Items.Add(textBox1.Text)
-                            textBox1.ForeColor = Color.FromArgb(9248044)
-                            Pause(1)
-                            textBox1.ForeColor = Color.Black
-                            textBox1.Text = "URL"
+
+                        If CBool(InStr(textBox1.Text, "funimation.com")) Then
+
+                            Main.WebbrowserURL = textBox1.Text
+
+                            If CBool(InStr(textBox1.Text, "funimation.com/v/")) Then
+                                Dim Episode() As String = textBox1.Text.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                                Dim v1JsonUrl As String = "https://d33et77evd9bgg.cloudfront.net/data/v1/episodes/" + Episode(Episode.Length - 1) + ".json"
+                                Dim v1Json As String = Nothing
+                                Try
+                                    Using client As New WebClient()
+                                        client.Encoding = System.Text.Encoding.UTF8
+                                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                                        v1Json = client.DownloadString(v1JsonUrl)
+                                    End Using
+                                    Main.GetFunimationNewJS_VideoProxy(Nothing, v1Json)
+                                    Exit Sub
+                                Catch ex As Exception
+                                    Debug.WriteLine("error- getting v1Json data for the bypasss")
+                                    Debug.WriteLine(ex.ToString)
+                                End Try
+
+                            End If
+
+                        End If
+
+                        If Main.Grapp_RDY = True Then
+
+                            Main.b = False
+                            Debug.WriteLine("Start loading: " + Date.Now.ToString)
+                            LoadBrowser(textBox1.Text)
+                            StatusLabel.Text = "Status: loading ...."
                         Else
-
-                            If CBool(InStr(textBox1.Text, "funimation.com")) Then
-
-                                Main.WebbrowserURL = textBox1.Text
-
-                                If CBool(InStr(textBox1.Text, "funimation.com/v/")) Then
-                                    Dim Episode() As String = textBox1.Text.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                    Dim v1JsonUrl As String = "https://d33et77evd9bgg.cloudfront.net/data/v1/episodes/" + Episode(Episode.Length - 1) + ".json"
-                                    Dim v1Json As String = Nothing
-                                    Try
-                                        Using client As New WebClient()
-                                            client.Encoding = System.Text.Encoding.UTF8
-                                            client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                                            v1Json = client.DownloadString(v1JsonUrl)
-                                        End Using
-                                        Main.GetFunimationNewJS_VideoProxy(Nothing, v1Json)
-                                        Exit Sub
-                                    Catch ex As Exception
-                                        Debug.WriteLine("error- getting v1Json data for the bypasss")
-                                        Debug.WriteLine(ex.ToString)
-                                    End Try
-
-                                End If
-
-                            End If
-
-                            If Main.Grapp_RDY = True Then
-
-                                Main.b = False
-                                Debug.WriteLine("Start loading: " + Date.Now.ToString)
-                                LoadBrowser(textBox1.Text)
-                                StatusLabel.Text = "Status: loading ...."
-
-                            End If
+                            Debug.WriteLine("Not Ready!")
                         End If
                     End If
+                    'End If
 
 
                 ElseIf CBool(InStr(textBox1.Text, "Test=true")) Then
@@ -438,11 +440,13 @@ Public Class Anime_Add
                 Main.Grapp_Abord = True
                 Main.b = True
                 groupBox1.Visible = True
+                btn_dl.Text = "Download"
                 btn_dl.BackgroundImage = My.Resources.main_button_download_default
+                StatusLabel.Text = "Status: idle"
             ElseIf CBool(InStr(Main.WebbrowserURL, "funimation.com")) = True Then
 
 
-                StatusLabel.Text = "Status: idle"
+
                 'btn_dl.BackgroundImage = My.Resources.add_mass_running_cancel
                 btn_dl.Text = "Cancel"
                 Mass_DL_Cancel = True
@@ -480,7 +484,7 @@ Public Class Anime_Add
                 comboBox3.Enabled = False
                 ComboBox1.Enabled = False
 
-            Else
+            Else 'CR
 
                 StatusLabel.Text = "Status: idle"
                 'btn_dl.BackgroundImage = My.Resources.add_mass_running_cancel
@@ -656,39 +660,39 @@ Public Class Anime_Add
 
 
         ElseIf CBool(InStr(Main.WebbrowserURL, "vrv.co")) = True Then
-                comboBox3.Items.Clear()
-                comboBox4.Items.Clear()
-                comboBox3.Enabled = True
-                comboBox4.Enabled = True
-                comboBox3.Text = Nothing
-                comboBox4.Text = Nothing
-                Dim SeasonSplit() As String = Main.VRVMass.Split(New String() {Chr(34) + "id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            comboBox3.Items.Clear()
+            comboBox4.Items.Clear()
+            comboBox3.Enabled = True
+            comboBox4.Enabled = True
+            comboBox3.Text = Nothing
+            comboBox4.Text = Nothing
+            Dim SeasonSplit() As String = Main.VRVMass.Split(New String() {Chr(34) + "id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                Dim SeasonSplit2() As String = SeasonSplit(ComboBox1.SelectedIndex + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim SeasonSplit2() As String = SeasonSplit(ComboBox1.SelectedIndex + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                Dim EpisodeJsonURL As String = Main.VRVMassBaseURL + "episodes?season_id=" + SeasonSplit2(0) + "&Policy=" + Main.VRVMassParameters
-                Dim EpisodeJson As String = Nothing
-                Debug.WriteLine(EpisodeJsonURL)
+            Dim EpisodeJsonURL As String = Main.VRVMassBaseURL + "episodes?season_id=" + SeasonSplit2(0) + "&Policy=" + Main.VRVMassParameters
+            Dim EpisodeJson As String = Nothing
+            Debug.WriteLine(EpisodeJsonURL)
 
-                Try
-                    Using client As New WebClient()
-                        client.Encoding = System.Text.Encoding.UTF8
-                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                        EpisodeJson = client.DownloadString(EpisodeJsonURL)
-                    End Using
-                Catch ex As Exception
-                    Debug.WriteLine("error- getting EpisodeJson data")
-                    Debug.WriteLine(ex.ToString)
-                    Exit Sub
-                End Try
-                Main.VRVMassEpisodes = EpisodeJson
-
-
-
-                Dim EpisodeNameSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Try
+                Using client As New WebClient()
+                    client.Encoding = System.Text.Encoding.UTF8
+                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    EpisodeJson = client.DownloadString(EpisodeJsonURL)
+                End Using
+            Catch ex As Exception
+                Debug.WriteLine("error- getting EpisodeJson data")
+                Debug.WriteLine(ex.ToString)
+                Exit Sub
+            End Try
+            Main.VRVMassEpisodes = EpisodeJson
 
 
-                Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            Dim EpisodeNameSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+            Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             For i As Integer = 1 To EpisodeSplit.Count - 1
                 Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim EpisodeNameSplit2() As String = EpisodeNameSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -708,47 +712,47 @@ Public Class Anime_Add
             End If
 
         ElseIf Main.WebbrowserURL = "https://funimation.com/js" Then
-                comboBox3.Items.Clear()
-                comboBox4.Items.Clear()
-                comboBox3.Text = Nothing
-                comboBox4.Text = Nothing
-                Dim ContentID As String = Nothing
+            comboBox3.Items.Clear()
+            comboBox4.Items.Clear()
+            comboBox3.Text = Nothing
+            comboBox4.Text = Nothing
+            Dim ContentID As String = Nothing
 
-                For i As Integer = 0 To Main.FunimtaionSeasonList.Count - 1
-                    If ComboBox1.Text = Main.FunimtaionSeasonList.Item(i).Title Then
-                        ContentID = Main.FunimtaionSeasonList.Item(i).ID
-                        Exit For
-                    End If
-                Next
-
-                If ContentID = Nothing Then
-                    MsgBox("error during season selection")
-                    Exit Sub
+            For i As Integer = 0 To Main.FunimtaionSeasonList.Count - 1
+                If ComboBox1.Text = Main.FunimtaionSeasonList.Item(i).Title Then
+                    ContentID = Main.FunimtaionSeasonList.Item(i).ID
+                    Exit For
                 End If
+            Next
 
-                Dim BaseUrl() As String = Main.FunimationSeasonAPIUrl.Split(New String() {"/shows/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            If ContentID = Nothing Then
+                MsgBox("error during season selection")
+                Exit Sub
+            End If
+
+            Dim BaseUrl() As String = Main.FunimationSeasonAPIUrl.Split(New String() {"/shows/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
 
-                Dim EpisodeJsonURL As String = BaseUrl(0) + "/seasons/" + ContentID + ".json"
-                Dim EpisodeJson As String = Nothing
-                Debug.WriteLine(EpisodeJsonURL)
+            Dim EpisodeJsonURL As String = BaseUrl(0) + "/seasons/" + ContentID + ".json"
+            Dim EpisodeJson As String = Nothing
+            Debug.WriteLine(EpisodeJsonURL)
 
-                Try
-                    Using client As New WebClient()
-                        client.Encoding = System.Text.Encoding.UTF8
-                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-                        EpisodeJson = client.DownloadString(EpisodeJsonURL)
-                    End Using
-                Catch ex As Exception
-                    Debug.WriteLine("error- getting EpisodeJson data")
-                    Debug.WriteLine(ex.ToString)
-                    Main.FunimationJsonBrowser = "EpisodeJson"
-                    LoadBrowser(EpisodeJsonURL)
-                    Exit Sub
-                End Try
+            Try
+                Using client As New WebClient()
+                    client.Encoding = System.Text.Encoding.UTF8
+                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    EpisodeJson = client.DownloadString(EpisodeJsonURL)
+                End Using
+            Catch ex As Exception
+                Debug.WriteLine("error- getting EpisodeJson data")
+                Debug.WriteLine(ex.ToString)
+                Main.FunimationJsonBrowser = "EpisodeJson"
+                LoadBrowser(EpisodeJsonURL)
+                Exit Sub
+            End Try
 
-                FillFunimationEpisodes(EpisodeJson)
+            FillFunimationEpisodes(EpisodeJson)
 
 
             If comboBox3.Items.Count > 0 Then
@@ -759,8 +763,8 @@ Public Class Anime_Add
 
         Else
 
-                'MsgBox(Main.WebbrowserURL)
-                comboBox3.Items.Clear()
+            'MsgBox(Main.WebbrowserURL)
+            comboBox3.Items.Clear()
             comboBox4.Items.Clear()
             comboBox3.Enabled = True
             comboBox4.Enabled = True

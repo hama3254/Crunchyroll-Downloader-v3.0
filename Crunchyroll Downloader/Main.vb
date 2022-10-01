@@ -1672,6 +1672,7 @@ Public Class Main
                     b = True
                     Exit For
                     Grapp_Abord = True
+                    Grapp_RDY = True
                     'MsgBox("dl_abourd")
                 End If
                 If UseQueue = True Then
@@ -4569,12 +4570,29 @@ Public Class Main
             'Debug.WriteLine(LoadedUrls.Count.ToString)
             LoadedUrls.Clear()
             Debug.WriteLine("Just Browsing, exiting...")
+            Grapp_RDY = True
             Exit Sub
         End If
         'MsgBox("loaded!")
         If CBool(InStr(Address, "beta.crunchyroll.com")) Then
             WebbrowserURL = Address
-            Pause(10)
+            For i As Integer = 10 To 1 Step -1
+                If b = True Then
+                    If Application.OpenForms().OfType(Of CefSharp_Browser).Any = True Then
+                        Anime_Add.StatusLabel.Text = "Status: idle"
+                    End If
+                    Me.Text = "Crunchyroll Downloader"
+                    Exit Sub
+                End If
+
+                If Application.OpenForms().OfType(Of CefSharp_Browser).Any = True Then
+                    Anime_Add.StatusLabel.Text = "Status: Processing Url " + i.ToString
+                End If
+                Me.Text = "Status: Processing Url " + i.ToString
+
+                Pause(1)
+            Next
+            Me.Text = "Status: Processing... "
             ProcessUrls()
             Exit Sub
         ElseIf CBool(InStr(Address, "crunchyroll.com")) Then
@@ -4748,6 +4766,7 @@ Public Class Main
                     GetBetaVideoProxy(requesturl, WebbrowserURL)
                     b = True
                     LoadedUrls.Clear()
+                    Me.Text = "Crunchyroll Downloader"
                     Exit Sub
                 End If
             ElseIf CBool(InStr(requesturl, "https://beta.crunchyroll.com/")) And CBool(InStr(requesturl, "streams?")) Then
@@ -4755,6 +4774,7 @@ Public Class Main
                     GetBetaVideoProxy(requesturl, WebbrowserURL)
                     b = True
                     LoadedUrls.Clear()
+                    Me.Text = "Crunchyroll Downloader"
                     Exit Sub
                 End If
             ElseIf CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
@@ -4762,6 +4782,7 @@ Public Class Main
                     GetBetaSeasons(requesturl)
                     b = True
                     LoadedUrls.Clear()
+                    Me.Text = "Crunchyroll Downloader"
                     Exit Sub
                 End If
             ElseIf CBool(InStr(requesturl, "https://beta.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
@@ -4769,6 +4790,7 @@ Public Class Main
                     GetBetaSeasons(requesturl)
                     b = True
                     LoadedUrls.Clear()
+                    Me.Text = "Crunchyroll Downloader"
                     Exit Sub
                 End If
             End If
@@ -4778,6 +4800,7 @@ Public Class Main
                     Get_VRV_VideoProxy(requesturl, WebbrowserURL)
                     b = True
                     LoadedUrls.Clear()
+                    Me.Text = "Crunchyroll Downloader"
                     Exit Sub
                 End If
             ElseIf CBool(InStr(requesturl, "https://api.vrv.co")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
@@ -4786,6 +4809,7 @@ Public Class Main
                     VRVSeason = requesturl
                     'b = True
                     'LoadedUrls.Clear()
+                    'Me.Text = "Crunchyroll Downloader" 
                     'Exit Sub
                 End If
             End If
@@ -4799,6 +4823,7 @@ Public Class Main
                                          Return Nothing
                                      End Function))
                 LoadedUrls.Clear()
+                Me.Text = "Crunchyroll Downloader"
                 Exit Sub
             End If
             If CBool(InStr(requesturl, "data/v1/episodes/")) Then
@@ -4811,6 +4836,7 @@ Public Class Main
                                          Return Nothing
                                      End Function))
                 LoadedUrls.Clear()
+                Me.Text = "Crunchyroll Downloader"
                 Exit Sub
             End If
             If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com")) And CBool(InStr(requesturl, "?region=")) Then
@@ -4863,6 +4889,7 @@ Public Class Main
                         GetFunimationNewJS_VideoProxy(requesturl)
                         Debug.WriteLine("processing :" + requesturl)
                         LoadedUrls.Clear()
+                        Me.Text = "Crunchyroll Downloader"
                         Exit Sub
                     End If
                 End If
@@ -4873,9 +4900,19 @@ Public Class Main
             Get_VRV_Seasons(VRVSeason)
             b = True
             LoadedUrls.Clear()
+            Me.Text = "Crunchyroll Downloader"
             Exit Sub
         End If
         LoadedUrls.Clear()
+
+        If b = True Then
+            LoadedUrls.Clear()
+            Debug.WriteLine("Just Browsing after all, exiting...")
+            Grapp_RDY = True
+            Me.Text = "Crunchyroll Downloader"
+            Exit Sub
+        End If
+
     End Sub
 
     Public Sub Navigate(ByVal Url As String)

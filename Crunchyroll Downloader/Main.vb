@@ -4582,7 +4582,9 @@ Public Class Main
                         Anime_Add.StatusLabel.Text = "Status: idle"
                     End If
                     Me.Text = "Crunchyroll Downloader"
+                    Grapp_RDY = True
                     Exit Sub
+                    LoadedUrls.Clear()
                 End If
 
                 If Application.OpenForms().OfType(Of CefSharp_Browser).Any = True Then
@@ -4757,7 +4759,7 @@ Public Class Main
 #End Region
     Public Sub ProcessUrls()
         Debug.WriteLine(LoadedUrls.Count.ToString)
-        Debug.WriteLine("Thread Name: " + Thread.CurrentThread.Name)
+        Debug.WriteLine(Date.Now.ToString + " Thread Name: " + Thread.CurrentThread.Name)
         Dim VRVSeason As String = Nothing
         For i As Integer = 0 To LoadedUrls.Count - 1
             Dim requesturl As String = LoadedUrls.Item(i)
@@ -5525,6 +5527,13 @@ Public Class Main
 
     Private Sub ThreadCount_Click(sender As Object, e As EventArgs) Handles ThreadCount.Click
         Trackbar.ShowDialog()
+    End Sub
+
+    Private Sub MsgBoxToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MsgBoxToolStripMenuItem.Click
+        MsgBox(LoadedUrls.Count.ToString)
+        For i As Integer = 0 To LoadedUrls.Count - 1
+            MsgBox(LoadedUrls(i))
+        Next
     End Sub
 
 

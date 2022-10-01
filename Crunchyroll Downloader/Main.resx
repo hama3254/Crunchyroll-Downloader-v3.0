@@ -528,6 +528,12 @@
   <data name="&gt;&gt;ThreadCount.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;MsgBoxToolStripMenuItem.Name" xml:space="preserve">
+    <value>MsgBoxToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;MsgBoxToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Main</value>
   </data>
@@ -585,8 +591,14 @@
   <data name="ThreadCount.Text" xml:space="preserve">
     <value>set hybrid-mode thread count</value>
   </data>
+  <data name="MsgBoxToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>233, 22</value>
+  </data>
+  <data name="MsgBoxToolStripMenuItem.Text" xml:space="preserve">
+    <value>MsgBox(LoadedUrls)</value>
+  </data>
   <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 180</value>
+    <value>234, 202</value>
   </data>
   <data name="&gt;&gt;ContextMenuStrip1.Name" xml:space="preserve">
     <value>ContextMenuStrip1</value>

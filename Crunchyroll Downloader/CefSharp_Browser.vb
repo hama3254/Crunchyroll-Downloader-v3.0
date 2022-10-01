@@ -34,6 +34,8 @@ Public Class CefSharp_Browser
 
             Me.Invoke(New Action(Function() As Object
 
+                                     Main.LoadedUrls.Clear()
+                                     Debug.WriteLine("FrameLoadEnd" + Date.Now.ToString)
                                      Main.WebbrowserURL = WebBrowser1.Address
                                      TextBox1.Text = Main.WebbrowserURL
 
@@ -166,7 +168,19 @@ Public Class CefSharp_Browser
     End Sub
 
     Private Sub WebBrowser1_DocumentTitleChanged(sender As Object, e As TitleChangedEventArgs) Handles WebBrowser1.TitleChanged
-        DocumentTitle = e.Title
+
+        If (Me.InvokeRequired) Then
+            Me.Invoke(Sub()
+                          DocumentTitle = e.Title
+                          Me.Text = "Browser - " + e.Title
+
+                      End Sub)
+        Else
+            DocumentTitle = e.Title
+            Me.Text = "Browser - " + e.Title
+
+        End If
+
         Try
             TextBox1.Text = WebBrowser1.Address
         Catch ex As Exception

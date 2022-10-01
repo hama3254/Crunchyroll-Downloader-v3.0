@@ -345,7 +345,7 @@ Public Class Anime_Add
             Main.SubsOnly = True
         End If
         If groupBox1.Visible = True Then
-
+            ' Main.LoadedUrls.Clear()
             Try
                 If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Or CBool(InStr(textBox1.Text, "vrv.co/series/")) Or CBool(InStr(textBox1.Text, "vrv.co/watch/")) Then
 

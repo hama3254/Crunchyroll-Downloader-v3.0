@@ -534,7 +534,7 @@ Partial Class Einstellungen
         Me.CB_Merge.IntegralHeight = False
         Me.CB_Merge.ItemHeight = 23
         Me.CB_Merge.Items.AddRange(New Object() {"[Merge Disabeld]"})
-        Me.CB_Merge.Location = New System.Drawing.Point(249, 31)
+        Me.CB_Merge.Location = New System.Drawing.Point(265, 25)
         Me.CB_Merge.Name = "CB_Merge"
         Me.CB_Merge.Size = New System.Drawing.Size(175, 29)
         Me.CB_Merge.TabIndex = 19
@@ -548,7 +548,7 @@ Partial Class Einstellungen
         Me.CB_Format.IntegralHeight = False
         Me.CB_Format.ItemHeight = 23
         Me.CB_Format.Items.AddRange(New Object() {"MP4", "MKV", "AAC (Audio only)"})
-        Me.CB_Format.Location = New System.Drawing.Point(25, 31)
+        Me.CB_Format.Location = New System.Drawing.Point(50, 25)
         Me.CB_Format.Name = "CB_Format"
         Me.CB_Format.Size = New System.Drawing.Size(175, 29)
         Me.CB_Format.TabIndex = 17

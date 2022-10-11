@@ -358,6 +358,27 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ;FFMETADATA1
+        '''title=[Titel]
+        '''
+        '''[CHAPTER]
+        '''TIMEBASE=1/1000
+        '''START=1
+        '''END=[Start-1]
+        '''
+        '''[CHAPTER]
+        '''TIMEBASE=1/1000
+        '''START=[Start]
+        '''END=[duration_ms]
+        '''title=Ending ähnelt.
+        '''</summary>
+        Friend ReadOnly Property ffmpeg_metadata_out() As String
+            Get
+                Return ResourceManager.GetString("ffmpeg_metadata_out", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &quot;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0&quot; ähnelt.
         '''</summary>
         Friend ReadOnly Property ffmpeg_user_agend() As String

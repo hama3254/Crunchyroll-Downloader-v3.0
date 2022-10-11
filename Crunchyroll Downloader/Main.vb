@@ -2020,20 +2020,36 @@ Public Class Main
 
                 Dim EndTime_ms As String = EndTime3(0) + EndTime4
                 Dim AfterTime_ms As String = EndTime3(0) + AfterTime
+                Dim Metadata As String = Nothing
 
-                Dim Metadata As String = My.Resources.ffmpeg_metadata.Replace("[Titel]", CR_FilenName).Replace("[Start]", StartTime_ms).Replace("[END]", EndTime_ms).Replace("[after]", AfterTime_ms).Replace("[duration_ms]", CR_episode_duration_ms.ToString)
+                If CInt(CR_episode_duration_ms) < CInt(StartTime_ms) Then
+                    'Totaly invalid...
+                ElseIf CInt(CR_episode_duration_ms) < CInt(EndTime_ms) Then
+                    'it's not an Intro it's an outro 
+                    Dim DeCh As Integer = CInt(StartTime_ms) - 1
+                    Metadata = My.Resources.ffmpeg_metadata_out.Replace("[Titel]", CR_FilenName).Replace("[Start-1]", DeCh.ToString).Replace("[Start]", StartTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
 
-                Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
-                Using sink As New StreamWriter(Mdata_File, False, utf8WithoutBom2)
-                    sink.WriteLine(Metadata)
-                    CR_MetadataUsage = True
-                End Using
+                Else
+                    Metadata = My.Resources.ffmpeg_metadata.Replace("[Titel]", CR_FilenName).Replace("[Start]", StartTime_ms).Replace("[END]", EndTime_ms).Replace("[after]", AfterTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
+
+
+                End If
+
+                If Metadata = Nothing Then
+                Else
+                    Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                    Using sink As New StreamWriter(Mdata_File, False, utf8WithoutBom2)
+                        sink.WriteLine(Metadata)
+                        CR_MetadataUsage = True
+                    End Using
+                End If
+
 
             End If
 
 #End Region
 #Region "VideoJson"
-            Dim VideoJson As String = Nothing
+                Dim VideoJson As String = Nothing
             Try
                 Using client As New WebClient()
                     client.Encoding = System.Text.Encoding.UTF8

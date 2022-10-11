@@ -547,4 +547,19 @@ TIMEBASE=1/1000
 START=[after]
 END=[duration_ms]</value>
   </data>
+  <data name="ffmpeg_metadata_out" xml:space="preserve">
+    <value>;FFMETADATA1
+title=[Titel]
+
+[CHAPTER]
+TIMEBASE=1/1000
+START=1
+END=[Start-1]
+
+[CHAPTER]
+TIMEBASE=1/1000
+START=[Start]
+END=[duration_ms]
+title=Ending</value>
+  </data>
 </root>

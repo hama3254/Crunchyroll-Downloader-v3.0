@@ -533,7 +533,7 @@ Partial Class Einstellungen
         Me.CB_Merge.FormattingEnabled = True
         Me.CB_Merge.IntegralHeight = False
         Me.CB_Merge.ItemHeight = 23
-        Me.CB_Merge.Items.AddRange(New Object() {"[Merge Disabeld]"})
+        Me.CB_Merge.Items.AddRange(New Object() {"[merge disabled]"})
         Me.CB_Merge.Location = New System.Drawing.Point(265, 25)
         Me.CB_Merge.Name = "CB_Merge"
         Me.CB_Merge.Size = New System.Drawing.Size(175, 29)

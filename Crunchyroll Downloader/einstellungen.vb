@@ -1230,14 +1230,14 @@ Public Class Einstellungen
         ElseIf CB_Format.Text = "MP4" Then
             CB_Merge.SelectedIndex = 0
             CB_Merge.Items.Clear()
-            CB_Merge.Items.Add("[Merge Disabeld]") 'mov_text
+            CB_Merge.Items.Add("[merge disabled]") 'mov_text
             CB_Merge.Items.Add("mov_text")
             'CB_Merge.Items.Add("srt")
             CB_Merge.SelectedItem = Main.MergeSubsFormat
         ElseIf CB_Format.Text = "MKV" Then
             CB_Merge.SelectedIndex = 0
             CB_Merge.Items.Clear()
-            CB_Merge.Items.Add("[Merge Disabeld]")
+            CB_Merge.Items.Add("[merge disabled]")
             CB_Merge.Items.Add("copy")
             CB_Merge.Items.Add("srt")
             CB_Merge.SelectedItem = Main.MergeSubsFormat

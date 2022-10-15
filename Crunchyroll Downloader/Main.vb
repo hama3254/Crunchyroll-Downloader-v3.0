@@ -429,7 +429,7 @@ Public Class Main
         Catch ex As Exception
         End Try
         ServicePointManager.Expect100Continue = True
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13
         Try
             Me.Icon = My.Resources.icon
         Catch ex As Exception

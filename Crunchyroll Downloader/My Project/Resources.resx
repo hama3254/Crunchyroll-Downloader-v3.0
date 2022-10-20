@@ -562,4 +562,7 @@ START=[Start]
 END=[duration_ms]
 title=Ending</value>
   </data>
+  <data name="htmlReplace" xml:space="preserve">
+    <value>&lt;html&gt;&lt;head&gt;&lt;meta name="color-scheme" content="light dark"&gt;&lt;/head&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap;"&gt;</value>
+  </data>
 </root>

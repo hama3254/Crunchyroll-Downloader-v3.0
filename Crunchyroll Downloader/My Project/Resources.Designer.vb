@@ -549,6 +549,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;color-scheme&quot; content=&quot;light dark&quot;&gt;&lt;/head&gt;&lt;pre style=&quot;word-wrap: break-word; white-space: pre-wrap;&quot;&gt; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property htmlReplace() As String
+            Get
+                Return ResourceManager.GetString("htmlReplace", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;a class=&quot;main_titel&quot;&gt;Placeholder&lt;/a&gt;
         '''&lt;img alt=&quot;image error&quot; src=&quot;balken.png&quot; class=&quot;class-balken&quot;&gt; ähnelt.
         '''</summary>

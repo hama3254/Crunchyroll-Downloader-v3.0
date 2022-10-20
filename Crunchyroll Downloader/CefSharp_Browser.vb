@@ -9,6 +9,7 @@ Imports System.Net.WebUtility
 Imports System.IO.Compression
 Imports System.Text
 Imports AdapterRequestHandler
+Imports System.Security.Policy
 
 Public Class CefSharp_Browser
 
@@ -38,6 +39,7 @@ Public Class CefSharp_Browser
                                      Debug.WriteLine("FrameLoadEnd" + Date.Now.ToString)
                                      Main.WebbrowserURL = WebBrowser1.Address
                                      TextBox1.Text = Main.WebbrowserURL
+
 
                                      Try
                                          If Btn_Scan.Enabled = False And Btn_Scan.Text = "Start network scan" Then
@@ -71,15 +73,17 @@ Public Class CefSharp_Browser
         Try
 
             Dim HTML As String = Await WebBrowser1.GetSourceAsync
+            ' Dim HTML2 As String = Await 
+
             Document = HTML
             Debug.WriteLine("get html")
 
             Me.Invoke(New Action(Function() As Object
+
                                      Main.WebbrowserText = HTML
                                      Main.WebbrowserURL = WebBrowser1.Address
                                      Main.WebbrowserTitle = DocumentTitle
                                      Main.ProcessHTML(HTML, WebBrowser1.Address, DocumentTitle)
-
                                      'If Main.UserBowser = False Then
                                      '    Me.Close()
                                      'End If
@@ -143,6 +147,28 @@ Public Class CefSharp_Browser
 
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim locale As String = "en-US"
+        Main.CR_Cookies = "Cookies: "
+        Try
+            Dim Collector As New TaskCookieVisitor
+            Dim CM As ICookieManager = WebBrowser1.GetCookieManager
+            CM.VisitAllCookies(Collector)
+            Dim DeviceRegion As String = Nothing
+            Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
+            For i As Integer = 0 To list.Count - 1
+
+                If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) = True And CBool(InStr(list.Item(i).Name, "_evidon_suppress")) = False Then
+                    Main.CR_Cookies = Main.CR_Cookies + list.Item(i).Name + "=" + list.Item(i).Value + ";"
+                    ' MsgBox(list.Item(i).Domain + vbNewLine + list.Item(i).Name + ":" + vbNewLine + list.Item(i).Value)
+                End If
+                If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "c_locale")) Then
+                    locale = list.Item(i).Value
+
+                End If
+            Next
+        Catch ex As Exception
+            Debug.Write(ex.ToString)
+        End Try
 
         Try
             My.Computer.Clipboard.SetText(WebBrowser1.Address)
@@ -283,21 +309,30 @@ Public Class CefSharp_Browser
 
         If (Me.InvokeRequired) Then
             Me.Invoke(Sub()
-                          If CBool(InStr(e.Request.Url, "beta.crunchyroll.com")) = True And CBool(InStr(e.Request.Headers, "Basic ")) = True And Main.CrBetaBasic = Nothing Then
+                          If CBool(InStr(e.Request.Url, "crunchyroll.com")) = True And CBool(InStr(e.Request.Headers, "Basic ")) = True And Main.CrBetaBasic = Nothing Then
                               Dim Basic As String() = e.Request.Headers.Split(New String() {"Basic "}, System.StringSplitOptions.RemoveEmptyEntries)
                               Dim Basic2 As String() = Basic(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
                               Main.CrBetaBasic = "Basic " + Basic2(0)
                               Debug.WriteLine(Main.CrBetaBasic)
                           End If
+
+
+
                       End Sub)
         Else
-            If CBool(InStr(e.Request.Url, "beta.crunchyroll.com")) = True And CBool(InStr(e.Request.Headers, "Basic ")) = True And Main.CrBetaBasic = Nothing Then
+            If CBool(InStr(e.Request.Url, "crunchyroll.com")) = True And CBool(InStr(e.Request.Headers, "Basic ")) = True And Main.CrBetaBasic = Nothing Then
                 Dim Basic As String() = e.Request.Headers.Split(New String() {"Basic "}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim Basic2 As String() = Basic(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
                 Main.CrBetaBasic = "Basic " + Basic2(0)
                 Debug.WriteLine(Main.CrBetaBasic)
             End If
+
+
+
         End If
+
+
+
 
 
         '
@@ -336,8 +371,7 @@ Public Class CefSharp_Browser
                 Exit Sub
             End If
             Debug.WriteLine(e.Request.Url)
-
-        ElseIf CBool(InStr(e.Request.Url, "https://beta-api.crunchyroll.com/")) And CBool(InStr(e.Request.Url, "streams?")) Then
+        ElseIf CBool(InStr(e.Request.Url, "crunchyroll.com/")) And CBool(InStr(e.Request.Url, "streams?")) Then
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
@@ -346,25 +380,7 @@ Public Class CefSharp_Browser
                 Exit Sub
             End If
             Debug.WriteLine(e.Request.Url)
-        ElseIf CBool(InStr(e.Request.Url, "https://beta.crunchyroll.com/")) And CBool(InStr(e.Request.Url, "streams?")) Then
-            If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
-                Exit Sub
-            Else
-                Main.LoadedUrls.Add(e.Request.Url)
-                Exit Sub
-            End If
-            Debug.WriteLine(e.Request.Url)
-        ElseIf CBool(InStr(e.Request.Url, "https://beta-api.crunchyroll.com/")) And CBool(InStr(e.Request.Url, "seasons?series_id=")) Then
-            If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
-                Exit Sub
-            Else
-                Main.LoadedUrls.Add(e.Request.Url)
-                Exit Sub
-            End If
-            Debug.WriteLine(e.Request.Url)
-        ElseIf CBool(InStr(e.Request.Url, "https://beta.crunchyroll.com/")) And CBool(InStr(e.Request.Url, "seasons?series_id=")) Then
+        ElseIf CBool(InStr(e.Request.Url, "crunchyroll.com/")) And CBool(InStr(e.Request.Url, "seasons?series_id=")) Then
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
@@ -393,159 +409,6 @@ Public Class CefSharp_Browser
             Debug.WriteLine(e.Request.Url)
 
         End If
-
-        Exit Sub
-
-
-        Dim requesturl As String = Nothing
-        Try
-            requesturl = e.Request.Url
-        Catch ex As Exception
-            Exit Sub
-        End Try
-
-
-
-
-        If CBool(InStr(requesturl, "https://api.vrv.co")) And CBool(InStr(requesturl, "streams?")) Then
-            Debug.WriteLine("vrv-1 " + requesturl)
-            If Main.b = False Then
-                Main.Get_VRV_VideoProxy(requesturl, Main.WebbrowserURL)
-                Main.b = True
-            End If
-
-        ElseIf CBool(InStr(requesturl, "https://api.vrv.co")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
-            Debug.WriteLine("vrv-2 " + requesturl)
-            Exit Sub
-            If Main.b = False Then
-                Main.GetBetaSeasons(requesturl)
-                Main.b = True
-            End If
-
-        End If
-
-
-        If CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "streams?")) Then
-
-            If Main.b = False Then
-                Main.GetBetaVideoProxy(requesturl, Main.WebbrowserURL)
-                Main.b = True
-            End If
-
-        ElseIf CBool(InStr(requesturl, "https://beta.crunchyroll.com/")) And CBool(InStr(requesturl, "streams?")) Then
-
-            If Main.b = False Then
-                Main.GetBetaVideoProxy(requesturl, Main.WebbrowserURL)
-                Main.b = True
-            End If
-
-        ElseIf CBool(InStr(requesturl, "https://beta.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
-
-            If Main.b = False Then
-                Main.GetBetaSeasons(requesturl)
-                Main.b = True
-            End If
-
-        ElseIf CBool(InStr(requesturl, "https://beta-api.crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
-
-            If Main.b = False Then
-                Main.GetBetaSeasons(requesturl)
-                Main.b = True
-            End If
-        End If
-
-
-        If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com")) And CBool(InStr(requesturl, "?region=")) Then
-            Try
-                Main.WebbrowserCookie = Cookie
-            Catch ex As Exception
-            End Try
-
-            If Main.FunimationAPIRegion = Nothing Then
-
-                Me.Invoke(New Action(Function() As Object
-                                         Dim parms As String() = requesturl.Split(New String() {"?region="}, System.StringSplitOptions.RemoveEmptyEntries)
-                                         Main.FunimationAPIRegion = "?region=" + parms(1)
-                                         Return Nothing
-                                     End Function))
-
-            End If
-
-            If Main.b = False Then
-                If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com/v1/show")) And CBool(InStr(requesturl, "/episodes/")) Then
-                    Main.GetFunimationNewJS_VideoProxy(requesturl)
-                    Main.b = True
-                    Exit Sub
-                Else
-                    Debug.WriteLine("processing js")
-                    Me.Invoke(New Action(Function() As Object
-                                             Anime_Add.ProcessFunimationJS(WebBrowser1.Address)
-                                             Return Nothing
-                                         End Function))
-                    Main.b = True
-
-                    Exit Sub
-                End If
-
-
-            End If
-        End If
-
-        If ScanTrue = True Then
-
-            If CBool(InStr(requesturl, ".m3u8")) Then
-                Dim client0 As New WebClient
-                client0.Encoding = Encoding.UTF8
-                'client0.Headers.Add(HttpRequestHeader.Cookie, e.Channel.GetRequestHeader("Cookie"))
-                Dim str0 As String = client0.DownloadString(requesturl)
-
-                If CBool(InStr(str0, "#EXTM3U")) Then
-                    Main.m3u8List.Add(requesturl)
-                Else
-                    Dim DecodedUrl As String = UrlDecode(requesturl)
-                    'MsgBox(DecodedUrl)
-                    Dim URLSplit() As String = DecodedUrl.Split(New String() {".m3u8"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim URLSplit2() As String = URLSplit(0).Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim NewUrl As String = "https://" + URLSplit2(URLSplit2.Count - 1) + ".m3u8" + URLSplit(1)
-                    'MsgBox(NewUrl)
-                    Dim str1 As String = client0.DownloadString(NewUrl)
-                    'MsgBox(str1)
-                    If CBool(InStr(str1, "#EXTM3U")) Then
-                        Main.m3u8List.Add(NewUrl)
-                    End If
-
-                End If
-            ElseIf CBool(InStr(requesturl, ".mpd")) Then
-                Main.mpdList.Add(requesturl)
-            ElseIf CBool(InStr(requesturl, "googlevideo.com")) And CBool(InStr(requesturl, "&range=")) = True Then
-
-                Dim DecodedUrl As String = UrlDecode(requesturl)
-                'MsgBox(DecodedUrl)
-                Dim VideoUrl() As String = DecodedUrl.Split(New String() {"&range="}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim VideoUrl2() As String = VideoUrl(1).Split(New String() {"&"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim NewUrl As String = VideoUrl(0) + "&" + VideoUrl2(1)
-                'Debug.WriteLine(NewUrl)
-
-                If Not Main.mpdList.Contains(NewUrl) Then
-                    Main.mpdList.Add(NewUrl)
-                End If
-
-
-            ElseIf CBool(InStr(requesturl, ".txt")) Then
-                Main.txtList.Add(requesturl)
-            ElseIf CBool(InStr(requesturl, ".vtt")) Then
-                Main.txtList.Add(requesturl)
-            ElseIf CBool(InStr(requesturl, ".srt")) Then
-                Main.txtList.Add(requesturl)
-            ElseIf CBool(InStr(requesturl, ".ass")) Then
-                Main.txtList.Add(requesturl)
-            ElseIf CBool(InStr(requesturl, ".ssa")) Then
-                Main.txtList.Add(requesturl)
-            ElseIf CBool(InStr(requesturl, ".dfxp")) Then
-                Main.txtList.Add(requesturl)
-            End If
-        End If
-
 
 
     End Sub

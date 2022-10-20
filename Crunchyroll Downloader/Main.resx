@@ -534,6 +534,12 @@
   <data name="&gt;&gt;MsgBoxToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;CRCookieToolStripMenuItem.Name" xml:space="preserve">
+    <value>CRCookieToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;CRCookieToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Main</value>
   </data>
@@ -596,6 +602,12 @@
   </data>
   <data name="MsgBoxToolStripMenuItem.Text" xml:space="preserve">
     <value>MsgBox(LoadedUrls)</value>
+  </data>
+  <data name="CRCookieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>233, 22</value>
+  </data>
+  <data name="CRCookieToolStripMenuItem.Text" xml:space="preserve">
+    <value>CR_Cookie</value>
   </data>
   <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
     <value>234, 202</value>

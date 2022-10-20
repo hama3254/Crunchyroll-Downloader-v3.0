@@ -51,6 +51,7 @@ Partial Class Main
         Me.Timer3OffToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ThreadCount = New System.Windows.Forms.ToolStripMenuItem()
         Me.MsgBoxToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CRCookieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -184,7 +185,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -227,6 +228,11 @@ Partial Class Main
         '
         Me.MsgBoxToolStripMenuItem.Name = "MsgBoxToolStripMenuItem"
         resources.ApplyResources(Me.MsgBoxToolStripMenuItem, "MsgBoxToolStripMenuItem")
+        '
+        'CRCookieToolStripMenuItem
+        '
+        Me.CRCookieToolStripMenuItem.Name = "CRCookieToolStripMenuItem"
+        resources.ApplyResources(Me.CRCookieToolStripMenuItem, "CRCookieToolStripMenuItem")
         '
         'Main
         '
@@ -284,4 +290,5 @@ Partial Class Main
     Friend WithEvents Timer3OffToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ThreadCount As ToolStripMenuItem
     Friend WithEvents MsgBoxToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CRCookieToolStripMenuItem As ToolStripMenuItem
 End Class

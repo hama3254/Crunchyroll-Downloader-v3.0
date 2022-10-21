@@ -24,7 +24,7 @@ Public Class Anime_Add
 
     Public Sub LoadBrowser(ByVal Url As String)
 
-        Main.LoadedUrl = Url
+        'Main.LoadedUrl = Url
 
         '        Dim locale As String = "en-US"
         '        If CBool(InStr(Url, "beta.crunchyroll.com")) = True And CBool(InStr(Url, "watch")) = True And CBool(Main.CrBetaBasic = Nothing) = False Then
@@ -610,7 +610,7 @@ Public Class Anime_Add
 
 
 
-            CefSharp_Browser.WebBrowser1.LoadUrl(EpisodeJsonURL)
+            'CefSharp_Browser.WebBrowser1.LoadUrl(EpisodeJsonURL)
 
 
             'Try
@@ -624,6 +624,37 @@ Public Class Anime_Add
             '    Debug.WriteLine(ex.ToString)
             '    Exit Sub
             'End Try
+
+
+            Dim EpisodeJson As String = Main.Curl(EpisodeJsonURL) 'localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace(My.Resources.htmlReplace, "")
+
+
+            Main.CrBetaMassEpisodes = EpisodeJson
+
+            Dim EpisodeNameSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+            Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = 1 To EpisodeSplit.Count - 1
+                Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim EpisodeNameSplit2() As String = EpisodeNameSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                If EpisodeSplit(i).Substring(0, 1) = Chr(34) Then
+                    comboBox3.Items.Add(EpisodeNameSplit2(0))
+                    comboBox4.Items.Add(EpisodeNameSplit2(0))
+                Else
+                    comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
+                    comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
+                End If
+
+            Next
+
+            If comboBox3.Items.Count > 0 Then
+                comboBox3.SelectedIndex = 0
+                comboBox4.SelectedIndex = comboBox4.Items.Count - 1
+            End If
+
+            comboBox3.Enabled = True
+            comboBox4.Enabled = True
 
 
 

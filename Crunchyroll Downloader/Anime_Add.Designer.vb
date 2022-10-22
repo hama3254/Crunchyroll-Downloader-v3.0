@@ -392,9 +392,9 @@ Partial Class Anime_Add
         Me.Controls.Add(Me.btn_dl)
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Close)
-        Me.Controls.Add(Me.groupBox2)
         Me.Controls.Add(Me.groupBox1)
         Me.Controls.Add(Me.GroupBox3)
+        Me.Controls.Add(Me.groupBox2)
         Me.Font = New System.Drawing.Font("Arial", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "Anime_Add"
         Me.Padding = New System.Windows.Forms.Padding(10, 60, 20, 20)

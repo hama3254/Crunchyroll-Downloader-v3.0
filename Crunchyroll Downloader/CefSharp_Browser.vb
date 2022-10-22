@@ -389,24 +389,6 @@ Public Class CefSharp_Browser
                 Exit Sub
             End If
             Debug.WriteLine(e.Request.Url)
-        ElseIf CBool(InStr(e.Request.Url, "https://api.vrv.co")) And CBool(InStr(e.Request.Url, "streams?")) Then
-            If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
-                Exit Sub
-            Else
-                Main.LoadedUrls.Add(e.Request.Url)
-                Exit Sub
-            End If
-            Debug.WriteLine(e.Request.Url)
-        ElseIf CBool(InStr(e.Request.Url, "https://api.vrv.co")) And CBool(InStr(e.Request.Url, "seasons?series_id=")) Then
-            If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
-                Exit Sub
-            Else
-                Main.LoadedUrls.Add(e.Request.Url)
-                Exit Sub
-            End If
-            Debug.WriteLine(e.Request.Url)
 
         End If
 

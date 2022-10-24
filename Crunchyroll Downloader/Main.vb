@@ -94,7 +94,6 @@ Public Class Main
     Public LabelUpdate As String = "Status: idle"
     Public LabelEpisode As String = "..."
     Public b As Boolean
-    Public c As Boolean = True
     Public LoginOnly As String = "False"
     Public Pfad As String = My.Computer.FileSystem.CurrentDirectory
     Public TempFolder As String = Pfad
@@ -3514,22 +3513,21 @@ Public Class Main
                 Debug.WriteLine("LoadedUrls: " + LoadedUrls(i))
             Next
 
-            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                Anime_Add.StatusLabel.Text = "Status: Processing... "
-            End If
-            Me.Text = "Status: Processing... "
-            ProcessUrls()
-            Debug.WriteLine("ProcessUrls")
-            Exit Sub
-
-        ElseIf c = False Then
-            If CBool(InStr(localHTML, "hardsub_lang")) Then
-                c = True
-                WebbrowserURL = Address
-                WebbrowserText = localHTML
-                WebbrowserTitle = DocumentTitle
-                WebbrowserHeadText = localHTML
-                'SoftSub.DownloadSubs()
+            If LoadedUrls.Count > 0 Then
+                If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                    Anime_Add.StatusLabel.Text = "Status: Processing... "
+                End If
+                Me.Text = "Status: Processing... "
+                ProcessUrls()
+                Debug.WriteLine("ProcessUrls")
+                Exit Sub
+            Else
+                If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                    Anime_Add.StatusLabel.Text = "Status: nothing found"
+                End If
+                Me.Text = "Status: nothing found"
+                ProcessUrls()
+                Debug.WriteLine("3530: nothing found")
                 Exit Sub
             End If
 

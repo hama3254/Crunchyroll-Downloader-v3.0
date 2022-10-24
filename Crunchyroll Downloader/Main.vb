@@ -22,12 +22,18 @@ Public Class Main
     Dim t As Thread
     Dim HTML As String = Nothing
     Public CR_Cookies As String = "Cookie: "
+
+    Public CR_etp_rt As String = Nothing
+    Public CR_ajs_user_id As String = Nothing
+    Public CheckCRLogin As Boolean = True
+
     'Public LoadedUrl As String = Nothing
     Public CrBetaMass As String = Nothing
     Public CrBetaMassEpisodes As String = Nothing
     Public CrBetaMassParameters As String = Nothing
     Public CrBetaMassBaseURL As String = Nothing
     Public CrBetaBasic As String = Nothing
+
     'Public CrBetaObjects As String = Nothing
     'Public CrBetaStreams As String = Nothing
     'Public CrBetaStreamsUrl As String = Nothing
@@ -74,14 +80,14 @@ Public Class Main
     Public SubsOnly As Boolean = False
     Public VideoFormat As String = ".mp4"
     Public MergeSubsFormat As String = "mov_text"
-    Public LoginDialog As Boolean = False
-    Public NonCR_Timeout As Integer = 5
-    Public NonCR_URL As String = Nothing
+    'Public LoginDialog As Boolean = False
+    'Public NonCR_Timeout As Integer = 5
+    'Public NonCR_URL As String = Nothing
     Public DlSoftSubsRDY As Boolean = True
     Public DialogTaskString As String
-    Public ErrorBrowserString As String
-    Public ErrorBrowserUrl As String
-    Public ErrorBrowserBackString As String
+    'Public ErrorBrowserString As String
+    'Public ErrorBrowserUrl As String
+    'Public ErrorBrowserBackString As String
     Public UserCloseDialog As Boolean = False
     Dim Aktuell As String
     Dim Gesamt As String
@@ -355,6 +361,7 @@ Public Class Main
     End Function
 
     Private Sub Form8_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        '
         Me.ContextMenuStrip = ContextMenuStrip1
         Dim tbtl As TextBoxTraceListener = New TextBoxTraceListener(TheTextBox)
         Trace.Listeners.Add(tbtl)
@@ -395,6 +402,16 @@ Public Class Main
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             DarkModeValue = CBool(Integer.Parse(rkg.GetValue("Dark_Mode").ToString))
+        Catch ex As Exception
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            CR_etp_rt = rkg.GetValue("etp_rt").ToString
+        Catch ex As Exception
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            CR_ajs_user_id = rkg.GetValue("ajs_user_id").ToString
         Catch ex As Exception
         End Try
         Manager.Style = MetroColorStyle.Orange
@@ -589,7 +606,7 @@ Public Class Main
                     MergeSubsFormat = "mov_text"
                 End If
 
-            ElseIf MergeSubsFormat = "None" Or MergeSubsFormat = "0" Then
+            ElseIf MergeSubsFormat = "None" Or MergeSubsFormat = "0" Or MergeSubsFormat = "[merge disabled]" Then
                 MergeSubs = False
             Else
                 MergeSubs = True
@@ -633,10 +650,9 @@ Public Class Main
             Dim Format As String = rkg.GetValue("VideoFormat").ToString
             If Format = ".mkv" Then
                 VideoFormat = ".mkv"
-                MergeSubsFormat = "copy"
             ElseIf Format = ".aac" Then
                 VideoFormat = ".aac"
-                MergeSubsFormat = "copy"
+                MergeSubsFormat = "[merge disabled]"
             End If
         Catch ex2 As Exception
         End Try
@@ -998,6 +1014,7 @@ Public Class Main
         Dim sr As StreamReader
         Dim sr2 As StreamReader
 
+
         Dim cmd As String = "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + " " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
         'MsgBox(cmd)
@@ -1026,9 +1043,11 @@ Public Class Main
         Loop Until Proc.HasExited
 
         If CurlOutput = Nothing Then
+            Debug.WriteLine("curl-E: " + CurlError)
             Return CurlError
 
         Else
+            Debug.WriteLine("curl-O: " + CurlOutput)
             Return CurlOutput
 
         End If
@@ -1076,9 +1095,11 @@ Public Class Main
         Loop Until Proc.HasExited
 
         If CurlOutput = Nothing Then
+            Debug.WriteLine("curl-E: " + CurlError)
             Return CurlError
 
         Else
+            Debug.WriteLine("curl-O: " + CurlOutput)
             Return CurlOutput
 
         End If
@@ -1127,11 +1148,11 @@ Public Class Main
         Loop Until Proc.HasExited
 
         If CurlOutput = Nothing Then
+            Debug.WriteLine("curl-E: " + CurlError)
             Return CurlError
-
         Else
+            Debug.WriteLine("curl-O: " + CurlOutput)
             Return CurlOutput
-
         End If
 
 
@@ -1288,6 +1309,9 @@ Public Class Main
     End Sub
 
     Public Sub GetBetaVideo(ByVal Streams As String, ByVal WebsiteURL As String) ', ByVal ObjectJson As String, ByVal VideoJson As String) '
+        If b = False Then
+            b = True
+        End If
         Debug.WriteLine(Streams)
         Debug.WriteLine(vbCrLf)
         Debug.WriteLine("Website: " + WebsiteURL)
@@ -1728,7 +1752,8 @@ Public Class Main
                         'MsgBox(SoftSub_3)
                         Dim client0 As New WebClient
                         client0.Encoding = Encoding.UTF8
-                        Dim str0 As String = client0.DownloadString(SoftSub_3)
+                        Dim str0 As String = client0.DownloadString(SoftSub_3) 'Curl(SoftSub_3)
+                        'MsgBox(str0)
                         Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
                         Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + "." + GetSubFileLangName(SoftSubs2(i)) + Path.GetExtension(Pfad3)), "ass")
                         'MsgBox(FN)
@@ -3407,70 +3432,7 @@ Public Class Main
         Dim localHTML As String = document
         Debug.WriteLine(Date.Now.ToString + "." + Date.Now.Millisecond.ToString)
         Debug.WriteLine(Address)
-        'If CBool(InStr(Address, "crunchyroll.com/")) And CBool(InStr(Address, "streams?")) Then
-        '    Debug.WriteLine("Streams")
-        '    My.Computer.FileSystem.WriteAllText("D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x64\Debug\WebInterface\CrBetaStreams.txt", CrBetaStreams, False)
 
-        '    CrBetaStreamsUrl = Address
-        '    CrBetaStreams = localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace(My.Resources.htmlReplace, "")
-
-        '    Dim ObjectsURLBuilder() As String = Address.Split(New String() {"videos"}, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Dim ObjectsURLBuilder2() As String = ObjectsURLBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Dim ObjectsURLBuilder3() As String = LoadedUrl.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Dim ObjectsURL As String = ObjectsURLBuilder(0) + "objects/" + ObjectsURLBuilder4(0) + ObjectsURLBuilder2(1)
-        '    Debug.WriteLine(ObjectsURL)
-
-
-
-        '    CefSharp_Browser.WebBrowser1.LoadUrl(ObjectsURL)
-
-        'ElseIf CBool(InStr(Address, "crunchyroll.com/")) And CBool(InStr(Address, "objects")) Then
-
-        '    CrBetaObjects = localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace(My.Resources.htmlReplace, "")
-
-        '    GetBetaVideoProxy(CrBetaStreamsUrl, LoadedUrl, CrBetaObjects, CrBetaStreams)
-
-        'Else
-        'If CBool(InStr(Address, "crunchyroll.com/")) And CBool(InStr(Address, "seasons?series_id=")) Then
-
-        '    GetBetaSeasons(Address, localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace(My.Resources.htmlReplace, ""))
-
-        'Else
-        'If CBool(InStr(Address, CrBetaMassBaseURL + "episodes?season_id=")) Then
-
-
-        '        Dim EpisodeJson As String = localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace(My.Resources.htmlReplace, "")
-
-
-        '        CrBetaMassEpisodes = EpisodeJson
-
-        '        Dim EpisodeNameSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-
-        '        Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-        '        For i As Integer = 1 To EpisodeSplit.Count - 1
-        '            Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-        '            Dim EpisodeNameSplit2() As String = EpisodeNameSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-        '            If EpisodeSplit(i).Substring(0, 1) = Chr(34) Then
-        '                Anime_Add.comboBox3.Items.Add(EpisodeNameSplit2(0))
-        '                Anime_Add.comboBox4.Items.Add(EpisodeNameSplit2(0))
-        '            Else
-        '                Anime_Add.comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
-        '                Anime_Add.comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
-        '            End If
-
-        '        Next
-
-        '        If Anime_Add.comboBox3.Items.Count > 0 Then
-        '            Anime_Add.comboBox3.SelectedIndex = 0
-        '            Anime_Add.comboBox4.SelectedIndex = Anime_Add.comboBox4.Items.Count - 1
-        '        End If
-
-        '        Anime_Add.comboBox3.Enabled = True
-        '        Anime_Add.comboBox4.Enabled = True
-
-        '    Else
         If CBool(InStr(Address, "title-api.prd.funimationsvc.com")) Then
             If FunimationJsonBrowser = "EpisodeJson" Then
                 Anime_Add.FillFunimationEpisodes(localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace("<html><head></head><pre style=" + Chr(34) + "word-wrap: break-word; white-space: pre-wrap;" + Chr(34) + ">", "")) '
@@ -3516,34 +3478,45 @@ Public Class Main
             End If
         End If
         If b = True Then
-            'LoadedUrls
-            'Debug.WriteLine(LoadedUrls.Count.ToString)
             LoadedUrls.Clear()
-            Debug.WriteLine("Just Browsing, exiting...")
             Grapp_RDY = True
+            Debug.WriteLine("Just Browsing, exiting...")
+            'Debug.WriteLine("Just Browsing, exiting... for real...")
             Exit Sub
         End If
         'MsgBox("loaded!")
         If CBool(InStr(Address, "crunchyroll.com")) Then
             WebbrowserURL = Address
-            For i As Integer = 10 To 1 Step -1
-                If b = True Then
-                    If Application.OpenForms().OfType(Of CefSharp_Browser).Any = True Then
-                        Anime_Add.StatusLabel.Text = "Status: idle"
-                    End If
-                    Me.Text = "Crunchyroll Downloader"
-                    Grapp_RDY = True
-                    Exit Sub
-                    LoadedUrls.Clear()
-                End If
 
-                If Application.OpenForms().OfType(Of CefSharp_Browser).Any = True Then
+
+            For i As Integer = 10 To 1 Step -1
+                If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
                     Anime_Add.StatusLabel.Text = "Status: Processing Url " + i.ToString
                 End If
                 Me.Text = "Status: Processing Url " + i.ToString
 
                 Pause(1)
+
+                If b = True Then
+                    If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                        Anime_Add.StatusLabel.Text = "Status: idle"
+                    End If
+                    Me.Text = "Crunchyroll Downloader"
+                    Grapp_RDY = True
+                    LoadedUrls.Clear()
+                    Debug.WriteLine("canceled....")
+                    Exit Sub
+                End If
             Next
+
+            Debug.WriteLine(LoadedUrls.Count.ToString)
+            For i As Integer = 0 To LoadedUrls.Count - 1
+                Debug.WriteLine(LoadedUrls(i))
+            Next
+
+            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                Anime_Add.StatusLabel.Text = "Status: Processing... "
+            End If
             Me.Text = "Status: Processing... "
             ProcessUrls()
             Exit Sub
@@ -3612,7 +3585,14 @@ Public Class Main
         For i As Integer = 0 To LoadedUrls.Count - 1
             Dim requesturl As String = LoadedUrls.Item(i)
             If CBool(InStr(requesturl, "crunchyroll.com/")) And CBool(InStr(requesturl, "streams?")) Then
+
                 If b = False Then
+
+                    If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                        Anime_Add.StatusLabel.Text = "Status: Crunchyroll episode found."
+                    End If
+                    Me.Text = "Status: Crunchyroll episode found."
+
                     GetBetaVideoProxy(requesturl, WebbrowserURL)
                     b = True
 
@@ -3624,7 +3604,14 @@ Public Class Main
                     Exit Sub
                 End If
             ElseIf CBool(InStr(requesturl, "crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
+
                 If b = False Then
+
+                    If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                        Anime_Add.StatusLabel.Text = "Status: Crunchyroll season found."
+                    End If
+                    Me.Text = "Status: Crunchyroll season found."
+
                     GetBetaSeasons(requesturl)
                     'CefSharp_Browser.WebBrowser1.LoadUrl(requesturl)
                     b = True
@@ -4288,6 +4275,16 @@ Public Class Main
         'MsgBox(Curl(InputBox("test", "test")))
 
         MsgBox(CR_Cookies)
+    End Sub
+
+    Private Sub ClearAllSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearAllSettingsToolStripMenuItem.Click
+
+
+        If MessageBox.Show("This will clear all settings and close the programm!", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+            Registry.CurrentUser.DeleteSubKey("Software\CRDownloader")
+            Me.Close()
+        End If
+
     End Sub
 
 

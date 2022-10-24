@@ -36,7 +36,7 @@ Partial Class Trackbar
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(100, 41)
         Me.Button1.TabIndex = 0
-        Me.Button1.Text = "Applay"
+        Me.Button1.Text = "Apply"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'TrackBar1

@@ -52,6 +52,7 @@ Partial Class Main
         Me.ThreadCount = New System.Windows.Forms.ToolStripMenuItem()
         Me.MsgBoxToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CRCookieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ClearAllSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -185,7 +186,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem, Me.ClearAllSettingsToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -233,6 +234,11 @@ Partial Class Main
         '
         Me.CRCookieToolStripMenuItem.Name = "CRCookieToolStripMenuItem"
         resources.ApplyResources(Me.CRCookieToolStripMenuItem, "CRCookieToolStripMenuItem")
+        '
+        'ClearAllSettingsToolStripMenuItem
+        '
+        Me.ClearAllSettingsToolStripMenuItem.Name = "ClearAllSettingsToolStripMenuItem"
+        resources.ApplyResources(Me.ClearAllSettingsToolStripMenuItem, "ClearAllSettingsToolStripMenuItem")
         '
         'Main
         '
@@ -291,4 +297,5 @@ Partial Class Main
     Friend WithEvents ThreadCount As ToolStripMenuItem
     Friend WithEvents MsgBoxToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CRCookieToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ClearAllSettingsToolStripMenuItem As ToolStripMenuItem
 End Class

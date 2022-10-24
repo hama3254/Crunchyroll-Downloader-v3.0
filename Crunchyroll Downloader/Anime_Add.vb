@@ -30,8 +30,11 @@ Public Class Anime_Add
         Dim locale As String = "en-US"
         If CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "watch")) = True And CBool(Main.CrBetaBasic = Nothing) = False Then
 #Region "Get Cookies"
-            Dim Cookies As String = Main.CR_Cookies '"Cookie: "
+            Main.CR_Cookies = "Cookie: "
             Try
+                Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
+                Dim etp_rt As Boolean = False
+                Dim ajs_user_id As Boolean = False
                 Dim Collector As New TaskCookieVisitor
                 Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
                 CM.VisitAllCookies(Collector)
@@ -39,24 +42,62 @@ Public Class Anime_Add
                 Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
                 For i As Integer = 0 To list.Count - 1
 
+                    '__cf_bm
                     If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "_evidon_suppress")) = False Then
-                        Cookies = Cookies + list.Item(i).Name + "=" + list.Item(i).Value + ";"
+                        Main.CR_Cookies = Main.CR_Cookies + list.Item(i).Name + "=" + list.Item(i).Value + ";"
                     End If
                     If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "c_locale")) Then
                         locale = list.Item(i).Value
 
                     End If
-                    If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "etp_rt")) Then
-                        'MsgBox(list.Item(i).Domain + ":" + list.Item(i).Name + ":" + vbNewLine + list.Item(i).Value)
+                    If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) = True And CBool(InStr(list.Item(i).Name, "etp_rt")) = True And Main.CheckCRLogin = True And Main.CR_etp_rt = Nothing Then
+                        Debug.WriteLine("etp_rt = True")
+                        etp_rt = True
+                        Main.CR_etp_rt = list.Item(i).Value
+                        rk.SetValue("etp_rt", Main.CR_etp_rt, RegistryValueKind.String)
+                    ElseIf CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) = True And CBool(InStr(list.Item(i).Name, "__cf_bm")) = True = True And Main.CheckCRLogin = True And Main.CR_ajs_user_id = Nothing Then
+                        'MsgBox(list.Item(i).Value)
+                        Debug.WriteLine("ajs_user_id = True")
+                        ajs_user_id = True
+                        Main.CR_ajs_user_id = list.Item(i).Value
+                        rk.SetValue("ajs_user_id", Main.CR_ajs_user_id, RegistryValueKind.String)
                     End If
                 Next
+
+
+
+                If Main.CR_etp_rt IsNot Nothing And etp_rt = False Then
+                    Main.CR_Cookies = "Cookie: " + "etp_rt" + "=" + Main.CR_etp_rt + ";" + Main.CR_Cookies.Replace("Cookie: ", "")
+                    Dim etp_rt_cookie As New CefSharp.Cookie
+                    etp_rt_cookie.Name = "etp_rt"
+                    etp_rt_cookie.Value = Main.CR_etp_rt
+                    etp_rt_cookie.HttpOnly = True
+                    etp_rt_cookie.Domain = ".crunchyroll.com"
+                    Debug.WriteLine("Set etp_rt_cookie: " + CM.SetCookieAsync("http://www.crunchyroll.com", etp_rt_cookie).Result.ToString)
+                End If
+
+                If Main.CR_ajs_user_id IsNot Nothing And ajs_user_id = False Then
+                    Main.CR_Cookies = Main.CR_Cookies + "ajs_user_id" + "=" + Main.CR_ajs_user_id + ";"
+                    Dim ajs_user_id_cookie As New CefSharp.Cookie
+                    ajs_user_id_cookie.Name = "__cf_bm"
+                    ajs_user_id_cookie.Value = Main.CR_ajs_user_id
+                    ajs_user_id_cookie.HttpOnly = True
+                    ajs_user_id_cookie.Domain = ".crunchyroll.com"
+                    Debug.WriteLine("Set ajs_user_id_cookie: " + CM.SetCookieAsync("http://www.crunchyroll.com", ajs_user_id_cookie).Result.ToString)
+                End If
+
+
+
             Catch ex As Exception
                 CefSharp_Browser.WebBrowser1.Load(Url)
                 Exit Sub
             End Try
 
+
+
+
             'MsgBox(Cookies)
-            Cookies = " -H " + Chr(34) + Cookies + Chr(34)
+            Main.CR_Cookies = " -H " + Chr(34) + Main.CR_Cookies + Chr(34)
 
 #End Region
             Dim Auth As String = " -H " + Chr(34) + "Authorization: " + Main.CrBetaBasic + Chr(34)
@@ -64,10 +105,10 @@ Public Class Anime_Add
 
             Dim CRBetaBearer As String = "Bearer "
 
-            Dim v1Token As String = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Cookies, Auth, Post)
+            Dim v1Token As String = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Main.CR_Cookies, Auth, Post)
 
             If CBool(InStr(v1Token, "curl:")) = True Then
-                v1Token = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Cookies, Auth, Post)
+                v1Token = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Main.CR_Cookies, Auth, Post)
             End If
 
             If CBool(InStr(v1Token, "curl:")) = True Then
@@ -94,12 +135,12 @@ Public Class Anime_Add
                 '    client.Headers.Add(Cookies) '+ WebBrowser1.Document.Cookie)
                 'MsgBox(OmUStreamSplitEpisodeIndex(1))
                 Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + CRBetaBearer + Chr(34)
-                Dim v2Content As String = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Cookies, Auth2) 'client.DownloadString("https://www.crunchyroll.com/index/v2")
+                Dim v2Content As String = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Main.CR_Cookies, Auth2) 'client.DownloadString("https://www.crunchyroll.com/index/v2")
                 'Debug.WriteLine(v2Content)
                 'MsgBox("v2: " + v2Content)
 
                 If CBool(InStr(v2Content, "curl:")) = True Then
-                    v2Content = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Cookies, Auth2)
+                    v2Content = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Main.CR_Cookies, Auth2)
                 End If
 
                 If CBool(InStr(v2Content, "curl:")) = True Then

@@ -559,7 +559,7 @@ Public Class Einstellungen
         Else
             Main.MergeSubsFormat = CB_Merge.SelectedItem.ToString
             Main.MergeSubs = False
-            rk.SetValue("MergeSubs", "None", RegistryValueKind.String)
+            rk.SetValue("MergeSubs", "[merge disabled]", RegistryValueKind.String)
         End If
 
 
@@ -1223,18 +1223,21 @@ Public Class Einstellungen
 
     Private Sub CB_Format_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CB_Format.SelectedIndexChanged
         If CB_Format.Text = "AAC (Audio only)" Then
-            If CB_Merge.SelectedIndex > 0 Then
-                MsgBox("Merged subs are not avalible with audio only!", MsgBoxStyle.Information)
-            End If
-            CB_Merge.SelectedIndex = 0
-        ElseIf CB_Format.Text = "MP4" Then
             CB_Merge.SelectedIndex = 0
             CB_Merge.Items.Clear()
-            CB_Merge.Items.Add("[merge disabled]") 'mov_text
+            CB_Merge.Items.Add("[merge disabled]")
+            CB_Merge.SelectedIndex = 0
+            CB_Merge.Enabled = False
+        ElseIf CB_Format.Text = "MP4" Then
+            CB_Merge.Enabled = True
+            CB_Merge.SelectedIndex = 0
+            CB_Merge.Items.Clear()
+            CB_Merge.Items.Add("[merge disabled]")
             CB_Merge.Items.Add("mov_text")
             'CB_Merge.Items.Add("srt")
             CB_Merge.SelectedItem = Main.MergeSubsFormat
         ElseIf CB_Format.Text = "MKV" Then
+            CB_Merge.Enabled = True
             CB_Merge.SelectedIndex = 0
             CB_Merge.Items.Clear()
             CB_Merge.Items.Add("[merge disabled]")

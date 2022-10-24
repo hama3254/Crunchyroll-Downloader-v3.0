@@ -34,7 +34,6 @@ Public Class CefSharp_Browser
 
 
             Me.Invoke(New Action(Function() As Object
-
                                      Main.LoadedUrls.Clear()
                                      Debug.WriteLine("FrameLoadEnd" + Date.Now.ToString)
                                      Main.WebbrowserURL = WebBrowser1.Address
@@ -147,28 +146,10 @@ Public Class CefSharp_Browser
 
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim locale As String = "en-US"
-        Main.CR_Cookies = "Cookies: "
-        Try
-            Dim Collector As New TaskCookieVisitor
-            Dim CM As ICookieManager = WebBrowser1.GetCookieManager
-            CM.VisitAllCookies(Collector)
-            Dim DeviceRegion As String = Nothing
-            Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
-            For i As Integer = 0 To list.Count - 1
 
-                If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) = True And CBool(InStr(list.Item(i).Name, "_evidon_suppress")) = False Then
-                    Main.CR_Cookies = Main.CR_Cookies + list.Item(i).Name + "=" + list.Item(i).Value + ";"
-                    ' MsgBox(list.Item(i).Domain + vbNewLine + list.Item(i).Name + ":" + vbNewLine + list.Item(i).Value)
-                End If
-                If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "c_locale")) Then
-                    locale = list.Item(i).Value
-
-                End If
-            Next
-        Catch ex As Exception
-            Debug.Write(ex.ToString)
-        End Try
+        'MsgBox(Main.CR_etp_rt)
+        'MsgBox(Main.CR_ajs_user_id)
+        'MsgBox(Main.CheckCRLogin.ToString)
 
         Try
             My.Computer.Clipboard.SetText(WebBrowser1.Address)
@@ -218,7 +199,7 @@ Public Class CefSharp_Browser
         If CBool(InStr(WebBrowser1.Address, "https://proxer.me/read/")) Then
             Main.WebbrowserURL = WebBrowser1.Address
             Dim NameDLFinal As String = Nothing
-            Dim NameDL As String() = Document.Split(New String() {"<div id=" + Chr(34) + "breadcrumb" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim NameDL As String() = Document.Split(New String() {"<div id=" + Chr(34) + " breadcrumb" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim NameDL2 As String() = NameDL(1).Split(New String() {"<div>"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim NameDL3 As String() = NameDL2(0).Split(New String() {Chr(34) + "true" + Chr(34) + ">"}, System.StringSplitOptions.RemoveEmptyEntries)
             For i As Integer = 0 To NameDL3.Count - 1
@@ -321,15 +302,19 @@ Public Class CefSharp_Browser
                       End Sub)
         Else
             If CBool(InStr(e.Request.Url, "crunchyroll.com")) = True And CBool(InStr(e.Request.Headers, "Basic ")) = True And Main.CrBetaBasic = Nothing Then
+
                 Dim Basic As String() = e.Request.Headers.Split(New String() {"Basic "}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim Basic2 As String() = Basic(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
                 Main.CrBetaBasic = "Basic " + Basic2(0)
                 Debug.WriteLine(Main.CrBetaBasic)
+
             End If
 
 
 
         End If
+
+
 
 
 

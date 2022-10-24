@@ -3509,9 +3509,9 @@ Public Class Main
                 End If
             Next
 
-            Debug.WriteLine(LoadedUrls.Count.ToString)
+            Debug.WriteLine("LoadedUrls: " + LoadedUrls.Count.ToString)
             For i As Integer = 0 To LoadedUrls.Count - 1
-                Debug.WriteLine(LoadedUrls(i))
+                Debug.WriteLine("LoadedUrls: " + LoadedUrls(i))
             Next
 
             If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
@@ -3519,6 +3519,7 @@ Public Class Main
             End If
             Me.Text = "Status: Processing... "
             ProcessUrls()
+            Debug.WriteLine("ProcessUrls")
             Exit Sub
 
         ElseIf c = False Then
@@ -3592,7 +3593,7 @@ Public Class Main
                         Anime_Add.StatusLabel.Text = "Status: Crunchyroll episode found."
                     End If
                     Me.Text = "Status: Crunchyroll episode found."
-
+                    Debug.WriteLine("Crunchyroll episode found")
                     GetBetaVideoProxy(requesturl, WebbrowserURL)
                     b = True
 
@@ -3611,7 +3612,7 @@ Public Class Main
                         Anime_Add.StatusLabel.Text = "Status: Crunchyroll season found."
                     End If
                     Me.Text = "Status: Crunchyroll season found."
-
+                    Debug.WriteLine("Crunchyroll season found")
                     GetBetaSeasons(requesturl)
                     'CefSharp_Browser.WebBrowser1.LoadUrl(requesturl)
                     b = True

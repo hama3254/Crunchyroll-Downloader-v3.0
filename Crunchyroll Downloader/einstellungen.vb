@@ -61,6 +61,10 @@ Public Class Einstellungen
             DubMode.Checked = True
         End If
 
+        If Main.CR_Chapters = True Then
+            ChB_Chapters.Checked = True
+        End If
+
         If Main.DarkModeValue = True Then
             DarkMode.Checked = True
             GroupBoxColor(Color.FromArgb(150, 150, 150))
@@ -390,6 +394,14 @@ Public Class Einstellungen
         Else
             Main.DubMode = False
             rk.SetValue("DubMode", 0, RegistryValueKind.String)
+        End If
+
+        If ChB_Chapters.Checked = True Then
+            Main.CR_Chapters = True
+            rk.SetValue("CR_Chapters", 1, RegistryValueKind.String)
+        Else
+            Main.CR_Chapters = False
+            rk.SetValue("CR_Chapters", 0, RegistryValueKind.String)
         End If
 
         If KodiSupport.Checked = True Then

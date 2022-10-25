@@ -151,6 +151,8 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
+        Me.GroupBox20 = New System.Windows.Forms.GroupBox()
+        Me.ChB_Chapters = New MetroFramework.Controls.MetroCheckBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -188,6 +190,7 @@ Partial Class Einstellungen
         Me.GroupBox8.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox20.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolTip1
@@ -1106,7 +1109,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 1
+        Me.TabControl1.SelectedIndex = 3
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1120,9 +1123,9 @@ Partial Class Einstellungen
         Me.MetroTabPage2.HorizontalScrollbarBarColor = True
         Me.MetroTabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage2.HorizontalScrollbarSize = 10
-        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 35)
+        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 44)
         Me.MetroTabPage2.Name = "MetroTabPage2"
-        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 528)
+        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 519)
         Me.MetroTabPage2.TabIndex = 8
         Me.MetroTabPage2.Text = "Naming"
         Me.MetroTabPage2.VerticalScrollbarBarColor = True
@@ -1311,6 +1314,7 @@ Partial Class Einstellungen
         '
         'MetroTabPage1
         '
+        Me.MetroTabPage1.Controls.Add(Me.GroupBox20)
         Me.MetroTabPage1.Controls.Add(Me.GroupBox19)
         Me.MetroTabPage1.Controls.Add(Me.GroupBox14)
         Me.MetroTabPage1.Controls.Add(Me.GB_SubLanguage)
@@ -1318,9 +1322,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1732,6 +1736,30 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
+        'GroupBox20
+        '
+        Me.GroupBox20.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox20.Controls.Add(Me.ChB_Chapters)
+        Me.GroupBox20.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox20.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox20.Location = New System.Drawing.Point(3, 385)
+        Me.GroupBox20.Name = "GroupBox20"
+        Me.GroupBox20.Size = New System.Drawing.Size(490, 62)
+        Me.GroupBox20.TabIndex = 34
+        Me.GroupBox20.TabStop = False
+        Me.GroupBox20.Text = "Chapters"
+        '
+        'ChB_Chapters
+        '
+        Me.ChB_Chapters.AutoSize = True
+        Me.ChB_Chapters.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.ChB_Chapters.Location = New System.Drawing.Point(158, 23)
+        Me.ChB_Chapters.Name = "ChB_Chapters"
+        Me.ChB_Chapters.Size = New System.Drawing.Size(145, 19)
+        Me.ChB_Chapters.TabIndex = 5
+        Me.ChB_Chapters.Text = "enable CR Chapters"
+        Me.ChB_Chapters.UseSelectable = True
+        '
         'Einstellungen
         '
         Me.ApplyImageInvert = True
@@ -1798,6 +1826,8 @@ Partial Class Einstellungen
         Me.GroupBox8.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox20.ResumeLayout(False)
+        Me.GroupBox20.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1931,4 +1961,6 @@ Partial Class Einstellungen
     Friend WithEvents GroupBox19 As GroupBox
     Friend WithEvents DubMode As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CB_Merge As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents GroupBox20 As GroupBox
+    Friend WithEvents ChB_Chapters As MetroFramework.Controls.MetroCheckBox
 End Class

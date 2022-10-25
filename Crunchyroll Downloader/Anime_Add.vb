@@ -66,25 +66,25 @@ Public Class Anime_Add
 
 
 
-                If Main.CR_etp_rt IsNot Nothing And etp_rt = False Then
-                    Main.CR_Cookies = "Cookie: " + "etp_rt" + "=" + Main.CR_etp_rt + ";" + Main.CR_Cookies.Replace("Cookie: ", "")
-                    Dim etp_rt_cookie As New CefSharp.Cookie
-                    etp_rt_cookie.Name = "etp_rt"
-                    etp_rt_cookie.Value = Main.CR_etp_rt
-                    etp_rt_cookie.HttpOnly = True
-                    etp_rt_cookie.Domain = ".crunchyroll.com"
-                    Debug.WriteLine("Set etp_rt_cookie: " + CM.SetCookieAsync("http://www.crunchyroll.com", etp_rt_cookie).Result.ToString)
-                End If
+                'If Main.CR_etp_rt IsNot Nothing And etp_rt = False Then
+                '    Main.CR_Cookies = "Cookie: " + "etp_rt" + "=" + Main.CR_etp_rt + ";" + Main.CR_Cookies.Replace("Cookie: ", "")
+                '    Dim etp_rt_cookie As New CefSharp.Cookie
+                '    etp_rt_cookie.Name = "etp_rt"
+                '    etp_rt_cookie.Value = Main.CR_etp_rt
+                '    etp_rt_cookie.HttpOnly = True
+                '    etp_rt_cookie.Domain = ".crunchyroll.com"
+                '    Debug.WriteLine("Set etp_rt_cookie: " + CM.SetCookieAsync("http://www.crunchyroll.com", etp_rt_cookie).Result.ToString)
+                'End If
 
-                If Main.CR_ajs_user_id IsNot Nothing And ajs_user_id = False Then
-                    Main.CR_Cookies = Main.CR_Cookies + "ajs_user_id" + "=" + Main.CR_ajs_user_id + ";"
-                    Dim ajs_user_id_cookie As New CefSharp.Cookie
-                    ajs_user_id_cookie.Name = "__cf_bm"
-                    ajs_user_id_cookie.Value = Main.CR_ajs_user_id
-                    ajs_user_id_cookie.HttpOnly = True
-                    ajs_user_id_cookie.Domain = ".crunchyroll.com"
-                    Debug.WriteLine("Set ajs_user_id_cookie: " + CM.SetCookieAsync("http://www.crunchyroll.com", ajs_user_id_cookie).Result.ToString)
-                End If
+                'If Main.CR_ajs_user_id IsNot Nothing And ajs_user_id = False Then
+                '    Main.CR_Cookies = Main.CR_Cookies + "ajs_user_id" + "=" + Main.CR_ajs_user_id + ";"
+                '    Dim ajs_user_id_cookie As New CefSharp.Cookie
+                '    ajs_user_id_cookie.Name = "__cf_bm"
+                '    ajs_user_id_cookie.Value = Main.CR_ajs_user_id
+                '    ajs_user_id_cookie.HttpOnly = True
+                '    ajs_user_id_cookie.Domain = ".crunchyroll.com"
+                '    Debug.WriteLine("Set ajs_user_id_cookie: " + CM.SetCookieAsync("http://www.crunchyroll.com", ajs_user_id_cookie).Result.ToString)
+                'End If
 
 
 

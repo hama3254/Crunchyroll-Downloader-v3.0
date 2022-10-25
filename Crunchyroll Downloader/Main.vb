@@ -148,6 +148,7 @@ Public Class Main
     Public DefaultSubFunimation As String = "Disabled"
     Public DefaultSubCR As String = "Disabled"
     Public DubMode As Boolean = True
+    Public CR_Chapters As Boolean = False
 #Region "Sprachen Vairablen"
     Public URL_Invaild As String = "something is wrong here..."
     Dim DL_Path_String As String = "Please choose download directory."
@@ -391,6 +392,7 @@ Public Class Main
         settings.CefCommandLineArgs.Add("disable-gpu-vsync")
         settings.CefCommandLineArgs.Add("disable-d3d11")
         settings.CefCommandLineArgs.Add("disable-gpu-rasterization")
+        settings.UserAgent = My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "").Replace(Chr(34), "")
         settings.DisableGpuAcceleration()
         'settings.CefCommandLineArgs("autoplay-policy") = "no-user-gesture-required"
         settings.LogFile = Path.Combine(Application.StartupPath, "lib", "browser.log")
@@ -508,6 +510,12 @@ Public Class Main
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             DubMode = CBool(Integer.Parse(rkg.GetValue("DubMode").ToString))
+        Catch ex As Exception
+        End Try
+
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            CR_Chapters = CBool(Integer.Parse(rkg.GetValue("CR_Chapters").ToString))
         Catch ex As Exception
         End Try
 
@@ -1286,7 +1294,7 @@ Public Class Main
         End If
 
         If CBool(InStr(SeasonJson, "curl:")) = True Then
-            MsgBox("Error- Getting data")
+            MsgBox("Error - Getting SeasonJson data")
             Exit Sub
         End If
         SeasonJson = CleanJSON(SeasonJson)
@@ -1371,7 +1379,7 @@ Public Class Main
             End If
 
             If CBool(InStr(ObjectJson, "curl:")) = True Then
-                MsgBox("Error- Getting data")
+                MsgBox("Error - Getting ObjectJson data")
                 Exit Sub
             End If
 
@@ -1571,94 +1579,97 @@ Public Class Main
 #End Region
 #Region "Chapters"
             'MsgBox(ObjectsURLBuilder4(0))
-
-            Dim ChaptersUrl As String = "https://static.crunchyroll.com/datalab-intro-v2/" + ObjectsURLBuilder4(0) + ".json"
-            Dim ChaptersJson As String = Nothing
-
-            'Try
-            '    Using client As New WebClient()
-            '        client.Encoding = System.Text.Encoding.UTF8
-            '        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-            '        ChaptersJson = client.DownloadString(ChaptersUrl)
-            '    End Using
-            'Catch ex As Exception
-            '    Debug.WriteLine("no Chapter data... ignoring")
-
-            'End Try
-
-            ChaptersJson = Curl(ChaptersUrl)
-
-            If CBool(InStr(ChaptersJson, "curl:")) = True Then
-                ChaptersJson = Curl(ChaptersUrl)
-            End If
-
-            If CBool(InStr(ChaptersJson, "curl:")) = True Then
-                ChaptersJson = Nothing
-                Debug.WriteLine("no Chapter data... ignoring")
-            End If
-
-            'Debug.WriteLine("ChaptersJson: " + ChaptersJson)
-            'Debug.WriteLine("ChaptersUrl: " + ChaptersUrl)
-
-            'MsgBox(ChaptersJson)
             Dim Mdata_File As String = Application.StartupPath + "\" + ObjectsURLBuilder4(0) + "-mdata.txt"
-            If ChaptersJson IsNot Nothing Then
 
-                Dim StartTime As String() = ChaptersJson.Split(New String() {Chr(34) + "startTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim StartTime2 As String() = StartTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim StartTime3 As String() = StartTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim StartTime4 As String = StartTime3(1)
-
-                For i As Integer = StartTime4.Length To 2
-                    StartTime4 = StartTime4 + "0"
-                Next
-
-                Dim StartTime_ms As String = StartTime3(0) + StartTime4
+            If CR_Chapters = True Then
 
 
-                Dim EndTime As String() = ChaptersJson.Split(New String() {Chr(34) + "endTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim EndTime2 As String() = EndTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim EndTime3 As String() = EndTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ChaptersUrl As String = "https://static.crunchyroll.com/datalab-intro-v2/" + ObjectsURLBuilder4(0) + ".json"
+                Dim ChaptersJson As String = Nothing
 
-                Dim EndTime4 As String = EndTime3(1)
-                Dim AfterTime As String = Nothing
+                'Try
+                '    Using client As New WebClient()
+                '        client.Encoding = System.Text.Encoding.UTF8
+                '        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                '        ChaptersJson = client.DownloadString(ChaptersUrl)
+                '    End Using
+                'Catch ex As Exception
+                '    Debug.WriteLine("no Chapter data... ignoring")
 
-                For i As Integer = EndTime4.Length To 2
-                    If EndTime4.Length = 2 Then
-                        AfterTime = EndTime4 + "1"
+                'End Try
+
+                ChaptersJson = Curl(ChaptersUrl)
+
+                If CBool(InStr(ChaptersJson, "curl:")) = True Then
+                    ChaptersJson = Curl(ChaptersUrl)
+                End If
+
+                If CBool(InStr(ChaptersJson, "curl:")) = True Then
+                    ChaptersJson = Nothing
+                    Debug.WriteLine("no Chapter data... ignoring")
+                End If
+
+                'Debug.WriteLine("ChaptersJson: " + ChaptersJson)
+                'Debug.WriteLine("ChaptersUrl: " + ChaptersUrl)
+
+                'MsgBox(ChaptersJson)
+                If ChaptersJson IsNot Nothing Then
+
+                    Dim StartTime As String() = ChaptersJson.Split(New String() {Chr(34) + "startTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim StartTime2 As String() = StartTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim StartTime3 As String() = StartTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim StartTime4 As String = StartTime3(1)
+
+                    For i As Integer = StartTime4.Length To 2
+                        StartTime4 = StartTime4 + "0"
+                    Next
+
+                    Dim StartTime_ms As String = StartTime3(0) + StartTime4
+
+
+                    Dim EndTime As String() = ChaptersJson.Split(New String() {Chr(34) + "endTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim EndTime2 As String() = EndTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim EndTime3 As String() = EndTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim EndTime4 As String = EndTime3(1)
+                    Dim AfterTime As String = Nothing
+
+                    For i As Integer = EndTime4.Length To 2
+                        If EndTime4.Length = 2 Then
+                            AfterTime = EndTime4 + "1"
+                        End If
+                        EndTime4 = EndTime4 + "0"
+                    Next
+
+                    Dim EndTime_ms As String = EndTime3(0) + EndTime4
+                    Dim AfterTime_ms As String = EndTime3(0) + AfterTime
+                    Dim Metadata As String = Nothing
+
+                    If CInt(CR_episode_duration_ms) < CInt(StartTime_ms) Then
+                        'Totaly invalid...
+                    ElseIf CInt(CR_episode_duration_ms) < CInt(EndTime_ms) Then
+                        'it's not an Intro it's an outro 
+                        Dim DeCh As Integer = CInt(StartTime_ms) - 1
+                        Metadata = My.Resources.ffmpeg_metadata_out.Replace("[Titel]", CR_FilenName).Replace("[Start-1]", DeCh.ToString).Replace("[Start]", StartTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
+
+                    Else
+                        Metadata = My.Resources.ffmpeg_metadata.Replace("[Titel]", CR_FilenName).Replace("[Start]", StartTime_ms).Replace("[END]", EndTime_ms).Replace("[after]", AfterTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
+
+
                     End If
-                    EndTime4 = EndTime4 + "0"
-                Next
 
-                Dim EndTime_ms As String = EndTime3(0) + EndTime4
-                Dim AfterTime_ms As String = EndTime3(0) + AfterTime
-                Dim Metadata As String = Nothing
-
-                If CInt(CR_episode_duration_ms) < CInt(StartTime_ms) Then
-                    'Totaly invalid...
-                ElseIf CInt(CR_episode_duration_ms) < CInt(EndTime_ms) Then
-                    'it's not an Intro it's an outro 
-                    Dim DeCh As Integer = CInt(StartTime_ms) - 1
-                    Metadata = My.Resources.ffmpeg_metadata_out.Replace("[Titel]", CR_FilenName).Replace("[Start-1]", DeCh.ToString).Replace("[Start]", StartTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
-
-                Else
-                    Metadata = My.Resources.ffmpeg_metadata.Replace("[Titel]", CR_FilenName).Replace("[Start]", StartTime_ms).Replace("[END]", EndTime_ms).Replace("[after]", AfterTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
+                    If Metadata = Nothing Then
+                    Else
+                        Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                        Using sink As New StreamWriter(Mdata_File, False, utf8WithoutBom2)
+                            sink.WriteLine(Metadata)
+                            CR_MetadataUsage = True
+                        End Using
+                    End If
 
 
                 End If
-
-                If Metadata = Nothing Then
-                Else
-                    Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
-                    Using sink As New StreamWriter(Mdata_File, False, utf8WithoutBom2)
-                        sink.WriteLine(Metadata)
-                        CR_MetadataUsage = True
-                    End Using
-                End If
-
-
             End If
-
 #End Region
 #Region "VideoJson"
             Dim VideoJson As String = Nothing
@@ -1670,8 +1681,9 @@ Public Class Main
             End If
 
             If CBool(InStr(VideoJson, "curl:")) = True Then
-                ChaptersJson = Nothing
-                Debug.WriteLine("no Chapter data... ignoring")
+                VideoJson = Nothing
+                MsgBox("Error - Getting VideoJson data")
+                Exit Sub
             End If
 
 

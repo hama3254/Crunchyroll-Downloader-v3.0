@@ -1723,9 +1723,12 @@ Public Class Main
             End If
             If SoftSubs2.Count > 0 Then
                 If MergeSubs = True And SubsOnly = False Then
-                    Dim DispositionIndex As Integer
+                    Dim DispositionIndex As Integer = 69
+                    Debug.WriteLine("Softsubs Default: " + DefaultSubCR)
+
                     For i As Integer = 0 To SoftSubs2.Count - 1
-                        Debug.WriteLine(SoftSubs2(i))
+                        Debug.WriteLine("Softsubs: " + SoftSubs2(i))
+
                         If SoftSubs2(i) = DefaultSubCR Then
                             DispositionIndex = i
                         End If
@@ -1744,7 +1747,9 @@ Public Class Main
                             SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i)) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(SoftSubs2(i)) + Chr(34)
                         End If
                     Next
-                    If DispositionIndex = Nothing Then
+                    Debug.WriteLine("-disposition:s: " + DispositionIndex.ToString)
+
+                    If DispositionIndex = 69 Then
                     Else
                         SoftSubMergeMetatata = SoftSubMergeMetatata + " -disposition:s:" + DispositionIndex.ToString + " default"
                     End If

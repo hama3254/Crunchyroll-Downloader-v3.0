@@ -172,7 +172,8 @@ Public Class Anime_Add
                 'End Using
 
 
-                'Debug.WriteLine(ObjectsUrl)
+                Debug.WriteLine("ObjectsUrl: " + ObjectsUrl)
+
 
             Catch ex As Exception
                 CefSharp_Browser.WebBrowser1.Load(Url)

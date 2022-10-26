@@ -65,6 +65,10 @@ Public Class Einstellungen
             ChB_Chapters.Checked = True
         End If
 
+        If Main.Curl_insecure = True Then
+            Chb_Ign_tls.Checked = True
+        End If
+
         If Main.DarkModeValue = True Then
             DarkMode.Checked = True
             GroupBoxColor(Color.FromArgb(150, 150, 150))
@@ -402,6 +406,14 @@ Public Class Einstellungen
         Else
             Main.CR_Chapters = False
             rk.SetValue("CR_Chapters", 0, RegistryValueKind.String)
+        End If
+
+        If Chb_Ign_tls.Checked = True Then
+            Main.Curl_insecure = True
+            rk.SetValue("Curl_insecure", 1, RegistryValueKind.String)
+        Else
+            Main.Curl_insecure = False
+            rk.SetValue("Curl_insecure", 0, RegistryValueKind.String)
         End If
 
         If KodiSupport.Checked = True Then

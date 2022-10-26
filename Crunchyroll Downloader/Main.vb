@@ -149,6 +149,7 @@ Public Class Main
     Public DefaultSubCR As String = "Disabled"
     Public DubMode As Boolean = True
     Public CR_Chapters As Boolean = False
+    Public Curl_insecure As Boolean = False
 #Region "Sprachen Vairablen"
     Public URL_Invaild As String = "something is wrong here..."
     Dim DL_Path_String As String = "Please choose download directory."
@@ -516,6 +517,12 @@ Public Class Main
         Try
             Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
             CR_Chapters = CBool(Integer.Parse(rkg.GetValue("CR_Chapters").ToString))
+        Catch ex As Exception
+        End Try
+        Try
+            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+            Curl_insecure = CBool(Integer.Parse(rkg.GetValue("Curl_insecure").ToString))
+            'MsgBox(Curl_insecure.ToString)
         Catch ex As Exception
         End Try
 
@@ -1020,11 +1027,13 @@ Public Class Main
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
         Dim sr As StreamReader
         Dim sr2 As StreamReader
-
-
-        Dim cmd As String = "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + " " + Chr(34) + Url + Chr(34)
+        Dim cmd As String = ""
+        If Curl_insecure = True Then
+            cmd = "--insecure "
+        End If
+        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + " " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
-        'MsgBox(cmd)
+        MsgBox(cmd)
         Dim CurlOutput As String = Nothing
         Dim CurlError As String = Nothing
         ' all parameters required to run the process
@@ -1073,8 +1082,11 @@ Public Class Main
         Dim sr2 As StreamReader
 
 
-
-        Dim cmd As String = "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + Cookies + Auth + Post + " " + Chr(34) + Url + Chr(34)
+        Dim cmd As String = ""
+        If Curl_insecure = True Then
+            cmd = "--insecure "
+        End If
+        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + Cookies + Auth + Post + " " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
         'MsgBox(cmd)
         Dim CurlOutput As String = Nothing
@@ -1127,7 +1139,11 @@ Public Class Main
 
 
 
-        Dim cmd As String = "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + Cookies + Auth + " " + Chr(34) + Url + Chr(34)
+        Dim cmd As String = ""
+        If Curl_insecure = True Then
+            cmd = "--insecure "
+        End If
+        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + Cookies + Auth + " " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
         'MsgBox(cmd)
         Dim CurlOutput As String = Nothing

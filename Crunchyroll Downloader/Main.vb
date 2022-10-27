@@ -33,7 +33,7 @@ Public Class Main
     Public CrBetaMassParameters As String = Nothing
     Public CrBetaMassBaseURL As String = Nothing
     Public CrBetaBasic As String = Nothing
-
+    Public locale As String = Nothing
     'Public CrBetaObjects As String = Nothing
     'Public CrBetaStreams As String = Nothing
     'Public CrBetaStreamsUrl As String = Nothing
@@ -1033,7 +1033,7 @@ Public Class Main
         End If
         cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + " " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
-        MsgBox(cmd)
+        'MsgBox(cmd)
         Dim CurlOutput As String = Nothing
         Dim CurlError As String = Nothing
         ' all parameters required to run the process
@@ -1044,6 +1044,8 @@ Public Class Main
         startinfo.RedirectStandardError = True
         startinfo.RedirectStandardOutput = True
         startinfo.CreateNoWindow = True
+        startinfo.StandardOutputEncoding = Encoding.UTF8
+        startinfo.StandardErrorEncoding = Encoding.UTF8
         Proc.StartInfo = startinfo
         Proc.Start() ' start the process
         sr = Proc.StandardOutput 'standard error is used by ffmpeg
@@ -1099,6 +1101,8 @@ Public Class Main
         startinfo.RedirectStandardError = True
         startinfo.RedirectStandardOutput = True
         startinfo.CreateNoWindow = True
+        startinfo.StandardOutputEncoding = Encoding.UTF8
+        startinfo.StandardErrorEncoding = Encoding.UTF8
         Proc.StartInfo = startinfo
         Proc.Start() ' start the process
         sr = Proc.StandardOutput 'standard error is used by ffmpeg
@@ -1156,6 +1160,8 @@ Public Class Main
         startinfo.RedirectStandardError = True
         startinfo.RedirectStandardOutput = True
         startinfo.CreateNoWindow = True
+        startinfo.StandardOutputEncoding = Encoding.UTF8
+        startinfo.StandardErrorEncoding = Encoding.UTF8
         Proc.StartInfo = startinfo
         Proc.Start() ' start the process
         sr = Proc.StandardOutput 'standard error is used by ffmpeg
@@ -1389,6 +1395,8 @@ Public Class Main
             Debug.WriteLine(ObjectsURL)
 
             ObjectJson = Curl(ObjectsURL)
+
+            'MsgBox(ObjectJson)
 
             If CBool(InStr(ObjectJson, "curl:")) = True Then
                 ObjectJson = Curl(ObjectsURL)
@@ -1782,9 +1790,15 @@ Public Class Main
                         Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
                         Dim SoftSub_3 As String = SoftSub_2(0).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
                         'MsgBox(SoftSub_3)
-                        Dim client0 As New WebClient
-                        client0.Encoding = Encoding.UTF8
-                        Dim str0 As String = client0.DownloadString(SoftSub_3) 'Curl(SoftSub_3)
+                        Dim str0 As String = Nothing
+                        If System.Environment.OSVersion.Version.Major < 10 Then
+                            str0 = Curl(SoftSub_3)
+                        Else
+                            Dim client0 As New WebClient
+                            client0.Encoding = Encoding.UTF8
+                            str0 = client0.DownloadString(SoftSub_3) 'Curl(SoftSub_3)
+                        End If
+
                         'MsgBox(str0)
                         Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
                         Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + "." + GetSubFileLangName(SoftSubs2(i)) + Path.GetExtension(Pfad3)), "ass")
@@ -1950,10 +1964,17 @@ Public Class Main
                     End If
                     'MsgBox(URL_DL)
                 Else
-                    Dim client As New System.Net.WebClient
-                    client.Encoding = Encoding.UTF8
-                    'MsgBox(CR_URI_Master)
-                    Dim str As String = client.DownloadString(CR_URI_Master)
+
+                    Dim str As String = Nothing
+
+                    If System.Environment.OSVersion.Version.Major < 10 Then
+                        str = Curl(CR_URI_Master)
+                    Else
+                        Dim client As New System.Net.WebClient
+                        client.Encoding = Encoding.UTF8
+                        str = client.DownloadString(CR_URI_Master)
+                    End If
+
                     'MsgBox(str)
                     If CBool(InStr(str, "x" + Reso.ToString + ",")) Then
                         Reso2 = "x" + Reso.ToString
@@ -2076,6 +2097,35 @@ Public Class Main
         End Try
     End Sub
 
+    Function Convert_locale(ByVal locale As String) As String
+        Try
+            If locale = "de" Then
+                Return "de-DE"
+            ElseIf locale = "" Then
+                Return "en-US"
+            ElseIf locale = "pt-br" Then
+                Return "pt-BR"
+            ElseIf locale = "es" Then
+                Return "es-419"
+            ElseIf locale = "fr" Then
+                Return "fr-FR"
+            ElseIf locale = "ar" Then
+                Return "ar-SA"
+            ElseIf locale = "ru" Then
+                Return "ru-RU"
+            ElseIf locale = "it" Then
+                Return "it-IT"
+            ElseIf locale = "es-es" Then
+                Return "es-ES"
+            ElseIf locale = "pt-pt" Then
+                Return "pt-PT"
+            Else
+                Return CB_SuB_Nothing
+            End If
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
     Function ConvertCC(ByVal CC As String) As String
         Try
             If CC = "deDE" Then
@@ -2344,6 +2394,8 @@ Public Class Main
         startinfo.RedirectStandardError = True
         startinfo.RedirectStandardOutput = True
         startinfo.CreateNoWindow = True
+        startinfo.StandardOutputEncoding = Encoding.UTF8
+        startinfo.StandardErrorEncoding = Encoding.UTF8
         AddHandler proc.ErrorDataReceived, AddressOf FFMPEGResoBack
         AddHandler proc.OutputDataReceived, AddressOf FFMPEGResoBack
         proc.StartInfo = startinfo
@@ -3631,6 +3683,44 @@ Public Class Main
                     'CefSharp_Browser.WebBrowser1.LoadUrl(requesturl)
 
 
+                    LoadedUrls.Clear()
+                    Me.Text = "Crunchyroll Downloader"
+                    Exit Sub
+                End If
+            ElseIf CBool(InStr(requesturl, "crunchyroll.com/")) And CBool(InStr(requesturl, "/objects/")) Then
+
+                If b = False Then
+                    Dim ObjectJson As String
+                    Dim ObjectsUrl As String = requesturl
+                    Dim StreamsUrl As String
+                    ObjectJson = Curl(ObjectsUrl)
+
+                    If CBool(InStr(ObjectJson, "curl:")) = True Then
+                        ObjectJson = Curl(ObjectsUrl)
+                    End If
+
+                    If CBool(InStr(ObjectJson, "curl:")) = True Then
+                        Continue For
+                    End If
+
+
+
+                    Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim StreamsUrlBuilder3() As String = ObjectsUrl.Split(New String() {"objects/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim StreamsUrlBuilder4() As String = StreamsUrlBuilder3(1).Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    StreamsUrl = StreamsUrlBuilder3(0) + "videos/" + StreamsUrlBuilder2(0) + "/streams?" + StreamsUrlBuilder4(1)
+
+
+                    If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                        Anime_Add.StatusLabel.Text = "Status: Crunchyroll episode found."
+                    End If
+                    Me.Text = "Status: Crunchyroll episode found."
+                    Debug.WriteLine("Crunchyroll episode found")
+                    GetBetaVideoProxy(StreamsUrl, WebbrowserURL)
+                    b = True
                     LoadedUrls.Clear()
                     Me.Text = "Crunchyroll Downloader"
                     Exit Sub

@@ -917,7 +917,7 @@ Public Class Einstellungen
 
 
 
-    Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles ListC1.Click, ListC2.Click, ListC3.Click, ListC4.Click, ListC5.Click, ListC6.Click, ListC7.Click
+    Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles ListC1.Click, ListC2.Click, ListC3.Click, ListC4.Click, ListC5.Click, ListC6.Click, ListC7.Click, ListC8.Click, ListC9.Click
         Dim Button As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         If Button.Text = "-c copy" Then
             FFMPEG_CommandP1.Text = "-c copy"
@@ -1321,6 +1321,7 @@ Public Class Einstellungen
         End If
 
     End Sub
+
 
 
 

@@ -26,6 +26,7 @@ Public Class Anime_Add
     Public Sub LoadBrowser(ByVal Url As String)
 
         'Main.LoadedUrl = Url
+        Main.LoadedUrls.Clear()
 
         If CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "series")) = True Then
 

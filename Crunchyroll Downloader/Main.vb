@@ -3658,6 +3658,7 @@ Public Class Main
                 Me.Text = "Status: nothing found"
                 ProcessUrls()
                 Debug.WriteLine("3530: nothing found")
+                Grapp_RDY = True
                 Exit Sub
             End If
 

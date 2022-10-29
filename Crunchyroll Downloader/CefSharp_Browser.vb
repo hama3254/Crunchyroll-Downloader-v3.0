@@ -34,11 +34,10 @@ Public Class CefSharp_Browser
 
 
             Me.Invoke(New Action(Function() As Object
-                                     Main.LoadedUrls.Clear()
+                                     '  Main.LoadedUrls.Clear()
                                      Debug.WriteLine("FrameLoadEnd" + Date.Now.ToString)
                                      Main.WebbrowserURL = WebBrowser1.Address
                                      TextBox1.Text = Main.WebbrowserURL
-
 
                                      Try
                                          If Btn_Scan.Enabled = False And Btn_Scan.Text = "Start network scan" Then
@@ -146,7 +145,6 @@ Public Class CefSharp_Browser
 
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
         'MsgBox(Main.CR_etp_rt)
         'MsgBox(Main.CR_ajs_user_id)
         'MsgBox(Main.CheckCRLogin.ToString)
@@ -265,6 +263,7 @@ Public Class CefSharp_Browser
 
     Private Sub ObserveHttp(e As RequestResourceEventArgs) 'Handles RequestResource.GetUrl
         'Debug.WriteLine(e.Request.Url)
+        'Debug.WriteLine(e.Request.Url)
 
         'If (Me.InvokeRequired) Then
         '    If Main.b = True And Main.FunimationJsonBrowser = Nothing Then
@@ -330,6 +329,7 @@ Public Class CefSharp_Browser
 
         End If
         If CBool(InStr(e.Request.Url, "https://title-api.prd.funimationsvc.com")) Then
+            Debug.WriteLine("Funimtaion: " + e.Request.Url)
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
@@ -337,8 +337,8 @@ Public Class CefSharp_Browser
                 Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.Request.Url)
         ElseIf CBool(InStr(e.Request.Url, "/data/v2/shows/")) Then
+            Debug.WriteLine("Funimtaion: " + e.Request.Url)
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
@@ -346,8 +346,8 @@ Public Class CefSharp_Browser
                 Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.Request.Url)
         ElseIf CBool(InStr(e.Request.Url, "/data/v1/episodes/")) Then
+            Debug.WriteLine("Funimtaion: " + e.Request.Url)
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
@@ -355,8 +355,8 @@ Public Class CefSharp_Browser
                 Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.Request.Url)
         ElseIf CBool(InStr(e.Request.Url, "crunchyroll.com/")) And CBool(InStr(e.Request.Url, "streams?")) Then
+            Debug.WriteLine("Crunchyroll-Single: " + e.Request.Url)
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
@@ -364,17 +364,17 @@ Public Class CefSharp_Browser
                 Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.Request.Url)
-        ElseIf CBool(InStr(e.Request.Url, "crunchyroll.com/")) And CBool(InStr(e.Request.Url, "/objects/")) Then
-            If (Me.InvokeRequired) Then
-                Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
-                Exit Sub
-            Else
-                Main.LoadedUrls.Add(e.Request.Url)
-                Exit Sub
-            End If
-            Debug.WriteLine(e.Request.Url)
+            'ElseIf CBool(InStr(e.Request.Url, "crunchyroll.com/")) And CBool(InStr(e.Request.Url, "/objects/")) Then
+            '    If (Me.InvokeRequired) Then
+            '        Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
+            '        Exit Sub
+            '    Else
+            '        Main.LoadedUrls.Add(e.Request.Url)
+            '        Exit Sub
+            '    End If
+            '    Debug.WriteLine(e.Request.Url)
         ElseIf CBool(InStr(e.Request.Url, "crunchyroll.com/")) And CBool(InStr(e.Request.Url, "seasons?series_id=")) Then
+            Debug.WriteLine("Crunchyroll-Season: " + e.Request.Url)
             If (Me.InvokeRequired) Then
                 Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Url))
                 Exit Sub
@@ -382,8 +382,6 @@ Public Class CefSharp_Browser
                 Main.LoadedUrls.Add(e.Request.Url)
                 Exit Sub
             End If
-            Debug.WriteLine(e.Request.Url)
-
         End If
 
 
@@ -410,6 +408,10 @@ Public Class CefSharp_Browser
         End Try
         Btn_Scan.Text = "use network scan dialog"
         network_scan.Show()
+    End Sub
+
+    Private Sub WebBrowser1_FrameLoadStart(sender As Object, e As FrameLoadStartEventArgs) Handles WebBrowser1.FrameLoadStart
+        Main.LoadedUrls.Clear()
     End Sub
 
 

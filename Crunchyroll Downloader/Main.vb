@@ -34,6 +34,8 @@ Public Class Main
     Public CrBetaMassBaseURL As String = Nothing
     Public CrBetaBasic As String = Nothing
     Public locale As String = Nothing
+    Public Url_locale As String = Nothing
+
     'Public CrBetaObjects As String = Nothing
     'Public CrBetaStreams As String = Nothing
     'Public CrBetaStreamsUrl As String = Nothing
@@ -1052,22 +1054,35 @@ Public Class Main
         sr2 = Proc.StandardError
         'sw = proc.StandardInput
 
+        Dim start, finish, pau As Double
+        start = CSng(Microsoft.VisualBasic.DateAndTime.Timer)
+        pau = 5
+        finish = start + pau
+
         Do
             CurlOutput = CurlOutput + sr.ReadToEnd
             CurlError = CurlError + sr2.ReadToEnd
             'ffmpegOutput2 = sr.ReadLine
             Debug.WriteLine(CurlOutput)
 
-        Loop Until Proc.HasExited
+        Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
-        If CurlOutput = Nothing Then
+
+        If CurlOutput = Nothing And CurlError = Nothing Then
+            Debug.WriteLine("curl-E: " + "curl: ")
+            Return CurlError
+        ElseIf CurlOutput = Nothing And CurlError IsNot Nothing Then
             Debug.WriteLine("curl-E: " + CurlError)
             Return CurlError
-
-        Else
+        ElseIf CurlOutput IsNot Nothing And CurlError = Nothing Then
             Debug.WriteLine("curl-O: " + CurlOutput)
             Return CurlOutput
-
+        ElseIf CurlOutput IsNot Nothing And CurlError IsNot Nothing Then
+            Debug.WriteLine("curl-O: " + CurlOutput)
+            Return CurlOutput
+        Else
+            Debug.WriteLine("curl-E: " + "curl: ")
+            Return CurlError
         End If
 
 
@@ -1108,6 +1123,10 @@ Public Class Main
         sr = Proc.StandardOutput 'standard error is used by ffmpeg
         sr2 = Proc.StandardError
         'sw = proc.StandardInput
+        Dim start, finish, pau As Double
+        start = CSng(Microsoft.VisualBasic.DateAndTime.Timer)
+        pau = 5
+        finish = start + pau
 
         Do
             CurlOutput = CurlOutput + sr.ReadToEnd
@@ -1115,18 +1134,25 @@ Public Class Main
             'ffmpegOutput2 = sr.ReadLine
             Debug.WriteLine(CurlOutput)
 
-        Loop Until Proc.HasExited
+        Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
-        If CurlOutput = Nothing Then
+
+        If CurlOutput = Nothing And CurlError = Nothing Then
+            Debug.WriteLine("curl-E: " + "curl: ")
+            Return CurlError
+        ElseIf CurlOutput = Nothing And CurlError IsNot Nothing Then
             Debug.WriteLine("curl-E: " + CurlError)
             Return CurlError
-
-        Else
+        ElseIf CurlOutput IsNot Nothing And CurlError = Nothing Then
             Debug.WriteLine("curl-O: " + CurlOutput)
             Return CurlOutput
-
+        ElseIf CurlOutput IsNot Nothing And CurlError IsNot Nothing Then
+            Debug.WriteLine("curl-O: " + CurlOutput)
+            Return CurlOutput
+        Else
+            Debug.WriteLine("curl-E: " + "curl: ")
+            Return CurlError
         End If
-
 
     End Function
 
@@ -1168,20 +1194,34 @@ Public Class Main
         sr2 = Proc.StandardError
         'sw = proc.StandardInput
 
+        Dim start, finish, pau As Double
+        start = CSng(Microsoft.VisualBasic.DateAndTime.Timer)
+        pau = 5
+        finish = start + pau
+
         Do
             CurlOutput = CurlOutput + sr.ReadToEnd
             CurlError = CurlError + sr2.ReadToEnd
             'ffmpegOutput2 = sr.ReadLine
             Debug.WriteLine(CurlOutput)
 
-        Loop Until Proc.HasExited
+        Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
-        If CurlOutput = Nothing Then
+        If CurlOutput = Nothing And CurlError = Nothing Then
+            Debug.WriteLine("curl-E: " + "curl: ")
+            Return CurlError
+        ElseIf CurlOutput = Nothing And CurlError IsNot Nothing Then
             Debug.WriteLine("curl-E: " + CurlError)
             Return CurlError
-        Else
+        ElseIf CurlOutput IsNot Nothing And CurlError = Nothing Then
             Debug.WriteLine("curl-O: " + CurlOutput)
             Return CurlOutput
+        ElseIf CurlOutput IsNot Nothing And CurlError IsNot Nothing Then
+            Debug.WriteLine("curl-O: " + CurlOutput)
+            Return CurlOutput
+        Else
+            Debug.WriteLine("curl-E: " + "curl: ")
+            Return CurlError
         End If
 
 
@@ -1207,7 +1247,12 @@ Public Class Main
                 Dim EpisodeSplit4() As String = EpisodeSplit3(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
                 'MsgBox("https://www.crunchyroll.com/watch/" + EpisodeSplit2(0) + "/" + EpisodeSplit4(0) + "/")
-                ListOfEpisodes.Add("https://www.crunchyroll.com/watch/" + EpisodeSplit2(0) + "/" + EpisodeSplit4(0) + "/")
+                If Url_locale = "" Then
+                    ListOfEpisodes.Add("https://www.crunchyroll.com/watch/" + EpisodeSplit2(0) + "/" + EpisodeSplit4(0) + "/")
+                Else
+                    ListOfEpisodes.Add("https://www.crunchyroll.com/" + Url_locale + "/" + "watch/" + EpisodeSplit2(0) + "/" + EpisodeSplit4(0) + "/")
+                End If
+
             Next
             Dim First As Integer = 0
             Dim Last As Integer = 0
@@ -2120,7 +2165,7 @@ Public Class Main
             ElseIf locale = "pt-pt" Then
                 Return "pt-PT"
             Else
-                Return CB_SuB_Nothing
+                Return "en-US"
             End If
         Catch ex As Exception
             Return Nothing
@@ -3725,7 +3770,7 @@ Public Class Main
                     Me.Text = "Crunchyroll Downloader"
                     Exit Sub
                 End If
-            ElseIf CBool(InStr(requesturl, "crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
+            ElseIf CBool(InStr(requesturl, "crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) And CBool(InStr(WebbrowserURL, "series")) Then
 
                 If b = False Then
 

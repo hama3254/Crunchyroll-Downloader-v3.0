@@ -27,11 +27,23 @@ Public Class Anime_Add
 
         'Main.LoadedUrl = Url
 
+        If CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "series")) = True Then
 
-        If CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "watch")) = True And CBool(Main.CrBetaBasic = Nothing) = False Then
+            Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim locale2() As String = locale1(1).Split(New String() {"/series"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Main.locale = Main.Convert_locale(locale2(0))
+            If Main.locale = "en-US" Then
+                Main.Url_locale = ""
+            Else
+                Main.Url_locale = locale2(0)
+            End If
+            CefSharp_Browser.WebBrowser1.Load(Url)
+
+        ElseIf CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "watch")) = True And CBool(Main.CrBetaBasic = Nothing) = False Then
 #Region "Get Cookies"
             Main.CR_Cookies = "Cookie: "
             Try
+
                 Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
                 Dim etp_rt As Boolean = False
                 Dim ajs_user_id As Boolean = False
@@ -46,10 +58,10 @@ Public Class Anime_Add
                     If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "_evidon_suppress")) = False Then
                         Main.CR_Cookies = Main.CR_Cookies + list.Item(i).Name + "=" + list.Item(i).Value + ";"
                     End If
-                    If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "c_locale")) Then
-                        Main.locale = list.Item(i).Value
+                    'If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(list.Item(i).Name, "c_locale")) Then
+                    '    Main.locale = list.Item(i).Value
 
-                    End If
+                    'End If
                     'If CBool(InStr(list.Item(i).Domain, ".crunchyroll.com")) = True And CBool(InStr(list.Item(i).Name, "etp_rt")) = True And Main.CheckCRLogin = True And Main.CR_etp_rt = Nothing Then
                     '    Debug.WriteLine("etp_rt = True")
                     '    etp_rt = True
@@ -70,6 +82,11 @@ Public Class Anime_Add
                 'MsgBox(locale2(0))
                 Main.locale = Main.Convert_locale(locale2(0))
                 'End If
+                If Main.locale = "en-US" Then
+                    Main.Url_locale = ""
+                Else
+                    Main.Url_locale = locale2(0)
+                End If
 
                 'MsgBox(Main.locale)
 
@@ -149,37 +166,39 @@ Public Class Anime_Add
             '    client.Headers.Add(Cookies) '+ WebBrowser1.Document.Cookie)
             'MsgBox(OmUStreamSplitEpisodeIndex(1))
             Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + CRBetaBearer + Chr(34)
-                Dim v2Content As String = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Main.CR_Cookies, Auth2) 'client.DownloadString("https://www.crunchyroll.com/index/v2")
-                'Debug.WriteLine(v2Content)
-                'MsgBox("v2: " + v2Content)
+            Dim v2Content As String = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Main.CR_Cookies, Auth2) 'client.DownloadString("https://www.crunchyroll.com/index/v2")
+            'Debug.WriteLine(v2Content)
+            'MsgBox("v2: " + v2Content)
 
-                If CBool(InStr(v2Content, "curl:")) = True Then
-                    v2Content = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Main.CR_Cookies, Auth2)
-                End If
+            If CBool(InStr(v2Content, "curl:")) = True Then
+                v2Content = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Main.CR_Cookies, Auth2)
+            End If
 
-                If CBool(InStr(v2Content, "curl:")) = True Then
-                    CefSharp_Browser.WebBrowser1.Load(Url)
-                    Exit Sub
-                End If
-
-
-                Dim v2ContentBeta() As String = v2Content.Split(New String() {Chr(34) + "cms_web" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
+            If CBool(InStr(v2Content, "curl:")) = True Then
+                CefSharp_Browser.WebBrowser1.Load(Url)
+                Exit Sub
+            End If
 
 
-                Dim bucket() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "bucket" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim bucket2() As String = bucket(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim v2ContentBeta() As String = v2Content.Split(New String() {Chr(34) + "cms_web" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                Dim policy() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "policy" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim policy2() As String = policy(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                Dim signature() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "signature" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim signature2() As String = signature(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim bucket() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "bucket" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim bucket2() As String = bucket(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                Dim key_pair_id() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "key_pair_id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim key_pair_id2() As String = key_pair_id(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim policy() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "policy" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim policy2() As String = policy(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                Dim ObjectsURLBuilder3() As String = Url.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim signature() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "signature" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim signature2() As String = signature(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            Dim key_pair_id() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "key_pair_id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim key_pair_id2() As String = key_pair_id(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+            'MsgBox(Url)
+            Dim ObjectsURLBuilder3() As String = Url.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
             ObjectsUrl = "https://www.crunchyroll.com/cms/v2" + bucket2(0) + "/objects/" + ObjectsURLBuilder4(0) + "?locale=" + Main.locale + "&Signature=" + signature2(0) + "&Policy=" + policy2(0) + "&Key-Pair-Id=" + key_pair_id2(0)
@@ -189,13 +208,13 @@ Public Class Anime_Add
             Debug.WriteLine("ObjectsUrl: " + ObjectsUrl)
 
 
-                'Catch ex As Exception
-                '    MsgBox(ex.ToString)
-                '    CefSharp_Browser.WebBrowser1.Load(Url)
-                '    Exit Sub
-                'End Try
+            'Catch ex As Exception
+            '    MsgBox(ex.ToString)
+            '    CefSharp_Browser.WebBrowser1.Load(Url)
+            '    Exit Sub
+            'End Try
 
-                Dim StreamsUrl As String = Nothing
+            Dim StreamsUrl As String = Nothing
             Dim ObjectJson As String
             Try
                 ObjectJson = Main.Curl(ObjectsUrl)

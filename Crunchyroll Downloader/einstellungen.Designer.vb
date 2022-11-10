@@ -95,6 +95,7 @@ Partial Class Einstellungen
         Me.Label2 = New MetroFramework.Controls.MetroLabel()
         Me.NumericUpDown2 = New System.Windows.Forms.NumericUpDown()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.Chb_Ign_tls = New MetroFramework.Controls.MetroCheckBox()
         Me.http_support = New MetroFramework.Controls.MetroComboBox()
         Me.DarkMode = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -153,7 +154,6 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.Chb_Ign_tls = New MetroFramework.Controls.MetroCheckBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -408,10 +408,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 35)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage2.Size = New System.Drawing.Size(501, 528)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -948,6 +948,17 @@ Partial Class Einstellungen
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Other"
         '
+        'Chb_Ign_tls
+        '
+        Me.Chb_Ign_tls.AutoSize = True
+        Me.Chb_Ign_tls.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.Chb_Ign_tls.Location = New System.Drawing.Point(135, 80)
+        Me.Chb_Ign_tls.Name = "Chb_Ign_tls"
+        Me.Chb_Ign_tls.Size = New System.Drawing.Size(223, 19)
+        Me.Chb_Ign_tls.TabIndex = 46
+        Me.Chb_Ign_tls.Text = "add ""--insecure"" to curl requests"
+        Me.Chb_Ign_tls.UseSelectable = True
+        '
         'http_support
         '
         Me.http_support.DropDownHeight = 250
@@ -957,7 +968,7 @@ Partial Class Einstellungen
         Me.http_support.IntegralHeight = False
         Me.http_support.ItemHeight = 23
         Me.http_support.Items.AddRange(New Object() {"add-on support disabled", "80", "8080"})
-        Me.http_support.Location = New System.Drawing.Point(214, 21)
+        Me.http_support.Location = New System.Drawing.Point(214, 25)
         Me.http_support.Name = "http_support"
         Me.http_support.Size = New System.Drawing.Size(237, 29)
         Me.http_support.TabIndex = 45
@@ -992,6 +1003,7 @@ Partial Class Einstellungen
         '
         'MetroLabel2
         '
+        Me.MetroLabel2.Enabled = False
         Me.MetroLabel2.FontWeight = MetroFramework.MetroLabelWeight.Regular
         Me.MetroLabel2.Location = New System.Drawing.Point(6, 80)
         Me.MetroLabel2.Name = "MetroLabel2"
@@ -1014,8 +1026,9 @@ Partial Class Einstellungen
         Me.ProfileTextBox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
         Me.ProfileTextBox.CustomButton.UseSelectable = True
         Me.ProfileTextBox.CustomButton.Visible = False
+        Me.ProfileTextBox.Enabled = False
         Me.ProfileTextBox.FontSize = MetroFramework.MetroTextBoxSize.Medium
-        Me.ProfileTextBox.Lines = New String() {"https://www.crunchyroll.com/"}
+        Me.ProfileTextBox.Lines = New String() {"Disabled"}
         Me.ProfileTextBox.Location = New System.Drawing.Point(6, 106)
         Me.ProfileTextBox.MaxLength = 32767
         Me.ProfileTextBox.Name = "ProfileTextBox"
@@ -1028,7 +1041,7 @@ Partial Class Einstellungen
         Me.ProfileTextBox.ShortcutsEnabled = True
         Me.ProfileTextBox.Size = New System.Drawing.Size(469, 25)
         Me.ProfileTextBox.TabIndex = 4
-        Me.ProfileTextBox.Text = "https://www.crunchyroll.com/"
+        Me.ProfileTextBox.Text = "Disabled"
         Me.ProfileTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.ProfileTextBox.UseSelectable = True
         Me.ProfileTextBox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
@@ -1126,9 +1139,9 @@ Partial Class Einstellungen
         Me.MetroTabPage2.HorizontalScrollbarBarColor = True
         Me.MetroTabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage2.HorizontalScrollbarSize = 10
-        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage2.Name = "MetroTabPage2"
-        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage2.TabIndex = 8
         Me.MetroTabPage2.Text = "Naming"
         Me.MetroTabPage2.VerticalScrollbarBarColor = True
@@ -1325,9 +1338,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1392,10 +1405,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage6.Size = New System.Drawing.Size(501, 528)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = " Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1629,9 +1642,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = " About  "
         '
@@ -1762,17 +1775,6 @@ Partial Class Einstellungen
         Me.Btn_Save.Size = New System.Drawing.Size(355, 30)
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
-        '
-        'Chb_Ign_tls
-        '
-        Me.Chb_Ign_tls.AutoSize = True
-        Me.Chb_Ign_tls.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.Chb_Ign_tls.Location = New System.Drawing.Point(135, 80)
-        Me.Chb_Ign_tls.Name = "Chb_Ign_tls"
-        Me.Chb_Ign_tls.Size = New System.Drawing.Size(223, 19)
-        Me.Chb_Ign_tls.TabIndex = 46
-        Me.Chb_Ign_tls.Text = "add ""--insecure"" to curl requests"
-        Me.Chb_Ign_tls.UseSelectable = True
         '
         'Einstellungen
         '

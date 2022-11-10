@@ -24,18 +24,14 @@ Partial Class Main
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
-        Me.ListView1 = New System.Windows.Forms.ListView()
-        Me.Link = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.TheTextBox = New System.Windows.Forms.RichTextBox()
-        Me.PictureBox6 = New System.Windows.Forms.PictureBox()
+        Me.ConsoleBar = New System.Windows.Forms.PictureBox()
         Me.MetroStyleExtender1 = New MetroFramework.Components.MetroStyleExtender(Me.components)
         Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
-        Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Timer4 = New System.Windows.Forms.Timer(Me.components)
         Me.Btn_add = New System.Windows.Forms.Button()
         Me.Btn_Browser = New System.Windows.Forms.Button()
@@ -53,29 +49,14 @@ Partial Class Main
         Me.MsgBoxToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CRCookieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClearAllSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ItemBoundsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DummyItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'ListView1
-        '
-        Me.ListView1.BackColor = System.Drawing.SystemColors.Control
-        Me.ListView1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.Link})
-        resources.ApplyResources(Me.ListView1, "ListView1")
-        Me.ListView1.ForeColor = System.Drawing.Color.Black
-        Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        Me.ListView1.HideSelection = False
-        Me.ListView1.Name = "ListView1"
-        Me.ListView1.TabStop = False
-        Me.ListView1.UseCompatibleStateImageBehavior = False
-        Me.ListView1.View = System.Windows.Forms.View.Details
-        '
-        'Link
-        '
-        resources.ApplyResources(Me.Link, "Link")
         '
         'PictureBox5
         '
@@ -84,10 +65,6 @@ Partial Class Main
         resources.ApplyResources(Me.PictureBox5, "PictureBox5")
         Me.PictureBox5.Name = "PictureBox5"
         Me.PictureBox5.TabStop = False
-        '
-        'Timer1
-        '
-        Me.Timer1.Enabled = True
         '
         'Timer2
         '
@@ -105,22 +82,19 @@ Partial Class Main
         resources.ApplyResources(Me.TheTextBox, "TheTextBox")
         Me.TheTextBox.Name = "TheTextBox"
         '
-        'PictureBox6
+        'ConsoleBar
         '
-        Me.PictureBox6.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox6.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.balken
-        resources.ApplyResources(Me.PictureBox6, "PictureBox6")
-        Me.PictureBox6.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox6.Name = "PictureBox6"
-        Me.PictureBox6.TabStop = False
+        Me.ConsoleBar.BackColor = System.Drawing.Color.Transparent
+        Me.ConsoleBar.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.balken
+        resources.ApplyResources(Me.ConsoleBar, "ConsoleBar")
+        Me.ConsoleBar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ConsoleBar.Name = "ConsoleBar"
+        Me.ConsoleBar.TabStop = False
         '
         'MetroStyleManager1
         '
         Me.MetroStyleManager1.Owner = Me
         Me.MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Orange
-        '
-        'BackgroundWorker1
-        '
         '
         'Timer4
         '
@@ -186,7 +160,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem, Me.ClearAllSettingsToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem, Me.ClearAllSettingsToolStripMenuItem, Me.ItemBoundsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -240,21 +214,36 @@ Partial Class Main
         Me.ClearAllSettingsToolStripMenuItem.Name = "ClearAllSettingsToolStripMenuItem"
         resources.ApplyResources(Me.ClearAllSettingsToolStripMenuItem, "ClearAllSettingsToolStripMenuItem")
         '
+        'ItemBoundsToolStripMenuItem
+        '
+        Me.ItemBoundsToolStripMenuItem.Name = "ItemBoundsToolStripMenuItem"
+        resources.ApplyResources(Me.ItemBoundsToolStripMenuItem, "ItemBoundsToolStripMenuItem")
+        '
+        'DummyItemToolStripMenuItem
+        '
+        Me.DummyItemToolStripMenuItem.Name = "DummyItemToolStripMenuItem"
+        resources.ApplyResources(Me.DummyItemToolStripMenuItem, "DummyItemToolStripMenuItem")
+        '
+        'Panel1
+        '
+        resources.ApplyResources(Me.Panel1, "Panel1")
+        Me.Panel1.Name = "Panel1"
+        '
         'Main
         '
         Me.ApplyImageInvert = True
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle
         resources.ApplyResources(Me, "$this")
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Btn_Close)
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Settings)
         Me.Controls.Add(Me.Btn_Browser)
         Me.Controls.Add(Me.Btn_add)
         Me.Controls.Add(Me.TheTextBox)
-        Me.Controls.Add(Me.PictureBox6)
+        Me.Controls.Add(Me.ConsoleBar)
         Me.Controls.Add(Me.PictureBox5)
-        Me.Controls.Add(Me.ListView1)
         Me.ForeColor = System.Drawing.Color.Black
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -263,24 +252,20 @@ Partial Class Main
         Me.Style = MetroFramework.MetroColorStyle.Orange
         Me.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents ListView1 As ListView
-    Friend WithEvents Link As ColumnHeader
     Friend WithEvents PictureBox5 As PictureBox
     Friend WithEvents ToolTip1 As ToolTip
-    Friend WithEvents Timer1 As Timer
     Friend WithEvents Timer2 As Timer
     Friend WithEvents Timer3 As Timer
     Friend WithEvents TheTextBox As RichTextBox
-    Friend WithEvents PictureBox6 As PictureBox
+    Friend WithEvents ConsoleBar As PictureBox
     Friend WithEvents MetroStyleExtender1 As MetroFramework.Components.MetroStyleExtender
     Friend WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
-    Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
     Friend WithEvents Timer4 As Timer
     Friend WithEvents Btn_add As Button
     Friend WithEvents Btn_Browser As Button
@@ -298,4 +283,7 @@ Partial Class Main
     Friend WithEvents MsgBoxToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CRCookieToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ClearAllSettingsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ItemBoundsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents DummyItemToolStripMenuItem As ToolStripMenuItem
+    Public WithEvents Panel1 As Panel
 End Class

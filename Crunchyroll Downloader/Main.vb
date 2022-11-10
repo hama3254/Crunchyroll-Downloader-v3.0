@@ -16,6 +16,8 @@ Imports System.Runtime.InteropServices
 Imports CefSharp.WinForms
 Imports CefSharp
 Imports System.Security.Policy
+Imports MyProvider.MyProvider
+Imports System.Windows
 
 Public Class Main
     Inherits MetroForm
@@ -40,7 +42,6 @@ Public Class Main
     'Public CrBetaStreams As String = Nothing
     'Public CrBetaStreamsUrl As String = Nothing
 
-    Public BlockList As List(Of String)
     Public LoadedUrls As New List(Of String)
     Public FunimationAPIRegion As String = Nothing
     Public FunimationRegion As String = Nothing
@@ -61,7 +62,7 @@ Public Class Main
     'Public liList As New List(Of String)
     Public HTMLString As String = My.Resources.Startuphtml
     Public ListBoxList As New List(Of String)
-    Public ItemList As New List(Of CRD_List_Item)
+    'Public ItemList As New List(Of CRD_List_Item)
     Public RunningDownloads As Integer = 0
     Public UseQueue As Boolean = False
     Public StartServer As Integer = 0
@@ -99,7 +100,7 @@ Public Class Main
     Public LoginOnly As String = "False"
     Public Pfad As String = My.Computer.FileSystem.CurrentDirectory
     Public TempFolder As String = Pfad
-    Public ProfileFolder As String = Path.Combine(My.Computer.FileSystem.SpecialDirectories.MyDocuments, "CRD-Profile")
+    Public ProfileFolder As String = Path.Combine(Application.StartupPath, "CRD-Profile") 'Path.Combine(My.Computer.FileSystem.SpecialDirectories.MyDocuments, "CRD-Profile")
     Public ffmpeg_command As String = " -c copy -bsf:a aac_adtstoasc" '" -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " 
     Public Reso As Integer
     Public Season_Prefix As String = "[default season prefix]"
@@ -194,7 +195,7 @@ Public Class Main
     Public BackColorValue As Color = Color.FromArgb(243, 243, 243)
     Public ForeColorValue As Color = SystemColors.WindowText
     Public Sub DarkMode()
-        ListView1.BackColor = Color.FromArgb(50, 50, 50)
+        Panel1.BackColor = Color.FromArgb(50, 50, 50)
         CloseImg = My.Resources.main_close_dark
         MinImg = My.Resources.main_mini_dark
         Btn_min.Image = MinImg
@@ -206,7 +207,7 @@ Public Class Main
     Public Sub LightMode()
         BackColorValue = Color.FromArgb(243, 243, 243)
         ForeColorValue = SystemColors.WindowText
-        ListView1.BackColor = SystemColors.Control
+        Panel1.BackColor = SystemColors.Control
         CloseImg = My.Resources.main_close
         MinImg = My.Resources.main_mini
         Btn_min.Image = MinImg
@@ -276,52 +277,63 @@ Public Class Main
         Btn_Close.Image = CloseImg
     End Sub
 
-    Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles PictureBox6.Click
+    Private Sub ConsoleBar_Click(sender As Object, e As EventArgs) Handles ConsoleBar.Click
         If TheTextBox.Visible = True Then
             TheTextBox.Visible = False
             ListViewHeightOffset = 7
-            PictureBox6.Location = New Point(0, Me.Height - ListViewHeightOffset)
+            ConsoleBar.Location = New Point(0, Me.Height - ListViewHeightOffset)
             TheTextBox.Location = New Point(1, Me.Height - ListViewHeightOffset + 7)
             TheTextBox.Width = Me.Width - 2
         Else
             ListViewHeightOffset = 103
             TheTextBox.Visible = True
-            PictureBox6.Location = New Point(0, Me.Height - ListViewHeightOffset)
+            ConsoleBar.Location = New Point(0, Me.Height - ListViewHeightOffset)
             TheTextBox.Location = New Point(1, Me.Height - ListViewHeightOffset + 7)
             TheTextBox.Width = Me.Width - 2
         End If
+        Me.Height = Me.Height + 1
     End Sub
 
-    Private Sub PictureBox6_MouseEnter(sender As Object, e As EventArgs) Handles PictureBox6.MouseEnter
-        PictureBox6.BackgroundImage = My.Resources.balken_console
+    Private Sub ConsoleBar_MouseEnter(sender As Object, e As EventArgs) Handles ConsoleBar.MouseEnter
+        ConsoleBar.BackgroundImage = My.Resources.balken_console
     End Sub
 
-    Private Sub PictureBox6_MouseLeave(sender As Object, e As EventArgs) Handles PictureBox6.MouseLeave
-        PictureBox6.BackgroundImage = My.Resources.balken
+    Private Sub ConsoleBar_MouseLeave(sender As Object, e As EventArgs) Handles ConsoleBar.MouseLeave
+        ConsoleBar.BackgroundImage = My.Resources.balken
     End Sub
 
     Private Sub Main_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-        ListView1.Width = Me.Width - 2
-        ListView1.Height = Me.Height - 71 - ListViewHeightOffset
+        Panel1.Width = Me.Width - 2
+        Panel1.Height = Me.Height - 71 - ListViewHeightOffset
         PictureBox5.Width = Me.Width - 40
-        PictureBox6.Location = New Point(1, Me.Height - ListViewHeightOffset)
-        PictureBox6.Width = Me.Width - 40
+        ConsoleBar.Location = New Point(1, Me.Height - ListViewHeightOffset)
+        ConsoleBar.Width = Me.Width - 40
         TheTextBox.Location = New Point(1, Me.Height - ListViewHeightOffset + 7)
         TheTextBox.Width = Me.Width - 2
         Btn_Close.Location = New Point(Me.Width - 41, 1)
         Btn_min.Location = New Point(Me.Width - 82, 1)
         Btn_Settings.Location = New Point(Me.Width - 190, 17)
         Try
-            For s As Integer = 0 To ListView1.Items.Count - 1
-                Dim r As Rectangle = ListView1.Items.Item(s).Bounds
-                ItemList(s).SetBounds(r.X, r.Y, ListView1.Width - 2, r.Height)
-                If ItemList(s).GetToDispose() = True Then
-                    ItemList(s).DisposeItem(ItemList(s).GetToDispose())
-                    ItemList.RemoveAt(s)
-                    ListView1.Items.RemoveAt(s)
+            Panel1.AutoScrollPosition = New Point(0, 0)
+
+            Dim W As Integer = Panel1.Width
+            If Panel1.Controls.Count * 142 > Panel1.Height Then
+                w = Panel1.Width - SystemInformation.VerticalScrollBarWidth
+            End If
+
+            Dim Item As New List(Of CRD_List_Item)
+            Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+            For s As Integer = 0 To Item.Count - 1
+                Item(s).SetBounds(0, 142 * s, W - 2, 142)
+                If Debug2 = True Then
+                    Debug.WriteLine("Bounds: " + Item(s).GetTextBound.ToString)
+
+                    Debug.WriteLine("Ist: " + Item(s).Location.Y.ToString)
+                    Debug.WriteLine("Soll: " + (142 * s).ToString)
                 End If
             Next
         Catch ex As Exception
+            Debug.WriteLine(ex.ToString)
         End Try
     End Sub
 
@@ -363,19 +375,30 @@ Public Class Main
         Return Output
     End Function
 
+
     Private Sub Form8_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         '
+
+#Region "settings path"
+
+        Dim mySettings As New DirectorySettings
+        mySettings.DirectoryName = Application.StartupPath
+        mySettings.FileName = "User.config.dat"
+        mySettings.Save() ' muss explizit gepeichert werden...
+
+#End Region
+
         Me.ContextMenuStrip = ContextMenuStrip1
         Dim tbtl As TextBoxTraceListener = New TextBoxTraceListener(TheTextBox)
         Trace.Listeners.Add(tbtl)
         b = True
         Thread.CurrentThread.Name = "Main"
         Debug.WriteLine("Thread Name: " + Thread.CurrentThread.Name)
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            ProfileFolder = rkg.GetValue("ProfilFolder").ToString
-        Catch ex As Exception
-        End Try
+        'Try
+        '    Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
+        '    ProfileFolder = rkg.GetValue("ProfilFolder").ToString
+        'Catch ex As Exception
+        'End Try
         Dim settings As CefSettings = New CefSettings()
         If Not Directory.Exists(Path.GetDirectoryName(ProfileFolder)) Then
             ' Nein! Jetzt erstellen...
@@ -389,7 +412,6 @@ Public Class Main
         Else
             settings.CachePath = ProfileFolder
         End If
-        '--disable-features=PreloadMediaEngagementData, MediaEngagementBypassAutoplayPolicies
         settings.CefCommandLineArgs.Add("disable-features=PreloadMediaEngagementData, MediaEngagementBypassAutoplayPolicies")
         settings.CefCommandLineArgs.Add("disable-gpu")
         settings.CefCommandLineArgs.Add("disable-gpu-vsync")
@@ -397,27 +419,13 @@ Public Class Main
         settings.CefCommandLineArgs.Add("disable-gpu-rasterization")
         settings.UserAgent = My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "").Replace(Chr(34), "")
         settings.DisableGpuAcceleration()
-        'settings.CefCommandLineArgs("autoplay-policy") = "no-user-gesture-required"
         settings.LogFile = Path.Combine(Application.StartupPath, "lib", "browser.log")
-        'Initialize Cef with the provided settings
-        Cef.Initialize(settings) ', performDependencyCheck:=True, browserProcessHandler:=Nothing)
+        Cef.Initialize(settings)
 
 
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            DarkModeValue = CBool(Integer.Parse(rkg.GetValue("Dark_Mode").ToString))
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            CR_etp_rt = rkg.GetValue("etp_rt").ToString
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            CR_ajs_user_id = rkg.GetValue("ajs_user_id").ToString
-        Catch ex As Exception
-        End Try
+        DarkModeValue = My.Settings.DarkModeValue
+
+
         Manager.Style = MetroColorStyle.Orange
         If DarkModeValue = True Then
             Manager.Theme = MetroThemeStyle.Dark
@@ -428,11 +436,10 @@ Public Class Main
         End If
         Me.StyleManager = Manager
         Manager.Owner = Me
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            StartServer = Integer.Parse(rkg.GetValue("ServerPort").ToString)
-        Catch ex As Exception
-        End Try
+
+        StartServer = My.Settings.ServerPort
+
+
         If StartServer > 0 Then
             Timer3.Enabled = True
             ServerThread = New Thread(AddressOf ServerStart)
@@ -441,329 +448,155 @@ Public Class Main
             ServerThread.Start()
         End If
         waveOutSetVolume(0, 0)
-        Try
-            Dim FileLocation As DirectoryInfo = New DirectoryInfo(Application.StartupPath)
-            For Each File In FileLocation.GetFiles()
-                If CBool(InStr(File.FullName, "gecko-network.txt")) Then
-                    My.Computer.FileSystem.DeleteFile(Path.Combine(Application.StartupPath, File.FullName))
-                    Exit For
-                End If
-            Next
-        Catch ex As Exception
-        End Try
+
         ServicePointManager.Expect100Continue = True
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+
+        StatusToolTip.Active = True
+
         Try
             Me.Icon = My.Resources.icon
         Catch ex As Exception
         End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Pfad = rkg.GetValue("Ordner").ToString
-        Catch ex As Exception
-        End Try
 
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            TempFolder = rkg.GetValue("TempFolder").ToString
-        Catch ex As Exception
+
+        If My.Settings.Pfad = Nothing Then
+            Pfad = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+        Else
+            Pfad = My.Settings.Pfad
+        End If
+
+        If My.Settings.TempFolder = Nothing Then
             TempFolder = Pfad
-        End Try
-
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Episode_Prefix = rkg.GetValue("Prefix_E").ToString
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Season_Prefix = rkg.GetValue("Prefix_S").ToString
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            DefaultSubFunimation = rkg.GetValue("DefaultSubFunimation").ToString
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            DefaultSubCR = rkg.GetValue("DefaultSubCR").ToString
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Startseite = rkg.GetValue("Startseite").ToString
-        Catch ex As Exception
-        End Try
-#Region "Startup IU"
-        StatusToolTip.Active = True
-#End Region
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            UseQueue = CBool(Integer.Parse(rkg.GetValue("QueueMode").ToString))
-            'MsgBox(UseQueue.ToString)
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            KodiNaming = CBool(Integer.Parse(rkg.GetValue("KodiSupport").ToString))
-        Catch ex As Exception
-        End Try
-
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            DubMode = CBool(Integer.Parse(rkg.GetValue("DubMode").ToString))
-        Catch ex As Exception
-        End Try
-
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            CR_Chapters = CBool(Integer.Parse(rkg.GetValue("CR_Chapters").ToString))
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Curl_insecure = CBool(Integer.Parse(rkg.GetValue("Curl_insecure").ToString))
-            'MsgBox(Curl_insecure.ToString)
-        Catch ex As Exception
-        End Try
-
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            KeepCache = CBool(Integer.Parse(rkg.GetValue("Keep_Cache").ToString))
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            ffmpeg_command = rkg.GetValue("ffmpeg_command").ToString
-        Catch ex As Exception
-            ffmpeg_command = " -c copy -bsf:a aac_adtstoasc "
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Reso = Integer.Parse(rkg.GetValue("Resu").ToString)
-            'MsgBox(Resu)
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            LeadingZero = Integer.Parse(rkg.GetValue("LeadingZero").ToString)
-            'MsgBox(Resu)
-        Catch ex As Exception
-        End Try
-
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Funimation_Bitrate = Integer.Parse(rkg.GetValue("Funimation_Bitrate").ToString)
-            'MsgBox(Resu)
-        Catch ex As Exception
-        End Try
-
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            SubSprache = rkg.GetValue("Sub").ToString
-        Catch ex As Exception
-        End Try
-        'Try
-        '    Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-        '    SubFunimation = rkg.GetValue("Fun_Sub").ToString
-        'Catch ex As Exception
-        'End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            SubFunimationString = rkg.GetValue("Fun_Sub").ToString
-            If SubFunimationString = "none" Then
-            Else
-                Dim SoftSubsStringSplit() As String = SubFunimationString.Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-                For i As Integer = 0 To SoftSubsStringSplit.Count - 1
-                    SubFunimation.Add(SoftSubsStringSplit(i))
-                Next
-            End If
-        Catch ex As Exception
-            If SubFunimation.Count = 0 Then
-                SubFunimation.Add("en")
-            End If
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            SubFolder_Value = rkg.GetValue("SubFolder_Value").ToString
-        Catch ex As Exception
-            SubFolder_Value = SubFolder_Nothing
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            MaxDL = Integer.Parse(rkg.GetValue("SL_DL").ToString)
-        Catch ex As Exception
-            MaxDL = 1
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            CR_NameMethode = Integer.Parse(rkg.GetValue("CR_NameMethode").ToString)
-        Catch ex As Exception
-            CR_NameMethode = 0
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            ErrorTolerance = Integer.Parse(rkg.GetValue("ErrorTolerance").ToString)
-        Catch ex As Exception
-            ErrorTolerance = 0
-        End Try
-
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            MergeSubsFormat = rkg.GetValue("MergeSubs").ToString
-
-            If MergeSubsFormat = "1" Then 'old setting should work as before
-
-                If VideoFormat = ".mkv" Then
-                    MergeSubsFormat = "copy"
-                Else
-                    VideoFormat = ".mp4"
-                    MergeSubsFormat = "mov_text"
-                End If
-
-            ElseIf MergeSubsFormat = "None" Or MergeSubsFormat = "0" Or MergeSubsFormat = "[merge disabled]" Then
-                MergeSubs = False
-            Else
-                MergeSubs = True
-            End If
-        Catch ex As Exception
-            Try
-                Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-                MergeSubs = CBool(Integer.Parse(rkg.GetValue("MergeMP4").ToString))
-            Catch ex2 As Exception
-            End Try
-        End Try
-
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            IncludeLangName = CBool(Integer.Parse(rkg.GetValue("IncludeLangName").ToString))
-        Catch ex As Exception
-        End Try
-
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            LangNameType = Integer.Parse(rkg.GetValue("LangNameType").ToString)
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            HybridThread = Integer.Parse(rkg.GetValue("HybridThread").ToString)
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            IgnoreSeason = Integer.Parse(rkg.GetValue("IgnoreS1").ToString)
-        Catch ex As Exception
-            Try
-                Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-                IgnoreSeason = Integer.Parse(rkg.GetValue("IgnoreS1").ToString)
-            Catch ex2 As Exception
-            End Try
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Dim Format As String = rkg.GetValue("VideoFormat").ToString
-            If Format = ".mkv" Then
-                VideoFormat = ".mkv"
-            ElseIf Format = ".aac" Then
-                VideoFormat = ".aac"
-                MergeSubsFormat = "[merge disabled]"
-            End If
-        Catch ex2 As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            HybridMode = CBool(Integer.Parse(rkg.GetValue("HybridMode").ToString))
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Funimation_srt = CBool(Integer.Parse(rkg.GetValue("Funimation_srt").ToString))
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Funimation_vtt = CBool(Integer.Parse(rkg.GetValue("Funimation_vtt").ToString))
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            'HardSubFunimation = rkg.GetValue("FunimationHardsub").ToString
-            HardSubFunimation = "Disabled"
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            DubFunimation = rkg.GetValue("FunimationDub").ToString
-        Catch ex As Exception
-        End Try
-#Region "removed softsubtitle"
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            SoftSubsString = rkg.GetValue("AddedSubs").ToString
-            If SoftSubsString = "none" Then
-            Else
-                Dim SoftSubsStringSplit() As String = SoftSubsString.Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-                For i As Integer = 0 To SoftSubsStringSplit.Count - 1
-                    SoftSubs.Add(SoftSubsStringSplit(i))
-                Next
-            End If
-        Catch ex As Exception
-        End Try
-#End Region
-        If Reso = Nothing Then
-            Reso = 1080
+        Else
+            TempFolder = My.Settings.TempFolder
         End If
-        If SubSprache = Nothing Then
-            SubSprache = "enUS"
+
+        Episode_Prefix = My.Settings.Prefix_E
+
+        Season_Prefix = My.Settings.Prefix_S
+
+        DefaultSubFunimation = My.Settings.DefaultSubFunimation
+
+        DefaultSubCR = My.Settings.DefaultSubCR
+
+        Startseite = My.Settings.Startseite
+
+
+        UseQueue = My.Settings.QueueMode
+
+        KodiNaming = My.Settings.KodiSupport
+
+        DubMode = My.Settings.DubMode
+
+        CR_Chapters = My.Settings.CR_Chapters
+
+        Curl_insecure = My.Settings.Curl_insecure
+
+        KeepCache = My.Settings.Keep_Cache
+
+        ffmpeg_command = My.Settings.ffmpeg_command
+
+        Reso = My.Settings.Reso
+
+        LeadingZero = My.Settings.LeadingZero
+
+        SubSprache = My.Settings.Subtitle
+
+
+        Funimation_Bitrate = My.Settings.Funimation_Bitrate
+
+        SubFolder_Value = My.Settings.SubFolder_Value
+
+        MaxDL = My.Settings.SL_DL
+
+        CR_NameMethode = My.Settings.CR_NameMethode
+
+
+        ErrorTolerance = My.Settings.ErrorTolerance
+
+
+        IncludeLangName = My.Settings.IncludeLangName
+
+
+        LangNameType = My.Settings.LangNameType
+
+
+        HybridThread = My.Settings.HybridThread
+
+        IgnoreSeason = My.Settings.IgnoreSeason
+        HybridMode = My.Settings.HybridMode
+        Funimation_srt = My.Settings.Funimation_srt
+        Funimation_vtt = My.Settings.Funimation_vtt
+
+        DubFunimation = My.Settings.FunimationDub
+
+
+        HardSubFunimation = "Disabled"
+
+
+        SoftSubsString = My.Settings.AddedSubs
+
+        If SoftSubsString = "None" Then
+        Else
+            Dim SoftSubsStringSplit() As String = SoftSubsString.Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = 0 To SoftSubsStringSplit.Count - 1
+                SoftSubs.Add(SoftSubsStringSplit(i))
+            Next
         End If
-        BlockList = New List(Of String)
-        BackgroundWorker1.RunWorkerAsync()
+
+
+
+        SubFunimationString = My.Settings.Fun_Sub
+
+        If SubFunimationString = "None" Then
+        Else
+            Dim SoftSubsStringSplit() As String = SubFunimationString.Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = 0 To SoftSubsStringSplit.Count - 1
+                SubFunimation.Add(SoftSubsStringSplit(i))
+            Next
+        End If
+
+
+
+        MergeSubsFormat = My.Settings.MergeSubs
+
+
+        If MergeSubsFormat = "[merge disabled]" Then
+            MergeSubs = False
+        Else
+            MergeSubs = True
+        End If
+
+
+        VideoFormat = My.Settings.VideoFormat
+
+
+
         RetryWithCachedFiles()
 
 
+
     End Sub
 
-    Private Sub BackgroundWorker1_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorker1.DoWork
-        Try
-            Dim fileEntries As String() = Directory.GetFiles(Application.StartupPath + "\AdBlock", "*.txt")
-            ' Process the list of .txt files found in the directory. '
-            Dim fileName As String
-            For Each fileName In fileEntries
-                If (System.IO.File.Exists(fileName)) Then
-                    BlockList.AddRange(System.IO.File.ReadAllLines(fileName).OrderBy(Function(x) Asc(x)).ToList)
-                End If
-            Next
-        Catch ex As Exception
-        End Try
-    End Sub
+
 
     Public Sub ListItemAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String, Optional Service As String = "CR") ', ByVal AudioLang As String)
 
-        With ListView1.Items.Add("0")
-            ItemConstructor(NameKomplett, NameP1, NameP2, Reso, HardSub, SoftSubs, ThumbnialURL, URL_DL, Pfad_DL, Service)
-        End With
+        'With ListView1.Items.Add("0")
+        'For i As Integer = 0 To 10
+        ItemConstructor(NameKomplett, NameP1, NameP2, Reso, HardSub, SoftSubs, ThumbnialURL, URL_DL, Pfad_DL, Service)
+
+        'Next
+        'End With
     End Sub
 
     Public Sub ItemConstructor(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal DisplayReso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String, ByVal Service As String)
         Dim Item As New CRD_List_Item
         Item.Visible = False
-        Item.Parent = ListView1
-        Item.Width = 838
-        Item.Height = 142
+
+
 #Region "Set Variables"
-        'Item.SetUsedMap(UsedMap)
-        'Item.Setffmpeg_command(ffmpeg_command)
-        Item.SetCache(KeepCache)
-        Item.SetMergeSubstoMP4(MergeSubs)
-        Item.SetDebug2(Debug2)
-#End Region
-        Dim r As Rectangle
-        Dim c As Integer = ListView1.Items.Count - 1
-        r = ListView1.Items(c).Bounds()
-        r.Width = 838
-        r.Height = 142
         Item.SetService(Service)
         Item.SetTolerance(ErrorTolerance)
         Item.SetTargetReso(Reso)
@@ -774,11 +607,27 @@ Public Class Main
         Item.SetThumbnailImage(ThumbnialURL)
         Item.SetLabelPercent("0%")
         Item.SetToolTip("Softsubs: " + SoftSubs)
-        'MsgBox(Item.GetTextBound.ToString)
-        ItemList.Add(Item)
-        Item.SetBounds(r.X, r.Y, r.Width, r.Height)
-        'Item.SetLocations(r.Y)
-        'MsgBox("test " + r.Y.ToString)
+        Item.SetCache(KeepCache)
+        Item.SetMergeSubstoMP4(MergeSubs)
+        Item.SetDebug2(Debug2)
+#End Region
+
+
+
+
+        Dim W As Integer = Panel1.Width
+        If Panel1.Controls.Count * 142 > Panel1.Height Then
+            W = Panel1.Width - SystemInformation.VerticalScrollBarWidth
+        End If
+
+
+
+        Item.SetBounds(0, 142 * Panel1.Controls.Count, W - 2, 142)
+
+
+        Item.Parent = Panel1
+        Panel1.Controls.Add(Item)
+
         Item.Visible = True
         Dim TempHybridMode As Boolean = HybridMode
         If CBool(InStr(URL_DL, ".mpd")) Then
@@ -795,43 +644,8 @@ Public Class Main
         Item.StartDownload(URL_DL, Pfad_DL, NameKomplett, TempHybridMode, TempFolder)
     End Sub
 
-#Region "Manga DL"
-    Public Sub MangaListItemAdd(ByVal NameP2 As String, ByVal ThumbnialURL As String, ByVal BaseURL As String, ByVal SiteList As List(Of String))
-        With ListView1.Items.Add("0")
-            MangaItemConstructor("proxer.me", NameP2, ThumbnialURL, BaseURL, SiteList)
-        End With
-    End Sub
 
-    Public Sub MangaItemConstructor(ByVal NameP1 As String, ByVal NameP2 As String, ByVal ThumbnialURL As String, ByVal BaseURL As String, ByVal SiteList As List(Of String))
-        Dim Item As New CRD_List_Item
-        Item.Visible = False
-        Item.Parent = ListView1
-        Item.Width = 838
-        Item.Height = 142
-#Region "Set Variables"
-        Item.SetDebug2(Debug2)
-#End Region
-        Dim r As Rectangle
-        Dim c As Integer = ListView1.Items.Count - 1
-        r = ListView1.Items(c).Bounds()
-        r.Width = 838
-        r.Height = 142
-        Item.SetLabelWebsite(NameP1)
-        Item.SetLabelAnimeTitel(NameP2)
-        Item.SetLabelResolution("Manga")
-        Item.SetLabelHardsub("Manga")
-        Item.SetThumbnailImage(ThumbnialURL)
-        Item.SetLabelPercent("0%")
-        'MsgBox(Item.GetTextBound.ToString)
-        ItemList.Add(Item)
-        Item.SetBounds(r.X, r.Y, r.Width, r.Height)
-        'Item.SetLocations(r.Y)
-        'MsgBox("test " + r.Y.ToString)
-        Item.Visible = True
-        Item.DownloadMangaPages(Pfad, BaseURL, SiteList, NameP2)
-    End Sub
 
-#End Region
 #Region "Season DL"
 
 
@@ -1024,7 +838,7 @@ Public Class Main
 
 
 
-        Dim exepath As String = "curl.exe"
+        Dim exepath As String = Path.Combine(Application.StartupPath, "lib", "curl.exe")
 
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
         Dim sr As StreamReader
@@ -1091,8 +905,7 @@ Public Class Main
     Public Function CurlPost(ByVal Url As String, ByVal Cookies As String, ByVal Auth As String, ByVal Post As String) As String
 
 
-
-        Dim exepath As String = "curl.exe"
+        Dim exepath As String = Path.Combine(Application.StartupPath, "lib", "curl.exe")
 
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
         Dim sr As StreamReader
@@ -1161,7 +974,7 @@ Public Class Main
 
 
 
-        Dim exepath As String = "curl.exe"
+        Dim exepath As String = Path.Combine(Application.StartupPath, "lib", "curl.exe")
 
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
         Dim sr As StreamReader
@@ -1268,15 +1081,17 @@ Public Class Main
                 For e As Integer = 0 To Integer.MaxValue
                     If Grapp_RDY = True Then
                         Try
-                            Dim ItemFinshedCount As Integer = 0
-                            For i2 As Integer = 0 To ListView1.Items.Count - 1
-                                If ItemList(i2).GetIsStatusFinished() = True Then
+                            Dim ItemFinshedCount As Integer = 0 '
+                            Dim Item As New List(Of CRD_List_Item)
+                            Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+                            For i2 As Integer = 0 To Item.Count - 1
+                                If Item(i2).GetIsStatusFinished() = True Then
                                     ItemFinshedCount = ItemFinshedCount + 1
                                 End If
                             Next
-                            RunningDownloads = ListView1.Items.Count - ItemFinshedCount
+                            RunningDownloads = Panel1.Controls.Count - ItemFinshedCount
                         Catch ex As Exception
-                            RunningDownloads = ListView1.Items.Count
+                            RunningDownloads = Panel1.Controls.Count
                         End Try
                         If RunningDownloads < MaxDL Then
                             Exit For
@@ -2211,9 +2026,13 @@ Public Class Main
     Private Sub Btn_Close_Click(sender As Object, e As EventArgs) Handles Btn_Close.Click
         If RunningDownloads > 0 Then
             If MessageBox.Show("Are you sure you want close the program and end all active downloads?", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                For i As Integer = 0 To ListView1.Items.Count - 1
-                    ItemList(i).KillRunningTask()
+
+                Dim Item As New List(Of CRD_List_Item)
+                Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+                For i As Integer = 0 To Item.Count - 1
+                    Item(i).KillRunningTask()
                 Next
+
                 RemoveTempFiles()
                 Me.Close()
             End If
@@ -2228,7 +2047,7 @@ Public Class Main
         Try
             Dim files() As String = System.IO.Directory.GetFiles(Application.StartupPath)
             For Each file As String In files
-                If CBool(InStr(file, "CRD-Temp-File-")) Then
+                If CBool(InStr(file, "CRD-Temp-File-")) Or CBool(InStr(file, "-mdata.txt")) Then
                     System.IO.File.Delete(file)
                 End If
             Next
@@ -2381,21 +2200,7 @@ Public Class Main
         rsRegEx = New System.Text.RegularExpressions.Regex("\s+")
         Return rsRegEx.Replace(input_text, " ").Trim()
     End Function
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        Try
-            For s As Integer = 0 To ListView1.Items.Count - 1
-                Dim r As Rectangle = ListView1.Items.Item(s).Bounds
-                ItemList(s).SetBounds(r.X, r.Y, ListView1.Width, r.Height)
-                ItemList(s).SetTheme(Manager.Theme)
-                If ItemList(s).GetToDispose() = True Then
-                    ItemList(s).DisposeItem(ItemList(s).GetToDispose())
-                    ItemList.RemoveAt(s)
-                    ListView1.Items.RemoveAt(s)
-                End If
-            Next
-        Catch ex As Exception
-        End Try
-    End Sub
+
 
 #Region "unused"
     'Public Shared Function GetPage(url As String) As String
@@ -2469,20 +2274,30 @@ Public Class Main
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         Try
             Dim ItemFinshedCount As Integer = 0
-            For i As Integer = 0 To ListView1.Items.Count - 1
-                If ItemList(i).GetIsStatusFinished() = True Then
+            Dim Item As New List(Of CRD_List_Item)
+            Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+
+            For i As Integer = 0 To Item.Count - 1
+                Debug.WriteLine(Item(i).GetIsStatusFinished().ToString)
+                If Item(i).GetIsStatusFinished() = True Then
                     ItemFinshedCount = ItemFinshedCount + 1
                 End If
             Next
-            RunningDownloads = ListView1.Items.Count - ItemFinshedCount
+
+            RunningDownloads = Item.Count - ItemFinshedCount
+
             If RunningDownloads > 0 Then
                 SetThreadExecutionState(EXECUTION_STATE.ES_SYSTEM_REQUIRED Or EXECUTION_STATE.ES_CONTINUOUS)
             Else
                 SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS)
             End If
         Catch ex As Exception
-            RunningDownloads = ListView1.Items.Count
+            Debug.WriteLine("Failed? : " + ex.ToString)
+
+            RunningDownloads = Panel1.Controls.Count
         End Try
+        'Debug.WriteLine("Running: " + RunningDownloads.ToString)
+
         'FontLabel2.Text = RunningDownloads.ToString
         'Debug.WriteLine("downloads.tick: " + RunningDownloads.ToString)
     End Sub
@@ -2631,14 +2446,16 @@ Public Class Main
                     If Funimation_Grapp_RDY = True Then
                         Try
                             Dim ItemFinshedCount As Integer = 0
-                            For i2 As Integer = 0 To ListView1.Items.Count - 1
-                                If ItemList(i2).GetIsStatusFinished() = True Then
+                            Dim Item As New List(Of CRD_List_Item)
+                            Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+                            For i2 As Integer = 0 To Item.Count - 1
+                                If Item(i2).GetIsStatusFinished() = True Then
                                     ItemFinshedCount = ItemFinshedCount + 1
                                 End If
                             Next
-                            RunningDownloads = ListView1.Items.Count - ItemFinshedCount
+                            RunningDownloads = Panel1.Controls.Count - ItemFinshedCount
                         Catch ex As Exception
-                            RunningDownloads = ListView1.Items.Count
+                            RunningDownloads = Panel1.Controls.Count
                         End Try
                         If RunningDownloads < MaxDL Then
                             Exit For
@@ -3493,12 +3310,15 @@ Public Class Main
 
 #End Region
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
-        ' PrepareHTML()
+
+        Dim Item As New List(Of CRD_List_Item)
+        Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+
         Dim GeckoHTML As String = My.Resources.htmlTop + vbNewLine + My.Resources.htmlTitlel.Replace("Placeholder", Me.Text.Replace("open the add window to continue", ""))
 
-        For i As Integer = 0 To ItemList.Count - 1
-            Dim Item As String = My.Resources.htmlvorThumbnail + ItemList.Item(i).GetThumbnailSource + My.Resources.htmlnachTumbnail + ItemList.Item(i).Label_website.Text + " <br> " + ItemList.Item(i).Label_Anime.Text + My.Resources.htmlvorAufloesung.Replace("0%", ItemList.Item(i).Label_percent.Text).Replace("width:0%", ItemList.Item(i).GetPercentValue.ToString + "%") + ItemList.Item(i).Label_Reso.Text + My.Resources.htmlvorSoftSubs + vbNewLine + My.Resources.htmlvorHardSubs + ItemList.Item(i).Label_Hardsub.Text + My.Resources.htmlnachHardSubs
-            GeckoHTML = GeckoHTML + vbNewLine + Item
+        For i As Integer = 0 To Item.Count - 1
+            Dim ItemString As String = My.Resources.htmlvorThumbnail + Item(i).GetThumbnailSource + My.Resources.htmlnachTumbnail + Item(i).Label_website.Text + " <br> " + Item(i).Label_Anime.Text + My.Resources.htmlvorAufloesung.Replace("0%", Item(i).Label_percent.Text).Replace("width:0%", Item(i).GetPercentValue.ToString + "%") + Item(i).Label_Reso.Text + My.Resources.htmlvorSoftSubs + vbNewLine + My.Resources.htmlvorHardSubs + Item(i).Label_Hardsub.Text + My.Resources.htmlnachHardSubs
+            GeckoHTML = GeckoHTML + vbNewLine + ItemString
         Next
 
 
@@ -3512,48 +3332,7 @@ Public Class Main
 
     End Sub
 
-    Private Sub PrepareHTML()
-        'Me.Invalidate()
-        'Try
-        Dim GeckoHTML As String = My.Resources.htmlTop + vbNewLine + My.Resources.htmlTitlel.Replace("Placeholder", Me.Text.Replace("open the add window to continue", ""))
-        Dim LiAdd As String = Nothing
-        For i As Integer = 0 To ItemList.Count - 1
-            'For i As Integer = 0 To liList.Count - 1
-            'MsgBox(liList.Item(i))
-            'MsgBox(liList(i))
-            '
-            Dim Item As String = My.Resources.htmlvorThumbnail + ItemList.Item(i).GetThumbnailSource + My.Resources.htmlnachTumbnail + ItemList.Item(i).Label_website.Text + " <br> " + ItemList.Item(i).Label_Anime.Text + My.Resources.htmlvorAufloesung.Replace("0%", ItemList.Item(i).GetPercentValue.ToString + "%") + ItemList.Item(i).Label_Reso.Text + My.Resources.htmlvorSoftSubs + vbNewLine + My.Resources.htmlvorHardSubs + ItemList.Item(i).Label_Hardsub.Text + My.Resources.htmlnachHardSubs
 
-            'If CBool(InStr(liList(i), "<!-- " + ItemList.Item(ii).GetNameAnime + "-->")) Then
-            '    If CBool(InStr(liList(i), "Finished - ")) Then
-            '        If LiAdd = Nothing Then
-            '            LiAdd = liList(i)
-            '        Else
-            '            LiAdd = LiAdd + vbNewLine + liList(i)
-            '        End If
-            '    Else
-            '        Dim ProzentBalken As String() = liList(i).Split(New String() {"width:"}, System.StringSplitOptions.RemoveEmptyEntries)
-            '        Dim ProzentBalken2 As String() = ProzentBalken(1).Split(New String() {"%" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            '        Dim ProzentZahl As String() = ProzentBalken2(1).Split(New String() {"'percenttext'>"}, System.StringSplitOptions.RemoveEmptyEntries)
-            '        Dim ProzentZahl2 As String() = ProzentZahl(1).Split(New String() {"%<"}, System.StringSplitOptions.RemoveEmptyEntries)
-            '        Dim ReAdd As String = ProzentBalken(0) + "width:" + ItemList.Item(i).GetPercentValue.ToString + "%" + Chr(34) + ProzentZahl(0) + "'percenttext'>" + ItemList.Item(ii).GetLabelPercent.ToString + "<" + ProzentZahl2(1)
-            '     
-            '        Exit For
-            '    End If
-            'End If
-            'Next
-        Next
-        Dim c As String = GeckoHTML + vbNewLine + LiAdd + vbNewLine + My.Resources.htmlEnd
-        Dim Balken As String = "balken.png"
-        c = c.Replace("balken1.png", Balken)
-        Dim CC As String = "cc.png"
-        c = c.Replace("cc1.png", CC)
-        HTML = c
-        'Catch ex As Exception
-        '    Debug.WriteLine(ex.ToString)
-        '    MsgBox(ex.ToString)
-        'End Try
-    End Sub
 
 
 #Region "process html"
@@ -3747,7 +3526,17 @@ Public Class Main
 
                     If CBool(InStr(ObjectJson, "curl:")) = True Then
                         Continue For
+                    ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
+
+                        If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                            Anime_Add.StatusLabel.Text = "Status: Failed, check CR login"
+                        End If
+                        Me.Text = "Status: Failed, check CR login"
+                        Debug.WriteLine("Status: Failed, check CR login")
+
+                        Continue For
                     End If
+
 
 
 
@@ -3782,6 +3571,18 @@ Public Class Main
                     Debug.WriteLine("Crunchyroll season found")
                     GetBetaSeasons(requesturl)
                     'CefSharp_Browser.WebBrowser1.LoadUrl(requesturl)
+                    b = True
+                    LoadedUrls.Clear()
+                    Me.Text = "Crunchyroll Downloader"
+                    Exit Sub
+                End If
+            ElseIf CBool(InStr(requesturl, "crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
+
+                If b = False Then
+
+                    If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                        Anime_Add.StatusLabel.Text = "Status: Error found invalid data."
+                    End If
                     b = True
                     LoadedUrls.Clear()
                     Me.Text = "Crunchyroll Downloader"
@@ -4366,7 +4167,7 @@ Public Class Main
 
     Private Sub Main_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         Btn_add.Image = My.Resources.main_add
-        ListView1.Select()
+        Panel1.Select()
     End Sub
 
     Private Sub TestDownloadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TestDownloadToolStripMenuItem.Click
@@ -4456,9 +4257,70 @@ Public Class Main
     End Sub
 
 
-    'Dim TN As String = "https://www.crunchyroll.com/imgsrv/display/thumbnail/320x180/catalog/crunchyroll/43a60a9d2877b11429d71c81db6d7636.jpeg"
-    'Dim cmd As String = "-i " + Chr(34) + "https://pl.crunchyroll.com/evs3/edc1a2ad856c347b4f86c0985ecc6d01/assets/efmaqxcadlmjn3o_2040239.mp4/index-v1-a1.m3u8?res=640x360&Expires=1666448510&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wbC5jcnVuY2h5cm9sbC5jb20vZXZzMy9lZGMxYTJhZDg1NmMzNDdiNGY4NmMwOTg1ZWNjNmQwMS9hc3NldHMvZWZtYXF4Y2FkbG1qbjNvXzIwNDAyMzkubXA0L2luZGV4LXYxLWExLm0zdTg~cmVzPTY0MHgzNjAiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE2NjY0NDg1MTB9fX1dfQ__&Signature=gd6oVG0w2pUa~l8~3JTecsU~0yyzkK1aaPQ~0WN32MeAuYfo49eYwz1C3AgeFAEeFyy8yMyW~3D4awwE7veS8BHptQzRlrcdFqw7VNDPUaA-3kzaqPFWOPlj2V~HkVv4m-soVs2HSs14i7Is8cWGQ6-0vQ6lFkxSxu2dg-eZdxcagkqSPwMsnjU~M17p1MhK0aQNWh2KyJUZ3zmeZNHrMQiAq4cBXM9aMp05XxI-li2ptCRMh63wYaYdmnvwOICDqgq5kwhLA-NNBavnjYo4HlEyfXwQWWEF2H~lQeAsZ90S6wF8~IrbP~DdMZc1Othh26Z0QWVX0BFEhPHmsoHqqw__&Key-Pair-Id=APKAJMWSQ5S7ZB3MF5VA" + Chr(34) + " -c copy "
-    'ListItemAdd("TestDL", "CR", "TestDL", "9987p", "DE", "None", TN, cmd, "E:\Test\RWBY\Testdl.mkv")
+    Private Sub ItemBoundsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ItemBoundsToolStripMenuItem.Click
+        Try
+
+            For s As Integer = 0 To Panel1.Controls.Count - 1
+                MsgBox(Panel1.Controls.Item(s).Bounds.ToString)
+            Next
+        Catch ex As Exception
+        End Try
+    End Sub
+
+
+
+
+    Private Sub PanelControlRemoved(sender As Object, e As ControlEventArgs) Handles Panel1.ControlAdded, Panel1.ControlRemoved
+
+        ItemBounds()
+    End Sub
+
+    Private Sub PanelScroll(sender As Object, e As ScrollEventArgs) Handles Panel1.Scroll
+        'MsgBox("Scroll")
+        ItemBounds()
+    End Sub
+
+    Sub ItemBounds()
+        Try
+            Panel1.AutoScrollPosition = New Point(0, 0)
+            Dim W As Integer = Panel1.Width
+            If Panel1.Controls.Count * 142 > Panel1.Height Then
+                W = Panel1.Width - SystemInformation.VerticalScrollBarWidth
+            End If
+
+            Dim Item As New List(Of CRD_List_Item)
+            Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+            For s As Integer = 0 To Item.Count - 1
+                Item(s).SetBounds(0, 142 * s, W - 2, 142)
+                If Debug2 = True Then
+                    Debug.WriteLine("Ist: " + Item(s).Location.Y.ToString)
+                    Debug.WriteLine("Soll: " + (142 * s).ToString)
+                End If
+            Next
+
+
+        Catch ex As Exception
+            Debug.WriteLine(ex.ToString)
+        End Try
+    End Sub
+
+    Private Sub DummyItemToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DummyItemToolStripMenuItem.Click
+        Dim TN As String = "https://invalid.com/"
+        Dim cmd As String = "-i " + Chr(34) + "https://invalid.com/" + Chr(34) + " -c copy "
+        ListItemAdd("TestDL", "CR", "TestDL", "9987p", "DE", "None", TN, cmd, "E:\Test\RWBY\Testdl.mkv")
+
+
+    End Sub
+
+
+
+
+
+
+
+
+
+
 
 
 

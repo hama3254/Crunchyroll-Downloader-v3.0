@@ -143,7 +143,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("AoD_Titel", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die [Script Info]
         '''; Template for error handling in the Crunchyrol Downloader by hama3254 https://github.com/hama3254/Crunchyroll-Downloader-v3.0
@@ -159,7 +159,8 @@ Namespace My.Resources
         '''Video Zoom: 6
         '''Video Position: 0
         '''
-        '''[V4+ Styles]        ''' [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''[V4+ Styles]
+        ''' [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Friend ReadOnly Property ass_template() As String
             Get

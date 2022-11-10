@@ -290,25 +290,17 @@ Public Class Einstellungen
         End If
 
 
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            ListViewAdd_True.Checked = CBool(Integer.Parse(rkg.GetValue("QueueMode").ToString))
-        Catch ex As Exception
-        End Try
-        Try
-            Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-            Dim ServerSetting As String = rkg.GetValue("ServerPort").ToString
 
-            If ServerSetting = "0" Then
-                http_support.Text = "add-on support disabled"
-            Else
-                http_support.Text = ServerSetting
-            End If
+        ListViewAdd_True.Checked = Main.UseQueue
 
-        Catch ex As Exception
+
+
+        If Main.StartServer = 0 Then
             http_support.Text = "add-on support disabled"
+        Else
+            http_support.Text = Main.StartServer.ToString
+        End If
 
-        End Try
 
         If Main.DefaultSubFunimation = "en" Then
             FunSubDef.SelectedItem = "English"
@@ -348,34 +340,28 @@ Public Class Einstellungen
     End Sub
 
     Private Sub Btn_Save_Click(sender As Object, e As EventArgs) Handles Btn_Save.Click
-        Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
-
         Main.LeadingZero = LeadingZeroDD.SelectedIndex
-        rk.SetValue("LeadingZero", LeadingZeroDD.SelectedIndex, RegistryValueKind.String)
+        My.Settings.LeadingZero = LeadingZeroDD.SelectedIndex
 
         Main.Funimation_Bitrate = Bitrate_Funi.SelectedIndex
-        rk.SetValue("Funimation_Bitrate", Bitrate_Funi.SelectedIndex, RegistryValueKind.String)
+        My.Settings.Funimation_Bitrate = Bitrate_Funi.SelectedIndex
 
 
         If http_support.Text = "add-on support disabled" Then
-            rk.SetValue("ServerPort", 0, RegistryValueKind.String)
+            My.Settings.ServerPort = 0
+
             Main.StartServer = CInt(False)
 
         Else
             Dim Port As Integer = 0
             Try
                 Port = CInt(http_support.Text)
-                rk.SetValue("ServerPort", Port, RegistryValueKind.String)
-                'Main.StartServer = False
-            Catch ex As Exception
-                'If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+                My.Settings.ServerPort = Port
 
-                'Else
-                '    AAuto.Checked = False
-                '    A360p.Checked = True
-                'End If
+            Catch ex As Exception
+
                 MsgBox("The add-on support Port can only be numbers!", MsgBoxStyle.Exclamation)
-                Exit Sub
+                'Exit Sub
             End Try
             If Main.StartServer = Port Then
             Else
@@ -389,223 +375,198 @@ Public Class Einstellungen
 
 
         Main.IgnoreSeason = CB_Ignore.SelectedIndex
-        rk.SetValue("IgnoreS1", CB_Ignore.SelectedIndex, RegistryValueKind.String)
+
+
+        My.Settings.IgnoreSeason = CB_Ignore.SelectedIndex
 
 
         If DubMode.Checked = True Then
             Main.DubMode = True
-            rk.SetValue("DubMode", 1, RegistryValueKind.String)
+            My.Settings.DubMode = True
         Else
             Main.DubMode = False
-            rk.SetValue("DubMode", 0, RegistryValueKind.String)
+            My.Settings.DubMode = False
+
         End If
 
         If ChB_Chapters.Checked = True Then
             Main.CR_Chapters = True
-            rk.SetValue("CR_Chapters", 1, RegistryValueKind.String)
+            My.Settings.CR_Chapters = True
         Else
             Main.CR_Chapters = False
-            rk.SetValue("CR_Chapters", 0, RegistryValueKind.String)
+            My.Settings.CR_Chapters = False
         End If
 
         If Chb_Ign_tls.Checked = True Then
             Main.Curl_insecure = True
-            rk.SetValue("Curl_insecure", 1, RegistryValueKind.String)
+            My.Settings.Curl_insecure = True
         Else
             Main.Curl_insecure = False
-            rk.SetValue("Curl_insecure", 0, RegistryValueKind.String)
+            My.Settings.Curl_insecure = False
         End If
 
         If KodiSupport.Checked = True Then
             Main.KodiNaming = True
-            rk.SetValue("KodiSupport", 1, RegistryValueKind.String)
+            My.Settings.KodiSupport = True
         Else
             Main.KodiNaming = False
-            rk.SetValue("KodiSupport", 0, RegistryValueKind.String)
+            My.Settings.KodiSupport = False
         End If
 
         '  MsgBox(Name_season.Text)
         If CBool(InStr(TextBox1.Text, "https://")) Then
             Main.Startseite = TextBox1.Text
-            rk.SetValue("Startseite", Main.Startseite, RegistryValueKind.String)
+            My.Settings.Startseite = Main.Startseite
         ElseIf TextBox1.Text = Nothing Then
             Main.Startseite = "https://www.crunchyroll.com/"
-            rk.SetValue("Startseite", Main.Startseite, RegistryValueKind.String)
+            My.Settings.Startseite = Main.Startseite
         Else
 
         End If
-        If DD_Season_Prefix.Text = "[default season prefix]" Then
-            Main.Season_Prefix = "[default season prefix]"
-            rk.SetValue("Prefix_S", "[default season prefix]", RegistryValueKind.String)
-        Else
+        If DD_Season_Prefix.Text IsNot "[default season prefix]" Then
             Main.Season_Prefix = DD_Season_Prefix.Text
-            rk.SetValue("Prefix_S", DD_Season_Prefix.Text, RegistryValueKind.String)
+            My.Settings.Prefix_S = Main.Season_Prefix
         End If
 
-        If DD_Episode_Prefix.Text = "[default episode prefix]" Then
-            Main.Episode_Prefix = "[default episode prefix]"
-            rk.SetValue("Prefix_E", "[default episode prefix]", RegistryValueKind.String)
-        Else
+        If DD_Episode_Prefix.Text IsNot "[default episode prefix]" Then
             Main.Episode_Prefix = DD_Episode_Prefix.Text
-            rk.SetValue("Prefix_E", DD_Episode_Prefix.Text, RegistryValueKind.String)
+            My.Settings.Prefix_E = Main.Episode_Prefix
         End If
 
         If A1080p.Checked Then
             Main.Reso = 1080
-            rk.SetValue("Resu", 1080, RegistryValueKind.String)
+            My.Settings.Reso = Main.Reso
         ElseIf A720p.Checked Then
             Main.Reso = 720
-            rk.SetValue("Resu", 720, RegistryValueKind.String)
+            My.Settings.Reso = Main.Reso
         ElseIf A360p.Checked Then
             Main.Reso = 360
-            rk.SetValue("Resu", 360, RegistryValueKind.String)
+            My.Settings.Reso = Main.Reso
         ElseIf A480p.Checked Then
             Main.Reso = 480
-            rk.SetValue("Resu", 480, RegistryValueKind.String)
+            My.Settings.Reso = Main.Reso
         ElseIf AAuto.Checked Then
             Main.Reso = 42
-            rk.SetValue("Resu", 42, RegistryValueKind.String)
+            My.Settings.Reso = Main.Reso
         End If
 
         If ComboBox1.SelectedItem.ToString = "English" Then
             Main.SubSprache = "enUS"
-            rk.SetValue("Sub", "enUS", RegistryValueKind.String)
-
+            My.Settings.Subtitle = Main.SubSprache
         ElseIf ComboBox1.SelectedItem.ToString = "Deutsch" Then
             Main.SubSprache = "deDE"
-            rk.SetValue("Sub", "deDE", RegistryValueKind.String)
-
+            My.Settings.Subtitle = Main.SubSprache
         ElseIf ComboBox1.SelectedItem.ToString = "Português (Brasil)" Then
             Main.SubSprache = "ptBR"
-            rk.SetValue("Sub", "ptBR", RegistryValueKind.String)
-
+            My.Settings.Subtitle = Main.SubSprache
         ElseIf ComboBox1.SelectedItem.ToString = "Español (LA)" Then
             Main.SubSprache = "esLA"
-            rk.SetValue("Sub", "esLA", RegistryValueKind.String)
-
+            My.Settings.Subtitle = Main.SubSprache
         ElseIf ComboBox1.SelectedItem.ToString = "Français (France)" Then
             Main.SubSprache = "frFR"
-            rk.SetValue("Sub", "frFR", RegistryValueKind.String)
-
+            My.Settings.Subtitle = Main.SubSprache
         ElseIf ComboBox1.SelectedItem.ToString = "العربية (Arabic)" Then
             Main.SubSprache = "arME"
-            rk.SetValue("Sub", "arME", RegistryValueKind.String)
-
+            My.Settings.Subtitle = Main.SubSprache
         ElseIf ComboBox1.SelectedItem.ToString = "Русский (Russian)" Then
             Main.SubSprache = "ruRU"
-            rk.SetValue("Sub", "ruRU", RegistryValueKind.String)
-
+            My.Settings.Subtitle = Main.SubSprache
         ElseIf ComboBox1.SelectedItem.ToString = "Italiano (Italian)" Then
             Main.SubSprache = "itIT"
-            rk.SetValue("Sub", "itIT", RegistryValueKind.String)
-
+            My.Settings.Subtitle = Main.SubSprache
         ElseIf ComboBox1.SelectedItem.ToString = "Español (España)" Then
             Main.SubSprache = "esES"
-            rk.SetValue("Sub", "esES", RegistryValueKind.String)
-
+            My.Settings.Subtitle = Main.SubSprache
         ElseIf ComboBox1.SelectedItem.ToString = Main.CB_SuB_Nothing Then
             Main.SubSprache = "None"
-            rk.SetValue("Sub", "None", RegistryValueKind.String)
-
+            My.Settings.Subtitle = Main.SubSprache
         End If
 
         If CR_SoftSubDefault.SelectedItem.ToString = "English" Then
             Main.DefaultSubCR = "enUS"
-            rk.SetValue("DefaultSubCR", "enUS", RegistryValueKind.String)
-
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
         ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Deutsch" Then
             Main.DefaultSubCR = "deDE"
-            rk.SetValue("DefaultSubCR", "deDE", RegistryValueKind.String)
-
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
         ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Português (Brasil)" Then
             Main.DefaultSubCR = "ptBR"
-            rk.SetValue("DefaultSubCR", "ptBR", RegistryValueKind.String)
-
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
         ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (LA)" Then
             Main.DefaultSubCR = "esLA"
-            rk.SetValue("DefaultSubCR", "esLA", RegistryValueKind.String)
-
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
         ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Français (France)" Then
             Main.DefaultSubCR = "frFR"
-            rk.SetValue("DefaultSubCR", "frFR", RegistryValueKind.String)
-
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
         ElseIf CR_SoftSubDefault.SelectedItem.ToString = "العربية (Arabic)" Then
             Main.DefaultSubCR = "arME"
-            rk.SetValue("DefaultSubCR", "arME", RegistryValueKind.String)
-
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
         ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Русский (Russian)" Then
             Main.DefaultSubCR = "ruRU"
-            rk.SetValue("DefaultSubCR", "ruRU", RegistryValueKind.String)
-
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
         ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Italiano (Italian)" Then
             Main.DefaultSubCR = "itIT"
-            rk.SetValue("DefaultSubCR", "itIT", RegistryValueKind.String)
-
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
         ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (España)" Then
             Main.DefaultSubCR = "esES"
-            rk.SetValue("DefaultSubCR", "esES", RegistryValueKind.String)
-
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
         ElseIf CR_SoftSubDefault.SelectedItem.ToString = "[Disabled]" Then
             Main.DefaultSubCR = "None"
-            rk.SetValue("DefaultSubCR", "Disabled", RegistryValueKind.String)
-
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
         End If
 
         If CR_Filename.Text = "[episode number]" Then
             Main.CR_NameMethode = 0
-            rk.SetValue("CR_NameMethode", 0, RegistryValueKind.String)
+            My.Settings.CR_NameMethode = Main.CR_NameMethode
         ElseIf CR_Filename.Text = "[episode name]" Then
             Main.CR_NameMethode = 1
-            rk.SetValue("CR_NameMethode", 1, RegistryValueKind.String)
+            My.Settings.CR_NameMethode = Main.CR_NameMethode
         ElseIf CR_Filename.Text = "[episode number] [episode name]" Then
             Main.CR_NameMethode = 2
-            rk.SetValue("CR_NameMethode", 2, RegistryValueKind.String)
+            My.Settings.CR_NameMethode = Main.CR_NameMethode
         ElseIf CR_Filename.Text = "[episode name] [episode number]" Then
             Main.CR_NameMethode = 3
-            rk.SetValue("CR_NameMethode", 3, RegistryValueKind.String)
+            My.Settings.CR_NameMethode = Main.CR_NameMethode
         End If
 
         If CB_Format.Text = "MKV" Then
             Main.VideoFormat = ".mkv"
-            rk.SetValue("VideoFormat", ".mkv", RegistryValueKind.String)
+            My.Settings.VideoFormat = Main.VideoFormat
         ElseIf CB_Format.Text = "AAC (Audio only)" Then
             Main.VideoFormat = ".aac"
-            rk.SetValue("VideoFormat", ".aac", RegistryValueKind.String)
+            My.Settings.VideoFormat = Main.VideoFormat
         Else
             Main.VideoFormat = ".mp4"
-            rk.SetValue("VideoFormat", ".mp4", RegistryValueKind.String)
+            My.Settings.VideoFormat = Main.VideoFormat
         End If
 
         If CB_Merge.SelectedIndex > 0 Then
             Main.MergeSubs = True
             Main.MergeSubsFormat = CB_Merge.SelectedItem.ToString
-            rk.SetValue("MergeSubs", CB_Merge.SelectedItem.ToString, RegistryValueKind.String)
+            My.Settings.MergeSubs = Main.MergeSubsFormat
+
         Else
             Main.MergeSubsFormat = CB_Merge.SelectedItem.ToString
             Main.MergeSubs = False
-            rk.SetValue("MergeSubs", "[merge disabled]", RegistryValueKind.String)
+            My.Settings.MergeSubs = Main.MergeSubsFormat
         End If
 
 
         If DD_DLMode.SelectedIndex = 2 Then
             Main.HybridMode = True
             Main.KeepCache = True
-            rk.SetValue("HybridMode", "1", RegistryValueKind.String)
+            My.Settings.HybridMode = Main.HybridMode
         ElseIf DD_DLMode.SelectedIndex = 1 Then
             Main.HybridMode = True
             Main.KeepCache = False
-            rk.SetValue("HybridMode", "1", RegistryValueKind.String)
+            My.Settings.HybridMode = Main.HybridMode
         Else
             Main.HybridMode = False
             Main.KeepCache = False
-            rk.SetValue("HybridMode", "0", RegistryValueKind.String)
+            My.Settings.HybridMode = Main.HybridMode
         End If
 
-        If Main.KeepCache = True Then
-            rk.SetValue("Keep_Cache", 1, RegistryValueKind.String)
-        Else
-            rk.SetValue("Keep_Cache", 0, RegistryValueKind.String)
-        End If
+        My.Settings.Keep_Cache = Main.KeepCache
+
 
 #Region "funimation"
 
@@ -614,43 +575,40 @@ Public Class Einstellungen
 
         Main.DubFunimation = Fun_Dub_Over.SelectedItem.ToString
 
-        rk.SetValue("FunimationDub", Fun_Dub_Over.SelectedItem.ToString, RegistryValueKind.String)
+
+        My.Settings.FunimationDub = Main.DubFunimation
 
 
-        If CB_Fun_HardSubs.SelectedItem.ToString = "Disabled" Then
-            Main.HardSubFunimation = "Disabled"
-            rk.SetValue("FunimationHardsub", "Disabled", RegistryValueKind.String)
+        'If CB_Fun_HardSubs.SelectedItem.ToString = "Disabled" Then
+        '    Main.HardSubFunimation = "Disabled"
+        '    rk.SetValue("FunimationHardsub", "Disabled", RegistryValueKind.String)
 
-        ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "English" Then
-            Main.HardSubFunimation = "en"
-            rk.SetValue("FunimationHardsub", "en", RegistryValueKind.String)
+        'ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "English" Then
+        '    Main.HardSubFunimation = "en"
+        '    rk.SetValue("FunimationHardsub", "en", RegistryValueKind.String)
 
-        ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "Português (Brasil)" Then
-            Main.HardSubFunimation = "pt"
-            rk.SetValue("FunimationHardsub", "pt", RegistryValueKind.String)
+        'ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "Português (Brasil)" Then
+        '    Main.HardSubFunimation = "pt"
+        '    rk.SetValue("FunimationHardsub", "pt", RegistryValueKind.String)
 
-        ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "Español (LA)" Then
-            Main.HardSubFunimation = "es"
-            rk.SetValue("FunimationHardsub", "es", RegistryValueKind.String)
+        'ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "Español (LA)" Then
+        '    Main.HardSubFunimation = "es"
+        '    rk.SetValue("FunimationHardsub", "es", RegistryValueKind.String)
 
-        End If
+        'End If
 
         If FunSubDef.SelectedItem.ToString = "[Disabled]" Then
             Main.DefaultSubFunimation = "Disabled"
-            rk.SetValue("DefaultSubFunimation", "Disabled", RegistryValueKind.String)
-
+            My.Settings.DefaultSubFunimation = Main.DefaultSubFunimation
         ElseIf FunSubDef.SelectedItem.ToString = "English" Then
             Main.DefaultSubFunimation = "en"
-            rk.SetValue("DefaultSubFunimation", "en", RegistryValueKind.String)
-
+            My.Settings.DefaultSubFunimation = Main.DefaultSubFunimation
         ElseIf FunSubDef.SelectedItem.ToString = "Português (Brasil)" Then
             Main.DefaultSubFunimation = "pt"
-            rk.SetValue("DefaultSubFunimation", "pt", RegistryValueKind.String)
-
+            My.Settings.DefaultSubFunimation = Main.DefaultSubFunimation
         ElseIf FunSubDef.SelectedItem.ToString = "Español (LA)" Then
             Main.DefaultSubFunimation = "es"
-            rk.SetValue("DefaultSubFunimation", "es", RegistryValueKind.String)
-
+            My.Settings.DefaultSubFunimation = Main.DefaultSubFunimation
         End If
 
         Main.SubFunimation.Clear()
@@ -674,17 +632,17 @@ Public Class Einstellungen
 
         If CB_srt.Checked = True Then
             Main.Funimation_srt = True
-            rk.SetValue("Funimation_srt", "1", RegistryValueKind.String)
+            My.Settings.Funimation_srt = True
         Else
             Main.Funimation_srt = False
-            rk.SetValue("Funimation_srt", "0", RegistryValueKind.String)
+            My.Settings.Funimation_srt = False
         End If
         If CB_vtt.Checked = True Then
             Main.Funimation_vtt = True
-            rk.SetValue("Funimation_vtt", "1", RegistryValueKind.String)
+            My.Settings.Funimation_vtt = True
         Else
             Main.Funimation_vtt = False
-            rk.SetValue("Funimation_vtt", "0", RegistryValueKind.String)
+            My.Settings.Funimation_vtt = False
         End If
 
 
@@ -697,9 +655,10 @@ Public Class Einstellungen
             End If
         Next
         If FunimationSaveString = Nothing Then
-            FunimationSaveString = "none"
+            FunimationSaveString = "None"
         End If
-        rk.SetValue("Fun_Sub", FunimationSaveString, RegistryValueKind.String)
+        My.Settings.Fun_Sub = FunimationSaveString
+
 #End Region
 
 
@@ -717,8 +676,10 @@ Public Class Einstellungen
             ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP2.Text + " " + FFMPEG_CommandP3.Text + " " + FFMPEG_CommandP4.Text
         End If
 
-        rk.SetValue("ffmpeg_command", ffpmeg_cmd, RegistryValueKind.String)
+
         Main.ffmpeg_command = ffpmeg_cmd
+        My.Settings.ffmpeg_command = Main.ffmpeg_command
+
 
         If CBool(InStr(FFMPEG_CommandP1.Text, "nvenc")) Then
             If NumericUpDown1.Value > 2 Then
@@ -730,18 +691,20 @@ Public Class Einstellungen
                 NumericUpDown1.Value = 1
             End If
         End If
-        rk.SetValue("SL_DL", NumericUpDown1.Value, RegistryValueKind.String)
-        Main.MaxDL = CInt(NumericUpDown1.Value)
 
-        rk.SetValue("ErrorTolerance", NumericUpDown2.Value, RegistryValueKind.String)
+        Main.MaxDL = CInt(NumericUpDown1.Value)
+        My.Settings.SL_DL = Main.MaxDL
+
+
         Main.ErrorTolerance = CInt(NumericUpDown2.Value)
+        My.Settings.ErrorTolerance = Main.ErrorTolerance
 
         If ListViewAdd_True.Checked = True Then
-            rk.SetValue("QueueMode", 1, RegistryValueKind.String)
             Main.UseQueue = True
+            My.Settings.QueueMode = Main.UseQueue
         ElseIf ListViewAdd_True.Checked = False Then
-            rk.SetValue("QueueMode", 0, RegistryValueKind.String)
             Main.UseQueue = False
+            My.Settings.QueueMode = Main.UseQueue
         End If
 
 
@@ -786,33 +749,32 @@ Public Class Einstellungen
             End If
         Next
         If SaveString = Nothing Then
-            SaveString = "none"
+            SaveString = "None"
         End If
-        rk.SetValue("AddedSubs", SaveString, RegistryValueKind.String)
+        My.Settings.AddedSubs = SaveString
+
 #End Region
 
         If CB_SoftSubSettings.SelectedIndex = 0 Then
             Main.IncludeLangName = False
-            rk.SetValue("IncludeLangName", "0", RegistryValueKind.String)
-
+            My.Settings.IncludeLangName = Main.IncludeLangName
         Else
             Main.IncludeLangName = True
-            rk.SetValue("IncludeLangName", "1", RegistryValueKind.String)
-
+            My.Settings.IncludeLangName = Main.IncludeLangName
         End If
 
         If LangNameType_DD.SelectedIndex = 1 Then
             Main.LangNameType = 1
-            rk.SetValue("LangNameType", "1", RegistryValueKind.String)
+            My.Settings.LangNameType = Main.LangNameType
         ElseIf LangNameType_DD.SelectedIndex = 2 Then
             Main.LangNameType = 2
-            rk.SetValue("LangNameType", "2", RegistryValueKind.String)
+            My.Settings.LangNameType = Main.LangNameType
         Else
             Main.LangNameType = 0
-            rk.SetValue("LangNameType", "0", RegistryValueKind.String)
+            My.Settings.LangNameType = Main.LangNameType
         End If
 
-
+        My.Settings.Save()
 
         Me.Close()
     End Sub
@@ -999,10 +961,9 @@ Public Class Einstellungen
 
 
     Private Sub DarkMode_CheckedChanged(sender As Object, e As EventArgs) Handles DarkMode.CheckedChanged
-        Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
 
         If DarkMode.Checked = True Then
-            rk.SetValue("Dark_Mode", 1, RegistryValueKind.String)
+            My.Settings.DarkModeValue = True
             Manager.Theme = MetroThemeStyle.Dark
             GroupBoxColor(Color.FromArgb(150, 150, 150))
             NumericUpDown1.BackColor = Color.FromArgb(17, 17, 17)
@@ -1012,7 +973,8 @@ Public Class Einstellungen
             pictureBox1.Image = Main.CloseImg
         Else
             Main.DarkModeValue = False
-            rk.SetValue("Dark_Mode", 0, RegistryValueKind.String)
+            My.Settings.DarkModeValue = False
+
             Manager.Theme = MetroThemeStyle.Light
             Main.LightMode()
             GroupBoxColor(Color.FromArgb(0, 0, 0))
@@ -1289,8 +1251,7 @@ Public Class Einstellungen
 
             Main.ProfileFolder = FolderBrowserDialog1.SelectedPath
             ProfileTextBox.Text = FolderBrowserDialog1.SelectedPath
-            Dim rk0 As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
-            rk0.SetValue("ProfilFolder", Main.ProfileFolder, RegistryValueKind.String)
+            My.Settings.Pfad = Main.ProfileFolder
 
 
         End If
@@ -1314,13 +1275,11 @@ Public Class Einstellungen
 
             Main.TempFolder = FolderBrowserDialog1.SelectedPath
             TempTB.Text = FolderBrowserDialog1.SelectedPath
-            Dim rk0 As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
-            rk0.SetValue("TempFolder", Main.TempFolder, RegistryValueKind.String)
-
-
+            My.Settings.TempFolder = Main.TempFolder
         End If
 
     End Sub
+
 
 
 

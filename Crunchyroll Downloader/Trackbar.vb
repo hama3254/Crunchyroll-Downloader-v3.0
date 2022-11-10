@@ -21,10 +21,9 @@ Public Class Trackbar
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Dim rk As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
 
         Main.HybridThread = TrackBar1.Value
-        rk.SetValue("HybridThread", TrackBar1.Value, RegistryValueKind.String)
+        My.Settings.HybridThread = Main.HybridThread
 
         Me.Close()
     End Sub

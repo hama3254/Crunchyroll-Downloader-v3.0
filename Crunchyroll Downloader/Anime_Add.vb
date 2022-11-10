@@ -10,6 +10,7 @@ Imports MetroFramework.Components
 Imports CefSharp
 Imports System.Text
 Imports System.Runtime.InteropServices.ComTypes
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Status
 
 Public Class Anime_Add
     Public Mass_DL_Cancel As Boolean = False
@@ -131,6 +132,8 @@ Public Class Anime_Add
             'MsgBox(Cookies)
             Main.CR_Cookies = " -H " + Chr(34) + Main.CR_Cookies + Chr(34)
 
+
+
 #End Region
             Dim Auth As String = " -H " + Chr(34) + "Authorization: " + Main.CrBetaBasic + Chr(34)
             Dim Post As String = " -d " + Chr(34) + "grant_type=etp_rt_cookie" + Chr(34) + " -X POST"
@@ -139,7 +142,21 @@ Public Class Anime_Add
 
             Dim v1Token As String = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Main.CR_Cookies, Auth, Post)
 
-            If CBool(InStr(v1Token, "curl:")) = True Then
+            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
+
+                v1Token = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Main.CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"))
+
+            End If
+
+
+            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
+                Me.StatusLabel.Text = "Status: Failed - bad request, check CR login"
+                Main.Text = "Status: Failed - bad request, check CR login"
+                Debug.WriteLine("Status: Failed - bad request, check CR login")
+                Main.b = True
+                Exit Sub
+
+            ElseIf CBool(InStr(v1Token, "curl:")) = True Then
                 v1Token = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Main.CR_Cookies, Auth, Post)
             End If
 
@@ -219,6 +236,7 @@ Public Class Anime_Add
             Dim ObjectJson As String
             Try
                 ObjectJson = Main.Curl(ObjectsUrl)
+                'MsgBox(ObjectJson)
 
                 If CBool(InStr(ObjectJson, "curl:")) = True Then
                     ObjectJson = Main.Curl(ObjectsUrl)
@@ -226,6 +244,12 @@ Public Class Anime_Add
 
                 If CBool(InStr(ObjectJson, "curl:")) = True Then
                     CefSharp_Browser.WebBrowser1.Load(Url)
+                    Exit Sub
+                ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
+
+                    StatusLabel.Text = "Status: Failed - no video, check CR login"
+                    Main.Text = "Status: Failed - no video, check CR login"
+                    Debug.WriteLine("Status: Failed - no video, check CR login")
                     Exit Sub
                 End If
 
@@ -491,8 +515,8 @@ Public Class Anime_Add
 
                             Main.b = False
                             Debug.WriteLine("Start loading: " + Date.Now.ToString)
-                            LoadBrowser(textBox1.Text)
                             StatusLabel.Text = "Status: loading ...."
+                            LoadBrowser(textBox1.Text)
                         Else
                             Debug.WriteLine("Not Ready!")
                         End If
@@ -836,15 +860,20 @@ Public Class Anime_Add
         End If
         Try
             Dim ItemFinshedCount As Integer = 0
-            For i As Integer = 0 To Main.ListView1.Items.Count - 1
-                If Main.ItemList(i).GetIsStatusFinished() = True Then
+            Dim Item As New List(Of CRD_List_Item)
+            Item.AddRange(Main.Panel1.Controls.OfType(Of CRD_List_Item))
+
+            For i As Integer = 0 To Item.Count - 1
+                Debug.WriteLine(Item(i).GetIsStatusFinished().ToString)
+                If Item(i).GetIsStatusFinished() = True Then
                     ItemFinshedCount = ItemFinshedCount + 1
                 End If
             Next
-            Main.RunningDownloads = Main.ListView1.Items.Count - ItemFinshedCount
+
+            Main.RunningDownloads = Item.Count - ItemFinshedCount
 
         Catch ex As Exception
-            Main.RunningDownloads = Main.ListView1.Items.Count
+            Main.RunningDownloads = Main.Panel1.Controls.Count
         End Try
 
         If Main.RunningDownloads < Main.MaxDL Then
@@ -882,10 +911,10 @@ Public Class Anime_Add
                             Main.WebbrowserURL = UriUsed
                             ListBox1.Items.Remove(ListBox1.Items(0))
                             Main.b = False
-                            LoadBrowser(UriUsed)
+
                             StatusLabel.Text = "Status: loading in browser"
                             Main.Text = "Status: loading in browser"
-
+                            LoadBrowser(UriUsed)
                             Main.Invalidate()
                         End If
 
@@ -985,8 +1014,11 @@ Public Class Anime_Add
         If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
             ComboBox2.Items.Clear()
             Main.Pfad = FolderBrowserDialog1.SelectedPath
-            Dim rk0 As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
-            rk0.SetValue("Ordner", Main.Pfad, RegistryValueKind.String)
+            'Dim rk0 As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\CRDownloader")
+            'rk0.SetValue("Ordner", Main.Pfad, RegistryValueKind.String)
+            My.Settings.Pfad = Main.Pfad
+            My.Settings.Save()
+
 
             ComboBox2.Items.Add(SubFolder_automatic)
             ComboBox2.Items.Add(SubFolder_automatic2)

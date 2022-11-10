@@ -58,6 +58,16 @@ Module Subfolder
 
     End Sub
 
+    Public Function ReadText(ByVal Pfad As String) As String
+
+        If Pfad.Length > 255 Then
+            Pfad = "\\?\" + Pfad
+        End If
+
+        Return File.ReadAllText(Pfad, Encoding.UTF8)
+
+    End Function
+
     Public Function GeräteID() As String
         Dim rnd As New Random
         Dim possible As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -102,6 +112,7 @@ Module Subfolder
                                                      End Sub))
             Catch ex As Exception
             End Try
+            'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", msg, True)
         End Sub
 
         Public Overrides Sub WriteLine(ByVal msg As String)

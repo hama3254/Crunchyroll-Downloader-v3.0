@@ -31,7 +31,6 @@ Public Class CRD_List_Item
     Dim TempFolder As String = Nothing
     Dim DownloadPfad As String = Nothing
     Dim ThumbnailSource As String = Nothing
-    Dim ToDispose As Boolean = False
     Dim Failed As Boolean = False
     Dim FailedCount As Integer = 0
     Dim HistoryDL_URL As String
@@ -57,20 +56,15 @@ Public Class CRD_List_Item
     Dim FailedSegments As New List(Of FailedSegemtsWithURL)
     Dim LogText As New List(Of String)
 
+    Private Event UpdateUI(ByVal Percent As Integer, ByVal di As DirectoryInfo, ByVal Idle As Integer)
 
     Dim PauseTime As Integer = 0
     Dim Threads As Integer = Main.HybridThread 'CInt(Environment.ProcessorCount / 2 - 1)
 
-#Region "Remove from list"
-    Public Sub DisposeItem(ByVal Dispose As Boolean)
-        If Dispose = True Then
-            Me.Dispose()
-        End If
-    End Sub
-    Public Function GetToDispose() As Boolean
-        Return ToDispose
-    End Function
-#End Region
+
+
+
+
 #Region "UI"
 
     Private Sub CRD_List_Item_Resize(sender As Object, e As EventArgs) Handles Me.Resize
@@ -419,6 +413,9 @@ Public Class CRD_List_Item
         If Threads < 2 Then
             Threads = 2
         End If
+
+
+
         'bt_del.SetBounds(775, 10, 35, 29)
         'bt_pause.SetBounds(740, 15, 25, 20)
         'PB_Thumbnail.SetBounds(11, 20, 168, 95)
@@ -437,9 +434,10 @@ Public Class CRD_List_Item
         'MetroStyleManager1.Theme = Main.Manager.Theme
     End Sub
 
-    Public Function GetTextBound() As Integer
+    Public Function GetTextBound() As Rectangle
         'Return Label_website.Location.Y
-        Return bt_del.Size.Height
+        'Return bt_del.Size.Height
+        Return Me.Bounds()
     End Function
 
 
@@ -448,12 +446,30 @@ Public Class CRD_List_Item
     Public Sub StartDownload(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String, ByVal DownloadHybridMode As Boolean, ByVal TempFolder As String)
         'MsgBox(DL_URL)
 
+
+
         Me.StyleManager = MetroStyleManager1
         Me.TempFolder = TempFolder
         DownloadPfad = DL_Pfad
         HistoryDL_URL = DL_URL
         HistoryDL_Pfad = DL_Pfad
         HistoryFilename = Filename
+
+        'If (Me.InvokeRequired) Then
+        '    Me.Invoke(Sub()
+
+
+        '                  'MsgBox(True.ToString)
+        '                  Label_percent.Text = "selected subtiles have been dowloaded"
+        '                  Canceld = True
+        '              End Sub)
+        'Else
+        '    ' MsgBox(False.ToString)
+        '    Label_percent.Text = "selected subtiles have been dowloaded"
+        '    Canceld = True
+        'End If
+        'Exit Sub
+
         If CBool(InStr(DL_URL, "-i [Subtitles only]")) Then
             Me.Invoke(New Action(Function() As Object
 
@@ -481,7 +497,8 @@ Public Class CRD_List_Item
 
 
 
-    Private Function TS_StatusAsync(ByVal prozent As Integer, ByVal di As IO.DirectoryInfo, ByVal pausetime As Integer) As Object
+    Private Sub TS_StatusAsync(ByVal prozent As Integer, ByVal di As IO.DirectoryInfo, ByVal pausetime As Integer) Handles Me.UpdateUI ' As Object
+
         Dim FinishedSize As Double = 0
         Dim AproxFinalSize As Double = 0
 
@@ -523,6 +540,8 @@ Public Class CRD_List_Item
             ElseIf prozent < 0 Then
                 prozent = 0
             End If
+
+
             Try
                 Me.Invoke(New Action(Function() As Object
 
@@ -535,9 +554,9 @@ Public Class CRD_List_Item
             End Try
         End If
 
-        Return Nothing
+        'Return Nothing
 
-    End Function
+    End Sub
 
 #Region "ThreadChecker"
 
@@ -689,8 +708,9 @@ Public Class CRD_List_Item
                 Count = Count + 1
                 Dim FragmentsFinised = Count * 100 / FragmentsInt
 
-                Dim Update = New Thread(Sub() Me.TS_StatusAsync(CInt(FragmentsFinised), di, PauseTime))
-                Update.Start()
+                'Dim Update = New Thread(Sub() Me.TS_StatusAsync(CInt(FragmentsFinised), di, PauseTime))
+                'Update.Start()
+                RaiseEvent UpdateUI(CInt(FragmentsFinised), di, PauseTime)
 
             ElseIf zeile.Contains("URI=" + Chr(34)) Then
                 Dim Zeile2() As String = zeile.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -895,8 +915,9 @@ Public Class CRD_List_Item
 
                 m3u8FileContent = m3u8FileContent + File + vbLf
                 Dim FragmentsFinised = Count * 100 / FragmentsInt
-                Dim Update = New Thread(Sub() Me.TS_StatusAsync(CInt(FragmentsFinised), di, PauseTime))
-                Update.Start()
+                'Dim Update = New Thread(Sub() Me.TS_StatusAsync(CInt(FragmentsFinised), di, PauseTime))
+                'Update.Start()
+                RaiseEvent UpdateUI(CInt(FragmentsFinised), di, PauseTime)
                 Count = Count + 1
 
             ElseIf textLenght(i) = "#EXT-X-PLAYLIST-TYPE:VOD" Then
@@ -1027,15 +1048,42 @@ Public Class CRD_List_Item
 
     Public Function DownloadHybrid(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
         LogText.Add(Date.Now.ToString + " " + DL_URL)
+
         Dim Folder As String = GeräteID()
         Dim DL_URL_old As String = DL_URL
         Dim PauseTime As Integer = 0
         Dim Pfad2 As String = TempFolder + "\" + Folder + "\" 'Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + Folder + "\"
+
+        If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
+            ' Nein! Jetzt erstellen...
+            Try
+                Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
+            Catch ex As Exception
+                Debug.WriteLine("folder issue")
+                Return "Error"
+                Exit Function
+            End Try
+        End If
+
+
         If CBool(InStr(DL_Pfad, "CRD-Temp-File-")) Then
             Pfad2 = DL_Pfad.Replace(Chr(34), "") + "\"
             Dim DL_PfadSplit() As String = DL_Pfad.Split(New String() {"CRD-Temp-File-"}, System.StringSplitOptions.RemoveEmptyEntries)
             DL_Pfad = Chr(34) + DL_PfadSplit(0) + Filename + Chr(34)
         End If
+
+        If CBool(InStr(DL_URL, "-mdata.txt" + Chr(34))) Then
+            Dim DL_URLSplit() As String = DL_URL.Split(New String() {"-mdata.txt" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim DL_URLSplit1() As String = DL_URLSplit(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim mdataFile As String = DL_URLSplit1(DL_URLSplit1.Count - 1) + "-mdata.txt"
+            Debug.WriteLine(mdataFile)
+            Dim mdata As String = ReadText(mdataFile)
+            Dim newMdata As String = Path.Combine(Pfad2, "mdata.txt")
+            Debug.WriteLine(newMdata)
+            WriteText(newMdata, mdata)
+            DL_URL = DL_URL.Replace(mdataFile, newMdata)
+        End If
+
         Dim di As New IO.DirectoryInfo(Pfad2)
         Dim m3u8_url As String() = DL_URL.Split(New [Char]() {Chr(34)})
         Dim m3u8FFmpeg As String = Nothing
@@ -1148,9 +1196,9 @@ Public Class CRD_List_Item
         Next
 
 
-        TS_StatusAsync(100, di, PauseTime)
+        'TS_StatusAsync(100, di, PauseTime)
 
-
+        RaiseEvent UpdateUI(100, di, PauseTime)
 
         If CBool(InStr(DL_URL, " -headers " + My.Resources.ffmpeg_user_agend)) = True And CBool(InStr(DL_URL, "https:\\")) = False Then
             DL_URL = DL_URL.Replace(" -headers " + My.Resources.ffmpeg_user_agend, "")
@@ -1212,8 +1260,10 @@ Public Class CRD_List_Item
         startinfo.UseShellExecute = False
         startinfo.WindowStyle = ProcessWindowStyle.Hidden
         startinfo.RedirectStandardError = True
-        startinfo.RedirectStandardInput = True
+        'startinfo.RedirectStandardInput = True
         startinfo.RedirectStandardOutput = True
+        startinfo.StandardErrorEncoding = Encoding.UTF8
+        startinfo.StandardOutputEncoding = Encoding.UTF8
         startinfo.CreateNoWindow = True
         proc = New Process
         proc.EnableRaisingEvents = True
@@ -1417,7 +1467,7 @@ Public Class CRD_List_Item
             If MessageBox.Show("The Download is not running anymore, press ok to remove it from the list.", "Remove from list!", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
                 Exit Sub
             End If
-            ToDispose = True
+            Me.Dispose()
         ElseIf HybridRunning = True Then
             If MessageBox.Show("Are you sure you want to cancel the Download?", "Cancel Download!", MessageBoxButtons.YesNo) = DialogResult.No Then
                 Exit Sub
@@ -1430,7 +1480,8 @@ Public Class CRD_List_Item
                 If MessageBox.Show("The Download is not running anymore, press ok to remove it from the list.", "Remove from list!", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
                     Exit Sub
                 End If
-                ToDispose = True
+
+                Me.Dispose()
             Else
                 If MessageBox.Show("Are you sure you want to cancel the Download?", "Cancel Download!", MessageBoxButtons.YesNo) = DialogResult.No Then
                     Exit Sub

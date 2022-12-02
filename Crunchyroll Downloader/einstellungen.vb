@@ -18,7 +18,7 @@ Public Class Einstellungen
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Label6.Text = "You have: v" + Application.ProductVersion.ToString
+        Label6.Text = "You have: v" + Application.ProductVersion.ToString '+ " WebView2_Test"
 
         BackgroundWorker1.RunWorkerAsync()
 
@@ -681,12 +681,12 @@ Public Class Einstellungen
         My.Settings.ffmpeg_command = Main.ffmpeg_command
 
 
-        If CBool(InStr(FFMPEG_CommandP1.Text, "nvenc")) Then
+        If CBool(InStr(FFMPEG_CommandP1.Text, "nvenc")) = True And CBool(Main.VideoFormat = ".aac") = False Then
             If NumericUpDown1.Value > 2 Then
                 NumericUpDown1.Value = 2
             End If
 
-        ElseIf CBool(InStr(FFMPEG_CommandP1.Text, "libx26")) Then
+        ElseIf CBool(InStr(FFMPEG_CommandP1.Text, "libx26")) = True And CBool(Main.VideoFormat = ".aac") = False Then
             If NumericUpDown1.Value > 1 Then
                 NumericUpDown1.Value = 1
             End If
@@ -910,7 +910,7 @@ Public Class Einstellungen
 
 
     Private Sub Label7_Click(sender As Object, e As EventArgs)
-        Process.Start("https://github.com/cefsharp/CefSharp")
+        Process.Start("https://learn.microsoft.com/de-de/microsoft-edge/webview2/")
     End Sub
 
     Private Sub Label3_Click(sender As Object, e As EventArgs)

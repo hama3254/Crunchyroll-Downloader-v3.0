@@ -392,7 +392,7 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
     <value>..\Resources\crdSettings_Button_SafeExit_hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ffmpeg_user_agend" xml:space="preserve">
-    <value>"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0"</value>
+    <value>"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0"</value>
   </data>
   <data name="crdSettings_Button_SafeExit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\crdSettings_Button_SafeExit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

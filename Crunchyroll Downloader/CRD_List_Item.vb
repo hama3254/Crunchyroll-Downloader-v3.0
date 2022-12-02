@@ -55,6 +55,7 @@ Public Class CRD_List_Item
 
     Dim FailedSegments As New List(Of FailedSegemtsWithURL)
     Dim LogText As New List(Of String)
+    Dim GlobalLogfile As String
 
     Private Event UpdateUI(ByVal Percent As Integer, ByVal di As DirectoryInfo, ByVal Idle As Integer)
 
@@ -75,7 +76,7 @@ Public Class CRD_List_Item
         Label_website.Location = New Point(195, 12)
         Label_Anime.Location = New Point(195, 40)
         Label_Reso.Location = New Point(195, 97)
-        Label_Hardsub.Location = New Point(265, 97)
+        Label_Hardsub.Location = New Point(255, 97)
         Label_percent.SetBounds(Me.Width - 400, 97, 378, 27)
         Label_percent.AutoSize = False
         ProgressBar1.SetBounds(195, 70, 601, 20)
@@ -454,6 +455,10 @@ Public Class CRD_List_Item
         HistoryDL_URL = DL_URL
         HistoryDL_Pfad = DL_Pfad
         HistoryFilename = Filename
+
+        GlobalLogfile = DL_Pfad.Replace(".mkv", ".txt").Replace(Chr(34), "")
+
+        'Debug.WriteLine(GlobalLogfile)
 
         'If (Me.InvokeRequired) Then
         '    Me.Invoke(Sub()
@@ -1298,8 +1303,25 @@ Public Class CRD_List_Item
     Sub FFMPEGOutput(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
         Try
             LogText.Add(Date.Now.ToString + " " + e.Data)
+            'My.Computer.FileSystem.WriteAllText(GlobalLogfile, Date.Now.ToString + " " + e.Data, True)
+            'Dim Log As String = ""
+            'Dim logfile As String = DownloadPfad.Replace(Main.VideoFormat, ".log").Replace(Chr(34), "")
+
+            'For i As Integer = 1 To LogText.Count - 1
+            '    Log = Log + vbNewLine
+            '    Log = Log + LogText.Item(i)
+            'Next
+            'WriteText(logfile, Log)
         Catch ex As Exception
+            Debug.WriteLine("FFMPEGOutput: " + ex.ToString)
         End Try
+
+        'Dim TH As String = "FFMPEGOutput_ID: " + Thread.CurrentThread.Name
+        'Debug.WriteLine(TH)
+
+        'My.Computer.FileSystem.WriteAllText(GlobalLogfile, TH, True)
+        'My.Computer.FileSystem.WriteAllText(GlobalLogfile, vbNewLine, True)
+        'Thread.CurrentThread.Name = "FFMPEGOutput"
 
 #Region "Detect Auto resolution"
         Try

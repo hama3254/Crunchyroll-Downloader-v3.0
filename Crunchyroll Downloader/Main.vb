@@ -13,20 +13,16 @@ Imports System.Globalization
 Imports System.ComponentModel
 Imports Newtonsoft.Json.Linq
 Imports System.Runtime.InteropServices
-Imports CefSharp.WinForms
-Imports CefSharp
 Imports System.Security.Policy
 Imports MyProvider.MyProvider
 Imports System.Windows
-
+Imports Microsoft.Web.WebView2.Core
 Public Class Main
     Inherits MetroForm
     Dim t As Thread
     Dim HTML As String = Nothing
     Public CR_Cookies As String = "Cookie: "
 
-    Public CR_etp_rt As String = Nothing
-    Public CR_ajs_user_id As String = Nothing
     Public CheckCRLogin As Boolean = True
 
     'Public LoadedUrl As String = Nothing
@@ -37,11 +33,11 @@ Public Class Main
     Public CrBetaBasic As String = Nothing
     Public locale As String = Nothing
     Public Url_locale As String = Nothing
-
+    Dim ProcessCounting As Integer = 30
     'Public CrBetaObjects As String = Nothing
     'Public CrBetaStreams As String = Nothing
     'Public CrBetaStreamsUrl As String = Nothing
-
+    Public LoadingUrl As String = ""
     Public LoadedUrls As New List(Of String)
     Public FunimationAPIRegion As String = Nothing
     Public FunimationRegion As String = Nothing
@@ -59,6 +55,7 @@ Public Class Main
     Dim ServerThread As Thread
     Public KodiNaming As Boolean = False
     Public ErrorTolerance As Integer = 0
+    Public CookieList As New List(Of CoreWebView2Cookie)
     'Public liList As New List(Of String)
     Public HTMLString As String = My.Resources.Startuphtml
     Public ListBoxList As New List(Of String)
@@ -66,9 +63,6 @@ Public Class Main
     Public RunningDownloads As Integer = 0
     Public UseQueue As Boolean = False
     Public StartServer As Integer = 0
-    Public m3u8List As New List(Of String)
-    Public txtList As New List(Of String)
-    Public mpdList As New List(Of String)
     Public ResoAvalibe As String = Nothing
     Public ResoSearchRunning As Boolean = False
     Public UsedMap As String = Nothing
@@ -105,7 +99,7 @@ Public Class Main
     Public Reso As Integer
     Public Season_Prefix As String = "[default season prefix]"
     Public Episode_Prefix As String = "[default episode prefix]"
-    Dim Reso2 As String
+
     Public ResoSave As String = "6666x6666"
     Public ResoFunBackup As String = "6666x6666"
     Public SubSprache As String
@@ -279,6 +273,7 @@ Public Class Main
 
     Private Sub ConsoleBar_Click(sender As Object, e As EventArgs) Handles ConsoleBar.Click
         If TheTextBox.Visible = True Then
+            'TheTextBox.Lines = DebugList.ToArray
             TheTextBox.Visible = False
             ListViewHeightOffset = 7
             ConsoleBar.Location = New Point(0, Me.Height - ListViewHeightOffset)
@@ -318,11 +313,13 @@ Public Class Main
 
             Dim W As Integer = Panel1.Width
             If Panel1.Controls.Count * 142 > Panel1.Height Then
-                w = Panel1.Width - SystemInformation.VerticalScrollBarWidth
+                W = Panel1.Width - SystemInformation.VerticalScrollBarWidth
             End If
 
             Dim Item As New List(Of CRD_List_Item)
             Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+            Item.Reverse()
+
             For s As Integer = 0 To Item.Count - 1
                 Item(s).SetBounds(0, 142 * s, W - 2, 142)
                 If Debug2 = True Then
@@ -376,7 +373,7 @@ Public Class Main
     End Function
 
 
-    Private Sub Form8_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         '
 
 #Region "settings path"
@@ -394,33 +391,6 @@ Public Class Main
         b = True
         Thread.CurrentThread.Name = "Main"
         Debug.WriteLine("Thread Name: " + Thread.CurrentThread.Name)
-        'Try
-        '    Dim rkg As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\CRDownloader")
-        '    ProfileFolder = rkg.GetValue("ProfilFolder").ToString
-        'Catch ex As Exception
-        'End Try
-        Dim settings As CefSettings = New CefSettings()
-        If Not Directory.Exists(Path.GetDirectoryName(ProfileFolder)) Then
-            ' Nein! Jetzt erstellen...
-            Try
-                Directory.CreateDirectory(Path.GetDirectoryName(ProfileFolder))
-                settings.CachePath = ProfileFolder
-            Catch ex As Exception
-                ' Ordner wurde nich erstellt
-                settings.CachePath = Application.StartupPath + "\lib"
-            End Try
-        Else
-            settings.CachePath = ProfileFolder
-        End If
-        settings.CefCommandLineArgs.Add("disable-features=PreloadMediaEngagementData, MediaEngagementBypassAutoplayPolicies")
-        settings.CefCommandLineArgs.Add("disable-gpu")
-        settings.CefCommandLineArgs.Add("disable-gpu-vsync")
-        settings.CefCommandLineArgs.Add("disable-d3d11")
-        settings.CefCommandLineArgs.Add("disable-gpu-rasterization")
-        settings.UserAgent = My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "").Replace(Chr(34), "")
-        settings.DisableGpuAcceleration()
-        settings.LogFile = Path.Combine(Application.StartupPath, "lib", "browser.log")
-        Cef.Initialize(settings)
 
 
         DarkModeValue = My.Settings.DarkModeValue
@@ -877,7 +847,7 @@ Public Class Main
             CurlOutput = CurlOutput + sr.ReadToEnd
             CurlError = CurlError + sr2.ReadToEnd
             'ffmpegOutput2 = sr.ReadLine
-            Debug.WriteLine(CurlOutput)
+            'Debug.WriteLine(CurlOutput)
 
         Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
@@ -918,7 +888,7 @@ Public Class Main
         End If
         cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + Cookies + Auth + Post + " " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
-        'MsgBox(cmd)
+        'Debug.WriteLine("CurlPost: " + cmd)
         Dim CurlOutput As String = Nothing
         Dim CurlError As String = Nothing
         ' all parameters required to run the process
@@ -945,25 +915,25 @@ Public Class Main
             CurlOutput = CurlOutput + sr.ReadToEnd
             CurlError = CurlError + sr2.ReadToEnd
             'ffmpegOutput2 = sr.ReadLine
-            Debug.WriteLine(CurlOutput)
+            'Debug.WriteLine(CurlOutput)
 
         Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
 
         If CurlOutput = Nothing And CurlError = Nothing Then
-            Debug.WriteLine("curl-E: " + "curl: ")
+            Debug.WriteLine("CurlPost-E: " + "curl: ")
             Return CurlError
         ElseIf CurlOutput = Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("curl-E: " + CurlError)
+            Debug.WriteLine("CurlPost-E: " + CurlError)
             Return CurlError
         ElseIf CurlOutput IsNot Nothing And CurlError = Nothing Then
-            Debug.WriteLine("curl-O: " + CurlOutput)
+            Debug.WriteLine("CurlPost-O: " + CurlOutput)
             Return CurlOutput
         ElseIf CurlOutput IsNot Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("curl-O: " + CurlOutput)
+            Debug.WriteLine("CurlPost-O: " + CurlOutput)
             Return CurlOutput
         Else
-            Debug.WriteLine("curl-E: " + "curl: ")
+            Debug.WriteLine("CurlPost-E: " + "curl: ")
             Return CurlError
         End If
 
@@ -1016,24 +986,24 @@ Public Class Main
             CurlOutput = CurlOutput + sr.ReadToEnd
             CurlError = CurlError + sr2.ReadToEnd
             'ffmpegOutput2 = sr.ReadLine
-            Debug.WriteLine(CurlOutput)
+            'Debug.WriteLine(CurlOutput)
 
         Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
         If CurlOutput = Nothing And CurlError = Nothing Then
-            Debug.WriteLine("curl-E: " + "curl: ")
+            Debug.WriteLine("CurlAuth-E: " + "curl: ")
             Return CurlError
         ElseIf CurlOutput = Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("curl-E: " + CurlError)
+            Debug.WriteLine("CurlAuth-E: " + CurlError)
             Return CurlError
         ElseIf CurlOutput IsNot Nothing And CurlError = Nothing Then
-            Debug.WriteLine("curl-O: " + CurlOutput)
+            Debug.WriteLine("CurlAuth-O: " + CurlOutput)
             Return CurlOutput
         ElseIf CurlOutput IsNot Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("curl-O: " + CurlOutput)
+            Debug.WriteLine("CurlAuth-O: " + CurlOutput)
             Return CurlOutput
         Else
-            Debug.WriteLine("curl-E: " + "curl: ")
+            Debug.WriteLine("CurlAuth-E: " + "curl: ")
             Return CurlError
         End If
 
@@ -1052,7 +1022,6 @@ Public Class Main
             Dim ListOfEpisodes As New List(Of String)
             Dim EpisodeSplit() As String = CrBetaMassEpisodes.Split(New String() {Chr(34) + "id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-            'My.Computer.FileSystem.WriteAllText("D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x64\Debug\WebInterface\EpisodeSplit.txt", CrBetaMassEpisodes, False)
             '"slug_title":"
             For i As Integer = 1 To EpisodeSplit.Count - 1
                 Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1084,6 +1053,8 @@ Public Class Main
                             Dim ItemFinshedCount As Integer = 0 '
                             Dim Item As New List(Of CRD_List_Item)
                             Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+                            Item.Reverse()
+
                             For i2 As Integer = 0 To Item.Count - 1
                                 If Item(i2).GetIsStatusFinished() = True Then
                                     ItemFinshedCount = ItemFinshedCount + 1
@@ -1176,7 +1147,7 @@ Public Class Main
         End If
 
         If CBool(InStr(SeasonJson, "curl:")) = True Then
-            MsgBox("Error - Getting SeasonJson data")
+            MsgBox("Error - Getting SeasonJson data" + vbNewLine + SeasonJson)
             Exit Sub
         End If
         SeasonJson = CleanJSON(SeasonJson)
@@ -1210,10 +1181,6 @@ Public Class Main
         'CrBetaStreamsUrl = Nothing
         'LoadedUrl = Nothing
 
-        'My.Computer.FileSystem.WriteAllText("D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x64\Debug\WebInterface\debugObjects.txt", ObjectJson, False)
-
-        'My.Computer.FileSystem.WriteAllText("D:\Projecte\Crunchyroll Downloader - v3.0-final\Crunchyroll-Downloader-v3.0 - CefSharp\Crunchyroll Downloader\bin\x64\Debug\WebInterface\debugStreams.txt", VideoJson, False)
-
 
         Try
             Grapp_RDY = False
@@ -1234,6 +1201,8 @@ Public Class Main
             Dim CR_episode_int As String = Nothing
             Dim CR_title As String = Nothing
             Dim CR_audio_locale As String = Nothing
+            Dim ResoUsed As String = "x" + Reso.ToString
+
 #Region "Name + Pfad"
             Dim Pfad2 As String
             Dim TextBox2_Text As String = Nothing
@@ -1263,7 +1232,7 @@ Public Class Main
             End If
 
             If CBool(InStr(ObjectJson, "curl:")) = True Then
-                MsgBox("Error - Getting ObjectJson data")
+                MsgBox("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
                 Exit Sub
             End If
 
@@ -1566,7 +1535,7 @@ Public Class Main
 
             If CBool(InStr(VideoJson, "curl:")) = True Then
                 VideoJson = Nothing
-                MsgBox("Error - Getting VideoJson data")
+                MsgBox("Error - Getting VideoJson data" + vbNewLine + VideoJson)
                 Exit Sub
             End If
 
@@ -1584,7 +1553,7 @@ Public Class Main
             '    Exit Sub
             'End Try
 
-            Dim LangNew As String = ConvertCC(SubSprache)
+            Dim CR_HardSubLang As String = ConvertCC(SubSprache)
 #End Region
 #Region "Download softsub file or build ffmpeg cmd"
             Dim SoftSubs2 As New List(Of String)
@@ -1734,7 +1703,7 @@ Public Class Main
 
             For i As Integer = 0 To CR_Streams.Count - 1
                 Debug.WriteLine(CR_Streams.Item(i).subLang)
-                If CR_Streams.Item(i).subLang = LangNew Then
+                If CR_Streams.Item(i).subLang = CR_HardSubLang Then
                     CR_URI_Master = CR_Streams.Item(i).Url
                 ElseIf CR_Streams.Item(i).subLang = "" And CR_audio_locale IsNot "ja-JP" And DubMode = True Then 'nothing/raw
                     RawStream = CR_Streams.Item(i).Url
@@ -1754,12 +1723,12 @@ Public Class Main
                 If UserCloseDialog = True Then
                     Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
                 Else
-                    LangNew = ResoBackString
+                    CR_HardSubLang = ResoBackString
                     ResoBackString = Nothing
 
                     For i As Integer = 0 To CR_Streams.Count - 1
                         Debug.WriteLine(CR_Streams.Item(i).subLang)
-                        If CR_Streams.Item(i).subLang = LangNew Then
+                        If CR_Streams.Item(i).subLang = CR_HardSubLang Then
                             CR_URI_Master = CR_Streams.Item(i).Url
                         End If
 
@@ -1837,11 +1806,11 @@ Public Class Main
 
                     'MsgBox(str)
                     If CBool(InStr(str, "x" + Reso.ToString + ",")) Then
-                        Reso2 = "x" + Reso.ToString
+                        ResoUsed = "x" + Reso.ToString
                     Else
                         'MsgBox(str)
                         If CBool(InStr(str, ResoSave + ",")) Then
-                            Reso2 = Reso2
+                            ResoUsed = ResoSave
                         Else
                             Me.Invoke(New Action(Function() As Object
                                                      DialogTaskString = "Resolution"
@@ -1853,61 +1822,85 @@ Public Class Main
                             If UserCloseDialog = True Then
                                 Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
                             Else
-                                Reso2 = ResoBackString
+                                'MsgBox(ResoBackString)
+                                ResoUsed = ResoBackString
                                 ResoSave = ResoBackString
                             End If
                         End If
                     End If
-                    Dim ffmpeg_url_1 As String() = str.Split(New String() {Reso2 + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim ffmpeg_url_3 As String() = Nothing
-                    Dim ffmpeg_url_2 As String() = ffmpeg_url_1(1).Split(New [Char]() {Chr(34)})
-                    ffmpeg_url_3 = ffmpeg_url_2(2).Split(New [Char]() {System.Convert.ToChar("#")})
+                    Dim ffmpeg_url_3 As String = Nothing
+                    Dim LineChar As String = vbLf
+                    If CBool(InStr(str, vbCrLf)) Then
+                        LineChar = vbCrLf
+                    ElseIf CBool(InStr(str, vbCr)) Then
+                        LineChar = vbCr
+                    End If
+                    Dim ffmpeg_url_1 As String() = str.Split(New String() {LineChar}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    For i As Integer = 0 To ffmpeg_url_1.Count - 2 'Step 2
+                        If CBool(InStr(ffmpeg_url_1(i), ResoUsed + ",")) Then
+                            ffmpeg_url_3 = ffmpeg_url_1(i + 1)
+                        End If
+                    Next
+                    'MsgBox(ffmpeg_url_3)
                     Debug.WriteLine("Line 2120-CR_audio_locale: " + CR_audio_locale)
 
-                    If MergeSubs = True And CR_MetadataUsage = False Then
-                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
+                        If MergeSubs = True And CR_MetadataUsage = False Then
+                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3.Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
                     ElseIf MergeSubs = False And CR_MetadataUsage = False Then
-                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3.Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
                     ElseIf MergeSubs = True And CR_MetadataUsage = True Then
-                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -i " + Chr(34) + Mdata_File + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " -map_metadata 1" + " " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
+                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3.Trim() + Chr(34) + " -i " + Chr(34) + Mdata_File + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " -map_metadata 1" + " " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
                     ElseIf MergeSubs = False And CR_MetadataUsage = True Then
-                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                        URL_DL = "-i " + Chr(34) + ffmpeg_url_3.Trim() + Chr(34) + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
 
                     End If
 
-                    'If MergeSubs = True And CR_MetadataUsage = False Then
-                    '    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
-                    'Else
-                    '    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
-                    'End If
+                        'If MergeSubs = True And CR_MetadataUsage = False Then
+                        '    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
+                        'Else
+                        '    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                        'End If
+                    End If
                 End If
-            End If
 #Region "thumbnail"
             Dim thumbnail As String() = ObjectJson.Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim thumbnail2 As String() = thumbnail(1).Split(New String() {Chr(34) + "}"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
             Dim thumbnail3 As String = "https://" + thumbnail2(0).Replace("\/", "/")
 #End Region
-#Region "<li> constructor"
-            Dim Subsprache3 As String = "none" 'HardSubValuesToDisplay(SubSprache2.Replace(Chr(34), ""))
-            Dim ResoHTMLDisplay As String = Nothing
-            If ResoBackString = Nothing Then
-                ResoHTMLDisplay = Reso.ToString + "p"
-            ElseIf DialogTaskString = "Language" Then
-                ResoHTMLDisplay = Reso.ToString + "p"
-            Else
-                Dim ResoHTML As String() = ResoBackString.Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
-                If ResoHTML.Count > 1 Then
-                    ResoHTMLDisplay = ResoHTML(1) + "p"
-                Else
-                    ResoHTMLDisplay = ResoHTML(0) + "p"
-                End If
+#Region "item constructor"
+            Dim SubType_Value As String = Nothing 'HardSubValuesToDisplay(SubSprache2.Replace(Chr(34), ""))
+
+            'MsgBox(CR_HardSubLang)
+
+            If Not CR_HardSubLang = "" Then
+                SubType_Value = "Hardsub: " + HardSubValuesToDisplay(CR_HardSubLang)
             End If
+
+            If SoftSubs2.Count > 0 And CR_HardSubLang = "" Then
+                SubType_Value = "Softsubs: "
+                For i As Integer = 0 To SoftSubs2.Count - 1
+                    SubType_Value = SubType_Value + HardSubValuesToDisplay(SoftSubs2(i))
+                    If i < SoftSubs2.Count - 1 Then
+                        SubType_Value = SubType_Value + ", "
+                    End If
+                Next
+            End If
+
+            Dim ResoHTMLDisplay As String = Nothing
+            Dim ResoHTML As String() = ResoUsed.Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
+            If ResoHTML.Count > 1 Then
+                ResoHTMLDisplay = ResoHTML(1) + "p"
+            Else
+                ResoHTMLDisplay = ResoHTML(0) + "p"
+            End If
+
             Dim L2Name As String = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c) 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName_Backup, "[^\w\\-]", " ")
+
             If Reso = 42 And HybridMode = False Then
                 ResoHTMLDisplay = "[Auto]"
-            ElseIf Reso = 42 And HybridMode = False Then
-                ResoHTMLDisplay = Reso2
             End If
+
             Pfad_DL = Pfad2
             Dim L1Name_Split As String() = WebsiteURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + HardSubValuesToDisplay(CR_audio_locale)
@@ -1918,7 +1911,7 @@ Public Class Main
 
 
             Me.Invoke(New Action(Function() As Object
-                                     ListItemAdd(Path.GetFileName(Pfad_DL.Replace(Chr(34), "")), L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL_DL, Pfad_DL)
+                                     ListItemAdd(Path.GetFileName(Pfad_DL.Replace(Chr(34), "")), L1Name, L2Name, ResoHTMLDisplay, SubType_Value, SubValuesToDisplay(), thumbnail3, URL_DL, Pfad_DL)
                                      Return Nothing
                                  End Function))
             'liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_title + " <br> " + CR_season_number + " " + CR_episode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
@@ -2029,6 +2022,8 @@ Public Class Main
 
                 Dim Item As New List(Of CRD_List_Item)
                 Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+                Item.Reverse()
+
                 For i As Integer = 0 To Item.Count - 1
                     Item(i).KillRunningTask()
                 Next
@@ -2128,10 +2123,10 @@ Public Class Main
     Private Sub Btn_add_Click(sender As Object, e As EventArgs) Handles Btn_add.Click
 
 
-        If Application.OpenForms().OfType(Of CefSharp_Browser).Any = True Then
+        If Application.OpenForms().OfType(Of Browser).Any = True Then
         Else
             UserBowser = False
-            CefSharp_Browser.Show()
+            Browser.Show()
         End If
 
         If Anime_Add.WindowState = System.Windows.Forms.FormWindowState.Minimized Then
@@ -2185,11 +2180,11 @@ Public Class Main
         Debug.WriteLine(Date.Now.ToString + "." + Date.Now.Millisecond.ToString)
         UserBowser = True
 
-        If Application.OpenForms().OfType(Of CefSharp_Browser).Any = True Then
-            CefSharp_Browser.Location = Me.Location
+        If Application.OpenForms().OfType(Of Browser).Any = True Then
+            Browser.Location = Me.Location
         Else
-            CefSharp_Browser.Location = Me.Location
-            CefSharp_Browser.Show()
+            Browser.Location = Me.Location
+            Browser.Show()
         End If
 
 
@@ -2276,9 +2271,10 @@ Public Class Main
             Dim ItemFinshedCount As Integer = 0
             Dim Item As New List(Of CRD_List_Item)
             Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+            Item.Reverse()
 
             For i As Integer = 0 To Item.Count - 1
-                Debug.WriteLine(Item(i).GetIsStatusFinished().ToString)
+                'Debug.WriteLine(Item(i).GetIsStatusFinished().ToString)
                 If Item(i).GetIsStatusFinished() = True Then
                     ItemFinshedCount = ItemFinshedCount + 1
                 End If
@@ -2448,6 +2444,8 @@ Public Class Main
                             Dim ItemFinshedCount As Integer = 0
                             Dim Item As New List(Of CRD_List_Item)
                             Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+                            Item.Reverse()
+
                             For i2 As Integer = 0 To Item.Count - 1
                                 If Item(i2).GetIsStatusFinished() = True Then
                                     ItemFinshedCount = ItemFinshedCount + 1
@@ -2483,8 +2481,10 @@ Public Class Main
                     b = False
 
                     If CBool(InStr(ListOfEpisodes(i), "funimation.com/v/")) Then
-                        Dim Episode() As String = ListOfEpisodes(i).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim Episode0() As String = ListOfEpisodes(i).Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim Episode() As String = Episode0(0).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim v1JsonUrl As String = "https://d33et77evd9bgg.cloudfront.net/data/v1/episodes/" + Episode(Episode.Length - 1) + ".json"
+                        'MsgBox(v1JsonUrl)
                         Dim v1Json As String = Nothing
                         Try
                             Using client As New WebClient()
@@ -2492,6 +2492,7 @@ Public Class Main
                                 client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
                                 v1Json = client.DownloadString(v1JsonUrl)
                             End Using
+                            WebbrowserURL = ListOfEpisodes(i)
                             GetFunimationNewJS_VideoProxy(Nothing, v1Json)
                         Catch ex As Exception
                             Debug.WriteLine("error- getting v1Json data for the bypasss")
@@ -2568,12 +2569,9 @@ Public Class Main
             Return "N/A"
         End If
     End Function
-    Public Sub GetFunimationNewJS_VideoProxy(Optional ByVal v1JsonURL As String = Nothing, Optional ByVal v1JsonData As String = Nothing)
+    Public Async Sub GetFunimationNewJS_VideoProxy(Optional ByVal v1JsonURL As String = Nothing, Optional ByVal v1JsonData As String = Nothing)
         Try
-            Dim Collector As New TaskCookieVisitor
-            Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
-            CM.VisitAllCookies(Collector)
-            Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
+            Dim list As List(Of CoreWebView2Cookie) = Await Browser.WebView2.CoreWebView2.CookieManager.GetCookiesAsync("https://www.funimation.com/")
             Dim Cookie As String = ""
             For i As Integer = 0 To list.Count - 1
                 If CBool(InStr(list.Item(i).Domain, "funimation.com")) Then 'list.Item(i).Domain = "funimation.com" Then
@@ -3313,6 +3311,7 @@ Public Class Main
 
         Dim Item As New List(Of CRD_List_Item)
         Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+        Item.Reverse()
 
         Dim GeckoHTML As String = My.Resources.htmlTop + vbNewLine + My.Resources.htmlTitlel.Replace("Placeholder", Me.Text.Replace("open the add window to continue", ""))
 
@@ -3393,92 +3392,48 @@ Public Class Main
             Exit Sub
         End If
         'MsgBox("loaded!")
-        If CBool(InStr(Address, "crunchyroll.com")) Then
+        If CBool(InStr(Address, "crunchyroll.com")) Or CBool(InStr(Address, "funimation.com")) Then
             WebbrowserURL = Address
 
+            ScanTimeout.Start()
 
-            For i As Integer = 10 To 1 Step -1
-                If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                    Anime_Add.StatusLabel.Text = "Status: Processing Url " + i.ToString
-                End If
-                Me.Text = "Status: Processing Url " + i.ToString
 
-                Pause(1)
+            'ElseIf CBool(InStr(Address, "funimation.com")) Then
 
-                If b = True Then
-                    If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                        Anime_Add.StatusLabel.Text = "Status: idle"
-                    End If
-                    Me.Text = "Crunchyroll Downloader"
-                    Grapp_RDY = True
-                    LoadedUrls.Clear()
-                    Debug.WriteLine("canceled....")
-                    Exit Sub
-                End If
-            Next
-
-            Debug.WriteLine("LoadedUrls: " + LoadedUrls.Count.ToString)
-            For i As Integer = 0 To LoadedUrls.Count - 1
-                Debug.WriteLine("LoadedUrls: " + LoadedUrls(i))
-            Next
-
-            If LoadedUrls.Count > 0 Then
-                If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                    Anime_Add.StatusLabel.Text = "Status: Processing... "
-                End If
-                Me.Text = "Status: Processing... "
-                ProcessUrls()
-                Debug.WriteLine("ProcessUrls")
-                Exit Sub
-            Else
-                If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                    Anime_Add.StatusLabel.Text = "Status: nothing found"
-                End If
-                Me.Text = "Status: nothing found"
-                ProcessUrls()
-                Debug.WriteLine("3530: nothing found")
-                Grapp_RDY = True
-                Exit Sub
-            End If
-
-        ElseIf CBool(InStr(Address, "funimation.com")) Then
-            Dim Collector As New TaskCookieVisitor
-            Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
-            CM.VisitAllCookies(Collector)
-            Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
-            Dim Cookie As String = ""
-            For i As Integer = 0 To list.Count - 1
-                If CBool(InStr(list.Item(i).Domain, "funimation.com")) Then 'list.Item(i).Domain = "funimation.com" Then
-                    'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
-                    Cookie = Cookie + list.Item(i).Name + "=" + list.Item(i).Value + ";"
-                End If
-                If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "src_token")) Then 'list.Item(i).Domain = "funimation.com" Then
-                    'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
-                    FunimationToken = "Token " + list.Item(i).Value
-                End If
-            Next
-            If b = False Then
-                WebbrowserCookie = Cookie
-                WebbrowserURL = Address
-                Text = "Crunchyroll Downloader"
-                For i As Integer = 10 To 0 Step -1
-                    Anime_Add.StatusLabel.Text = "Status: checking traffic - " + i.ToString
-                    Pause(1)
-                Next
-                Dim Evaluator = New Thread(Sub() Me.ProcessUrls())
-                Evaluator.Start()
-                Exit Sub
-            End If
-        Else
-            WebbrowserURL = Address
-            Text = "Crunchyroll Downloader"
-            For i As Integer = 10 To 0 Step -1
-                Anime_Add.StatusLabel.Text = "Status: checking traffic - " + i.ToString
-                Pause(1)
-            Next
-            ProcessUrls()
-            'Pause(10)
-            'ProcessUrls()
+            '    Dim list As List(Of CoreWebView2Cookie) = Await Browser.WebView2.CoreWebView2.CookieManager.GetCookiesAsync("https://www.funimation.com")
+            '    Dim Cookie As String = ""
+            '    For i As Integer = 0 To list.Count - 1
+            '        If CBool(InStr(list.Item(i).Domain, "funimation.com")) Then 'list.Item(i).Domain = "funimation.com" Then
+            '            'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
+            '            Cookie = Cookie + list.Item(i).Name + "=" + list.Item(i).Value + ";"
+            '        End If
+            '        If CBool(InStr(list.Item(i).Domain, "funimation.com")) And CBool(InStr(list.Item(i).Name, "src_token")) Then 'list.Item(i).Domain = "funimation.com" Then
+            '            'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
+            '            FunimationToken = "Token " + list.Item(i).Value
+            '        End If
+            '    Next
+            '    If b = False Then
+            '        WebbrowserCookie = Cookie
+            '        WebbrowserURL = Address
+            '        Text = "Crunchyroll Downloader"
+            '        For i As Integer = 10 To 0 Step -1
+            '            Anime_Add.StatusLabel.Text = "Status: checking traffic - " + i.ToString
+            '            Pause(1)
+            '        Next
+            '        Dim Evaluator = New Thread(Sub() Me.ProcessUrls())
+            '        Evaluator.Start()
+            '        Exit Sub
+            '    End If
+            'Else
+            '    WebbrowserURL = Address
+            '    Text = "Crunchyroll Downloader"
+            '    For i As Integer = 10 To 0 Step -1
+            '        Anime_Add.StatusLabel.Text = "Status: checking traffic - " + i.ToString
+            '        Pause(1)
+            '    Next
+            '    ProcessUrls()
+            '    'Pause(10)
+            '    'ProcessUrls()
         End If
         'End If
     End Sub
@@ -3487,6 +3442,64 @@ Public Class Main
 
 
 #End Region
+
+    Private Sub Process(sender As Object, e As EventArgs) Handles ScanTimeout.Tick
+        If b = True Then
+            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                Anime_Add.StatusLabel.Text = "Status: idle"
+            End If
+            Me.Text = "Crunchyroll Downloader"
+            Grapp_RDY = True
+            LoadedUrls.Clear()
+            Debug.WriteLine("canceled....")
+            ProcessCounting = 30
+            ScanTimeout.Enabled = False
+            Exit Sub
+        End If
+
+        If LoadedUrls.Count = 0 And ProcessCounting > 0 Then
+
+            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                Anime_Add.StatusLabel.Text = "Status: Processing Url " + ProcessCounting.ToString
+            End If
+            Me.Text = "Status: Processing Url " + ProcessCounting.ToString
+
+            ProcessCounting = ProcessCounting - 1
+            Exit Sub
+        ElseIf LoadedUrls.Count = 0 And ProcessCounting > 0 Then
+            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                Anime_Add.StatusLabel.Text = "Status: nothing found"
+            End If
+            Me.Text = "Status: nothing found"
+            'ProcessUrls()
+            b = True
+            Debug.WriteLine("3412: nothing found")
+            Grapp_RDY = True
+            ProcessCounting = 30
+            ScanTimeout.Enabled = False
+            Exit Sub
+        End If
+
+
+        Debug.WriteLine("LoadedUrls: " + LoadedUrls.Count.ToString)
+        'For i As Integer = 0 To LoadedUrls.Count - 1
+        '    Debug.WriteLine("LoadedUrls: " + LoadedUrls(i))
+        'Next
+
+        If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+            Anime_Add.StatusLabel.Text = "Status: Processing... "
+        End If
+        Me.Text = "Status: Processing... "
+        ProcessUrls()
+        Debug.WriteLine("ProcessUrls")
+
+        ProcessCounting = 30
+        ScanTimeout.Enabled = False
+        Exit Sub
+
+
+
+    End Sub
     Public Sub ProcessUrls()
         Debug.WriteLine(LoadedUrls.Count.ToString)
         Debug.WriteLine(Date.Now.ToString + " Thread Name: " + Thread.CurrentThread.Name)
@@ -3505,7 +3518,7 @@ Public Class Main
                     GetBetaVideoProxy(requesturl, WebbrowserURL)
                     b = True
 
-                    'CefSharp_Browser.WebBrowser1.LoadUrl(requesturl)
+                    'Browser.WebBrowser1.LoadUrl(requesturl)
 
 
                     LoadedUrls.Clear()
@@ -3570,7 +3583,7 @@ Public Class Main
                     Me.Text = "Status: Crunchyroll season found."
                     Debug.WriteLine("Crunchyroll season found")
                     GetBetaSeasons(requesturl)
-                    'CefSharp_Browser.WebBrowser1.LoadUrl(requesturl)
+                    'Browser.WebBrowser1.LoadUrl(requesturl)
                     b = True
                     LoadedUrls.Clear()
                     Me.Text = "Crunchyroll Downloader"
@@ -3618,21 +3631,6 @@ Public Class Main
                 Exit Sub
             End If
             If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com")) And CBool(InStr(requesturl, "?region=")) Then
-                Try
-                    Dim Collector As New TaskCookieVisitor
-                    Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
-                    CM.VisitAllCookies(Collector)
-                    Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
-                    Dim Cookie As String = ""
-                    For ii As Integer = 0 To list.Count - 1
-                        If CBool(InStr(list.Item(ii).Domain, "funimation.com")) Then 'list.Item(i).Domain = "funimation.com" Then
-                            'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
-                            Cookie = Cookie + list.Item(ii).Name + "=" + list.Item(ii).Value + ";"
-                        End If
-                    Next
-                    WebbrowserCookie = Cookie
-                Catch ex As Exception
-                End Try
                 If FunimationAPIRegion = Nothing Then
                     Me.Invoke(New Action(Function() As Object
                                              Dim parms As String() = requesturl.Split(New String() {"?region="}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -3641,29 +3639,9 @@ Public Class Main
                                          End Function))
                 End If
                 If b = False Then
-                    'If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com/v1/episodes/")) Then
-                    '    GetFunimationJS_VideoProxy(requesturl)
-                    '    Debug.WriteLine("processing :" + requesturl)
-                    '    b = True
-                    '    Exit For
-                    'Else
+
                     If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com/v1/show")) And CBool(InStr(requesturl, "/episodes/")) Then
                         b = True
-                        Try
-                            Dim Collector As New TaskCookieVisitor
-                            Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
-                            CM.VisitAllCookies(Collector)
-                            Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
-                            Dim Cookie As String = ""
-                            For ii As Integer = 0 To list.Count - 1
-                                If CBool(InStr(list.Item(ii).Domain, "funimation.com")) Then 'list.Item(i).Domain = "funimation.com" Then
-                                    'MsgBox(list.Item(i).Name + vbNewLine + list.Item(i).Value)
-                                    Cookie = Cookie + list.Item(ii).Name + "=" + list.Item(ii).Value + ";"
-                                End If
-                            Next
-                            WebbrowserCookie = Cookie
-                        Catch ex As Exception
-                        End Try
                         GetFunimationNewJS_VideoProxy(requesturl)
                         Debug.WriteLine("processing :" + requesturl)
                         LoadedUrls.Clear()
@@ -3687,25 +3665,25 @@ Public Class Main
     End Sub
 
     Public Sub Navigate(ByVal Url As String)
-        If Application.OpenForms().OfType(Of CefSharp_Browser).Any = True Then
+        If Application.OpenForms().OfType(Of Browser).Any = True Then
             If InvokeRequired = True Then
                 Me.Invoke(New Action(Function() As Object
-                                         CefSharp_Browser.WebBrowser1.Load(Url)
+                                         Browser.WebView2.CoreWebView2.Navigate(Url)
                                          Return Nothing
                                      End Function))
             Else
-                CefSharp_Browser.WebBrowser1.Load(Url)
+                Browser.WebView2.CoreWebView2.Navigate(Url)
             End If
         Else
             If InvokeRequired = True Then
                 Me.Invoke(New Action(Function() As Object
-                                         CefSharp_Browser.Show()
-                                         CefSharp_Browser.WebBrowser1.Load(Url)
+                                         Browser.Show()
+                                         Browser.WebView2.CoreWebView2.Navigate(Url)
                                          Return Nothing
                                      End Function))
             Else
-                CefSharp_Browser.Show()
-                CefSharp_Browser.WebBrowser1.Load(Url)
+                Browser.Show()
+                Browser.WebView2.CoreWebView2.Navigate(Url)
             End If
         End If
     End Sub
@@ -4149,10 +4127,6 @@ Public Class Main
         Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
     End Sub
 
-    Private Sub Button1_Click_2(sender As Object, e As EventArgs)
-        network_scan.Show()
-    End Sub
-
     Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
 
         If Application.OpenForms().OfType(Of Anime_Add).Any = False Then
@@ -4170,14 +4144,14 @@ Public Class Main
         Panel1.Select()
     End Sub
 
-    Private Sub TestDownloadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TestDownloadToolStripMenuItem.Click
+    Private Async Sub Funimation_Token_Click(sender As Object, e As EventArgs) Handles Funimation_Token.Click
         Dim Token As String = Nothing
         Try
-            Dim Collector As New TaskCookieVisitor
-            Dim CM As ICookieManager = CefSharp_Browser.WebBrowser1.GetCookieManager
-            CM.VisitAllCookies(Collector)
             Dim DeviceRegion As String = Nothing
-            Dim list As List(Of Global.CefSharp.Cookie) = Collector.Task.Result()
+
+            'Browser.GetCookies()
+
+            Dim list As List(Of CoreWebView2Cookie) = Await Browser.WebView2.CoreWebView2.CookieManager.GetCookiesAsync("https://www.funimation.com/")
             Dim Cookie As String = ""
             For i As Integer = 0 To list.Count - 1
                 If CBool(InStr(list.Item(i).Domain, "funimation.com")) Then 'list.Item(i).Domain = "funimation.com" Then
@@ -4242,8 +4216,12 @@ Public Class Main
     Private Sub CRCookieToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CRCookieToolStripMenuItem.Click
 
         'MsgBox(Curl(InputBox("test", "test")))
+        'For i As Integer = 0 To CookieList.Count - 1
 
-        MsgBox(CR_Cookies)
+
+        'Next
+        MsgBox(CookieList.Count.ToString)
+        'MsgBox(CR_Cookies)
     End Sub
 
     Private Sub ClearAllSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearAllSettingsToolStripMenuItem.Click
@@ -4290,6 +4268,8 @@ Public Class Main
 
             Dim Item As New List(Of CRD_List_Item)
             Item.AddRange(Panel1.Controls.OfType(Of CRD_List_Item))
+            Item.Reverse()
+
             For s As Integer = 0 To Item.Count - 1
                 Item(s).SetBounds(0, 142 * s, W - 2, 142)
                 If Debug2 = True Then
@@ -4311,6 +4291,8 @@ Public Class Main
 
 
     End Sub
+
+
 
 
 

@@ -41,7 +41,7 @@ Partial Class Main
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ToggleDebugModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.TestDownloadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Funimation_Token = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckCRBetaTokenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AddonHTMLToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Timer3OffToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -52,6 +52,7 @@ Partial Class Main
         Me.ItemBoundsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DummyItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.ScanTimeout = New System.Windows.Forms.Timer(Me.components)
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -69,7 +70,7 @@ Partial Class Main
         'Timer2
         '
         Me.Timer2.Enabled = True
-        Me.Timer2.Interval = 1000
+        Me.Timer2.Interval = 3000
         '
         'Timer3
         '
@@ -160,7 +161,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.TestDownloadToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem, Me.ClearAllSettingsToolStripMenuItem, Me.ItemBoundsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem, Me.ClearAllSettingsToolStripMenuItem, Me.ItemBoundsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -174,10 +175,10 @@ Partial Class Main
         Me.OpenSettingsToolStripMenuItem.Name = "OpenSettingsToolStripMenuItem"
         resources.ApplyResources(Me.OpenSettingsToolStripMenuItem, "OpenSettingsToolStripMenuItem")
         '
-        'TestDownloadToolStripMenuItem
+        'Funimation_Token
         '
-        Me.TestDownloadToolStripMenuItem.Name = "TestDownloadToolStripMenuItem"
-        resources.ApplyResources(Me.TestDownloadToolStripMenuItem, "TestDownloadToolStripMenuItem")
+        Me.Funimation_Token.Name = "Funimation_Token"
+        resources.ApplyResources(Me.Funimation_Token, "Funimation_Token")
         '
         'CheckCRBetaTokenToolStripMenuItem
         '
@@ -229,6 +230,10 @@ Partial Class Main
         resources.ApplyResources(Me.Panel1, "Panel1")
         Me.Panel1.Name = "Panel1"
         '
+        'ScanTimeout
+        '
+        Me.ScanTimeout.Interval = 1000
+        '
         'Main
         '
         Me.ApplyImageInvert = True
@@ -275,7 +280,7 @@ Partial Class Main
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
     Friend WithEvents ToggleDebugModeToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OpenSettingsToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents TestDownloadToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Funimation_Token As ToolStripMenuItem
     Friend WithEvents CheckCRBetaTokenToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AddonHTMLToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Timer3OffToolStripMenuItem As ToolStripMenuItem
@@ -286,4 +291,5 @@ Partial Class Main
     Friend WithEvents ItemBoundsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DummyItemToolStripMenuItem As ToolStripMenuItem
     Public WithEvents Panel1 As Panel
+    Friend WithEvents ScanTimeout As Timer
 End Class

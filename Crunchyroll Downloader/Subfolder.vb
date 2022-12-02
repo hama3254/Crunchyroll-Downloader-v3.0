@@ -1,5 +1,7 @@
-﻿Imports System.IO
+﻿Imports System.ComponentModel
+Imports System.IO
 Imports System.Text
+Imports System.Windows.Forms.VisualStyles
 
 Module Subfolder
     Public SubFolder_automatic As String = "[automatic by Series and Season]"
@@ -97,22 +99,56 @@ Module Subfolder
 
         Private tBox As RichTextBox
         Dim lastmsg As String = Nothing
+
+
         Public Sub New(ByVal box As RichTextBox)
             Me.tBox = box
         End Sub
 
-        Public Overrides Sub Write(ByVal msg As String)
+        Dim WithEvents BG As BackgroundWorker
+
+        Sub RunBG(ByVal sender As Object, e As DoWorkEventArgs) Handles BG.DoWork
+            Dim msg As String = CStr(e.Argument)
+            If msg <> lastmsg Then
+                lastmsg = msg
+            Else
+                Exit Sub
+            End If
+
             Try
                 tBox.Parent.Invoke(New MethodInvoker(Sub()
-                                                         If msg <> lastmsg Then
-                                                             lastmsg = msg
-                                                             tBox.AppendText(msg)
-
-                                                         End If
+                                                         tBox.AppendText(msg)
                                                      End Sub))
             Catch ex As Exception
+
             End Try
-            'My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\log.txt", msg, True)
+
+        End Sub
+
+        Sub StopBG(sender As Object, e As EventArgs)
+            Dim T As Timer = CType(sender, Timer)
+            If BG.IsBusy Then
+                BG.CancelAsync()
+                T.Dispose()
+            Else
+                T.Dispose()
+            End If
+        End Sub
+
+        Public Overrides Sub Write(ByVal msg As String)
+
+            Dim time As New Timer
+            AddHandler time.Tick, AddressOf StopBG
+            time.Interval = 500
+            time.Start()
+            BG = New BackgroundWorker
+            BG.WorkerSupportsCancellation = True
+            BG.RunWorkerAsync(msg)
+
+
+
+
+
         End Sub
 
         Public Overrides Sub WriteLine(ByVal msg As String)

@@ -321,9 +321,9 @@ Partial Class Anime_Add
         Me.ListBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListBox1.FormattingEnabled = True
         Me.ListBox1.ItemHeight = 15
-        Me.ListBox1.Location = New System.Drawing.Point(13, 18)
+        Me.ListBox1.Location = New System.Drawing.Point(13, 30)
         Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(693, 244)
+        Me.ListBox1.Size = New System.Drawing.Size(693, 229)
         Me.ListBox1.TabIndex = 0
         '
         'Timer1
@@ -382,6 +382,7 @@ Partial Class Anime_Add
         'Timer3
         '
         Me.Timer3.Enabled = True
+        Me.Timer3.Interval = 2000
         '
         'Anime_Add
         '
@@ -392,9 +393,9 @@ Partial Class Anime_Add
         Me.Controls.Add(Me.btn_dl)
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Close)
-        Me.Controls.Add(Me.groupBox1)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.groupBox2)
+        Me.Controls.Add(Me.groupBox1)
         Me.Font = New System.Drawing.Font("Arial", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "Anime_Add"
         Me.Padding = New System.Windows.Forms.Padding(10, 60, 20, 20)

@@ -122,7 +122,7 @@ Partial Class CRD_List_Item
         Me.Label_Hardsub.BackColor = System.Drawing.Color.Transparent
         Me.Label_Hardsub.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.Label_Hardsub.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.Label_Hardsub.Location = New System.Drawing.Point(265, 97)
+        Me.Label_Hardsub.Location = New System.Drawing.Point(255, 97)
         Me.Label_Hardsub.Name = "Label_Hardsub"
         Me.Label_Hardsub.Size = New System.Drawing.Size(126, 25)
         Me.Label_Hardsub.TabIndex = 6

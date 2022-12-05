@@ -25,7 +25,11 @@ Public Class Main
 
     Public CheckCRLogin As Boolean = True
 
-    'Public LoadedUrl As String = Nothing
+
+    Public CR_SeasonJson As UrlJson = New UrlJson("", "")
+    Public CR_ObjectsJson As UrlJson = New UrlJson("", "")
+    Public CR_VideoJson As UrlJson = New UrlJson("", "")
+
     Public CrBetaMass As String = Nothing
     Public CrBetaMassEpisodes As String = Nothing
     Public CrBetaMassParameters As String = Nothing
@@ -1147,7 +1151,7 @@ Public Class Main
         End If
 
         If CBool(InStr(SeasonJson, "curl:")) = True Then
-            MsgBox("Error - Getting SeasonJson data" + vbNewLine + SeasonJson)
+            MsgBox("Error - Getting SeasonJson data" + vbNewLine + SeasonJson + vbNewLine + vbNewLine + JsonUrl)
             Exit Sub
         End If
         SeasonJson = CleanJSON(SeasonJson)
@@ -1223,6 +1227,9 @@ Public Class Main
             Dim ObjectsURL As String = ObjectsURLBuilder(0) + "objects/" + ObjectsURLBuilder4(0) + ObjectsURLBuilder2(1)
             Debug.WriteLine(ObjectsURL)
 
+
+
+
             ObjectJson = Curl(ObjectsURL)
 
             'MsgBox(ObjectJson)
@@ -1231,7 +1238,12 @@ Public Class Main
                 ObjectJson = Curl(ObjectsURL)
             End If
 
-            If CBool(InStr(ObjectJson, "curl:")) = True Then
+            If CBool(InStr(ObjectJson, "curl:")) = True And CBool(InStr(CR_ObjectsJson.Url, ObjectsURLBuilder4(0))) Then
+                Debug.WriteLine("curl error, using UrlJson " + vbNewLine + ObjectJson)
+
+                ObjectJson = CR_ObjectsJson.Content
+                CR_ObjectsJson = New UrlJson("", "")
+            ElseIf CBool(InStr(ObjectJson, "curl:")) Then
                 MsgBox("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
                 Exit Sub
             End If
@@ -1533,7 +1545,16 @@ Public Class Main
                 VideoJson = Curl(Streams)
             End If
 
-            If CBool(InStr(VideoJson, "curl:")) = True Then
+            Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+
+            If CBool(InStr(VideoJson, "curl:")) = True And CBool(InStr(CR_VideoJson.Url, StreamsUrlBuilder2(0))) Then
+                Debug.WriteLine("curl error, using UrlJson " + vbNewLine + VideoJson)
+                VideoJson = CR_VideoJson.Content
+                CR_VideoJson = New UrlJson("", "")
+            ElseIf CBool(InStr(VideoJson, "curl:")) = True Then
                 VideoJson = Nothing
                 MsgBox("Error - Getting VideoJson data" + vbNewLine + VideoJson)
                 Exit Sub
@@ -4224,13 +4245,11 @@ Public Class Main
         'MsgBox(CR_Cookies)
     End Sub
 
-    Private Sub ClearAllSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearAllSettingsToolStripMenuItem.Click
+    Private Sub ClearAllSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UrlJsonsToolStripMenuItem.Click
 
-
-        If MessageBox.Show("This will clear all settings and close the programm!", "confirm?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Registry.CurrentUser.DeleteSubKey("Software\CRDownloader")
-            Me.Close()
-        End If
+        MsgBox("Season" + vbNewLine + CR_SeasonJson.Content.Count.ToString)
+        MsgBox("Object" + vbNewLine + CR_ObjectsJson.Content.Count.ToString)
+        MsgBox("Streams" + vbNewLine + CR_VideoJson.Content.Count.ToString)
 
     End Sub
 
@@ -4374,6 +4393,20 @@ Public Class CR_Beta_Stream
         Return String.Format("{0}, {1}, {2}", Me.audioLanguage, Me.subLang, Me.Format, Me.Url)
     End Function
 
+End Class
+Public Class UrlJson
+
+    Public Url As String
+    Public Content As String
+    Public Sub New(ByVal Url As String, ByVal Content As String)
+        Me.Url = Url
+        Me.Content = Content
+
+    End Sub
+
+    Public Overrides Function ToString() As String
+        Return String.Format("{0}, {1}", Me.Url, Me.Content)
+    End Function
 End Class
 Public Class ServerResponse
 

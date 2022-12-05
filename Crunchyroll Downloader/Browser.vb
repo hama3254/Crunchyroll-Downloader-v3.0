@@ -19,7 +19,10 @@ Public Class Browser
     Private Sub WebView2_CoreWebView2InitializationCompleted(sender As Object, e As CoreWebView2InitializationCompletedEventArgs) Handles WebView2.CoreWebView2InitializationCompleted
         WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
         WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.funimation.com/*", CoreWebView2WebResourceContext.All)
+        WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
+
         'WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
+        AddHandler WebView2.CoreWebView2.WebResourceResponseReceived, AddressOf ObserveResponse
 
         AddHandler WebView2.CoreWebView2.WebResourceRequested, AddressOf ObserveHttp
         WebView2.CoreWebView2.Settings.UserAgent = My.Resources.ffmpeg_user_agend.Replace(Chr(34), "").Replace("User-Agent: ", "")
@@ -69,7 +72,7 @@ Public Class Browser
     End Sub
 
 
-    Private Sub GeckoFX_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Sub Browser_Load(sender As Object, e As EventArgs) Handles Me.Load
         Main.waveOutSetVolume(0, 0)
         If Me.Width > My.Computer.Screen.Bounds.Width Then
             Me.Width = My.Computer.Screen.Bounds.Width
@@ -141,6 +144,90 @@ Public Class Browser
     End Sub
 
 
+    Private Async Sub ObserveResponse(ByVal sender As Object, ByVal e As CoreWebView2WebResourceResponseReceivedEventArgs)
+
+
+
+
+        If CBool(InStr(Main.LoadingUrl, "crunchyroll.com")) Then
+
+
+
+
+            If CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "streams?")) Then
+                Debug.WriteLine("Crunchyroll-Single: " + e.Request.Uri)
+                Dim Content As Stream = Await e.Response.GetContentAsync
+                Dim ContentString As String = Nothing
+                Dim reader As New StreamReader(Content)
+                ContentString = reader.ReadToEnd
+
+                Main.LoadedUrls.Add(e.Request.Uri)
+                Main.CR_VideoJson = New UrlJson(e.Request.Uri, ContentString)
+
+                Exit Sub
+            ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "/objects/")) And CBool(InStr(Main.LoadingUrl, "/watch/")) Then
+                Debug.WriteLine(e.Request.Uri)
+                Main.LoadedUrls.Add(e.Request.Uri)
+                Dim Content As Stream = Await e.Response.GetContentAsync
+                Dim ContentString As String = Nothing
+                Dim reader As New StreamReader(Content)
+                ContentString = reader.ReadToEnd
+                Main.CR_ObjectsJson = New UrlJson(e.Request.Uri, ContentString)
+                Exit Sub
+            ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "seasons?series_id=")) And CBool(InStr(Main.LoadingUrl, "/series/")) Then
+                Debug.WriteLine("Crunchyroll-Season: " + e.Request.Uri)
+                Main.LoadedUrls.Add(e.Request.Uri)
+                Main.LoadedUrls.Add(e.Request.Uri)
+                Dim Content As Stream = Await e.Response.GetContentAsync
+                Dim ContentString As String = Nothing
+                Dim reader As New StreamReader(Content)
+                ContentString = reader.ReadToEnd
+                Main.CR_SeasonJson = New UrlJson(e.Request.Uri, ContentString)
+                Exit Sub
+            End If
+
+        ElseIf CBool(InStr(Main.LoadingUrl, "funimation.com")) Then
+            If CBool(InStr(e.Request.Uri, "?deviceType=web")) Then
+                'Debug.WriteLine(e.Request.Uri)
+                Dim parms As String() = e.Request.Uri.Split(New String() {"?deviceType="}, System.StringSplitOptions.RemoveEmptyEntries)
+                Main.FunimationDeviceRegion = "?deviceType=" + parms(1)
+
+            End If
+            If CBool(InStr(e.Request.Uri, "https://title-api.prd.funimationsvc.com")) Then
+                Debug.WriteLine("Funimtaion: " + e.Request.Uri)
+                If (Me.InvokeRequired) Then
+                    Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Uri))
+                    Exit Sub
+                Else
+                    Main.LoadedUrls.Add(e.Request.Uri)
+                    Exit Sub
+                End If
+            ElseIf CBool(InStr(e.Request.Uri, "/data/v2/shows/")) Then
+                Debug.WriteLine("Funimtaion: " + e.Request.Uri)
+                If (Me.InvokeRequired) Then
+                    Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Uri))
+                    Exit Sub
+                Else
+                    Main.LoadedUrls.Add(e.Request.Uri)
+                    Exit Sub
+                End If
+            ElseIf CBool(InStr(e.Request.Uri, "/data/v1/episodes/")) Then
+                Debug.WriteLine("Funimtaion: " + e.Request.Uri)
+                If (Me.InvokeRequired) Then
+                    Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Uri))
+                    Exit Sub
+                Else
+                    Main.LoadedUrls.Add(e.Request.Uri)
+                    Exit Sub
+                End If
+            End If
+
+
+
+        End If
+
+    End Sub
+
 
 
 
@@ -148,6 +235,7 @@ Public Class Browser
 
 
     Private Sub ObserveHttp(ByVal sender As Object, ByVal e As CoreWebView2WebResourceRequestedEventArgs) 'Handles RequestResource.GetUrl
+
 
         If CBool(InStr(e.Request.Uri, "crunchyroll.com")) = True And Main.CrBetaBasic = Nothing Then
             Dim Headers As New List(Of KeyValuePair(Of String, String))
@@ -160,36 +248,31 @@ Public Class Browser
             Next
         End If
 
-
+        Exit Sub
 
         If CBool(InStr(Main.LoadingUrl, "crunchyroll.com")) Then
+
             If CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "streams?")) Then
                 Debug.WriteLine("Crunchyroll-Single: " + e.Request.Uri)
-                If (Me.InvokeRequired) Then
-                    Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Uri))
-                    Exit Sub
-                Else
-                    Main.LoadedUrls.Add(e.Request.Uri)
-                    Exit Sub
-                End If
+                'Dim ContentString As String = Nothing
+                'Dim Content As New MemoryStream
+                'e.Response.Content.CopyTo(Content)
+                'Content.Position = 0
+                'ContentString = Encoding.UTF8.GetString(Content.ToArray())
+                'MsgBox(ContentString)
+                Main.LoadedUrls.Add(e.Request.Uri)
+                'Main.CR_VideoJson = New UrlJson(e.Request.Uri, e.Request.Content.ToString)
+                Exit Sub
             ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "/objects/")) And CBool(InStr(e.Request.Uri, "/watch/")) Then
-                If (Me.InvokeRequired) Then
-                    Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Uri))
-                    Exit Sub
-                Else
-                    Main.LoadedUrls.Add(e.Request.Uri)
-                    Exit Sub
-                End If
                 Debug.WriteLine(e.Request.Uri)
+                Main.LoadedUrls.Add(e.Request.Uri)
+                'Main.CR_ObjectsJson = New UrlJson(e.Request.Uri, e.Request.Content.ToString)
+                Exit Sub
             ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "seasons?series_id=")) Then
                 Debug.WriteLine("Crunchyroll-Season: " + e.Request.Uri)
-                If (Me.InvokeRequired) Then
-                    Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request.Uri))
-                    Exit Sub
-                Else
-                    Main.LoadedUrls.Add(e.Request.Uri)
-                    Exit Sub
-                End If
+                Main.LoadedUrls.Add(e.Request.Uri)
+                'Main.CR_SeasonJson = New UrlJson(e.Request.Uri, e.Request.Content.ToString)
+                Exit Sub
             End If
 
 

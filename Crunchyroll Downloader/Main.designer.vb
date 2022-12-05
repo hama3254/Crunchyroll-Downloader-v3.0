@@ -48,7 +48,7 @@ Partial Class Main
         Me.ThreadCount = New System.Windows.Forms.ToolStripMenuItem()
         Me.MsgBoxToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CRCookieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ClearAllSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UrlJsonsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ItemBoundsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DummyItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
@@ -161,7 +161,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem, Me.ClearAllSettingsToolStripMenuItem, Me.ItemBoundsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.ItemBoundsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -210,10 +210,10 @@ Partial Class Main
         Me.CRCookieToolStripMenuItem.Name = "CRCookieToolStripMenuItem"
         resources.ApplyResources(Me.CRCookieToolStripMenuItem, "CRCookieToolStripMenuItem")
         '
-        'ClearAllSettingsToolStripMenuItem
+        'UrlJsonsToolStripMenuItem
         '
-        Me.ClearAllSettingsToolStripMenuItem.Name = "ClearAllSettingsToolStripMenuItem"
-        resources.ApplyResources(Me.ClearAllSettingsToolStripMenuItem, "ClearAllSettingsToolStripMenuItem")
+        Me.UrlJsonsToolStripMenuItem.Name = "UrlJsonsToolStripMenuItem"
+        resources.ApplyResources(Me.UrlJsonsToolStripMenuItem, "UrlJsonsToolStripMenuItem")
         '
         'ItemBoundsToolStripMenuItem
         '
@@ -287,7 +287,7 @@ Partial Class Main
     Friend WithEvents ThreadCount As ToolStripMenuItem
     Friend WithEvents MsgBoxToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CRCookieToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ClearAllSettingsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UrlJsonsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ItemBoundsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DummyItemToolStripMenuItem As ToolStripMenuItem
     Public WithEvents Panel1 As Panel

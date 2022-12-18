@@ -64,6 +64,10 @@ Public Class Anime_Add
 
                 Next
 
+                'MsgBox(Main.CR_Cookies)
+
+                'Browser.WebView2.Source = New Uri(Url)
+                'Exit Sub
                 If CBool(InStr(Url, "/series")) Then
                     Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim locale2() As String = locale1(1).Split(New String() {"/series"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -99,7 +103,7 @@ Public Class Anime_Add
 
 
             'MsgBox(Cookies)
-            Main.CR_Cookies = " -H " + Chr(34) + Main.CR_Cookies + Chr(34)
+            Dim Loc_CR_Cookies = " -H " + Chr(34) + Main.CR_Cookies + Chr(34)
 
 
 
@@ -109,13 +113,13 @@ Public Class Anime_Add
 
             Dim CRBetaBearer As String = "Bearer "
 
-            Dim v1Token As String = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Main.CR_Cookies, Auth, Post)
+            Dim v1Token As String = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post)
 
 
 
             If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
 
-                v1Token = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Main.CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"))
+                v1Token = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"))
 
             End If
 
@@ -135,7 +139,7 @@ Public Class Anime_Add
                 Exit Sub
 
             ElseIf CBool(InStr(v1Token, "curl:")) = True Then
-                v1Token = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Main.CR_Cookies, Auth, Post)
+                v1Token = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post)
             End If
 
             If CBool(InStr(v1Token, "curl:")) = True Then
@@ -154,37 +158,37 @@ Public Class Anime_Add
 
 
             Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + CRBetaBearer + Chr(34)
-            Dim v2Content As String = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Main.CR_Cookies, Auth2) 'client.DownloadString("https://www.crunchyroll.com/index/v2")
-
-            If CBool(InStr(v2Content, "curl:")) = True Then
-                v2Content = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Main.CR_Cookies, Auth2)
-            End If
-
-            If CBool(InStr(v2Content, "curl:")) = True Then
-                Browser.WebView2.CoreWebView2.Navigate(Url)
-                StatusLabel.Text = "Status: loading in browser..."
-                Exit Sub
-            End If
-
-
-            Dim v2ContentBeta() As String = v2Content.Split(New String() {Chr(34) + "cms_web" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-
-            Dim bucket() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "bucket" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim bucket2() As String = bucket(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-            Dim policy() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "policy" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim policy2() As String = policy(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-            Dim signature() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "signature" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim signature2() As String = signature(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-            Dim key_pair_id() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "key_pair_id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim key_pair_id2() As String = key_pair_id(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
             If CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "series/")) = True Then
 
+                Dim v2Content As String = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Main.CR_Cookies, Auth2)
+
+                If CBool(InStr(v2Content, "curl:")) = True Then
+                    v2Content = Main.CurlAuth("https://www.crunchyroll.com/index/v2", Main.CR_Cookies, Auth2)
+                End If
+
+                If CBool(InStr(v2Content, "curl:")) = True Then
+                    Browser.WebView2.CoreWebView2.Navigate(Url)
+                    StatusLabel.Text = "Status: loading in browser..."
+                    Exit Sub
+                End If
+
+
+                Dim v2ContentBeta() As String = v2Content.Split(New String() {Chr(34) + "cms_web" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                Dim bucket() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "bucket" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim bucket2() As String = bucket(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim policy() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "policy" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim policy2() As String = policy(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim signature() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "signature" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim signature2() As String = signature(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim key_pair_id() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "key_pair_id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim key_pair_id2() As String = key_pair_id(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
                 Dim Series_idUrlBuilder() As String = Url.Split(New String() {"series/"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim Series_idUrlBuilder2() As String = Series_idUrlBuilder(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -205,7 +209,7 @@ Public Class Anime_Add
                 Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
-                ObjectsUrl = "https://www.crunchyroll.com/cms/v2" + bucket2(0) + "/objects/" + ObjectsURLBuilder4(0) + "?locale=" + Main.locale + "&Signature=" + signature2(0) + "&Policy=" + policy2(0) + "&Key-Pair-Id=" + key_pair_id2(0)
+                ObjectsUrl = "https://www.crunchyroll.com/content/v2/cms/objects/" + ObjectsURLBuilder4(0) + "?locale=" + Main.locale '+ "&Signature=" + signature2(0) + "&Policy=" + policy2(0) + "&Key-Pair-Id=" + key_pair_id2(0)
                 'End Using
                 'MsgBox(ObjectsUrl)
 
@@ -215,15 +219,21 @@ Public Class Anime_Add
                 Dim StreamsUrl As String = Nothing
                 Dim ObjectJson As String
                 Try
-                    ObjectJson = Main.Curl(ObjectsUrl)
+                    ObjectJson = Main.CurlAuth(ObjectsUrl, Loc_CR_Cookies, Auth2)
+
+
+                    '"curl:" 'Main.Curl(ObjectsUrl)
                     'MsgBox(ObjectJson)
 
-                    If CBool(InStr(ObjectJson, "curl:")) = True Then
-                        ObjectJson = Main.Curl(ObjectsUrl)
-                    End If
+                    'If CBool(InStr(ObjectJson, "curl:")) = True Then
+                    '    ObjectJson = Main.Curl(ObjectsUrl)
+                    'End If
 
                     If CBool(InStr(ObjectJson, "curl:")) = True Then
-                        Browser.WebView2.CoreWebView2.Navigate(Url)
+                        MsgBox(ObjectJson)
+                        'Browser.WebView2.CoreWebView2.Navigate(ObjectsUrl)
+                        ' Main.LoadingUrl = ObjectsUrl
+
                         Exit Sub
                     ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
 
@@ -260,7 +270,7 @@ Public Class Anime_Add
                     Exit Sub
                 End Try
 
-                Main.GetBetaVideoProxy(StreamsUrl, Url)
+                Main.GetBetaVideoProxy(StreamsUrl, Auth2, Url)
 
 
             Else

@@ -17,6 +17,8 @@ Imports System.Security.Policy
 Imports MyProvider.MyProvider
 Imports System.Windows
 Imports Microsoft.Web.WebView2.Core
+Imports System.Net.Http
+
 Public Class Main
     Inherits MetroForm
     Dim t As Thread
@@ -29,6 +31,7 @@ Public Class Main
     Public CR_SeasonJson As UrlJson = New UrlJson("", "")
     Public CR_ObjectsJson As UrlJson = New UrlJson("", "")
     Public CR_VideoJson As UrlJson = New UrlJson("", "")
+    Public CR_AuthToken As String = ""
 
     Public CrBetaMass As String = Nothing
     Public CrBetaMassEpisodes As String = Nothing
@@ -42,7 +45,7 @@ Public Class Main
     'Public CrBetaStreams As String = Nothing
     'Public CrBetaStreamsUrl As String = Nothing
     Public LoadingUrl As String = ""
-    Public LoadedUrls As New List(Of String)
+    Public LoadedUrls As New List(Of CoreWebView2WebResourceRequest)
     Public FunimationAPIRegion As String = Nothing
     Public FunimationRegion As String = Nothing
     Public FunimationDeviceRegion As String = Nothing
@@ -352,6 +355,10 @@ Public Class Main
     Public Sub SetSettingsTheme()
         Einstellungen.Theme = Manager.Theme
     End Sub
+
+
+
+
 
     Function AddLeadingZeros(ByVal txt As String) As String
 
@@ -1167,12 +1174,12 @@ Public Class Main
         Next
     End Sub
 
-    Public Sub GetBetaVideoProxy(ByVal requesturl As String, ByVal WebsiteURL As String) ', ByVal ObjectJson As String, ByVal VideoJson As String)
-        Dim Evaluator = New Thread(Sub() Me.GetBetaVideo(requesturl, WebsiteURL)) ', ObjectJson, VideoJson))
+    Public Sub GetBetaVideoProxy(ByVal requesturl As String, ByVal AuthToken As String, ByVal WebsiteURL As String)
+        Dim Evaluator = New Thread(Sub() Me.GetBetaVideo(requesturl, AuthToken, WebsiteURL))
         Evaluator.Start()
     End Sub
 
-    Public Sub GetBetaVideo(ByVal Streams As String, ByVal WebsiteURL As String) ', ByVal ObjectJson As String, ByVal VideoJson As String) '
+    Public Sub GetBetaVideo(ByVal Streams As String, ByVal AuthToken As String, ByVal WebsiteURL As String)
         If b = False Then
             b = True
         End If
@@ -1180,10 +1187,6 @@ Public Class Main
         Debug.WriteLine(vbCrLf)
         Debug.WriteLine("Website: " + WebsiteURL)
 
-        'CrBetaStreams = Nothing
-        'CrBetaObjects = Nothing
-        'CrBetaStreamsUrl = Nothing
-        'LoadedUrl = Nothing
 
 
         Try
@@ -1227,52 +1230,44 @@ Public Class Main
             Dim ObjectsURL As String = ObjectsURLBuilder(0) + "objects/" + ObjectsURLBuilder4(0) + ObjectsURLBuilder2(1)
             Debug.WriteLine(ObjectsURL)
 
+            Dim Loc_CR_Cookies = " -H " + Chr(34) + CR_Cookies + Chr(34)
+
+            Dim Loc_AuthToken = " -H " + Chr(34) + "Authorization: " + AuthToken + Chr(34)
+
+            If CBool(InStr(AuthToken, "Authorization")) = True Then
+                Loc_AuthToken = AuthToken
+            End If
+
+
+            ObjectJson = CurlAuth(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
 
 
 
-            ObjectJson = Curl(ObjectsURL)
+            'ObjectJson = Curl(ObjectsURL)
 
             'MsgBox(ObjectJson)
 
             If CBool(InStr(ObjectJson, "curl:")) = True Then
-                ObjectJson = Curl(ObjectsURL)
+                ObjectJson = CurlAuth(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
             End If
 
+
+
             If CBool(InStr(ObjectJson, "curl:")) = True And CBool(InStr(CR_ObjectsJson.Url, ObjectsURLBuilder4(0))) Then
-                Debug.WriteLine("curl error, using UrlJson " + vbNewLine + ObjectJson)
+                Debug.WriteLine("curl error, using CR_ObjectsJson " + vbNewLine + ObjectJson)
 
                 ObjectJson = CR_ObjectsJson.Content
                 CR_ObjectsJson = New UrlJson("", "")
             ElseIf CBool(InStr(ObjectJson, "curl:")) Then
-                MsgBox("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
+            MsgBox("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
                 Exit Sub
             End If
 
-            'Try
-            '    Using client As New WebClient()
-            '        client.Encoding = System.Text.Encoding.UTF8
-            '        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-            '        client.Headers.Add(CR_Cookies) 'document
-            '        client.Headers.Add("Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
-            '        client.Headers.Add("Accept-Encoding: gzip, deflate, br")
-            '        client.Headers.Add("Sec-Fetch-Dest: document")
-            '        client.Headers.Add("Sec-Fetch-Mode: navigate")
-            '        client.Headers.Add("Sec-Fetch-Site: none") 'Sec-Fetch-User
-            '        client.Headers.Add("Sec-Fetch-User: ?1") '
-            '        client.Headers.Add("TE: trailers")
-            '        client.Headers.Add("Upgrade-Insecure-Requests: 1")
-            '        ObjectJson = client.DownloadString(ObjectsURL)
-            '    End Using
-            'Catch ex As Exception
 
-            '    Debug.WriteLine("error- getting name data")
-            '    Debug.WriteLine(vbNewLine + ex.ToString)
-
-            '    Exit Sub
-            'End Try
 
             'Filter JSON esqaped characters
             'Debug.WriteLine(Date.Now.ToString + "before:" + ObjectJson)
+            Debug.WriteLine("1288: " + ObjectJson)
             ObjectJson = CleanJSON(ObjectJson)
             'Debug.WriteLine(Date.Now.ToString + "after:" + ObjectJson)
 
@@ -1283,7 +1278,8 @@ Public Class Main
                 For Each item As JProperty In data
                     item.CreateReader()
                     Select Case item.Name
-                        Case "items" 'each record is inside the entries array
+
+                        Case "data" 'each record is inside the entries array
                             For Each Entry As JObject In item.Values
                                 Try
                                     Dim Title As String = Entry("title").ToString
@@ -1539,10 +1535,15 @@ Public Class Main
 #Region "VideoJson"
             Dim VideoJson As String = Nothing
 
-            VideoJson = Curl(Streams)
+            VideoJson = CurlAuth(Streams, Loc_CR_Cookies, Loc_AuthToken)
+
+
+
+            'VideoJson = Curl(Streams)
 
             If CBool(InStr(VideoJson, "curl:")) = True Then
-                VideoJson = Curl(Streams)
+                VideoJson = CurlAuth(Streams, Loc_CR_Cookies, Loc_AuthToken)
+
             End If
 
             Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1551,7 +1552,7 @@ Public Class Main
 
 
             If CBool(InStr(VideoJson, "curl:")) = True And CBool(InStr(CR_VideoJson.Url, StreamsUrlBuilder2(0))) Then
-                Debug.WriteLine("curl error, using UrlJson " + vbNewLine + VideoJson)
+                Debug.WriteLine("curl error, using CR_VideoJson " + vbNewLine + VideoJson)
                 VideoJson = CR_VideoJson.Content
                 CR_VideoJson = New UrlJson("", "")
             ElseIf CBool(InStr(VideoJson, "curl:")) = True Then
@@ -1563,16 +1564,7 @@ Public Class Main
 
             Debug.WriteLine("VideoJson: " + VideoJson)
             Debug.WriteLine("VideoStreams: " + Streams)
-            'Try
-            '    Using client As New WebClient()
-            '        client.Encoding = System.Text.Encoding.UTF8
-            '        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
-            '        VideoJson = client.DownloadString(Streams)
-            '    End Using
-            'Catch ex As Exception
-            '    Debug.WriteLine("error- getting stream data")
-            '    Exit Sub
-            'End Try
+
 
             Dim CR_HardSubLang As String = ConvertCC(SubSprache)
 #End Region
@@ -1673,50 +1665,59 @@ Public Class Main
 
             Dim VideoJObject As JObject = JObject.Parse(VideoJson)
             Dim VideoData As List(Of JToken) = VideoJObject.Children().ToList
+
             For Each item As JProperty In VideoData
                 item.CreateReader()
                 Select Case item.Name
-                    Case "audio_locale"
-                        Dim Title As String = item.Value.ToString
-                        CR_audio_locale = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                    Case "data" 'each record is inside the entries array
+                        For Each Entry As JObject In item.Values
 
-                    Case "streams" 'each record is inside the entries array
-                        For Each Entry As JProperty In item.Values
+                            Dim VideoSubData As List(Of JToken) = Entry.Children().ToList
+                            For Each VideoSubItem As JProperty In VideoSubData
 
-                            Dim JsonEntryFormat As String = Entry.Name
-                            If CBool(InStr(JsonEntryFormat, "drm")) Or CBool(InStr(JsonEntryFormat, "dash")) Or CBool(InStr(JsonEntryFormat, "download")) Then
-                                Continue For
-                            End If
+                                Dim JsonEntryFormat As String = VideoSubItem.Name
+                                If CBool(InStr(JsonEntryFormat, "drm")) Or CBool(InStr(JsonEntryFormat, "dash")) Or CBool(InStr(JsonEntryFormat, "download")) Or CBool(InStr(JsonEntryFormat, "urls")) Then '
+                                    Continue For
+                                End If
 
+                                Dim SubData As List(Of JToken) = VideoSubItem.Children().ToList
+                                For Each SubItem As JObject In SubData
+                                    SubItem.CreateReader()
 
-                            Dim SubData As List(Of JToken) = Entry.Children().ToList
-                            For Each SubItem As JObject In SubData
-                                SubItem.CreateReader()
-
-                                Dim StreamFormats As List(Of JToken) = SubItem.Children().ToList
+                                    Dim StreamFormats As List(Of JToken) = SubItem.Children().ToList
 
 
-                                For Each HardsubStreams As JProperty In StreamFormats
-                                    HardsubStreams.CreateReader()
-                                    Dim SubLang As String = HardsubStreams.Name
-                                    Dim Url As String = HardsubStreams.Value("url").ToString
-                                    If SubLang = Nothing Or SubLang = "" Then
-                                        SubLang = ""
-                                    End If
-                                    CR_Streams.Add(New CR_Beta_Stream(CR_audio_locale, SubLang, JsonEntryFormat, Url))
+                                    For Each HardsubStreams As JProperty In StreamFormats
+                                        HardsubStreams.CreateReader()
+                                        Dim SubLang As String = HardsubStreams.Name
+                                        Dim Url As String = HardsubStreams.Value("url").ToString
+                                        If SubLang = Nothing Or SubLang = "" Then
+                                            SubLang = ""
+                                        End If
 
+                                        CR_Streams.Add(New CR_Beta_Stream(SubLang, JsonEntryFormat, Url))
+
+                                    Next
                                 Next
+
+
                             Next
                         Next
+                    Case "meta" 'each record is inside the entries array
+                        For Each MetaEntrys As JProperty In item.Values
+                            Select Case MetaEntrys.Name
+                                Case "audio_locale"
+                                    Dim AudioTag As String = MetaEntrys.Value.ToString
+                                    CR_audio_locale = String.Join(" ", AudioTag.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                            End Select
+
+                        Next
+
                 End Select
             Next
 
             Dim CR_URI_Master As String = Nothing
 
-            'Me.Invoke(New Action(Function() As Object
-            '                         MsgBox(CR_Streams.Count.ToString + vbNewLine + LangNew)
-            '                         Return Nothing
-            '                     End Function))
 
             Dim RawStream As String = ""
 
@@ -1769,14 +1770,7 @@ Public Class Main
             Else
                 Throw New System.Exception("Premium Episode")
             End If
-            'Else
-            '    Me.Invoke(New Action(Function() As Object
-            '                             Anime_Add.StatusLabel.Text = "Status: Substitles only mode - skipped video"
-            '                             Me.Text = "Status: Substitles only mode - skipped video"
-            '                             Me.Invalidate()
-            '                             Return Nothing
-            '                         End Function))
-            'End If
+
 #End Region
 #Region "lösche doppel download"
             Dim Pfad5 As String = Pfad2.Replace(Chr(34), "")
@@ -1866,7 +1860,7 @@ Public Class Main
                     'MsgBox(ffmpeg_url_3)
                     Debug.WriteLine("Line 2120-CR_audio_locale: " + CR_audio_locale)
 
-                        If MergeSubs = True And CR_MetadataUsage = False Then
+                    If MergeSubs = True And CR_MetadataUsage = False Then
                         URL_DL = "-i " + Chr(34) + ffmpeg_url_3.Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
                     ElseIf MergeSubs = False And CR_MetadataUsage = False Then
                         URL_DL = "-i " + Chr(34) + ffmpeg_url_3.Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
@@ -1877,17 +1871,32 @@ Public Class Main
 
                     End If
 
-                        'If MergeSubs = True And CR_MetadataUsage = False Then
-                        '    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
-                        'Else
-                        '    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
-                        'End If
-                    End If
+                    'If MergeSubs = True And CR_MetadataUsage = False Then
+                    '    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
+                    'Else
+                    '    URL_DL = "-i " + Chr(34) + ffmpeg_url_3(0).Trim() + Chr(34) + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                    'End If
                 End If
+            End If
 #Region "thumbnail"
             Dim thumbnail As String() = ObjectJson.Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim thumbnail2 As String() = thumbnail(1).Split(New String() {Chr(34) + "}"}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-            Dim thumbnail3 As String = "https://" + thumbnail2(0).Replace("\/", "/")
+            Dim thumbnail3 As String = ""
+            For i As Integer = 0 To thumbnail.Count - 1
+                If CBool(InStr(thumbnail(i), ".jpg" + Chr(34))) Then
+                    Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".jpg" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                    thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".jpg"
+                    Exit For
+                ElseIf CBool(InStr(thumbnail(i), ".jpeg" + Chr(34))) Then
+                    Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".jpeg" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                    thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".jpeg"
+                    Exit For
+                ElseIf CBool(InStr(thumbnail(i), ".jpe" + Chr(34))) Then
+                    Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".jpe" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                    thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".jpe"
+                    Exit For
+                End If
+            Next
+
 #End Region
 #Region "item constructor"
             Dim SubType_Value As String = Nothing 'HardSubValuesToDisplay(SubSprache2.Replace(Chr(34), ""))
@@ -3487,14 +3496,26 @@ Public Class Main
 
             ProcessCounting = ProcessCounting - 1
             Exit Sub
-        ElseIf LoadedUrls.Count = 0 And ProcessCounting > 0 Then
+        ElseIf LoadedUrls.Count = 1 And ProcessCounting > 0 Then
+
+            If CBool(InStr(LoadedUrls.Item(0).Uri, "/objects/")) Then
+                If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                    Anime_Add.StatusLabel.Text = "Status: Processing Url " + ProcessCounting.ToString
+                End If
+                Me.Text = "Status: Processing Url " + ProcessCounting.ToString
+
+                ProcessCounting = ProcessCounting - 1
+                Exit Sub
+            End If
+
+        ElseIf LoadedUrls.Count = 0 And ProcessCounting = 0 Then
             If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
                 Anime_Add.StatusLabel.Text = "Status: nothing found"
             End If
             Me.Text = "Status: nothing found"
             'ProcessUrls()
             b = True
-            Debug.WriteLine("3412: nothing found")
+            Debug.WriteLine("3508: nothing found")
             Grapp_RDY = True
             ProcessCounting = 30
             ScanTimeout.Enabled = False
@@ -3511,11 +3532,11 @@ Public Class Main
             Anime_Add.StatusLabel.Text = "Status: Processing... "
         End If
         Me.Text = "Status: Processing... "
-        ProcessUrls()
         Debug.WriteLine("ProcessUrls")
-
         ProcessCounting = 30
         ScanTimeout.Enabled = False
+        ProcessUrls()
+
         Exit Sub
 
 
@@ -3524,10 +3545,13 @@ Public Class Main
     Public Sub ProcessUrls()
         Debug.WriteLine(LoadedUrls.Count.ToString)
         Debug.WriteLine(Date.Now.ToString + " Thread Name: " + Thread.CurrentThread.Name)
-
+        Dim SavedObjectsUrl = ""
         For i As Integer = 0 To LoadedUrls.Count - 1
-            Dim requesturl As String = LoadedUrls.Item(i)
-            If CBool(InStr(requesturl, "crunchyroll.com/")) And CBool(InStr(requesturl, "streams?")) Then
+
+            Dim Request As CoreWebView2WebResourceRequest = LoadedUrls.Item(i)
+
+
+            If CBool(InStr(Request.Uri, "crunchyroll.com/")) And CBool(InStr(Request.Uri, "streams?")) Then
 
                 If b = False Then
 
@@ -3536,7 +3560,9 @@ Public Class Main
                     End If
                     Me.Text = "Status: Crunchyroll episode found."
                     Debug.WriteLine("Crunchyroll episode found")
-                    GetBetaVideoProxy(requesturl, WebbrowserURL)
+
+
+                    GetBetaVideoProxy(Request.Uri, CR_AuthToken, WebbrowserURL)
                     b = True
 
                     'Browser.WebBrowser1.LoadUrl(requesturl)
@@ -3546,55 +3572,8 @@ Public Class Main
                     Me.Text = "Crunchyroll Downloader"
                     Exit Sub
                 End If
-            ElseIf CBool(InStr(requesturl, "crunchyroll.com/")) And CBool(InStr(requesturl, "/objects/")) Then
 
-                If b = False Then
-                    Dim ObjectJson As String
-                    Dim ObjectsUrl As String = requesturl
-                    Dim StreamsUrl As String
-                    ObjectJson = Curl(ObjectsUrl)
-
-                    If CBool(InStr(ObjectJson, "curl:")) = True Then
-                        ObjectJson = Curl(ObjectsUrl)
-                    End If
-
-                    If CBool(InStr(ObjectJson, "curl:")) = True Then
-                        Continue For
-                    ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
-
-                        If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                            Anime_Add.StatusLabel.Text = "Status: Failed, check CR login"
-                        End If
-                        Me.Text = "Status: Failed, check CR login"
-                        Debug.WriteLine("Status: Failed, check CR login")
-
-                        Continue For
-                    End If
-
-
-
-
-                    Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                    Dim StreamsUrlBuilder3() As String = ObjectsUrl.Split(New String() {"objects/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim StreamsUrlBuilder4() As String = StreamsUrlBuilder3(1).Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                    StreamsUrl = StreamsUrlBuilder3(0) + "videos/" + StreamsUrlBuilder2(0) + "/streams?" + StreamsUrlBuilder4(1)
-
-
-                    If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                        Anime_Add.StatusLabel.Text = "Status: Crunchyroll episode found."
-                    End If
-                    Me.Text = "Status: Crunchyroll episode found."
-                    Debug.WriteLine("Crunchyroll episode found")
-                    GetBetaVideoProxy(StreamsUrl, WebbrowserURL)
-                    b = True
-                    LoadedUrls.Clear()
-                    Me.Text = "Crunchyroll Downloader"
-                    Exit Sub
-                End If
-            ElseIf CBool(InStr(requesturl, "crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) And CBool(InStr(WebbrowserURL, "series")) Then
+            ElseIf CBool(InStr(Request.Uri, "crunchyroll.com/")) And CBool(InStr(Request.Uri, "seasons?series_id=")) And CBool(InStr(WebbrowserURL, "series")) Then
 
                 If b = False Then
 
@@ -3603,14 +3582,14 @@ Public Class Main
                     End If
                     Me.Text = "Status: Crunchyroll season found."
                     Debug.WriteLine("Crunchyroll season found")
-                    GetBetaSeasons(requesturl)
-                    'Browser.WebBrowser1.LoadUrl(requesturl)
+                    GetBetaSeasons(Request.Uri)
+                    'Browser.WebBrowser1.LoadUrl(Request.Uri)
                     b = True
                     LoadedUrls.Clear()
                     Me.Text = "Crunchyroll Downloader"
                     Exit Sub
                 End If
-            ElseIf CBool(InStr(requesturl, "crunchyroll.com/")) And CBool(InStr(requesturl, "seasons?series_id=")) Then
+            ElseIf CBool(InStr(Request.Uri, "crunchyroll.com/")) And CBool(InStr(Request.Uri, "seasons?series_id=")) Then
 
                 If b = False Then
 
@@ -3622,15 +3601,75 @@ Public Class Main
                     Me.Text = "Crunchyroll Downloader"
                     Exit Sub
                 End If
+            ElseIf CBool(InStr(Request.Uri, "crunchyroll.com/")) And CBool(InStr(Request.Uri, "/objects/")) Then
+                If i = LoadedUrls.Count - 1 And SavedObjectsUrl IsNot "" Then
+
+                    If b = False Then
+                        Dim ObjectJson As String
+                        Dim ObjectsUrl As String = Request.Uri
+                        Dim StreamsUrl As String
+                        ObjectJson = Curl(ObjectsUrl)
+
+                        If CBool(InStr(ObjectJson, "curl:")) = True Then
+                            ObjectJson = Curl(ObjectsUrl)
+                        End If
+
+                        If CBool(InStr(ObjectJson, "curl:")) = True Then
+                            Continue For
+                        ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
+
+                            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                                Anime_Add.StatusLabel.Text = "Status: Failed, check CR login"
+                            End If
+                            Me.Text = "Status: Failed, check CR login"
+                            Debug.WriteLine("Status: Failed, check CR login")
+
+                            Continue For
+                        End If
+
+
+
+
+                        Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                        Dim StreamsUrlBuilder3() As String = ObjectsUrl.Split(New String() {"objects/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim StreamsUrlBuilder4() As String = StreamsUrlBuilder3(1).Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                        StreamsUrl = StreamsUrlBuilder3(0) + "videos/" + StreamsUrlBuilder2(0) + "/streams?" + StreamsUrlBuilder4(1)
+
+
+                        If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                            Anime_Add.StatusLabel.Text = "Status: Crunchyroll episode found."
+                        End If
+                        Me.Text = "Status: Crunchyroll episode found."
+                        Debug.WriteLine("Crunchyroll episode found")
+                        Dim Headers As New List(Of KeyValuePair(Of String, String))
+                        Headers.AddRange(Request.Headers.ToList)
+                        Dim AuthToken As String = ""
+                        For ii As Integer = 0 To Headers.Count
+                            If CBool(InStr(Headers.Item(i).Value, "Bearer")) Then
+                                AuthToken = Headers.Item(i).Value
+                            End If
+                        Next
+                        GetBetaVideoProxy(StreamsUrl, AuthToken, WebbrowserURL)
+                        b = True
+                        LoadedUrls.Clear()
+                        Me.Text = "Crunchyroll Downloader"
+                        Exit Sub
+                    End If
+                Else
+                    SavedObjectsUrl = Request.Uri
+                End If
 
             End If
 
-            If CBool(InStr(requesturl, "/data/v2/shows/")) Then
+            If CBool(InStr(Request.Uri, "/data/v2/shows/")) Then
                 b = True
                 'MsgBox("The new Funimation Overview is not supportet yet!", MsgBoxStyle.Information)
                 Me.Invoke(New Action(Function() As Object
                                          'My.Computer.Clipboard.SetText(localHTML)
-                                         GetFunimationJS_Seasons(requesturl)
+                                         GetFunimationJS_Seasons(Request.Uri)
                                          WebbrowserURL = "https://funimation.com/js"
                                          Return Nothing
                                      End Function))
@@ -3638,12 +3677,12 @@ Public Class Main
                 Me.Text = "Crunchyroll Downloader"
                 Exit Sub
             End If
-            If CBool(InStr(requesturl, "data/v1/episodes/")) Then
+            If CBool(InStr(Request.Uri, "data/v1/episodes/")) Then
                 b = True
                 'MsgBox("The new Funimation Overview is not supportet yet!", MsgBoxStyle.Information)
                 Me.Invoke(New Action(Function() As Object
                                          'My.Computer.Clipboard.SetText(localHTML)
-                                         GetFunimationNewJS_VideoProxy(requesturl)
+                                         GetFunimationNewJS_VideoProxy(Request.Uri)
                                          WebbrowserURL = "https://funimation.com/js"
                                          Return Nothing
                                      End Function))
@@ -3651,20 +3690,20 @@ Public Class Main
                 Me.Text = "Crunchyroll Downloader"
                 Exit Sub
             End If
-            If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com")) And CBool(InStr(requesturl, "?region=")) Then
+            If CBool(InStr(Request.Uri, "https://title-api.prd.funimationsvc.com")) And CBool(InStr(Request.Uri, "?region=")) Then
                 If FunimationAPIRegion = Nothing Then
                     Me.Invoke(New Action(Function() As Object
-                                             Dim parms As String() = requesturl.Split(New String() {"?region="}, System.StringSplitOptions.RemoveEmptyEntries)
+                                             Dim parms As String() = Request.Uri.Split(New String() {"?region="}, System.StringSplitOptions.RemoveEmptyEntries)
                                              FunimationAPIRegion = "?region=" + parms(1)
                                              Return Nothing
                                          End Function))
                 End If
                 If b = False Then
 
-                    If CBool(InStr(requesturl, "https://title-api.prd.funimationsvc.com/v1/show")) And CBool(InStr(requesturl, "/episodes/")) Then
+                    If CBool(InStr(Request.Uri, "https://title-api.prd.funimationsvc.com/v1/show")) And CBool(InStr(Request.Uri, "/episodes/")) Then
                         b = True
-                        GetFunimationNewJS_VideoProxy(requesturl)
-                        Debug.WriteLine("processing :" + requesturl)
+                        GetFunimationNewJS_VideoProxy(Request.Uri)
+                        Debug.WriteLine("processing :" + Request.Uri)
                         LoadedUrls.Clear()
                         Me.Text = "Crunchyroll Downloader"
                         Exit Sub
@@ -4378,19 +4417,20 @@ Public Class FunimationStream
 End Class
 
 Public Class CR_Beta_Stream
-    Public audioLanguage As String
+    'Public audioLanguage As String
     Public Url As String
     Public subLang As String
     Public Format As String
-    Public Sub New(ByVal audioLanguage As String, ByVal subLang As String, ByVal Format As String, ByVal Url As String)
+    'ByVal audioLanguage As String, 
+    Public Sub New(ByVal subLang As String, ByVal Format As String, ByVal Url As String)
         Me.subLang = subLang
         Me.Url = Url
-        Me.audioLanguage = audioLanguage
+        'Me.audioLanguage = audioLanguage
         Me.Format = Format
     End Sub
-
+    'Me.audioLanguage,
     Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}, {2}", Me.audioLanguage, Me.subLang, Me.Format, Me.Url)
+        Return String.Format("{0}, {1}, {2}", Me.subLang, Me.Format, Me.Url)
     End Function
 
 End Class

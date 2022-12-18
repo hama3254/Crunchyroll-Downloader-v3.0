@@ -33,6 +33,9 @@ Public Class ErrorDialog
         ElseIf Main.DialogTaskString = "Language_CR_Beta" Then
             'CheckBox1.Visible = False
             StatusLabel.Text = Main.LabelLangNotFoundText
+            Debug.WriteLine("ResoNotFoundString")
+            Debug.WriteLine(Main.ResoNotFoundString)
+            Debug.WriteLine("ResoNotFoundString")
 
             Dim lang_avalibe As String() = Main.ResoNotFoundString.Split(New String() {"hardsub_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 

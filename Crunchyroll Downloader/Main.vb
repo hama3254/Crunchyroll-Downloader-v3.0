@@ -2152,11 +2152,12 @@ Public Class Main
 
     Private Sub Btn_add_Click(sender As Object, e As EventArgs) Handles Btn_add.Click
 
-
-        If Application.OpenForms().OfType(Of Browser).Any = True Then
-        Else
-            UserBowser = False
-            Browser.Show()
+        If File.Exists("cookies.txt") = False Then
+            If Application.OpenForms().OfType(Of Browser).Any = True Then
+            Else
+                UserBowser = False
+                Browser.Show()
+            End If
         End If
 
         If Anime_Add.WindowState = System.Windows.Forms.FormWindowState.Minimized Then

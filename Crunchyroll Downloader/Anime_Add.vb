@@ -16,17 +16,56 @@ Public Class Anime_Add
     Public List_DL_Cancel As Boolean = False
 
 
+    Public Function GetCookiesFromFile(ByVal Host As String) As String
+
+        Dim Cookies As String = "Cookie: "
+        Dim Cookie_txt As String = My.Computer.FileSystem.ReadAllText("cookies.txt")
+
+        Dim LineChar As String = vbCrLf
+
+        If CBool(InStr(Cookie_txt, vbCr)) Then
+            LineChar = vbCr
+            'Debug.WriteLine("vbCr")
+        ElseIf CBool(InStr(Cookie_txt, vbLf)) Then
+            LineChar = vbLf
+            'Debug.WriteLine("vbLf")
+        End If
+
+        Dim Cookie_txt1() As String = Cookie_txt.Split(New String() {LineChar}, System.StringSplitOptions.RemoveEmptyEntries)
+
+        Debug.WriteLine("got txt")
+
+        For i As Integer = 0 To Cookie_txt1.Count - 1
+
+            Dim Cookie_txt2() As String = Cookie_txt1(i).Split(New String() {Chr(9)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            If CBool(InStr(Cookie_txt2(0), Host)) = True Then
+
+                If CBool(InStr(Cookie_txt2(5), "_evidon_suppress")) = True Then
+                    Continue For
+                End If
+
+                Cookies = Cookies + Cookie_txt2(5) + "=" + Cookie_txt2(6) + ";"
 
 
-    Public Authorization As String = Nothing
-    Public AuthorizationCookie As String = Nothing
+
+            End If
+
+        Next
+
+
+        Debug.WriteLine(Cookies)
+
+        Return Cookies
+    End Function
+
 
 
     Public Sub LoadBrowser(ByVal Url As String)
 
         Main.LoadingUrl = Url
         Main.LoadedUrls.Clear()
-
+        Dim NoBrowser As Boolean = False
         'Browser.WebView2.Source = New Uri(Url)
         'Exit Sub
         'MsgBox(Url)
@@ -39,36 +78,39 @@ Public Class Anime_Add
 
             Main.CR_Cookies = "Cookie: "
             'MsgBox("Cookies")
-            Browser.GetCookies(Url)
-            'MsgBox("Cookies2")
+            If File.Exists("cookies.txt") = True Then
+                Main.CR_Cookies = GetCookiesFromFile("crunchyroll.com")
+                NoBrowser = True
+                Main.CrBetaBasic = "Basic bm9haWhkZXZtXzZpeWcwYThsMHE6"
+                'MsgBox(True.ToString)
+            Else
+                Browser.GetCookies(Url)
 
-            Debug.WriteLine(Main.CookieList.Count.ToString)
-            If Main.CookieList.Count = 0 Then
-                Browser.WebView2.CoreWebView2.Navigate(Url)
-                StatusLabel.Text = "Status: loading in browser..."
-                Main.Text = "Status: loading in browser..."
-                Exit Sub
-            End If
-
-            Try
+                Debug.WriteLine(Main.CookieList.Count.ToString)
+                If Main.CookieList.Count = 0 Then
+                    Browser.WebView2.CoreWebView2.Navigate(Url)
+                    StatusLabel.Text = "Status: loading in browser..."
+                    Main.Text = "Status: loading in browser..."
+                    Exit Sub
+                End If
 
 
 
-                Dim DeviceRegion As String = Nothing
-                ' Main.CookieList = Collector.Task.Result()
                 For i As Integer = 0 To Main.CookieList.Count - 1
 
-                    If CBool(InStr(Main.CookieList.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(Main.CookieList.Item(i).Name, "_evidon_suppress")) = False Then
-                        Main.CR_Cookies = Main.CR_Cookies + Main.CookieList.Item(i).Name + "=" + Main.CookieList.Item(i).Value + ";"
-                    End If
+                        If CBool(InStr(Main.CookieList.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(Main.CookieList.Item(i).Name, "_evidon_suppress")) = False Then
+                            Main.CR_Cookies = Main.CR_Cookies + Main.CookieList.Item(i).Name + "=" + Main.CookieList.Item(i).Value + ";"
+                        End If
 
-                Next
+                    Next
 
-                'MsgBox(Main.CR_Cookies)
+            End If
 
-                'Browser.WebView2.Source = New Uri(Url)
-                'Exit Sub
-                If CBool(InStr(Url, "/series")) Then
+            'MsgBox(Main.CR_Cookies)
+
+            Dim DeviceRegion As String = Nothing
+
+            If CBool(InStr(Url, "/series")) Then
                     Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim locale2() As String = locale1(1).Split(New String() {"/series"}, System.StringSplitOptions.RemoveEmptyEntries)
                     Main.locale = Main.Convert_locale(locale2(0))
@@ -91,18 +133,6 @@ Public Class Anime_Add
                     End If
                 End If
 
-                'MsgBox("locale: " + Main.locale)
-
-            Catch ex As Exception
-                Browser.WebView2.CoreWebView2.Navigate(Url)
-                StatusLabel.Text = "Status: loading in browser..."
-                Exit Sub
-            End Try
-
-
-
-
-            'MsgBox(Cookies)
             Dim Loc_CR_Cookies = " -H " + Chr(34) + Main.CR_Cookies + Chr(34)
 
 
@@ -123,6 +153,7 @@ Public Class Anime_Add
 
             End If
 
+            MsgBox(v1Token)
 
             If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
                 Me.StatusLabel.Text = "Status: Failed - bad request, check CR login"
@@ -142,13 +173,15 @@ Public Class Anime_Add
                 v1Token = Main.CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post)
             End If
 
+
+
             If CBool(InStr(v1Token, "curl:")) = True Then
                 Browser.WebView2.CoreWebView2.Navigate(Url)
                 StatusLabel.Text = "Status: loading in browser..."
                 Exit Sub
             End If
 
-            'MsgBox(v1Token)
+            '
 
             Dim Token() As String = v1Token.Split(New String() {Chr(34) + "access_token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim Token2() As String = Token(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -414,12 +447,6 @@ Public Class Anime_Add
     Private Sub Btn_dl_Click(sender As Object, e As EventArgs) Handles btn_dl.Click
 
 
-        If Application.OpenForms().OfType(Of Browser).Any = True Then
-        Else
-            Main.UserBowser = False
-            Browser.Show()
-        End If
-
         Main.LoginOnly = "Download Mode!"
         'MsgBox(Main.WebbrowserURL)
         If SubTitlesOnlyCB.Text = "[Default]" Then
@@ -484,7 +511,7 @@ Public Class Anime_Add
                         If Main.Grapp_RDY = True Then
 
                             Main.b = False
-                            Debug.WriteLine("Start loading: " + Date.Now.ToString)
+                            Debug.WriteLine("what's going on?: " + Date.Now.ToString)
                             StatusLabel.Text = "Status: loading ...."
                             LoadBrowser(textBox1.Text)
                         Else

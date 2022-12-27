@@ -54,7 +54,7 @@ Public Class Anime_Add
         Next
 
 
-        Debug.WriteLine(Cookies)
+        'Debug.WriteLine(Cookies)
 
         Return Cookies
     End Function
@@ -153,7 +153,7 @@ Public Class Anime_Add
 
             End If
 
-            MsgBox(v1Token)
+            'MsgBox(v1Token)
 
             If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
                 Me.StatusLabel.Text = "Status: Failed - bad request, check CR login"
@@ -174,6 +174,7 @@ Public Class Anime_Add
             End If
 
 
+            'MsgBox(v1Token)
 
             If CBool(InStr(v1Token, "curl:")) = True Then
                 Browser.WebView2.CoreWebView2.Navigate(Url)
@@ -263,9 +264,8 @@ Public Class Anime_Add
                     'End If
 
                     If CBool(InStr(ObjectJson, "curl:")) = True Then
-                        MsgBox(ObjectJson)
-                        'Browser.WebView2.CoreWebView2.Navigate(ObjectsUrl)
-                        ' Main.LoadingUrl = ObjectsUrl
+                        Browser.WebView2.CoreWebView2.Navigate(ObjectsUrl)
+                        Main.LoadingUrl = ObjectsUrl
 
                         Exit Sub
                     ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
@@ -488,7 +488,7 @@ Public Class Anime_Add
                                 Dim Episode0() As String = textBox1.Text.Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
                                 Dim Episode() As String = Episode0(0).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
                                 Dim v1JsonUrl As String = "https://d33et77evd9bgg.cloudfront.net/data/v1/episodes/" + Episode(Episode.Length - 1) + ".json"
-                                MsgBox(v1JsonUrl)
+                                'MsgBox(v1JsonUrl)
                                 Dim v1Json As String = Nothing
                                 Try
                                     Using client As New WebClient()
@@ -696,44 +696,25 @@ Public Class Anime_Add
 
             Dim EpisodeJsonURL As String = Main.CrBetaMassBaseURL + "episodes?season_id=" + SeasonSplit2(0) + "&locale=" + Main.CrBetaMassParameters
 
-            Debug.WriteLine(EpisodeJsonURL)
+            'Debug.WriteLine(EpisodeJsonURL)
 
             Dim EpisodeJson As String = Main.Curl(EpisodeJsonURL) 'localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace(My.Resources.htmlReplace, "")
 
+            If CBool(InStr(EpisodeJson, "curl:")) Then
 
-            Main.CrBetaMassEpisodes = EpisodeJson
+                Main.GetBetaSeasonSingle = True
+                Browser.WebView2.Source = New Uri(EpisodeJsonURL)
+                Exit Sub
 
-            Dim EpisodeNameSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-
-            Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            For i As Integer = 1 To EpisodeSplit.Count - 1
-                Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim EpisodeNameSplit2() As String = EpisodeNameSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                If EpisodeSplit(i).Substring(0, 1) = Chr(34) Then
-                    comboBox3.Items.Add(EpisodeNameSplit2(0))
-                    comboBox4.Items.Add(EpisodeNameSplit2(0))
-                Else
-                    comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
-                    comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
-                End If
-
-            Next
-
-            If comboBox3.Items.Count > 0 Then
-                comboBox3.SelectedIndex = 0
-                comboBox4.SelectedIndex = comboBox4.Items.Count - 1
             End If
 
-            comboBox3.Enabled = True
-            comboBox4.Enabled = True
+
+            FillCREpisodes(EpisodeJson)
 
 
 
-
-
-        ElseIf Main.WebbrowserURL = "https://funimation.com/js" Then
-            comboBox3.Items.Clear()
+            ElseIf Main.WebbrowserURL = "https://funimation.com/js" Then
+                comboBox3.Items.Clear()
             comboBox4.Items.Clear()
             comboBox3.Text = Nothing
             comboBox4.Text = Nothing
@@ -785,7 +766,36 @@ Public Class Anime_Add
 
         End If
     End Sub
+    Public Sub FillCREpisodes(ByVal EpisodeJson As String)
+        'MsgBox(True.ToString)
+        Main.CrBetaMassEpisodes = EpisodeJson
 
+        Dim EpisodeNameSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+        Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+        For i As Integer = 1 To EpisodeSplit.Count - 1
+            Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim EpisodeNameSplit2() As String = EpisodeNameSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            If EpisodeSplit(i).Substring(0, 1) = Chr(34) Then
+                comboBox3.Items.Add(EpisodeNameSplit2(0))
+                comboBox4.Items.Add(EpisodeNameSplit2(0))
+            Else
+                comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
+                comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
+            End If
+
+        Next
+
+        If comboBox3.Items.Count > 0 Then
+            comboBox3.SelectedIndex = 0
+            comboBox4.SelectedIndex = comboBox4.Items.Count - 1
+        End If
+
+        comboBox3.Enabled = True
+        comboBox4.Enabled = True
+
+    End Sub
 
     Public Sub FillFunimationEpisodes(ByVal EpisodeJson As String)
 

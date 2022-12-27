@@ -33,6 +33,8 @@ Public Class Main
     Public CR_VideoJson As UrlJson = New UrlJson("", "")
     Public CR_AuthToken As String = ""
 
+    Public GetBetaSeasonsRetry As Boolean = False
+    Public GetBetaSeasonSingle As Boolean = False
     Public CrBetaMass As String = Nothing
     Public CrBetaMassEpisodes As String = Nothing
     Public CrBetaMassParameters As String = Nothing
@@ -1127,7 +1129,7 @@ Public Class Main
         Anime_Add.btn_dl.Text = "Download" 'Anime_Add.btn_dl.BackgroundImage = My.Resources.main_button_download_default
     End Sub
 
-    Public Sub GetBetaSeasons(ByVal JsonUrl As String) ', ByVal SeasonJson As String)
+    Public Sub GetBetaSeasons(ByVal JsonUrl As String, Optional ByVal BrowserData As String = Nothing) ', ByVal SeasonJson As String)
         Anime_Add.groupBox2.Visible = True
         Anime_Add.bt_Cancel_mass.Enabled = True
         Anime_Add.bt_Cancel_mass.Visible = True
@@ -1151,16 +1153,34 @@ Public Class Main
         'Catch ex As Exception
         '    Debug.WriteLine("error- getting SeasonJson data")
         'End Try
-        SeasonJson = Curl(JsonUrl)
+        If BrowserData = Nothing Then
 
-        If CBool(InStr(SeasonJson, "curl:")) = True Then
             SeasonJson = Curl(JsonUrl)
+
+            If CBool(InStr(SeasonJson, "curl:")) = True Then
+                SeasonJson = Curl(JsonUrl)
+            End If
+
+            If CBool(InStr(SeasonJson, "curl:")) = True And (CR_SeasonJson.Url = JsonUrl) = False Then
+                GetBetaSeasonsRetry = True
+                Browser.WebView2.Source = New Uri(JsonUrl)
+                Exit Sub
+            End If
+
+            If CBool(InStr(SeasonJson, "curl:")) = True And CBool(InStr(CR_SeasonJson.Url, JsonUrl)) Then
+                Debug.WriteLine("curl error, using CR_SeasonJson ")
+
+                SeasonJson = CR_SeasonJson.Content
+                CR_ObjectsJson = New UrlJson("", "")
+            ElseIf CBool(InStr(SeasonJson, "curl:")) = True Then
+                MsgBox("Error - Getting SeasonJson data" + vbNewLine + SeasonJson + vbNewLine + vbNewLine + JsonUrl)
+                Exit Sub
+            End If
+        Else
+            SeasonJson = BrowserData
+            Debug.WriteLine("BrowserData: " + BrowserData)
         End If
 
-        If CBool(InStr(SeasonJson, "curl:")) = True Then
-            MsgBox("Error - Getting SeasonJson data" + vbNewLine + SeasonJson + vbNewLine + vbNewLine + JsonUrl)
-            Exit Sub
-        End If
         SeasonJson = CleanJSON(SeasonJson)
         Dim ParameterSplit() As String = JsonUrl.Split(New String() {"&locale="}, System.StringSplitOptions.RemoveEmptyEntries)
         CrBetaMassParameters = ParameterSplit(1)

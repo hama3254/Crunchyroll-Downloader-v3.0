@@ -224,6 +224,8 @@ Public Class Einstellungen
             ComboBox1.SelectedItem = "English"
         ElseIf Main.SubSprache = "ptBR" Then
             ComboBox1.SelectedItem = "Português (Brasil)"
+        ElseIf Main.SubSprache = "es-419" Then
+            ComboBox1.SelectedItem = "Español (LA)"
         ElseIf Main.SubSprache = "esLA" Then
             ComboBox1.SelectedItem = "Español (LA)"
         ElseIf Main.SubSprache = "frFR" Then
@@ -460,7 +462,7 @@ Public Class Einstellungen
             Main.SubSprache = "ptBR"
             My.Settings.Subtitle = Main.SubSprache
         ElseIf ComboBox1.SelectedItem.ToString = "Español (LA)" Then
-            Main.SubSprache = "esLA"
+            Main.SubSprache = "es-419"
             My.Settings.Subtitle = Main.SubSprache
         ElseIf ComboBox1.SelectedItem.ToString = "Français (France)" Then
             Main.SubSprache = "frFR"
@@ -1277,6 +1279,10 @@ Public Class Einstellungen
             TempTB.Text = FolderBrowserDialog1.SelectedPath
             My.Settings.TempFolder = Main.TempFolder
         End If
+
+    End Sub
+
+    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
 
     End Sub
 

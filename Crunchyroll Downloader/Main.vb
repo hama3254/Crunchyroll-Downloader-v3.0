@@ -763,8 +763,10 @@ Public Class Main
                 Return "English"
             ElseIf HardSub = "ptBR" Or HardSub = "pt" Or HardSub = "pt-BR" Then
                 Return "Português (Brasil)"
-            ElseIf HardSub = "esLA" Or HardSub = "es" Or HardSub = "es-419" Or HardSub = "es-LA" Then
+            ElseIf HardSub = "esLA" Or HardSub = "es" Or HardSub = "es-LA" Then
                 Return "Español (LA)"
+            ElseIf HardSub = "es-419" Then
+                Return "Español"
             ElseIf HardSub = "frFR" Or HardSub = "fr-FR" Then
                 Return "Français (France)"
             ElseIf HardSub = "arME" Or HardSub = "ar-ME" Then
@@ -1727,8 +1729,19 @@ Public Class Main
                         For Each MetaEntrys As JProperty In item.Values
                             Select Case MetaEntrys.Name
                                 Case "audio_locale"
-                                    Dim AudioTag As String = MetaEntrys.Value.ToString
-                                    CR_audio_locale = String.Join(" ", AudioTag.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                    If CR_audio_locale IsNot "ja-JP" Then
+                                        Dim AudioTag As String = MetaEntrys.Value.ToString
+                                        CR_audio_locale = String.Join(" ", AudioTag.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                    End If
+                                Case "subtitles"
+                                    Dim SubtitleSubData As List(Of JToken) = MetaEntrys.Children().ToList
+                                    For Each SubtitleSubItem As JObject In SubtitleSubData
+                                        'MsgBox(SubtitleSubItem.Children().ToList.Count.ToString)
+                                        If SubtitleSubItem.Children().ToList.Count > 2 Then
+                                            CR_audio_locale = "ja-JP"
+                                        End If
+                                        Exit For
+                                    Next
                             End Select
 
                         Next
@@ -1765,9 +1778,10 @@ Public Class Main
                 If UserCloseDialog = True Then
                     Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
                 Else
+                    'MsgBox(CR_HardSubLang)
                     CR_HardSubLang = ResoBackString
                     ResoBackString = Nothing
-
+                    'MsgBox(CR_Streams.Count.ToString)
                     For i As Integer = 0 To CR_Streams.Count - 1
                         Debug.WriteLine(CR_Streams.Item(i).subLang)
                         If CR_Streams.Item(i).subLang = CR_HardSubLang Then

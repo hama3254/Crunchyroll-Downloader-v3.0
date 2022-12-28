@@ -153,8 +153,10 @@ Public Class ErrorDialog
                 Return "en-US"
             ElseIf HardSub = "Português (Brasil)" Then
                 Return "pt-BR"
-            ElseIf HardSub = "Español (LA)" Then
+            ElseIf HardSub = "Español (LA)" Then '"(LA)-Español"
                 Return "es-LA"
+            ElseIf HardSub = "Español" Then
+                Return "es-419"
             ElseIf HardSub = "Français (France)" Then
                 Return "fr-FR"
             ElseIf HardSub = "العربية (Arabic)" Then
@@ -205,4 +207,5 @@ Public Class ErrorDialog
         PictureBox9.Enabled = True
         PictureBox9.Cursor = Cursors.Hand
     End Sub
+
 End Class

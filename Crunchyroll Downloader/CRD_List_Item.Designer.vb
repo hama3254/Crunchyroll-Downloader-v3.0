@@ -31,7 +31,6 @@ Partial Class CRD_List_Item
         Me.Label_Reso = New MetroFramework.Controls.MetroLabel()
         Me.Label_Hardsub = New MetroFramework.Controls.MetroLabel()
         Me.Label_percent = New MetroFramework.Controls.MetroLabel()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ViewInExplorerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -230,7 +229,6 @@ Partial Class CRD_List_Item
     Friend WithEvents PB_Thumbnail As PictureBox
     Friend WithEvents bt_pause As PictureBox
     Friend WithEvents bt_del As PictureBox
-    Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents Timer2 As Timer
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
     Friend WithEvents ViewInExplorerToolStripMenuItem As ToolStripMenuItem

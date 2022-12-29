@@ -406,33 +406,12 @@ Public Class CRD_List_Item
         End If
 
     End Sub
-    Public Sub SetToolTip(ByVal Text As String)
-        ToolTip1.SetToolTip(Me, Text)
-    End Sub
     Private Sub Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.ContextMenuStrip = ContextMenuStrip1 '.ContextMenu
         If Threads < 2 Then
             Threads = 2
         End If
 
-
-
-        'bt_del.SetBounds(775, 10, 35, 29)
-        'bt_pause.SetBounds(740, 15, 25, 20)
-        'PB_Thumbnail.SetBounds(11, 20, 168, 95)
-        'PB_Thumbnail.BringToFront()
-        'Label_website.Location = New Point(195, 15)
-        'Label_Anime.Location = New Point(195, 37)
-        'Label_Reso.Location = New Point(195, 97)
-        'Label_Hardsub.Location = New Point(265, 97)
-        'Label_percent.SetBounds(432, 97, 378, 27)
-        'Label_percent.AutoSize = False
-        'ProgressBar1.SetBounds(195, 70, 601, 20)
-        'PictureBox5.Location = New Point(0, 136)
-        'PictureBox5.Height = 6
-
-
-        'MetroStyleManager1.Theme = Main.Manager.Theme
     End Sub
 
     Public Function GetTextBound() As Rectangle

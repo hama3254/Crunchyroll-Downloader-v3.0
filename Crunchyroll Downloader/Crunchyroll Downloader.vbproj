@@ -149,6 +149,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CRD-Classes.vb" />
     <Compile Include="Settings.vb" />
     <Compile Include="Trackbar.Designer.vb">
       <DependentUpon>Trackbar.vb</DependentUpon>

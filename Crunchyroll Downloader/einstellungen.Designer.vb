@@ -39,7 +39,7 @@ Partial Class Einstellungen
         Me.CBdeDE = New MetroFramework.Controls.MetroCheckBox()
         Me.CBenUS = New MetroFramework.Controls.MetroCheckBox()
         Me.GB_SubLanguage = New System.Windows.Forms.GroupBox()
-        Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
+        Me.CB_CR_Harsubs = New MetroFramework.Controls.MetroComboBox()
         Me.TabPage2 = New MetroFramework.Controls.MetroTabPage()
         Me.GroupBox18 = New System.Windows.Forms.GroupBox()
         Me.ListViewAdd_True = New MetroFramework.Controls.MetroCheckBox()
@@ -234,7 +234,7 @@ Partial Class Einstellungen
         Me.CR_SoftSubDefault.IntegralHeight = False
         Me.CR_SoftSubDefault.ItemHeight = 23
         Me.CR_SoftSubDefault.Items.AddRange(New Object() {"[Disabled]"})
-        Me.CR_SoftSubDefault.Location = New System.Drawing.Point(69, 30)
+        Me.CR_SoftSubDefault.Location = New System.Drawing.Point(82, 30)
         Me.CR_SoftSubDefault.Name = "CR_SoftSubDefault"
         Me.CR_SoftSubDefault.Size = New System.Drawing.Size(326, 29)
         Me.CR_SoftSubDefault.Sorted = True
@@ -266,7 +266,7 @@ Partial Class Einstellungen
         Me.CBesES.AutoSize = True
         Me.CBesES.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CBesES.ForeColor = System.Drawing.Color.Black
-        Me.CBesES.Location = New System.Drawing.Point(156, 73)
+        Me.CBesES.Location = New System.Drawing.Point(164, 73)
         Me.CBesES.Name = "CBesES"
         Me.CBesES.Size = New System.Drawing.Size(127, 19)
         Me.CBesES.TabIndex = 25
@@ -278,7 +278,7 @@ Partial Class Einstellungen
         Me.CBitIT.AutoSize = True
         Me.CBitIT.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CBitIT.ForeColor = System.Drawing.Color.Black
-        Me.CBitIT.Location = New System.Drawing.Point(15, 110)
+        Me.CBitIT.Location = New System.Drawing.Point(24, 110)
         Me.CBitIT.Name = "CBitIT"
         Me.CBitIT.Size = New System.Drawing.Size(119, 19)
         Me.CBitIT.TabIndex = 27
@@ -290,7 +290,7 @@ Partial Class Einstellungen
         Me.CBruRU.AutoSize = True
         Me.CBruRU.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CBruRU.ForeColor = System.Drawing.Color.Black
-        Me.CBruRU.Location = New System.Drawing.Point(296, 110)
+        Me.CBruRU.Location = New System.Drawing.Point(304, 110)
         Me.CBruRU.Name = "CBruRU"
         Me.CBruRU.Size = New System.Drawing.Size(133, 19)
         Me.CBruRU.TabIndex = 29
@@ -302,7 +302,7 @@ Partial Class Einstellungen
         Me.CBarME.AutoSize = True
         Me.CBarME.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CBarME.ForeColor = System.Drawing.Color.Black
-        Me.CBarME.Location = New System.Drawing.Point(156, 110)
+        Me.CBarME.Location = New System.Drawing.Point(164, 110)
         Me.CBarME.Name = "CBarME"
         Me.CBarME.Size = New System.Drawing.Size(115, 19)
         Me.CBarME.TabIndex = 28
@@ -314,7 +314,7 @@ Partial Class Einstellungen
         Me.CBfrFR.AutoSize = True
         Me.CBfrFR.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CBfrFR.ForeColor = System.Drawing.Color.Black
-        Me.CBfrFR.Location = New System.Drawing.Point(296, 35)
+        Me.CBfrFR.Location = New System.Drawing.Point(304, 35)
         Me.CBfrFR.Name = "CBfrFR"
         Me.CBfrFR.Size = New System.Drawing.Size(126, 19)
         Me.CBfrFR.TabIndex = 23
@@ -326,7 +326,7 @@ Partial Class Einstellungen
         Me.CBesLA.AutoSize = True
         Me.CBesLA.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CBesLA.ForeColor = System.Drawing.Color.Black
-        Me.CBesLA.Location = New System.Drawing.Point(156, 35)
+        Me.CBesLA.Location = New System.Drawing.Point(164, 35)
         Me.CBesLA.Name = "CBesLA"
         Me.CBesLA.Size = New System.Drawing.Size(100, 19)
         Me.CBesLA.TabIndex = 22
@@ -338,7 +338,7 @@ Partial Class Einstellungen
         Me.CBptBR.AutoSize = True
         Me.CBptBR.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CBptBR.ForeColor = System.Drawing.Color.Black
-        Me.CBptBR.Location = New System.Drawing.Point(296, 73)
+        Me.CBptBR.Location = New System.Drawing.Point(304, 73)
         Me.CBptBR.Name = "CBptBR"
         Me.CBptBR.Size = New System.Drawing.Size(131, 19)
         Me.CBptBR.TabIndex = 26
@@ -350,7 +350,7 @@ Partial Class Einstellungen
         Me.CBdeDE.AutoSize = True
         Me.CBdeDE.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CBdeDE.ForeColor = System.Drawing.Color.Black
-        Me.CBdeDE.Location = New System.Drawing.Point(15, 73)
+        Me.CBdeDE.Location = New System.Drawing.Point(24, 73)
         Me.CBdeDE.Name = "CBdeDE"
         Me.CBdeDE.Size = New System.Drawing.Size(75, 19)
         Me.CBdeDE.TabIndex = 24
@@ -362,7 +362,7 @@ Partial Class Einstellungen
         Me.CBenUS.AutoSize = True
         Me.CBenUS.FontSize = MetroFramework.MetroCheckBoxSize.Medium
         Me.CBenUS.ForeColor = System.Drawing.Color.Black
-        Me.CBenUS.Location = New System.Drawing.Point(15, 35)
+        Me.CBenUS.Location = New System.Drawing.Point(24, 35)
         Me.CBenUS.Name = "CBenUS"
         Me.CBenUS.Size = New System.Drawing.Size(68, 19)
         Me.CBenUS.TabIndex = 21
@@ -372,7 +372,7 @@ Partial Class Einstellungen
         'GB_SubLanguage
         '
         Me.GB_SubLanguage.BackColor = System.Drawing.Color.Transparent
-        Me.GB_SubLanguage.Controls.Add(Me.ComboBox1)
+        Me.GB_SubLanguage.Controls.Add(Me.CB_CR_Harsubs)
         Me.GB_SubLanguage.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_SubLanguage.ForeColor = System.Drawing.Color.Black
         Me.GB_SubLanguage.Location = New System.Drawing.Point(5, 74)
@@ -382,20 +382,18 @@ Partial Class Einstellungen
         Me.GB_SubLanguage.TabStop = False
         Me.GB_SubLanguage.Text = "Sub Sprache"
         '
-        'ComboBox1
+        'CB_CR_Harsubs
         '
-        Me.ComboBox1.DropDownHeight = 250
-        Me.ComboBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.IntegralHeight = False
-        Me.ComboBox1.ItemHeight = 23
-        Me.ComboBox1.Items.AddRange(New Object() {"Deutsch", "English", "Español (España)", "Español (LA)", "Français (France)", "Italiano (Italian)", "Português (Brasil)", "Русский (Russian)", "العربية (Arabic)"})
-        Me.ComboBox1.Location = New System.Drawing.Point(60, 25)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(326, 29)
-        Me.ComboBox1.Sorted = True
-        Me.ComboBox1.TabIndex = 20
-        Me.ComboBox1.UseSelectable = True
+        Me.CB_CR_Harsubs.DropDownHeight = 275
+        Me.CB_CR_Harsubs.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_CR_Harsubs.FormattingEnabled = True
+        Me.CB_CR_Harsubs.IntegralHeight = False
+        Me.CB_CR_Harsubs.ItemHeight = 23
+        Me.CB_CR_Harsubs.Location = New System.Drawing.Point(82, 25)
+        Me.CB_CR_Harsubs.Name = "CB_CR_Harsubs"
+        Me.CB_CR_Harsubs.Size = New System.Drawing.Size(326, 29)
+        Me.CB_CR_Harsubs.TabIndex = 20
+        Me.CB_CR_Harsubs.UseSelectable = True
         '
         'TabPage2
         '
@@ -1139,9 +1137,9 @@ Partial Class Einstellungen
         Me.MetroTabPage2.HorizontalScrollbarBarColor = True
         Me.MetroTabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage2.HorizontalScrollbarSize = 10
-        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage2.Name = "MetroTabPage2"
-        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage2.TabIndex = 8
         Me.MetroTabPage2.Text = "Naming"
         Me.MetroTabPage2.VerticalScrollbarBarColor = True
@@ -1642,9 +1640,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = " About  "
         '
@@ -1925,7 +1923,7 @@ Partial Class Einstellungen
     Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
     Friend WithEvents DarkMode As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents TextBox1 As MetroFramework.Controls.MetroTextBox
-    Friend WithEvents ComboBox1 As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents CB_CR_Harsubs As MetroFramework.Controls.MetroComboBox
     Friend WithEvents CB_Fun_HardSubs As MetroFramework.Controls.MetroComboBox
     Friend WithEvents Fun_Dub_Over As MetroFramework.Controls.MetroComboBox
     Public WithEvents LastVersion As MetroFramework.Controls.MetroLabel

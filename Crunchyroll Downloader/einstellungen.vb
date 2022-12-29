@@ -80,23 +80,23 @@ Public Class Einstellungen
 
         TabControl1.SelectedIndex = 0
         For i As Integer = 0 To Main.SoftSubs.Count - 1
-            If Main.SoftSubs(i) = "deDE" Then
+            If Main.SoftSubs(i) = "de-DE" Then
                 CBdeDE.Checked = True
-            ElseIf Main.SoftSubs(i) = "enUS" Then
+            ElseIf Main.SoftSubs(i) = "en-US" Then
                 CBenUS.Checked = True
-            ElseIf Main.SoftSubs(i) = "ptBR" Then
+            ElseIf Main.SoftSubs(i) = "pt-BR" Then
                 CBptBR.Checked = True
-            ElseIf Main.SoftSubs(i) = "esLA" Then
+            ElseIf Main.SoftSubs(i) = "es-419" Then
                 CBesLA.Checked = True
-            ElseIf Main.SoftSubs(i) = "frFR" Then
+            ElseIf Main.SoftSubs(i) = "fr-FR" Then
                 CBfrFR.Checked = True
-            ElseIf Main.SoftSubs(i) = "arME" Then
+            ElseIf Main.SoftSubs(i) = "ar-ME" Then
                 CBarME.Checked = True
-            ElseIf Main.SoftSubs(i) = "ruRU" Then
+            ElseIf Main.SoftSubs(i) = "ru-RU" Then
                 CBruRU.Checked = True
-            ElseIf Main.SoftSubs(i) = "itIT" Then
+            ElseIf Main.SoftSubs(i) = "it-IT" Then
                 CBitIT.Checked = True
-            ElseIf Main.SoftSubs(i) = "esES" Then
+            ElseIf Main.SoftSubs(i) = "es-ES" Then
                 CBesES.Checked = True
             End If
         Next
@@ -214,34 +214,18 @@ Public Class Einstellungen
             AAuto.Checked = True
         End If
 
+        CB_CR_Harsubs.Items.Clear()
 
-        If Check_CB() = False Then
-            ComboBox1.Items.Add(Main.CB_SuB_Nothing)
-        End If
-        If Main.SubSprache = "deDE" Then
-            ComboBox1.SelectedItem = "Deutsch"
-        ElseIf Main.SubSprache = "enUS" Then
-            ComboBox1.SelectedItem = "English"
-        ElseIf Main.SubSprache = "ptBR" Then
-            ComboBox1.SelectedItem = "Português (Brasil)"
-        ElseIf Main.SubSprache = "es-419" Then
-            ComboBox1.SelectedItem = "Español (LA)"
-        ElseIf Main.SubSprache = "esLA" Then
-            ComboBox1.SelectedItem = "Español (LA)"
-        ElseIf Main.SubSprache = "frFR" Then
-            ComboBox1.SelectedItem = "Français (France)"
-        ElseIf Main.SubSprache = "arME" Then
-            ComboBox1.SelectedItem = "العربية (Arabic)"
-        ElseIf Main.SubSprache = "ruRU" Then
-            ComboBox1.SelectedItem = "Русский (Russian)"
-        ElseIf Main.SubSprache = "itIT" Then
-            ComboBox1.SelectedItem = "Italiano (Italian)"
-        ElseIf Main.SubSprache = "esES" Then
-            ComboBox1.SelectedItem = "Español (España)"
-        Else
-            ComboBox1.SelectedItem = Main.CB_SuB_Nothing
-        End If
 
+        For i As Integer = 0 To Main.SubSpracheEnum.Count - 1
+            CB_CR_Harsubs.Items.Add(Main.SubSpracheEnum(i).Name)
+            If Main.SubSpracheEnum(i).CR_Value = Main.SubSprache.CR_Value Then
+                'MsgBox(CB_CR_Harsubs.Items.Count.ToString)
+                'MsgBox(i.ToString)
+                CB_CR_Harsubs.SelectedIndex = i
+            End If
+
+        Next
 
         If DD_Season_Prefix.Items.Contains(Main.Season_Prefix) Then
             DD_Season_Prefix.SelectedItem = Main.Season_Prefix
@@ -317,23 +301,23 @@ Public Class Einstellungen
 
 
 
-        If Main.DefaultSubCR = "deDE" Then
+        If Main.DefaultSubCR = "de-DE" Then
             CR_SoftSubDefault.SelectedItem = "Deutsch"
-        ElseIf Main.DefaultSubCR = "enUS" Then
+        ElseIf Main.DefaultSubCR = "en-US" Then
             CR_SoftSubDefault.SelectedItem = "English"
-        ElseIf Main.DefaultSubCR = "ptBR" Then
+        ElseIf Main.DefaultSubCR = "pt-BR" Then
             CR_SoftSubDefault.SelectedItem = "Português (Brasil)"
-        ElseIf Main.DefaultSubCR = "esLA" Then
+        ElseIf Main.DefaultSubCR = "es-419" Then
             CR_SoftSubDefault.SelectedItem = "Español (LA)"
-        ElseIf Main.DefaultSubCR = "frFR" Then
+        ElseIf Main.DefaultSubCR = "fr-FR" Then
             CR_SoftSubDefault.SelectedItem = "Français (France)"
-        ElseIf Main.DefaultSubCR = "arME" Then
+        ElseIf Main.DefaultSubCR = "ar-ME" Then
             CR_SoftSubDefault.SelectedItem = "العربية (Arabic)"
-        ElseIf Main.DefaultSubCR = "ruRU" Then
+        ElseIf Main.DefaultSubCR = "ru-RU" Then
             CR_SoftSubDefault.SelectedItem = "Русский (Russian)"
-        ElseIf Main.DefaultSubCR = "itIT" Then
+        ElseIf Main.DefaultSubCR = "it-IT" Then
             CR_SoftSubDefault.SelectedItem = "Italiano (Italian)"
-        ElseIf Main.DefaultSubCR = "esES" Then
+        ElseIf Main.DefaultSubCR = "es-ES" Then
             CR_SoftSubDefault.SelectedItem = "Español (España)"
         Else
             CR_SoftSubDefault.SelectedItem = "[Disabled]"
@@ -452,71 +436,54 @@ Public Class Einstellungen
             My.Settings.Reso = Main.Reso
         End If
 
-        If ComboBox1.SelectedItem.ToString = "English" Then
-            Main.SubSprache = "enUS"
-            My.Settings.Subtitle = Main.SubSprache
-        ElseIf ComboBox1.SelectedItem.ToString = "Deutsch" Then
-            Main.SubSprache = "deDE"
-            My.Settings.Subtitle = Main.SubSprache
-        ElseIf ComboBox1.SelectedItem.ToString = "Português (Brasil)" Then
-            Main.SubSprache = "ptBR"
-            My.Settings.Subtitle = Main.SubSprache
-        ElseIf ComboBox1.SelectedItem.ToString = "Español (LA)" Then
-            Main.SubSprache = "es-419"
-            My.Settings.Subtitle = Main.SubSprache
-        ElseIf ComboBox1.SelectedItem.ToString = "Français (France)" Then
-            Main.SubSprache = "frFR"
-            My.Settings.Subtitle = Main.SubSprache
-        ElseIf ComboBox1.SelectedItem.ToString = "العربية (Arabic)" Then
-            Main.SubSprache = "arME"
-            My.Settings.Subtitle = Main.SubSprache
-        ElseIf ComboBox1.SelectedItem.ToString = "Русский (Russian)" Then
-            Main.SubSprache = "ruRU"
-            My.Settings.Subtitle = Main.SubSprache
-        ElseIf ComboBox1.SelectedItem.ToString = "Italiano (Italian)" Then
-            Main.SubSprache = "itIT"
-            My.Settings.Subtitle = Main.SubSprache
-        ElseIf ComboBox1.SelectedItem.ToString = "Español (España)" Then
-            Main.SubSprache = "esES"
-            My.Settings.Subtitle = Main.SubSprache
-        ElseIf ComboBox1.SelectedItem.ToString = Main.CB_SuB_Nothing Then
-            Main.SubSprache = "None"
-            My.Settings.Subtitle = Main.SubSprache
-        End If
+
+        For i As Integer = 0 To Main.SubSpracheEnum.Count - 1
+
+            If CB_CR_Harsubs.SelectedItem.ToString = Main.SubSpracheEnum(i).Name Then
+                Main.SubSprache = Main.SubSpracheEnum(i)
+                My.Settings.Subtitle = Main.SubSprache.CR_Value
+                'MsgBox(Main.SubSpracheEnum(i).Name)
+                'MsgBox(Main.SubSpracheEnum(i).CR_Value)
+                Exit For
+            End If
+
+        Next
+
 
         If CR_SoftSubDefault.SelectedItem.ToString = "English" Then
-            Main.DefaultSubCR = "enUS"
-            My.Settings.DefaultSubCR = Main.DefaultSubCR
-        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Deutsch" Then
-            Main.DefaultSubCR = "deDE"
-            My.Settings.DefaultSubCR = Main.DefaultSubCR
-        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Português (Brasil)" Then
-            Main.DefaultSubCR = "ptBR"
-            My.Settings.DefaultSubCR = Main.DefaultSubCR
-        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (LA)" Then
-            Main.DefaultSubCR = "esLA"
-            My.Settings.DefaultSubCR = Main.DefaultSubCR
-        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Français (France)" Then
-            Main.DefaultSubCR = "frFR"
-            My.Settings.DefaultSubCR = Main.DefaultSubCR
-        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "العربية (Arabic)" Then
-            Main.DefaultSubCR = "arME"
-            My.Settings.DefaultSubCR = Main.DefaultSubCR
-        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Русский (Russian)" Then
-            Main.DefaultSubCR = "ruRU"
-            My.Settings.DefaultSubCR = Main.DefaultSubCR
-        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Italiano (Italian)" Then
-            Main.DefaultSubCR = "itIT"
-            My.Settings.DefaultSubCR = Main.DefaultSubCR
-        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (España)" Then
-            Main.DefaultSubCR = "esES"
-            My.Settings.DefaultSubCR = Main.DefaultSubCR
-        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "[Disabled]" Then
-            Main.DefaultSubCR = "None"
-            My.Settings.DefaultSubCR = Main.DefaultSubCR
-        End If
+                Main.DefaultSubCR = "en-US"
+                My.Settings.DefaultSubCR = Main.DefaultSubCR
+            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Deutsch" Then
+                Main.DefaultSubCR = "de-DE"
+                My.Settings.DefaultSubCR = Main.DefaultSubCR
+            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Português (Brasil)" Then
+                Main.DefaultSubCR = "pt-BR"
+                My.Settings.DefaultSubCR = Main.DefaultSubCR
+            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (LA)" Then
+                Main.DefaultSubCR = "es-419"
+                My.Settings.DefaultSubCR = Main.DefaultSubCR
+            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Français (France)" Then
+                Main.DefaultSubCR = "fr-FR"
+                My.Settings.DefaultSubCR = Main.DefaultSubCR
+            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "العربية (Arabic)" Then
+                Main.DefaultSubCR = "ar-ME"
+                My.Settings.DefaultSubCR = Main.DefaultSubCR
+            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Русский (Russian)" Then
+                Main.DefaultSubCR = "ru-RU"
+                My.Settings.DefaultSubCR = Main.DefaultSubCR
+            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Italiano (Italian)" Then
+                Main.DefaultSubCR = "it-IT"
+                My.Settings.DefaultSubCR = Main.DefaultSubCR
+            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (España)" Then
+                Main.DefaultSubCR = "es-ES"
+                My.Settings.DefaultSubCR = Main.DefaultSubCR
+            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "[Disabled]" Then
+                Main.DefaultSubCR = "None"
+                My.Settings.DefaultSubCR = Main.DefaultSubCR
+            End If
 
-        If CR_Filename.Text = "[episode number]" Then
+
+            If CR_Filename.Text = "[episode number]" Then
             Main.CR_NameMethode = 0
             My.Settings.CR_NameMethode = Main.CR_NameMethode
         ElseIf CR_Filename.Text = "[episode name]" Then
@@ -781,16 +748,7 @@ Public Class Einstellungen
         Me.Close()
     End Sub
 
-    Private Function Check_CB() As Boolean
-        Dim C As Boolean = False
-        For i As Integer = 0 To ComboBox1.Items.Count - 1
-            If ComboBox1.Items.Item(i).ToString = Main.CB_SuB_Nothing Then
-                C = True
-                Exit For
-            End If
-        Next
-        Return C
-    End Function
+
 
 
 
@@ -820,7 +778,7 @@ Public Class Einstellungen
     End Sub
 
 
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ComboBox1.DrawItem, CB_Fun_HardSubs.DrawItem, Fun_Dub_Over.DrawItem
+    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles CB_CR_Harsubs.DrawItem, CB_Fun_HardSubs.DrawItem, Fun_Dub_Over.DrawItem
         Dim CB As ComboBox = CType(sender, ComboBox)
         CB.BackColor = Color.White
         If e.Index >= 0 Then
@@ -1282,22 +1240,7 @@ Public Class Einstellungen
 
     End Sub
 
-    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
-
-    End Sub
-
-
-
-
-
-
-
-
 #End Region
-
-
-
-
 
 
 

@@ -111,7 +111,8 @@ Public Class Main
 
     Public ResoSave As String = "6666x6666"
     Public ResoFunBackup As String = "6666x6666"
-    Public SubSprache As String
+    Public SubSprache As NameValuePair
+    Public SubSpracheEnum As New List(Of NameValuePair)
     Public SoftSubs As New List(Of String)
     Public IncludeLangName As Boolean = False
     Public LangNameType As Integer = 0
@@ -181,7 +182,7 @@ Public Class Main
     Public LabelResoNotFoundText As String = "resolution not found" + vbNewLine + "Select another one below"
     Public LabelLangNotFoundText As String = "subtitle language not found" + vbNewLine + "Select another one below"
     Public ButtonResoNotFoundText As String = "Submit"
-    Public CB_SuB_Nothing As String = "[ null ]"
+    'Public CB_SuB_Nothing As String = "[ null ]"
     Dim StatusToolTip As ToolTip = New ToolTip()
     Dim StatusToolTipText As String
 
@@ -388,7 +389,7 @@ Public Class Main
 
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         '
-
+        FillArray()
 #Region "settings path"
 
         Dim mySettings As New DirectorySettings
@@ -484,7 +485,15 @@ Public Class Main
 
         LeadingZero = My.Settings.LeadingZero
 
-        SubSprache = My.Settings.Subtitle
+        SubSprache = SubSpracheEnum(0)
+
+        For i As Integer = 0 To SubSpracheEnum.Count - 1
+            If SubSpracheEnum(i).CR_Value = My.Settings.Subtitle Then
+                'MsgBox(My.Settings.Subtitle)
+                SubSprache = SubSpracheEnum(i)
+                Exit For
+            End If
+        Next
 
 
         Funimation_Bitrate = My.Settings.Funimation_Bitrate
@@ -564,17 +573,17 @@ Public Class Main
 
 
 
-    Public Sub ListItemAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String, Optional Service As String = "CR") ', ByVal AudioLang As String)
+    Public Sub ListItemAdd(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal Reso As String, ByVal HardSub As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String, Optional Service As String = "CR") ', ByVal AudioLang As String)
 
         'With ListView1.Items.Add("0")
         'For i As Integer = 0 To 10
-        ItemConstructor(NameKomplett, NameP1, NameP2, Reso, HardSub, SoftSubs, ThumbnialURL, URL_DL, Pfad_DL, Service)
+        ItemConstructor(NameKomplett, NameP1, NameP2, Reso, HardSub, ThumbnialURL, URL_DL, Pfad_DL, Service)
 
         'Next
         'End With
     End Sub
 
-    Public Sub ItemConstructor(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal DisplayReso As String, ByVal HardSub As String, ByVal SoftSubs As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String, ByVal Service As String)
+    Public Sub ItemConstructor(ByVal NameKomplett As String, ByVal NameP1 As String, ByVal NameP2 As String, ByVal DisplayReso As String, ByVal HardSub As String, ByVal ThumbnialURL As String, ByVal URL_DL As String, ByVal Pfad_DL As String, ByVal Service As String)
         Dim Item As New CRD_List_Item
         Item.Visible = False
 
@@ -589,7 +598,6 @@ Public Class Main
         Item.SetLabelHardsub(HardSub)
         Item.SetThumbnailImage(ThumbnialURL)
         Item.SetLabelPercent("0%")
-        Item.SetToolTip("Softsubs: " + SoftSubs)
         Item.SetCache(KeepCache)
         Item.SetMergeSubstoMP4(MergeSubs)
         Item.SetDebug2(Debug2)
@@ -637,107 +645,7 @@ Public Class Main
 
 #End Region
 #Region "Sub to display"
-    Public Function SubValuesToDisplay() As String
-        Try
-            Dim deDE As Boolean = False
-            Dim enUS As Boolean = False
-            Dim ptBR As Boolean = False
-            Dim esLA As Boolean = False
-            Dim frFR As Boolean = False
-            Dim arME As Boolean = False
-            Dim ruRU As Boolean = False
-            Dim itIT As Boolean = False
-            Dim esES As Boolean = False
-            Dim ListReturn As String = Nothing
-            For i As Integer = 0 To SoftSubs.Count - 1
-                If SoftSubs(i) = "deDE" Then
-                    deDE = True
-                ElseIf SoftSubs(i) = "enUS" Then
-                    enUS = True
-                ElseIf SoftSubs(i) = "ptBR" Then
-                    ptBR = True
-                ElseIf SoftSubs(i) = "esLA" Then
-                    esLA = True
-                ElseIf SoftSubs(i) = "frFR" Then
-                    frFR = True
-                ElseIf SoftSubs(i) = "arME" Then
-                    arME = True
-                ElseIf SoftSubs(i) = "ruRU" Then
-                    ruRU = True
-                ElseIf SoftSubs(i) = "itIT" Then
-                    itIT = True
-                ElseIf SoftSubs(i) = "esES" Then
-                    esES = True
-                End If
-            Next
-            If deDE = True Then
-                If ListReturn = Nothing Then
-                    ListReturn = "Deutsch"
-                Else
-                    ListReturn = ListReturn + ", Deutsch"
-                End If
-            End If
-            If enUS = True Then
-                If ListReturn = Nothing Then
-                    ListReturn = "English"
-                Else
-                    ListReturn = ListReturn + ", English"
-                End If
-            End If
-            If esLA = True Then
-                If ListReturn = Nothing Then
-                    ListReturn = "Español (LA)"
-                Else
-                    ListReturn = ListReturn + ", Español (LA)"
-                End If
-            End If
-            If ptBR = True Then
-                If ListReturn = Nothing Then
-                    ListReturn = "Português (Brasil)"
-                Else
-                    ListReturn = ListReturn + ", Português (Brasil)"
-                End If
-            End If
-            If frFR = True Then
-                If ListReturn = Nothing Then
-                    ListReturn = "Français (France)"
-                Else
-                    ListReturn = ListReturn + ", Français (France)"
-                End If
-            End If
-            If arME = True Then
-                If ListReturn = Nothing Then
-                    ListReturn = "العربية (Arabic)"
-                Else
-                    ListReturn = ListReturn + ", العربية (Arabic)"
-                End If
-            End If
-            If ruRU = True Then
-                If ListReturn = Nothing Then
-                    ListReturn = "Русский (Russian)"
-                Else
-                    ListReturn = ListReturn + ", Русский (Russian)"
-                End If
-            End If
-            If itIT = True Then
-                If ListReturn = Nothing Then
-                    ListReturn = "Italiano (Italian)"
-                Else
-                    ListReturn = ListReturn + ", Italiano (Italian)"
-                End If
-            End If
-            If esES = True Then
-                If ListReturn = Nothing Then
-                    ListReturn = "Español (España)"
-                Else
-                    ListReturn = ListReturn + ", Español (España)"
-                End If
-            End If
-            Return ListReturn
-        Catch ex As Exception
-            Return Nothing
-        End Try
-    End Function
+
 
     Public Function GetSubFileLangName(ByVal HardSub As String) As String
 
@@ -755,58 +663,40 @@ Public Class Main
 
     End Function
     Public Function HardSubValuesToDisplay(ByVal HardSub As String) As String
-        Try
-            HardSub = HardSub.Replace(Chr(34), "")
-            If HardSub = "deDE" Or HardSub = "de-DE" Then
-                Return "Deutsch"
-            ElseIf HardSub = "enUS" Or HardSub = "en" Or HardSub = "en-US" Then
-                Return "English"
-            ElseIf HardSub = "ptBR" Or HardSub = "pt" Or HardSub = "pt-BR" Then
-                Return "Português (Brasil)"
-            ElseIf HardSub = "esLA" Or HardSub = "es" Or HardSub = "es-LA" Then
-                Return "Español (LA)"
-            ElseIf HardSub = "es-419" Then
-                Return "Español"
-            ElseIf HardSub = "frFR" Or HardSub = "fr-FR" Then
-                Return "Français (France)"
-            ElseIf HardSub = "arME" Or HardSub = "ar-ME" Then
-                Return "العربية (Arabic)"
-            ElseIf HardSub = "ruRU" Or HardSub = "ru-RU" Then
-                Return "Русский (Russian)"
-            ElseIf HardSub = "itIT" Or HardSub = "it-IT" Then
-                Return "Italiano (Italian)"
-            ElseIf HardSub = "esES" Or HardSub = "es-ES" Then
-                Return "Español (España)"
-            ElseIf HardSub = "jaJP" Or HardSub = "ja-JP" Then
-                Return "Japanese"
-            Else
-                Return CB_SuB_Nothing
+
+        For i As Integer = 0 To SubSpracheEnum.Count - 1
+            If SubSpracheEnum(i).CR_Value = HardSub Or SubSpracheEnum(i).FM_Value = HardSub Then
+                Return SubSpracheEnum(i).Name
+                Exit Function
             End If
-        Catch ex As Exception
-            Return Nothing
-        End Try
+        Next
+
+        Return "Error"
+
     End Function
+
+
     Public Function CCtoMP4CC(ByVal HardSub As String) As String
         Try
-            If HardSub = "deDE" Or HardSub = "de-DE" Then
+            If HardSub = "de-DE" Then
                 Return "ger"
-            ElseIf HardSub = "enUS" Or HardSub = "en-US" Or HardSub = "en" Then
+            ElseIf HardSub = "en-US" Or HardSub = "en" Then
                 Return "eng"
-            ElseIf HardSub = "ptBR" Or HardSub = "pt-BR" Or HardSub = "pt" Then
+            ElseIf HardSub = "pt-BR" Or HardSub = "pt" Then
                 Return "por"
-            ElseIf HardSub = "esLA" Or HardSub = "es-LA" Or HardSub = "es" Or HardSub = "es-419" Then
+            ElseIf HardSub = "es" Or HardSub = "es-419" Then
                 Return "spa"
-            ElseIf HardSub = "frFR" Or HardSub = "fr-FR" Then
+            ElseIf HardSub = "fr-FR" Then
                 Return "fre"
-            ElseIf HardSub = "arME" Or HardSub = "ar-ME" Then
+            ElseIf HardSub = "ar-ME" Then
                 Return "ara"
-            ElseIf HardSub = "ruRU" Or HardSub = "ru-RU" Then
+            ElseIf HardSub = "ru-RU" Then
                 Return "rus"
-            ElseIf HardSub = "itIT" Or HardSub = "it-IT" Then
+            ElseIf HardSub = "it-IT" Then
                 Return "ita"
-            ElseIf HardSub = "esES" Or HardSub = "es-ES" Then
+            ElseIf HardSub = "es-ES" Then
                 Return "spa"
-            ElseIf HardSub = "jaJP" Or HardSub = "ja-JP" Then
+            ElseIf HardSub = "ja-JP" Then
                 Return "jpn"
             Else
                 Return "chi"
@@ -1588,13 +1478,13 @@ Public Class Main
             Debug.WriteLine("VideoStreams: " + Streams)
 
 
-            Dim CR_HardSubLang As String = ConvertCC(SubSprache)
+            Dim CR_HardSubLang As String = SubSprache.CR_Value
 #End Region
 #Region "Download softsub file or build ffmpeg cmd"
             Dim SoftSubs2 As New List(Of String)
             If SoftSubs.Count > 0 Then
                 For i As Integer = 0 To SoftSubs.Count - 1
-                    If CBool(InStr(VideoJson, Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + ConvertCC(SoftSubs(i)) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) Then
+                    If CBool(InStr(VideoJson, Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + SoftSubs(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) Then
                         SoftSubs2.Add(SoftSubs(i))
                     Else
                         '
@@ -1620,7 +1510,7 @@ Public Class Main
                         If SoftSubs2(i) = DefaultSubCR Then
                             DispositionIndex = i
                         End If
-                        Dim SoftSub As String() = VideoJson.Split(New String() {Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + ConvertCC(SoftSubs2(i)) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim SoftSub As String() = VideoJson.Split(New String() {Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
                         Dim SoftSub_3 As String = SoftSub_2(0).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
                         If SoftSubMergeURLs = Nothing Then
@@ -1650,7 +1540,7 @@ Public Class Main
                                                  Me.Invalidate()
                                                  Return Nothing
                                              End Function))
-                        Dim SoftSub As String() = VideoJson.Split(New String() {Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + ConvertCC(SoftSubs2(i)) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim SoftSub As String() = VideoJson.Split(New String() {Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + SoftSubs2(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
                         Dim SoftSub_3 As String = SoftSub_2(0).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
                         'MsgBox(SoftSub_3)
@@ -1975,7 +1865,7 @@ Public Class Main
 
 
             Me.Invoke(New Action(Function() As Object
-                                     ListItemAdd(Path.GetFileName(Pfad_DL.Replace(Chr(34), "")), L1Name, L2Name, ResoHTMLDisplay, SubType_Value, SubValuesToDisplay(), thumbnail3, URL_DL, Pfad_DL)
+                                     ListItemAdd(Path.GetFileName(Pfad_DL.Replace(Chr(34), "")), L1Name, L2Name, ResoHTMLDisplay, SubType_Value, thumbnail3, URL_DL, Pfad_DL)
                                      Return Nothing
                                  End Function))
             'liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + CR_title + " <br> " + CR_season_number + " " + CR_episode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
@@ -1999,7 +1889,7 @@ Public Class Main
                                  End Function))
             Grapp_RDY = True
             If CBool(InStr(ex.ToString, "Could not find the sub language")) Then
-                MsgBox(Sub_language_NotFound + SubSprache)
+                MsgBox(Sub_language_NotFound + SubSprache.Name)
             ElseIf CBool(InStr(ex.ToString, "RESOLUTION Not Found")) Then
                 MsgBox(Resolution_NotFound)
             ElseIf CBool(InStr(ex.ToString, "Premium Episode")) Then
@@ -2043,41 +1933,41 @@ Public Class Main
             Return Nothing
         End Try
     End Function
-    Function ConvertCC(ByVal CC As String) As String
-        Try
-            If CC = "deDE" Then
-                Return "de-DE"
-            ElseIf CC = "enUS" Then
-                Return "en-US"
-            ElseIf CC = "ptBR" Then
-                Return "pt-BR"
-            ElseIf CC = "esLA" Then
-                Return "es-LA"
-            ElseIf CC = "es-419" Then
-                Return "es-419"
-            ElseIf CC = "frFR" Then
-                Return "fr-FR"
-            ElseIf CC = "arME" Then
-                Return "ar-ME"
-            ElseIf CC = "ar-SA" Then
-                Return "ar-SA"
-            ElseIf CC = "ruRU" Then
-                Return "ru-RU"
-            ElseIf CC = "itIT" Then
-                Return "it-IT"
-            ElseIf CC = "esES" Then
-                Return "es-ES"
-            ElseIf CC = "jaJP" Then
-                Return "ja-JP"
-            ElseIf CC = "None" Then
-                Return ""
-            Else
-                Return CB_SuB_Nothing
-            End If
-        Catch ex As Exception
-            Return Nothing
-        End Try
-    End Function
+    'Function ConvertCC(ByVal CC As String) As String
+    '    Try
+    '        If CC = "deDE" Then
+    '            Return "de-DE"
+    '        ElseIf CC = "enUS" Then
+    '            Return "en-US"
+    '        ElseIf CC = "ptBR" Then
+    '            Return "pt-BR"
+    '        ElseIf CC = "esLA" Then
+    '            Return "es-LA"
+    '        ElseIf CC = "es-419" Then
+    '            Return "es-419"
+    '        ElseIf CC = "frFR" Then
+    '            Return "fr-FR"
+    '        ElseIf CC = "arME" Then
+    '            Return "ar-ME"
+    '        ElseIf CC = "ar-SA" Then
+    '            Return "ar-SA"
+    '        ElseIf CC = "ruRU" Then
+    '            Return "ru-RU"
+    '        ElseIf CC = "itIT" Then
+    '            Return "it-IT"
+    '        ElseIf CC = "esES" Then
+    '            Return "es-ES"
+    '        ElseIf CC = "jaJP" Then
+    '            Return "ja-JP"
+    '        ElseIf CC = "None" Then
+    '            Return ""
+    '        Else
+    '            Return CB_SuB_Nothing
+    '        End If
+    '    Catch ex As Exception
+    '        Return Nothing
+    '    End Try
+    'End Function
 #End Region
 
     Private Sub Btn_Close_Click(sender As Object, e As EventArgs) Handles Btn_Close.Click
@@ -2165,7 +2055,7 @@ Public Class Main
                                 Next
                                 reader.Close()
                                 Me.Invoke(New Action(Function() As Object
-                                                         ListItemAdd(Filename, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, SubValuesToDisplay(), thumbnail3, URL2, Pfad2)
+                                                         ListItemAdd(Filename, L1Name, L2Name, ResoHTMLDisplay, Subsprache3, thumbnail3, URL2, Pfad2)
                                                          Return Nothing
                                                      End Function))
                                 ' liList.Add(My.Resources.htmlvorThumbnail + thumbnail3 + My.Resources.htmlnachTumbnail + L1Name + " <br> " + L2Name + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + Subsprache3 + My.Resources.htmlnachHardSubs + "<!-- " + L2Name + "-->")
@@ -3346,7 +3236,7 @@ Public Class Main
             Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + FunimationDub
             Me.Invoke(New Action(Function() As Object
-                                     ListItemAdd(Pfad_DL, L1Name, DefaultName, ResoHTMLDisplay, Funimation_m3u8_MainVersion, SubValuesToDisplay(), thumbnail4, Funimation_m3u8_final, DownloadPfad, "FM")
+                                     ListItemAdd(Pfad_DL, L1Name, DefaultName, ResoHTMLDisplay, Funimation_m3u8_MainVersion, thumbnail4, Funimation_m3u8_final, DownloadPfad, "FM")
                                      Return Nothing
                                  End Function))
             'liList.Add(My.Resources.htmlvorThumbnail + thumbnail4 + My.Resources.htmlnachTumbnail + FunimationTitle + " <br> " + FunimationSeason + " " + FunimationEpisode + My.Resources.htmlvorAufloesung + ResoHTMLDisplay + My.Resources.htmlvorSoftSubs + vbNewLine + SubValuesToDisplay() + My.Resources.htmlvorHardSubs + "null" + My.Resources.htmlnachHardSubs + "<!-- " + DefaultName + "-->")
@@ -4385,115 +4275,32 @@ Public Class Main
 
     End Sub
 
+#End Region
 
+#Region "enum"
 
+    Sub FillArray() '
 
+        SubSpracheEnum.Add(New NameValuePair("[ null ]", "None", Nothing))
+        SubSpracheEnum.Add(New NameValuePair("Deutsch", "de-DE", Nothing))
+        SubSpracheEnum.Add(New NameValuePair("English", "en-US", "en"))
+        SubSpracheEnum.Add(New NameValuePair("Português (Brasil)", "pt-BR", "pt"))
+        SubSpracheEnum.Add(New NameValuePair("Español (LA)", "es-419", "es"))
+        SubSpracheEnum.Add(New NameValuePair("Français (France)", "fr-FR", Nothing))
+        SubSpracheEnum.Add(New NameValuePair("العربية (Arabic)", "ar-ME", Nothing))
+        SubSpracheEnum.Add(New NameValuePair("Русский (Russian)", "ru-RU", Nothing))
+        SubSpracheEnum.Add(New NameValuePair("Italiano (Italian)", "it-IT", Nothing))
+        SubSpracheEnum.Add(New NameValuePair("Español (España)", "es-ES", Nothing))
+        SubSpracheEnum.Add(New NameValuePair("Japanese", "ja-JP", Nothing))
 
-
-
-
-
-
-
-
-
-
+    End Sub
 
 
 
 #End Region
-End Class
 
-Public Class FunimationOverview
-    Public ID As String
-    Public Title As String
-    Public Slug As String
-    Public Sub New(ByVal Slug As String, ByVal ID As String, ByVal Title As String)
-        Me.ID = ID
-        Me.Title = Title
-        Me.Slug = Slug
-    End Sub
 
-    Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}, {2}", Me.Slug, Me.ID, Me.Title)
-    End Function
-End Class
-
-Public Class FunimationSubs
-    Public LangugageCode As String
-    Public Url As String
-    Public Format As String
-    Public Sub New(ByVal LangugageCode As String, ByVal Format As String, ByVal Url As String)
-        Me.Url = Url
-        Me.LangugageCode = LangugageCode
-        Me.Format = Format
-    End Sub
-
-    Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}, {2}", Me.LangugageCode, Me.Format, Me.Url)
-    End Function
-End Class
-
-Public Class FunimationStream
-    Public audioLanguage As String
-    Public Url As String
-    Public version As String
-    Public Primary As Boolean
-    Public Sub New(ByVal audioLanguage As String, ByVal version As String, ByVal Url As String, ByVal Primary As Boolean)
-        Me.Primary = Primary
-        Me.Url = Url
-        Me.audioLanguage = audioLanguage
-        Me.version = version
-    End Sub
-
-    Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}, {2}", Me.audioLanguage, Me.version, Me.Url)
-    End Function
-End Class
-
-Public Class CR_Beta_Stream
-    'Public audioLanguage As String
-    Public Url As String
-    Public subLang As String
-    Public Format As String
-    'ByVal audioLanguage As String, 
-    Public Sub New(ByVal subLang As String, ByVal Format As String, ByVal Url As String)
-        Me.subLang = subLang
-        Me.Url = Url
-        'Me.audioLanguage = audioLanguage
-        Me.Format = Format
-    End Sub
-    'Me.audioLanguage,
-    Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}, {2}", Me.subLang, Me.Format, Me.Url)
-    End Function
 
 End Class
-Public Class UrlJson
 
-    Public Url As String
-    Public Content As String
-    Public Sub New(ByVal Url As String, ByVal Content As String)
-        Me.Url = Url
-        Me.Content = Content
 
-    End Sub
-
-    Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}", Me.Url, Me.Content)
-    End Function
-End Class
-Public Class ServerResponse
-
-    Public Type As String
-    Public Content As String
-    Public Sub New(ByVal Content As String, ByVal Type As String)
-        Me.Content = Content
-        Me.Type = Type
-
-    End Sub
-
-    Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}", Me.Content, Me.Type)
-    End Function
-End Class

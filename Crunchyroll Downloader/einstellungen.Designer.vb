@@ -55,14 +55,17 @@ Partial Class Einstellungen
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FFMPEG_CommandP1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.copy = New System.Windows.Forms.ToolStripMenuItem()
-        Me.nv_h264 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.nv_hevc = New System.Windows.Forms.ToolStripMenuItem()
         Me.CPU_h264 = New System.Windows.Forms.ToolStripMenuItem()
         Me.CPU_h265 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CPU_AV1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.nv_h264 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.nv_hevc = New System.Windows.Forms.ToolStripMenuItem()
+        Me.nv_AV1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.AMD_h264 = New System.Windows.Forms.ToolStripMenuItem()
         Me.AMD_hevc = New System.Windows.Forms.ToolStripMenuItem()
         Me.Intel_h264 = New System.Windows.Forms.ToolStripMenuItem()
         Me.Intel_hevc = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Intel_AV1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.FFMPEG_CommandP2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListP1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListP2 = New System.Windows.Forms.ToolStripMenuItem()
@@ -119,7 +122,6 @@ Partial Class Einstellungen
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
         Me.DD_Episode_Prefix = New MetroFramework.Controls.MetroComboBox()
         Me.DD_Season_Prefix = New MetroFramework.Controls.MetroComboBox()
-        Me.CR_Filename = New MetroFramework.Controls.MetroComboBox()
         Me.MetroTabPage1 = New MetroFramework.Controls.MetroTabPage()
         Me.GroupBox20 = New System.Windows.Forms.GroupBox()
         Me.ChB_Chapters = New MetroFramework.Controls.MetroCheckBox()
@@ -154,9 +156,13 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.Intel_AV1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.CPU_AV1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.nv_AV1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TB_NameString = New MetroFramework.Controls.MetroTextBox()
+        Me.CB_EpisodeName = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_AnimeDub = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_EpisodeNR = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_AnimeSub = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_Season = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_Anime = New MetroFramework.Controls.MetroCheckBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -602,64 +608,85 @@ Partial Class Einstellungen
         'copy
         '
         Me.copy.Name = "copy"
-        Me.copy.Size = New System.Drawing.Size(180, 22)
+        Me.copy.Size = New System.Drawing.Size(172, 22)
         Me.copy.Text = "-c copy"
-        '
-        'nv_h264
-        '
-        Me.nv_h264.BackColor = System.Drawing.Color.YellowGreen
-        Me.nv_h264.Name = "nv_h264"
-        Me.nv_h264.Size = New System.Drawing.Size(180, 22)
-        Me.nv_h264.Text = "-c:v h264_nvenc "
-        '
-        'nv_hevc
-        '
-        Me.nv_hevc.BackColor = System.Drawing.Color.YellowGreen
-        Me.nv_hevc.Name = "nv_hevc"
-        Me.nv_hevc.Size = New System.Drawing.Size(180, 22)
-        Me.nv_hevc.Text = "-c:v hevc_nvenc"
         '
         'CPU_h264
         '
         Me.CPU_h264.BackColor = System.Drawing.Color.DarkGray
         Me.CPU_h264.Name = "CPU_h264"
-        Me.CPU_h264.Size = New System.Drawing.Size(180, 22)
+        Me.CPU_h264.Size = New System.Drawing.Size(172, 22)
         Me.CPU_h264.Text = "-c:v libx264"
         '
         'CPU_h265
         '
         Me.CPU_h265.BackColor = System.Drawing.Color.DarkGray
         Me.CPU_h265.Name = "CPU_h265"
-        Me.CPU_h265.Size = New System.Drawing.Size(180, 22)
+        Me.CPU_h265.Size = New System.Drawing.Size(172, 22)
         Me.CPU_h265.Text = "-c:v libx265"
+        '
+        'CPU_AV1
+        '
+        Me.CPU_AV1.BackColor = System.Drawing.Color.DarkGray
+        Me.CPU_AV1.Name = "CPU_AV1"
+        Me.CPU_AV1.Size = New System.Drawing.Size(172, 22)
+        Me.CPU_AV1.Text = "-c:v libsvtav1"
+        '
+        'nv_h264
+        '
+        Me.nv_h264.BackColor = System.Drawing.Color.YellowGreen
+        Me.nv_h264.Name = "nv_h264"
+        Me.nv_h264.Size = New System.Drawing.Size(172, 22)
+        Me.nv_h264.Text = "-c:v h264_nvenc "
+        '
+        'nv_hevc
+        '
+        Me.nv_hevc.BackColor = System.Drawing.Color.YellowGreen
+        Me.nv_hevc.Name = "nv_hevc"
+        Me.nv_hevc.Size = New System.Drawing.Size(172, 22)
+        Me.nv_hevc.Text = "-c:v hevc_nvenc"
+        '
+        'nv_AV1
+        '
+        Me.nv_AV1.BackColor = System.Drawing.Color.YellowGreen
+        Me.nv_AV1.Name = "nv_AV1"
+        Me.nv_AV1.Size = New System.Drawing.Size(172, 22)
+        Me.nv_AV1.Text = "-c:v av1_nvenc"
         '
         'AMD_h264
         '
         Me.AMD_h264.BackColor = System.Drawing.Color.Tomato
         Me.AMD_h264.Name = "AMD_h264"
-        Me.AMD_h264.Size = New System.Drawing.Size(180, 22)
+        Me.AMD_h264.Size = New System.Drawing.Size(172, 22)
         Me.AMD_h264.Text = "-c:v h264_amf"
         '
         'AMD_hevc
         '
         Me.AMD_hevc.BackColor = System.Drawing.Color.Tomato
         Me.AMD_hevc.Name = "AMD_hevc"
-        Me.AMD_hevc.Size = New System.Drawing.Size(180, 22)
+        Me.AMD_hevc.Size = New System.Drawing.Size(172, 22)
         Me.AMD_hevc.Text = "-c:v hevc_amf"
         '
         'Intel_h264
         '
         Me.Intel_h264.BackColor = System.Drawing.Color.CornflowerBlue
         Me.Intel_h264.Name = "Intel_h264"
-        Me.Intel_h264.Size = New System.Drawing.Size(180, 22)
+        Me.Intel_h264.Size = New System.Drawing.Size(172, 22)
         Me.Intel_h264.Text = "-c:v h264_qsv"
         '
         'Intel_hevc
         '
         Me.Intel_hevc.BackColor = System.Drawing.Color.CornflowerBlue
         Me.Intel_hevc.Name = "Intel_hevc"
-        Me.Intel_hevc.Size = New System.Drawing.Size(180, 22)
+        Me.Intel_hevc.Size = New System.Drawing.Size(172, 22)
         Me.Intel_hevc.Text = "-c:v hevc_qsv"
+        '
+        'Intel_AV1
+        '
+        Me.Intel_AV1.BackColor = System.Drawing.Color.CornflowerBlue
+        Me.Intel_AV1.Name = "Intel_AV1"
+        Me.Intel_AV1.Size = New System.Drawing.Size(172, 22)
+        Me.Intel_AV1.Text = "-c:v av1_qsv"
         '
         'FFMPEG_CommandP2
         '
@@ -876,10 +903,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage1.Size = New System.Drawing.Size(501, 519)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1134,7 +1161,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 1
+        Me.TabControl1.SelectedIndex = 2
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1163,7 +1190,7 @@ Partial Class Einstellungen
         Me.GroupBox17.Controls.Add(Me.LeadingZeroDD)
         Me.GroupBox17.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox17.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox17.Location = New System.Drawing.Point(5, 212)
+        Me.GroupBox17.Location = New System.Drawing.Point(5, 300)
         Me.GroupBox17.Name = "GroupBox17"
         Me.GroupBox17.Size = New System.Drawing.Size(490, 67)
         Me.GroupBox17.TabIndex = 40
@@ -1191,7 +1218,7 @@ Partial Class Einstellungen
         Me.GroupBox3.Controls.Add(Me.CB_SoftSubSettings)
         Me.GroupBox3.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox3.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox3.Location = New System.Drawing.Point(5, 285)
+        Me.GroupBox3.Location = New System.Drawing.Point(5, 380)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(490, 129)
         Me.GroupBox3.TabIndex = 52
@@ -1234,9 +1261,9 @@ Partial Class Einstellungen
         Me.GB_Filename_Pre.Controls.Add(Me.MetroLink1)
         Me.GB_Filename_Pre.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_Filename_Pre.ForeColor = System.Drawing.Color.Black
-        Me.GB_Filename_Pre.Location = New System.Drawing.Point(5, 144)
+        Me.GB_Filename_Pre.Location = New System.Drawing.Point(5, 230)
         Me.GB_Filename_Pre.Name = "GB_Filename_Pre"
-        Me.GB_Filename_Pre.Size = New System.Drawing.Size(490, 62)
+        Me.GB_Filename_Pre.Size = New System.Drawing.Size(490, 65)
         Me.GB_Filename_Pre.TabIndex = 22
         Me.GB_Filename_Pre.TabStop = False
         Me.GB_Filename_Pre.Text = "Filename Extras"
@@ -1281,14 +1308,20 @@ Partial Class Einstellungen
         'GroupBox12
         '
         Me.GroupBox12.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox12.Controls.Add(Me.CB_EpisodeName)
+        Me.GroupBox12.Controls.Add(Me.CB_AnimeDub)
+        Me.GroupBox12.Controls.Add(Me.CB_EpisodeNR)
+        Me.GroupBox12.Controls.Add(Me.CB_AnimeSub)
+        Me.GroupBox12.Controls.Add(Me.CB_Season)
+        Me.GroupBox12.Controls.Add(Me.CB_Anime)
+        Me.GroupBox12.Controls.Add(Me.TB_NameString)
         Me.GroupBox12.Controls.Add(Me.DD_Episode_Prefix)
         Me.GroupBox12.Controls.Add(Me.DD_Season_Prefix)
-        Me.GroupBox12.Controls.Add(Me.CR_Filename)
         Me.GroupBox12.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox12.ForeColor = System.Drawing.Color.Black
         Me.GroupBox12.Location = New System.Drawing.Point(5, 11)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(490, 127)
+        Me.GroupBox12.Size = New System.Drawing.Size(490, 215)
         Me.GroupBox12.TabIndex = 21
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Filename"
@@ -1302,7 +1335,7 @@ Partial Class Einstellungen
         Me.DD_Episode_Prefix.IntegralHeight = False
         Me.DD_Episode_Prefix.ItemHeight = 23
         Me.DD_Episode_Prefix.Items.AddRange(New Object() {"[default episode prefix]"})
-        Me.DD_Episode_Prefix.Location = New System.Drawing.Point(248, 85)
+        Me.DD_Episode_Prefix.Location = New System.Drawing.Point(248, 165)
         Me.DD_Episode_Prefix.Name = "DD_Episode_Prefix"
         Me.DD_Episode_Prefix.Size = New System.Drawing.Size(225, 29)
         Me.DD_Episode_Prefix.TabIndex = 10
@@ -1317,25 +1350,11 @@ Partial Class Einstellungen
         Me.DD_Season_Prefix.IntegralHeight = False
         Me.DD_Season_Prefix.ItemHeight = 23
         Me.DD_Season_Prefix.Items.AddRange(New Object() {"[default season prefix]"})
-        Me.DD_Season_Prefix.Location = New System.Drawing.Point(6, 85)
+        Me.DD_Season_Prefix.Location = New System.Drawing.Point(6, 165)
         Me.DD_Season_Prefix.Name = "DD_Season_Prefix"
         Me.DD_Season_Prefix.Size = New System.Drawing.Size(225, 29)
         Me.DD_Season_Prefix.TabIndex = 9
         Me.DD_Season_Prefix.UseSelectable = True
-        '
-        'CR_Filename
-        '
-        Me.CR_Filename.DropDownHeight = 250
-        Me.CR_Filename.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CR_Filename.FormattingEnabled = True
-        Me.CR_Filename.IntegralHeight = False
-        Me.CR_Filename.ItemHeight = 23
-        Me.CR_Filename.Items.AddRange(New Object() {"[episode number]", "[episode name]", "[episode number] [episode name]", "[episode name] [episode number]"})
-        Me.CR_Filename.Location = New System.Drawing.Point(6, 35)
-        Me.CR_Filename.Name = "CR_Filename"
-        Me.CR_Filename.Size = New System.Drawing.Size(467, 29)
-        Me.CR_Filename.TabIndex = 8
-        Me.CR_Filename.UseSelectable = True
         '
         'MetroTabPage1
         '
@@ -1414,10 +1433,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage6.Size = New System.Drawing.Size(501, 519)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = " Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1651,9 +1670,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = " About  "
         '
@@ -1785,26 +1804,110 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'Intel_AV1
+        'TB_NameString
         '
-        Me.Intel_AV1.BackColor = System.Drawing.Color.CornflowerBlue
-        Me.Intel_AV1.Name = "Intel_AV1"
-        Me.Intel_AV1.Size = New System.Drawing.Size(180, 22)
-        Me.Intel_AV1.Text = "-c:v av1_qsv"
         '
-        'CPU_AV1
         '
-        Me.CPU_AV1.BackColor = System.Drawing.Color.DarkGray
-        Me.CPU_AV1.Name = "CPU_AV1"
-        Me.CPU_AV1.Size = New System.Drawing.Size(180, 22)
-        Me.CPU_AV1.Text = "-c:v libsvtav1"
         '
-        'nv_AV1
+        Me.TB_NameString.CustomButton.Image = Nothing
+        Me.TB_NameString.CustomButton.Location = New System.Drawing.Point(439, 1)
+        Me.TB_NameString.CustomButton.Name = ""
+        Me.TB_NameString.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.TB_NameString.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.TB_NameString.CustomButton.TabIndex = 1
+        Me.TB_NameString.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.TB_NameString.CustomButton.UseSelectable = True
+        Me.TB_NameString.CustomButton.Visible = False
+        Me.TB_NameString.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.TB_NameString.Lines = New String(-1) {}
+        Me.TB_NameString.Location = New System.Drawing.Point(6, 35)
+        Me.TB_NameString.MaxLength = 32767
+        Me.TB_NameString.Name = "TB_NameString"
+        Me.TB_NameString.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.TB_NameString.ReadOnly = True
+        Me.TB_NameString.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.TB_NameString.SelectedText = ""
+        Me.TB_NameString.SelectionLength = 0
+        Me.TB_NameString.SelectionStart = 0
+        Me.TB_NameString.ShortcutsEnabled = True
+        Me.TB_NameString.Size = New System.Drawing.Size(467, 29)
+        Me.TB_NameString.TabIndex = 21
+        Me.TB_NameString.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TB_NameString.UseSelectable = True
+        Me.TB_NameString.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.TB_NameString.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
-        Me.nv_AV1.BackColor = System.Drawing.Color.YellowGreen
-        Me.nv_AV1.Name = "nv_AV1"
-        Me.nv_AV1.Size = New System.Drawing.Size(180, 22)
-        Me.nv_AV1.Text = "-c:v av1_nvenc"
+        'CB_EpisodeName
+        '
+        Me.CB_EpisodeName.AutoSize = True
+        Me.CB_EpisodeName.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_EpisodeName.ForeColor = System.Drawing.Color.Black
+        Me.CB_EpisodeName.Location = New System.Drawing.Point(153, 124)
+        Me.CB_EpisodeName.Name = "CB_EpisodeName"
+        Me.CB_EpisodeName.Size = New System.Drawing.Size(101, 19)
+        Me.CB_EpisodeName.TabIndex = 31
+        Me.CB_EpisodeName.Text = "Episode Title"
+        Me.CB_EpisodeName.UseSelectable = True
+        '
+        'CB_AnimeDub
+        '
+        Me.CB_AnimeDub.AutoSize = True
+        Me.CB_AnimeDub.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_AnimeDub.ForeColor = System.Drawing.Color.Black
+        Me.CB_AnimeDub.Location = New System.Drawing.Point(320, 86)
+        Me.CB_AnimeDub.Name = "CB_AnimeDub"
+        Me.CB_AnimeDub.Size = New System.Drawing.Size(125, 19)
+        Me.CB_AnimeDub.TabIndex = 29
+        Me.CB_AnimeDub.Text = "Audio Language"
+        Me.CB_AnimeDub.UseSelectable = True
+        '
+        'CB_EpisodeNR
+        '
+        Me.CB_EpisodeNR.AutoSize = True
+        Me.CB_EpisodeNR.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_EpisodeNR.ForeColor = System.Drawing.Color.Black
+        Me.CB_EpisodeNR.Location = New System.Drawing.Point(153, 86)
+        Me.CB_EpisodeNR.Name = "CB_EpisodeNR"
+        Me.CB_EpisodeNR.Size = New System.Drawing.Size(126, 19)
+        Me.CB_EpisodeNR.TabIndex = 28
+        Me.CB_EpisodeNR.Text = "Episode Number"
+        Me.CB_EpisodeNR.UseSelectable = True
+        '
+        'CB_AnimeSub
+        '
+        Me.CB_AnimeSub.AutoSize = True
+        Me.CB_AnimeSub.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_AnimeSub.ForeColor = System.Drawing.Color.Black
+        Me.CB_AnimeSub.Location = New System.Drawing.Point(320, 124)
+        Me.CB_AnimeSub.Name = "CB_AnimeSub"
+        Me.CB_AnimeSub.Size = New System.Drawing.Size(135, 19)
+        Me.CB_AnimeSub.TabIndex = 32
+        Me.CB_AnimeSub.Text = "Subtitle Language"
+        Me.CB_AnimeSub.UseSelectable = True
+        '
+        'CB_Season
+        '
+        Me.CB_Season.AutoSize = True
+        Me.CB_Season.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_Season.ForeColor = System.Drawing.Color.Black
+        Me.CB_Season.Location = New System.Drawing.Point(17, 124)
+        Me.CB_Season.Name = "CB_Season"
+        Me.CB_Season.Size = New System.Drawing.Size(122, 19)
+        Me.CB_Season.TabIndex = 30
+        Me.CB_Season.Text = "Season Number"
+        Me.CB_Season.UseSelectable = True
+        '
+        'CB_Anime
+        '
+        Me.CB_Anime.AutoSize = True
+        Me.CB_Anime.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_Anime.ForeColor = System.Drawing.Color.Black
+        Me.CB_Anime.Location = New System.Drawing.Point(17, 86)
+        Me.CB_Anime.Name = "CB_Anime"
+        Me.CB_Anime.Size = New System.Drawing.Size(100, 19)
+        Me.CB_Anime.TabIndex = 27
+        Me.CB_Anime.Text = "Series Name"
+        Me.CB_Anime.UseSelectable = True
         '
         'Einstellungen
         '
@@ -1857,6 +1960,7 @@ Partial Class Einstellungen
         Me.GB_Filename_Pre.ResumeLayout(False)
         Me.GB_Filename_Pre.PerformLayout()
         Me.GroupBox12.ResumeLayout(False)
+        Me.GroupBox12.PerformLayout()
         Me.MetroTabPage1.ResumeLayout(False)
         Me.GroupBox20.ResumeLayout(False)
         Me.GroupBox20.PerformLayout()
@@ -1992,7 +2096,6 @@ Partial Class Einstellungen
     Friend WithEvents LeadingZeroDD As MetroFramework.Controls.MetroComboBox
     Friend WithEvents DD_Episode_Prefix As MetroFramework.Controls.MetroComboBox
     Friend WithEvents DD_Season_Prefix As MetroFramework.Controls.MetroComboBox
-    Friend WithEvents CR_Filename As MetroFramework.Controls.MetroComboBox
     Friend WithEvents GroupBox17 As GroupBox
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents LangNameType_DD As MetroFramework.Controls.MetroComboBox
@@ -2013,4 +2116,11 @@ Partial Class Einstellungen
     Friend WithEvents Intel_AV1 As ToolStripMenuItem
     Friend WithEvents CPU_AV1 As ToolStripMenuItem
     Friend WithEvents nv_AV1 As ToolStripMenuItem
+    Public WithEvents CB_EpisodeName As MetroFramework.Controls.MetroCheckBox
+    Public WithEvents CB_AnimeDub As MetroFramework.Controls.MetroCheckBox
+    Public WithEvents CB_EpisodeNR As MetroFramework.Controls.MetroCheckBox
+    Public WithEvents CB_AnimeSub As MetroFramework.Controls.MetroCheckBox
+    Public WithEvents CB_Season As MetroFramework.Controls.MetroCheckBox
+    Public WithEvents CB_Anime As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents TB_NameString As MetroFramework.Controls.MetroTextBox
 End Class

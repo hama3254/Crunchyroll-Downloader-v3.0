@@ -116,5 +116,8 @@
     <Setting Name="ErrorTolerance" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="NameTemplate" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Unused</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

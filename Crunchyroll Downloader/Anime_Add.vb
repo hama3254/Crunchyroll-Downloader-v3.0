@@ -1052,7 +1052,7 @@ Public Class Anime_Add
 
 
     Private Sub GroupBox1_VisibleChanged(sender As Object, e As EventArgs) Handles groupBox1.VisibleChanged
-        If Not TextBox2.Text = "Use Custom Name" Then
+        If Not TextBox2.Text = "Use Custom Name" And CBool(InStr(TextBox2.Text, "++")) = False Then
             TextBox2.Text = "Use Custom Name"
         End If
     End Sub

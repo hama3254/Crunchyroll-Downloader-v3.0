@@ -116,17 +116,8 @@ Public Class Einstellungen
             '    RB_pt.Checked = True
             'End If
         Next
-        If Main.CR_NameMethode = 0 Then
-            CR_Filename.SelectedIndex = 0
-        ElseIf Main.CR_NameMethode = 1 Then
-            CR_Filename.SelectedIndex = 1
-        ElseIf Main.CR_NameMethode = 2 Then
-            CR_Filename.SelectedIndex = 2
-        ElseIf Main.CR_NameMethode = 3 Then
-            CR_Filename.SelectedIndex = 3
-        Else
-            CR_Filename.SelectedIndex = 0
-        End If
+
+        'TB_NameString.Text = Main.NameBuilder
 
         Me.Location = New Point(CInt(Main.Location.X + Main.Width / 2 - Me.Width / 2), CInt(Main.Location.Y + Main.Height / 2 - Me.Height / 2))
         Try
@@ -328,6 +319,29 @@ Public Class Einstellungen
             CR_SoftSubDefault.SelectedItem = "[Disabled]"
         End If
 
+
+        Dim NameParts As String() = Main.NameBuilder.Split(New String() {";"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+        For i As Integer = 0 To NameParts.Count - 1
+
+            If NameParts(i) = "AnimeTitle" Then
+                CB_Anime.Checked = True
+            ElseIf NameParts(i) = "Season" Then
+                CB_Season.Checked = True
+            ElseIf NameParts(i) = "EpisodeNR" Then
+                CB_EpisodeNR.Checked = True
+            ElseIf NameParts(i) = "EpisodeName" Then
+                CB_EpisodeName.Checked = True
+            ElseIf NameParts(i) = "AnimeDub" Then
+                CB_AnimeDub.Checked = True
+            ElseIf NameParts(i) = "AnimeSub" Then
+                CB_AnimeSub.Checked = True
+            End If
+
+        Next
+
+
     End Sub
 
     Private Sub Btn_Save_Click(sender As Object, e As EventArgs) Handles Btn_Save.Click
@@ -488,19 +502,8 @@ Public Class Einstellungen
         End If
 
 
-        If CR_Filename.Text = "[episode number]" Then
-            Main.CR_NameMethode = 0
-            My.Settings.CR_NameMethode = Main.CR_NameMethode
-        ElseIf CR_Filename.Text = "[episode name]" Then
-            Main.CR_NameMethode = 1
-            My.Settings.CR_NameMethode = Main.CR_NameMethode
-        ElseIf CR_Filename.Text = "[episode number] [episode name]" Then
-            Main.CR_NameMethode = 2
-            My.Settings.CR_NameMethode = Main.CR_NameMethode
-        ElseIf CR_Filename.Text = "[episode name] [episode number]" Then
-            Main.CR_NameMethode = 3
-            My.Settings.CR_NameMethode = Main.CR_NameMethode
-        End If
+        Main.NameBuilder = TB_NameString.Text
+
 
         If CB_Format.Text = "MKV" Then
             Main.VideoFormat = ".mkv"
@@ -1248,6 +1251,49 @@ Public Class Einstellungen
         End If
 
     End Sub
+#Region "Build Name String"
+
+    Private Sub CB_Anime_CheckedChanged(sender As Object, e As EventArgs) Handles CB_Anime.CheckedChanged, CB_Season.CheckedChanged, CB_EpisodeNR.CheckedChanged, CB_EpisodeName.CheckedChanged, CB_AnimeDub.CheckedChanged, CB_AnimeSub.CheckedChanged
+        If CB_Anime.Checked = True And CBool(InStr(TB_NameString.Text, "AnimeTitle;")) = False Then
+            TB_NameString.AppendText("AnimeTitle;")
+        ElseIf CB_Anime.Checked = False Then
+            TB_NameString.Text = TB_NameString.Text.Replace("AnimeTitle;", "")
+        End If
+
+        If CB_Season.Checked = True And CBool(InStr(TB_NameString.Text, "Season;")) = False Then
+            TB_NameString.AppendText("Season;")
+        ElseIf CB_Season.Checked = False Then
+            TB_NameString.Text = TB_NameString.Text.Replace("Season;", "")
+        End If
+
+        If CB_EpisodeNR.Checked = True And CBool(InStr(TB_NameString.Text, "EpisodeNR;")) = False Then
+            TB_NameString.AppendText("EpisodeNR;")
+        ElseIf CB_EpisodeNR.Checked = False Then
+            TB_NameString.Text = TB_NameString.Text.Replace("EpisodeNR;", "")
+        End If
+
+        If CB_EpisodeName.Checked = True And CBool(InStr(TB_NameString.Text, "EpisodeName;")) = False Then
+            TB_NameString.AppendText("EpisodeName;")
+        ElseIf CB_EpisodeName.Checked = False Then
+            TB_NameString.Text = TB_NameString.Text.Replace("EpisodeName;", "")
+        End If
+
+        If CB_AnimeDub.Checked = True And CBool(InStr(TB_NameString.Text, "AnimeDub;")) = False Then
+            TB_NameString.AppendText("AnimeDub;")
+        ElseIf CB_AnimeDub.Checked = False Then
+            TB_NameString.Text = TB_NameString.Text.Replace("AnimeDub;", "")
+        End If
+
+        If CB_AnimeSub.Checked = True And CBool(InStr(TB_NameString.Text, "AnimeSub;")) = False Then
+            TB_NameString.AppendText("AnimeSub;")
+        ElseIf CB_AnimeSub.Checked = False Then
+            TB_NameString.Text = TB_NameString.Text.Replace("AnimeSub;", "")
+        End If
+
+    End Sub
+
+
+#End Region
 
 #End Region
 

@@ -131,7 +131,7 @@ Public Class Main
     Public Funimation_Grapp_RDY As Boolean = True
     Public Grapp_non_cr_RDY As Boolean = True
     Public Grapp_Abord As Boolean = False
-    Public CR_NameMethode As Integer = 0
+    Public NameBuilder As String = ""
     Public LeadingZero As Integer = 1
     Public MaxDL As Integer
     Public ResoNotFoundString As String
@@ -502,8 +502,20 @@ Public Class Main
 
         MaxDL = My.Settings.SL_DL
 
-        CR_NameMethode = My.Settings.CR_NameMethode
-
+        ' 
+        If My.Settings.NameTemplate = "Unused" Then 'convert old stlye
+            If My.Settings.CR_NameMethode = 0 Then
+                NameBuilder = "AnimeTitle;Season;EpisodeNR;"
+            ElseIf My.Settings.CR_NameMethode = 1 Then
+                NameBuilder = "AnimeTitle;Season;EpisodeName;"
+            ElseIf My.Settings.CR_NameMethode = 2 Then
+                NameBuilder = "AnimeTitle;Season;EpisodeNR;EpisodeName;"
+            ElseIf My.Settings.CR_NameMethode = 3 Then
+                NameBuilder = "AnimeTitle;Season;EpisodeName;EpisodeNR;"
+            End If
+        Else
+            NameBuilder = My.Settings.NameTemplate
+        End If
 
         ErrorTolerance = My.Settings.ErrorTolerance
 
@@ -1241,7 +1253,8 @@ Public Class Main
             CR_Anime_Staffel_int = CR_season_number
 
 
-            If TextBox2_Text = Nothing Or TextBox2_Text = "Use Custom Name" Then
+
+            If TextBox2_Text = Nothing Or TextBox2_Text = "Use Custom Name" Or CBool(InStr(TextBox2_Text, "++")) = True Then
 
 
                 If Season_Prefix = "[default season prefix]" Then
@@ -1283,43 +1296,83 @@ Public Class Main
                 End If
 
 
-                If CR_NameMethode = 0 Then 'nummer
-                    If CR_season_number = Nothing And CR_episode = Nothing Then
-                        CR_FilenName = CR_series_title + " " + CR_title
-                    ElseIf CR_episode = Nothing Then
-                        CR_FilenName = CR_series_title + " " + CR_title
-                    ElseIf CR_season_number = Nothing Then
-                        CR_FilenName = CR_series_title + " " + CR_episode
-                    Else
-                        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_episode
+                Dim NameParts As String() = NameBuilder.Split(New String() {";"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                For i As Integer = 0 To NameParts.Count - 1
+
+                    If NameParts(i) = "AnimeTitle" Then
+                        CR_FilenName = CR_FilenName + " " + CR_series_title
+                    ElseIf NameParts(i) = "Season" Then
+                        CR_FilenName = CR_FilenName + " " + CR_season_number
+                    ElseIf NameParts(i) = "EpisodeNR" Then
+                        CR_FilenName = CR_FilenName + " " + CR_episode
+                    ElseIf NameParts(i) = "EpisodeName" Then
+                        CR_FilenName = CR_FilenName + " " + CR_title
+                    ElseIf NameParts(i) = "AnimeDub" Then
+                        CR_FilenName = CR_FilenName + " RepDub"
+                    ElseIf NameParts(i) = "AnimeSub" Then
+                        CR_FilenName = CR_FilenName + " RepSub"
                     End If
-                ElseIf CR_NameMethode = 1 Then 'name
-                    If CR_season_number = Nothing Then
-                        CR_FilenName = CR_series_title + " " + CR_title
-                    Else
-                        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_title
-                    End If
-                ElseIf CR_NameMethode = 2 Then ' nummer - name
-                    If CR_season_number = Nothing And CR_episode = Nothing Then
-                        CR_FilenName = CR_series_title + " " + CR_title
-                    ElseIf CR_season_number = Nothing Then
-                        CR_FilenName = CR_series_title + " " + CR_episode + " " + CR_title
-                    Else
-                        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_episode + " " + CR_title
-                    End If
-                ElseIf CR_NameMethode = 3 Then ' name - nummer
-                    If CR_season_number = Nothing And CR_episode = Nothing Then
-                        CR_FilenName = CR_series_title + " " + CR_title
-                    ElseIf CR_season_number = Nothing Then
-                        CR_FilenName = CR_series_title + " " + CR_title + " " + CR_episode
-                    Else
-                        CR_FilenName = CR_series_title + " " + CR_title + " " + CR_season_number + " " + CR_episode
-                    End If
+
+                Next
+
+
+                'If CR_NameMethode = 0 Then 'nummer
+                '    If CR_season_number = Nothing And CR_episode = Nothing Then
+                '        CR_FilenName = CR_series_title + " " + CR_title
+                '    ElseIf CR_episode = Nothing Then
+                '        CR_FilenName = CR_series_title + " " + CR_title
+                '    ElseIf CR_season_number = Nothing Then
+                '        CR_FilenName = CR_series_title + " " + CR_episode
+                '    Else
+                '        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_episode
+                '    End If
+                'ElseIf CR_NameMethode = 1 Then 'name
+                '    If CR_season_number = Nothing Then
+                '        CR_FilenName = CR_series_title + " " + CR_title
+                '    Else
+                '        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_title
+                '    End If
+                'ElseIf CR_NameMethode = 2 Then ' nummer - name
+                '    If CR_season_number = Nothing And CR_episode = Nothing Then
+                '        CR_FilenName = CR_series_title + " " + CR_title
+                '    ElseIf CR_season_number = Nothing Then
+                '        CR_FilenName = CR_series_title + " " + CR_episode + " " + CR_title
+                '    Else
+                '        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_episode + " " + CR_title
+                '    End If
+                'ElseIf CR_NameMethode = 3 Then ' name - nummer
+                '    If CR_season_number = Nothing And CR_episode = Nothing Then
+                '        CR_FilenName = CR_series_title + " " + CR_title
+                '    ElseIf CR_season_number = Nothing Then
+                '        CR_FilenName = CR_series_title + " " + CR_title + " " + CR_episode
+                '    Else
+                '        CR_FilenName = CR_series_title + " " + CR_title + " " + CR_season_number + " " + CR_episode
+                '    End If
+                'End If
+
+
+                If CBool(InStr(TextBox2_Text, "++")) = True Then
+                    Dim Backup_CR_FilenName As String = CR_FilenName
+                    Try
+                        Dim AddDef As String = "CRD"
+                        Dim TestString As String = AddDef + TextBox2_Text + AddDef
+                        Dim PrePost As String() = TestString.Split(New String() {"++"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        CR_FilenName = PrePost(0) + CR_FilenName + PrePost(1)
+                        CR_FilenName = CR_FilenName.Replace(AddDef, "")
+                    Catch ex As Exception
+                        CR_FilenName = Backup_CR_FilenName
+                    End Try
                 End If
+
+
+
+
+
 
 #End Region
             Else
-                CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
+                    CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
             End If
 
             If KodiNaming = True Then
@@ -1808,6 +1861,17 @@ Public Class Main
                     End If
                 Next
             End If
+#End Region
+#Region "Replace Sub/Dub in name"
+
+            If CBool(InStr(CR_FilenName, "RepDub")) Then
+                CR_FilenName = CR_FilenName.Replace("RepDub", HardSubValuesToDisplay(CR_audio_locale))
+            End If
+
+            If CBool(InStr(CR_FilenName, " RepSub")) Then
+                CR_FilenName = CR_FilenName.Replace(" RepSub", "")
+            End If
+
 #End Region
 
 #Region "Display Resolution"
@@ -2626,13 +2690,46 @@ Public Class Main
             FunimationEpisodeTitle = String.Join(" ", FunimationEpisodeTitle.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "")
             FunimationDub = ConvertFunimationDub(DubFunimation) 'FunimationDub2(0)
             Dim DefaultName As String = RemoveExtraSpaces(FunimationTitle + " " + FunimationSeason + " " + FunimationEpisode)
-            If CR_NameMethode = 1 Then
-                DefaultName = RemoveExtraSpaces(FunimationTitle + " " + FunimationSeason + " " + FunimationEpisodeTitle)
-            ElseIf CR_NameMethode = 2 Then
-                DefaultName = RemoveExtraSpaces(FunimationTitle + " " + FunimationSeason + " " + FunimationEpisode + " " + FunimationEpisodeTitle)
-            ElseIf CR_NameMethode = 3 Then
-                DefaultName = RemoveExtraSpaces(FunimationTitle + " " + FunimationEpisodeTitle + " " + FunimationSeason + " " + FunimationEpisode)
+
+            Dim NameParts As String() = NameBuilder.Split(New String() {";"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            For i As Integer = 0 To NameParts.Count - 1
+
+                If NameParts(i) = "AnimeTitle" Then
+                    DefaultName = DefaultName + " " + FunimationTitle
+                ElseIf NameParts(i) = "Season" Then
+                    DefaultName = DefaultName + " " + FunimationSeason
+                ElseIf NameParts(i) = "EpisodeNR" Then
+                    DefaultName = DefaultName + " " + FunimationEpisode
+                ElseIf NameParts(i) = "EpisodeName" Then
+                    DefaultName = DefaultName + " " + FunimationEpisodeTitle
+                ElseIf NameParts(i) = "AnimeDub" Then
+                    DefaultName = DefaultName + " RepDub"
+                ElseIf NameParts(i) = "AnimeSub" Then
+                    DefaultName = DefaultName + " RepSub"
+                End If
+
+            Next
+
+
+            If CBool(InStr(DefaultName, " RepDub")) Then
+                DefaultName = DefaultName.Replace(" RepDub", "")
             End If
+
+            If CBool(InStr(DefaultName, " RepSub")) Then
+                DefaultName = DefaultName.Replace(" RepSub", "")
+            End If
+
+
+            'If CR_NameMethode = 1 Then
+            '    DefaultName = RemoveExtraSpaces(FunimationTitle + " " + FunimationSeason + " " + FunimationEpisodeTitle)
+            'ElseIf CR_NameMethode = 2 Then
+            '    DefaultName = RemoveExtraSpaces(FunimationTitle + " " + FunimationSeason + " " + FunimationEpisode + " " + FunimationEpisodeTitle)
+            'ElseIf CR_NameMethode = 3 Then
+            '    DefaultName = RemoveExtraSpaces(FunimationTitle + " " + FunimationEpisodeTitle + " " + FunimationSeason + " " + FunimationEpisode)
+            'End If
+
+
             DefaultName = DefaultName.Replace("&#x27;", "'")
             'Dim DefaultPath As String = Pfad + "\" + DefaultName + VideoFormat
             'DefaultPath = DefaultPath.Replace("\\", "\")

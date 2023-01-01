@@ -90,7 +90,7 @@ Public Class Einstellungen
                 CBesLA.Checked = True
             ElseIf Main.SoftSubs(i) = "fr-FR" Then
                 CBfrFR.Checked = True
-            ElseIf Main.SoftSubs(i) = "ar-ME" Then
+            ElseIf Main.SoftSubs(i) = "ar-SA" Then
                 CBarME.Checked = True
             ElseIf Main.SoftSubs(i) = "ru-RU" Then
                 CBruRU.Checked = True
@@ -223,6 +223,7 @@ Public Class Einstellungen
                 'MsgBox(CB_CR_Harsubs.Items.Count.ToString)
                 'MsgBox(i.ToString)
                 CB_CR_Harsubs.SelectedIndex = i
+                'Exit For
             End If
 
         Next
@@ -275,6 +276,10 @@ Public Class Einstellungen
             FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
         End If
 
+        If FFMPEG_CommandP1.Text = "-c:v libsvtav1" And FFMPEG_CommandP2.Text = "[no Preset]" Then
+            FFMPEG_CommandP2.Enabled = False
+            FFMPEG_CommandP3.Enabled = True
+        End If
 
 
         ListViewAdd_True.Checked = Main.UseQueue
@@ -311,7 +316,7 @@ Public Class Einstellungen
             CR_SoftSubDefault.SelectedItem = "Español (LA)"
         ElseIf Main.DefaultSubCR = "fr-FR" Then
             CR_SoftSubDefault.SelectedItem = "Français (France)"
-        ElseIf Main.DefaultSubCR = "ar-ME" Then
+        ElseIf Main.DefaultSubCR = "ar-SA" Then
             CR_SoftSubDefault.SelectedItem = "العربية (Arabic)"
         ElseIf Main.DefaultSubCR = "ru-RU" Then
             CR_SoftSubDefault.SelectedItem = "Русский (Russian)"
@@ -451,39 +456,39 @@ Public Class Einstellungen
 
 
         If CR_SoftSubDefault.SelectedItem.ToString = "English" Then
-                Main.DefaultSubCR = "en-US"
-                My.Settings.DefaultSubCR = Main.DefaultSubCR
-            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Deutsch" Then
-                Main.DefaultSubCR = "de-DE"
-                My.Settings.DefaultSubCR = Main.DefaultSubCR
-            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Português (Brasil)" Then
-                Main.DefaultSubCR = "pt-BR"
-                My.Settings.DefaultSubCR = Main.DefaultSubCR
-            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (LA)" Then
-                Main.DefaultSubCR = "es-419"
-                My.Settings.DefaultSubCR = Main.DefaultSubCR
-            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Français (France)" Then
-                Main.DefaultSubCR = "fr-FR"
-                My.Settings.DefaultSubCR = Main.DefaultSubCR
-            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "العربية (Arabic)" Then
-                Main.DefaultSubCR = "ar-ME"
-                My.Settings.DefaultSubCR = Main.DefaultSubCR
-            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Русский (Russian)" Then
-                Main.DefaultSubCR = "ru-RU"
-                My.Settings.DefaultSubCR = Main.DefaultSubCR
-            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Italiano (Italian)" Then
-                Main.DefaultSubCR = "it-IT"
-                My.Settings.DefaultSubCR = Main.DefaultSubCR
-            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (España)" Then
-                Main.DefaultSubCR = "es-ES"
-                My.Settings.DefaultSubCR = Main.DefaultSubCR
-            ElseIf CR_SoftSubDefault.SelectedItem.ToString = "[Disabled]" Then
-                Main.DefaultSubCR = "None"
-                My.Settings.DefaultSubCR = Main.DefaultSubCR
-            End If
+            Main.DefaultSubCR = "en-US"
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Deutsch" Then
+            Main.DefaultSubCR = "de-DE"
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Português (Brasil)" Then
+            Main.DefaultSubCR = "pt-BR"
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (LA)" Then
+            Main.DefaultSubCR = "es-419"
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Français (France)" Then
+            Main.DefaultSubCR = "fr-FR"
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "العربية (Arabic)" Then
+            Main.DefaultSubCR = "ar-SA"
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Русский (Russian)" Then
+            Main.DefaultSubCR = "ru-RU"
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Italiano (Italian)" Then
+            Main.DefaultSubCR = "it-IT"
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "Español (España)" Then
+            Main.DefaultSubCR = "es-ES"
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
+        ElseIf CR_SoftSubDefault.SelectedItem.ToString = "[Disabled]" Then
+            Main.DefaultSubCR = "None"
+            My.Settings.DefaultSubCR = Main.DefaultSubCR
+        End If
 
 
-            If CR_Filename.Text = "[episode number]" Then
+        If CR_Filename.Text = "[episode number]" Then
             Main.CR_NameMethode = 0
             My.Settings.CR_NameMethode = Main.CR_NameMethode
         ElseIf CR_Filename.Text = "[episode name]" Then
@@ -680,33 +685,31 @@ Public Class Einstellungen
 #Region "sof subs"
         Main.SoftSubs.Clear()
         If CBdeDE.Checked = True Then
-            Main.SoftSubs.Add("deDE")
+            Main.SoftSubs.Add("de-DE")
         End If
         If CBenUS.Checked = True Then
-            Main.SoftSubs.Add("enUS")
+            Main.SoftSubs.Add("en-US")
         End If
         If CBptBR.Checked = True Then
-            Main.SoftSubs.Add("ptBR")
+            Main.SoftSubs.Add("pt-BR")
         End If
         If CBesLA.Checked = True Then
-            Main.SoftSubs.Add("esLA")
             Main.SoftSubs.Add("es-419")
         End If
         If CBfrFR.Checked = True Then
-            Main.SoftSubs.Add("frFR")
+            Main.SoftSubs.Add("fr-FR")
         End If
         If CBarME.Checked = True Then
-            Main.SoftSubs.Add("arME")
             Main.SoftSubs.Add("ar-SA")
         End If
         If CBruRU.Checked = True Then
-            Main.SoftSubs.Add("ruRU")
+            Main.SoftSubs.Add("ru-RU")
         End If
         If CBitIT.Checked = True Then
-            Main.SoftSubs.Add("itIT")
+            Main.SoftSubs.Add("it-IT")
         End If
         If CBesES.Checked = True Then
-            Main.SoftSubs.Add("esES")
+            Main.SoftSubs.Add("es-ES")
         End If
 
         Dim SaveString As String = Nothing
@@ -839,12 +842,17 @@ Public Class Einstellungen
 
 
 
-    Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles ListC1.Click, ListC2.Click, ListC3.Click, ListC4.Click, ListC5.Click, ListC6.Click, ListC7.Click, ListC8.Click, ListC9.Click
+    Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles copy.Click, nv_h264.Click, nv_hevc.Click, nv_AV1.Click, CPU_h264.Click, CPU_h265.Click, CPU_AV1.Click, AMD_h264.Click, AMD_hevc.Click, Intel_h264.Click, Intel_hevc.Click, Intel_AV1.Click
         Dim Button As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         If Button.Text = "-c copy" Then
             FFMPEG_CommandP1.Text = "-c copy"
             FFMPEG_CommandP2.Enabled = False
             FFMPEG_CommandP3.Enabled = False
+        ElseIf Button.Text = "-c:v libsvtav1" Then
+            FFMPEG_CommandP1.Text = Button.Text
+            FFMPEG_CommandP2.Text = "[no Preset]"
+            FFMPEG_CommandP2.Enabled = False
+            FFMPEG_CommandP3.Enabled = True
         Else
             FFMPEG_CommandP1.Text = Button.Text
             FFMPEG_CommandP2.Enabled = True
@@ -914,6 +922,7 @@ Public Class Einstellungen
         GroupBox17.ForeColor = color
         GroupBox18.ForeColor = color
         GroupBox19.ForeColor = color
+        GroupBox20.ForeColor = color
     End Sub
 
 

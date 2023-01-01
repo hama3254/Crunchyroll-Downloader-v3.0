@@ -62,12 +62,30 @@ Public Class CR_Beta_Stream
     Public Sub New(ByVal subLang As String, ByVal Format As String, ByVal Url As String)
         Me.subLang = subLang
         Me.Url = Url
-        'Me.audioLanguage = audioLanguage
         Me.Format = Format
     End Sub
     'Me.audioLanguage,
     Public Overrides Function ToString() As String
         Return String.Format("{0}, {1}, {2}", Me.subLang, Me.Format, Me.Url)
+    End Function
+
+End Class
+
+Public Class CR_Subtiles
+    Public Url As String
+    Public SubLangValue As String
+    Public SubLangName As String
+    Public DefaultSub As Boolean
+    Public Index As String
+    Public Sub New(ByVal SubLangValue As String, ByVal SubLangName As String, ByVal Url As String, ByVal Index As String, ByVal DefaultSub As Boolean)
+        Me.SubLangValue = SubLangValue
+        Me.SubLangName = SubLangName
+        Me.Url = Url
+        Me.Index = Index
+        Me.DefaultSub = DefaultSub
+    End Sub
+    Public Overrides Function ToString() As String
+        Return String.Format("{0}, {1}, {2}", Me.SubLangValue, Me.SubLangName, Me.Url, Me.Index, Me.DefaultSub.ToString)
     End Function
 
 End Class

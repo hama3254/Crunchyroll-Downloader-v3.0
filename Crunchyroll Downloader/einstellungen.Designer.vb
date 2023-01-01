@@ -54,15 +54,15 @@ Partial Class Einstellungen
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FFMPEG_CommandP1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListC1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListC2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListC3 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListC4 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListC5 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListC6 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListC7 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListC8 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListC9 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.copy = New System.Windows.Forms.ToolStripMenuItem()
+        Me.nv_h264 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.nv_hevc = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CPU_h264 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CPU_h265 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AMD_h264 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AMD_hevc = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Intel_h264 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Intel_hevc = New System.Windows.Forms.ToolStripMenuItem()
         Me.FFMPEG_CommandP2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListP1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListP2 = New System.Windows.Forms.ToolStripMenuItem()
@@ -154,6 +154,9 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
+        Me.Intel_AV1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CPU_AV1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.nv_AV1 = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -406,10 +409,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage2.Size = New System.Drawing.Size(501, 519)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -590,65 +593,73 @@ Partial Class Einstellungen
         '
         'FFMPEG_CommandP1
         '
-        Me.FFMPEG_CommandP1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListC1, Me.ListC2, Me.ListC3, Me.ListC4, Me.ListC5, Me.ListC6, Me.ListC7, Me.ListC8, Me.ListC9})
+        Me.FFMPEG_CommandP1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.copy, Me.CPU_h264, Me.CPU_h265, Me.CPU_AV1, Me.nv_h264, Me.nv_hevc, Me.nv_AV1, Me.AMD_h264, Me.AMD_hevc, Me.Intel_h264, Me.Intel_hevc, Me.Intel_AV1})
         Me.FFMPEG_CommandP1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FFMPEG_CommandP1.Name = "FFMPEG_CommandP1"
         Me.FFMPEG_CommandP1.Size = New System.Drawing.Size(63, 20)
         Me.FFMPEG_CommandP1.Text = "-c copy"
         '
-        'ListC1
+        'copy
         '
-        Me.ListC1.Name = "ListC1"
-        Me.ListC1.Size = New System.Drawing.Size(172, 22)
-        Me.ListC1.Text = "-c copy"
+        Me.copy.Name = "copy"
+        Me.copy.Size = New System.Drawing.Size(180, 22)
+        Me.copy.Text = "-c copy"
         '
-        'ListC2
+        'nv_h264
         '
-        Me.ListC2.Name = "ListC2"
-        Me.ListC2.Size = New System.Drawing.Size(172, 22)
-        Me.ListC2.Text = "-c:v h264_nvenc "
+        Me.nv_h264.BackColor = System.Drawing.Color.YellowGreen
+        Me.nv_h264.Name = "nv_h264"
+        Me.nv_h264.Size = New System.Drawing.Size(180, 22)
+        Me.nv_h264.Text = "-c:v h264_nvenc "
         '
-        'ListC3
+        'nv_hevc
         '
-        Me.ListC3.Name = "ListC3"
-        Me.ListC3.Size = New System.Drawing.Size(172, 22)
-        Me.ListC3.Text = "-c:v hevc_nvenc"
+        Me.nv_hevc.BackColor = System.Drawing.Color.YellowGreen
+        Me.nv_hevc.Name = "nv_hevc"
+        Me.nv_hevc.Size = New System.Drawing.Size(180, 22)
+        Me.nv_hevc.Text = "-c:v hevc_nvenc"
         '
-        'ListC4
+        'CPU_h264
         '
-        Me.ListC4.Name = "ListC4"
-        Me.ListC4.Size = New System.Drawing.Size(172, 22)
-        Me.ListC4.Text = "-c:v libx264"
+        Me.CPU_h264.BackColor = System.Drawing.Color.DarkGray
+        Me.CPU_h264.Name = "CPU_h264"
+        Me.CPU_h264.Size = New System.Drawing.Size(180, 22)
+        Me.CPU_h264.Text = "-c:v libx264"
         '
-        'ListC5
+        'CPU_h265
         '
-        Me.ListC5.Name = "ListC5"
-        Me.ListC5.Size = New System.Drawing.Size(172, 22)
-        Me.ListC5.Text = "-c:v libx265"
+        Me.CPU_h265.BackColor = System.Drawing.Color.DarkGray
+        Me.CPU_h265.Name = "CPU_h265"
+        Me.CPU_h265.Size = New System.Drawing.Size(180, 22)
+        Me.CPU_h265.Text = "-c:v libx265"
         '
-        'ListC6
+        'AMD_h264
         '
-        Me.ListC6.Name = "ListC6"
-        Me.ListC6.Size = New System.Drawing.Size(172, 22)
-        Me.ListC6.Text = "-c:v h264_amf"
+        Me.AMD_h264.BackColor = System.Drawing.Color.Tomato
+        Me.AMD_h264.Name = "AMD_h264"
+        Me.AMD_h264.Size = New System.Drawing.Size(180, 22)
+        Me.AMD_h264.Text = "-c:v h264_amf"
         '
-        'ListC7
+        'AMD_hevc
         '
-        Me.ListC7.Name = "ListC7"
-        Me.ListC7.Size = New System.Drawing.Size(172, 22)
-        Me.ListC7.Text = "-c:v hevc_amf"
+        Me.AMD_hevc.BackColor = System.Drawing.Color.Tomato
+        Me.AMD_hevc.Name = "AMD_hevc"
+        Me.AMD_hevc.Size = New System.Drawing.Size(180, 22)
+        Me.AMD_hevc.Text = "-c:v hevc_amf"
         '
-        'ListC8
+        'Intel_h264
         '
-        Me.ListC8.Name = "ListC8"
-        Me.ListC8.Size = New System.Drawing.Size(172, 22)
-        Me.ListC8.Text = "-c:v h264_qsv"
+        Me.Intel_h264.BackColor = System.Drawing.Color.CornflowerBlue
+        Me.Intel_h264.Name = "Intel_h264"
+        Me.Intel_h264.Size = New System.Drawing.Size(180, 22)
+        Me.Intel_h264.Text = "-c:v h264_qsv"
         '
-        'ListC9
+        'Intel_hevc
         '
-        Me.ListC9.Name = "ListC9"
-        Me.ListC9.Size = New System.Drawing.Size(172, 22)
-        Me.ListC9.Text = "-c:v hevc_qsv"
+        Me.Intel_hevc.BackColor = System.Drawing.Color.CornflowerBlue
+        Me.Intel_hevc.Name = "Intel_hevc"
+        Me.Intel_hevc.Size = New System.Drawing.Size(180, 22)
+        Me.Intel_hevc.Text = "-c:v hevc_qsv"
         '
         'FFMPEG_CommandP2
         '
@@ -1123,7 +1134,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 3
+        Me.TabControl1.SelectedIndex = 1
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1137,9 +1148,9 @@ Partial Class Einstellungen
         Me.MetroTabPage2.HorizontalScrollbarBarColor = True
         Me.MetroTabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage2.HorizontalScrollbarSize = 10
-        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 35)
+        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 44)
         Me.MetroTabPage2.Name = "MetroTabPage2"
-        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 528)
+        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 519)
         Me.MetroTabPage2.TabIndex = 8
         Me.MetroTabPage2.Text = "Naming"
         Me.MetroTabPage2.VerticalScrollbarBarColor = True
@@ -1774,6 +1785,27 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
+        'Intel_AV1
+        '
+        Me.Intel_AV1.BackColor = System.Drawing.Color.CornflowerBlue
+        Me.Intel_AV1.Name = "Intel_AV1"
+        Me.Intel_AV1.Size = New System.Drawing.Size(180, 22)
+        Me.Intel_AV1.Text = "-c:v av1_qsv"
+        '
+        'CPU_AV1
+        '
+        Me.CPU_AV1.BackColor = System.Drawing.Color.DarkGray
+        Me.CPU_AV1.Name = "CPU_AV1"
+        Me.CPU_AV1.Size = New System.Drawing.Size(180, 22)
+        Me.CPU_AV1.Text = "-c:v libsvtav1"
+        '
+        'nv_AV1
+        '
+        Me.nv_AV1.BackColor = System.Drawing.Color.YellowGreen
+        Me.nv_AV1.Name = "nv_AV1"
+        Me.nv_AV1.Size = New System.Drawing.Size(180, 22)
+        Me.nv_AV1.Text = "-c:v av1_nvenc"
+        '
         'Einstellungen
         '
         Me.ApplyImageInvert = True
@@ -1853,11 +1885,11 @@ Partial Class Einstellungen
     Friend WithEvents Panel1 As Panel
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents FFMPEG_CommandP1 As ToolStripMenuItem
-    Friend WithEvents ListC1 As ToolStripMenuItem
-    Friend WithEvents ListC2 As ToolStripMenuItem
-    Friend WithEvents ListC3 As ToolStripMenuItem
-    Friend WithEvents ListC4 As ToolStripMenuItem
-    Friend WithEvents ListC5 As ToolStripMenuItem
+    Friend WithEvents copy As ToolStripMenuItem
+    Friend WithEvents nv_h264 As ToolStripMenuItem
+    Friend WithEvents nv_hevc As ToolStripMenuItem
+    Friend WithEvents CPU_h264 As ToolStripMenuItem
+    Friend WithEvents CPU_h265 As ToolStripMenuItem
     Friend WithEvents FFMPEG_CommandP2 As ToolStripMenuItem
     Friend WithEvents ListP1 As ToolStripMenuItem
     Friend WithEvents ListP2 As ToolStripMenuItem
@@ -1935,8 +1967,8 @@ Partial Class Einstellungen
     Friend WithEvents CR_SoftSubDefault As MetroFramework.Controls.MetroComboBox
     Friend WithEvents CB_Format As MetroFramework.Controls.MetroComboBox
     Friend WithEvents MetroTabPage1 As MetroFramework.Controls.MetroTabPage
-    Friend WithEvents ListC6 As ToolStripMenuItem
-    Friend WithEvents ListC7 As ToolStripMenuItem
+    Friend WithEvents AMD_h264 As ToolStripMenuItem
+    Friend WithEvents AMD_hevc As ToolStripMenuItem
     Friend WithEvents ListP3 As ToolStripMenuItem
     Friend WithEvents Btn_Save As Button
     Friend WithEvents MetroLabel2 As MetroFramework.Controls.MetroLabel
@@ -1970,12 +2002,15 @@ Partial Class Einstellungen
     Friend WithEvents MetroLabel3 As MetroFramework.Controls.MetroLabel
     Friend WithEvents TempTB As MetroFramework.Controls.MetroTextBox
     Friend WithEvents CB_Ignore As MetroFramework.Controls.MetroComboBox
-    Friend WithEvents ListC8 As ToolStripMenuItem
-    Friend WithEvents ListC9 As ToolStripMenuItem
+    Friend WithEvents Intel_h264 As ToolStripMenuItem
+    Friend WithEvents Intel_hevc As ToolStripMenuItem
     Friend WithEvents GroupBox19 As GroupBox
     Friend WithEvents DubMode As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CB_Merge As MetroFramework.Controls.MetroComboBox
     Friend WithEvents GroupBox20 As GroupBox
     Friend WithEvents ChB_Chapters As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents Chb_Ign_tls As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents Intel_AV1 As ToolStripMenuItem
+    Friend WithEvents CPU_AV1 As ToolStripMenuItem
+    Friend WithEvents nv_AV1 As ToolStripMenuItem
 End Class

@@ -160,7 +160,7 @@ Public Class ErrorDialog
             ElseIf HardSub = "Français (France)" Then
                 Return "fr-FR"
             ElseIf HardSub = "العربية (Arabic)" Then
-                Return "ar-ME"
+                Return "ar-SA"
             ElseIf HardSub = "Русский (Russian)" Then
                 Return "ru-RU"
             ElseIf HardSub = "Italiano (Italian)" Then

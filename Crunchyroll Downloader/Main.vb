@@ -107,7 +107,9 @@ Public Class Main
     Public ffmpeg_command As String = " -c copy -bsf:a aac_adtstoasc" '" -c:v hevc_nvenc -preset fast -b:v 6M -bsf:a aac_adtstoasc " 
     Public Reso As Integer
     Public Season_Prefix As String = "[default season prefix]"
+    Public Season_PrefixDefault As String = "[default season prefix]"
     Public Episode_Prefix As String = "[default episode prefix]"
+    Public Episode_PrefixDefault As String = "[default episode prefix]"
 
     Public ResoSave As String = "6666x6666"
     Public ResoFunBackup As String = "6666x6666"
@@ -1125,7 +1127,7 @@ Public Class Main
             Dim CR_Streams As New List(Of CR_Beta_Stream)
             Dim CR_series_title As String = Nothing
             Dim CR_season_number As String = Nothing
-            Dim CR_season_number2 As String = Nothing
+            Dim CR_FolderSeason As String = Nothing
             Dim CR_episode As String = Nothing
             Dim CR_episode_duration_ms As String = "60000000"
             Dim CR_episode2 As String = Nothing
@@ -1137,7 +1139,7 @@ Public Class Main
             Dim ResoUsed As String = "x" + Reso.ToString
             Dim ffmpegInput As String = "-i [Subtitles only]"
 
-#Region "Name + Pfad"
+
             Dim Pfad2 As String
             Dim TextBox2_Text As String = Nothing
             Dim CR_FilenName As String = Nothing
@@ -1146,7 +1148,6 @@ Public Class Main
                                      TextBox2_Text = Anime_Add.TextBox2.Text
                                      Return Nothing
                                  End Function))
-#Region "Name von Crunchyroll"
 
 
 
@@ -1202,232 +1203,45 @@ Public Class Main
             Dim data As List(Of JToken) = ser.Children().ToList
 
             For Each item As JProperty In data
-                    item.CreateReader()
-                    Select Case item.Name
+                item.CreateReader()
+                Select Case item.Name
 
-                        Case "data" 'each record is inside the entries array
-                            For Each Entry As JObject In item.Values
-                                Try
-                                    Dim Title As String = Entry("title").ToString
-                                    CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                    Debug.WriteLine(Date.Now.ToString + " CR-Title: " + CR_title)
-                                Catch ex As Exception
-                                End Try
-                                Dim SubData As List(Of JToken) = Entry.Children().ToList
-                                For Each SubItem As JProperty In SubData
-                                    'SubItem.CreateReader()
-                                    Select Case SubItem.Name
-                                        Case "episode_metadata"
-                                            For Each SubEntry As JProperty In SubItem.Values
-                                                Select Case SubEntry.Name
-                                                    Case "series_title"
-                                                        CR_series_title = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                    Case "data" 'each record is inside the entries array
+                        For Each Entry As JObject In item.Values
+                            Try
+                                Dim Title As String = Entry("title").ToString
+                                CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                Debug.WriteLine(Date.Now.ToString + " CR-Title: " + CR_title)
+                            Catch ex As Exception
+                            End Try
+                            Dim SubData As List(Of JToken) = Entry.Children().ToList
+                            For Each SubItem As JProperty In SubData
+                                'SubItem.CreateReader()
+                                Select Case SubItem.Name
+                                    Case "episode_metadata"
+                                        For Each SubEntry As JProperty In SubItem.Values
+                                            Select Case SubEntry.Name
+                                                Case "series_title"
+                                                    CR_series_title = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                     'Case "season_title"
                                                     '    CR_season_title = SubEntry.Value.ToString
-                                                    Case "season_number"
-                                                        CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                    Case "episode_number"
-                                                        CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                    Case "episode"
-                                                        CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                    Case "duration_ms"
-                                                        CR_episode_duration_ms = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                    Case "is_dubbed"
-                                                        CR_audio_isDubbed = CBool(SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", ""))
-                                                End Select
-                                            Next '
-                                    End Select
-                                Next
+                                                Case "season_number"
+                                                    CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                Case "episode_number"
+                                                    CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                Case "episode"
+                                                    CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                Case "duration_ms"
+                                                    CR_episode_duration_ms = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                Case "is_dubbed"
+                                                    CR_audio_isDubbed = CBool(SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", ""))
+                                            End Select
+                                        Next '
+                                End Select
                             Next
-                    End Select
-                Next
-
-
-            If CR_episode = Nothing Or CR_episode = "" And CR_episode2 = Nothing Then
-                CR_episode_int = "0"
-            ElseIf CR_episode IsNot Nothing And CR_episode IsNot "" Then
-                CR_episode_int = CR_episode
-            ElseIf CR_episode2 IsNot Nothing Then
-                CR_episode_int = CR_episode2
-            End If
-            CR_Anime_Staffel_int = CR_season_number
-
-
-
-            If TextBox2_Text = Nothing Or TextBox2_Text = "Use Custom Name" Or CBool(InStr(TextBox2_Text, "++")) = True Then
-
-
-                If Season_Prefix = "[default season prefix]" Then
-                    If CR_episode = Nothing And CR_episode2 = Nothing Then 'no episode number means most likey a movie 
-                        CR_season_number = Nothing
-                    ElseIf CR_season_number = Nothing Then
-                    Else
-                        CR_season_number = "Season " + CR_season_number
-                    End If
-                Else
-                    If CR_episode = Nothing And CR_episode2 = Nothing Then 'no episode number means most likey a movie 
-                        CR_season_number = Nothing
-                    ElseIf CR_season_number = Nothing Then
-                    Else
-                        CR_season_number = Season_Prefix + CR_season_number
-                    End If
-                End If
-
-                CR_season_number2 = CR_season_number
-
-                If IgnoreSeason = 1 And CR_season_number = "1" Or IgnoreSeason = 1 And CR_season_number = "0" Then
-                    CR_season_number = Nothing
-                ElseIf IgnoreSeason = 2 Then
-                    CR_season_number = Nothing
-                End If
-
-
-                If Episode_Prefix = "[default episode prefix]" Then
-                    If CR_episode = Nothing Or CR_episode = "" And CR_episode2 = Nothing Then
-                        CR_episode = CR_title
-                    ElseIf CR_episode IsNot Nothing And CR_episode IsNot "" Then
-                        CR_episode = "Episode " + AddLeadingZeros(CR_episode)
-                    ElseIf CR_episode2 IsNot Nothing Then
-                        CR_episode = "Episode " + AddLeadingZeros(CR_episode2)
-                    End If
-                    'CR_episode = "Episode " + AddLeadingZeros(CR_episode)
-                Else
-                    CR_episode = Episode_Prefix + AddLeadingZeros(CR_episode)
-                End If
-
-
-                Dim NameParts As String() = NameBuilder.Split(New String() {";"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                For i As Integer = 0 To NameParts.Count - 1
-
-                    If NameParts(i) = "AnimeTitle" Then
-                        CR_FilenName = CR_FilenName + " " + CR_series_title
-                    ElseIf NameParts(i) = "Season" Then
-                        CR_FilenName = CR_FilenName + " " + CR_season_number
-                    ElseIf NameParts(i) = "EpisodeNR" Then
-                        CR_FilenName = CR_FilenName + " " + CR_episode
-                    ElseIf NameParts(i) = "EpisodeName" Then
-                        CR_FilenName = CR_FilenName + " " + CR_title
-                    ElseIf NameParts(i) = "AnimeDub" Then
-                        CR_FilenName = CR_FilenName + " RepDub"
-                    ElseIf NameParts(i) = "AnimeSub" Then
-                        CR_FilenName = CR_FilenName + " RepSub"
-                    End If
-
-                Next
-
-
-                'If CR_NameMethode = 0 Then 'nummer
-                '    If CR_season_number = Nothing And CR_episode = Nothing Then
-                '        CR_FilenName = CR_series_title + " " + CR_title
-                '    ElseIf CR_episode = Nothing Then
-                '        CR_FilenName = CR_series_title + " " + CR_title
-                '    ElseIf CR_season_number = Nothing Then
-                '        CR_FilenName = CR_series_title + " " + CR_episode
-                '    Else
-                '        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_episode
-                '    End If
-                'ElseIf CR_NameMethode = 1 Then 'name
-                '    If CR_season_number = Nothing Then
-                '        CR_FilenName = CR_series_title + " " + CR_title
-                '    Else
-                '        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_title
-                '    End If
-                'ElseIf CR_NameMethode = 2 Then ' nummer - name
-                '    If CR_season_number = Nothing And CR_episode = Nothing Then
-                '        CR_FilenName = CR_series_title + " " + CR_title
-                '    ElseIf CR_season_number = Nothing Then
-                '        CR_FilenName = CR_series_title + " " + CR_episode + " " + CR_title
-                '    Else
-                '        CR_FilenName = CR_series_title + " " + CR_season_number + " " + CR_episode + " " + CR_title
-                '    End If
-                'ElseIf CR_NameMethode = 3 Then ' name - nummer
-                '    If CR_season_number = Nothing And CR_episode = Nothing Then
-                '        CR_FilenName = CR_series_title + " " + CR_title
-                '    ElseIf CR_season_number = Nothing Then
-                '        CR_FilenName = CR_series_title + " " + CR_title + " " + CR_episode
-                '    Else
-                '        CR_FilenName = CR_series_title + " " + CR_title + " " + CR_season_number + " " + CR_episode
-                '    End If
-                'End If
-
-
-                If CBool(InStr(TextBox2_Text, "++")) = True Then
-                    Dim Backup_CR_FilenName As String = CR_FilenName
-                    Try
-                        Dim AddDef As String = "CRD"
-                        Dim TestString As String = AddDef + TextBox2_Text + AddDef
-                        Dim PrePost As String() = TestString.Split(New String() {"++"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        CR_FilenName = PrePost(0) + CR_FilenName + PrePost(1)
-                        CR_FilenName = CR_FilenName.Replace(AddDef, "")
-                    Catch ex As Exception
-                        CR_FilenName = Backup_CR_FilenName
-                    End Try
-                End If
-
-
-
-
-
-
-#End Region
-            Else
-                    CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
-            End If
-
-            If KodiNaming = True Then
-                Dim KodiString As String = "[S"
-                If CR_Anime_Staffel_int = "0" Then
-                    CR_Anime_Staffel_int = "01"
-                Else
-                    CR_Anime_Staffel_int = "0" + CR_Anime_Staffel_int
-                End If
-
-                KodiString = KodiString + CR_Anime_Staffel_int + " E" + AddLeadingZeros(CR_episode_int) ' CR_episode_nr
-                KodiString = KodiString + "] "
-                CR_FilenName = KodiString + CR_FilenName
-            End If
-            Debug.WriteLine(CR_FilenName)
-
-            CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
-            CR_FilenName = RemoveExtraSpaces(CR_FilenName)
-            'My.Computer.FileSystem.WriteAllText("log.log", WebbrowserText, False)
-            Pfad2 = UseSubfolder(CR_series_title, CR_season_number2, Pfad)
-            If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
-                ' Nein! Jetzt erstellen...
-                Try
-                    Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
-                    Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
-                Catch ex As Exception
-                    ' Ordner wurde nich erstellt
-                    Pfad2 = Chr(34) + Pfad + "\" + CR_FilenName + VideoFormat + Chr(34)
-                    Pfad2 = Pfad2.Replace("\\", "\")
-                End Try
-            Else
-                Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
-            End If
-#End Region
-
-#Region "lösche doppel download"
-            Dim Pfad5 As String = Pfad2.Replace(Chr(34), "")
-            If My.Computer.FileSystem.FileExists(Pfad5) And SubsOnly = False Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
-                Me.Invoke(New Action(Function() As Object
-                                         Anime_Add.StatusLabel.Text = "Status: The file video already exists."
-                                         Me.Text = "Status: The file video already exists."
-                                         Me.Invalidate()
-                                         Return Nothing
-                                     End Function))
-                If MessageBox.Show("The file " + Pfad5 + " already exists." + vbNewLine + "You want to override it?", "File exists!", MessageBoxButtons.OKCancel) = DialogResult.OK Then
-                    Try
-                        My.Computer.FileSystem.DeleteFile(Pfad5)
-                    Catch ex As Exception
-                    End Try
-                Else
-                    Grapp_RDY = True
-                    Exit Sub
-                End If
-            End If
-#End Region
+                        Next
+                End Select
+            Next
 
 #Region "Chapters"
             Dim Mdata_File As String = Application.StartupPath + "\" + ObjectsURLBuilder4(0) + "-mdata.txt"
@@ -1506,6 +1320,7 @@ Public Class Main
                 End If
             End If
 #End Region
+
 #Region "VideoJson"
             Dim VideoJson As String = Nothing
 
@@ -1598,15 +1413,7 @@ Public Class Main
                                     Else
                                         CR_audio_locale = "ja-JP"
                                     End If
-                                    'Case "subtitles"
-                                    '    Dim SubtitleSubData As List(Of JToken) = MetaEntrys.Children().ToList
-                                    '    For Each SubtitleSubItem As JObject In SubtitleSubData
-                                    '        'MsgBox(SubtitleSubItem.Children().ToList.Count.ToString)
-                                    '        If SubtitleSubItem.Children().ToList.Count > 2 Then
-                                    '            CR_audio_locale = "ja-JP"
-                                    '        End If
-                                    '        Exit For
-                                    '    Next
+
                             End Select
 
                         Next
@@ -1672,12 +1479,170 @@ Public Class Main
 
 #End Region
 
+#Region "Name"
+
+#Region "Name von Crunchyroll"
+
+
+            If CR_episode = Nothing Or CR_episode = "" And CR_episode2 = Nothing Then
+                CR_episode_int = "0"
+            ElseIf CR_episode IsNot Nothing And CR_episode IsNot "" Then
+                CR_episode_int = CR_episode
+            ElseIf CR_episode2 IsNot Nothing Then
+                CR_episode_int = CR_episode2
+            End If
+            CR_Anime_Staffel_int = CR_season_number
+
+
+
+            If TextBox2_Text = Nothing Or TextBox2_Text = "Use Custom Name" Or CBool(InStr(TextBox2_Text, "++")) = True Then
+
+
+                If Season_Prefix = "[default season prefix]" Then
+                    If CR_episode = Nothing And CR_episode2 = Nothing Then 'no episode number means most likey a movie 
+                        CR_season_number = Nothing
+                    ElseIf CR_season_number = Nothing Then
+                    Else
+                        CR_season_number = "Season " + CR_season_number
+                    End If
+                Else
+                    If CR_episode = Nothing And CR_episode2 = Nothing Then 'no episode number means most likey a movie 
+                        CR_season_number = Nothing
+                    ElseIf CR_season_number = Nothing Then
+                    Else
+                        CR_season_number = Season_Prefix + CR_season_number
+                    End If
+                End If
+
+                CR_FolderSeason = CR_season_number
+
+                If IgnoreSeason = 1 And CR_season_number = "1" Or IgnoreSeason = 1 And CR_season_number = "0" Then
+                    CR_season_number = Nothing
+                ElseIf IgnoreSeason = 2 Then
+                    CR_season_number = Nothing
+                End If
+
+
+                If Episode_Prefix = "[default episode prefix]" Then
+                    If CR_episode = Nothing Or CR_episode = "" And CR_episode2 = Nothing Then
+                        CR_episode = CR_title
+                    ElseIf CR_episode IsNot Nothing And CR_episode IsNot "" Then
+                        CR_episode = "Episode " + AddLeadingZeros(CR_episode)
+                    ElseIf CR_episode2 IsNot Nothing Then
+                        CR_episode = "Episode " + AddLeadingZeros(CR_episode2)
+                    End If
+                    'CR_episode = "Episode " + AddLeadingZeros(CR_episode)
+                Else
+                    CR_episode = Episode_Prefix + AddLeadingZeros(CR_episode)
+                End If
+
+
+                Dim NameParts As String() = NameBuilder.Split(New String() {";"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                For i As Integer = 0 To NameParts.Count - 1
+
+                    If NameParts(i) = "AnimeTitle" Then
+                        CR_FilenName = CR_FilenName + " " + CR_series_title
+                    ElseIf NameParts(i) = "Season" Then
+                        CR_FilenName = CR_FilenName + " " + CR_season_number
+                    ElseIf NameParts(i) = "EpisodeNR" Then
+                        CR_FilenName = CR_FilenName + " " + CR_episode
+                    ElseIf NameParts(i) = "EpisodeName" Then
+                        CR_FilenName = CR_FilenName + " " + CR_title
+                    ElseIf NameParts(i) = "AnimeDub" Then
+                        CR_FilenName = CR_FilenName + " " + HardSubValuesToDisplay(CR_audio_locale)
+                    ElseIf NameParts(i) = "AnimeSub" Then
+                        ' CR_FilenName = CR_FilenName + " RepSub" 'to be done
+                    End If
+
+                Next
+
+                If CBool(InStr(TextBox2_Text, "++")) = True Then
+                    Dim Backup_CR_FilenName As String = CR_FilenName
+                    Try
+                        Dim AddDef As String = "CRD"
+                        Dim TestString As String = AddDef + TextBox2_Text + AddDef
+                        Dim PrePost As String() = TestString.Split(New String() {"++"}, System.StringSplitOptions.RemoveEmptyEntries)
+                        CR_FilenName = PrePost(0) + CR_FilenName + PrePost(1)
+                        CR_FilenName = CR_FilenName.Replace(AddDef, "")
+                    Catch ex As Exception
+                        CR_FilenName = Backup_CR_FilenName
+                    End Try
+                End If
+
+
+
+
+
+
+#End Region
+            Else
+                    CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
+            End If
+
+            If KodiNaming = True Then
+                Dim KodiString As String = "[S"
+                If CR_Anime_Staffel_int = "0" Then
+                    CR_Anime_Staffel_int = "01"
+                Else
+                    CR_Anime_Staffel_int = "0" + CR_Anime_Staffel_int
+                End If
+
+                KodiString = KodiString + CR_Anime_Staffel_int + " E" + AddLeadingZeros(CR_episode_int) ' CR_episode_nr
+                KodiString = KodiString + "] "
+                CR_FilenName = KodiString + CR_FilenName
+            End If
+            Debug.WriteLine(CR_FilenName)
+
+            CR_FilenName = String.Join(" ", CR_FilenName.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(CR_FilenName, "[^\w\\-]", " ")
+            CR_FilenName = RemoveExtraSpaces(CR_FilenName)
+            'My.Computer.FileSystem.WriteAllText("log.log", WebbrowserText, False)
+            Pfad2 = UseSubfolder(CR_series_title, CR_FolderSeason, Pfad)
+            If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
+                ' Nein! Jetzt erstellen...
+                Try
+                    Directory.CreateDirectory(Path.GetDirectoryName(Pfad2))
+                    Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
+                Catch ex As Exception
+                    ' Ordner wurde nich erstellt
+                    Pfad2 = Chr(34) + Pfad + "\" + CR_FilenName + VideoFormat + Chr(34)
+                    Pfad2 = Pfad2.Replace("\\", "\")
+                End Try
+            Else
+                Pfad2 = Chr(34) + Pfad2 + CR_FilenName + VideoFormat + Chr(34)
+            End If
+#End Region
+
+#Region "lösche doppel download"
+            Dim Pfad5 As String = Pfad2.Replace(Chr(34), "")
+            If My.Computer.FileSystem.FileExists(Pfad5) And SubsOnly = False Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
+                Me.Invoke(New Action(Function() As Object
+                                         Anime_Add.StatusLabel.Text = "Status: The file video already exists."
+                                         Me.Text = "Status: The file video already exists."
+                                         Me.Invalidate()
+                                         Return Nothing
+                                     End Function))
+                If MessageBox.Show("The file " + Pfad5 + " already exists." + vbNewLine + "You want to override it?", "File exists!", MessageBoxButtons.OKCancel) = DialogResult.OK Then
+                    Try
+                        My.Computer.FileSystem.DeleteFile(Pfad5)
+                    Catch ex As Exception
+                    End Try
+                Else
+                    Grapp_RDY = True
+                    Exit Sub
+                End If
+            End If
+#End Region
+
+
 #Region "GetResolution"
 
             If Reso = 42 And HybridMode = False Then
 
                 ffmpegInput = "-i " + Chr(34) + CR_URI_Master + Chr(34)
 
+            ElseIf SubsOnly = True Then
+                ffmpegInput = "-i [Subtitles only]"
             Else
 
                 Dim str As String = Nothing
@@ -1824,7 +1789,6 @@ Public Class Main
             ffmpegInput = RemoveExtraSpaces(ffmpegInput)
 #End Region
 
-
 #Region "thumbnail"
             Dim thumbnail As String() = ObjectJson.Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim thumbnail3 As String = ""
@@ -1845,6 +1809,7 @@ Public Class Main
             Next
 
 #End Region
+
 #Region "item constructor"
 
 #Region "Display Hard_Softsubs"
@@ -1862,17 +1827,7 @@ Public Class Main
                 Next
             End If
 #End Region
-#Region "Replace Sub/Dub in name"
 
-            If CBool(InStr(CR_FilenName, "RepDub")) Then
-                CR_FilenName = CR_FilenName.Replace("RepDub", HardSubValuesToDisplay(CR_audio_locale))
-            End If
-
-            If CBool(InStr(CR_FilenName, " RepSub")) Then
-                CR_FilenName = CR_FilenName.Replace(" RepSub", "")
-            End If
-
-#End Region
 
 #Region "Display Resolution"
 
@@ -2152,74 +2107,6 @@ Public Class Main
         Return rsRegEx.Replace(input_text, " ").Trim()
     End Function
 
-
-#Region "unused"
-    'Public Shared Function GetPage(url As String) As String
-    '    Try
-    '        Dim ourUri As New Uri(url)
-    '        Dim myHttpWebRequest As HttpWebRequest = CType(WebRequest.Create(ourUri), HttpWebRequest)
-    '        myHttpWebRequest.Timeout = 10000
-    '        Dim myHttpWebResponse As HttpWebResponse = CType(myHttpWebRequest.GetResponse(), HttpWebResponse)
-    '        Return myHttpWebResponse.ResponseUri.ToString
-    '        myHttpWebResponse.Close()
-    '    Catch e As Exception
-    '        'MsgBox(e.Message.ToString)
-    '        Return url
-    '    End Try
-    'End Function
-    Sub FFMPEGResoBack(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
-        If CBool(InStr(e.Data, ": Video:")) Then
-            Dim ZeileReso() As String = e.Data.Split(New String() {" ["}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ZeileReso2() As String = ZeileReso(0).Split(New String() {"x"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ZeileReso3() As String = e.Data.Split(New String() {": Video:"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ZeileReso4() As String = ZeileReso3(0).Split(New String() {"Stream #"}, System.StringSplitOptions.RemoveEmptyEntries)
-            ResoAvalibe = ResoAvalibe + vbNewLine + ZeileReso2(ZeileReso2.Count - 1).Trim + ":--:" + ZeileReso4(1)
-        ElseIf CBool(InStr(e.Data, "At least one output file must be specified")) Then
-            ResoSearchRunning = False
-        End If
-    End Sub
-
-    Public Sub FFMPEG_Reso(ByVal DL_URL As String)
-        ResoSearchRunning = True
-        Dim proc As New Process
-        Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
-        Dim startinfo As New System.Diagnostics.ProcessStartInfo
-        Dim cmd As String = "-i " + Chr(34) + DL_URL + Chr(34) 'start ffmpeg with command strFFCMD string
-        Dim ffmpegOutput As String = Nothing
-        Dim ffmpegOutput2 As String = Nothing
-        'all parameters required to run the process
-        startinfo.FileName = exepath
-        startinfo.Arguments = cmd
-        startinfo.UseShellExecute = False
-        startinfo.WindowStyle = ProcessWindowStyle.Hidden
-        startinfo.RedirectStandardError = True
-        startinfo.RedirectStandardOutput = True
-        startinfo.CreateNoWindow = True
-        startinfo.StandardOutputEncoding = Encoding.UTF8
-        startinfo.StandardErrorEncoding = Encoding.UTF8
-        AddHandler proc.ErrorDataReceived, AddressOf FFMPEGResoBack
-        AddHandler proc.OutputDataReceived, AddressOf FFMPEGResoBack
-        proc.StartInfo = startinfo
-        proc.Start() ' start the process
-        proc.BeginOutputReadLine()
-        proc.BeginErrorReadLine()
-        'Dim ZeitAnzeige As String = Nothing
-        'Dim StreamNR As String = Nothing
-        ''Math.Abs()
-        'Dim AllReso As String = "1080p720p480p360p"
-        'Dim AllResoArry() As String = AllReso.Split(New String() {"p"}, System.StringSplitOptions.RemoveEmptyEntries)
-        'Dim Zeilen() As String = ffmpegOutput.Split(New String() {vbNewLine}, System.StringSplitOptions.RemoveEmptyEntries)
-        'For i As Integer = 0 To Zeilen.Count - 1
-        '    If CBool(InStr(Zeilen(i), "x" + Reso.ToString + " [") Then
-        '        Dim ZeileReso() As String = Zeilen(i).Split(New String() {": Video:"}, System.StringSplitOptions.RemoveEmptyEntries)
-        '        Dim ZeileReso2() As String = ZeileReso(0).Split(New String() {"Stream #"}, System.StringSplitOptions.RemoveEmptyEntries)
-        '        StreamNR = ZeileReso2(1)
-        '    End If
-        'Next
-        'Return ZeitAnzeige + "#1" + StreamNR
-    End Sub
-
-#End Region
 
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
@@ -4327,6 +4214,10 @@ Public Class Main
         SubSpracheEnum.Add(New NameValuePair("Español (España)", "es-ES", Nothing))
         SubSpracheEnum.Add(New NameValuePair("Japanese", "ja-JP", Nothing))
 
+    End Sub
+
+    Private Sub QueueToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles QueueToolStripMenuItem.Click
+        Queue.Show()
     End Sub
 
 

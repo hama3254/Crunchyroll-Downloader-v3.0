@@ -102,8 +102,6 @@ Partial Class Einstellungen
         Me.http_support = New MetroFramework.Controls.MetroComboBox()
         Me.DarkMode = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.MetroLabel2 = New MetroFramework.Controls.MetroLabel()
-        Me.ProfileTextBox = New MetroFramework.Controls.MetroTextBox()
         Me.Label1 = New MetroFramework.Controls.MetroLabel()
         Me.TextBox1 = New MetroFramework.Controls.MetroTextBox()
         Me.DL_Count_simultaneous = New System.Windows.Forms.GroupBox()
@@ -120,8 +118,13 @@ Partial Class Einstellungen
         Me.KodiSupport = New MetroFramework.Controls.MetroToggle()
         Me.MetroLink1 = New MetroFramework.Controls.MetroLink()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
-        Me.DD_Episode_Prefix = New MetroFramework.Controls.MetroComboBox()
-        Me.DD_Season_Prefix = New MetroFramework.Controls.MetroComboBox()
+        Me.CB_EpisodeName = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_AnimeDub = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_EpisodeNR = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_AnimeSub = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_Season = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_Anime = New MetroFramework.Controls.MetroCheckBox()
+        Me.TB_NameString = New MetroFramework.Controls.MetroTextBox()
         Me.MetroTabPage1 = New MetroFramework.Controls.MetroTabPage()
         Me.GroupBox20 = New System.Windows.Forms.GroupBox()
         Me.ChB_Chapters = New MetroFramework.Controls.MetroCheckBox()
@@ -156,13 +159,8 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.TB_NameString = New MetroFramework.Controls.MetroTextBox()
-        Me.CB_EpisodeName = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_AnimeDub = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_EpisodeNR = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_AnimeSub = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_Season = New MetroFramework.Controls.MetroCheckBox()
-        Me.CB_Anime = New MetroFramework.Controls.MetroCheckBox()
+        Me.DD_Season_Prefix = New MetroFramework.Controls.MetroTextBox()
+        Me.DD_Episode_Prefix = New MetroFramework.Controls.MetroTextBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -923,7 +921,7 @@ Partial Class Einstellungen
         Me.GroupBox6.Controls.Add(Me.NumericUpDown2)
         Me.GroupBox6.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox6.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox6.Location = New System.Drawing.Point(3, 360)
+        Me.GroupBox6.Location = New System.Drawing.Point(5, 299)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(490, 112)
         Me.GroupBox6.TabIndex = 80
@@ -977,7 +975,7 @@ Partial Class Einstellungen
         Me.GroupBox5.Controls.Add(Me.DarkMode)
         Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox5.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox5.Location = New System.Drawing.Point(3, 240)
+        Me.GroupBox5.Location = New System.Drawing.Point(5, 179)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(490, 114)
         Me.GroupBox5.TabIndex = 70
@@ -1024,64 +1022,16 @@ Partial Class Einstellungen
         'GroupBox1
         '
         Me.GroupBox1.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox1.Controls.Add(Me.MetroLabel2)
-        Me.GroupBox1.Controls.Add(Me.ProfileTextBox)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.TextBox1)
         Me.GroupBox1.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox1.ForeColor = System.Drawing.Color.Black
         Me.GroupBox1.Location = New System.Drawing.Point(5, 85)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(490, 149)
+        Me.GroupBox1.Size = New System.Drawing.Size(490, 88)
         Me.GroupBox1.TabIndex = 60
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Browser Settings"
-        '
-        'MetroLabel2
-        '
-        Me.MetroLabel2.Enabled = False
-        Me.MetroLabel2.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel2.Location = New System.Drawing.Point(6, 80)
-        Me.MetroLabel2.Name = "MetroLabel2"
-        Me.MetroLabel2.Size = New System.Drawing.Size(469, 22)
-        Me.MetroLabel2.TabIndex = 3
-        Me.MetroLabel2.Text = "Profile Folder"
-        Me.MetroLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'ProfileTextBox
-        '
-        '
-        '
-        '
-        Me.ProfileTextBox.CustomButton.Image = Nothing
-        Me.ProfileTextBox.CustomButton.Location = New System.Drawing.Point(445, 1)
-        Me.ProfileTextBox.CustomButton.Name = ""
-        Me.ProfileTextBox.CustomButton.Size = New System.Drawing.Size(23, 23)
-        Me.ProfileTextBox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.ProfileTextBox.CustomButton.TabIndex = 1
-        Me.ProfileTextBox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.ProfileTextBox.CustomButton.UseSelectable = True
-        Me.ProfileTextBox.CustomButton.Visible = False
-        Me.ProfileTextBox.Enabled = False
-        Me.ProfileTextBox.FontSize = MetroFramework.MetroTextBoxSize.Medium
-        Me.ProfileTextBox.Lines = New String() {"Disabled"}
-        Me.ProfileTextBox.Location = New System.Drawing.Point(6, 106)
-        Me.ProfileTextBox.MaxLength = 32767
-        Me.ProfileTextBox.Name = "ProfileTextBox"
-        Me.ProfileTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.ProfileTextBox.ReadOnly = True
-        Me.ProfileTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.ProfileTextBox.SelectedText = ""
-        Me.ProfileTextBox.SelectionLength = 0
-        Me.ProfileTextBox.SelectionStart = 0
-        Me.ProfileTextBox.ShortcutsEnabled = True
-        Me.ProfileTextBox.Size = New System.Drawing.Size(469, 25)
-        Me.ProfileTextBox.TabIndex = 4
-        Me.ProfileTextBox.Text = "Disabled"
-        Me.ProfileTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ProfileTextBox.UseSelectable = True
-        Me.ProfileTextBox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.ProfileTextBox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'Label1
         '
@@ -1308,6 +1258,8 @@ Partial Class Einstellungen
         'GroupBox12
         '
         Me.GroupBox12.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox12.Controls.Add(Me.DD_Episode_Prefix)
+        Me.GroupBox12.Controls.Add(Me.DD_Season_Prefix)
         Me.GroupBox12.Controls.Add(Me.CB_EpisodeName)
         Me.GroupBox12.Controls.Add(Me.CB_AnimeDub)
         Me.GroupBox12.Controls.Add(Me.CB_EpisodeNR)
@@ -1315,8 +1267,6 @@ Partial Class Einstellungen
         Me.GroupBox12.Controls.Add(Me.CB_Season)
         Me.GroupBox12.Controls.Add(Me.CB_Anime)
         Me.GroupBox12.Controls.Add(Me.TB_NameString)
-        Me.GroupBox12.Controls.Add(Me.DD_Episode_Prefix)
-        Me.GroupBox12.Controls.Add(Me.DD_Season_Prefix)
         Me.GroupBox12.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox12.ForeColor = System.Drawing.Color.Black
         Me.GroupBox12.Location = New System.Drawing.Point(5, 11)
@@ -1326,35 +1276,111 @@ Partial Class Einstellungen
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Filename"
         '
-        'DD_Episode_Prefix
+        'CB_EpisodeName
         '
-        Me.DD_Episode_Prefix.DropDownHeight = 250
-        Me.DD_Episode_Prefix.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
-        Me.DD_Episode_Prefix.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DD_Episode_Prefix.FormattingEnabled = True
-        Me.DD_Episode_Prefix.IntegralHeight = False
-        Me.DD_Episode_Prefix.ItemHeight = 23
-        Me.DD_Episode_Prefix.Items.AddRange(New Object() {"[default episode prefix]"})
-        Me.DD_Episode_Prefix.Location = New System.Drawing.Point(248, 165)
-        Me.DD_Episode_Prefix.Name = "DD_Episode_Prefix"
-        Me.DD_Episode_Prefix.Size = New System.Drawing.Size(225, 29)
-        Me.DD_Episode_Prefix.TabIndex = 10
-        Me.DD_Episode_Prefix.UseSelectable = True
+        Me.CB_EpisodeName.AutoSize = True
+        Me.CB_EpisodeName.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_EpisodeName.ForeColor = System.Drawing.Color.Black
+        Me.CB_EpisodeName.Location = New System.Drawing.Point(153, 124)
+        Me.CB_EpisodeName.Name = "CB_EpisodeName"
+        Me.CB_EpisodeName.Size = New System.Drawing.Size(101, 19)
+        Me.CB_EpisodeName.TabIndex = 31
+        Me.CB_EpisodeName.Text = "Episode Title"
+        Me.CB_EpisodeName.UseSelectable = True
         '
-        'DD_Season_Prefix
+        'CB_AnimeDub
         '
-        Me.DD_Season_Prefix.DropDownHeight = 250
-        Me.DD_Season_Prefix.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
-        Me.DD_Season_Prefix.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DD_Season_Prefix.FormattingEnabled = True
-        Me.DD_Season_Prefix.IntegralHeight = False
-        Me.DD_Season_Prefix.ItemHeight = 23
-        Me.DD_Season_Prefix.Items.AddRange(New Object() {"[default season prefix]"})
-        Me.DD_Season_Prefix.Location = New System.Drawing.Point(6, 165)
-        Me.DD_Season_Prefix.Name = "DD_Season_Prefix"
-        Me.DD_Season_Prefix.Size = New System.Drawing.Size(225, 29)
-        Me.DD_Season_Prefix.TabIndex = 9
-        Me.DD_Season_Prefix.UseSelectable = True
+        Me.CB_AnimeDub.AutoSize = True
+        Me.CB_AnimeDub.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_AnimeDub.ForeColor = System.Drawing.Color.Black
+        Me.CB_AnimeDub.Location = New System.Drawing.Point(320, 86)
+        Me.CB_AnimeDub.Name = "CB_AnimeDub"
+        Me.CB_AnimeDub.Size = New System.Drawing.Size(125, 19)
+        Me.CB_AnimeDub.TabIndex = 29
+        Me.CB_AnimeDub.Text = "Audio Language"
+        Me.CB_AnimeDub.UseSelectable = True
+        '
+        'CB_EpisodeNR
+        '
+        Me.CB_EpisodeNR.AutoSize = True
+        Me.CB_EpisodeNR.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_EpisodeNR.ForeColor = System.Drawing.Color.Black
+        Me.CB_EpisodeNR.Location = New System.Drawing.Point(153, 86)
+        Me.CB_EpisodeNR.Name = "CB_EpisodeNR"
+        Me.CB_EpisodeNR.Size = New System.Drawing.Size(126, 19)
+        Me.CB_EpisodeNR.TabIndex = 28
+        Me.CB_EpisodeNR.Text = "Episode Number"
+        Me.CB_EpisodeNR.UseSelectable = True
+        '
+        'CB_AnimeSub
+        '
+        Me.CB_AnimeSub.AutoSize = True
+        Me.CB_AnimeSub.Enabled = False
+        Me.CB_AnimeSub.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_AnimeSub.ForeColor = System.Drawing.Color.Black
+        Me.CB_AnimeSub.Location = New System.Drawing.Point(320, 124)
+        Me.CB_AnimeSub.Name = "CB_AnimeSub"
+        Me.CB_AnimeSub.Size = New System.Drawing.Size(135, 19)
+        Me.CB_AnimeSub.TabIndex = 32
+        Me.CB_AnimeSub.Text = "Subtitle Language"
+        Me.CB_AnimeSub.UseSelectable = True
+        '
+        'CB_Season
+        '
+        Me.CB_Season.AutoSize = True
+        Me.CB_Season.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_Season.ForeColor = System.Drawing.Color.Black
+        Me.CB_Season.Location = New System.Drawing.Point(17, 124)
+        Me.CB_Season.Name = "CB_Season"
+        Me.CB_Season.Size = New System.Drawing.Size(122, 19)
+        Me.CB_Season.TabIndex = 30
+        Me.CB_Season.Text = "Season Number"
+        Me.CB_Season.UseSelectable = True
+        '
+        'CB_Anime
+        '
+        Me.CB_Anime.AutoSize = True
+        Me.CB_Anime.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_Anime.ForeColor = System.Drawing.Color.Black
+        Me.CB_Anime.Location = New System.Drawing.Point(17, 86)
+        Me.CB_Anime.Name = "CB_Anime"
+        Me.CB_Anime.Size = New System.Drawing.Size(100, 19)
+        Me.CB_Anime.TabIndex = 27
+        Me.CB_Anime.Text = "Series Name"
+        Me.CB_Anime.UseSelectable = True
+        '
+        'TB_NameString
+        '
+        '
+        '
+        '
+        Me.TB_NameString.CustomButton.Image = Nothing
+        Me.TB_NameString.CustomButton.Location = New System.Drawing.Point(439, 1)
+        Me.TB_NameString.CustomButton.Name = ""
+        Me.TB_NameString.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.TB_NameString.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.TB_NameString.CustomButton.TabIndex = 1
+        Me.TB_NameString.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.TB_NameString.CustomButton.UseSelectable = True
+        Me.TB_NameString.CustomButton.Visible = False
+        Me.TB_NameString.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.TB_NameString.Lines = New String(-1) {}
+        Me.TB_NameString.Location = New System.Drawing.Point(6, 35)
+        Me.TB_NameString.MaxLength = 32767
+        Me.TB_NameString.Name = "TB_NameString"
+        Me.TB_NameString.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.TB_NameString.ReadOnly = True
+        Me.TB_NameString.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.TB_NameString.SelectedText = ""
+        Me.TB_NameString.SelectionLength = 0
+        Me.TB_NameString.SelectionStart = 0
+        Me.TB_NameString.ShortcutsEnabled = True
+        Me.TB_NameString.Size = New System.Drawing.Size(467, 29)
+        Me.TB_NameString.TabIndex = 21
+        Me.TB_NameString.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TB_NameString.UseSelectable = True
+        Me.TB_NameString.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.TB_NameString.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'MetroTabPage1
         '
@@ -1366,9 +1392,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1433,10 +1459,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage6.Size = New System.Drawing.Size(501, 528)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = " Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1670,9 +1696,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = " About  "
         '
@@ -1804,110 +1830,69 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'TB_NameString
+        'DD_Season_Prefix
         '
         '
         '
         '
-        Me.TB_NameString.CustomButton.Image = Nothing
-        Me.TB_NameString.CustomButton.Location = New System.Drawing.Point(439, 1)
-        Me.TB_NameString.CustomButton.Name = ""
-        Me.TB_NameString.CustomButton.Size = New System.Drawing.Size(27, 27)
-        Me.TB_NameString.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.TB_NameString.CustomButton.TabIndex = 1
-        Me.TB_NameString.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.TB_NameString.CustomButton.UseSelectable = True
-        Me.TB_NameString.CustomButton.Visible = False
-        Me.TB_NameString.FontSize = MetroFramework.MetroTextBoxSize.Medium
-        Me.TB_NameString.Lines = New String(-1) {}
-        Me.TB_NameString.Location = New System.Drawing.Point(6, 35)
-        Me.TB_NameString.MaxLength = 32767
-        Me.TB_NameString.Name = "TB_NameString"
-        Me.TB_NameString.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.TB_NameString.ReadOnly = True
-        Me.TB_NameString.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.TB_NameString.SelectedText = ""
-        Me.TB_NameString.SelectionLength = 0
-        Me.TB_NameString.SelectionStart = 0
-        Me.TB_NameString.ShortcutsEnabled = True
-        Me.TB_NameString.Size = New System.Drawing.Size(467, 29)
-        Me.TB_NameString.TabIndex = 21
-        Me.TB_NameString.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.TB_NameString.UseSelectable = True
-        Me.TB_NameString.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.TB_NameString.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        Me.DD_Season_Prefix.CustomButton.Image = Nothing
+        Me.DD_Season_Prefix.CustomButton.Location = New System.Drawing.Point(197, 1)
+        Me.DD_Season_Prefix.CustomButton.Name = ""
+        Me.DD_Season_Prefix.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.DD_Season_Prefix.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.DD_Season_Prefix.CustomButton.TabIndex = 1
+        Me.DD_Season_Prefix.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.DD_Season_Prefix.CustomButton.UseSelectable = True
+        Me.DD_Season_Prefix.CustomButton.Visible = False
+        Me.DD_Season_Prefix.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.DD_Season_Prefix.Lines = New String(-1) {}
+        Me.DD_Season_Prefix.Location = New System.Drawing.Point(6, 165)
+        Me.DD_Season_Prefix.MaxLength = 32767
+        Me.DD_Season_Prefix.Name = "DD_Season_Prefix"
+        Me.DD_Season_Prefix.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.DD_Season_Prefix.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.DD_Season_Prefix.SelectedText = ""
+        Me.DD_Season_Prefix.SelectionLength = 0
+        Me.DD_Season_Prefix.SelectionStart = 0
+        Me.DD_Season_Prefix.ShortcutsEnabled = True
+        Me.DD_Season_Prefix.Size = New System.Drawing.Size(225, 29)
+        Me.DD_Season_Prefix.TabIndex = 33
+        Me.DD_Season_Prefix.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.DD_Season_Prefix.UseSelectable = True
+        Me.DD_Season_Prefix.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.DD_Season_Prefix.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
-        'CB_EpisodeName
+        'DD_Episode_Prefix
         '
-        Me.CB_EpisodeName.AutoSize = True
-        Me.CB_EpisodeName.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_EpisodeName.ForeColor = System.Drawing.Color.Black
-        Me.CB_EpisodeName.Location = New System.Drawing.Point(153, 124)
-        Me.CB_EpisodeName.Name = "CB_EpisodeName"
-        Me.CB_EpisodeName.Size = New System.Drawing.Size(101, 19)
-        Me.CB_EpisodeName.TabIndex = 31
-        Me.CB_EpisodeName.Text = "Episode Title"
-        Me.CB_EpisodeName.UseSelectable = True
         '
-        'CB_AnimeDub
         '
-        Me.CB_AnimeDub.AutoSize = True
-        Me.CB_AnimeDub.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_AnimeDub.ForeColor = System.Drawing.Color.Black
-        Me.CB_AnimeDub.Location = New System.Drawing.Point(320, 86)
-        Me.CB_AnimeDub.Name = "CB_AnimeDub"
-        Me.CB_AnimeDub.Size = New System.Drawing.Size(125, 19)
-        Me.CB_AnimeDub.TabIndex = 29
-        Me.CB_AnimeDub.Text = "Audio Language"
-        Me.CB_AnimeDub.UseSelectable = True
         '
-        'CB_EpisodeNR
-        '
-        Me.CB_EpisodeNR.AutoSize = True
-        Me.CB_EpisodeNR.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_EpisodeNR.ForeColor = System.Drawing.Color.Black
-        Me.CB_EpisodeNR.Location = New System.Drawing.Point(153, 86)
-        Me.CB_EpisodeNR.Name = "CB_EpisodeNR"
-        Me.CB_EpisodeNR.Size = New System.Drawing.Size(126, 19)
-        Me.CB_EpisodeNR.TabIndex = 28
-        Me.CB_EpisodeNR.Text = "Episode Number"
-        Me.CB_EpisodeNR.UseSelectable = True
-        '
-        'CB_AnimeSub
-        '
-        Me.CB_AnimeSub.AutoSize = True
-        Me.CB_AnimeSub.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_AnimeSub.ForeColor = System.Drawing.Color.Black
-        Me.CB_AnimeSub.Location = New System.Drawing.Point(320, 124)
-        Me.CB_AnimeSub.Name = "CB_AnimeSub"
-        Me.CB_AnimeSub.Size = New System.Drawing.Size(135, 19)
-        Me.CB_AnimeSub.TabIndex = 32
-        Me.CB_AnimeSub.Text = "Subtitle Language"
-        Me.CB_AnimeSub.UseSelectable = True
-        '
-        'CB_Season
-        '
-        Me.CB_Season.AutoSize = True
-        Me.CB_Season.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_Season.ForeColor = System.Drawing.Color.Black
-        Me.CB_Season.Location = New System.Drawing.Point(17, 124)
-        Me.CB_Season.Name = "CB_Season"
-        Me.CB_Season.Size = New System.Drawing.Size(122, 19)
-        Me.CB_Season.TabIndex = 30
-        Me.CB_Season.Text = "Season Number"
-        Me.CB_Season.UseSelectable = True
-        '
-        'CB_Anime
-        '
-        Me.CB_Anime.AutoSize = True
-        Me.CB_Anime.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_Anime.ForeColor = System.Drawing.Color.Black
-        Me.CB_Anime.Location = New System.Drawing.Point(17, 86)
-        Me.CB_Anime.Name = "CB_Anime"
-        Me.CB_Anime.Size = New System.Drawing.Size(100, 19)
-        Me.CB_Anime.TabIndex = 27
-        Me.CB_Anime.Text = "Series Name"
-        Me.CB_Anime.UseSelectable = True
+        Me.DD_Episode_Prefix.CustomButton.Image = Nothing
+        Me.DD_Episode_Prefix.CustomButton.Location = New System.Drawing.Point(197, 1)
+        Me.DD_Episode_Prefix.CustomButton.Name = ""
+        Me.DD_Episode_Prefix.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.DD_Episode_Prefix.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.DD_Episode_Prefix.CustomButton.TabIndex = 1
+        Me.DD_Episode_Prefix.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.DD_Episode_Prefix.CustomButton.UseSelectable = True
+        Me.DD_Episode_Prefix.CustomButton.Visible = False
+        Me.DD_Episode_Prefix.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.DD_Episode_Prefix.Lines = New String(-1) {}
+        Me.DD_Episode_Prefix.Location = New System.Drawing.Point(248, 165)
+        Me.DD_Episode_Prefix.MaxLength = 32767
+        Me.DD_Episode_Prefix.Name = "DD_Episode_Prefix"
+        Me.DD_Episode_Prefix.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.DD_Episode_Prefix.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.DD_Episode_Prefix.SelectedText = ""
+        Me.DD_Episode_Prefix.SelectionLength = 0
+        Me.DD_Episode_Prefix.SelectionStart = 0
+        Me.DD_Episode_Prefix.ShortcutsEnabled = True
+        Me.DD_Episode_Prefix.Size = New System.Drawing.Size(225, 29)
+        Me.DD_Episode_Prefix.TabIndex = 34
+        Me.DD_Episode_Prefix.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.DD_Episode_Prefix.UseSelectable = True
+        Me.DD_Episode_Prefix.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.DD_Episode_Prefix.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'Einstellungen
         '
@@ -2075,8 +2060,6 @@ Partial Class Einstellungen
     Friend WithEvents AMD_hevc As ToolStripMenuItem
     Friend WithEvents ListP3 As ToolStripMenuItem
     Friend WithEvents Btn_Save As Button
-    Friend WithEvents MetroLabel2 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents ProfileTextBox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents ListBit_1500 As ToolStripMenuItem
     Friend WithEvents ListBit_6500 As ToolStripMenuItem
     Friend WithEvents ListBit_5500 As ToolStripMenuItem
@@ -2094,8 +2077,6 @@ Partial Class Einstellungen
     Friend WithEvents MetroLink1 As MetroFramework.Controls.MetroLink
     Friend WithEvents GroupBox12 As GroupBox
     Friend WithEvents LeadingZeroDD As MetroFramework.Controls.MetroComboBox
-    Friend WithEvents DD_Episode_Prefix As MetroFramework.Controls.MetroComboBox
-    Friend WithEvents DD_Season_Prefix As MetroFramework.Controls.MetroComboBox
     Friend WithEvents GroupBox17 As GroupBox
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents LangNameType_DD As MetroFramework.Controls.MetroComboBox
@@ -2123,4 +2104,6 @@ Partial Class Einstellungen
     Public WithEvents CB_Season As MetroFramework.Controls.MetroCheckBox
     Public WithEvents CB_Anime As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents TB_NameString As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents DD_Episode_Prefix As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents DD_Season_Prefix As MetroFramework.Controls.MetroTextBox
 End Class

@@ -53,6 +53,7 @@ Partial Class Main
         Me.DummyItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ScanTimeout = New System.Windows.Forms.Timer(Me.components)
+        Me.QueueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -161,7 +162,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.ItemBoundsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.ItemBoundsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -234,6 +235,11 @@ Partial Class Main
         '
         Me.ScanTimeout.Interval = 1000
         '
+        'QueueToolStripMenuItem
+        '
+        Me.QueueToolStripMenuItem.Name = "QueueToolStripMenuItem"
+        resources.ApplyResources(Me.QueueToolStripMenuItem, "QueueToolStripMenuItem")
+        '
         'Main
         '
         Me.ApplyImageInvert = True
@@ -292,4 +298,5 @@ Partial Class Main
     Friend WithEvents DummyItemToolStripMenuItem As ToolStripMenuItem
     Public WithEvents Panel1 As Panel
     Friend WithEvents ScanTimeout As Timer
+    Friend WithEvents QueueToolStripMenuItem As ToolStripMenuItem
 End Class

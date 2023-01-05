@@ -31,7 +31,6 @@ Public Class Einstellungen
         Me.StyleManager = Manager
 
 
-        ProfileTextBox.Text = Main.ProfileFolder
         TempTB.Text = Main.TempFolder
         LeadingZeroDD.SelectedIndex = Main.LeadingZero
 
@@ -219,19 +218,10 @@ Public Class Einstellungen
 
         Next
 
-        If DD_Season_Prefix.Items.Contains(Main.Season_Prefix) Then
-            DD_Season_Prefix.SelectedItem = Main.Season_Prefix
-        Else
-            DD_Season_Prefix.Items.Add(Main.Season_Prefix)
-            DD_Season_Prefix.SelectedItem = Main.Season_Prefix
-        End If
+        DD_Season_Prefix.Text = Main.Season_Prefix
 
-        If DD_Episode_Prefix.Items.Contains(Main.Episode_Prefix) Then
-            DD_Episode_Prefix.SelectedItem = Main.Episode_Prefix
-        Else
-            DD_Episode_Prefix.Items.Add(Main.Episode_Prefix)
-            DD_Episode_Prefix.SelectedItem = Main.Episode_Prefix
-        End If
+        DD_Episode_Prefix.Text = Main.Episode_Prefix
+
 
 
         NumericUpDown2.Value = Main.ErrorTolerance
@@ -323,6 +313,7 @@ Public Class Einstellungen
         Dim NameParts As String() = Main.NameBuilder.Split(New String() {";"}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
+
         For i As Integer = 0 To NameParts.Count - 1
 
             If NameParts(i) = "AnimeTitle" Then
@@ -336,10 +327,13 @@ Public Class Einstellungen
             ElseIf NameParts(i) = "AnimeDub" Then
                 CB_AnimeDub.Checked = True
             ElseIf NameParts(i) = "AnimeSub" Then
-                CB_AnimeSub.Checked = True
+                 CB_AnimeSub.Checked = True
             End If
 
         Next
+
+        CB_AnimeSub.Checked = False ' to be continued
+
 
 
     End Sub
@@ -503,6 +497,8 @@ Public Class Einstellungen
 
 
         Main.NameBuilder = TB_NameString.Text
+
+        My.Settings.NameTemplate = Main.NameBuilder
 
 
         If CB_Format.Text = "MKV" Then
@@ -1181,26 +1177,25 @@ Public Class Einstellungen
 
     Private Sub CB_Format_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CB_Format.SelectedIndexChanged
         If CB_Format.Text = "AAC (Audio only)" Then
-            CB_Merge.SelectedIndex = 0
             CB_Merge.Items.Clear()
             CB_Merge.Items.Add("[merge disabled]")
             CB_Merge.SelectedIndex = 0
             CB_Merge.Enabled = False
         ElseIf CB_Format.Text = "MP4" Then
             CB_Merge.Enabled = True
-            CB_Merge.SelectedIndex = 0
             CB_Merge.Items.Clear()
             CB_Merge.Items.Add("[merge disabled]")
             CB_Merge.Items.Add("mov_text")
+            CB_Merge.SelectedIndex = 0
             'CB_Merge.Items.Add("srt")
             CB_Merge.SelectedItem = Main.MergeSubsFormat
         ElseIf CB_Format.Text = "MKV" Then
             CB_Merge.Enabled = True
-            CB_Merge.SelectedIndex = 0
             CB_Merge.Items.Clear()
             CB_Merge.Items.Add("[merge disabled]")
             CB_Merge.Items.Add("copy")
             CB_Merge.Items.Add("srt")
+            CB_Merge.SelectedIndex = 0
             CB_Merge.SelectedItem = Main.MergeSubsFormat
         End If
 
@@ -1212,20 +1207,6 @@ Public Class Einstellungen
                 MsgBox("Merged subs are not avalible with audio only!", MsgBoxStyle.Information)
             End If
             CB_Merge.SelectedIndex = 0
-        End If
-    End Sub
-
-    Private Sub ProfileTextBox_Click(sender As Object, e As EventArgs) Handles ProfileTextBox.Click
-
-        Dim FolderBrowserDialog1 As New FolderBrowserDialog()
-        FolderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer
-        If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
-
-            Main.ProfileFolder = FolderBrowserDialog1.SelectedPath
-            ProfileTextBox.Text = FolderBrowserDialog1.SelectedPath
-            My.Settings.Pfad = Main.ProfileFolder
-
-
         End If
     End Sub
 
@@ -1291,6 +1272,33 @@ Public Class Einstellungen
         End If
 
     End Sub
+
+
+    Private Sub DD_Season_Prefix_UserAction(sender As Object, e As EventArgs) Handles DD_Season_Prefix.Click, DD_Season_Prefix.GotFocus
+        If DD_Season_Prefix.Text = Main.Season_PrefixDefault Then
+            DD_Season_Prefix.Text = Nothing
+        End If
+    End Sub
+
+    Private Sub DD_Season_Prefix_LostFocus(sender As Object, e As EventArgs) Handles DD_Season_Prefix.LostFocus
+        If DD_Season_Prefix.Text = Nothing Then
+            DD_Season_Prefix.Text = Main.Season_PrefixDefault
+        End If
+    End Sub
+
+
+    Private Sub DD_Episode_Prefix_UserAction(sender As Object, e As EventArgs) Handles DD_Episode_Prefix.Click, DD_Episode_Prefix.GotFocus
+        If DD_Episode_Prefix.Text = Main.Episode_Prefix Then
+            DD_Episode_Prefix.Text = Nothing
+        End If
+    End Sub
+
+    Private Sub DD_Episode_Prefix_LostFocus(sender As Object, e As EventArgs) Handles DD_Episode_Prefix.LostFocus
+        If DD_Episode_Prefix.Text = Nothing Then
+            DD_Episode_Prefix.Text = Main.Episode_Prefix
+        End If
+    End Sub
+
 
 
 #End Region

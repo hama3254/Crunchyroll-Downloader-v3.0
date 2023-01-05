@@ -66,7 +66,10 @@ Public Class Browser
     End Sub
 
     Public Async Sub GetCookies(ByVal Uri As String)
-        Main.CookieList = Await WebView2.CoreWebView2.CookieManager.GetCookiesAsync(Uri)
+        Try
+            Main.CookieList = Await WebView2.CoreWebView2.CookieManager.GetCookiesAsync(Uri)
+        Catch ex As Exception
+        End Try
     End Sub
 
 

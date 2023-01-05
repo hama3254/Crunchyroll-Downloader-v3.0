@@ -150,6 +150,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CRD-Classes.vb" />
+    <Compile Include="queue.Designer.vb">
+      <DependentUpon>queue.vb</DependentUpon>
+    </Compile>
+    <Compile Include="queue.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Settings.vb" />
     <Compile Include="Trackbar.Designer.vb">
       <DependentUpon>Trackbar.vb</DependentUpon>
@@ -214,6 +220,9 @@
     <Compile Include="Subfolder.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="queue.resx">
+      <DependentUpon>queue.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Trackbar.resx">
       <DependentUpon>Trackbar.vb</DependentUpon>
     </EmbeddedResource>

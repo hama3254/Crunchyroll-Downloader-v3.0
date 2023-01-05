@@ -151,7 +151,7 @@
     <value>9</value>
   </data>
   <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>370, 2</value>
+    <value>383, 18</value>
   </metadata>
   <metadata name="Timer2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>272, 14</value>
@@ -531,6 +531,12 @@
   <data name="&gt;&gt;ScanTimeout.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;QueueToolStripMenuItem.Name" xml:space="preserve">
+    <value>QueueToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;QueueToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Main</value>
   </data>
@@ -543,6 +549,12 @@
   <metadata name="ContextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>352, 49</value>
   </metadata>
+  <data name="QueueToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>233, 22</value>
+  </data>
+  <data name="QueueToolStripMenuItem.Text" xml:space="preserve">
+    <value>Queue</value>
+  </data>
   <data name="ToggleDebugModeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>233, 22</value>
   </data>
@@ -616,7 +628,7 @@
     <value>Dummy_Item</value>
   </data>
   <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 290</value>
+    <value>234, 312</value>
   </data>
   <data name="&gt;&gt;ContextMenuStrip1.Name" xml:space="preserve">
     <value>ContextMenuStrip1</value>

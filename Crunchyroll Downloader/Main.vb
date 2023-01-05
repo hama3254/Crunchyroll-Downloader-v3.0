@@ -1784,6 +1784,13 @@ Public Class Main
                         ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
                     End If
                 End If
+            Else
+                If CR_MetadataUsage = False Then
+                    ffmpegInput = ffmpegInput + " " + ffmpeg_command_temp
+                Else
+                    ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1 " + ffmpeg_command_temp
+                End If
+                'MsgBox(ffmpegInput)
             End If
 
             ffmpegInput = RemoveExtraSpaces(ffmpegInput)

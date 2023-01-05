@@ -1288,14 +1288,14 @@ Public Class Einstellungen
 
 
     Private Sub DD_Episode_Prefix_UserAction(sender As Object, e As EventArgs) Handles DD_Episode_Prefix.Click, DD_Episode_Prefix.GotFocus
-        If DD_Episode_Prefix.Text = Main.Episode_Prefix Then
+        If DD_Episode_Prefix.Text = Main.Episode_PrefixDefault Then
             DD_Episode_Prefix.Text = Nothing
         End If
     End Sub
 
     Private Sub DD_Episode_Prefix_LostFocus(sender As Object, e As EventArgs) Handles DD_Episode_Prefix.LostFocus
         If DD_Episode_Prefix.Text = Nothing Then
-            DD_Episode_Prefix.Text = Main.Episode_Prefix
+            DD_Episode_Prefix.Text = Main.Episode_PrefixDefault
         End If
     End Sub
 

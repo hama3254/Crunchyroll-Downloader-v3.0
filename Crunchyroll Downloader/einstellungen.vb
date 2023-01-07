@@ -53,7 +53,7 @@ Public Class Einstellungen
         End If
 
         If Main.KodiNaming = True Then
-            KodiSupport.Checked = True
+            CB_Kodi.Checked = True
         End If
 
         If Main.DubMode = True Then
@@ -326,13 +326,11 @@ Public Class Einstellungen
                 CB_EpisodeName.Checked = True
             ElseIf NameParts(i) = "AnimeDub" Then
                 CB_AnimeDub.Checked = True
-            ElseIf NameParts(i) = "AnimeSub" Then
-                 CB_AnimeSub.Checked = True
             End If
 
         Next
 
-        CB_AnimeSub.Checked = False ' to be continued
+
 
 
 
@@ -404,7 +402,7 @@ Public Class Einstellungen
             My.Settings.Curl_insecure = False
         End If
 
-        If KodiSupport.Checked = True Then
+        If CB_Kodi.Checked = True Then
             Main.KodiNaming = True
             My.Settings.KodiSupport = True
         Else
@@ -1234,7 +1232,7 @@ Public Class Einstellungen
     End Sub
 #Region "Build Name String"
 
-    Private Sub CB_Anime_CheckedChanged(sender As Object, e As EventArgs) Handles CB_Anime.CheckedChanged, CB_Season.CheckedChanged, CB_EpisodeNR.CheckedChanged, CB_EpisodeName.CheckedChanged, CB_AnimeDub.CheckedChanged, CB_AnimeSub.CheckedChanged
+    Private Sub CB_Anime_CheckedChanged(sender As Object, e As EventArgs) Handles CB_Anime.CheckedChanged, CB_Season.CheckedChanged, CB_EpisodeNR.CheckedChanged, CB_EpisodeName.CheckedChanged, CB_AnimeDub.CheckedChanged, CB_Kodi.CheckedChanged
         If CB_Anime.Checked = True And CBool(InStr(TB_NameString.Text, "AnimeTitle;")) = False Then
             TB_NameString.AppendText("AnimeTitle;")
         ElseIf CB_Anime.Checked = False Then
@@ -1265,11 +1263,7 @@ Public Class Einstellungen
             TB_NameString.Text = TB_NameString.Text.Replace("AnimeDub;", "")
         End If
 
-        If CB_AnimeSub.Checked = True And CBool(InStr(TB_NameString.Text, "AnimeSub;")) = False Then
-            TB_NameString.AppendText("AnimeSub;")
-        ElseIf CB_AnimeSub.Checked = False Then
-            TB_NameString.Text = TB_NameString.Text.Replace("AnimeSub;", "")
-        End If
+
 
     End Sub
 

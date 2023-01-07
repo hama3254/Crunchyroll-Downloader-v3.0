@@ -359,6 +359,9 @@
     <Content Include="bin\x86\Debug\Lib\swiftshader\libEGL.dll" />
     <Content Include="bin\x86\Debug\Lib\swiftshader\libGLESv2.dll" />
     <Content Include="icon.ico" />
+    <None Include="Resources\main-queue_invert_dark.png" />
+    <None Include="Resources\main-queue_invert.png" />
+    <None Include="Resources\main-queue.png" />
     <None Include="Resources\main_close_hover.png" />
     <None Include="Resources\main-mini_dark_hover.png" />
     <None Include="Resources\main-close_dark_hover.png" />

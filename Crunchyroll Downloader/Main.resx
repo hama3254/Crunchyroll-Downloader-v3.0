@@ -132,7 +132,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="PictureBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>840, 6</value>
+    <value>900, 6</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="PictureBox5.TabIndex" type="System.Int32, mscorlib">
@@ -148,7 +148,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;PictureBox5.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>383, 18</value>
@@ -187,7 +187,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;TheTextBox.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="ConsoleBar.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Stretch</value>
@@ -199,7 +199,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="ConsoleBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>840, 6</value>
+    <value>900, 6</value>
   </data>
   <data name="ConsoleBar.TabIndex" type="System.Int32, mscorlib">
     <value>68</value>
@@ -214,7 +214,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ConsoleBar.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <metadata name="MetroStyleExtender1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -229,7 +229,37 @@
     <value>87</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>842, 630</value>
+    <value>900, 630</value>
+  </data>
+  <data name="Btn_Queue.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="Btn_Queue.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="Btn_Queue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Btn_Queue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>575, 18</value>
+  </data>
+  <data name="Btn_Queue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 35</value>
+  </data>
+  <data name="Btn_Queue.TabIndex" type="System.Int32, mscorlib">
+    <value>70</value>
+  </data>
+  <data name="&gt;&gt;Btn_Queue.Name" xml:space="preserve">
+    <value>Btn_Queue</value>
+  </data>
+  <data name="&gt;&gt;Btn_Queue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Btn_Queue.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Btn_Queue.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="Panel1.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -238,10 +268,10 @@
     <value>1, 71</value>
   </data>
   <data name="Panel1.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>798, 403</value>
+    <value>898, 403</value>
   </data>
   <data name="Panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>840, 546</value>
+    <value>898, 546</value>
   </data>
   <data name="Panel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -256,7 +286,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Panel1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="Btn_Close.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>None</value>
@@ -271,7 +301,7 @@
     <value>800, 1</value>
   </data>
   <data name="Btn_Close.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>35, 35</value>
   </data>
   <data name="Btn_Close.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -286,7 +316,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Btn_Close.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="Btn_min.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>None</value>
@@ -301,7 +331,7 @@
     <value>757, 1</value>
   </data>
   <data name="Btn_min.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>30, 30</value>
   </data>
   <data name="Btn_min.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -316,7 +346,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Btn_min.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="Btn_Settings.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
@@ -328,7 +358,7 @@
     <value>NoControl</value>
   </data>
   <data name="Btn_Settings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>641, 18</value>
+    <value>665, 18</value>
   </data>
   <data name="Btn_Settings.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 35</value>
@@ -346,7 +376,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Btn_Settings.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="Btn_Browser.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
@@ -355,7 +385,7 @@
     <value>Flat</value>
   </data>
   <data name="Btn_Browser.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 18</value>
+    <value>140, 18</value>
   </data>
   <data name="Btn_Browser.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 35</value>
@@ -373,7 +403,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Btn_Browser.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="Btn_add.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
@@ -385,7 +415,7 @@
     <value>NoControl</value>
   </data>
   <data name="Btn_add.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 18</value>
+    <value>20, 18</value>
   </data>
   <data name="Btn_add.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 35</value>
@@ -403,7 +433,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Btn_add.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -412,7 +442,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>840, 630</value>
+    <value>900, 630</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Crunchyroll Downloader</value>
@@ -452,6 +482,12 @@
   </data>
   <data name="&gt;&gt;Timer4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;QueueToolStripMenuItem.Name" xml:space="preserve">
+    <value>QueueToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;QueueToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ToggleDebugModeToolStripMenuItem.Name" xml:space="preserve">
     <value>ToggleDebugModeToolStripMenuItem</value>
@@ -530,12 +566,6 @@
   </data>
   <data name="&gt;&gt;ScanTimeout.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;QueueToolStripMenuItem.Name" xml:space="preserve">
-    <value>QueueToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;QueueToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Main</value>
@@ -628,7 +658,7 @@
     <value>Dummy_Item</value>
   </data>
   <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 312</value>
+    <value>234, 290</value>
   </data>
   <data name="&gt;&gt;ContextMenuStrip1.Name" xml:space="preserve">
     <value>ContextMenuStrip1</value>

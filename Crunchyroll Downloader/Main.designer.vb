@@ -39,6 +39,7 @@ Partial Class Main
         Me.Btn_min = New System.Windows.Forms.Button()
         Me.Btn_Close = New System.Windows.Forms.Button()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.QueueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToggleDebugModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Funimation_Token = New System.Windows.Forms.ToolStripMenuItem()
@@ -53,7 +54,7 @@ Partial Class Main
         Me.DummyItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ScanTimeout = New System.Windows.Forms.Timer(Me.components)
-        Me.QueueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Btn_Queue = New System.Windows.Forms.Button()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -166,6 +167,11 @@ Partial Class Main
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
+        'QueueToolStripMenuItem
+        '
+        Me.QueueToolStripMenuItem.Name = "QueueToolStripMenuItem"
+        resources.ApplyResources(Me.QueueToolStripMenuItem, "QueueToolStripMenuItem")
+        '
         'ToggleDebugModeToolStripMenuItem
         '
         Me.ToggleDebugModeToolStripMenuItem.Name = "ToggleDebugModeToolStripMenuItem"
@@ -235,10 +241,16 @@ Partial Class Main
         '
         Me.ScanTimeout.Interval = 1000
         '
-        'QueueToolStripMenuItem
+        'Btn_Queue
         '
-        Me.QueueToolStripMenuItem.Name = "QueueToolStripMenuItem"
-        resources.ApplyResources(Me.QueueToolStripMenuItem, "QueueToolStripMenuItem")
+        Me.Btn_Queue.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.Btn_Queue, "Btn_Queue")
+        Me.Btn_Queue.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_Queue.FlatAppearance.BorderSize = 0
+        Me.Btn_Queue.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
+        Me.Btn_Queue.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_queue
+        Me.Btn_Queue.Name = "Btn_Queue"
+        Me.Btn_Queue.UseVisualStyleBackColor = False
         '
         'Main
         '
@@ -246,6 +258,7 @@ Partial Class Main
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle
         resources.ApplyResources(Me, "$this")
+        Me.Controls.Add(Me.Btn_Queue)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Btn_Close)
         Me.Controls.Add(Me.Btn_min)
@@ -299,4 +312,5 @@ Partial Class Main
     Public WithEvents Panel1 As Panel
     Friend WithEvents ScanTimeout As Timer
     Friend WithEvents QueueToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Btn_Queue As Button
 End Class

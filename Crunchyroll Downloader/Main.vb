@@ -194,6 +194,10 @@ Public Class Main
 #Region "UI"
     Private Sub Main_TextChanged(sender As Object, e As EventArgs) Handles Me.TextChanged
         Me.Invalidate()
+
+
+
+
     End Sub
 
     Public CloseImg As Bitmap = My.Resources.main_del
@@ -259,6 +263,20 @@ Public Class Main
         Btn_Settings.Image = My.Resources.main_settings
     End Sub
 
+    Private Sub Btn_Queue_MouseEnter(sender As Object, e As EventArgs) Handles Btn_Queue.MouseEnter, Btn_Queue.GotFocus
+        If Manager.Theme = MetroThemeStyle.Dark Then
+            Btn_Queue.Image = My.Resources.main_queue_invert_dark
+        Else
+            Btn_Queue.Image = My.Resources.main_queue_invert
+        End If
+    End Sub
+
+    Private Sub Btn_Queue_MouseLeave(sender As Object, e As EventArgs) Handles Btn_Queue.MouseLeave, Btn_Queue.LostFocus
+        Btn_Queue.Image = My.Resources.main_queue
+    End Sub
+
+
+
     Private Sub Btn_min_MouseEnter(sender As Object, e As EventArgs) Handles Btn_min.MouseEnter, Btn_min.GotFocus
         If Manager.Theme = MetroThemeStyle.Dark Then
             Btn_min.Image = My.Resources.main_mini_dark_hover
@@ -317,9 +335,10 @@ Public Class Main
         ConsoleBar.Width = Me.Width - 40
         TheTextBox.Location = New Point(1, Me.Height - ListViewHeightOffset + 7)
         TheTextBox.Width = Me.Width - 2
-        Btn_Close.Location = New Point(Me.Width - 41, 1)
-        Btn_min.Location = New Point(Me.Width - 82, 1)
-        Btn_Settings.Location = New Point(Me.Width - 190, 17)
+        Btn_Close.Location = New Point(Me.Width - 36, 1)
+        Btn_min.Location = New Point(Me.Width - 67, 1)
+        Btn_Settings.Location = New Point(Me.Width - 165, 17)
+        Btn_Queue.Location = New Point(Me.Width - 265, 17)
         Try
             Panel1.AutoScrollPosition = New Point(0, 0)
 
@@ -390,8 +409,12 @@ Public Class Main
 
 
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        '
+
         FillArray()
+
+
+
+
 #Region "settings path"
 
         Dim mySettings As New DirectorySettings
@@ -1002,7 +1025,8 @@ Public Class Main
                     'MsgBox("dl_abourd")
                 End If
                 If UseQueue = True Then
-                    Anime_Add.ListBox1.Items.Add(ListOfEpisodes(i))
+                    'Anime_Add.ListBox1.Items.Add(ListOfEpisodes(i))
+                    ListBoxList.Add(ListOfEpisodes(i))
                     Anime_Add.Add_Display.ForeColor = Color.FromArgb(9248044)
                     Pause(1)
                     Anime_Add.Add_Display.ForeColor = Color.Black
@@ -1010,7 +1034,7 @@ Public Class Main
                     Grapp_RDY = False
                     b = False
                     Debug.WriteLine("b: " + b.ToString)
-                    Anime_Add.LoadBrowser(ListOfEpisodes(i))
+                    LoadBrowser(ListOfEpisodes(i))
                 End If
                 Anime_Add.Add_Display.Text = (i - First + 1).ToString + " / " + (Last - First + 1).ToString
             Next
@@ -1024,14 +1048,12 @@ Public Class Main
             Gesamt = 0.ToString
             Anime_Add.groupBox1.Visible = True
             Anime_Add.groupBox2.Visible = False
-            Anime_Add.GroupBox3.Visible = False
             Anime_Add.Mass_DL_Cancel = False
             Anime_Add.btn_dl.Text = "Download" 'btn_dl.BackgroundImage = My.Resources.main_button_download_default
         End Try
         Pause(5)
         Anime_Add.groupBox1.Visible = True
         Anime_Add.groupBox2.Visible = False
-        Anime_Add.GroupBox3.Visible = False
         Anime_Add.Mass_DL_Cancel = False
         Anime_Add.btn_dl.Text = "Download" 'Anime_Add.btn_dl.BackgroundImage = My.Resources.main_button_download_default
     End Sub
@@ -1187,7 +1209,7 @@ Public Class Main
                 ObjectJson = CR_ObjectsJson.Content
                 CR_ObjectsJson = New UrlJson("", "")
             ElseIf CBool(InStr(ObjectJson, "curl:")) Then
-            MsgBox("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
+                MsgBox("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
                 Exit Sub
             End If
 
@@ -1577,7 +1599,7 @@ Public Class Main
 
 #End Region
             Else
-                    CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
+                CR_FilenName = RemoveExtraSpaces(String.Join(" ", TextBox2_Text.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)).Replace(Chr(34), "").Replace("\", "").Replace("/", "") 'System.Text.RegularExpressions.Regex.Replace(TextBox2_Text, "[^\w\\-]", " "))
             End If
 
             If KodiNaming = True Then
@@ -2322,7 +2344,8 @@ Public Class Main
                     'MsgBox("dl_abourd")
                 End If
                 If UseQueue = True Then
-                    Anime_Add.ListBox1.Items.Add(ListOfEpisodes(i))
+                    'Anime_Add.ListBox1.Items.Add(ListOfEpisodes(i))
+                    ListBoxList.Add(ListOfEpisodes(i))
                     Anime_Add.Add_Display.ForeColor = Color.FromArgb(9248044)
                     Pause(1)
                     Anime_Add.Add_Display.ForeColor = Color.Black
@@ -2367,7 +2390,6 @@ Public Class Main
             Gesamt = 0.ToString
             Anime_Add.groupBox1.Visible = True
             Anime_Add.groupBox2.Visible = False
-            Anime_Add.GroupBox3.Visible = False
             Anime_Add.Mass_DL_Cancel = False
             Anime_Add.btn_dl.Text = "Download" 'Anime_Add.btn_dl.BackgroundImage = My.Resources.main_button_download_default
         End Try
@@ -2375,7 +2397,6 @@ Public Class Main
         Pause(5)
         Anime_Add.groupBox1.Visible = True
         Anime_Add.groupBox2.Visible = False
-        Anime_Add.GroupBox3.Visible = False
         Anime_Add.Mass_DL_Cancel = False
         Anime_Add.btn_dl.Text = "Download" 'Anime_Add.btn_dl.BackgroundImage = My.Resources.main_button_download_default
     End Sub
@@ -3676,29 +3697,29 @@ Public Class Main
                         Dim html() As String = htmlReq.Split(New String() {"HTMLMass="}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim DecodedHTML As String = UrlDecode(html(1))
                         Dim URLSplit() As String = DecodedHTML.Split(New String() {"javascript:"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                            For i As Integer = 0 To URLSplit.Count - 1
-                                Dim ii As Integer = i
-                                Me.Invoke(New Action(Function() As Object
-                                                         If Anime_Add.ListBox1.Items.Contains(URLSplit(ii)) = False Then
-                                                             Anime_Add.ListBox1.Items.Add(URLSplit(ii))
-                                                         End If
-                                                         'Anime_Add.ListBox1.Items.Add(URLSplit(ii))
-                                                         Return Nothing
-                                                     End Function))
-                            Next
-                        Else
-                            For i As Integer = 0 To URLSplit.Count - 1
-                                If ListBoxList.Contains(URLSplit(i)) = False Then
-                                    ListBoxList.Add(URLSplit(i))
-                                End If
-                            Next
-                            Me.Invoke(New Action(Function() As Object
-                                                     Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
-                                                     Me.Invalidate()
-                                                     Return Nothing
-                                                 End Function))
-                        End If
+                        'If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                        '    For i As Integer = 0 To URLSplit.Count - 1
+                        '        Dim ii As Integer = i
+                        '        Me.Invoke(New Action(Function() As Object
+                        '                                 If Anime_Add.ListBox1.Items.Contains(URLSplit(ii)) = False Then
+                        '                                     Anime_Add.ListBox1.Items.Add(URLSplit(ii))
+                        '                                 End If
+                        '                                 'Anime_Add.ListBox1.Items.Add(URLSplit(ii))
+                        '                                 Return Nothing
+                        '                             End Function))
+                        '    Next
+                        'Else
+                        For i As Integer = 0 To URLSplit.Count - 1
+                            If ListBoxList.Contains(URLSplit(i)) = False Then
+                                ListBoxList.Add(URLSplit(i))
+                            End If
+                        Next
+                        Me.Invoke(New Action(Function() As Object
+                                                 Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
+                                                 Me.Invalidate()
+                                                 Return Nothing
+                                             End Function))
+                        'End If
                         strRequest = rootPath & "Post_Mass_Sucess.html" 'PostPage
                         SendHTMLResponse(stream, strRequest)
                     Catch abort As ThreadAbortException
@@ -3722,29 +3743,29 @@ Public Class Main
                             SystemWebBrowserCookie = CookieSplit(1)
                             Dim URLSplit() As String = CookieSplit(0).Split(New String() {"FunimationMass="}, System.StringSplitOptions.RemoveEmptyEntries)
                             Dim URLSplit2() As String = URLSplit(1).Split(New String() {"javascript:"}, System.StringSplitOptions.RemoveEmptyEntries)
-                            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                                For i As Integer = 0 To URLSplit2.Count - 1
-                                    Dim ii As Integer = i
-                                    Me.Invoke(New Action(Function() As Object
-                                                             If Anime_Add.ListBox1.Items.Contains(URLSplit2(ii)) = False Then
-                                                                 Anime_Add.ListBox1.Items.Add(URLSplit2(ii))
-                                                             End If
-                                                             'Anime_Add.ListBox1.Items.Add(URLSplit(ii))
-                                                             Return Nothing
-                                                         End Function))
-                                Next
-                            Else
-                                For i As Integer = 0 To URLSplit2.Count - 1
-                                    If ListBoxList.Contains(URLSplit2(i)) = False Then
-                                        ListBoxList.Add(URLSplit2(i))
-                                    End If
-                                Next
-                                Me.Invoke(New Action(Function() As Object
-                                                         Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
-                                                         Me.Invalidate()
-                                                         Return Nothing
-                                                     End Function))
-                            End If
+                            'If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                            '    For i As Integer = 0 To URLSplit2.Count - 1
+                            '        Dim ii As Integer = i
+                            '        Me.Invoke(New Action(Function() As Object
+                            '                                 If Anime_Add.ListBox1.Items.Contains(URLSplit2(ii)) = False Then
+                            '                                     Anime_Add.ListBox1.Items.Add(URLSplit2(ii))
+                            '                                 End If
+                            '                                 'Anime_Add.ListBox1.Items.Add(URLSplit(ii))
+                            '                                 Return Nothing
+                            '                             End Function))
+                            '    Next
+                            'Else
+                            For i As Integer = 0 To URLSplit2.Count - 1
+                                If ListBoxList.Contains(URLSplit2(i)) = False Then
+                                    ListBoxList.Add(URLSplit2(i))
+                                End If
+                            Next
+                            Me.Invoke(New Action(Function() As Object
+                                                     Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
+                                                     Me.Invalidate()
+                                                     Return Nothing
+                                                 End Function))
+                            'End If
                             strRequest = rootPath & "Post_Mass_Sucess.html" 'PostPage
                             SendHTMLResponse(stream, strRequest)
                         End If
@@ -3829,23 +3850,23 @@ Public Class Main
                                 b = False
                             End If
                         Else
-                            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                                Me.Invoke(New Action(Function() As Object
-                                                         If Anime_Add.ListBox1.Items.Contains(WebbrowserURL) = False Then
-                                                             Anime_Add.ListBox1.Items.Add(WebbrowserURL)
-                                                         End If
-                                                         Return Nothing
-                                                     End Function))
-                            Else
-                                If ListBoxList.Contains(WebbrowserURL) = False Then
-                                    ListBoxList.Add(WebbrowserURL)
-                                End If
-                                Me.Invoke(New Action(Function() As Object
-                                                         Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue"
-                                                         Me.Invalidate()
-                                                         Return Nothing
-                                                     End Function))
+                            'If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+                            '    Me.Invoke(New Action(Function() As Object
+                            '                             If Anime_Add.ListBox1.Items.Contains(WebbrowserURL) = False Then
+                            '                                 Anime_Add.ListBox1.Items.Add(WebbrowserURL)
+                            '                             End If
+                            '                             Return Nothing
+                            '                         End Function))
+                            'Else
+                            If ListBoxList.Contains(WebbrowserURL) = False Then
+                                ListBoxList.Add(WebbrowserURL)
                             End If
+                            Me.Invoke(New Action(Function() As Object
+                                                     Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue"
+                                                     Me.Invalidate()
+                                                     Return Nothing
+                                                 End Function))
+                            'End If
                         End If
                         strRequest = rootPath & "Post_Single_Sucess.html" 'PostPage
                         SendHTMLResponse(stream, strRequest)
@@ -4042,21 +4063,23 @@ Public Class Main
 
     Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
 
-        If Application.OpenForms().OfType(Of Anime_Add).Any = False Then
-            If ListBoxList.Count > 0 Then
-                If CBool(InStr(Me.Text, "Crunchyroll Downloader")) Or CBool(InStr(Me.Text, " downloads in queue")) Then
-                    Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
-                End If
-            End If
-        End If
+        'If Application.OpenForms().OfType(Of Anime_Add).Any = False Then
+        '    If ListBoxList.Count > 0 Then
+        '        If CBool(InStr(Me.Text, "Crunchyroll Downloader")) Or CBool(InStr(Me.Text, " downloads in queue")) Then
+        '            Me.Text = "Status: " + ListBoxList.Count.ToString + " downloads in queue" + vbNewLine + "open the add window to continue"
+        '        End If
+        '    End If
+        'End If
 
     End Sub
 
     Private Sub Main_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         Btn_add.Image = My.Resources.main_add
         Panel1.Select()
-    End Sub
 
+
+
+    End Sub
     Private Async Sub Funimation_Token_Click(sender As Object, e As EventArgs) Handles Funimation_Token.Click
         Dim Token As String = Nothing
         Try
@@ -4227,11 +4250,323 @@ Public Class Main
         Queue.Show()
     End Sub
 
+    Private Sub Btn_Queue_Click(sender As Object, e As EventArgs) Handles Btn_Queue.Click
+        If File.Exists("cookies.txt") = False Then
+            If Application.OpenForms().OfType(Of Browser).Any = True Then
+            Else
+                UserBowser = False
+                Browser.Show()
+            End If
+        End If
+
+        If Queue.WindowState = System.Windows.Forms.FormWindowState.Minimized Then
+            Queue.WindowState = System.Windows.Forms.FormWindowState.Normal
+        Else
+            Queue.Show()
+        End If
+
+    End Sub
+
 
 
 #End Region
 
+#Region "Process Urls"
 
+
+    Public Sub LoadBrowser(ByVal Url As String)
+
+
+        LoadingUrl = Url
+        LoadedUrls.Clear()
+        Dim NoBrowser As Boolean = False
+        'Browser.WebView2.Source = New Uri(Url)
+        'Exit Sub
+        'MsgBox(Url)
+
+        If CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "series")) = True Or CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "watch")) = True Then
+
+
+
+#Region "Get Cookies"
+
+            CR_Cookies = "Cookie: "
+            'MsgBox("Cookies")
+            If File.Exists("cookies.txt") = True Then
+                CR_Cookies = GetCookiesFromFile("crunchyroll.com")
+                NoBrowser = True
+                CrBetaBasic = "Basic bm9haWhkZXZtXzZpeWcwYThsMHE6"
+                'MsgBox(True.ToString)
+            Else
+                Browser.GetCookies(Url)
+
+                Debug.WriteLine(CookieList.Count.ToString)
+                If CookieList.Count = 0 Then
+                    Browser.WebView2.CoreWebView2.Navigate(Url)
+                    SetStatusLabel("Status: loading in browser...")
+                    Me.Text = "Status: loading in browser..."
+                    Exit Sub
+                End If
+
+
+
+                For i As Integer = 0 To CookieList.Count - 1
+
+                    If CBool(InStr(CookieList.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(CookieList.Item(i).Name, "_evidon_suppress")) = False Then
+                        CR_Cookies = CR_Cookies + CookieList.Item(i).Name + "=" + CookieList.Item(i).Value + ";"
+                    End If
+
+                Next
+
+            End If
+
+            'MsgBox(Main.CR_Cookies)
+
+            Dim DeviceRegion As String = Nothing
+
+            If CBool(InStr(Url, "/series")) Then
+                Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim locale2() As String = locale1(1).Split(New String() {"/series"}, System.StringSplitOptions.RemoveEmptyEntries)
+                locale = Convert_locale(locale2(0))
+                If locale = "en-US" Then
+                    Url_locale = ""
+                Else
+                    Url_locale = locale2(0)
+                End If
+            ElseIf CBool(InStr(Url, "/watch")) Then
+                Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim locale2() As String = locale1(1).Split(New String() {"/watch"}, System.StringSplitOptions.RemoveEmptyEntries)
+                'MsgBox(locale2(0))
+
+                locale = Convert_locale(locale2(0))
+                'End If
+                If locale = "en-US" Then
+                    Url_locale = ""
+                Else
+                    Url_locale = locale2(0)
+                End If
+            End If
+
+            Dim Loc_CR_Cookies = " -H " + Chr(34) + CR_Cookies + Chr(34)
+
+
+
+#End Region
+            Dim Auth As String = " -H " + Chr(34) + "Authorization: " + CrBetaBasic + Chr(34)
+            Dim Post As String = " -d " + Chr(34) + "grant_type=etp_rt_cookie" + Chr(34) + " -X POST"
+
+            Dim CRBetaBearer As String = "Bearer "
+
+            Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post)
+
+
+
+            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
+
+                v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"))
+
+            End If
+
+            'MsgBox(v1Token)
+
+            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
+                SetStatusLabel("Status: Failed - bad request, check CR login")
+                Me.Text = "Status: Failed - bad request, check CR login"
+                Debug.WriteLine("Status: Failed - bad request, check CR login")
+
+                b = True
+                Exit Sub
+
+            ElseIf CBool(InStr(v1Token, "curl:")) = True Then
+                v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post)
+            End If
+
+
+            'MsgBox(v1Token)
+
+            If CBool(InStr(v1Token, "curl:")) = True Then
+                Browser.WebView2.CoreWebView2.Navigate(Url)
+                SetStatusLabel("Status: loading in browser...")
+                Exit Sub
+            End If
+
+            '
+
+            Dim Token() As String = v1Token.Split(New String() {Chr(34) + "access_token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim Token2() As String = Token(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            CRBetaBearer = CRBetaBearer + Token2(0)
+
+            Dim ObjectsUrl As String = Nothing
+
+
+            Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + CRBetaBearer + Chr(34)
+
+
+            If CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "series/")) = True Then
+
+                Dim v2Content As String = CurlAuth("https://www.crunchyroll.com/index/v2", CR_Cookies, Auth2)
+
+                If CBool(InStr(v2Content, "curl:")) = True Then
+                    v2Content = CurlAuth("https://www.crunchyroll.com/index/v2", CR_Cookies, Auth2)
+                End If
+
+                If CBool(InStr(v2Content, "curl:")) = True Then
+                    Browser.WebView2.CoreWebView2.Navigate(Url)
+                    SetStatusLabel("Status: loading in browser...")
+                    Exit Sub
+                End If
+
+
+                Dim v2ContentBeta() As String = v2Content.Split(New String() {Chr(34) + "cms_web" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                Dim bucket() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "bucket" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim bucket2() As String = bucket(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim policy() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "policy" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim policy2() As String = policy(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim signature() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "signature" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim signature2() As String = signature(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim key_pair_id() As String = v2ContentBeta(1).Split(New String() {Chr(34) + "key_pair_id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim key_pair_id2() As String = key_pair_id(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim Series_idUrlBuilder() As String = Url.Split(New String() {"series/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Series_idUrlBuilder2() As String = Series_idUrlBuilder(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                Dim SeriesUrl As String = "https://www.crunchyroll.com/cms/v2" + bucket2(0) + "/seasons?series_id=" + Series_idUrlBuilder2(0) + "&locale=" + locale + "&Signature=" + signature2(0) + "&Policy=" + policy2(0) + "&Key-Pair-Id=" + key_pair_id2(0)
+
+                'MsgBox(SeriesUrl)
+                GetBetaSeasons(SeriesUrl)
+
+
+            ElseIf CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "watch/")) = True And CBool(CrBetaBasic = Nothing) = False Then
+
+
+
+                'MsgBox(Url)
+                Dim ObjectsURLBuilder3() As String = Url.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                ObjectsUrl = "https://www.crunchyroll.com/content/v2/cms/objects/" + ObjectsURLBuilder4(0) + "?locale=" + locale '+ "&Signature=" + signature2(0) + "&Policy=" + policy2(0) + "&Key-Pair-Id=" + key_pair_id2(0)
+                'End Using
+                'MsgBox(ObjectsUrl)
+
+                Debug.WriteLine("ObjectsUrl: " + ObjectsUrl)
+
+
+                Dim StreamsUrl As String = Nothing
+                Dim ObjectJson As String
+                Try
+                    ObjectJson = CurlAuth(ObjectsUrl, Loc_CR_Cookies, Auth2)
+
+
+                    '"curl:" 'Main.Curl(ObjectsUrl)
+                    'MsgBox(ObjectJson)
+
+                    'If CBool(InStr(ObjectJson, "curl:")) = True Then
+                    '    ObjectJson = Main.Curl(ObjectsUrl)
+                    'End If
+
+                    If CBool(InStr(ObjectJson, "curl:")) = True Then
+                        Browser.WebView2.CoreWebView2.Navigate(ObjectsUrl)
+                        LoadingUrl = ObjectsUrl
+
+                        Exit Sub
+                    ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
+
+                        SetStatusLabel("Status: Failed - no video, check CR login")
+                        Me.Text = "Status: Failed - no video, check CR login"
+                        Debug.WriteLine("Status: Failed - no video, check CR login")
+
+                        Exit Sub
+                    End If
+
+                Catch ex As Exception
+                    Browser.WebView2.CoreWebView2.Navigate(Url)
+                    Exit Sub
+                End Try
+
+                Try
+                    Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim StreamsUrlBuilder3() As String = ObjectsUrl.Split(New String() {"objects/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim StreamsUrlBuilder4() As String = StreamsUrlBuilder3(1).Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    StreamsUrl = StreamsUrlBuilder3(0) + "videos/" + StreamsUrlBuilder2(0) + "/streams?" + StreamsUrlBuilder4(1)
+
+                    ' Debug.WriteLine(StreamsUrl)
+                Catch ex As Exception
+                    Browser.WebView2.CoreWebView2.Navigate(Url)
+                    Exit Sub
+                End Try
+
+                GetBetaVideoProxy(StreamsUrl, Auth2, Url)
+
+
+            Else
+                Browser.WebView2.CoreWebView2.Navigate(Url)
+            End If
+        Else
+            'to do
+        End If
+    End Sub
+
+    Public Function GetCookiesFromFile(ByVal Host As String) As String
+
+        Dim Cookies As String = "Cookie: "
+        Dim Cookie_txt As String = My.Computer.FileSystem.ReadAllText("cookies.txt")
+
+        Dim LineChar As String = vbCrLf
+
+        If CBool(InStr(Cookie_txt, vbCr)) Then
+            LineChar = vbCr
+            'Debug.WriteLine("vbCr")
+        ElseIf CBool(InStr(Cookie_txt, vbLf)) Then
+            LineChar = vbLf
+            'Debug.WriteLine("vbLf")
+        End If
+
+        Dim Cookie_txt1() As String = Cookie_txt.Split(New String() {LineChar}, System.StringSplitOptions.RemoveEmptyEntries)
+
+        Debug.WriteLine("got txt")
+
+        For i As Integer = 0 To Cookie_txt1.Count - 1
+
+            Dim Cookie_txt2() As String = Cookie_txt1(i).Split(New String() {Chr(9)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            If CBool(InStr(Cookie_txt2(0), Host)) = True Then
+
+                If CBool(InStr(Cookie_txt2(5), "_evidon_suppress")) = True Then
+                    Continue For
+                End If
+
+                Cookies = Cookies + Cookie_txt2(5) + "=" + Cookie_txt2(6) + ";"
+
+
+
+            End If
+
+        Next
+
+
+        'Debug.WriteLine(Cookies)
+
+        Return Cookies
+    End Function
+
+    Sub SetStatusLabel(ByVal txt As String)
+        If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+            Anime_Add.StatusLabel.Text = txt
+        End If
+
+    End Sub
+
+#End Region
 
 End Class
 

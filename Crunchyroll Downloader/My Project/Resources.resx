@@ -565,4 +565,13 @@ title=Ending</value>
   <data name="htmlReplace" xml:space="preserve">
     <value>&lt;html&gt;&lt;head&gt;&lt;meta name="color-scheme" content="light dark"&gt;&lt;/head&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap;"&gt;</value>
   </data>
+  <data name="main_queue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-queue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_queue_invert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-queue_invert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_queue_invert_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main-queue_invert_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

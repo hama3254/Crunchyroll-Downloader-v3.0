@@ -23,7 +23,6 @@ Partial Class Anime_Add
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Anime_Add))
         Me.groupBox1 = New System.Windows.Forms.GroupBox()
         Me.SubTitlesOnlyCB = New MetroFramework.Controls.MetroComboBox()
@@ -38,18 +37,12 @@ Partial Class Anime_Add
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
         Me.comboBox3 = New MetroFramework.Controls.MetroComboBox()
         Me.Add_Display = New MetroFramework.Controls.MetroLabel()
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.ListBox1 = New System.Windows.Forms.ListBox()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Btn_min = New System.Windows.Forms.PictureBox()
         Me.Btn_Close = New System.Windows.Forms.PictureBox()
         Me.btn_dl = New System.Windows.Forms.Button()
-        Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.groupBox1.SuspendLayout()
         Me.groupBox2.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
         CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -304,38 +297,6 @@ Partial Class Anime_Add
         Me.Add_Display.Text = "..."
         Me.Add_Display.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'GroupBox3
-        '
-        Me.GroupBox3.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox3.Controls.Add(Me.ListBox1)
-        Me.GroupBox3.Location = New System.Drawing.Point(15, 70)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(720, 280)
-        Me.GroupBox3.TabIndex = 46
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Visible = False
-        '
-        'ListBox1
-        '
-        Me.ListBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
-        Me.ListBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListBox1.FormattingEnabled = True
-        Me.ListBox1.ItemHeight = 15
-        Me.ListBox1.Location = New System.Drawing.Point(13, 30)
-        Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(693, 229)
-        Me.ListBox1.TabIndex = 0
-        '
-        'Timer1
-        '
-        Me.Timer1.Enabled = True
-        Me.Timer1.Interval = 500
-        '
-        'Timer2
-        '
-        Me.Timer2.Enabled = True
-        Me.Timer2.Interval = 2500
-        '
         'Btn_min
         '
         Me.Btn_min.BackColor = System.Drawing.Color.Transparent
@@ -379,11 +340,6 @@ Partial Class Anime_Add
         Me.btn_dl.Text = "Download"
         Me.btn_dl.UseVisualStyleBackColor = True
         '
-        'Timer3
-        '
-        Me.Timer3.Enabled = True
-        Me.Timer3.Interval = 2000
-        '
         'Anime_Add
         '
         Me.ApplyImageInvert = True
@@ -393,9 +349,8 @@ Partial Class Anime_Add
         Me.Controls.Add(Me.btn_dl)
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Close)
-        Me.Controls.Add(Me.groupBox1)
-        Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.groupBox2)
+        Me.Controls.Add(Me.groupBox1)
         Me.Font = New System.Drawing.Font("Arial", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "Anime_Add"
         Me.Padding = New System.Windows.Forms.Padding(10, 60, 20, 20)
@@ -403,7 +358,6 @@ Partial Class Anime_Add
         Me.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center
         Me.groupBox1.ResumeLayout(False)
         Me.groupBox2.ResumeLayout(False)
-        Me.GroupBox3.ResumeLayout(False)
         CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -411,10 +365,6 @@ Partial Class Anime_Add
     End Sub
     Public WithEvents groupBox2 As GroupBox
     Public WithEvents groupBox1 As GroupBox
-    Public WithEvents GroupBox3 As GroupBox
-    Friend WithEvents Timer1 As Timer
-    Private WithEvents Timer2 As Timer
-    Public WithEvents ListBox1 As ListBox
     Public WithEvents StatusLabel As MetroFramework.Controls.MetroLabel
     Public WithEvents Add_Display As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroTextBox1 As MetroFramework.Controls.MetroTextBox
@@ -429,7 +379,6 @@ Partial Class Anime_Add
     Private WithEvents Btn_Close As PictureBox
     Public WithEvents SubTitlesOnlyCB As MetroFramework.Controls.MetroComboBox
     Friend WithEvents btn_dl As Button
-    Friend WithEvents Timer3 As Timer
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
     Friend WithEvents bt_Cancel_mass As Button
 End Class

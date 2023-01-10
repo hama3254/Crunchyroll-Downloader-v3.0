@@ -113,7 +113,7 @@ Public Class Main
 
     Public ResoSave As String = "6666x6666"
     Public ResoFunBackup As String = "6666x6666"
-    Public SubSprache As NameValuePair
+    Public SubSprache As NameValuePair = New NameValuePair("[ null ]", "", Nothing)
     Public SubSpracheEnum As New List(Of NameValuePair)
     Public SoftSubs As New List(Of String)
     Public IncludeLangName As Boolean = False
@@ -510,7 +510,6 @@ Public Class Main
 
         LeadingZero = My.Settings.LeadingZero
 
-        SubSprache = SubSpracheEnum(0)
 
         For i As Integer = 0 To SubSpracheEnum.Count - 1
             If SubSpracheEnum(i).CR_Value = My.Settings.Subtitle Then
@@ -520,6 +519,10 @@ Public Class Main
             End If
         Next
 
+        'If My.Settings.Subtitle = Nothing Then
+
+        '    SubSprache = SubSpracheEnum(0)
+        'End If
 
         Funimation_Bitrate = My.Settings.Funimation_Bitrate
 
@@ -4232,7 +4235,7 @@ Public Class Main
 
     Sub FillArray() '
 
-        SubSpracheEnum.Add(New NameValuePair("[ null ]", Nothing, Nothing))
+        SubSpracheEnum.Add(New NameValuePair("[ null ]", "", Nothing))
         SubSpracheEnum.Add(New NameValuePair("Deutsch", "de-DE", Nothing))
         SubSpracheEnum.Add(New NameValuePair("English", "en-US", "en"))
         SubSpracheEnum.Add(New NameValuePair("Português (Brasil)", "pt-BR", "pt"))

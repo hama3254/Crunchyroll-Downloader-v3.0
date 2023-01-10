@@ -204,24 +204,27 @@ Public Class Einstellungen
             AAuto.Checked = True
         End If
 
-        CB_CR_Harsubs.Items.Clear()
+        Try
+            CB_CR_Harsubs.Items.Clear()
 
+            For i As Integer = 0 To Main.SubSpracheEnum.Count - 1
+                CB_CR_Harsubs.Items.Add(Main.SubSpracheEnum(i).Name)
+                If Main.SubSpracheEnum(i).CR_Value = Main.SubSprache.CR_Value Then
+                    'MsgBox(CB_CR_Harsubs.Items.Count.ToString)
+                    'MsgBox(i.ToString)
+                    CB_CR_Harsubs.SelectedIndex = i
+                    'Exit For
+                End If
 
-        For i As Integer = 0 To Main.SubSpracheEnum.Count - 1
-            CB_CR_Harsubs.Items.Add(Main.SubSpracheEnum(i).Name)
-            If Main.SubSpracheEnum(i).CR_Value = Main.SubSprache.CR_Value Then
-                'MsgBox(CB_CR_Harsubs.Items.Count.ToString)
-                'MsgBox(i.ToString)
-                CB_CR_Harsubs.SelectedIndex = i
-                'Exit For
-            End If
+            Next
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
 
-        Next
 
         DD_Season_Prefix.Text = Main.Season_Prefix
 
         DD_Episode_Prefix.Text = Main.Episode_Prefix
-
 
 
         NumericUpDown2.Value = Main.ErrorTolerance
@@ -256,6 +259,7 @@ Public Class Einstellungen
             FFMPEG_CommandP3.Text = ffmpegDisplayCurrent(4) + " " + ffmpegDisplayCurrent(5)
             FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
         End If
+
 
         If FFMPEG_CommandP1.Text = "-c:v libsvtav1" And FFMPEG_CommandP2.Text = "[no Preset]" Then
             FFMPEG_CommandP2.Enabled = False
@@ -459,6 +463,7 @@ Public Class Einstellungen
             End If
 
         Next
+
 
 
         If CR_SoftSubDefault.SelectedItem.ToString = "English" Then

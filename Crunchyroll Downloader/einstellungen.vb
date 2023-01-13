@@ -204,10 +204,9 @@ Public Class Einstellungen
             AAuto.Checked = True
         End If
 
-        Try
-            CB_CR_Harsubs.Items.Clear()
+        CB_CR_Harsubs.Items.Clear()
 
-            For i As Integer = 0 To Main.SubSpracheEnum.Count - 1
+        For i As Integer = 0 To Main.SubSpracheEnum.Count - 1
                 CB_CR_Harsubs.Items.Add(Main.SubSpracheEnum(i).Name)
                 If Main.SubSpracheEnum(i).CR_Value = Main.SubSprache.CR_Value Then
                     'MsgBox(CB_CR_Harsubs.Items.Count.ToString)
@@ -217,12 +216,10 @@ Public Class Einstellungen
                 End If
 
             Next
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-        End Try
 
 
-        DD_Season_Prefix.Text = Main.Season_Prefix
+
+            DD_Season_Prefix.Text = Main.Season_Prefix
 
         DD_Episode_Prefix.Text = Main.Episode_Prefix
 

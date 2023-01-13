@@ -1446,26 +1446,27 @@ Public Class Main
                 End Select
             Next
 
-            Dim CR_URI_Master As String = Nothing
+            Dim CR_URI_Master As New List(Of String)
 
 
-            Dim RawStream As String = ""
+            Dim RawStream As New List(Of String)
 
 
 
             For i As Integer = 0 To CR_Streams.Count - 1
                 Debug.WriteLine(CR_Streams.Item(i).subLang)
                 If CR_Streams.Item(i).subLang = CR_HardSubLang Then
-                    CR_URI_Master = CR_Streams.Item(i).Url
+                    CR_URI_Master.Add(CR_Streams.Item(i).Url)
                 ElseIf CR_Streams.Item(i).subLang = "" And CR_audio_locale IsNot "ja-JP" And DubMode = True Then 'nothing/raw
-                    RawStream = CR_Streams.Item(i).Url
+                    RawStream.Add(CR_Streams.Item(i).Url)
                 End If
             Next
 
-            If CR_URI_Master = Nothing And RawStream IsNot "" Then
-                CR_URI_Master = RawStream
+            If CR_URI_Master.Count = 0 And RawStream.Count > 0 Then
+                CR_URI_Master.Clear()
+                CR_URI_Master.AddRange(RawStream)
 
-            ElseIf CR_URI_Master = Nothing Then
+            ElseIf CR_URI_Master.Count = 0 Then
                 Me.Invoke(New Action(Function() As Object
                                          ResoNotFoundString = VideoJson
                                          DialogTaskString = "Language_CR_Beta"
@@ -1482,16 +1483,15 @@ Public Class Main
                     For i As Integer = 0 To CR_Streams.Count - 1
                         Debug.WriteLine(CR_Streams.Item(i).subLang)
                         If CR_Streams.Item(i).subLang = CR_HardSubLang Then
-                            CR_URI_Master = CR_Streams.Item(i).Url
+                            CR_URI_Master.Add(CR_Streams.Item(i).Url)
                         End If
 
                     Next
 
                 End If
             End If
-            CR_URI_Master = CR_URI_Master.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
 
-            If CBool(InStr(CR_URI_Master, "master.m3u8")) Then
+            If CBool(InStr(CR_URI_Master(0), "master.m3u8")) Then
                 Me.Invoke(New Action(Function() As Object
                                          Anime_Add.StatusLabel.Text = "Status: m3u8 found, looking for resolution"
                                          Me.Text = "Status: m3u8 found, looking for resolution"
@@ -1664,7 +1664,7 @@ Public Class Main
 
             If Reso = 42 And HybridMode = False Then
 
-                ffmpegInput = "-i " + Chr(34) + CR_URI_Master + Chr(34)
+                ffmpegInput = "-i " + Chr(34) + CR_URI_Master(0) + Chr(34)
 
             ElseIf SubsOnly = True Then
                 ffmpegInput = "-i [Subtitles only]"
@@ -1672,54 +1672,67 @@ Public Class Main
 
                 Dim str As String = Nothing
 
-                str = Curl(CR_URI_Master)
 
-                If CBool(InStr(str, "x" + Reso.ToString + ",")) Then
-                    ResoUsed = "x" + Reso.ToString
-                Else
-                    If CBool(InStr(str, ResoSave + ",")) Then
-                        ResoUsed = ResoSave
-                    Else
-                        Me.Invoke(New Action(Function() As Object
-                                                 DialogTaskString = "Resolution"
-                                                 ResoNotFoundString = str
-                                                 ErrorDialog.ShowDialog()
-                                                 Return Nothing
-                                             End Function))
-                        If UserCloseDialog = True Then
-                            Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
-                        Else
-                            ResoUsed = ResoBackString
-                            ResoSave = ResoBackString
-                        End If
-                    End If
-                End If
-                Dim ffmpeg_url_3 As String = Nothing
-                Dim LineChar As String = vbLf
-                If CBool(InStr(str, vbCrLf)) Then
-                    LineChar = vbCrLf
-                ElseIf CBool(InStr(str, vbCr)) Then
-                    LineChar = vbCr
-                End If
-                Dim ffmpeg_url_1 As String() = str.Split(New String() {LineChar}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                For i As Integer = 0 To ffmpeg_url_1.Count - 2 'Step 2
-                    If CBool(InStr(ffmpeg_url_1(i), ResoUsed + ",")) Then
-                        ffmpeg_url_3 = ffmpeg_url_1(i + 1)
+                For i As Integer = 0 To CR_URI_Master.Count - 1
+                    str = Curl(CR_URI_Master(i))
+
+                    If CBool(InStr(str, "curl:")) = False Then
+                        Exit For
                     End If
                 Next
 
 
-                ffmpegInput = "-i " + Chr(34) + ffmpeg_url_3.Trim() + Chr(34)
+                If CBool(InStr(str, "curl:")) = True Then
 
-            End If
+                    MsgBox("Unable to get master.m3u8" + vbNewLine + str, MsgBoxStyle.Critical)
+
+                ElseIf CBool(InStr(str, "x" + Reso.ToString + ",")) Then
+                    ResoUsed = "x" + Reso.ToString
+                Else
+                    If CBool(InStr(str, ResoSave + ",")) Then
+                            ResoUsed = ResoSave
+                        Else
+                            Me.Invoke(New Action(Function() As Object
+                                                     DialogTaskString = "Resolution"
+                                                     ResoNotFoundString = str
+                                                     ErrorDialog.ShowDialog()
+                                                     Return Nothing
+                                                 End Function))
+                            If UserCloseDialog = True Then
+                                Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
+                            Else
+                                ResoUsed = ResoBackString
+                                ResoSave = ResoBackString
+                            End If
+                        End If
+                    End If
+                    Dim ffmpeg_url_3 As String = Nothing
+                    Dim LineChar As String = vbLf
+                    If CBool(InStr(str, vbCrLf)) Then
+                        LineChar = vbCrLf
+                    ElseIf CBool(InStr(str, vbCr)) Then
+                        LineChar = vbCr
+                    End If
+                    Dim ffmpeg_url_1 As String() = str.Split(New String() {LineChar}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    For i As Integer = 0 To ffmpeg_url_1.Count - 2 'Step 2
+                        If CBool(InStr(ffmpeg_url_1(i), ResoUsed + ",")) Then
+                            ffmpeg_url_3 = ffmpeg_url_1(i + 1)
+                        End If
+                    Next
+
+
+                    ffmpegInput = "-i " + Chr(34) + ffmpeg_url_3.Trim() + Chr(34)
+
+                End If
 
 
 
 #End Region
 
 #Region "GetSoftsubs"
-            Dim SoftSubsAvailable As New List(Of String)
+                Dim SoftSubsAvailable As New List(Of String)
 
             Dim SoftSubsList As New List(Of CR_Subtiles)
 

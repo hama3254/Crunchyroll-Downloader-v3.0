@@ -61,7 +61,7 @@ Public Class CR_Beta_Stream
     'ByVal audioLanguage As String, 
     Public Sub New(ByVal subLang As String, ByVal Format As String, ByVal Url As String)
         Me.subLang = subLang
-        Me.Url = Url
+        Me.Url = Url.Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
         Me.Format = Format
     End Sub
     'Me.audioLanguage,

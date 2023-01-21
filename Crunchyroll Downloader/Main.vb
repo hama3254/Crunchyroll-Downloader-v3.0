@@ -1084,7 +1084,9 @@ Public Class Main
         CR_MassSeasons.Clear()
         If BrowserData = Nothing Then
 
-            SeasonJson = CurlAuth(JsonUrl, CR_Cookies, Auth)
+            Dim Loc_CR_Cookies = " -H " + Chr(34) + CR_Cookies.Replace(Chr(34), "").Replace(" -H ", "") + Chr(34)
+
+            SeasonJson = CurlAuth(JsonUrl, Loc_CR_Cookies, Auth)
 
             If CBool(InStr(SeasonJson, "curl:")) = True Then
                 'Browser.WebView2.CoreWebView2.Navigate(Url)
@@ -2808,7 +2810,7 @@ Public Class Main
                 item.CreateReader()
                 Select Case item.Name
                     Case "fallback"
-                        '  MsgBox(SubItem.Value.ToString())
+                        'MsgBox(SubItem.Value.ToString())
                         Dim SubData2 As List(Of JToken) = item.Values.ToList
                         'MsgBox(SubData2.Count.ToString)
                         For i As Integer = 0 To SubData2.Count - 1
@@ -2850,7 +2852,7 @@ Public Class Main
                             Select Case SubItem.Name
                                ' Case "manifestPath"
                                '     Funimation_m3u8_Main = SubItem.Value.ToString
-                               '' MsgBox()
+                               ''MsgBox()
                                 Case "version"
                                     PrimaryVersion = SubItem.Value.ToString
                                 Case "audioLanguage"
@@ -2858,7 +2860,7 @@ Public Class Main
                                 Case "manifestPath"
                                     PrimarymanifesUrl = SubItem.Value.ToString
                                 Case "subtitles"
-                                    '  MsgBox(SubItem.Value.ToString())
+                                    'MsgBox(SubItem.Value.ToString())
                                     Dim SubData2 As List(Of JToken) = SubItem.Values.ToList
                                     'MsgBox(SubData2.Count.ToString)
                                     For i As Integer = 0 To SubData2.Count - 1
@@ -4445,7 +4447,7 @@ Public Class Main
 
 
                 Dim SeriesUrl As String = "https://www.crunchyroll.com/content/v2/cms/series/" + SeriesUrlBuilder2(0) + "/seasons?preferred_audio_language=" + DubSprache.CR_Value + "&locale=" + locale '+ "&Signature=" + signature2(0) + "&Policy=" + policy2(0) + "&Key-Pair-Id=" + key_pair_id2(0)
-
+                Debug.WriteLine(SeriesUrl)
                 'MsgBox(SeriesUrl)
                 GetBetaSeasons(Url, SeriesUrl, Auth2)
 
@@ -4508,7 +4510,7 @@ Public Class Main
 
                     StreamsUrl = StreamsUrlBuilder3(0) + "videos/" + StreamsUrlBuilder2(0) + "/streams?" + StreamsUrlBuilder4(1)
 
-                    MsgBox(StreamsUrl)
+                    'MsgBox(StreamsUrl)
 
                     ' Debug.WriteLine(StreamsUrl)
                 Catch ex As Exception

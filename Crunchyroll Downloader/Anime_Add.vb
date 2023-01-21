@@ -405,8 +405,10 @@ Public Class Anime_Add
 
             Dim JsonUrl As String = "https://www.crunchyroll.com/content/v2/cms/seasons/" + Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).guid + "/episodes?preferred_audio_language=" + Main.DubSprache.CR_Value + "&locale=" + Main.locale
 
+            Dim Loc_CR_Cookies = " -H " + Chr(34) + Main.CR_Cookies.Replace(Chr(34), "").Replace(" -H ", "") + Chr(34)
 
-            Dim EpisodeJson As String = Main.CurlAuth(JsonUrl, Main.CR_Cookies, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth) '
+
+            Dim EpisodeJson As String = Main.CurlAuth(JsonUrl, Loc_CR_Cookies, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth) '
 
             FillCREpisodes(EpisodeJson)
 

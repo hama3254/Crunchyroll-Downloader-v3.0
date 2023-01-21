@@ -213,8 +213,8 @@ Public Class Anime_Add
                 End If
             Catch ex As Exception
                 MsgBox(ex.ToString)
-                Main.b = True
-                MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
+            Main.b = True
+            MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
             End Try
         ElseIf groupBox2.Visible = True Then
 

@@ -1114,29 +1114,57 @@ Public Class Main
                         Dim SeasonSubData As List(Of JToken) = Entry.Children().ToList
                         Dim localSeasons As New List(Of CR_Seasons)
                         Dim season_number As String = Nothing
+                        Dim id As String = Nothing
+                        Dim audio_localeMain As String = Nothing
+
+
                         For Each SeasonSubItem As JProperty In SeasonSubData
                             SeasonSubItem.CreateReader()
 
                             Select Case SeasonSubItem.Name
                                 Case "versions"
-                                    For Each VersionItem As JObject In SeasonSubItem.Values
+                                    Try
+                                        For Each VersionItem As JObject In SeasonSubItem.Values
 
-                                        Dim guid As String = VersionItem.GetValue("guid").ToString
-                                        Dim audio_locale As String = VersionItem.GetValue("audio_locale").ToString
+                                            Dim guid As String = VersionItem.GetValue("guid").ToString
+                                            Dim audio_locale As String = VersionItem.GetValue("audio_locale").ToString
 
-                                        localSeasons.Add(New CR_Seasons(guid, audio_locale, Auth))
-                                    Next
-
+                                            localSeasons.Add(New CR_Seasons(guid, audio_locale, Auth))
+                                        Next
+                                    Catch ex As Exception
+                                        Debug.WriteLine("Error getting season data")
+                                    End Try
                                 Case "season_number"
                                     season_number = SeasonSubItem.Value.ToString
-
+                                Case "id"
+                                    id = SeasonSubItem.Value.ToString
+                                Case "audio_locale"
+                                    audio_localeMain = SeasonSubItem.Value.ToString
                             End Select
                         Next
 
-                        For i As Integer = 0 To localSeasons.Count - 1
-                            Anime_Add.ComboBox1.Items.Add(HardSubValuesToDisplay(localSeasons.Item(i).audio_locale) + " - Season " + season_number)
-                            CR_MassSeasons.Add(localSeasons.Item(i))
-                        Next
+                        If localSeasons.Count = 0 Then
+                            Anime_Add.ComboBox1.Items.Add(HardSubValuesToDisplay(audio_localeMain) + " - Season " + season_number)
+                            CR_MassSeasons.Add(New CR_Seasons(id, audio_localeMain, Auth))
+                        End If
+
+                        If localSeasons.Count > 0 Then
+                            For i As Integer = 0 To CR_MassSeasons.Count - 1
+                                If CR_MassSeasons.Item(i).guid = localSeasons.Item(0).guid Then
+                                    localSeasons.Clear()
+                                    Exit For
+                                End If
+                            Next
+                        End If
+
+
+                        If localSeasons.Count > 0 Then
+                            For i As Integer = 0 To localSeasons.Count - 1
+                                Anime_Add.ComboBox1.Items.Add(HardSubValuesToDisplay(localSeasons.Item(i).audio_locale) + " - Season " + season_number)
+                                CR_MassSeasons.Add(localSeasons.Item(i))
+                            Next
+                        End If
+
                     Next
             End Select
         Next
@@ -4398,7 +4426,6 @@ Public Class Main
             Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post)
 
 
-
             If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
 
                 v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"))
@@ -4418,7 +4445,6 @@ Public Class Main
             ElseIf CBool(InStr(v1Token, "curl:")) = True Then
                 v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post)
             End If
-
 
             'MsgBox(v1Token)
 

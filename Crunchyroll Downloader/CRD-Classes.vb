@@ -104,6 +104,23 @@ Public Class UrlJson
     End Function
 End Class
 
+Public Class CR_Seasons
+
+    Public guid As String
+    Public audio_locale As String
+    Public Auth As String
+    Public Sub New(ByVal guid As String, ByVal audio_locale As String, ByVal Auth As String)
+        Me.guid = guid
+        Me.audio_locale = audio_locale
+        Me.Auth = Auth
+
+    End Sub
+
+    Public Overrides Function ToString() As String
+        Return String.Format("{0}, {1}", Me.guid, Me.audio_locale)
+    End Function
+End Class
+
 
 #End Region
 

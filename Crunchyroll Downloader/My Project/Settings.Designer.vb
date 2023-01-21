@@ -521,6 +521,18 @@ Namespace My
                 Me("NameTemplate") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("ja-JP")>  _
+        Public Property CR_Dub() As String
+            Get
+                Return CType(Me("CR_Dub"),String)
+            End Get
+            Set
+                Me("CR_Dub") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -19,7 +19,7 @@ Public Class Browser
     Private Sub WebView2_CoreWebView2InitializationCompleted(sender As Object, e As CoreWebView2InitializationCompletedEventArgs) Handles WebView2.CoreWebView2InitializationCompleted
         WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
         WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.funimation.com/*", CoreWebView2WebResourceContext.All)
-        WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
+        'WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
 
         'WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
         AddHandler WebView2.CoreWebView2.WebResourceResponseReceived, AddressOf ObserveResponse
@@ -196,31 +196,31 @@ Public Class Browser
                 Exit Sub
 
 
-            ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "seasons?series_id=")) And CBool(InStr(Main.LoadingUrl, "/series/")) Then
-                Debug.WriteLine("Crunchyroll-Season: " + e.Request.Uri)
-                Main.LoadedUrls.Add(e.Request)
-                Main.LoadedUrls.Add(e.Request)
-                Dim Content As Stream = Await e.Response.GetContentAsync
-                Dim ContentString As String = Nothing
-                Dim reader As New StreamReader(Content)
-                ContentString = reader.ReadToEnd
-                Main.CR_SeasonJson = New UrlJson(e.Request.Uri, ContentString)
-                If Main.GetBetaSeasonsRetry = True Then
-                    Main.GetBetaSeasonsRetry = False
-                    Main.GetBetaSeasons(e.Request.Uri, ContentString)
-                End If
-                Exit Sub
+                'ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "seasons?series_id=")) And CBool(InStr(Main.LoadingUrl, "/series/")) Then
+                '    Debug.WriteLine("Crunchyroll-Season: " + e.Request.Uri)
+                '    Main.LoadedUrls.Add(e.Request)
+                '    Main.LoadedUrls.Add(e.Request)
+                '    Dim Content As Stream = Await e.Response.GetContentAsync
+                '    Dim ContentString As String = Nothing
+                '    Dim reader As New StreamReader(Content)
+                '    ContentString = reader.ReadToEnd
+                '    Main.CR_SeasonJson = New UrlJson(e.Request.Uri, ContentString)
+                '    If Main.GetBetaSeasonsRetry = True Then
+                '        Main.GetBetaSeasonsRetry = False
+                '        Main.GetBetaSeasons(Main.WebbrowserURL, e.Request.Uri, "", ContentString)
+                '    End If
+                '    Exit Sub
 
 
-            ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "episodes?season_id=")) And Main.GetBetaSeasonSingle = True Then
-                Debug.WriteLine("Crunchyroll-Single-Season: " + e.Request.Uri)
-                Dim Content As Stream = Await e.Response.GetContentAsync
-                Dim ContentString As String = Nothing
-                Dim reader As New StreamReader(Content)
-                ContentString = reader.ReadToEnd
-                Main.GetBetaSeasonSingle = False
-                Anime_Add.FillCREpisodes(ContentString)
-                Exit Sub
+                'ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "episodes?season_id=")) And Main.GetBetaSeasonSingle = True Then
+                '    Debug.WriteLine("Crunchyroll-Single-Season: " + e.Request.Uri)
+                '    Dim Content As Stream = Await e.Response.GetContentAsync
+                '    Dim ContentString As String = Nothing
+                '    Dim reader As New StreamReader(Content)
+                '    ContentString = reader.ReadToEnd
+                '    Main.GetBetaSeasonSingle = False
+                '    Anime_Add.FillCREpisodes(ContentString)
+                '    Exit Sub
             End If
         ElseIf CBool(InStr(Main.LoadingUrl, "funimation.com")) Then
             If CBool(InStr(e.Request.Uri, "?deviceType=web")) Then

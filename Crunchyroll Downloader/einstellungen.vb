@@ -206,20 +206,33 @@ Public Class Einstellungen
 
         CB_CR_Harsubs.Items.Clear()
 
-        For i As Integer = 0 To Main.SubSpracheEnum.Count - 1
-                CB_CR_Harsubs.Items.Add(Main.SubSpracheEnum(i).Name)
-                If Main.SubSpracheEnum(i).CR_Value = Main.SubSprache.CR_Value Then
-                    'MsgBox(CB_CR_Harsubs.Items.Count.ToString)
-                    'MsgBox(i.ToString)
-                    CB_CR_Harsubs.SelectedIndex = i
-                    'Exit For
-                End If
+        For i As Integer = 0 To Main.LangValueEnum.Count - 1
+            CB_CR_Harsubs.Items.Add(Main.LangValueEnum(i).Name)
+            If Main.LangValueEnum(i).CR_Value = Main.SubSprache.CR_Value Then
+                'MsgBox(CB_CR_Harsubs.Items.Count.ToString)
+                'MsgBox(i.ToString)
+                CB_CR_Harsubs.SelectedIndex = i
+                'Exit For
+            End If
 
-            Next
+        Next
+
+
+        CB_CR_Audio.Items.Clear()
+
+        For i As Integer = 1 To Main.LangValueEnum.Count - 1
+
+            CB_CR_Audio.Items.Add(Main.LangValueEnum(i).Name)
+            If Main.LangValueEnum(i).CR_Value = Main.DubSprache.CR_Value Then
+                CB_CR_Audio.SelectedIndex = i - 1
+
+            End If
+
+        Next
 
 
 
-            DD_Season_Prefix.Text = Main.Season_Prefix
+        DD_Season_Prefix.Text = Main.Season_Prefix
 
         DD_Episode_Prefix.Text = Main.Episode_Prefix
 
@@ -449,13 +462,24 @@ Public Class Einstellungen
         End If
 
 
-        For i As Integer = 0 To Main.SubSpracheEnum.Count - 1
+        For i As Integer = 0 To Main.LangValueEnum.Count - 1
 
-            If CB_CR_Harsubs.SelectedItem.ToString = Main.SubSpracheEnum(i).Name Then
-                Main.SubSprache = Main.SubSpracheEnum(i)
+            If CB_CR_Harsubs.SelectedItem.ToString = Main.LangValueEnum(i).Name Then
+                Main.SubSprache = Main.LangValueEnum(i)
                 My.Settings.Subtitle = Main.SubSprache.CR_Value
-                'MsgBox(Main.SubSpracheEnum(i).Name)
-                'MsgBox(Main.SubSpracheEnum(i).CR_Value)
+                'MsgBox(Main.LangValueEnum(i).Name)
+                'MsgBox(Main.LangValueEnum(i).CR_Value)
+                Exit For
+            End If
+
+        Next
+
+        For i As Integer = 0 To Main.LangValueEnum.Count - 1
+
+            If CB_CR_Audio.SelectedItem.ToString = Main.LangValueEnum(i).Name Then
+                Main.DubSprache = Main.LangValueEnum(i)
+                My.Settings.CR_Dub = Main.DubSprache.CR_Value
+
                 Exit For
             End If
 
@@ -843,10 +867,18 @@ Public Class Einstellungen
 
     Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles copy.Click, nv_h264.Click, nv_hevc.Click, nv_AV1.Click, CPU_h264.Click, CPU_h265.Click, CPU_AV1.Click, AMD_h264.Click, AMD_hevc.Click, Intel_h264.Click, Intel_hevc.Click, Intel_AV1.Click
         Dim Button As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
+
+        If CBool(InStr(Button.Text, "av1")) Then
+            If MessageBox.Show("The inculded ffmpeg version does not support any AV1 encoders." + vbNewLine + "The 'Help' button gets you to the ffmpeg download page.", "AV1 support", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, 0, "https://ffmpeg.org/download.html", "") = DialogResult.Cancel Then
+                Exit Sub
+            End If
+        End If
+
         If Button.Text = "-c copy" Then
             FFMPEG_CommandP1.Text = "-c copy"
             FFMPEG_CommandP2.Enabled = False
             FFMPEG_CommandP3.Enabled = False
+
         ElseIf Button.Text = "-c:v libsvtav1" Then
             FFMPEG_CommandP1.Text = Button.Text
             FFMPEG_CommandP2.Text = "[no Preset]"
@@ -1294,6 +1326,8 @@ Public Class Einstellungen
             DD_Episode_Prefix.Text = Main.Episode_PrefixDefault
         End If
     End Sub
+
+
 
 
 

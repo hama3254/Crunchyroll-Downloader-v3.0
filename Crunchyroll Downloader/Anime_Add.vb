@@ -10,6 +10,7 @@ Imports MetroFramework.Components
 Imports System.Text
 Imports System.Runtime.InteropServices.ComTypes
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Status
+Imports Newtonsoft.Json.Linq
 
 Public Class Anime_Add
     Public Mass_DL_Cancel As Boolean = False
@@ -359,6 +360,40 @@ Public Class Anime_Add
 
     End Sub
 
+    Public Sub FillCREpisodes(ByVal EpisodeJson As String)
+
+        EpisodeJson = CleanJSON(EpisodeJson)
+        Main.CR_MassEpisodes.Clear()
+
+        Dim EpisodeJObject As JObject = JObject.Parse(EpisodeJson)
+        Dim EpisodeData As List(Of JToken) = EpisodeJObject.Children().ToList
+
+        For Each item As JProperty In EpisodeData
+            item.CreateReader()
+            Select Case item.Name
+                Case "data" 'each record is inside the entries array
+                    For Each Entry As JObject In item.Values
+                        Dim episode_number As String = Entry.GetValue("episode_number").ToString
+                        Dim episode_id As String = Entry.GetValue("id").ToString
+                        Dim slug_title As String = Entry.GetValue("slug_title").ToString
+
+                        comboBox3.Items.Add("Episode " + episode_number)
+                        comboBox4.Items.Add("Episode " + episode_number)
+                        Main.CR_MassEpisodes.Add(New CR_Seasons(episode_id, slug_title, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth))
+                    Next
+            End Select
+        Next
+
+        If comboBox3.Items.Count > 0 Then
+            comboBox3.SelectedIndex = 0
+            comboBox4.SelectedIndex = comboBox4.Items.Count - 1
+        End If
+
+        comboBox3.Enabled = True
+        comboBox4.Enabled = True
+
+    End Sub
+
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
         If CBool(InStr(Main.WebbrowserURL, "crunchyroll.com")) = True Then
             comboBox3.Items.Clear()
@@ -367,30 +402,16 @@ Public Class Anime_Add
             comboBox4.Enabled = False
             comboBox3.Text = Nothing
             comboBox4.Text = Nothing
-            Dim SeasonSplit() As String = Main.CrBetaMass.Split(New String() {Chr(34) + "id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-            Dim SeasonSplit2() As String = SeasonSplit(ComboBox1.SelectedIndex + 1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim JsonUrl As String = "https://www.crunchyroll.com/content/v2/cms/seasons/" + Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).guid + "/episodes?preferred_audio_language=" + Main.DubSprache.CR_Value + "&locale=" + Main.locale
 
-            Dim EpisodeJsonURL As String = Main.CrBetaMassBaseURL + "episodes?season_id=" + SeasonSplit2(0) + "&locale=" + Main.CrBetaMassParameters
 
-            'Debug.WriteLine(EpisodeJsonURL)
-
-            Dim EpisodeJson As String = Main.Curl(EpisodeJsonURL) 'localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace(My.Resources.htmlReplace, "")
-
-            If CBool(InStr(EpisodeJson, "curl:")) Then
-
-                Main.GetBetaSeasonSingle = True
-                Browser.WebView2.Source = New Uri(EpisodeJsonURL)
-                Exit Sub
-
-            End If
-
+            Dim EpisodeJson As String = Main.CurlAuth(JsonUrl, Main.CR_Cookies, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth) '
 
             FillCREpisodes(EpisodeJson)
 
 
-
-            ElseIf Main.WebbrowserURL = "https://funimation.com/js" Then
+        ElseIf Main.WebbrowserURL = "https://funimation.com/js" Then
                 comboBox3.Items.Clear()
             comboBox4.Items.Clear()
             comboBox3.Text = Nothing
@@ -443,36 +464,7 @@ Public Class Anime_Add
 
         End If
     End Sub
-    Public Sub FillCREpisodes(ByVal EpisodeJson As String)
-        'MsgBox(True.ToString)
-        Main.CrBetaMassEpisodes = EpisodeJson
 
-        Dim EpisodeNameSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-
-        Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episode" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-        For i As Integer = 1 To EpisodeSplit.Count - 1
-            Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim EpisodeNameSplit2() As String = EpisodeNameSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            If EpisodeSplit(i).Substring(0, 1) = Chr(34) Then
-                comboBox3.Items.Add(EpisodeNameSplit2(0))
-                comboBox4.Items.Add(EpisodeNameSplit2(0))
-            Else
-                comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
-                comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
-            End If
-
-        Next
-
-        If comboBox3.Items.Count > 0 Then
-            comboBox3.SelectedIndex = 0
-            comboBox4.SelectedIndex = comboBox4.Items.Count - 1
-        End If
-
-        comboBox3.Enabled = True
-        comboBox4.Enabled = True
-
-    End Sub
 
     Public Sub FillFunimationEpisodes(ByVal EpisodeJson As String)
 

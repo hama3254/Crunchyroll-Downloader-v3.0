@@ -41,16 +41,12 @@ Partial Class Main
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.QueueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToggleDebugModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OpenSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Funimation_Token = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckCRBetaTokenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AddonHTMLToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Timer3OffToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ThreadCount = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MsgBoxToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CRCookieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UrlJsonsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ItemBoundsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DummyItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ScanTimeout = New System.Windows.Forms.Timer(Me.components)
@@ -163,7 +159,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.OpenSettingsToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.AddonHTMLToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.MsgBoxToolStripMenuItem, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.ItemBoundsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -177,11 +173,6 @@ Partial Class Main
         Me.ToggleDebugModeToolStripMenuItem.Name = "ToggleDebugModeToolStripMenuItem"
         resources.ApplyResources(Me.ToggleDebugModeToolStripMenuItem, "ToggleDebugModeToolStripMenuItem")
         '
-        'OpenSettingsToolStripMenuItem
-        '
-        Me.OpenSettingsToolStripMenuItem.Name = "OpenSettingsToolStripMenuItem"
-        resources.ApplyResources(Me.OpenSettingsToolStripMenuItem, "OpenSettingsToolStripMenuItem")
-        '
         'Funimation_Token
         '
         Me.Funimation_Token.Name = "Funimation_Token"
@@ -191,11 +182,6 @@ Partial Class Main
         '
         Me.CheckCRBetaTokenToolStripMenuItem.Name = "CheckCRBetaTokenToolStripMenuItem"
         resources.ApplyResources(Me.CheckCRBetaTokenToolStripMenuItem, "CheckCRBetaTokenToolStripMenuItem")
-        '
-        'AddonHTMLToolStripMenuItem
-        '
-        Me.AddonHTMLToolStripMenuItem.Name = "AddonHTMLToolStripMenuItem"
-        resources.ApplyResources(Me.AddonHTMLToolStripMenuItem, "AddonHTMLToolStripMenuItem")
         '
         'Timer3OffToolStripMenuItem
         '
@@ -207,11 +193,6 @@ Partial Class Main
         Me.ThreadCount.Name = "ThreadCount"
         resources.ApplyResources(Me.ThreadCount, "ThreadCount")
         '
-        'MsgBoxToolStripMenuItem
-        '
-        Me.MsgBoxToolStripMenuItem.Name = "MsgBoxToolStripMenuItem"
-        resources.ApplyResources(Me.MsgBoxToolStripMenuItem, "MsgBoxToolStripMenuItem")
-        '
         'CRCookieToolStripMenuItem
         '
         Me.CRCookieToolStripMenuItem.Name = "CRCookieToolStripMenuItem"
@@ -221,11 +202,6 @@ Partial Class Main
         '
         Me.UrlJsonsToolStripMenuItem.Name = "UrlJsonsToolStripMenuItem"
         resources.ApplyResources(Me.UrlJsonsToolStripMenuItem, "UrlJsonsToolStripMenuItem")
-        '
-        'ItemBoundsToolStripMenuItem
-        '
-        Me.ItemBoundsToolStripMenuItem.Name = "ItemBoundsToolStripMenuItem"
-        resources.ApplyResources(Me.ItemBoundsToolStripMenuItem, "ItemBoundsToolStripMenuItem")
         '
         'DummyItemToolStripMenuItem
         '
@@ -298,16 +274,12 @@ Partial Class Main
     Friend WithEvents Btn_Close As Button
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
     Friend WithEvents ToggleDebugModeToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents OpenSettingsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Funimation_Token As ToolStripMenuItem
     Friend WithEvents CheckCRBetaTokenToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents AddonHTMLToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Timer3OffToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ThreadCount As ToolStripMenuItem
-    Friend WithEvents MsgBoxToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CRCookieToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UrlJsonsToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ItemBoundsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DummyItemToolStripMenuItem As ToolStripMenuItem
     Public WithEvents Panel1 As Panel
     Friend WithEvents ScanTimeout As Timer

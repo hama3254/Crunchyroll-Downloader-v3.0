@@ -150,6 +150,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CRD-Classes.vb" />
+    <Compile Include="ffmpeg_option.Designer.vb">
+      <DependentUpon>ffmpeg_option.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ffmpeg_option.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="queue.Designer.vb">
       <DependentUpon>queue.vb</DependentUpon>
     </Compile>
@@ -220,6 +226,9 @@
     <Compile Include="Subfolder.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ffmpeg_option.resx">
+      <DependentUpon>ffmpeg_option.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="queue.resx">
       <DependentUpon>queue.vb</DependentUpon>
     </EmbeddedResource>
@@ -359,6 +368,8 @@
     <Content Include="bin\x86\Debug\Lib\swiftshader\libEGL.dll" />
     <Content Include="bin\x86\Debug\Lib\swiftshader\libGLESv2.dll" />
     <Content Include="icon.ico" />
+    <None Include="Resources\ffmpeg_OK_cL.png" />
+    <None Include="Resources\ffmpeg_OK_cL_hover.png" />
     <None Include="Resources\main-queue_invert_dark.png" />
     <None Include="Resources\main-queue_invert.png" />
     <None Include="Resources\main-queue.png" />

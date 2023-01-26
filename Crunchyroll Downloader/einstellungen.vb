@@ -241,42 +241,46 @@ Public Class Einstellungen
         NumericUpDown1.Value = Main.MaxDL
         TextBox1.Text = Main.Startseite
 
-        If CBool(InStr(Main.ffmpeg_command, "-c copy")) Then
-            FFMPEG_CommandP1.Text = "-c copy"
-            FFMPEG_CommandP2.Enabled = False
-            FFMPEG_CommandP3.Enabled = False
-            FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
-        ElseIf CBool(InStr(Main.ffmpeg_command, "-c:a copy ")) Then
-            Dim ffmpegDisplayCurrent As String() = Main.ffmpeg_command.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
-            If ffmpegDisplayCurrent.Count > 8 Then
+        Try
+
+            If CBool(InStr(Main.ffmpeg_command, "-c copy")) Then
+                FFMPEG_CommandP1.Text = "-c copy"
+                FFMPEG_CommandP2.Enabled = False
+                FFMPEG_CommandP3.Enabled = False
+                FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
+            ElseIf CBool(InStr(Main.ffmpeg_command, "-c:a copy ")) Then
+                Dim ffmpegDisplayCurrent As String() = Main.ffmpeg_command.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
+                If ffmpegDisplayCurrent.Count > 8 Then
+                    FFMPEG_CommandP1.Text = ffmpegDisplayCurrent(0) + " " + ffmpegDisplayCurrent(1)
+                    FFMPEG_CommandP2.Text = ffmpegDisplayCurrent(2) + " " + ffmpegDisplayCurrent(3)
+                    FFMPEG_CommandP3.Text = ffmpegDisplayCurrent(4) + " " + ffmpegDisplayCurrent(5)
+                    FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
+                Else
+                    FFMPEG_CommandP1.Text = ffmpegDisplayCurrent(0) + " " + ffmpegDisplayCurrent(1)
+                    FFMPEG_CommandP2.Text = "[no Preset]"
+                    FFMPEG_CommandP3.Text = ffmpegDisplayCurrent(2) + " " + ffmpegDisplayCurrent(3)
+                    FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
+                End If
+
+
+            Else
+
+                Dim ffmpegDisplayCurrent As String() = Main.ffmpeg_command.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
                 FFMPEG_CommandP1.Text = ffmpegDisplayCurrent(0) + " " + ffmpegDisplayCurrent(1)
                 FFMPEG_CommandP2.Text = ffmpegDisplayCurrent(2) + " " + ffmpegDisplayCurrent(3)
                 FFMPEG_CommandP3.Text = ffmpegDisplayCurrent(4) + " " + ffmpegDisplayCurrent(5)
                 FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
-            Else
-                FFMPEG_CommandP1.Text = ffmpegDisplayCurrent(0) + " " + ffmpegDisplayCurrent(1)
-                FFMPEG_CommandP2.Text = "[no Preset]"
-                FFMPEG_CommandP3.Text = ffmpegDisplayCurrent(2) + " " + ffmpegDisplayCurrent(3)
-                FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
             End If
 
 
-        Else
+            If FFMPEG_CommandP1.Text = "-c:v libsvtav1" And FFMPEG_CommandP2.Text = "[no Preset]" Then
+                FFMPEG_CommandP2.Enabled = False
+                FFMPEG_CommandP3.Enabled = True
+            End If
 
-            Dim ffmpegDisplayCurrent As String() = Main.ffmpeg_command.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
-            FFMPEG_CommandP1.Text = ffmpegDisplayCurrent(0) + " " + ffmpegDisplayCurrent(1)
-            FFMPEG_CommandP2.Text = ffmpegDisplayCurrent(2) + " " + ffmpegDisplayCurrent(3)
-            FFMPEG_CommandP3.Text = ffmpegDisplayCurrent(4) + " " + ffmpegDisplayCurrent(5)
-            FFMPEG_CommandP4.Text = "-c:a copy -bsf:a aac_adtstoasc"
-        End If
-
-
-        If FFMPEG_CommandP1.Text = "-c:v libsvtav1" And FFMPEG_CommandP2.Text = "[no Preset]" Then
-            FFMPEG_CommandP2.Enabled = False
-            FFMPEG_CommandP3.Enabled = True
-        End If
-
-
+        Catch ex As Exception
+            MsgBox("Error processing ffmpeg command", MsgBoxStyle.Information)
+        End Try
         ListViewAdd_True.Checked = Main.UseQueue
 
 

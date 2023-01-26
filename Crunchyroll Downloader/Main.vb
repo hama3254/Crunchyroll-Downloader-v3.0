@@ -514,6 +514,12 @@ Public Class Main
 
         ffmpeg_command = My.Settings.ffmpeg_command
 
+        If My.Settings.ffmpeg_command_override = "null" Then
+        Else
+            ffmpeg_command = My.Settings.ffmpeg_command_override
+        End If
+
+
         Reso = My.Settings.Reso
 
         LeadingZero = My.Settings.LeadingZero
@@ -2155,7 +2161,7 @@ Public Class Main
         End If
     End Sub
 
-    Private Sub OpenSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenSettingsToolStripMenuItem.Click
+    Private Sub OpenSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Einstellungen.Show()
     End Sub
 
@@ -4196,7 +4202,7 @@ Public Class Main
         End If
     End Sub
 
-    Private Sub AddonHTMLToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddonHTMLToolStripMenuItem.Click
+    Private Sub AddonHTMLToolStripMenuItem_Click(sender As Object, e As EventArgs)
         My.Computer.Clipboard.SetText(HTML)
     End Sub
 
@@ -4208,7 +4214,7 @@ Public Class Main
         Trackbar.ShowDialog()
     End Sub
 
-    Private Sub MsgBoxToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MsgBoxToolStripMenuItem.Click
+    Private Sub MsgBoxToolStripMenuItem_Click(sender As Object, e As EventArgs)
         MsgBox(LoadedUrls.Count.ToString)
         For i As Integer = 0 To LoadedUrls.Count - 1
             MsgBox(LoadedUrls(i))
@@ -4235,7 +4241,7 @@ Public Class Main
     End Sub
 
 
-    Private Sub ItemBoundsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ItemBoundsToolStripMenuItem.Click
+    Private Sub ItemBoundsToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Try
 
             For s As Integer = 0 To Panel1.Controls.Count - 1
@@ -4313,7 +4319,14 @@ Public Class Main
     End Sub
 
     Private Sub QueueToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles QueueToolStripMenuItem.Click
-        Queue.Show()
+        'ffmpeg_options.ShowDialog()
+        Dim newCmd As New ffmpeg_options
+        newCmd.command = ffmpeg_command
+        'MsgBox(newCmd.ShowDialog.ToString)
+        If newCmd.ShowDialog = DialogResult.OK Then
+            ffmpeg_command = newCmd.command
+            My.Settings.ffmpeg_command_override = newCmd.command
+        End If
     End Sub
 
     Private Sub Btn_Queue_Click(sender As Object, e As EventArgs) Handles Btn_Queue.Click

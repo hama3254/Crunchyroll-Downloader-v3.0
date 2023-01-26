@@ -157,11 +157,16 @@ Public Class CRD_List_Item
         ElseIf HybridRunning = True Then
             Return False
         Else
-            If proc.HasExited = True Then
-                Return True
-            Else
+            Try
+                If proc.HasExited = True Then
+                    Return True
+                Else
+                    Return False
+                End If
+            Catch ex As Exception
                 Return False
-            End If
+            End Try
+
         End If
 
     End Function

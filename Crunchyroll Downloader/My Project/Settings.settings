@@ -122,5 +122,8 @@
     <Setting Name="CR_Dub" Type="System.String" Scope="User">
       <Value Profile="(Default)">ja-JP</Value>
     </Setting>
+    <Setting Name="ffmpeg_command_override" Type="System.String" Scope="User">
+      <Value Profile="(Default)">null</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

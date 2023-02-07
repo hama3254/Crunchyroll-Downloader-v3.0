@@ -677,9 +677,14 @@ Public Class Einstellungen
             ffpmeg_cmd = " " + FFMPEG_CommandP1.Text + " " + FFMPEG_CommandP2.Text + " " + FFMPEG_CommandP3.Text + " " + FFMPEG_CommandP4.Text
         End If
 
+        If Main.ffmpeg_command = My.Settings.ffmpeg_command_override Then
+            'override should not get overwritten 
 
-        Main.ffmpeg_command = ffpmeg_cmd
-        My.Settings.ffmpeg_command = Main.ffmpeg_command
+        Else
+            Main.ffmpeg_command = ffpmeg_cmd
+            My.Settings.ffmpeg_command = Main.ffmpeg_command
+        End If
+
 
 
         If CBool(InStr(FFMPEG_CommandP1.Text, "nvenc")) = True And CBool(Main.VideoFormat = ".aac") = False Then

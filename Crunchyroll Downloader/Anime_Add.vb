@@ -46,9 +46,6 @@ Public Class Anime_Add
         Btn_Close.Image = Main.CloseImg
         Btn_min.Image = Main.MinImg
 
-
-
-
         Try
             Me.Icon = My.Resources.icon
         Catch ex As Exception

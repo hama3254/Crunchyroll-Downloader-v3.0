@@ -10,6 +10,7 @@ Imports System.Text
 Imports System.Security.Policy
 Imports Microsoft.Web.WebView2.Core
 Imports MetroFramework.Drawing
+Imports Newtonsoft.Json.Linq
 
 Public Class Browser
 
@@ -98,7 +99,7 @@ Public Class Browser
 
         If Main.UserBowser = False Then
             Me.Location = New Point(-10000, 10000)
-
+            Timer1.Enabled = True
         End If
         WebView2.Source = New Uri(Main.Startseite)
     End Sub
@@ -154,8 +155,26 @@ Public Class Browser
 
 
 
+            If CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "v1/token")) And Main.CR_v1Token = "Get" Then
+                Debug.WriteLine("Crunchyroll-v1_token: " + e.Request.Uri)
+                Dim Content As Stream = Await e.Response.GetContentAsync
+                Dim ContentString As String = Nothing
+                Dim reader As New StreamReader(Content)
+                ContentString = reader.ReadToEnd
 
-            If CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "streams?")) Then
+
+                Dim Loc_CR_Cookies = " -H " + Chr(34) + Main.CR_Cookies + Chr(34)
+
+                Dim Token() As String = ContentString.Split(New String() {Chr(34) + "access_token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Token2() As String = Token(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim Auth As String = "Bearer " + Token2(0)
+                Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + Auth + Chr(34)
+                Main.ProcessLoading(Main.LoadingUrl, Auth2, Loc_CR_Cookies)
+                Main.CR_v1Token = ""
+                Exit Sub
+
+            ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "streams?")) Then
                 Debug.WriteLine("Crunchyroll-Single: " + e.Request.Uri)
                 Dim Content As Stream = Await e.Response.GetContentAsync
                 Dim ContentString As String = Nothing
@@ -176,51 +195,15 @@ Public Class Browser
                 ContentString = reader.ReadToEnd
                 Main.CR_ObjectsJson = New UrlJson(e.Request.Uri, ContentString)
 
-                'If CBool(InStr(WebView2.CoreWebView2.Source, "/objects/")) Then
-                '    ' MsgBox("True2")
-                '    Debug.WriteLine("Main.JSON: " + ContentString)
-                '    Dim StreamsUrlBuilder() As String = ContentString.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                '    Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
-                '    '  MsgBox("True3")
-
-                '    Dim StreamsUrlBuilder3() As String = e.Request.Uri.Split(New String() {"objects/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                '    Dim StreamsUrlBuilder4() As String = StreamsUrlBuilder3(1).Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                '    Dim StreamsUrl As String = StreamsUrlBuilder3(0) + "videos/" + StreamsUrlBuilder2(0) + "/streams?" + StreamsUrlBuilder4(1)
-                '    MsgBox(StreamsUrl)
-                '    WebView2.Source = New Uri(StreamsUrl)
-
-
-                'End If
 
                 Exit Sub
 
 
-                'ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "seasons?series_id=")) And CBool(InStr(Main.LoadingUrl, "/series/")) Then
-                '    Debug.WriteLine("Crunchyroll-Season: " + e.Request.Uri)
-                '    Main.LoadedUrls.Add(e.Request)
-                '    Main.LoadedUrls.Add(e.Request)
-                '    Dim Content As Stream = Await e.Response.GetContentAsync
-                '    Dim ContentString As String = Nothing
-                '    Dim reader As New StreamReader(Content)
-                '    ContentString = reader.ReadToEnd
-                '    Main.CR_SeasonJson = New UrlJson(e.Request.Uri, ContentString)
-                '    If Main.GetBetaSeasonsRetry = True Then
-                '        Main.GetBetaSeasonsRetry = False
-                '        Main.GetBetaSeasons(Main.WebbrowserURL, e.Request.Uri, "", ContentString)
-                '    End If
-                '    Exit Sub
+            ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "seasons?preferred_audio_language=")) And CBool(InStr(Main.LoadingUrl, "/series/")) Then
+                Debug.WriteLine("Crunchyroll-Season: " + e.Request.Uri)
+                Main.LoadedUrls.Add(e.Request)
 
-
-                'ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "episodes?season_id=")) And Main.GetBetaSeasonSingle = True Then
-                '    Debug.WriteLine("Crunchyroll-Single-Season: " + e.Request.Uri)
-                '    Dim Content As Stream = Await e.Response.GetContentAsync
-                '    Dim ContentString As String = Nothing
-                '    Dim reader As New StreamReader(Content)
-                '    ContentString = reader.ReadToEnd
-                '    Main.GetBetaSeasonSingle = False
-                '    Anime_Add.FillCREpisodes(ContentString)
-                '    Exit Sub
+                Exit Sub
             End If
         ElseIf CBool(InStr(Main.LoadingUrl, "funimation.com")) Then
             If CBool(InStr(e.Request.Uri, "?deviceType=web")) Then
@@ -318,7 +301,7 @@ Public Class Browser
                 Main.LoadedUrls.Add(e.Request)
                 'Main.CR_ObjectsJson = New UrlJson(e.Request.Uri, e.Request.Content.ToString)
                 Exit Sub
-            ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "seasons?series_id=")) Then
+            ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "seasons?preferred_audio_language=")) Then
                 Debug.WriteLine("Crunchyroll-Season: " + e.Request.Uri)
                 Main.LoadedUrls.Add(e.Request)
                 'Main.CR_SeasonJson = New UrlJson(e.Request.Uri, e.Request.Content.ToString)
@@ -368,29 +351,19 @@ Public Class Browser
 
     End Sub
 
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        'If Main.UserBowser = False Then
+        '    WebView2.Reload()
+        'Else
+        '    Timer1.Enabled = False
+        'End If
 
+    End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         Me.Close()
     End Sub
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    'Private Sub WebBrowser1_ConsoleMessage(sender As Object, e As ConsoleMessageEventArgs) Handles WebBrowser1.ConsoleMessage
-    '    Debug.WriteLine(e.Message)
-    'End Sub
 
 End Class
 

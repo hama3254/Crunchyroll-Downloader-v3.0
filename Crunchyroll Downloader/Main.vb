@@ -32,6 +32,8 @@ Public Class Main
     Public CR_ObjectsJson As UrlJson = New UrlJson("", "")
     Public CR_VideoJson As UrlJson = New UrlJson("", "")
     Public CR_AuthToken As String = ""
+    Public CR_v1Token As String = ""
+
 
     'Public GetBetaSeasonsRetry As Boolean = False
     'Public GetBetaSeasonSingle As Boolean = False
@@ -1421,7 +1423,7 @@ Public Class Main
                 VideoJson = CR_VideoJson.Content
                 CR_VideoJson = New UrlJson("", "")
             ElseIf CBool(InStr(VideoJson, "curl:")) = True Then
-                VideoJson = Nothing
+                'VideoJson = Nothing
                 MsgBox("Error - Getting VideoJson data" + vbNewLine + VideoJson)
                 Exit Sub
             End If
@@ -3505,20 +3507,14 @@ Public Class Main
                     End If
                     Me.Text = "Status: Crunchyroll episode found."
                     Debug.WriteLine("Crunchyroll episode found")
-
-
                     GetBetaVideoProxy(Request.Uri, CR_AuthToken, WebbrowserURL)
                     b = True
-
-                    'Browser.WebBrowser1.LoadUrl(requesturl)
-
-
                     LoadedUrls.Clear()
                     Me.Text = "Crunchyroll Downloader"
                     Exit Sub
                 End If
 
-            ElseIf CBool(InStr(Request.Uri, "crunchyroll.com/")) And CBool(InStr(Request.Uri, "seasons?series_id=")) And CBool(InStr(WebbrowserURL, "series")) Then
+            ElseIf CBool(InStr(Request.Uri, "crunchyroll.com/")) And CBool(InStr(Request.Uri, "seasons?preferred_audio_language=")) And CBool(InStr(WebbrowserURL, "series")) Then
 
                 If b = False Then
 
@@ -3528,7 +3524,13 @@ Public Class Main
                     Me.Text = "Status: Crunchyroll season found."
                     Debug.WriteLine("Crunchyroll season found")
 
-                    GetBetaSeasons(WebbrowserURL, Request.Uri, "")
+                    Dim Auth As String = " -H " + Chr(34) + "Authorization: " + Request.Headers.GetHeader("Authorization") + Chr(34)
+                    Debug.WriteLine(Auth)
+
+                    CR_Cookies = "Cookie: " + Request.Headers.GetHeader("Cookie")
+
+                    GetBetaSeasons(WebbrowserURL, Request.Uri, Auth)
+
                     'Browser.WebBrowser1.LoadUrl(Request.Uri)
                     b = True
                     LoadedUrls.Clear()
@@ -3959,6 +3961,12 @@ Public Class Main
                 End If
             ElseIf strArray(0).Trim().ToUpper.Equals("GET") Then
                 strRequest = strArray(1).Trim
+
+                If CBool(InStr(strRequest, "403")) Then
+                    strRequest = strRequest & defaultPage '"HTMLString" 'strRequest & defaultPage
+                    SendHTMLResponse(stream, "index.html", Nothing, "HTTP/1.0 403 Forbidden")
+                End If
+
                 If strRequest.StartsWith("/") Then
                     strRequest = strRequest.Substring(1)
                 End If
@@ -3984,7 +3992,7 @@ Public Class Main
     End Sub
 
     ' Send HTTP Response
-    Private Sub SendHTMLResponse(ByVal stream As NetworkStream, Optional ByVal httpRequest As String = Nothing, Optional ByVal Response As ServerResponse = Nothing)
+    Private Sub SendHTMLResponse(ByVal stream As NetworkStream, Optional ByVal httpRequest As String = Nothing, Optional ByVal Response As ServerResponse = Nothing, Optional ByVal httpCode As String = "HTTP/1.0 200 OK")
         Try
             Dim respByte() As Byte
             If httpRequest = Nothing Then
@@ -3992,7 +4000,7 @@ Public Class Main
                 respByte = System.Text.Encoding.UTF8.GetBytes(Response.Content) 'File.ReadAllBytes("") '
                 ' Set HTML Header
                 Dim htmlHeader As String =
-                    "HTTP/1.0 200 OK" & ControlChars.CrLf &
+                   httpCode & ControlChars.CrLf &
                     "Server: CRD 1.0" & ControlChars.CrLf &
                    "Content-Length: " & respByte.Length & ControlChars.CrLf &
                     "Content-Type: " & GetContentType(Response.Type) &
@@ -4007,7 +4015,7 @@ Public Class Main
                 respByte = System.Text.Encoding.UTF8.GetBytes(HTML) 'File.ReadAllBytes("") '
                 ' Set HTML Header
                 Dim htmlHeader As String =
-                    "HTTP/1.0 200 OK" & ControlChars.CrLf &
+                    httpCode & ControlChars.CrLf &
                     "Server: CRD 1.0" & ControlChars.CrLf &
                    "Content-Length: " & respByte.Length & ControlChars.CrLf &
                     "Content-Type: " & GetContentType(httpRequest) &
@@ -4032,7 +4040,7 @@ Public Class Main
                 respByte = File.ReadAllBytes(httpRequest)
                 ' Set HTML Header
                 Dim htmlHeader As String =
-                    "HTTP/1.0 200 OK" & ControlChars.CrLf &
+                    httpCode & ControlChars.CrLf &
                     "Server: CRD 1.0" & ControlChars.CrLf &
                    "Content-Length: " & respByte.Length & ControlChars.CrLf &
                     "Content-Type: " & GetContentType(httpRequest) & ControlChars.CrLf &
@@ -4359,6 +4367,7 @@ Public Class Main
         LoadingUrl = Url
         LoadedUrls.Clear()
         Dim NoBrowser As Boolean = False
+        'CR_v1Token = "Get"
         'Browser.WebView2.Source = New Uri(Url)
         'Exit Sub
         'MsgBox(Url)
@@ -4426,9 +4435,14 @@ Public Class Main
                 End If
             End If
 
+            Debug.WriteLine("###" + CR_Cookies + "###")
+
             Dim Loc_CR_Cookies = " -H " + Chr(34) + CR_Cookies + Chr(34)
 
 
+            'CR_v1Token = "Get"
+            'Browser.WebView2.Source = New Uri(Url)
+            'Exit Sub
 
 #End Region
             Dim Auth As String = " -H " + Chr(34) + "Authorization: " + CrBetaBasic + Chr(34)
@@ -4460,113 +4474,114 @@ Public Class Main
             End If
 
             'MsgBox(v1Token)
-
-            If CBool(InStr(v1Token, "curl:")) = True Then
-                'Browser.WebView2.CoreWebView2.Navigate(Url)
-                SetStatusLabel("Status: Critical error. #4425")
+            If CBool(InStr(v1Token, "curl: (60)")) = True Then
+                SetStatusLabel("Status: Critical error. #4478")
+                MsgBox("Please try the '--insecure' option found on the 'Main' page of the settings.")
                 Exit Sub
-            End If
+                'ElseIf CBool(InStr(v1Token, "curl:")) Then
 
-            '
+            ElseIf CBool(InStr(v1Token, "curl:")) = True Then
+                Browser.WebView2.CoreWebView2.Navigate(Url)
+                Exit Sub
+
+            End If
 
             Dim Token() As String = v1Token.Split(New String() {Chr(34) + "access_token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim Token2() As String = Token(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             CRBetaBearer = CRBetaBearer + Token2(0)
 
-            Dim ObjectsUrl As String = Nothing
-
-
             Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + CRBetaBearer + Chr(34)
 
+            ProcessLoading(Url, Auth2, Loc_CR_Cookies)
 
-            If CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "series/")) = True Then
-
-                Dim SeriesUrlBuilder() As String = Url.Split(New String() {"series/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim SeriesUrlBuilder2() As String = SeriesUrlBuilder(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-
-                Dim SeriesUrl As String = "https://www.crunchyroll.com/content/v2/cms/series/" + SeriesUrlBuilder2(0) + "/seasons?preferred_audio_language=" + DubSprache.CR_Value + "&locale=" + locale '+ "&Signature=" + signature2(0) + "&Policy=" + policy2(0) + "&Key-Pair-Id=" + key_pair_id2(0)
-                Debug.WriteLine(SeriesUrl)
-                'MsgBox(SeriesUrl)
-                GetBetaSeasons(Url, SeriesUrl, Auth2)
-
-
-            ElseIf CBool(InStr(Url, "crunchyroll.com")) = True And CBool(InStr(Url, "watch/")) = True And CBool(CrBetaBasic = Nothing) = False Then
-
-
-
-                'MsgBox(Url)
-                Dim ObjectsURLBuilder3() As String = Url.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-
-
-                ObjectsUrl = "https://www.crunchyroll.com/content/v2/cms/objects/" + ObjectsURLBuilder4(0) + "?preferred_audio_language=" + DubSprache.CR_Value + "&locale=" + locale
-                'End Using
-                'MsgBox(ObjectsUrl)
-
-                Debug.WriteLine("ObjectsUrl: " + ObjectsUrl)
-
-
-                Dim StreamsUrl As String = Nothing
-                Dim ObjectJson As String
-                Try
-                    ObjectJson = CurlAuth(ObjectsUrl, Loc_CR_Cookies, Auth2)
-
-
-                    '"curl:" 'Main.Curl(ObjectsUrl)
-                    'MsgBox(ObjectJson)
-
-                    'If CBool(InStr(ObjectJson, "curl:")) = True Then
-                    '    ObjectJson = Main.Curl(ObjectsUrl)
-                    'End If
-
-                    If CBool(InStr(ObjectJson, "curl:")) = True Then
-                        Browser.WebView2.CoreWebView2.Navigate(ObjectsUrl)
-                        LoadingUrl = ObjectsUrl
-
-                        Exit Sub
-                    ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
-
-                        SetStatusLabel("Status: Failed - no video, check CR login")
-                        Me.Text = "Status: Failed - no video, check CR login"
-                        Debug.WriteLine("Status: Failed - no video, check CR login")
-
-                        Exit Sub
-                    End If
-
-                Catch ex As Exception
-                    Browser.WebView2.CoreWebView2.Navigate(Url)
-                    Exit Sub
-                End Try
-
-                Try
-                    Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                    Dim StreamsUrlBuilder3() As String = ObjectsUrl.Split(New String() {"objects/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim StreamsUrlBuilder4() As String = StreamsUrlBuilder3(1).Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                    StreamsUrl = StreamsUrlBuilder3(0) + "videos/" + StreamsUrlBuilder2(0) + "/streams?" + StreamsUrlBuilder4(1)
-
-                    'MsgBox(StreamsUrl)
-
-                    ' Debug.WriteLine(StreamsUrl)
-                Catch ex As Exception
-                    Browser.WebView2.CoreWebView2.Navigate(Url)
-                    Exit Sub
-                End Try
-
-                GetBetaVideoProxy(StreamsUrl, Auth2, Url)
-
-
-            Else
-                Browser.WebView2.CoreWebView2.Navigate(Url)
-            End If
         Else
             'to do
         End If
     End Sub
+
+    Public Sub ProcessLoading(ByVal url As String, Auth2 As String, ByVal Loc_CR_Cookies As String)
+
+        If CBool(InStr(url, "crunchyroll.com")) = True And CBool(InStr(url, "series/")) = True Then
+
+            Dim SeriesUrlBuilder() As String = url.Split(New String() {"series/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim SeriesUrlBuilder2() As String = SeriesUrlBuilder(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+            Dim SeriesUrl As String = "https://www.crunchyroll.com/content/v2/cms/series/" + SeriesUrlBuilder2(0) + "/seasons?preferred_audio_language=" + DubSprache.CR_Value + "&locale=" + locale '+ "&Signature=" + signature2(0) + "&Policy=" + policy2(0) + "&Key-Pair-Id=" + key_pair_id2(0)
+            Debug.WriteLine(SeriesUrl)
+            'MsgBox(SeriesUrl)
+            GetBetaSeasons(url, SeriesUrl, Auth2)
+
+
+        ElseIf CBool(InStr(url, "crunchyroll.com")) = True And CBool(InStr(url, "watch/")) = True And CBool(CrBetaBasic = Nothing) = False Then
+
+            Dim ObjectsUrl As String = Nothing
+
+
+            'MsgBox(Url)
+            Dim ObjectsURLBuilder3() As String = url.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+
+            ObjectsUrl = "https://www.crunchyroll.com/content/v2/cms/objects/" + ObjectsURLBuilder4(0) + "?preferred_audio_language=" + DubSprache.CR_Value + "&locale=" + locale
+            'End Using
+            'MsgBox(ObjectsUrl)
+
+            Debug.WriteLine("ObjectsUrl: " + ObjectsUrl)
+
+
+            Dim StreamsUrl As String = Nothing
+            Dim ObjectJson As String
+            Try
+                ObjectJson = CurlAuth(ObjectsUrl, Loc_CR_Cookies, Auth2)
+
+                If CBool(InStr(ObjectJson, "curl:")) = True Then
+                    Browser.WebView2.CoreWebView2.Navigate(ObjectsUrl)
+                    LoadingUrl = ObjectsUrl
+
+                    Exit Sub
+                ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
+
+                    SetStatusLabel("Status: Failed - no video, check CR login")
+                    Me.Text = "Status: Failed - no video, check CR login"
+                    Debug.WriteLine("Status: Failed - no video, check CR login")
+
+                    Exit Sub
+                End If
+
+            Catch ex As Exception
+                Browser.WebView2.CoreWebView2.Navigate(url)
+                Exit Sub
+            End Try
+
+            Try
+                Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim StreamsUrlBuilder3() As String = ObjectsUrl.Split(New String() {"objects/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim StreamsUrlBuilder4() As String = StreamsUrlBuilder3(1).Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                StreamsUrl = StreamsUrlBuilder3(0) + "videos/" + StreamsUrlBuilder2(0) + "/streams?" + StreamsUrlBuilder4(1)
+
+                'MsgBox(StreamsUrl)
+
+                ' Debug.WriteLine(StreamsUrl)
+            Catch ex As Exception
+                Browser.WebView2.CoreWebView2.Navigate(url)
+                Exit Sub
+            End Try
+
+            GetBetaVideoProxy(StreamsUrl, Auth2, url)
+
+
+        Else
+            Browser.WebView2.CoreWebView2.Navigate(url)
+        End If
+
+
+    End Sub
+
 
     Public Function GetCookiesFromFile(ByVal Host As String) As String
 
@@ -4614,6 +4629,7 @@ Public Class Main
     Sub SetStatusLabel(ByVal txt As String)
         If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
             Anime_Add.StatusLabel.Text = txt
+
         End If
 
     End Sub

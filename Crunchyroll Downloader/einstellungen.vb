@@ -38,6 +38,8 @@ Public Class Einstellungen
 
         CB_Ignore.SelectedIndex = Main.IgnoreSeason
 
+        CB_HideSF.SelectedIndex = Main.HideFLInt
+
         If Main.IncludeLangName = True Then
             CB_SoftSubSettings.SelectedIndex = 1
         Else
@@ -387,11 +389,10 @@ Public Class Einstellungen
 
 
 
-
+        Main.HideFLInt = CB_HideSF.SelectedIndex
+        My.Settings.HideSF = CB_HideSF.SelectedIndex
 
         Main.IgnoreSeason = CB_Ignore.SelectedIndex
-
-
         My.Settings.IgnoreSeason = CB_Ignore.SelectedIndex
 
 

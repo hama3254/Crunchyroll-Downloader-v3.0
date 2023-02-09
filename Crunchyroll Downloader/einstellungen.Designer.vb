@@ -129,6 +129,7 @@ Partial Class Einstellungen
         Me.GroupBox20 = New System.Windows.Forms.GroupBox()
         Me.ChB_Chapters = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox19 = New System.Windows.Forms.GroupBox()
+        Me.CB_CR_Audio = New MetroFramework.Controls.MetroComboBox()
         Me.DubMode = New MetroFramework.Controls.MetroCheckBox()
         Me.TabPage6 = New MetroFramework.Controls.MetroTabPage()
         Me.GroupBox15 = New System.Windows.Forms.GroupBox()
@@ -159,7 +160,8 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.CB_CR_Audio = New MetroFramework.Controls.MetroComboBox()
+        Me.GroupBox21 = New System.Windows.Forms.GroupBox()
+        Me.CB_HideSF = New MetroFramework.Controls.MetroComboBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -198,6 +200,7 @@ Partial Class Einstellungen
         Me.GroupBox8.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox21.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolTip1
@@ -605,84 +608,84 @@ Partial Class Einstellungen
         'copy
         '
         Me.copy.Name = "copy"
-        Me.copy.Size = New System.Drawing.Size(180, 22)
+        Me.copy.Size = New System.Drawing.Size(172, 22)
         Me.copy.Text = "-c copy"
         '
         'CPU_h264
         '
         Me.CPU_h264.BackColor = System.Drawing.Color.DarkGray
         Me.CPU_h264.Name = "CPU_h264"
-        Me.CPU_h264.Size = New System.Drawing.Size(180, 22)
+        Me.CPU_h264.Size = New System.Drawing.Size(172, 22)
         Me.CPU_h264.Text = "-c:v libx264"
         '
         'CPU_h265
         '
         Me.CPU_h265.BackColor = System.Drawing.Color.DarkGray
         Me.CPU_h265.Name = "CPU_h265"
-        Me.CPU_h265.Size = New System.Drawing.Size(180, 22)
+        Me.CPU_h265.Size = New System.Drawing.Size(172, 22)
         Me.CPU_h265.Text = "-c:v libx265"
         '
         'CPU_AV1
         '
         Me.CPU_AV1.BackColor = System.Drawing.Color.DarkGray
         Me.CPU_AV1.Name = "CPU_AV1"
-        Me.CPU_AV1.Size = New System.Drawing.Size(180, 22)
+        Me.CPU_AV1.Size = New System.Drawing.Size(172, 22)
         Me.CPU_AV1.Text = "-c:v libsvtav1"
         '
         'nv_h264
         '
         Me.nv_h264.BackColor = System.Drawing.Color.YellowGreen
         Me.nv_h264.Name = "nv_h264"
-        Me.nv_h264.Size = New System.Drawing.Size(180, 22)
+        Me.nv_h264.Size = New System.Drawing.Size(172, 22)
         Me.nv_h264.Text = "-c:v h264_nvenc "
         '
         'nv_hevc
         '
         Me.nv_hevc.BackColor = System.Drawing.Color.YellowGreen
         Me.nv_hevc.Name = "nv_hevc"
-        Me.nv_hevc.Size = New System.Drawing.Size(180, 22)
+        Me.nv_hevc.Size = New System.Drawing.Size(172, 22)
         Me.nv_hevc.Text = "-c:v hevc_nvenc"
         '
         'nv_AV1
         '
         Me.nv_AV1.BackColor = System.Drawing.Color.YellowGreen
         Me.nv_AV1.Name = "nv_AV1"
-        Me.nv_AV1.Size = New System.Drawing.Size(180, 22)
+        Me.nv_AV1.Size = New System.Drawing.Size(172, 22)
         Me.nv_AV1.Text = "-c:v av1_nvenc"
         '
         'AMD_h264
         '
         Me.AMD_h264.BackColor = System.Drawing.Color.Tomato
         Me.AMD_h264.Name = "AMD_h264"
-        Me.AMD_h264.Size = New System.Drawing.Size(180, 22)
+        Me.AMD_h264.Size = New System.Drawing.Size(172, 22)
         Me.AMD_h264.Text = "-c:v h264_amf"
         '
         'AMD_hevc
         '
         Me.AMD_hevc.BackColor = System.Drawing.Color.Tomato
         Me.AMD_hevc.Name = "AMD_hevc"
-        Me.AMD_hevc.Size = New System.Drawing.Size(180, 22)
+        Me.AMD_hevc.Size = New System.Drawing.Size(172, 22)
         Me.AMD_hevc.Text = "-c:v hevc_amf"
         '
         'Intel_h264
         '
         Me.Intel_h264.BackColor = System.Drawing.Color.CornflowerBlue
         Me.Intel_h264.Name = "Intel_h264"
-        Me.Intel_h264.Size = New System.Drawing.Size(180, 22)
+        Me.Intel_h264.Size = New System.Drawing.Size(172, 22)
         Me.Intel_h264.Text = "-c:v h264_qsv"
         '
         'Intel_hevc
         '
         Me.Intel_hevc.BackColor = System.Drawing.Color.CornflowerBlue
         Me.Intel_hevc.Name = "Intel_hevc"
-        Me.Intel_hevc.Size = New System.Drawing.Size(180, 22)
+        Me.Intel_hevc.Size = New System.Drawing.Size(172, 22)
         Me.Intel_hevc.Text = "-c:v hevc_qsv"
         '
         'Intel_AV1
         '
         Me.Intel_AV1.BackColor = System.Drawing.Color.CornflowerBlue
         Me.Intel_AV1.Name = "Intel_AV1"
-        Me.Intel_AV1.Size = New System.Drawing.Size(180, 22)
+        Me.Intel_AV1.Size = New System.Drawing.Size(172, 22)
         Me.Intel_AV1.Text = "-c:v av1_qsv"
         '
         'FFMPEG_CommandP2
@@ -891,6 +894,7 @@ Partial Class Einstellungen
         '
         Me.TabPage1.AutoScroll = True
         Me.TabPage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer), CType(CType(243, Byte), Integer))
+        Me.TabPage1.Controls.Add(Me.GroupBox21)
         Me.TabPage1.Controls.Add(Me.GroupBox6)
         Me.TabPage1.Controls.Add(Me.GroupBox5)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
@@ -900,10 +904,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage1.Size = New System.Drawing.Size(501, 519)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1110,7 +1114,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 3
+        Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1476,6 +1480,19 @@ Partial Class Einstellungen
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Dubbed"
         '
+        'CB_CR_Audio
+        '
+        Me.CB_CR_Audio.DropDownHeight = 275
+        Me.CB_CR_Audio.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_CR_Audio.FormattingEnabled = True
+        Me.CB_CR_Audio.IntegralHeight = False
+        Me.CB_CR_Audio.ItemHeight = 23
+        Me.CB_CR_Audio.Location = New System.Drawing.Point(82, 55)
+        Me.CB_CR_Audio.Name = "CB_CR_Audio"
+        Me.CB_CR_Audio.Size = New System.Drawing.Size(326, 29)
+        Me.CB_CR_Audio.TabIndex = 21
+        Me.CB_CR_Audio.UseSelectable = True
+        '
         'DubMode
         '
         Me.DubMode.AutoSize = True
@@ -1497,10 +1514,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage6.Size = New System.Drawing.Size(501, 519)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = " Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1734,9 +1751,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = " About  "
         '
@@ -1868,18 +1885,32 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'CB_CR_Audio
+        'GroupBox21
         '
-        Me.CB_CR_Audio.DropDownHeight = 275
-        Me.CB_CR_Audio.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CB_CR_Audio.FormattingEnabled = True
-        Me.CB_CR_Audio.IntegralHeight = False
-        Me.CB_CR_Audio.ItemHeight = 23
-        Me.CB_CR_Audio.Location = New System.Drawing.Point(82, 55)
-        Me.CB_CR_Audio.Name = "CB_CR_Audio"
-        Me.CB_CR_Audio.Size = New System.Drawing.Size(326, 29)
-        Me.CB_CR_Audio.TabIndex = 21
-        Me.CB_CR_Audio.UseSelectable = True
+        Me.GroupBox21.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox21.Controls.Add(Me.CB_HideSF)
+        Me.GroupBox21.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox21.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox21.Location = New System.Drawing.Point(5, 417)
+        Me.GroupBox21.Name = "GroupBox21"
+        Me.GroupBox21.Size = New System.Drawing.Size(490, 67)
+        Me.GroupBox21.TabIndex = 81
+        Me.GroupBox21.TabStop = False
+        Me.GroupBox21.Text = "Subfolder"
+        '
+        'CB_HideSF
+        '
+        Me.CB_HideSF.DropDownHeight = 275
+        Me.CB_HideSF.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_HideSF.FormattingEnabled = True
+        Me.CB_HideSF.IntegralHeight = False
+        Me.CB_HideSF.ItemHeight = 23
+        Me.CB_HideSF.Items.AddRange(New Object() {"show all subfolder", "hide all subfolder", "hide subfolder by last accessed [> 1 week]", "hide subfolder by last accessed [> 1 month]", "hide subfolder by last accessed [> 3 months]", "hide subfolder by last accessed [> 6 months]"})
+        Me.CB_HideSF.Location = New System.Drawing.Point(82, 25)
+        Me.CB_HideSF.Name = "CB_HideSF"
+        Me.CB_HideSF.Size = New System.Drawing.Size(326, 29)
+        Me.CB_HideSF.TabIndex = 21
+        Me.CB_HideSF.UseSelectable = True
         '
         'Einstellungen
         '
@@ -1949,6 +1980,7 @@ Partial Class Einstellungen
         Me.GroupBox8.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox21.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2091,4 +2123,6 @@ Partial Class Einstellungen
     Friend WithEvents DD_Episode_Prefix As MetroFramework.Controls.MetroTextBox
     Friend WithEvents DD_Season_Prefix As MetroFramework.Controls.MetroTextBox
     Friend WithEvents CB_CR_Audio As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents GroupBox21 As GroupBox
+    Friend WithEvents CB_HideSF As MetroFramework.Controls.MetroComboBox
 End Class

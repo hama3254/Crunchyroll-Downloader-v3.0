@@ -89,6 +89,7 @@ Public Class Main
     Public MergeSubs As Boolean = False
     'Public IgnoreS1 As Boolean = False
     Public IgnoreSeason As Integer = 0
+    Public HideFLInt As Integer = 0
     Public KeepCache As Boolean = False
     Public SubsOnly As Boolean = False
     Public VideoFormat As String = ".mp4"
@@ -576,6 +577,7 @@ Public Class Main
         HybridThread = My.Settings.HybridThread
 
         IgnoreSeason = My.Settings.IgnoreSeason
+        HideFLInt = My.Settings.HideSF
         HybridMode = My.Settings.HybridMode
         Funimation_srt = My.Settings.Funimation_srt
         Funimation_vtt = My.Settings.Funimation_vtt

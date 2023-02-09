@@ -545,6 +545,18 @@ Namespace My
                 Me("ffmpeg_command_override") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property HideSF() As Integer
+            Get
+                Return CType(Me("HideSF"),Integer)
+            End Get
+            Set
+                Me("HideSF") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

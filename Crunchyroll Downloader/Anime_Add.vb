@@ -91,12 +91,31 @@ Public Class Anime_Add
             SubFolder_Value = SubFolder_Nothing
         End Try
 
+        Dim TS As TimeSpan = TimeSpan.FromDays(3666)
+
+        If Main.HideFLInt = 1 Then
+            TS = TimeSpan.FromMilliseconds(1)
+        ElseIf Main.HideFLInt = 2 Then
+            TS = TimeSpan.FromDays(7)
+        ElseIf Main.HideFLInt = 3 Then
+            TS = TimeSpan.FromDays(30)
+        ElseIf Main.HideFLInt = 4 Then
+            TS = TimeSpan.FromDays(90)
+        ElseIf Main.HideFLInt = 5 Then
+            TS = TimeSpan.FromDays(180)
+        End If
+        'MsgBox(TS.ToString)
         Try
             Dim di As New System.IO.DirectoryInfo(Main.Pfad)
             For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
-                If fi.Attributes.HasFlag(System.IO.FileAttributes.Hidden) Then
-                Else
-                    ComboBox2.Items.Add(fi.Name)
+                If fi.Attributes.HasFlag(System.IO.FileAttributes.Hidden) = False Then
+                    'MsgBox(fi.Name + vbNewLine + fi.LastAccessTime.ToString)
+                    If fi.Name = SubFolder_Value = True Then
+                        ComboBox2.Items.Add(fi.Name)
+                    ElseIf fi.LastAccessTime > Date.Now.Subtract(TS) = True Then
+                        ComboBox2.Items.Add(fi.Name)
+                    End If
+
                 End If
             Next
             Dim Result As New List(Of String)

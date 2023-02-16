@@ -51,6 +51,7 @@ Partial Class Main
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ScanTimeout = New System.Windows.Forms.Timer(Me.components)
         Me.Btn_Queue = New System.Windows.Forms.Button()
+        Me.SaveThumbnailAsImageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -159,7 +160,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.SaveThumbnailAsImageToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -228,6 +229,11 @@ Partial Class Main
         Me.Btn_Queue.Name = "Btn_Queue"
         Me.Btn_Queue.UseVisualStyleBackColor = False
         '
+        'SaveThumbnailAsImageToolStripMenuItem
+        '
+        Me.SaveThumbnailAsImageToolStripMenuItem.Name = "SaveThumbnailAsImageToolStripMenuItem"
+        resources.ApplyResources(Me.SaveThumbnailAsImageToolStripMenuItem, "SaveThumbnailAsImageToolStripMenuItem")
+        '
         'Main
         '
         Me.ApplyImageInvert = True
@@ -285,4 +291,5 @@ Partial Class Main
     Friend WithEvents ScanTimeout As Timer
     Friend WithEvents QueueToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Btn_Queue As Button
+    Friend WithEvents SaveThumbnailAsImageToolStripMenuItem As ToolStripMenuItem
 End Class

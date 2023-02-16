@@ -141,10 +141,14 @@ Public Class CRD_List_Item
             Dim bytes As Byte() = wc.DownloadData(ThumbnialURL)
             Dim ms As New MemoryStream(bytes)
             Thumbnail = System.Drawing.Image.FromStream(ms)
+
+
         Catch ex As Exception
             'MsgBox(ex.ToString)
         End Try
+
         PB_Thumbnail.BackgroundImage = Thumbnail
+
     End Sub
 #End Region
 #Region "Get Variables"
@@ -415,6 +419,10 @@ Public Class CRD_List_Item
         Me.ContextMenuStrip = ContextMenuStrip1 '.ContextMenu
         If Threads < 2 Then
             Threads = 2
+        End If
+
+        If My.Settings.SaveThumbnail = True Then
+            TN_DL.Enabled = True
         End If
 
     End Sub
@@ -1609,7 +1617,24 @@ Public Class CRD_List_Item
         End Try
     End Sub
 
+    Private Sub TN_DL_Tick(sender As Object, e As EventArgs) Handles TN_DL.Tick
+        If My.Settings.SaveThumbnail = True Then
+            Dim FilePath As String = DownloadPfad.Replace(Chr(34), "")
+            Dim FilePath2 As String = Path.GetFullPath(FilePath).Replace(Path.GetExtension(FilePath), "") + ".png"
 
+            If Not Directory.Exists(Path.GetDirectoryName(FilePath2)) Then
+                ' Nein! Jetzt erstellen...
+                Directory.CreateDirectory(Path.GetDirectoryName(FilePath2))
+            End If
+
+            Debug.WriteLine(FilePath2)
+
+            Dim BackgroundImage As Bitmap = CType(PB_Thumbnail.BackgroundImage, Bitmap)
+            BackgroundImage.Save(FilePath2, System.Drawing.Imaging.ImageFormat.Png)
+
+        End If
+        TN_DL.Enabled = False
+    End Sub
 End Class
 
 

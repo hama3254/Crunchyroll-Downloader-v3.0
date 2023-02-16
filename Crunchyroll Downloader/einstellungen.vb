@@ -16,6 +16,9 @@ Public Class Einstellungen
     Dim Manager As MetroStyleManager = Main.Manager
     Dim LastVersionString As String = "v3.8-Beta"
 
+    Public CR_SoftSubsTemp As New List(Of String)
+
+
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Label6.Text = "You have: v" + Application.ProductVersion.ToString '+ " WebView2_Test"
@@ -25,7 +28,7 @@ Public Class Einstellungen
 
         'CR_Anime_Folge = CR_Name_Staffel0_Folge1(1)
         'If GitHubLastTag1(0)
-
+        CR_SoftSubsTemp.AddRange(Main.SoftSubs)
 
         Manager.Owner = Me
         Me.StyleManager = Manager
@@ -80,27 +83,22 @@ Public Class Einstellungen
         End If
 
         TabControl1.SelectedIndex = 0
-        For i As Integer = 0 To Main.SoftSubs.Count - 1
-            If Main.SoftSubs(i) = "de-DE" Then
-                CBdeDE.Checked = True
-            ElseIf Main.SoftSubs(i) = "en-US" Then
-                CBenUS.Checked = True
-            ElseIf Main.SoftSubs(i) = "pt-BR" Then
-                CBptBR.Checked = True
-            ElseIf Main.SoftSubs(i) = "es-419" Then
-                CBesLA.Checked = True
-            ElseIf Main.SoftSubs(i) = "fr-FR" Then
-                CBfrFR.Checked = True
-            ElseIf Main.SoftSubs(i) = "ar-SA" Then
-                CBarME.Checked = True
-            ElseIf Main.SoftSubs(i) = "ru-RU" Then
-                CBruRU.Checked = True
-            ElseIf Main.SoftSubs(i) = "it-IT" Then
-                CBitIT.Checked = True
-            ElseIf Main.SoftSubs(i) = "es-ES" Then
-                CBesES.Checked = True
+
+#Region "sof subs"
+        CR_SoftSubDefault.SelectedIndex = 0
+
+        For i As Integer = 1 To Main.LangValueEnum.Count - 2 ' index 0 = 'null' | last index = jp
+
+            If Main.SoftSubs.Contains(Main.LangValueEnum(i).CR_Value) Then
+                CR_SoftSubDefault.Items.Add(Main.LangValueEnum(i).Name)
+
             End If
+
         Next
+        CR_SoftSubs.SelectedIndex = 0
+
+#End Region
+
         For i As Integer = 0 To Main.SubFunimation.Count - 1
             If Main.SubFunimation(i) = "en" Then
                 CB_fun_eng.Checked = True
@@ -109,16 +107,8 @@ Public Class Einstellungen
             ElseIf Main.SubFunimation(i) = "pt" Then
                 CB_fun_ptbr.Checked = True
             End If
-            'If Main.SubFunimation(i) = "en" Then
-            '    RB_eng.Checked = True
-            'ElseIf Main.SubFunimation(i) = "es" Then
-            '    RB_es.Checked = True
-            'ElseIf Main.SubFunimation(i) = "pt" Then
-            '    RB_pt.Checked = True
-            'End If
-        Next
 
-        'TB_NameString.Text = Main.NameBuilder
+        Next
 
         Me.Location = New Point(CInt(Main.Location.X + Main.Width / 2 - Me.Width / 2), CInt(Main.Location.Y + Main.Height / 2 - Me.Height / 2))
         Try
@@ -715,35 +705,9 @@ Public Class Einstellungen
         End If
 
 
-#Region "sof subs"
         Main.SoftSubs.Clear()
-        If CBdeDE.Checked = True Then
-            Main.SoftSubs.Add("de-DE")
-        End If
-        If CBenUS.Checked = True Then
-            Main.SoftSubs.Add("en-US")
-        End If
-        If CBptBR.Checked = True Then
-            Main.SoftSubs.Add("pt-BR")
-        End If
-        If CBesLA.Checked = True Then
-            Main.SoftSubs.Add("es-419")
-        End If
-        If CBfrFR.Checked = True Then
-            Main.SoftSubs.Add("fr-FR")
-        End If
-        If CBarME.Checked = True Then
-            Main.SoftSubs.Add("ar-SA")
-        End If
-        If CBruRU.Checked = True Then
-            Main.SoftSubs.Add("ru-RU")
-        End If
-        If CBitIT.Checked = True Then
-            Main.SoftSubs.Add("it-IT")
-        End If
-        If CBesES.Checked = True Then
-            Main.SoftSubs.Add("es-ES")
-        End If
+        Main.SoftSubs.AddRange(CR_SoftSubsTemp)
+
 
         Dim SaveString As String = Nothing
         For ii As Integer = 0 To Main.SoftSubs.Count - 1
@@ -758,7 +722,8 @@ Public Class Einstellungen
         End If
         My.Settings.AddedSubs = SaveString
 
-#End Region
+
+
 
         If CB_SoftSubSettings.SelectedIndex = 0 Then
             Main.IncludeLangName = False
@@ -1089,124 +1054,6 @@ Public Class Einstellungen
         End If
     End Sub
 
-#Region "CR_default soft sub"
-
-
-    Private Sub CBesES_CheckedChanged(sender As Object, e As EventArgs) Handles CBesES.CheckedChanged
-        If CBesES.Checked = True Then
-            CR_SoftSubDefault.Items.Add(CBesES.Text)
-        Else
-            CR_SoftSubDefault.Items.Remove(CBesES.Text)
-            If CR_SoftSubDefault.Text = CBesES.Text Then
-                CR_SoftSubDefault.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
-
-    Private Sub CBitIT_CheckedChanged(sender As Object, e As EventArgs) Handles CBitIT.CheckedChanged
-        If CBitIT.Checked = True Then
-            CR_SoftSubDefault.Items.Add(CBitIT.Text)
-        Else
-            CR_SoftSubDefault.Items.Remove(CBitIT.Text)
-            If CR_SoftSubDefault.Text = CBitIT.Text Then
-                CR_SoftSubDefault.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
-
-    Private Sub CBruRU_CheckedChanged(sender As Object, e As EventArgs) Handles CBruRU.CheckedChanged
-        If CBruRU.Checked = True Then
-            CR_SoftSubDefault.Items.Add(CBruRU.Text)
-        Else
-            CR_SoftSubDefault.Items.Remove(CBruRU.Text)
-            If CR_SoftSubDefault.Text = CBruRU.Text Then
-                CR_SoftSubDefault.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
-
-    Private Sub CBarME_CheckedChanged(sender As Object, e As EventArgs) Handles CBarME.CheckedChanged
-        If CBarME.Checked = True Then
-            CR_SoftSubDefault.Items.Add(CBarME.Text)
-        Else
-            CR_SoftSubDefault.Items.Remove(CBarME.Text)
-            If CR_SoftSubDefault.Text = CBarME.Text Then
-                CR_SoftSubDefault.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
-
-    Private Sub CBfrFR_CheckedChanged(sender As Object, e As EventArgs) Handles CBfrFR.CheckedChanged
-        If CBfrFR.Checked = True Then
-            CR_SoftSubDefault.Items.Add(CBfrFR.Text)
-        Else
-            CR_SoftSubDefault.Items.Remove(CBfrFR.Text)
-            If CR_SoftSubDefault.Text = CBfrFR.Text Then
-                CR_SoftSubDefault.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
-
-    Private Sub CBesLA_CheckedChanged(sender As Object, e As EventArgs) Handles CBesLA.CheckedChanged
-        If CBesLA.Checked = True Then
-            CR_SoftSubDefault.Items.Add(CBesLA.Text)
-        Else
-            CR_SoftSubDefault.Items.Remove(CBesLA.Text)
-            If CR_SoftSubDefault.Text = CBesLA.Text Then
-                CR_SoftSubDefault.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
-
-    Private Sub CBptBR_CheckedChanged(sender As Object, e As EventArgs) Handles CBptBR.CheckedChanged
-        If CBptBR.Checked = True Then
-            CR_SoftSubDefault.Items.Add(CBptBR.Text)
-        Else
-            CR_SoftSubDefault.Items.Remove(CBptBR.Text)
-            If CR_SoftSubDefault.Text = CBptBR.Text Then
-                CR_SoftSubDefault.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
-
-    Private Sub CBdeDE_CheckedChanged(sender As Object, e As EventArgs) Handles CBdeDE.CheckedChanged
-        If CBdeDE.Checked = True Then
-            CR_SoftSubDefault.Items.Add(CBdeDE.Text)
-        Else
-            CR_SoftSubDefault.Items.Remove(CBdeDE.Text)
-            If CR_SoftSubDefault.Text = CBdeDE.Text Then
-                CR_SoftSubDefault.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
-
-    Private Sub CBenUS_CheckedChanged(sender As Object, e As EventArgs) Handles CBenUS.CheckedChanged
-        If CBenUS.Checked = True Then
-            CR_SoftSubDefault.Items.Add(CBenUS.Text)
-        Else
-            CR_SoftSubDefault.Items.Remove(CBenUS.Text)
-            If CR_SoftSubDefault.Text = CBenUS.Text Then
-                CR_SoftSubDefault.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
-
-
-    'Private Sub HybridMode_CB_Click(sender As Object, e As EventArgs)
-    '    If HybridMode_CB.Checked = True Then
-
-    '        If MessageBox.Show("Should the cached data be kept?" + vbNewLine + "Press 'No' to free the space after downloading.", "Keep cached files?", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-    '            Main.KeepCache = True
-    '        Else
-    '            Main.KeepCache = False
-    '        End If
-
-    '        If AAuto.Checked = True Then
-    '            MsgBox("Resolution '[Auto]' and 'Hybride Mode' does not work together", MsgBoxStyle.Information)
-    '            HybridMode_CB.Checked = False
-    '        End If
-    '    End If
-    'End Sub
 
     Private Sub MetroLink1_Click(sender As Object, e As EventArgs)
         Process.Start("https://github.com/hama3254/Crunchyroll-Downloader-v3.0/discussions/276")
@@ -1337,6 +1184,20 @@ Public Class Einstellungen
         End If
     End Sub
 
+    Private Sub CR_SoftSubs_Change(sender As Object, e As EventArgs) Handles CR_SoftSubs.Click
+        Dim Popup As New CheckBoxComboBox
+        Popup.Text = "CR Sub selection"
+        Popup.Show()
+    End Sub
+
+
+
+    'Private Sub CB_CR_Audio_Click(sender As Object, e As EventArgs) Handles CB_CR_Audio.Click
+    '    Dim Popup As New CheckBoxComboBox
+    '    Popup.Text = "CR Dub selection"
+    '    Popup.Show()
+    'End Sub
+
 
 
 
@@ -1346,6 +1207,4 @@ Public Class Einstellungen
 #End Region
 
 
-
-#End Region
 End Class

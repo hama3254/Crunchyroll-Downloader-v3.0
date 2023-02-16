@@ -21,6 +21,7 @@ Imports System.Net.Http
 
 Public Class Main
     Inherits MetroForm
+
     Dim t As Thread
     Dim HTML As String = Nothing
     Public CR_Cookies As String = "Cookie: "
@@ -420,6 +421,8 @@ Public Class Main
 
 
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+
 
         FillArray()
 
@@ -4328,6 +4331,8 @@ Public Class Main
 
     End Sub
 
+
+
     Private Sub QueueToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles QueueToolStripMenuItem.Click
         'ffmpeg_options.ShowDialog()
         Dim newCmd As New ffmpeg_options
@@ -4634,6 +4639,20 @@ Public Class Main
 
         End If
 
+    End Sub
+
+    Private Sub SaveThumbnailAsImageToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveThumbnailAsImageToolStripMenuItem.Click
+        If My.Settings.SaveThumbnail = False Then
+            My.Settings.SaveThumbnail = True
+            MsgBox("Thumbnails will be saved into the video folder")
+            My.Settings.Save()
+
+        Else
+            My.Settings.SaveThumbnail = False
+            MsgBox("Thumbnail saving disabled")
+            My.Settings.Save()
+
+        End If
     End Sub
 
 #End Region

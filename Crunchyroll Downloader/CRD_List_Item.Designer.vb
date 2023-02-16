@@ -40,6 +40,7 @@ Partial Class CRD_List_Item
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.ProgressBar1 = New MetroFramework.Controls.MetroProgressBar()
         Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
+        Me.TN_DL = New System.Windows.Forms.Timer(Me.components)
         CType(Me.PB_Thumbnail, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_pause, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.bt_del, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -197,6 +198,10 @@ Partial Class CRD_List_Item
         Me.MetroStyleManager1.Owner = Me
         Me.MetroStyleManager1.Style = MetroFramework.MetroColorStyle.Orange
         '
+        'TN_DL
+        '
+        Me.TN_DL.Interval = 5000
+        '
         'CRD_List_Item
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -243,4 +248,5 @@ Partial Class CRD_List_Item
     Friend WithEvents Label_percent As MetroFramework.Controls.MetroLabel
     Friend WithEvents LogTocClipboard As ToolStripMenuItem
     Friend WithEvents SaveToFile As ToolStripMenuItem
+    Friend WithEvents TN_DL As Timer
 End Class

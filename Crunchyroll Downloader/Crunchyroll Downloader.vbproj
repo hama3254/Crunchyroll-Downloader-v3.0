@@ -104,8 +104,9 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MetroFramework">
-      <HintPath>..\..\metroframework-modern-ui\MetroFramework\bin\x64\Debug\MetroFramework.dll</HintPath>
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\metroframework-modern-ui\MetroFramework\bin\x64\Debug\MetroFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.1418.22, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.WebView2.1.0.1418.22\lib\net45\Microsoft.Web.WebView2.Core.dll</HintPath>
@@ -154,6 +155,12 @@
       <DependentUpon>ffmpeg_option.vb</DependentUpon>
     </Compile>
     <Compile Include="ffmpeg_option.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CheckBoxComboBox.Designer.vb">
+      <DependentUpon>CheckBoxComboBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CheckBoxComboBox.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="queue.Designer.vb">
@@ -228,6 +235,9 @@
   <ItemGroup>
     <EmbeddedResource Include="ffmpeg_option.resx">
       <DependentUpon>ffmpeg_option.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CheckBoxComboBox.resx">
+      <DependentUpon>CheckBoxComboBox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="queue.resx">
       <DependentUpon>queue.vb</DependentUpon>
@@ -368,6 +378,7 @@
     <Content Include="bin\x86\Debug\Lib\swiftshader\libEGL.dll" />
     <Content Include="bin\x86\Debug\Lib\swiftshader\libGLESv2.dll" />
     <Content Include="icon.ico" />
+    <None Include="Resources\BG.png" />
     <None Include="Resources\ffmpeg_OK_cL.png" />
     <None Include="Resources\ffmpeg_OK_cL_hover.png" />
     <None Include="Resources\main-queue_invert_dark.png" />

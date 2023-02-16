@@ -1,8 +1,6 @@
 ﻿Option Strict On
-Imports System.ComponentModel
+
 Imports System.Net
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Button
 Imports MetroFramework
 Imports MetroFramework.Components
 

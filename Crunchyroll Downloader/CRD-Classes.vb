@@ -1,5 +1,13 @@
 ﻿Public Class CRD_Classes
 
+    Public Enum DownloadScopeEnum
+        OldDefault = 0
+        MergeAudio = 1
+        SubsOnly = 2
+        AudioOnly = 3
+    End Enum
+
+
 End Class
 
 #Region "funimation"

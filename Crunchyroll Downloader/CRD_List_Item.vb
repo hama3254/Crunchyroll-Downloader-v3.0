@@ -1093,7 +1093,13 @@ Public Class CRD_List_Item
                              End Function))
 
         For i As Integer = 0 To InuputStreams.Count - 1
+
             Dim int As Integer = i
+
+            If CBool(InStr(InuputStreams(int), ":\")) Then
+                Continue For
+            End If
+
             Dim InputURL As String() = InuputStreams(int).Split(New [Char]() {Chr(34)})
             Dim InputClient As New WebClient
             InputClient.Encoding = Encoding.UTF8

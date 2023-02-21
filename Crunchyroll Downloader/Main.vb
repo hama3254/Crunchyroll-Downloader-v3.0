@@ -18,6 +18,7 @@ Imports MyProvider.MyProvider
 Imports System.Windows
 Imports Microsoft.Web.WebView2.Core
 Imports System.Net.Http
+Imports Crunchyroll_Downloader.CRD_Classes
 
 Public Class Main
     Inherits MetroForm
@@ -92,7 +93,8 @@ Public Class Main
     Public IgnoreSeason As Integer = 0
     Public HideFLInt As Integer = 0
     Public KeepCache As Boolean = False
-    Public SubsOnly As Boolean = False
+    'Public SubsOnly As Boolean = False
+    Public DownloadScope As Integer = 0
     Public VideoFormat As String = ".mp4"
     Public MergeSubsFormat As String = "mov_text"
     'Public LoginDialog As Boolean = False
@@ -628,7 +630,11 @@ Public Class Main
 
         VideoFormat = My.Settings.VideoFormat
 
-
+        If VideoFormat = ".aac" Then
+            VideoFormat = ".mp4"
+            'My.Settings.VideoFormat = ".mp4"
+            MsgBox("The 'Audio only' output option has been moved." + vbNewLine + "See https://github.com/hama3254/Crunchyroll-Downloader-v3.0/issues/698 for more information.")
+        End If
 
         RetryWithCachedFiles()
 
@@ -1202,10 +1208,6 @@ Public Class Main
         Try
             Grapp_RDY = False
             Dim ffmpeg_command_temp As String = ffmpeg_command
-            If VideoFormat = ".aac" Then
-                Dim ffmpeg_command_Builder() As String = ffmpeg_command.Split(New String() {"-c:a copy"}, System.StringSplitOptions.RemoveEmptyEntries)
-                ffmpeg_command_temp = "-c:a copy" + ffmpeg_command_Builder(1)
-            End If
             Dim CR_MetadataUsage As Boolean = False
             Dim CR_Streams As New List(Of CR_Beta_Stream)
             Dim CR_series_title As String = Nothing
@@ -1270,8 +1272,11 @@ Public Class Main
                 ObjectJson = CR_ObjectsJson.Content
                 CR_ObjectsJson = New UrlJson("", "")
             ElseIf CBool(InStr(ObjectJson, "curl:")) Then
-                MsgBox("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
-                Exit Sub
+
+                Throw New System.Exception("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
+
+                'MsgBox("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
+                'Exit Sub
             End If
 
 
@@ -1326,84 +1331,6 @@ Public Class Main
                 End Select
             Next
 
-#Region "Chapters"
-            Dim Mdata_File As String = Application.StartupPath + "\" + ObjectsURLBuilder4(0) + "-mdata.txt"
-
-            If CR_Chapters = True Then
-
-
-                Dim ChaptersUrl As String = "https://static.crunchyroll.com/datalab-intro-v2/" + ObjectsURLBuilder4(0) + ".json"
-                Dim ChaptersJson As String = Nothing
-
-
-                ChaptersJson = Curl(ChaptersUrl)
-
-                If CBool(InStr(ChaptersJson, "curl:")) = True Then
-                    ChaptersJson = Curl(ChaptersUrl)
-                End If
-
-                If CBool(InStr(ChaptersJson, "curl:")) = True Then
-                    ChaptersJson = Nothing
-                    Debug.WriteLine("no Chapter data... ignoring")
-                End If
-                If ChaptersJson IsNot Nothing Then
-
-                    Dim StartTime As String() = ChaptersJson.Split(New String() {Chr(34) + "startTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim StartTime2 As String() = StartTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim StartTime3 As String() = StartTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim StartTime4 As String = StartTime3(1)
-
-                    For i As Integer = StartTime4.Length To 2
-                        StartTime4 = StartTime4 + "0"
-                    Next
-
-                    Dim StartTime_ms As String = StartTime3(0) + StartTime4
-
-
-                    Dim EndTime As String() = ChaptersJson.Split(New String() {Chr(34) + "endTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim EndTime2 As String() = EndTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim EndTime3 As String() = EndTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                    Dim EndTime4 As String = EndTime3(1)
-                    Dim AfterTime As String = Nothing
-
-                    For i As Integer = EndTime4.Length To 2
-                        If EndTime4.Length = 2 Then
-                            AfterTime = EndTime4 + "1"
-                        End If
-                        EndTime4 = EndTime4 + "0"
-                    Next
-
-                    Dim EndTime_ms As String = EndTime3(0) + EndTime4
-                    Dim AfterTime_ms As String = EndTime3(0) + AfterTime
-                    Dim Metadata As String = Nothing
-
-                    If CInt(CR_episode_duration_ms) < CInt(StartTime_ms) Then
-                        'Totaly invalid...
-                    ElseIf CInt(CR_episode_duration_ms) < CInt(EndTime_ms) Then
-                        'it's not an Intro it's an outro 
-                        Dim DeCh As Integer = CInt(StartTime_ms) - 1
-                        Metadata = My.Resources.ffmpeg_metadata_out.Replace("[Titel]", CR_FilenName).Replace("[Start-1]", DeCh.ToString).Replace("[Start]", StartTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
-
-                    Else
-                        Metadata = My.Resources.ffmpeg_metadata.Replace("[Titel]", CR_FilenName).Replace("[Start]", StartTime_ms).Replace("[END]", EndTime_ms).Replace("[after]", AfterTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
-
-                    End If
-
-                    If Metadata = Nothing Then
-                    Else
-                        Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
-                        Using sink As New StreamWriter(Mdata_File, False, utf8WithoutBom2)
-                            sink.WriteLine(Metadata)
-                            CR_MetadataUsage = True
-                        End Using
-                    End If
-
-
-                End If
-            End If
-#End Region
-
 #Region "VideoJson"
             Dim VideoJson As String = Nothing
 
@@ -1428,9 +1355,9 @@ Public Class Main
                 VideoJson = CR_VideoJson.Content
                 CR_VideoJson = New UrlJson("", "")
             ElseIf CBool(InStr(VideoJson, "curl:")) = True Then
-                'VideoJson = Nothing
-                MsgBox("Error - Getting VideoJson data" + vbNewLine + VideoJson)
-                Exit Sub
+                Throw New System.Exception("Error - Getting VideoJson data" + vbNewLine + VideoJson) 'VideoJson = Nothing
+                ' MsgBox("Error - Getting VideoJson data" + vbNewLine + VideoJson)
+                '  Exit Sub
             End If
 
 
@@ -1699,13 +1626,100 @@ Public Class Main
             End If
 #End Region
 
+
+
+#Region "Chapters"
+            Dim Mdata_File As String = Application.StartupPath + "\" + ObjectsURLBuilder4(0) + "-mdata.txt"
+
+            If CR_Chapters = True Then
+
+
+                Dim ChaptersUrl As String = "https://static.crunchyroll.com/datalab-intro-v2/" + ObjectsURLBuilder4(0) + ".json"
+                Dim ChaptersJson As String = Nothing
+
+
+                ChaptersJson = Curl(ChaptersUrl)
+
+                If CBool(InStr(ChaptersJson, "curl:")) = True Then
+                    ChaptersJson = Curl(ChaptersUrl)
+                End If
+
+                If CBool(InStr(ChaptersJson, "curl:")) = True Then
+                    ChaptersJson = Nothing
+                    Debug.WriteLine("no Chapter data... ignoring")
+                End If
+                If ChaptersJson IsNot Nothing Then
+
+                    Dim StartTime As String() = ChaptersJson.Split(New String() {Chr(34) + "startTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim StartTime2 As String() = StartTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim StartTime3 As String() = StartTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim StartTime4 As String = StartTime3(1)
+
+                    For i As Integer = StartTime4.Length To 2
+                        StartTime4 = StartTime4 + "0"
+                    Next
+
+                    Dim StartTime_ms As String = StartTime3(0) + StartTime4
+
+
+                    Dim EndTime As String() = ChaptersJson.Split(New String() {Chr(34) + "endTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim EndTime2 As String() = EndTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim EndTime3 As String() = EndTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim EndTime4 As String = EndTime3(1)
+                    Dim AfterTime As String = Nothing
+
+                    For i As Integer = EndTime4.Length To 2
+                        If EndTime4.Length = 2 Then
+                            AfterTime = EndTime4 + "1"
+                        End If
+                        EndTime4 = EndTime4 + "0"
+                    Next
+
+                    Dim EndTime_ms As String = EndTime3(0) + EndTime4
+                    Dim AfterTime_ms As String = EndTime3(0) + AfterTime
+                    Dim Metadata As String = Nothing
+
+                    If CInt(CR_episode_duration_ms) < CInt(StartTime_ms) Then
+                        'Totaly invalid...
+                    ElseIf CInt(CR_episode_duration_ms) < CInt(EndTime_ms) Then
+                        'it's not an Intro it's an outro 
+                        Dim DeCh As Integer = CInt(StartTime_ms) - 1
+                        Metadata = My.Resources.ffmpeg_metadata_out.Replace("[Titel]", CR_FilenName).Replace("[Start-1]", DeCh.ToString).Replace("[Start]", StartTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
+
+                    Else
+                        Metadata = My.Resources.ffmpeg_metadata.Replace("[Titel]", CR_FilenName).Replace("[Start]", StartTime_ms).Replace("[END]", EndTime_ms).Replace("[after]", AfterTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
+
+                    End If
+
+                    If Metadata = Nothing Then
+                    Else
+                        Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                        Using sink As New StreamWriter(Mdata_File, False, utf8WithoutBom2)
+                            sink.WriteLine(Metadata)
+                            CR_MetadataUsage = True
+                        End Using
+                    End If
+
+
+                End If
+            End If
+#End Region
+
+
+
+
+
 #Region "lösche doppel download"
             'MsgBox(Pfad2)
             Dim Pfad5 As String = Pfad2.Replace(Chr(34), "")
-            If My.Computer.FileSystem.FileExists(Pfad5) And SubsOnly = False Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
+            Dim Pfad6 As String = Pfad5
+            Dim MergeAudio As Boolean = False
+
+            If My.Computer.FileSystem.FileExists(Pfad5) And DownloadScope = DownloadScopeEnum.OldDefault Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
                 Me.Invoke(New Action(Function() As Object
-                                         Anime_Add.StatusLabel.Text = "Status: The file video already exists."
-                                         Me.Text = "Status: The file video already exists."
+                                         Anime_Add.StatusLabel.Text = "Status: The file already exists."
+                                         Me.Text = "Status: The file already exists."
                                          Me.Invalidate()
                                          Return Nothing
                                      End Function))
@@ -1718,6 +1732,41 @@ Public Class Main
                     Grapp_RDY = True
                     Exit Sub
                 End If
+
+            ElseIf My.Computer.FileSystem.FileExists(Pfad5) And DownloadScope = DownloadScopeEnum.MergeAudio Then
+
+
+                Pfad6 = Path.GetDirectoryName(Pfad5) + "\" + GeräteID() + Path.GetExtension(Pfad5) '+ "."
+                FileSystem.Rename(Pfad5, Pfad6)
+                MergeAudio = True
+
+            ElseIf My.Computer.FileSystem.FileExists(Path.GetDirectoryName(Pfad5) + "\" + Path.GetFileNameWithoutExtension(Pfad5) + "aac") And DownloadScope = DownloadScopeEnum.AudioOnly Then
+
+                Me.Invoke(New Action(Function() As Object
+                                         Anime_Add.StatusLabel.Text = "Status: The file already exists."
+                                         Me.Text = "Status: The file already exists."
+                                         Me.Invalidate()
+                                         Return Nothing
+                                     End Function))
+                If MessageBox.Show("The file " + Path.GetDirectoryName(Pfad5) + "\" + Path.GetFileNameWithoutExtension(Pfad5) + "aac" + " already exists." + vbNewLine + "You want to override it?", "File exists!", MessageBoxButtons.OKCancel) = DialogResult.OK Then
+                    Try
+                        My.Computer.FileSystem.DeleteFile(Path.GetDirectoryName(Pfad5) + "\" + Path.GetFileNameWithoutExtension(Pfad5) + "aac")
+                    Catch ex As Exception
+                    End Try
+                Else
+                    Grapp_RDY = True
+                    Exit Sub
+                End If
+
+            ElseIf DownloadScope = DownloadScopeEnum.AudioOnly Then
+
+                'replace format with aac
+                Pfad2 = Pfad2.Replace(VideoFormat, ".aac")
+
+                'replace command for aac
+                Dim ffmpeg_command_Builder() As String = ffmpeg_command.Split(New String() {"-c:a copy"}, System.StringSplitOptions.RemoveEmptyEntries)
+                ffmpeg_command_temp = "-c:a copy" + ffmpeg_command_Builder(1)
+
             End If
 #End Region
 
@@ -1728,11 +1777,12 @@ Public Class Main
 
                 ffmpegInput = "-i " + Chr(34) + CR_URI_Master(0) + Chr(34)
 
-            ElseIf SubsOnly = True Then
+            ElseIf DownloadScope = DownloadScopeEnum.SubsOnly Then
                 ffmpegInput = "-i [Subtitles only]"
             Else
 
                 Dim str As String = Nothing
+
 
 
 
@@ -1748,6 +1798,13 @@ Public Class Main
                 If CBool(InStr(str, "curl:")) = True Then
 
                     MsgBox("Unable to get master.m3u8" + vbNewLine + str, MsgBoxStyle.Critical)
+                ElseIf DownloadScope = DownloadScopeEnum.AudioOnly Or MergeAudio = True Then
+
+                    If CBool(InStr(str, "x480,")) Then
+                        ResoUsed = "x480"
+                    ElseIf CBool(InStr(str, "x" + Reso.ToString + ",")) Then
+                        ResoUsed = "x" + Reso.ToString
+                    End If
 
                 ElseIf CBool(InStr(str, "x" + Reso.ToString + ",")) Then
                     ResoUsed = "x" + Reso.ToString
@@ -1769,6 +1826,7 @@ Public Class Main
                         End If
                     End If
                 End If
+
                 Dim ffmpeg_url_3 As String = Nothing
                 Dim LineChar As String = vbLf
                 If CBool(InStr(str, vbCrLf)) Then
@@ -1783,7 +1841,6 @@ Public Class Main
                         ffmpeg_url_3 = ffmpeg_url_1(i + 1)
                     End If
                 Next
-
 
                 ffmpegInput = "-i " + Chr(34) + ffmpeg_url_3.Trim() + Chr(34)
 
@@ -1806,7 +1863,20 @@ Public Class Main
                 Next
             End If
 
-            If SoftSubsAvailable.Count > 0 Then
+
+            If DownloadScope = DownloadScopeEnum.AudioOnly Then
+
+
+            ElseIf MergeAudio = True Then
+
+
+            ElseIf SoftSubsAvailable.Count > 0 Then
+
+                Dim MergeSubsNow As Boolean = MergeSubs
+
+                If DownloadScope = DownloadScopeEnum.SubsOnly Then
+                    MergeSubsNow = False
+                End If
 
                 Debug.WriteLine("Softsubs Default: " + DefaultSubCR)
 
@@ -1820,7 +1890,7 @@ Public Class Main
                 Next
 
 
-                If MergeSubs = True And SubsOnly = False Then
+                If MergeSubsNow = True Then
                     Dim DispositionIndex As Integer = 69
                     Dim SoftSubMergeURLs As String = ""
                     Dim SoftSubMergeMaps As String = " -map 0:v -map 0:a"
@@ -1855,6 +1925,7 @@ Public Class Main
 
                     End If
 
+
                 Else
 
                     For i As Integer = 0 To SoftSubsList.Count - 1
@@ -1876,6 +1947,7 @@ Public Class Main
                         Dim Pfad4 As String = Path.Combine(Path.GetDirectoryName(Pfad3), FN)
                         WriteText(Pfad4, SubText)
                         Pause(3)
+
                     Next
 
                     If CR_MetadataUsage = False Then
@@ -1884,13 +1956,7 @@ Public Class Main
                         ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
                     End If
                 End If
-            Else
-                If CR_MetadataUsage = False Then
-                    ffmpegInput = ffmpegInput + " " + ffmpeg_command_temp
-                Else
-                    ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1 " + ffmpeg_command_temp
-                End If
-                'MsgBox(ffmpegInput)
+
             End If
 
             ffmpegInput = RemoveExtraSpaces(ffmpegInput)
@@ -1976,6 +2042,7 @@ Public Class Main
                                      Me.Invalidate()
                                      Return Nothing
                                  End Function))
+
         Catch ex As Exception
             Me.Invoke(New Action(Function() As Object
                                      Anime_Add.StatusLabel.Text = "Status: idle"
@@ -1995,10 +2062,12 @@ Public Class Main
                 MsgBox(ErrorNoPermisson + vbNewLine + ex.ToString, MsgBoxStyle.Information)
             ElseIf CBool(InStr(ex.ToString, Chr(34) + "UserAbort" + Chr(34))) Then
                 MsgBox(ex.ToString, MsgBoxStyle.Information)
+            ElseIf CBool(InStr(ex.ToString, "Error - Getting")) Then
+                Navigate(WebsiteURL)
             Else
                 MsgBox(ex.ToString, MsgBoxStyle.Information)
             End If
-        End Try
+        End Try '
     End Sub
 
     Function Convert_locale(ByVal locale As String) As String
@@ -2585,10 +2654,7 @@ Public Class Main
         End If
         Try
             Dim ffmpeg_command_temp As String = ffmpeg_command
-            If VideoFormat = ".aac" Then
-                Dim ffmpeg_command_Builder() As String = ffmpeg_command.Split(New String() {"-c:a copy"}, System.StringSplitOptions.RemoveEmptyEntries)
-                ffmpeg_command_temp = "-c:a copy" + ffmpeg_command_Builder(1)
-            End If
+
             Me.Invoke(New Action(Function() As Object
                                      Me.Text = "Status: looking for video file"
                                      Anime_Add.StatusLabel.Text = "Status: looking for video file"
@@ -2931,7 +2997,7 @@ Public Class Main
             Dim Funimation_m3u8_final As String = Nothing
             Dim client0 As New WebClient
             client0.Encoding = Encoding.UTF8
-            If SubsOnly = False Then
+            If DownloadScope = 1 Then
                 For i As Integer = 0 To VideoStreams.Count - 1
                     If VideoStreams(i).Primary = True Then
                         Funimation_m3u8_Primary = VideoStreams(i).Url
@@ -3157,7 +3223,7 @@ Public Class Main
             End If
             Dim SoftSubMergeMetatata As String = Nothing
             If UsedSubs.Count > 0 Then
-                If MergeSubs = True And SubsOnly = False Then
+                If MergeSubs = True And DownloadScope = 0 Then
                     Dim DispositionIndex As Integer = 999
                     Dim LastMerged As String = Nothing
                     Dim MapCount As Integer = -1
@@ -3257,7 +3323,7 @@ Public Class Main
 #End Region
             'MsgBox(Funimation_m3u8_final)
             'DownloadPfad = DownloadPfad.Replace(" \", "\")
-            If SubsOnly = True Then
+            If DownloadScope = 1 Then
                 Funimation_m3u8_final = "-i [Subtitles only]"
             End If
             Dim L1Name_Split As String() = WebbrowserURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -4374,6 +4440,12 @@ Public Class Main
         LoadingUrl = Url
         LoadedUrls.Clear()
         Dim NoBrowser As Boolean = False
+
+        If My.Settings.SaveMode = True Then
+            Browser.WebView2.CoreWebView2.Navigate(Url)
+            Exit Sub
+        End If
+
         'CR_v1Token = "Get"
         'Browser.WebView2.Source = New Uri(Url)
         'Exit Sub
@@ -4540,27 +4612,21 @@ Public Class Main
 
             Dim StreamsUrl As String = Nothing
             Dim ObjectJson As String
-            Try
-                ObjectJson = CurlAuth(ObjectsUrl, Loc_CR_Cookies, Auth2)
+            ObjectJson = CurlAuth(ObjectsUrl, Loc_CR_Cookies, Auth2)
 
-                If CBool(InStr(ObjectJson, "curl:")) = True Then
-                    Browser.WebView2.CoreWebView2.Navigate(ObjectsUrl)
-                    LoadingUrl = ObjectsUrl
 
-                    Exit Sub
-                ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
-
-                    SetStatusLabel("Status: Failed - no video, check CR login")
-                    Me.Text = "Status: Failed - no video, check CR login"
-                    Debug.WriteLine("Status: Failed - no video, check CR login")
-
-                    Exit Sub
-                End If
-
-            Catch ex As Exception
+            If CBool(InStr(ObjectJson, "curl:")) = True Then
                 Browser.WebView2.CoreWebView2.Navigate(url)
+
                 Exit Sub
-            End Try
+            ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
+
+                SetStatusLabel("Status: Failed - no video, check CR login")
+                Me.Text = "Status: Failed - no video, check CR login"
+                Debug.WriteLine("Status: Failed - no video, check CR login")
+
+                Exit Sub
+            End If
 
             Try
                 Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -4650,6 +4716,20 @@ Public Class Main
         Else
             My.Settings.SaveThumbnail = False
             MsgBox("Thumbnail saving disabled")
+            My.Settings.Save()
+
+        End If
+    End Sub
+
+    Private Sub SaveModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveModeToolStripMenuItem.Click
+        If My.Settings.SaveMode = False Then
+            My.Settings.SaveMode = True
+            MsgBox("SaveMode enabled")
+            My.Settings.Save()
+
+        Else
+            My.Settings.SaveMode = False
+            MsgBox("SaveMode disabled")
             My.Settings.Save()
 
         End If

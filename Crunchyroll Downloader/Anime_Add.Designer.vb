@@ -25,7 +25,7 @@ Partial Class Anime_Add
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Anime_Add))
         Me.groupBox1 = New System.Windows.Forms.GroupBox()
-        Me.SubTitlesOnlyCB = New MetroFramework.Controls.MetroComboBox()
+        Me.DownloadScope = New MetroFramework.Controls.MetroComboBox()
         Me.StatusLabel = New MetroFramework.Controls.MetroLabel()
         Me.ComboBox2 = New MetroFramework.Controls.MetroComboBox()
         Me.TextBox4 = New MetroFramework.Controls.MetroTextBox()
@@ -50,7 +50,7 @@ Partial Class Anime_Add
         'groupBox1
         '
         Me.groupBox1.BackColor = System.Drawing.Color.Transparent
-        Me.groupBox1.Controls.Add(Me.SubTitlesOnlyCB)
+        Me.groupBox1.Controls.Add(Me.DownloadScope)
         Me.groupBox1.Controls.Add(Me.StatusLabel)
         Me.groupBox1.Controls.Add(Me.ComboBox2)
         Me.groupBox1.Controls.Add(Me.TextBox4)
@@ -62,20 +62,19 @@ Partial Class Anime_Add
         Me.groupBox1.TabIndex = 33
         Me.groupBox1.TabStop = False
         '
-        'SubTitlesOnlyCB
+        'DownloadScope
         '
-        Me.SubTitlesOnlyCB.BackColor = System.Drawing.Color.White
-        Me.SubTitlesOnlyCB.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SubTitlesOnlyCB.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.SubTitlesOnlyCB.FormattingEnabled = True
-        Me.SubTitlesOnlyCB.ItemHeight = 23
-        Me.SubTitlesOnlyCB.Items.AddRange(New Object() {"[Default]", "[Subtitles only]"})
-        Me.SubTitlesOnlyCB.Location = New System.Drawing.Point(18, 190)
-        Me.SubTitlesOnlyCB.Name = "SubTitlesOnlyCB"
-        Me.SubTitlesOnlyCB.Size = New System.Drawing.Size(693, 29)
-        Me.SubTitlesOnlyCB.Sorted = True
-        Me.SubTitlesOnlyCB.TabIndex = 39
-        Me.SubTitlesOnlyCB.UseSelectable = True
+        Me.DownloadScope.BackColor = System.Drawing.Color.White
+        Me.DownloadScope.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DownloadScope.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.DownloadScope.FormattingEnabled = True
+        Me.DownloadScope.ItemHeight = 23
+        Me.DownloadScope.Items.AddRange(New Object() {"[Default]", "[Merge Audio with existing files]", "[Subtitles only]", "[Audio only (AAC)]"})
+        Me.DownloadScope.Location = New System.Drawing.Point(18, 190)
+        Me.DownloadScope.Name = "DownloadScope"
+        Me.DownloadScope.Size = New System.Drawing.Size(693, 29)
+        Me.DownloadScope.TabIndex = 39
+        Me.DownloadScope.UseSelectable = True
         '
         'StatusLabel
         '
@@ -349,8 +348,8 @@ Partial Class Anime_Add
         Me.Controls.Add(Me.btn_dl)
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Close)
-        Me.Controls.Add(Me.groupBox2)
         Me.Controls.Add(Me.groupBox1)
+        Me.Controls.Add(Me.groupBox2)
         Me.Font = New System.Drawing.Font("Arial", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "Anime_Add"
         Me.Padding = New System.Windows.Forms.Padding(10, 60, 20, 20)
@@ -377,7 +376,7 @@ Partial Class Anime_Add
     Public WithEvents comboBox3 As MetroFramework.Controls.MetroComboBox
     Private WithEvents Btn_min As PictureBox
     Private WithEvents Btn_Close As PictureBox
-    Public WithEvents SubTitlesOnlyCB As MetroFramework.Controls.MetroComboBox
+    Public WithEvents DownloadScope As MetroFramework.Controls.MetroComboBox
     Friend WithEvents btn_dl As Button
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
     Friend WithEvents bt_Cancel_mass As Button

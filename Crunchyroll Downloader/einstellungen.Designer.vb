@@ -306,10 +306,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage2.Size = New System.Drawing.Size(501, 519)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Output"
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -449,7 +449,7 @@ Partial Class Einstellungen
         Me.CB_Format.FormattingEnabled = True
         Me.CB_Format.IntegralHeight = False
         Me.CB_Format.ItemHeight = 23
-        Me.CB_Format.Items.AddRange(New Object() {"MP4", "MKV", "AAC (Audio only)"})
+        Me.CB_Format.Items.AddRange(New Object() {"MP4", "MKV"})
         Me.CB_Format.Location = New System.Drawing.Point(50, 25)
         Me.CB_Format.Name = "CB_Format"
         Me.CB_Format.Size = New System.Drawing.Size(175, 29)
@@ -1032,7 +1032,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 3
+        Me.TabControl1.SelectedIndex = 1
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1046,9 +1046,9 @@ Partial Class Einstellungen
         Me.MetroTabPage2.HorizontalScrollbarBarColor = True
         Me.MetroTabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage2.HorizontalScrollbarSize = 10
-        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 35)
+        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 44)
         Me.MetroTabPage2.Name = "MetroTabPage2"
-        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 528)
+        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 519)
         Me.MetroTabPage2.TabIndex = 8
         Me.MetroTabPage2.Text = "Naming"
         Me.MetroTabPage2.VerticalScrollbarBarColor = True

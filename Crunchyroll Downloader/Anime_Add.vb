@@ -40,7 +40,7 @@ Public Class Anime_Add
 
 
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        SubTitlesOnlyCB.SelectedIndex = 0
+        DownloadScope.SelectedIndex = 0
         Manager.Owner = Me
         Me.StyleManager = Manager
         Btn_Close.Image = Main.CloseImg
@@ -148,14 +148,11 @@ Public Class Anime_Add
 
         Main.LoginOnly = "Download Mode!"
         'MsgBox(Main.WebbrowserURL)
-        If SubTitlesOnlyCB.Text = "[Default]" Then
-            Main.SubsOnly = False
-        Else
-            Main.SubsOnly = True
-        End If
+
+
         If groupBox1.Visible = True Then
             ' Main.LoadedUrls.Clear()
-            Try
+        Try
                 If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then
 
 
@@ -589,12 +586,8 @@ Public Class Anime_Add
         End If
     End Sub
 
-    Private Sub SubTitlesOnlyCB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SubTitlesOnlyCB.SelectedIndexChanged
-        If SubTitlesOnlyCB.Text = "[Default]" Then
-            Main.SubsOnly = False
-        Else
-            Main.SubsOnly = True
-        End If
+    Private Sub SubTitlesOnlyCB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DownloadScope.SelectedIndexChanged
+        Main.DownloadScope = DownloadScope.SelectedIndex
     End Sub
 
 

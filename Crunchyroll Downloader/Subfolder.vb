@@ -155,5 +155,84 @@ Module Subfolder
             Write(msg & vbCrLf)
         End Sub
     End Class
+    Public Function ShortingName(ByVal FullPath As String) As String
+
+        Dim FileName As String = Path.GetFileNameWithoutExtension(FullPath)
+
+        Dim Segements() As String = FileName.Split(New String() {" "}, System.StringSplitOptions.RemoveEmptyEntries)
+
+        Dim ReturnName As String = Nothing
+
+        For i As Integer = 0 To Segements.Count - 1
+            If Segements(i).Count > 5 Then ' 6 chars or more, split at 5
+                ReturnName = ReturnName + Segements(i).Substring(0, 3) + ". "
+
+
+            ElseIf Segements(i).Count > 3 Then ' 4 or 5 can stay
+                ReturnName = ReturnName + Segements(i) + " "
+            End If
+        Next
+
+        If ReturnName = Nothing Then
+            ReturnName = FullPath
+        Else
+            ReturnName = Path.GetDirectoryName(FullPath) + "\" + ReturnName + Path.GetExtension(FullPath)
+        End If
+
+        Return ReturnName
+    End Function
+    Public Function FFMPEG_Audio(ByVal file As String) As Integer
+
+        Dim proc As New Process
+        Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
+        Dim startinfo As New System.Diagnostics.ProcessStartInfo
+        Dim sr As StreamReader
+
+        Dim cmd As String = "-i " + Chr(34) + file + Chr(34) 'start ffmpeg with command strFFCMD string
+        Dim ffmpegOutput As String = Nothing
+        'all parameters required to run the process
+        startinfo.FileName = exepath
+        startinfo.Arguments = cmd
+        startinfo.UseShellExecute = False
+        startinfo.WindowStyle = ProcessWindowStyle.Normal
+        startinfo.RedirectStandardError = True
+        startinfo.RedirectStandardOutput = True
+        startinfo.CreateNoWindow = True
+        startinfo.StandardOutputEncoding = Encoding.UTF8
+        startinfo.StandardErrorEncoding = Encoding.UTF8
+        proc.StartInfo = startinfo
+        proc.Start() ' start the process
+        sr = proc.StandardError 'standard error is used by ffmpeg
+
+        Dim start, finish, pau As Double
+        start = CSng(Microsoft.VisualBasic.DateAndTime.Timer)
+        pau = 5
+        finish = start + pau
+
+
+
+
+        Do
+            ffmpegOutput = ffmpegOutput + sr.ReadToEnd
+
+        Loop Until proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
+
+
+        Dim Streams() As String = ffmpegOutput.Split(New String() {"Stream #"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+        Dim Tracks As Integer = 0
+
+        For i As Integer = 0 To Streams.Count - 1
+            If CBool(InStr(Streams(i), ": Audio:")) Then
+                Tracks = Tracks + 1
+
+            End If
+        Next
+
+        Return Tracks
+
+    End Function
+
+
 
 End Module

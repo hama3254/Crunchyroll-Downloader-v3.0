@@ -40,7 +40,9 @@ Public Class Anime_Add
 
 
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        DownloadScope.SelectedIndex = 0
+
+        DownloadScope.SelectedIndex = Main.DownloadScope
+
         Manager.Owner = Me
         Me.StyleManager = Manager
         Btn_Close.Image = Main.CloseImg
@@ -588,6 +590,8 @@ Public Class Anime_Add
 
     Private Sub SubTitlesOnlyCB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DownloadScope.SelectedIndexChanged
         Main.DownloadScope = DownloadScope.SelectedIndex
+        My.Settings.DownloadScope = Main.DownloadScope
+        My.Settings.Save()
     End Sub
 
 

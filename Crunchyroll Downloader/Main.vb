@@ -424,12 +424,7 @@ Public Class Main
 
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-
-
         FillArray()
-
-
-
 
 #Region "settings path"
 
@@ -450,6 +445,7 @@ Public Class Main
 
         DarkModeValue = My.Settings.DarkModeValue
 
+        DownloadScope = My.Settings.DownloadScope
 
         Manager.Style = MetroColorStyle.Orange
         If DarkModeValue = True Then
@@ -1866,8 +1862,15 @@ Public Class Main
 
             If DownloadScope = DownloadScopeEnum.AudioOnly Then
 
+                If CR_MetadataUsage = False Then
+                    ffmpegInput = ffmpegInput + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                Else
+                    ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                End If
 
             ElseIf MergeAudio = True Then
+
+                ffmpegInput = "-i " + Chr(34) + Pfad6 + Chr(34) + " " + ffmpegInput + " -map 0 -map 1:a" + " -metadata:s:a:" + FFMPEG_Audio(Pfad6).ToString + " language=" + CCtoMP4CC(CR_audio_locale) + " -c copy"
 
 
             ElseIf SoftSubsAvailable.Count > 0 Then
@@ -1956,7 +1959,13 @@ Public Class Main
                         ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
                     End If
                 End If
+            Else
 
+                If CR_MetadataUsage = False Then
+                    ffmpegInput = ffmpegInput + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                Else
+                    ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                End If
             End If
 
             ffmpegInput = RemoveExtraSpaces(ffmpegInput)

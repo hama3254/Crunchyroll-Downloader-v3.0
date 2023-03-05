@@ -1230,15 +1230,7 @@ Public Class Main
                                      Return Nothing
                                  End Function))
 
-
-
-            Dim ObjectsURLBuilder() As String = Streams.Split(New String() {"videos"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ObjectsURLBuilder2() As String = ObjectsURLBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ObjectsURLBuilder3() As String = WebsiteURL.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ObjectsURL As String = ObjectsURLBuilder(0) + "objects/" + ObjectsURLBuilder4(0) + ObjectsURLBuilder2(1)
-            Debug.WriteLine(ObjectsURL)
-
+            '
             Dim Loc_CR_Cookies = " -H " + Chr(34) + CR_Cookies + Chr(34)
 
             Dim Loc_AuthToken = " -H " + Chr(34) + "Authorization: " + AuthToken + Chr(34)
@@ -1247,85 +1239,144 @@ Public Class Main
                 Loc_AuthToken = AuthToken
             End If
 
+            Dim CR_EpisodeID As String = ""
 
-            ObjectJson = CurlAuth(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
+            If CBool(InStr(WebsiteURL, "musicvideo")) = True Then
+                'TextBox2_Text to bypasss name for now
+
+                'https://www.crunchyroll.com/content/v2/cms/objects/G69PX0W3Y?locale=de-DE
+                'https://www.crunchyroll.com/content/v2/cms/videos/G25FVQD3Q/streams?locale=de-DE
+
+                'https://www.crunchyroll.com/content/v2/music/MV2FD1FECE/streams?locale=de-DE
+
+                'https://www.crunchyroll.com/content/v2/music/MV2FD1FECE?locale=de-DE
+
+                'https://www.crunchyroll.com/content/v2/music/music_videos/MV2FD1FECE?locale=de-DE
 
 
+                Dim ObjectsURL As String = Streams.Replace("music/", "music/music_videos/").Replace("/streams", "")
 
-            'ObjectJson = Curl(ObjectsURL)
 
-            'MsgBox(ObjectJson)
-
-            If CBool(InStr(ObjectJson, "curl:")) = True Then
                 ObjectJson = CurlAuth(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
-            End If
+
+                'MsgBox(ObjectsURL)
+
+                'MsgBox(ObjectJson.Length.ToString)
+                'MsgBox(ObjectJson)
+
+                'title":" + "
+
+                '"name":" + "
+
+                Dim Title() As String = ObjectJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Title2() As String = Title(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim Arti() As String = ObjectJson.Split(New String() {Chr(34) + "name" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Arti2() As String = Arti(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                'MsgBox(Arti2(0))
+                'MsgBox(Title2(0))
+
+
+                TextBox2_Text = Arti2(0) + " - " + Title2(0)
 
 
 
-            If CBool(InStr(ObjectJson, "curl:")) = True And CBool(InStr(CR_ObjectsJson.Url, ObjectsURLBuilder4(0))) Then
-                Debug.WriteLine("curl error, using CR_ObjectsJson " + vbNewLine + ObjectJson)
-
-                ObjectJson = CR_ObjectsJson.Content
-                CR_ObjectsJson = New UrlJson("", "")
-            ElseIf CBool(InStr(ObjectJson, "curl:")) Then
-
-                Throw New System.Exception("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
-
-                'MsgBox("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
-                'Exit Sub
-            End If
+            Else
 
 
+                Dim ObjectsURLBuilder() As String = Streams.Split(New String() {"videos"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ObjectsURLBuilder2() As String = ObjectsURLBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ObjectsURLBuilder3() As String = WebsiteURL.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ObjectsURL As String = ObjectsURLBuilder(0) + "objects/" + ObjectsURLBuilder4(0) + ObjectsURLBuilder2(1)
 
-            'Filter JSON esqaped characters
-            'Debug.WriteLine(Date.Now.ToString + "before:" + ObjectJson)
-            Debug.WriteLine("1288: " + ObjectJson)
-            ObjectJson = CleanJSON(ObjectJson)
-            'Debug.WriteLine(Date.Now.ToString + "after:" + ObjectJson)
+                CR_EpisodeID = ObjectsURLBuilder4(0)
 
-            Dim ser As JObject = JObject.Parse(ObjectJson)
-            Dim data As List(Of JToken) = ser.Children().ToList
+                Debug.WriteLine(ObjectsURL)
 
-            For Each item As JProperty In data
-                item.CreateReader()
-                Select Case item.Name
 
-                    Case "data" 'each record is inside the entries array
-                        For Each Entry As JObject In item.Values
-                            Try
-                                Dim Title As String = Entry("title").ToString
-                                CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                Debug.WriteLine(Date.Now.ToString + " CR-Title: " + CR_title)
-                            Catch ex As Exception
-                            End Try
-                            Dim SubData As List(Of JToken) = Entry.Children().ToList
-                            For Each SubItem As JProperty In SubData
-                                'SubItem.CreateReader()
-                                Select Case SubItem.Name
-                                    Case "episode_metadata"
-                                        For Each SubEntry As JProperty In SubItem.Values
-                                            Select Case SubEntry.Name
-                                                Case "series_title"
-                                                    CR_series_title = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                ObjectJson = CurlAuth(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
+
+
+
+                'ObjectJson = Curl(ObjectsURL)
+
+                'MsgBox(ObjectJson)
+
+                If CBool(InStr(ObjectJson, "curl:")) = True Then
+                    ObjectJson = CurlAuth(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
+                End If
+
+
+
+                If CBool(InStr(ObjectJson, "curl:")) = True And CBool(InStr(CR_ObjectsJson.Url, ObjectsURLBuilder4(0))) Then
+                    Debug.WriteLine("curl error, using CR_ObjectsJson " + vbNewLine + ObjectJson)
+
+                    ObjectJson = CR_ObjectsJson.Content
+                    CR_ObjectsJson = New UrlJson("", "")
+                ElseIf CBool(InStr(ObjectJson, "curl:")) Then
+
+                    Throw New System.Exception("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
+
+                    'MsgBox("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
+                    'Exit Sub
+                End If
+
+
+
+                'Filter JSON esqaped characters
+                'Debug.WriteLine(Date.Now.ToString + "before:" + ObjectJson)
+                Debug.WriteLine("1288: " + ObjectJson)
+                ObjectJson = CleanJSON(ObjectJson)
+                'Debug.WriteLine(Date.Now.ToString + "after:" + ObjectJson)
+
+                Dim ser As JObject = JObject.Parse(ObjectJson)
+                Dim data As List(Of JToken) = ser.Children().ToList
+
+                For Each item As JProperty In data
+                    item.CreateReader()
+                    Select Case item.Name
+
+                        Case "data" 'each record is inside the entries array
+                            For Each Entry As JObject In item.Values
+                                Try
+                                    Dim Title As String = Entry("title").ToString
+                                    CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                    Debug.WriteLine(Date.Now.ToString + " CR-Title: " + CR_title)
+                                Catch ex As Exception
+                                End Try
+                                Dim SubData As List(Of JToken) = Entry.Children().ToList
+                                For Each SubItem As JProperty In SubData
+                                    'SubItem.CreateReader()
+                                    Select Case SubItem.Name
+                                        Case "episode_metadata"
+                                            For Each SubEntry As JProperty In SubItem.Values
+                                                Select Case SubEntry.Name
+                                                    Case "series_title"
+                                                        CR_series_title = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                     'Case "season_title"
                                                     '    CR_season_title = SubEntry.Value.ToString
-                                                Case "season_number"
-                                                    CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                Case "episode_number"
-                                                    CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                Case "episode"
-                                                    CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                Case "duration_ms"
-                                                    CR_episode_duration_ms = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                Case "is_dubbed"
-                                                    CR_audio_isDubbed = CBool(SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", ""))
-                                            End Select
-                                        Next '
-                                End Select
+                                                    Case "season_number"
+                                                        CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                    Case "episode_number"
+                                                        CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                    Case "episode"
+                                                        CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                    Case "duration_ms"
+                                                        CR_episode_duration_ms = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                    Case "is_dubbed"
+                                                        CR_audio_isDubbed = CBool(SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", ""))
+                                                End Select
+                                            Next '
+                                    End Select
+                                Next
                             Next
-                        Next
-                End Select
-            Next
+                    End Select
+                Next
+
+            End If
 
 #Region "VideoJson"
             Dim VideoJson As String = Nothing
@@ -1341,12 +1392,12 @@ Public Class Main
 
             End If
 
-            Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+            'Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            'Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
 
-            If CBool(InStr(VideoJson, "curl:")) = True And CBool(InStr(CR_VideoJson.Url, StreamsUrlBuilder2(0))) Then
+            If CBool(InStr(VideoJson, "curl:")) = True Then 'And CBool(InStr(CR_VideoJson.Url, StreamsUrlBuilder2(0))) Then
                 Debug.WriteLine("curl error, using CR_VideoJson " + vbNewLine + VideoJson)
                 VideoJson = CR_VideoJson.Content
                 CR_VideoJson = New UrlJson("", "")
@@ -1625,79 +1676,85 @@ Public Class Main
 
 
 #Region "Chapters"
-            Dim Mdata_File As String = Application.StartupPath + "\" + ObjectsURLBuilder4(0) + "-mdata.txt"
+            Dim Mdata_File As String = Application.StartupPath + "\" + CR_EpisodeID + "-mdata.txt"
 
-            If CR_Chapters = True Then
-
-
-                Dim ChaptersUrl As String = "https://static.crunchyroll.com/datalab-intro-v2/" + ObjectsURLBuilder4(0) + ".json"
-                Dim ChaptersJson As String = Nothing
+            If CR_EpisodeID = "" Then
+                'ignore for music video
+            Else
 
 
-                ChaptersJson = Curl(ChaptersUrl)
+                If CR_Chapters = True Then
 
-                If CBool(InStr(ChaptersJson, "curl:")) = True Then
+
+                    Dim ChaptersUrl As String = "https://static.crunchyroll.com/datalab-intro-v2/" + CR_EpisodeID + ".json"
+                    Dim ChaptersJson As String = Nothing
+
+
                     ChaptersJson = Curl(ChaptersUrl)
-                End If
 
-                If CBool(InStr(ChaptersJson, "curl:")) = True Then
-                    ChaptersJson = Nothing
-                    Debug.WriteLine("no Chapter data... ignoring")
-                End If
-                If ChaptersJson IsNot Nothing Then
+                    If CBool(InStr(ChaptersJson, "curl:")) = True Then
+                        ChaptersJson = Curl(ChaptersUrl)
+                    End If
 
-                    Dim StartTime As String() = ChaptersJson.Split(New String() {Chr(34) + "startTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim StartTime2 As String() = StartTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim StartTime3 As String() = StartTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim StartTime4 As String = StartTime3(1)
+                    If CBool(InStr(ChaptersJson, "curl:")) = True Then
+                        ChaptersJson = Nothing
+                        Debug.WriteLine("no Chapter data... ignoring")
+                    End If
+                    If ChaptersJson IsNot Nothing Then
 
-                    For i As Integer = StartTime4.Length To 2
-                        StartTime4 = StartTime4 + "0"
-                    Next
+                        Dim StartTime As String() = ChaptersJson.Split(New String() {Chr(34) + "startTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim StartTime2 As String() = StartTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim StartTime3 As String() = StartTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim StartTime4 As String = StartTime3(1)
 
-                    Dim StartTime_ms As String = StartTime3(0) + StartTime4
+                        For i As Integer = StartTime4.Length To 2
+                            StartTime4 = StartTime4 + "0"
+                        Next
+
+                        Dim StartTime_ms As String = StartTime3(0) + StartTime4
 
 
-                    Dim EndTime As String() = ChaptersJson.Split(New String() {Chr(34) + "endTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim EndTime2 As String() = EndTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim EndTime3 As String() = EndTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim EndTime As String() = ChaptersJson.Split(New String() {Chr(34) + "endTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim EndTime2 As String() = EndTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+                        Dim EndTime3 As String() = EndTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                    Dim EndTime4 As String = EndTime3(1)
-                    Dim AfterTime As String = Nothing
+                        Dim EndTime4 As String = EndTime3(1)
+                        Dim AfterTime As String = Nothing
 
-                    For i As Integer = EndTime4.Length To 2
-                        If EndTime4.Length = 2 Then
-                            AfterTime = EndTime4 + "1"
+                        For i As Integer = EndTime4.Length To 2
+                            If EndTime4.Length = 2 Then
+                                AfterTime = EndTime4 + "1"
+                            End If
+                            EndTime4 = EndTime4 + "0"
+                        Next
+
+                        Dim EndTime_ms As String = EndTime3(0) + EndTime4
+                        Dim AfterTime_ms As String = EndTime3(0) + AfterTime
+                        Dim Metadata As String = Nothing
+
+                        If CInt(CR_episode_duration_ms) < CInt(StartTime_ms) Then
+                            'Totaly invalid...
+                        ElseIf CInt(CR_episode_duration_ms) < CInt(EndTime_ms) Then
+                            'it's not an Intro it's an outro 
+                            Dim DeCh As Integer = CInt(StartTime_ms) - 1
+                            Metadata = My.Resources.ffmpeg_metadata_out.Replace("[Titel]", CR_FilenName).Replace("[Start-1]", DeCh.ToString).Replace("[Start]", StartTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
+
+                        Else
+                            Metadata = My.Resources.ffmpeg_metadata.Replace("[Titel]", CR_FilenName).Replace("[Start]", StartTime_ms).Replace("[END]", EndTime_ms).Replace("[after]", AfterTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
+
                         End If
-                        EndTime4 = EndTime4 + "0"
-                    Next
 
-                    Dim EndTime_ms As String = EndTime3(0) + EndTime4
-                    Dim AfterTime_ms As String = EndTime3(0) + AfterTime
-                    Dim Metadata As String = Nothing
+                        If Metadata = Nothing Then
+                        Else
+                            Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+                            Using sink As New StreamWriter(Mdata_File, False, utf8WithoutBom2)
+                                sink.WriteLine(Metadata)
+                                CR_MetadataUsage = True
+                            End Using
+                        End If
 
-                    If CInt(CR_episode_duration_ms) < CInt(StartTime_ms) Then
-                        'Totaly invalid...
-                    ElseIf CInt(CR_episode_duration_ms) < CInt(EndTime_ms) Then
-                        'it's not an Intro it's an outro 
-                        Dim DeCh As Integer = CInt(StartTime_ms) - 1
-                        Metadata = My.Resources.ffmpeg_metadata_out.Replace("[Titel]", CR_FilenName).Replace("[Start-1]", DeCh.ToString).Replace("[Start]", StartTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
-
-                    Else
-                        Metadata = My.Resources.ffmpeg_metadata.Replace("[Titel]", CR_FilenName).Replace("[Start]", StartTime_ms).Replace("[END]", EndTime_ms).Replace("[after]", AfterTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
 
                     End If
-
-                    If Metadata = Nothing Then
-                    Else
-                        Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
-                        Using sink As New StreamWriter(Mdata_File, False, utf8WithoutBom2)
-                            sink.WriteLine(Metadata)
-                            CR_MetadataUsage = True
-                        End Using
-                    End If
-
-
                 End If
             End If
 #End Region
@@ -1783,6 +1840,7 @@ Public Class Main
 
 
                 For i As Integer = 0 To CR_URI_Master.Count - 1
+
                     str = Curl(CR_URI_Master(i))
 
                     If CBool(InStr(str, "curl:")) = False Then
@@ -1793,7 +1851,11 @@ Public Class Main
 
                 If CBool(InStr(str, "curl:")) = True Then
 
+                    Debug.WriteLine("Checked " + CR_URI_Master.Count.ToString)
                     MsgBox("Unable to get master.m3u8" + vbNewLine + str, MsgBoxStyle.Critical)
+                    Grapp_RDY = True
+                    Exit Sub
+
                 ElseIf DownloadScope = DownloadScopeEnum.AudioOnly Or MergeAudio = True Then
 
                     If CBool(InStr(str, "x480,")) Then
@@ -1972,24 +2034,29 @@ Public Class Main
 #End Region
 
 #Region "thumbnail"
-            Dim thumbnail As String() = ObjectJson.Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim thumbnail3 As String = ""
-            For i As Integer = 0 To thumbnail.Count - 1
-                If CBool(InStr(thumbnail(i), ".jpg" + Chr(34))) Then
-                    Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".jpg" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                    thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".jpg"
-                    Exit For
-                ElseIf CBool(InStr(thumbnail(i), ".jpeg" + Chr(34))) Then
-                    Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".jpeg" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                    thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".jpeg"
-                    Exit For
-                ElseIf CBool(InStr(thumbnail(i), ".jpe" + Chr(34))) Then
-                    Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".jpe" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
-                    thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".jpe"
-                    Exit For
-                End If
-            Next
 
+            Try
+                Dim thumbnail As String() = ObjectJson.Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
+                For i As Integer = 0 To thumbnail.Count - 1
+                    If CBool(InStr(thumbnail(i), ".jpg" + Chr(34))) Then
+                        Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".jpg" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                        thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".jpg"
+                        Exit For
+                    ElseIf CBool(InStr(thumbnail(i), ".jpeg" + Chr(34))) Then
+                        Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".jpeg" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                        thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".jpeg"
+                        Exit For
+                    ElseIf CBool(InStr(thumbnail(i), ".jpe" + Chr(34))) Then
+                        Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".jpe" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                        thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".jpe"
+                        Exit For
+                    End If
+                Next
+
+            Catch ex As Exception
+
+            End Try
 #End Region
 
 #Region "item constructor"
@@ -4509,6 +4576,8 @@ Public Class Main
                 Else
                     Url_locale = locale2(0)
                 End If
+
+
             ElseIf CBool(InStr(Url, "/watch")) Then
                 Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim locale2() As String = locale1(1).Split(New String() {"/watch"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -4521,6 +4590,16 @@ Public Class Main
                 Else
                     Url_locale = locale2(0)
                 End If
+
+                If CBool(InStr(Url, "musicvideo/")) Then
+                    SetStatusLabel("Status: musicvideo detected - partial support only")
+
+                    Browser.WebView2.CoreWebView2.Navigate(Url)
+                    Exit Sub
+
+                End If
+
+
             End If
 
             Debug.WriteLine("###" + CR_Cookies + "###")

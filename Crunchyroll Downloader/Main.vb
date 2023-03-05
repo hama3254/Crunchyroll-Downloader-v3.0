@@ -1244,16 +1244,6 @@ Public Class Main
             If CBool(InStr(WebsiteURL, "musicvideo")) = True Then
                 'TextBox2_Text to bypasss name for now
 
-                'https://www.crunchyroll.com/content/v2/cms/objects/G69PX0W3Y?locale=de-DE
-                'https://www.crunchyroll.com/content/v2/cms/videos/G25FVQD3Q/streams?locale=de-DE
-
-                'https://www.crunchyroll.com/content/v2/music/MV2FD1FECE/streams?locale=de-DE
-
-                'https://www.crunchyroll.com/content/v2/music/MV2FD1FECE?locale=de-DE
-
-                'https://www.crunchyroll.com/content/v2/music/music_videos/MV2FD1FECE?locale=de-DE
-
-
                 Dim ObjectsURL As String = Streams.Replace("music/", "music/music_videos/").Replace("/streams", "")
 
 
@@ -1281,7 +1271,31 @@ Public Class Main
 
                 TextBox2_Text = Arti2(0) + " - " + Title2(0)
 
+            ElseIf CBool(InStr(WebsiteURL, "/concert/")) = True Then
 
+                'TextBox2_Text to bypasss name for now
+
+                'https://www.crunchyroll.com/content/v2/music/MCB3E02384/streams?locale=de-DE
+
+                'https://www.crunchyroll.com/content/v2/music/concerts/MCB3E02384?locale=de-DE
+
+                Dim ObjectsURL As String = Streams.Replace("music/", "music/concerts/").Replace("/streams", "")
+
+                ObjectJson = CurlAuth(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
+
+
+                Dim Title() As String = ObjectJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Title2() As String = Title(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim Arti() As String = ObjectJson.Split(New String() {Chr(34) + "name" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Arti2() As String = Arti(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+                'MsgBox(Arti2(0))
+                'MsgBox(Title2(0))
+
+
+                TextBox2_Text = Arti2(0) + " - " + Title2(0)
 
             Else
 
@@ -2037,6 +2051,7 @@ Public Class Main
             Dim thumbnail3 As String = ""
 
             Try
+
                 Dim thumbnail As String() = ObjectJson.Split(New String() {"https://"}, System.StringSplitOptions.RemoveEmptyEntries)
                 For i As Integer = 0 To thumbnail.Count - 1
                     If CBool(InStr(thumbnail(i), ".jpg" + Chr(34))) Then
@@ -2050,6 +2065,18 @@ Public Class Main
                     ElseIf CBool(InStr(thumbnail(i), ".jpe" + Chr(34))) Then
                         Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".jpe" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
                         thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".jpe"
+                        Exit For
+                    ElseIf CBool(InStr(thumbnail(i), ".JPEG" + Chr(34))) Then
+                        Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".JPEG" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                        thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".JPEG"
+                        Exit For
+                    ElseIf CBool(InStr(thumbnail(i), ".JPG" + Chr(34))) Then
+                        Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".JPG" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                        thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".JPG"
+                        Exit For
+                    ElseIf CBool(InStr(thumbnail(i), ".JPE" + Chr(34))) Then
+                        Dim thumbnail2 As String() = thumbnail(i).Split(New String() {".JPE" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '(New [Char]() {"-"})
+                        thumbnail3 = "https://" + thumbnail2(0).Replace("\/", "/") + ".JPE"
                         Exit For
                     End If
                 Next
@@ -4594,6 +4621,11 @@ Public Class Main
                 If CBool(InStr(Url, "musicvideo/")) Then
                     SetStatusLabel("Status: musicvideo detected - partial support only")
 
+                    Browser.WebView2.CoreWebView2.Navigate(Url)
+                    Exit Sub
+                ElseIf CBool(InStr(Url, "/concert/")) Then
+
+                    SetStatusLabel("Status: concert detected - partial support only")
                     Browser.WebView2.CoreWebView2.Navigate(Url)
                     Exit Sub
 

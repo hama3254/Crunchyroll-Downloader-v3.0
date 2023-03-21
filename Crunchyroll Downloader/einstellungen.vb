@@ -33,6 +33,8 @@ Public Class Einstellungen
         Manager.Owner = Me
         Me.StyleManager = Manager
 
+        CB_OverrideDub.Checked = My.Settings.OverrideDub
+        CB_Cap.Checked = My.Settings.Captions
 
         TempTB.Text = Main.TempFolder
         LeadingZeroDD.SelectedIndex = Main.LeadingZero
@@ -349,7 +351,8 @@ Public Class Einstellungen
     Private Sub Btn_Save_Click(sender As Object, e As EventArgs) Handles Btn_Save.Click
         Main.LeadingZero = LeadingZeroDD.SelectedIndex
         My.Settings.LeadingZero = LeadingZeroDD.SelectedIndex
-
+        My.Settings.OverrideDub = CB_OverrideDub.Checked
+        My.Settings.Captions = CB_Cap.Checked
         Main.Funimation_Bitrate = Bitrate_Funi.SelectedIndex
         My.Settings.Funimation_Bitrate = Bitrate_Funi.SelectedIndex
 

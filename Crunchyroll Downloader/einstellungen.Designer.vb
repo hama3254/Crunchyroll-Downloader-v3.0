@@ -154,6 +154,9 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
+        Me.CB_OverrideDub = New MetroFramework.Controls.MetroCheckBox()
+        Me.GroupBox22 = New System.Windows.Forms.GroupBox()
+        Me.CB_Cap = New MetroFramework.Controls.MetroCheckBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -193,6 +196,7 @@ Partial Class Einstellungen
         Me.GroupBox8.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox22.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolTip1
@@ -220,7 +224,7 @@ Partial Class Einstellungen
         Me.GroupBox14.Controls.Add(Me.CR_SoftSubDefault)
         Me.GroupBox14.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox14.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox14.Location = New System.Drawing.Point(5, 255)
+        Me.GroupBox14.Location = New System.Drawing.Point(5, 345)
         Me.GroupBox14.Name = "GroupBox14"
         Me.GroupBox14.Size = New System.Drawing.Size(490, 70)
         Me.GroupBox14.TabIndex = 30
@@ -247,7 +251,7 @@ Partial Class Einstellungen
         Me.SoftSubs.BackColor = System.Drawing.Color.Transparent
         Me.SoftSubs.Controls.Add(Me.CR_SoftSubs)
         Me.SoftSubs.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SoftSubs.Location = New System.Drawing.Point(5, 190)
+        Me.SoftSubs.Location = New System.Drawing.Point(5, 215)
         Me.SoftSubs.Name = "SoftSubs"
         Me.SoftSubs.Size = New System.Drawing.Size(490, 65)
         Me.SoftSubs.TabIndex = 20
@@ -273,11 +277,12 @@ Partial Class Einstellungen
         '
         Me.GB_SubLanguage.BackColor = System.Drawing.Color.Transparent
         Me.GB_SubLanguage.Controls.Add(Me.CB_CR_Harsubs)
+        Me.GB_SubLanguage.Controls.Add(Me.DubMode)
         Me.GB_SubLanguage.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GB_SubLanguage.ForeColor = System.Drawing.Color.Black
-        Me.GB_SubLanguage.Location = New System.Drawing.Point(5, 120)
+        Me.GB_SubLanguage.Location = New System.Drawing.Point(5, 115)
         Me.GB_SubLanguage.Name = "GB_SubLanguage"
-        Me.GB_SubLanguage.Size = New System.Drawing.Size(490, 65)
+        Me.GB_SubLanguage.Size = New System.Drawing.Size(490, 95)
         Me.GB_SubLanguage.TabIndex = 10
         Me.GB_SubLanguage.TabStop = False
         Me.GB_SubLanguage.Text = "Sub Sprache"
@@ -289,7 +294,7 @@ Partial Class Einstellungen
         Me.CB_CR_Harsubs.FormattingEnabled = True
         Me.CB_CR_Harsubs.IntegralHeight = False
         Me.CB_CR_Harsubs.ItemHeight = 23
-        Me.CB_CR_Harsubs.Location = New System.Drawing.Point(85, 25)
+        Me.CB_CR_Harsubs.Location = New System.Drawing.Point(85, 55)
         Me.CB_CR_Harsubs.Name = "CB_CR_Harsubs"
         Me.CB_CR_Harsubs.Size = New System.Drawing.Size(320, 29)
         Me.CB_CR_Harsubs.TabIndex = 20
@@ -795,10 +800,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage1.Size = New System.Drawing.Size(501, 519)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "  Main"
         Me.TabPage1.VerticalScrollbar = True
@@ -1032,7 +1037,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 1
+        Me.TabControl1.SelectedIndex = 3
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1343,6 +1348,7 @@ Partial Class Einstellungen
         '
         'MetroTabPage1
         '
+        Me.MetroTabPage1.Controls.Add(Me.GroupBox22)
         Me.MetroTabPage1.Controls.Add(Me.GroupBox20)
         Me.MetroTabPage1.Controls.Add(Me.GroupBox19)
         Me.MetroTabPage1.Controls.Add(Me.GroupBox14)
@@ -1366,7 +1372,7 @@ Partial Class Einstellungen
         Me.GroupBox20.Controls.Add(Me.ChB_Chapters)
         Me.GroupBox20.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox20.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox20.Location = New System.Drawing.Point(3, 330)
+        Me.GroupBox20.Location = New System.Drawing.Point(3, 420)
         Me.GroupBox20.Name = "GroupBox20"
         Me.GroupBox20.Size = New System.Drawing.Size(490, 65)
         Me.GroupBox20.TabIndex = 34
@@ -1387,13 +1393,13 @@ Partial Class Einstellungen
         'GroupBox19
         '
         Me.GroupBox19.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox19.Controls.Add(Me.CB_OverrideDub)
         Me.GroupBox19.Controls.Add(Me.CB_CR_Audio)
-        Me.GroupBox19.Controls.Add(Me.DubMode)
         Me.GroupBox19.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox19.ForeColor = System.Drawing.Color.Black
         Me.GroupBox19.Location = New System.Drawing.Point(5, 15)
         Me.GroupBox19.Name = "GroupBox19"
-        Me.GroupBox19.Size = New System.Drawing.Size(490, 100)
+        Me.GroupBox19.Size = New System.Drawing.Size(490, 95)
         Me.GroupBox19.TabIndex = 33
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Dubbed"
@@ -1405,7 +1411,7 @@ Partial Class Einstellungen
         Me.CB_CR_Audio.FormattingEnabled = True
         Me.CB_CR_Audio.IntegralHeight = False
         Me.CB_CR_Audio.ItemHeight = 23
-        Me.CB_CR_Audio.Location = New System.Drawing.Point(85, 55)
+        Me.CB_CR_Audio.Location = New System.Drawing.Point(85, 21)
         Me.CB_CR_Audio.Name = "CB_CR_Audio"
         Me.CB_CR_Audio.Size = New System.Drawing.Size(320, 29)
         Me.CB_CR_Audio.TabIndex = 21
@@ -1415,11 +1421,11 @@ Partial Class Einstellungen
         '
         Me.DubMode.BackColor = System.Drawing.Color.Transparent
         Me.DubMode.FontSize = MetroFramework.MetroCheckBoxSize.SomethingInBetween
-        Me.DubMode.Location = New System.Drawing.Point(85, 21)
+        Me.DubMode.Location = New System.Drawing.Point(70, 20)
         Me.DubMode.Name = "DubMode"
-        Me.DubMode.Size = New System.Drawing.Size(320, 28)
+        Me.DubMode.Size = New System.Drawing.Size(348, 29)
         Me.DubMode.TabIndex = 5
-        Me.DubMode.Text = "accept no hardsubs for dubbed shows"
+        Me.DubMode.Text = "skip hardsubs if unavailable on dubbed shows"
         Me.DubMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.DubMode.UseCustomBackColor = True
         Me.DubMode.UseSelectable = True
@@ -1434,10 +1440,10 @@ Partial Class Einstellungen
         Me.TabPage6.HorizontalScrollbarBarColor = True
         Me.TabPage6.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage6.HorizontalScrollbarSize = 10
-        Me.TabPage6.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 44)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage6.Size = New System.Drawing.Size(501, 519)
         Me.TabPage6.TabIndex = 4
         Me.TabPage6.Text = " Funimation"
         Me.TabPage6.VerticalScrollbarBarColor = True
@@ -1671,9 +1677,9 @@ Partial Class Einstellungen
         Me.TabPage7.Controls.Add(Me.Label4)
         Me.TabPage7.Controls.Add(Me.Label6)
         Me.TabPage7.Controls.Add(Me.Label5)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 35)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 44)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(501, 528)
+        Me.TabPage7.Size = New System.Drawing.Size(501, 519)
         Me.TabPage7.TabIndex = 5
         Me.TabPage7.Text = " About  "
         '
@@ -1805,6 +1811,43 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
+        'CB_OverrideDub
+        '
+        Me.CB_OverrideDub.BackColor = System.Drawing.Color.Transparent
+        Me.CB_OverrideDub.FontSize = MetroFramework.MetroCheckBoxSize.SomethingInBetween
+        Me.CB_OverrideDub.Location = New System.Drawing.Point(70, 56)
+        Me.CB_OverrideDub.Name = "CB_OverrideDub"
+        Me.CB_OverrideDub.Size = New System.Drawing.Size(348, 29)
+        Me.CB_OverrideDub.TabIndex = 22
+        Me.CB_OverrideDub.Text = "override Dub language"
+        Me.CB_OverrideDub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.CB_OverrideDub.UseCustomBackColor = True
+        Me.CB_OverrideDub.UseSelectable = True
+        '
+        'GroupBox22
+        '
+        Me.GroupBox22.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox22.Controls.Add(Me.CB_Cap)
+        Me.GroupBox22.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox22.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox22.Location = New System.Drawing.Point(3, 280)
+        Me.GroupBox22.Name = "GroupBox22"
+        Me.GroupBox22.Size = New System.Drawing.Size(490, 65)
+        Me.GroupBox22.TabIndex = 35
+        Me.GroupBox22.TabStop = False
+        Me.GroupBox22.Text = "CC"
+        '
+        'CB_Cap
+        '
+        Me.CB_Cap.AutoSize = True
+        Me.CB_Cap.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_Cap.Location = New System.Drawing.Point(158, 23)
+        Me.CB_Cap.Name = "CB_Cap"
+        Me.CB_Cap.Size = New System.Drawing.Size(168, 19)
+        Me.CB_Cap.TabIndex = 5
+        Me.CB_Cap.Text = "use captions if available"
+        Me.CB_Cap.UseSelectable = True
+        '
         'Einstellungen
         '
         Me.ApplyImageInvert = True
@@ -1872,6 +1915,8 @@ Partial Class Einstellungen
         Me.GroupBox8.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox22.ResumeLayout(False)
+        Me.GroupBox22.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2008,4 +2053,7 @@ Partial Class Einstellungen
     Friend WithEvents ChB_Chapters As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CR_SoftSubs As MetroFramework.Controls.MetroComboBox
     Public WithEvents CR_SoftSubDefault As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents CB_OverrideDub As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents GroupBox22 As GroupBox
+    Friend WithEvents CB_Cap As MetroFramework.Controls.MetroCheckBox
 End Class

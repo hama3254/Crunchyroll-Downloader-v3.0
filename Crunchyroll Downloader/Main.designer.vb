@@ -40,6 +40,7 @@ Partial Class Main
         Me.Btn_Close = New System.Windows.Forms.Button()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.QueueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveThumbnailAsImageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToggleDebugModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Funimation_Token = New System.Windows.Forms.ToolStripMenuItem()
@@ -52,7 +53,6 @@ Partial Class Main
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ScanTimeout = New System.Windows.Forms.Timer(Me.components)
         Me.Btn_Queue = New System.Windows.Forms.Button()
-        Me.SaveModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -170,6 +170,11 @@ Partial Class Main
         Me.QueueToolStripMenuItem.Name = "QueueToolStripMenuItem"
         resources.ApplyResources(Me.QueueToolStripMenuItem, "QueueToolStripMenuItem")
         '
+        'SaveModeToolStripMenuItem
+        '
+        Me.SaveModeToolStripMenuItem.Name = "SaveModeToolStripMenuItem"
+        resources.ApplyResources(Me.SaveModeToolStripMenuItem, "SaveModeToolStripMenuItem")
+        '
         'SaveThumbnailAsImageToolStripMenuItem
         '
         Me.SaveThumbnailAsImageToolStripMenuItem.Name = "SaveThumbnailAsImageToolStripMenuItem"
@@ -234,11 +239,6 @@ Partial Class Main
         Me.Btn_Queue.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_queue
         Me.Btn_Queue.Name = "Btn_Queue"
         Me.Btn_Queue.UseVisualStyleBackColor = False
-        '
-        'SaveModeToolStripMenuItem
-        '
-        Me.SaveModeToolStripMenuItem.Name = "SaveModeToolStripMenuItem"
-        resources.ApplyResources(Me.SaveModeToolStripMenuItem, "SaveModeToolStripMenuItem")
         '
         'Main
         '

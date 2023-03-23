@@ -4507,10 +4507,10 @@ Public Class Main
         ItemBounds()
     End Sub
 
-    Private Sub PanelScroll(sender As Object, e As ScrollEventArgs) Handles Panel1.Scroll
-        'MsgBox("Scroll")
-        ItemBounds()
-    End Sub
+    'Private Sub PanelScroll(sender As Object, e As ScrollEventArgs) Handles Panel1.Scroll
+    '    'MsgBox("Scroll")
+    '    'ItemBounds()
+    'End Sub
 
     Sub ItemBounds()
         Try
@@ -4919,6 +4919,10 @@ Public Class Main
             My.Settings.Save()
 
         End If
+    End Sub
+
+    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
+
     End Sub
 
 #End Region

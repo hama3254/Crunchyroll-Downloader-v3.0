@@ -377,8 +377,12 @@ Public Class Anime_Add
 
     Public Sub FillCREpisodes(ByVal EpisodeJson As String)
 
+
+
         EpisodeJson = CleanJSON(EpisodeJson)
         Main.CR_MassEpisodes.Clear()
+
+        Dim audio_locale_filter As String = Nothing
 
         Dim EpisodeJObject As JObject = JObject.Parse(EpisodeJson)
         Dim EpisodeData As List(Of JToken) = EpisodeJObject.Children().ToList
@@ -388,6 +392,15 @@ Public Class Anime_Add
             Select Case item.Name
                 Case "data" 'each record is inside the entries array
                     For Each Entry As JObject In item.Values
+
+                        Dim audio_locale As String = Entry.GetValue("audio_locale").ToString
+                        If audio_locale_filter = Nothing Then
+                            audio_locale_filter = audio_locale
+                        ElseIf CBool(InStr(audio_locale_filter, audio_locale)) = False Then
+                            'MsgBox(audio_locale + vbNewLine + audio_locale_filter)
+                            Continue For
+                        End If
+
                         Dim episode_number As String = Entry.GetValue("episode_number").ToString
                         Dim episode_id As String = Entry.GetValue("id").ToString
                         Dim slug_title As String = Entry.GetValue("slug_title").ToString
@@ -395,6 +408,7 @@ Public Class Anime_Add
                         comboBox3.Items.Add("Episode " + episode_number)
                         comboBox4.Items.Add("Episode " + episode_number)
                         Main.CR_MassEpisodes.Add(New CR_Seasons(episode_id, slug_title, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth))
+
                     Next
             End Select
         Next
@@ -424,6 +438,8 @@ Public Class Anime_Add
 
 
             Dim EpisodeJson As String = Main.CurlAuth(JsonUrl, Loc_CR_Cookies, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth) '
+
+            'My.Computer.Clipboard.SetText(EpisodeJson)
 
             FillCREpisodes(EpisodeJson)
 

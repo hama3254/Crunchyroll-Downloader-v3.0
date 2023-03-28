@@ -1437,7 +1437,7 @@ Public Class Main
                         Dim media_guid2() As String = media_guid(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
                         If CBool(InStr(Streams, media_guid2(0))) Then
-                            MsgBox("done")
+                            'MsgBox("done")
                             'done 
                             Exit For
                         Else

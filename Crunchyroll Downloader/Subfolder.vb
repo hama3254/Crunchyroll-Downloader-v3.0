@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
+Imports System.Runtime.Remoting
 Imports System.Text
 Imports System.Windows.Forms.VisualStyles
 
@@ -56,7 +57,12 @@ Module Subfolder
             Pfad = "\\?\" + Pfad
         End If
 
-        File.WriteAllText(Pfad, Content, Encoding.UTF8)
+        Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+        Using sink As New StreamWriter(Pfad, False, utf8WithoutBom2)
+            sink.WriteLine(Content)
+        End Using
+
+        'File.WriteAllText(Pfad, Content, Encoding.UTF8)
 
     End Sub
 

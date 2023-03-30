@@ -11,7 +11,7 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **Where does the issue happen?**
- - Platform: [e.g. Crunchyroll Beta, Cruchyroll Classic, Funimation]
+ - Platform: [e.g. Crunchyroll, Funimation]
  - Settings [e.g. Hardsubs, Softsubs, ffmpeg options]
  - Version [e.g. v3.8.7.2]
 

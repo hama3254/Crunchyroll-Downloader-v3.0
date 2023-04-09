@@ -437,7 +437,22 @@ Public Class Anime_Add
             Dim Loc_CR_Cookies = " -H " + Chr(34) + Main.CR_Cookies.Replace(Chr(34), "").Replace(" -H ", "") + Chr(34)
 
 
-            Dim EpisodeJson As String = Main.CurlAuth(JsonUrl, Loc_CR_Cookies, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth) '
+            Dim EpisodeJson As String = Nothing 'CurlAuth(JsonUrl, Loc_CR_Cookies, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth) '
+
+
+            Try
+
+                EpisodeJson = CurlAuthNew(JsonUrl, Loc_CR_Cookies, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth) '
+
+            Catch ex As Exception
+                If CBool(InStr(ex.ToString, "Error - Getting")) Then
+                    MsgBox("Error invalid CR respone")
+                    Exit Sub
+                Else
+                    MsgBox("Error processing data")
+                    Exit Sub
+                End If
+            End Try
 
             'My.Computer.Clipboard.SetText(EpisodeJson)
 

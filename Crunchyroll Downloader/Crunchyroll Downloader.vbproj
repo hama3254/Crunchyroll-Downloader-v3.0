@@ -163,6 +163,7 @@
     <Compile Include="CheckBoxComboBox.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="GetData.vb" />
     <Compile Include="queue.Designer.vb">
       <DependentUpon>queue.vb</DependentUpon>
     </Compile>

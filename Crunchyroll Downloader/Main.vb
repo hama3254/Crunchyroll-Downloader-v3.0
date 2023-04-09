@@ -20,6 +20,7 @@ Imports Microsoft.Web.WebView2.Core
 Imports System.Net.Http
 Imports Crunchyroll_Downloader.CRD_Classes
 
+
 Public Class Main
     Inherits MetroForm
 
@@ -30,9 +31,6 @@ Public Class Main
     Public CheckCRLogin As Boolean = True
 
 
-    Public CR_SeasonJson As UrlJson = New UrlJson("", "")
-    Public CR_ObjectsJson As UrlJson = New UrlJson("", "")
-    Public CR_VideoJson As UrlJson = New UrlJson("", "")
     Public CR_AuthToken As String = ""
     Public CR_v1Token As String = ""
 
@@ -774,218 +772,7 @@ Public Class Main
     End Function
 #End Region
 
-#Region "curl"
 
-    Public Function Curl(ByVal Url As String) As String
-
-
-
-        Dim exepath As String = Path.Combine(Application.StartupPath, "lib", "curl.exe")
-
-        Dim startinfo As New System.Diagnostics.ProcessStartInfo
-        Dim sr As StreamReader
-        Dim sr2 As StreamReader
-        Dim cmd As String = ""
-        If Curl_insecure = True Then
-            cmd = "--insecure "
-        End If
-        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + " " + Chr(34) + Url + Chr(34)
-        Dim Proc As New Process
-        'MsgBox(cmd)
-        Dim CurlOutput As String = Nothing
-        Dim CurlError As String = Nothing
-        ' all parameters required to run the process
-        startinfo.FileName = exepath
-        startinfo.Arguments = cmd
-        startinfo.UseShellExecute = False
-        startinfo.WindowStyle = ProcessWindowStyle.Normal
-        startinfo.RedirectStandardError = True
-        startinfo.RedirectStandardOutput = True
-        startinfo.CreateNoWindow = True
-        startinfo.StandardOutputEncoding = Encoding.UTF8
-        startinfo.StandardErrorEncoding = Encoding.UTF8
-        Proc.StartInfo = startinfo
-        Proc.Start() ' start the process
-        sr = Proc.StandardOutput 'standard error is used by ffmpeg
-        sr2 = Proc.StandardError
-        'sw = proc.StandardInput
-
-        Dim start, finish, pau As Double
-        start = CSng(Microsoft.VisualBasic.DateAndTime.Timer)
-        pau = 5
-        finish = start + pau
-
-        Do
-            CurlOutput = CurlOutput + sr.ReadToEnd
-            CurlError = CurlError + sr2.ReadToEnd
-            'ffmpegOutput2 = sr.ReadLine
-            'Debug.WriteLine(CurlOutput)
-
-        Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
-
-
-        If CurlOutput = Nothing And CurlError = Nothing Then
-            Debug.WriteLine("curl-E: " + "curl: ")
-            Return CurlError
-        ElseIf CurlOutput = Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("curl-E: " + CurlError)
-            Return CurlError
-        ElseIf CurlOutput IsNot Nothing And CurlError = Nothing Then
-            Debug.WriteLine("curl-O: " + CurlOutput)
-            Return CurlOutput
-        ElseIf CurlOutput IsNot Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("curl-O: " + CurlOutput)
-            Return CurlOutput
-        Else
-            Debug.WriteLine("curl-E: " + "curl: ")
-            Return CurlError
-        End If
-
-
-    End Function
-
-    Public Function CurlPost(ByVal Url As String, ByVal Cookies As String, ByVal Auth As String, ByVal Post As String) As String
-
-
-        Dim exepath As String = Path.Combine(Application.StartupPath, "lib", "curl.exe")
-
-        Dim startinfo As New System.Diagnostics.ProcessStartInfo
-        Dim sr As StreamReader
-        Dim sr2 As StreamReader
-
-
-        Dim cmd As String = ""
-        If Curl_insecure = True Then
-            cmd = "--insecure "
-        End If
-        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + Cookies + Auth + Post + " " + Chr(34) + Url + Chr(34)
-        Dim Proc As New Process
-        'Debug.WriteLine("CurlPost: " + cmd)
-        Dim CurlOutput As String = Nothing
-        Dim CurlError As String = Nothing
-        ' all parameters required to run the process
-        startinfo.FileName = exepath
-        startinfo.Arguments = cmd
-        startinfo.UseShellExecute = False
-        startinfo.WindowStyle = ProcessWindowStyle.Normal
-        startinfo.RedirectStandardError = True
-        startinfo.RedirectStandardOutput = True
-        startinfo.CreateNoWindow = True
-        startinfo.StandardOutputEncoding = Encoding.UTF8
-        startinfo.StandardErrorEncoding = Encoding.UTF8
-        Proc.StartInfo = startinfo
-        Proc.Start() ' start the process
-        sr = Proc.StandardOutput 'standard error is used by ffmpeg
-        sr2 = Proc.StandardError
-        'sw = proc.StandardInput
-        Dim start, finish, pau As Double
-        start = CSng(Microsoft.VisualBasic.DateAndTime.Timer)
-        pau = 5
-        finish = start + pau
-
-        Do
-            CurlOutput = CurlOutput + sr.ReadToEnd
-            CurlError = CurlError + sr2.ReadToEnd
-            'ffmpegOutput2 = sr.ReadLine
-            'Debug.WriteLine(CurlOutput)
-
-        Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
-
-
-        If CurlOutput = Nothing And CurlError = Nothing Then
-            Debug.WriteLine("CurlPost-E: " + "curl: ")
-            Return CurlError
-        ElseIf CurlOutput = Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("CurlPost-E: " + CurlError)
-            Return CurlError
-        ElseIf CurlOutput IsNot Nothing And CurlError = Nothing Then
-            Debug.WriteLine("CurlPost-O: " + CurlOutput)
-            Return CurlOutput
-        ElseIf CurlOutput IsNot Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("CurlPost-O: " + CurlOutput)
-            Return CurlOutput
-        Else
-            Debug.WriteLine("CurlPost-E: " + "curl: ")
-            Return CurlError
-        End If
-
-    End Function
-
-
-    Public Function CurlAuth(ByVal Url As String, ByVal Cookies As String, ByVal Auth As String) As String
-
-
-
-        Dim exepath As String = Path.Combine(Application.StartupPath, "lib", "curl.exe")
-
-        Dim startinfo As New System.Diagnostics.ProcessStartInfo
-        Dim sr As StreamReader
-        Dim sr2 As StreamReader
-
-
-
-        Dim cmd As String = ""
-        If Curl_insecure = True Then
-            cmd = "--insecure "
-        End If
-        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + Cookies + Auth + " " + Chr(34) + Url + Chr(34)
-        Dim Proc As New Process
-        'MsgBox(cmd)
-        Dim CurlOutput As String = Nothing
-        Dim CurlError As String = Nothing
-        ' all parameters required to run the process
-        startinfo.FileName = exepath
-        startinfo.Arguments = cmd
-        startinfo.UseShellExecute = False
-        startinfo.WindowStyle = ProcessWindowStyle.Normal
-        startinfo.RedirectStandardError = True
-        startinfo.RedirectStandardOutput = True
-        startinfo.CreateNoWindow = True
-        startinfo.StandardOutputEncoding = Encoding.UTF8
-        startinfo.StandardErrorEncoding = Encoding.UTF8
-        Proc.StartInfo = startinfo
-        Proc.Start() ' start the process
-        sr = Proc.StandardOutput 'standard error is used by ffmpeg
-        sr2 = Proc.StandardError
-        'sw = proc.StandardInput
-
-        Dim start, finish, pau As Double
-        start = CSng(Microsoft.VisualBasic.DateAndTime.Timer)
-        pau = 5
-        finish = start + pau
-
-        Do
-            CurlOutput = CurlOutput + sr.ReadToEnd
-            CurlError = CurlError + sr2.ReadToEnd
-            'ffmpegOutput2 = sr.ReadLine
-            'Debug.WriteLine(CurlOutput)
-
-        Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
-
-        If CurlOutput = Nothing And CurlError = Nothing Then
-            Debug.WriteLine("CurlAuth-E: " + "curl: ")
-            Return CurlError
-        ElseIf CurlOutput = Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("CurlAuth-E: " + CurlError)
-            Return CurlError
-        ElseIf CurlOutput IsNot Nothing And CurlError = Nothing Then
-            Debug.WriteLine("CurlAuth-O: " + CurlOutput)
-            Return CurlOutput
-        ElseIf CurlOutput IsNot Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("CurlAuth-O: " + CurlOutput)
-            Return CurlOutput
-        Else
-            Debug.WriteLine("CurlAuth-E: " + "curl: ")
-            Return CurlError
-        End If
-
-
-    End Function
-
-
-
-
-#End Region
 
 
 #Region "CR-Beta"
@@ -1101,13 +888,20 @@ Public Class Main
 
             Dim Loc_CR_Cookies = " -H " + Chr(34) + CR_Cookies.Replace(Chr(34), "").Replace(" -H ", "") + Chr(34)
 
-            SeasonJson = CurlAuth(JsonUrl, Loc_CR_Cookies, Auth)
+            Try
 
-            If CBool(InStr(SeasonJson, "curl:")) = True Then
-                'Browser.WebView2.CoreWebView2.Navigate(Url)
-                SetStatusLabel("Status: Critical error. #1091")
-                Exit Sub
-            End If
+                SeasonJson = CurlAuthNew(JsonUrl, Loc_CR_Cookies, Auth)
+
+            Catch ex As Exception
+                If CBool(InStr(ex.ToString, "Error - Getting")) Then
+                    MsgBox("Error invalid CR respone")
+                    Exit Sub
+                Else
+                    MsgBox("Error processing data")
+                    Exit Sub
+                End If
+            End Try
+
 
 
         Else
@@ -1186,12 +980,12 @@ Public Class Main
 
     End Sub
 
-    Public Sub GetBetaVideoProxy(ByVal requesturl As String, ByVal AuthToken As String, ByVal WebsiteURL As String)
-        Dim Evaluator = New Thread(Sub() Me.GetBetaVideo(requesturl, AuthToken, WebsiteURL))
+    Public Sub GetCRVideoProxy(ByVal requesturl As String, ByVal AuthToken As String, ByVal WebsiteURL As String)
+        Dim Evaluator = New Thread(Sub() Me.GetCRVideo(requesturl, AuthToken, WebsiteURL))
         Evaluator.Start()
     End Sub
 
-    Public Sub GetBetaVideo(ByVal Streams As String, ByVal AuthToken As String, ByVal WebsiteURL As String)
+    Public Sub GetCRVideo(ByVal Streams As String, ByVal AuthToken As String, ByVal WebsiteURL As String)
         If b = False Then
             b = True
         End If
@@ -1241,47 +1035,29 @@ Public Class Main
 
             Dim CR_EpisodeID As String = ""
 
+#Region "No anime :("
+
+
             If CBool(InStr(WebsiteURL, "musicvideo")) = True Then
                 'TextBox2_Text to bypasss name for now
 
                 Dim ObjectsURL As String = Streams.Replace("music/", "music/music_videos/").Replace("/streams", "")
 
-
-                ObjectJson = CurlAuth(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
-
-                'MsgBox(ObjectsURL)
-
-                'MsgBox(ObjectJson.Length.ToString)
-                'MsgBox(ObjectJson)
-
-                'title":" + "
-
-                '"name":" + "
+                ObjectJson = CurlAuthNew(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
 
                 Dim Title() As String = ObjectJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim Title2() As String = Title(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
                 Dim Arti() As String = ObjectJson.Split(New String() {Chr(34) + "name" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim Arti2() As String = Arti(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-
-                'MsgBox(Arti2(0))
-                'MsgBox(Title2(0))
-
 
                 TextBox2_Text = Arti2(0) + " - " + Title2(0)
 
             ElseIf CBool(InStr(WebsiteURL, "/concert/")) = True Then
 
-                'TextBox2_Text to bypasss name for now
-
-                'https://www.crunchyroll.com/content/v2/music/MCB3E02384/streams?locale=de-DE
-
-                'https://www.crunchyroll.com/content/v2/music/concerts/MCB3E02384?locale=de-DE
-
                 Dim ObjectsURL As String = Streams.Replace("music/", "music/concerts/").Replace("/streams", "")
 
-                ObjectJson = CurlAuth(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
+                ObjectJson = CurlAuthNew(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
 
 
                 Dim Title() As String = ObjectJson.Split(New String() {Chr(34) + "title" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1296,10 +1072,9 @@ Public Class Main
 
 
                 TextBox2_Text = Arti2(0) + " - " + Title2(0)
+#End Region
 
             Else
-
-
                 Dim ObjectsURLBuilder() As String = Streams.Split(New String() {"videos"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim ObjectsURLBuilder2() As String = ObjectsURLBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim ObjectsURLBuilder3() As String = WebsiteURL.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1310,35 +1085,7 @@ Public Class Main
 
                 Debug.WriteLine(ObjectsURL)
 
-
-                ObjectJson = CurlAuth(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
-
-
-
-                'ObjectJson = Curl(ObjectsURL)
-
-                'MsgBox(ObjectJson)
-
-                If CBool(InStr(ObjectJson, "curl:")) = True Then
-                    ObjectJson = CurlAuth(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
-                End If
-
-
-
-                If CBool(InStr(ObjectJson, "curl:")) = True And CBool(InStr(CR_ObjectsJson.Url, ObjectsURLBuilder4(0))) Then
-                    Debug.WriteLine("curl error, using CR_ObjectsJson " + vbNewLine + ObjectJson)
-
-                    ObjectJson = CR_ObjectsJson.Content
-                    CR_ObjectsJson = New UrlJson("", "")
-                ElseIf CBool(InStr(ObjectJson, "curl:")) Then
-
-                    Throw New System.Exception("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
-
-                    'MsgBox("Error - Getting ObjectJson data" + vbNewLine + ObjectJson)
-                    'Exit Sub
-                End If
-
-
+                ObjectJson = CurlAuthNew(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
 
                 'Filter JSON esqaped characters
                 'Debug.WriteLine(Date.Now.ToString + "before:" + ObjectJson)
@@ -1394,22 +1141,8 @@ Public Class Main
 
 #Region "VideoJson"
             Dim VideoJson As String = Nothing
-            VideoJson = CurlAuth(Streams, Loc_CR_Cookies, Loc_AuthToken)
 
-            If CBool(InStr(VideoJson, "curl:")) = True Then
-                VideoJson = CurlAuth(Streams, Loc_CR_Cookies, Loc_AuthToken)
-
-            End If
-
-            If CBool(InStr(VideoJson, "curl:")) = True Then 'And CBool(InStr(CR_VideoJson.Url, StreamsUrlBuilder2(0))) Then
-                Debug.WriteLine("curl error, using CR_VideoJson " + vbNewLine + VideoJson)
-                VideoJson = CR_VideoJson.Content
-                CR_VideoJson = New UrlJson("", "")
-            ElseIf CBool(InStr(VideoJson, "curl:")) = True Then
-                Throw New System.Exception("Error - Getting VideoJson data" + vbNewLine + VideoJson) 'VideoJson = Nothing
-                ' MsgBox("Error - Getting VideoJson data" + vbNewLine + VideoJson)
-                '  Exit Sub
-            End If
+            VideoJson = CurlAuthNew(Streams, Loc_CR_Cookies, Loc_AuthToken)
 
             Debug.WriteLine("VideoJson: " + VideoJson)
             Debug.WriteLine("VideoStreams: " + Streams)
@@ -1447,17 +1180,11 @@ Public Class Main
 
                             'MsgBox(Streams)
 
-                            VideoJson = CurlAuth(Streams, Loc_CR_Cookies, Loc_AuthToken)
 
-                            If CBool(InStr(VideoJson, "curl:")) = True Then
-                                VideoJson = CurlAuth(Streams, Loc_CR_Cookies, Loc_AuthToken)
-                            Else
-                                Exit For
-                            End If
 
-                            If CBool(InStr(VideoJson, "curl:")) = True Then
-                                Throw New System.Exception("Error - Getting VideoJson data" + vbNewLine + VideoJson)
-                            End If
+
+                            VideoJson = CurlAuthNew(Streams, Loc_CR_Cookies, Loc_AuthToken)
+
 
                         End If
 
@@ -1597,6 +1324,7 @@ Public Class Main
 
 #Region "Name von Crunchyroll"
 
+            Dim MergeSearch As String = "if not changed no Merch possible, i hope..."
 
             If CR_episode = Nothing Or CR_episode = "" And CR_episode2 = Nothing Then
                 CR_episode_int = "0"
@@ -1657,10 +1385,13 @@ Public Class Main
 
                     If NameParts(i) = "AnimeTitle" Then
                         CR_FilenName = CR_FilenName + " " + CR_series_title
+                        MergeSearch = MergeSearch + " " + CR_series_title
                     ElseIf NameParts(i) = "Season" Then
                         CR_FilenName = CR_FilenName + " " + CR_season_number
+                        MergeSearch = MergeSearch + " " + CR_season_number
                     ElseIf NameParts(i) = "EpisodeNR" Then
                         CR_FilenName = CR_FilenName + " " + CR_episode
+                        MergeSearch = MergeSearch + " " + CR_episode
                     ElseIf NameParts(i) = "EpisodeName" Then
                         CR_FilenName = CR_FilenName + " " + CR_title
                     ElseIf NameParts(i) = "AnimeDub" Then
@@ -1823,6 +1554,13 @@ Public Class Main
             Dim Pfad6 As String = Pfad5
             Dim MergeAudio As Boolean = False
 
+            If DownloadScope = DownloadScopeEnum.MergeAudio Then
+
+                Pfad5 = FindExistingVideo(Path.GetDirectoryName(Pfad5), MergeSearch, Pfad5)
+
+            End If
+            '
+
             If My.Computer.FileSystem.FileExists(Pfad5) And DownloadScope = DownloadScopeEnum.OldDefault Then 'Pfad = Kompeltter Pfad mit Dateinamen + ENdung
                 Me.Invoke(New Action(Function() As Object
                                          Anime_Add.StatusLabel.Text = "Status: The file already exists."
@@ -1846,6 +1584,8 @@ Public Class Main
                 Pfad6 = Path.GetDirectoryName(Pfad5) + "\" + GeräteID() + Path.GetExtension(Pfad5) '+ "."
                 FileSystem.Rename(Pfad5, Pfad6)
                 MergeAudio = True
+
+
 
             ElseIf My.Computer.FileSystem.FileExists(Path.GetDirectoryName(Pfad5) + "\" + Path.GetFileNameWithoutExtension(Pfad5) + "aac") And DownloadScope = DownloadScopeEnum.AudioOnly Then
 
@@ -2304,14 +2044,22 @@ Public Class Main
         Catch ex As Exception
         End Try
         If KeepCache = False Then
+
+
+            Dim folderPath As String = Pfad
+            Dim files() As String = Directory.GetFiles(folderPath, "*", SearchOption.AllDirectories)
+
+            For Each file As String In files
+                If CBool(InStr(file, "CRD-Temp-File-")) Then
+                    'MsgBox(file)
+                    System.IO.File.Delete(file)
+                End If
+            Next
             Try
                 Dim di As New System.IO.DirectoryInfo(Pfad)
                 For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
-                    If fi.Attributes.HasFlag(System.IO.FileAttributes.Hidden) Then
-                    Else
-                        If CBool(InStr(fi.Name, "CRD-Temp-File-")) Then
-                            System.IO.Directory.Delete(fi.FullName, True)
-                        End If
+                    If CBool(InStr(fi.Name, "CRD-Temp-File-")) Then
+                        System.IO.Directory.Delete(fi.FullName, True)
                     End If
                 Next
             Catch ex As Exception
@@ -3747,7 +3495,7 @@ Public Class Main
                     End If
                     Me.Text = "Status: Crunchyroll episode found."
                     Debug.WriteLine("Crunchyroll episode found")
-                    GetBetaVideoProxy(Request.Uri, CR_AuthToken, WebbrowserURL)
+                    GetCRVideoProxy(Request.Uri, CR_AuthToken, WebbrowserURL)
                     b = True
                     LoadedUrls.Clear()
                     Me.Text = "Crunchyroll Downloader"
@@ -3788,66 +3536,6 @@ Public Class Main
                     LoadedUrls.Clear()
                     Me.Text = "Crunchyroll Downloader"
                     Exit Sub
-                End If
-            ElseIf CBool(InStr(Request.Uri, "crunchyroll.com/")) And CBool(InStr(Request.Uri, "/objects/")) Then
-                If i = LoadedUrls.Count - 1 And SavedObjectsUrl IsNot "" Then
-
-                    If b = False Then
-                        Dim ObjectJson As String
-                        Dim ObjectsUrl As String = Request.Uri
-                        Dim StreamsUrl As String
-                        ObjectJson = Curl(ObjectsUrl)
-
-                        If CBool(InStr(ObjectJson, "curl:")) = True Then
-                            ObjectJson = Curl(ObjectsUrl)
-                        End If
-
-                        If CBool(InStr(ObjectJson, "curl:")) = True Then
-                            Continue For
-                        ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
-
-                            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                                Anime_Add.StatusLabel.Text = "Status: Failed, check CR login"
-                            End If
-                            Me.Text = "Status: Failed, check CR login"
-                            Debug.WriteLine("Status: Failed, check CR login")
-
-                            Continue For
-                        End If
-
-
-
-
-                        Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"videos/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                        Dim StreamsUrlBuilder3() As String = ObjectsUrl.Split(New String() {"objects/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                        Dim StreamsUrlBuilder4() As String = StreamsUrlBuilder3(1).Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                        StreamsUrl = StreamsUrlBuilder3(0) + "videos/" + StreamsUrlBuilder2(0) + "/streams?" + StreamsUrlBuilder4(1)
-
-
-                        If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                            Anime_Add.StatusLabel.Text = "Status: Crunchyroll episode found."
-                        End If
-                        Me.Text = "Status: Crunchyroll episode found."
-                        Debug.WriteLine("Crunchyroll episode found")
-                        Dim Headers As New List(Of KeyValuePair(Of String, String))
-                        Headers.AddRange(Request.Headers.ToList)
-                        Dim AuthToken As String = ""
-                        For ii As Integer = 0 To Headers.Count
-                            If CBool(InStr(Headers.Item(i).Value, "Bearer")) Then
-                                AuthToken = Headers.Item(i).Value
-                            End If
-                        Next
-                        GetBetaVideoProxy(StreamsUrl, AuthToken, WebbrowserURL)
-                        b = True
-                        LoadedUrls.Clear()
-                        Me.Text = "Crunchyroll Downloader"
-                        Exit Sub
-                    End If
-                Else
-                    SavedObjectsUrl = Request.Uri
                 End If
 
             End If
@@ -4480,13 +4168,7 @@ Public Class Main
         'MsgBox(CR_Cookies)
     End Sub
 
-    Private Sub ClearAllSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UrlJsonsToolStripMenuItem.Click
 
-        MsgBox("Season" + vbNewLine + CR_SeasonJson.Content.Count.ToString)
-        MsgBox("Object" + vbNewLine + CR_ObjectsJson.Content.Count.ToString)
-        MsgBox("Streams" + vbNewLine + CR_VideoJson.Content.Count.ToString)
-
-    End Sub
 
 
     Private Sub ItemBoundsToolStripMenuItem_Click(sender As Object, e As EventArgs)
@@ -4798,7 +4480,22 @@ Public Class Main
 
             Dim StreamsUrl As String = Nothing
             Dim ObjectJson As String
-            ObjectJson = CurlAuth(ObjectsUrl, Loc_CR_Cookies, Auth2)
+
+
+
+            Try
+
+                ObjectJson = CurlAuthNew(ObjectsUrl, Loc_CR_Cookies, Auth2)
+
+            Catch ex As Exception
+                If CBool(InStr(ex.ToString, "Error - Getting")) Then
+                    MsgBox("Error invalid CR respone")
+                    Exit Sub
+                Else
+                    MsgBox("Error processing data")
+                    Exit Sub
+                End If
+            End Try
 
 
             If CBool(InStr(ObjectJson, "curl:")) = True Then
@@ -4831,7 +4528,7 @@ Public Class Main
                 Exit Sub
             End Try
 
-            GetBetaVideoProxy(StreamsUrl, Auth2, url)
+            GetCRVideoProxy(StreamsUrl, Auth2, url)
 
 
         Else

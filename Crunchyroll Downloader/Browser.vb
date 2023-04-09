@@ -174,29 +174,7 @@ Public Class Browser
                 Main.CR_v1Token = ""
                 Exit Sub
 
-            ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "streams?")) Then
-                Debug.WriteLine("Crunchyroll-Single: " + e.Request.Uri)
-                Dim Content As Stream = Await e.Response.GetContentAsync
-                Dim ContentString As String = Nothing
-                Dim reader As New StreamReader(Content)
-                ContentString = reader.ReadToEnd
 
-                Main.LoadedUrls.Add(e.Request)
-                Main.CR_VideoJson = New UrlJson(e.Request.Uri, ContentString)
-
-                Exit Sub
-            ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "/objects/")) And CBool(InStr(Main.LoadingUrl, "/watch/")) Then
-                'MsgBox(True.ToString)
-                Debug.WriteLine(e.Request.Uri)
-                'Main.LoadedUrls.Add(e.Request.Uri)
-                Dim Content As Stream = Await e.Response.GetContentAsync
-                Dim ContentString As String = Nothing
-                Dim reader As New StreamReader(Content)
-                ContentString = reader.ReadToEnd
-                Main.CR_ObjectsJson = New UrlJson(e.Request.Uri, ContentString)
-
-
-                Exit Sub
 
 
             ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "seasons?preferred_audio_language=")) And CBool(InStr(Main.LoadingUrl, "/series/")) Then

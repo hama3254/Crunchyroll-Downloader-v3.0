@@ -15,7 +15,7 @@ Module GetData
         If Main.Curl_insecure = True Then
             cmd = "--insecure "
         End If
-        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + " " + Chr(34) + Url + Chr(34)
+        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Settings.User_Agend.Replace("User-Agent: ", "") + " " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
         'MsgBox(cmd)
         Dim CurlOutput As String = Nothing
@@ -84,7 +84,7 @@ Module GetData
         If Main.Curl_insecure = True Then
             cmd = "--insecure "
         End If
-        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + Cookies + Auth + Post + " " + Chr(34) + Url + Chr(34)
+        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Settings.User_Agend.Replace("User-Agent: ", "") + Cookies + Auth + Post + " " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
         'Debug.WriteLine("CurlPost: " + cmd)
         Dim CurlOutput As String = Nothing
@@ -154,7 +154,7 @@ Module GetData
         If Main.Curl_insecure = True Then
             cmd = "--insecure "
         End If
-        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + Cookies + Auth + " " + Chr(34) + Url + Chr(34)
+        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Settings.User_Agend.Replace("User-Agent: ", "") + Cookies + Auth + " " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
         'MsgBox(cmd)
         Dim CurlOutput As String = Nothing

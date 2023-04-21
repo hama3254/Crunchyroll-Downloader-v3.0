@@ -973,7 +973,7 @@ Public Class Einstellungen
         Try
             Dim client0 As New WebClient
             client0.Encoding = Encoding.UTF8
-            client0.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+            client0.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
 
             Dim str0 As String = client0.DownloadString("https://api.github.com/repos/hama3254/Crunchyroll-Downloader-v3.0/releases")
 

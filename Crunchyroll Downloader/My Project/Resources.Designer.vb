@@ -399,15 +399,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0&quot; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property ffmpeg_user_agend() As String
-            Get
-                Return ResourceManager.GetString("ffmpeg_user_agend", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die src=&quot;/player/ ähnelt.
         '''</summary>
         Friend ReadOnly Property Funimation_Player_ID() As String

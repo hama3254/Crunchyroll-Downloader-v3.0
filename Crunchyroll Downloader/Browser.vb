@@ -26,7 +26,9 @@ Public Class Browser
         AddHandler WebView2.CoreWebView2.WebResourceResponseReceived, AddressOf ObserveResponse
 
         AddHandler WebView2.CoreWebView2.WebResourceRequested, AddressOf ObserveHttp
-        WebView2.CoreWebView2.Settings.UserAgent = My.Resources.ffmpeg_user_agend.Replace(Chr(34), "").Replace("User-Agent: ", "")
+        'WebView2.CoreWebView2.Settings.UserAgent = My.Settings.User_Agend.Replace(Chr(34), "").Replace("User-Agent: ", "")
+        My.Settings.User_Agend = Chr(34) + "User-Agent: " + WebView2.CoreWebView2.Settings.UserAgent + Chr(34)
+        'MsgBox(My.Settings.User_Agend)
         If WebView2.CoreWebView2.Source = "about:blank" Or WebView2.CoreWebView2.Source = Nothing Then
             'TextBox1.Text = Main.Startseite
             WebView2.CoreWebView2.Navigate(Main.Startseite)

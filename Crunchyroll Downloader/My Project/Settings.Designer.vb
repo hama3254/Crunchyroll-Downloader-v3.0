@@ -617,6 +617,19 @@ Namespace My
                 Me("Captions") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("""User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,"& _ 
+            " like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34""")>  _
+        Public Property User_Agend() As String
+            Get
+                Return CType(Me("User_Agend"),String)
+            End Get
+            Set
+                Me("User_Agend") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

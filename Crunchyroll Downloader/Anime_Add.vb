@@ -192,7 +192,7 @@ Public Class Anime_Add
                                 Try
                                     Using client As New WebClient()
                                         client.Encoding = System.Text.Encoding.UTF8
-                                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                                        client.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
                                         v1Json = client.DownloadString(v1JsonUrl)
                                     End Using
                                     Main.WebbrowserURL = textBox1.Text
@@ -489,7 +489,7 @@ Public Class Anime_Add
             Try
                 Using client As New WebClient()
                     client.Encoding = System.Text.Encoding.UTF8
-                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    client.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
                     EpisodeJson = client.DownloadString(EpisodeJsonURL)
                 End Using
             Catch ex As Exception

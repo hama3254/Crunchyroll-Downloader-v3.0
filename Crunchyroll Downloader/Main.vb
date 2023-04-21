@@ -2249,7 +2249,7 @@ Public Class Main
             Try
                 Using client As New WebClient()
                     client.Encoding = System.Text.Encoding.UTF8
-                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    client.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
                     SeasonJson = client.DownloadString(JsonUrl)
                 End Using
             Catch ex As Exception
@@ -2426,7 +2426,7 @@ Public Class Main
                         Try
                             Using client As New WebClient()
                                 client.Encoding = System.Text.Encoding.UTF8
-                                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                                client.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
                                 v1Json = client.DownloadString(v1JsonUrl)
                             End Using
                             WebbrowserURL = ListOfEpisodes(i)
@@ -2542,7 +2542,7 @@ Public Class Main
                 'Throw New Exception("TEst")
                 Using client As New WebClient()
                     client.Encoding = System.Text.Encoding.UTF8
-                    client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                    client.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
                     v1Json = client.DownloadString(v1JsonUrl)
                 End Using
             Catch ex As Exception
@@ -2773,7 +2773,7 @@ Public Class Main
             Dim EpisodeJsonString As String = Nothing
             Dim PlayerClient As New WebClient
             PlayerClient.Encoding = Encoding.UTF8
-            PlayerClient.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+            PlayerClient.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
             PlayerClient.Headers.Add(HttpRequestHeader.Accept, "application/json, text/plain, */*")
             PlayerClient.Headers.Add("origin: https://www.funimation.com/")
             PlayerClient.Headers.Add(HttpRequestHeader.Referer, "https://www.funimation.com/")
@@ -2964,7 +2964,7 @@ Public Class Main
                     Dim FunimationAudio() As String = str1.Split(New String() {"# AUDIO groups"}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim FunimationAudio2() As String = FunimationAudio(1).Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim FunimationAudio3() As String = FunimationAudio2(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                    FunimationAudioMap = " -headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + FunimationAudio3(0) + Chr(34)
+                    FunimationAudioMap = " -headers " + My.Settings.User_Agend + " -i " + Chr(34) + FunimationAudio3(0) + Chr(34)
                 End If
 
                 Dim str2() As String = str1.Split(New String() {"# keyframes"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -3157,9 +3157,9 @@ Public Class Main
                             DispositionIndex = MapCount
                         End If
                         If SoftSubMergeURLs = Nothing Then
-                            SoftSubMergeURLs = " -headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + SoftSub(0) + Chr(34)
+                            SoftSubMergeURLs = " -headers " + My.Settings.User_Agend + " -i " + Chr(34) + SoftSub(0) + Chr(34)
                         Else
-                            SoftSubMergeURLs = SoftSubMergeURLs + " -headers " + My.Resources.ffmpeg_user_agend + " -i " + Chr(34) + SoftSub(0) + Chr(34)
+                            SoftSubMergeURLs = SoftSubMergeURLs + " -headers " + My.Settings.User_Agend + " -i " + Chr(34) + SoftSub(0) + Chr(34)
                         End If
                         If FunimationAudioMap = Nothing Then
                             SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (MapCount + 1).ToString
@@ -3231,7 +3231,7 @@ Public Class Main
                 If FunimationAudioMap = Nothing Then
                     Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + DubMetatata + " " + ffmpeg_command_temp
                 Else
-                    Funimation_m3u8_final = FunimationAudioMap.Replace(" -headers " + My.Resources.ffmpeg_user_agend + " ", "") + DubMetatata + " " + ffmpeg_command_temp
+                    Funimation_m3u8_final = FunimationAudioMap.Replace(" -headers " + My.Settings.User_Agend + " ", "") + DubMetatata + " " + ffmpeg_command_temp
                 End If
             Else
                 Funimation_m3u8_final = "-i " + Chr(34) + Funimation_m3u8_final + Chr(34) + FunimationAudioMap + DubMetatata + " " + ffmpeg_command
@@ -3335,7 +3335,7 @@ Public Class Main
                 Try
                     Using client As New WebClient()
                         client.Encoding = System.Text.Encoding.UTF8
-                        client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                        client.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
                         Dim SaveName As String = System.Text.RegularExpressions.Regex.Replace(DocumentTitle.Replace(" - Schaue legal auf Wakanim.TV", ""), "[^\w\\-]", " ").Replace(":", "")
                         SaveName = RemoveExtraSpaces(SaveName)
                         client.DownloadFile(WakanimSub2(0), Pfad + "\" + SaveName + ".vtt")

@@ -744,7 +744,7 @@ Public Class CRD_List_Item
 
                 Dim Request As HttpWebRequest = CType(WebRequest.Create(DL_URL), HttpWebRequest)
                 Dim Bytes(NewBytes) As Byte
-                Request.UserAgent = My.Resources.ffmpeg_user_agend.Replace(Chr(34), "").Replace("User-Agent: ", "")
+                Request.UserAgent = My.Settings.User_Agend.Replace(Chr(34), "").Replace("User-Agent: ", "")
                 Request.Timeout = 30000
                 Request.Method = "GET"
                 Request.AddRange(CurrentSize, CurrentSize + NewBytes)
@@ -1203,8 +1203,8 @@ Public Class CRD_List_Item
 
         RaiseEvent UpdateUI(100, di, PauseTime)
 
-        If CBool(InStr(DL_URL, " -headers " + My.Resources.ffmpeg_user_agend)) = True And CBool(InStr(DL_URL, "https:\\")) = False Then
-            DL_URL = DL_URL.Replace(" -headers " + My.Resources.ffmpeg_user_agend, "")
+        If CBool(InStr(DL_URL, " -headers " + My.Settings.User_Agend)) = True And CBool(InStr(DL_URL, "https:\\")) = False Then
+            DL_URL = DL_URL.Replace(" -headers " + My.Settings.User_Agend, "")
         End If
 
         'MsgBox(DL_URL)
@@ -1252,7 +1252,7 @@ Public Class CRD_List_Item
 
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
-        Dim cmd As String = "-user_agent " + My.Resources.ffmpeg_user_agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        Dim cmd As String = "-user_agent " + My.Settings.User_Agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
         LogText.Add(Date.Now.ToString + " " + cmd)
         If Debug2 = True Then
             MsgBox(cmd)
@@ -1464,7 +1464,7 @@ Public Class CRD_List_Item
             'MsgBox(BaseURL + SiteList(i) + vbNewLine + Pfad_DL + "\" + SiteList(i))
             Dim iWert As Integer = i
             Using client As New WebClient()
-                client.Headers.Add(My.Resources.ffmpeg_user_agend.Replace(Chr(34), ""))
+                client.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
                 client.Headers.Add(HttpRequestHeader.AcceptEncoding, "*")
                 client.DownloadFile(BaseURL + SiteList(i), Pfad_DL + "\" + SiteList(i))
                 Pause(1)

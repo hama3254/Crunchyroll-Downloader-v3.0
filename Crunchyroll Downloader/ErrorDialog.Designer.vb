@@ -22,11 +22,13 @@ Partial Class ErrorDialog
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
         Me.pictureBox3 = New System.Windows.Forms.PictureBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.PictureBox9 = New System.Windows.Forms.PictureBox()
         Me.StatusLabel = New MetroFramework.Controls.MetroLabel()
+        Me.Delay = New System.Windows.Forms.Timer(Me.components)
         CType(Me.pictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -50,7 +52,7 @@ Partial Class ErrorDialog
         Me.pictureBox3.BackColor = System.Drawing.Color.Transparent
         Me.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pictureBox3.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_close
-        Me.pictureBox3.Location = New System.Drawing.Point(329, 1)
+        Me.pictureBox3.Location = New System.Drawing.Point(333, -3)
         Me.pictureBox3.Name = "pictureBox3"
         Me.pictureBox3.Size = New System.Drawing.Size(50, 40)
         Me.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -63,7 +65,7 @@ Partial Class ErrorDialog
         Me.GroupBox3.Controls.Add(Me.PictureBox9)
         Me.GroupBox3.Controls.Add(Me.StatusLabel)
         Me.GroupBox3.Controls.Add(Me.ComboBox1)
-        Me.GroupBox3.Location = New System.Drawing.Point(13, 43)
+        Me.GroupBox3.Location = New System.Drawing.Point(13, 60)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(354, 203)
         Me.GroupBox3.TabIndex = 38
@@ -98,6 +100,10 @@ Partial Class ErrorDialog
         Me.StatusLabel.Text = "Status: idle"
         Me.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'Delay
+        '
+        Me.Delay.Interval = 2000
+        '
         'ErrorDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -106,6 +112,7 @@ Partial Class ErrorDialog
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.pictureBox3)
         Me.Name = "ErrorDialog"
+        Me.Text = "CRD-Dialog-Box"
         CType(Me.pictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
@@ -119,4 +126,5 @@ Partial Class ErrorDialog
     Private WithEvents PictureBox9 As PictureBox
     Friend WithEvents ComboBox1 As MetroFramework.Controls.MetroComboBox
     Public WithEvents StatusLabel As MetroFramework.Controls.MetroLabel
+    Friend WithEvents Delay As Timer
 End Class

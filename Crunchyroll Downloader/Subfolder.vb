@@ -239,6 +239,9 @@ Module Subfolder
 
     End Function
 
+    Public Declare Function SetForegroundWindow Lib "user32" (ByVal hwnd As IntPtr) As IntPtr
+
+    Public Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As IntPtr
 
 
 End Module

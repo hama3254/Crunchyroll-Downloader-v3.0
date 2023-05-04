@@ -189,6 +189,7 @@ Module GetData
         Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
 
+
         If CurlOutput = Nothing Or CBool(InStr(CurlOutput, "curl")) Then
             Throw New System.Exception("Error - Getting ObjectJson data" + vbNewLine + CurlOutput)
             Return Nothing

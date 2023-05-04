@@ -338,7 +338,6 @@ Namespace My.Resources
         
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die ;FFMETADATA1
-        '''title=[Titel]
         '''
         '''[CHAPTER]
         '''TIMEBASE=1/1000
@@ -359,7 +358,6 @@ Namespace My.Resources
         
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die ;FFMETADATA1
-        '''title=[Titel]
         '''
         '''[CHAPTER]
         '''TIMEBASE=1/1000

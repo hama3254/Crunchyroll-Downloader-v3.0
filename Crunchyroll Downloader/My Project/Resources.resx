@@ -531,7 +531,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   </data>
   <data name="ffmpeg_metadata" xml:space="preserve">
     <value>;FFMETADATA1
-title=[Titel]
 
 [CHAPTER]
 TIMEBASE=1/1000
@@ -546,7 +545,6 @@ END=[duration_ms]</value>
   </data>
   <data name="ffmpeg_metadata_out" xml:space="preserve">
     <value>;FFMETADATA1
-title=[Titel]
 
 [CHAPTER]
 TIMEBASE=1/1000

@@ -7,8 +7,10 @@ Public Class ErrorDialog
 
 
     Private Sub Reso_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Me.TopMost = True
         Manager.Owner = Me
         Me.StyleManager = Manager
+
         pictureBox3.Image = Main.CloseImg
         ComboBox1.Text = Nothing
 
@@ -97,7 +99,7 @@ Public Class ErrorDialog
             End Try
 
         End If
-
+        Delay.Enabled = True
     End Sub
 
     Private Sub SurroundingSub()
@@ -208,4 +210,16 @@ Public Class ErrorDialog
         PictureBox9.Cursor = Cursors.Hand
     End Sub
 
+    Private Sub Delay_Tick(sender As Object, e As EventArgs) Handles Delay.Tick
+
+        Try
+            Dim hwnd As IntPtr = FindWindow(Nothing, Me.Text)
+            SetForegroundWindow(hwnd)
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+        'MsgBox(Me.Text)
+        Delay.Enabled = False
+    End Sub
 End Class

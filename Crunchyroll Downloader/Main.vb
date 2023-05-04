@@ -1485,8 +1485,10 @@ Public Class Main
                         ChaptersJson = Nothing
                         Debug.WriteLine("no Chapter data... ignoring")
                     End If
-                    If ChaptersJson IsNot Nothing Then
 
+
+                    If ChaptersJson IsNot Nothing Then
+                        'MsgBox(ChaptersJson)
                         Dim StartTime As String() = ChaptersJson.Split(New String() {Chr(34) + "startTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim StartTime2 As String() = StartTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim StartTime3 As String() = StartTime2(0).Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1497,7 +1499,8 @@ Public Class Main
                         Next
 
                         Dim StartTime_ms As String = StartTime3(0) + StartTime4
-
+                        '
+                        Dim StartTime_int As Integer = CInt(StartTime_ms)
 
                         Dim EndTime As String() = ChaptersJson.Split(New String() {Chr(34) + "endTime" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
                         Dim EndTime2 As String() = EndTime(1).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1517,15 +1520,20 @@ Public Class Main
                         Dim AfterTime_ms As String = EndTime3(0) + AfterTime
                         Dim Metadata As String = Nothing
 
+
                         If CInt(CR_episode_duration_ms) < CInt(StartTime_ms) Then
                             'Totaly invalid...
+                        ElseIf CInt(CR_episode_duration_ms) < CInt(EndTime_ms) And StartTime_int = 0 Then
+                            'the answer is 42...
+                            Debug.WriteLine("Skip Chapters, the answer is 42...")
+                            'this is pointless
                         ElseIf CInt(CR_episode_duration_ms) < CInt(EndTime_ms) Then
                             'it's not an Intro it's an outro 
-                            Dim DeCh As Integer = CInt(StartTime_ms) - 1
-                            Metadata = My.Resources.ffmpeg_metadata_out.Replace("[Titel]", CR_FilenName).Replace("[Start-1]", DeCh.ToString).Replace("[Start]", StartTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
+                            Dim DeCh As Integer = StartTime_int - 1
+                            Metadata = My.Resources.ffmpeg_metadata_out.Replace("[Start-1]", DeCh.ToString).Replace("[Start]", StartTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
 
                         Else
-                            Metadata = My.Resources.ffmpeg_metadata.Replace("[Titel]", CR_FilenName).Replace("[Start]", StartTime_ms).Replace("[END]", EndTime_ms).Replace("[after]", AfterTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
+                            Metadata = My.Resources.ffmpeg_metadata.Replace("[Start]", StartTime_ms).Replace("[END]", EndTime_ms).Replace("[after]", AfterTime_ms).Replace("[duration_ms]", CR_episode_duration_ms)
 
                         End If
 
@@ -4235,9 +4243,10 @@ Public Class Main
     Sub FillArray() '
 
         LangValueEnum.Add(New NameValuePair("[ null ]", "", Nothing))
-        LangValueEnum.Add(New NameValuePair("Deutsch", "de-DE", Nothing))
+        LangValueEnum.Add(New NameValuePair("Deutsch", "de-DE", Nothing)) '
         LangValueEnum.Add(New NameValuePair("English", "en-US", "en"))
         LangValueEnum.Add(New NameValuePair("Português (Brasil)", "pt-BR", "pt"))
+        LangValueEnum.Add(New NameValuePair("Português (Portugal)", "pt-PT", Nothing))
         LangValueEnum.Add(New NameValuePair("Español (LA)", "es-419", "es"))
         LangValueEnum.Add(New NameValuePair("Français (France)", "fr-FR", Nothing))
         LangValueEnum.Add(New NameValuePair("العربية (Arabic)", "ar-SA", Nothing))
@@ -4488,6 +4497,7 @@ Public Class Main
                 ObjectJson = CurlAuthNew(ObjectsUrl, Loc_CR_Cookies, Auth2)
 
             Catch ex As Exception
+
                 If CBool(InStr(ex.ToString, "Error - Getting")) Then
                     MsgBox("Error invalid CR respone")
                     Exit Sub

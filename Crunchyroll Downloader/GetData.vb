@@ -7,6 +7,8 @@ Module GetData
 
     Public Function Curl(ByVal Url As String) As String
 
+        'MsgBox(Url)
+
         Dim exepath As String = Path.Combine(Application.StartupPath, "lib", "curl.exe")
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
         Dim sr As StreamReader
@@ -50,21 +52,16 @@ Module GetData
         Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
 
-        If CurlOutput = Nothing And CurlError = Nothing Then
-            Debug.WriteLine("curl-E: " + "curl: ")
-            Return CurlError
-        ElseIf CurlOutput = Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("curl-E: " + CurlError)
-            Return CurlError
-        ElseIf CurlOutput IsNot Nothing And CurlError = Nothing Then
-            Debug.WriteLine("curl-O: " + CurlOutput)
-            Return CurlOutput
-        ElseIf CurlOutput IsNot Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("curl-O: " + CurlOutput)
-            Return CurlOutput
+        If CBool(InStr(CurlError, "curl")) Then
+            Debug.WriteLine(CurlError)
+            Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
+            Return Nothing
+        ElseIf CBool(InStr(CurlOutput, "curl")) Then
+            Debug.WriteLine(CurlOutput)
+            Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
+            Return Nothing
         Else
-            Debug.WriteLine("curl-E: " + "curl: ")
-            Return CurlError
+            Return CurlOutput
         End If
 
 
@@ -118,28 +115,26 @@ Module GetData
         Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
 
-        If CurlOutput = Nothing And CurlError = Nothing Then
-            Debug.WriteLine("CurlPost-E: " + "curl: ")
-            Return CurlError
-        ElseIf CurlOutput = Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("CurlPost-E: " + CurlError)
-            Return CurlError
-        ElseIf CurlOutput IsNot Nothing And CurlError = Nothing Then
-            Debug.WriteLine("CurlPost-O: " + CurlOutput)
-            Return CurlOutput
-        ElseIf CurlOutput IsNot Nothing And CurlError IsNot Nothing Then
-            Debug.WriteLine("CurlPost-O: " + CurlOutput)
-            Return CurlOutput
+        If CBool(InStr(CurlError, "curl")) Then
+            Debug.WriteLine(CurlError)
+            Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
+            Return Nothing
+        ElseIf CBool(InStr(CurlOutput, "curl")) Then
+            Debug.WriteLine(CurlOutput)
+            Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
+            Return Nothing
         Else
-            Debug.WriteLine("CurlPost-E: " + "curl: ")
-            Return CurlError
+            Return CurlOutput
         End If
 
     End Function
 
 
-    Public Function CurlAuthNew(ByVal Url As String, ByVal Cookies As String, ByVal Auth As String) As String
+    Public Function CurlAuthNew(ByVal Url As String, ByVal Cookies As String, ByVal Auth As String, Optional ByVal Test As Boolean = False) As String
+        If Test = True Then
+            Throw New System.Exception("Error - Getting" + vbNewLine + "Test")
 
+        End If
 
 
         Dim exepath As String = Path.Combine(Application.StartupPath, "lib", "curl.exe")
@@ -190,10 +185,12 @@ Module GetData
 
 
 
-        If CurlOutput = Nothing Or CBool(InStr(CurlOutput, "curl")) Then
-            Throw New System.Exception("Error - Getting ObjectJson data" + vbNewLine + CurlOutput)
+        If CBool(InStr(CurlError, "curl")) Then
+            Debug.WriteLine(CurlError)
+            Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
-        ElseIf CBool(InStr(CurlError, "curl")) Then
+        ElseIf CBool(InStr(CurlOutput, "curl")) Then
+            Debug.WriteLine(CurlOutput)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
         Else

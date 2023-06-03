@@ -11,6 +11,8 @@ Imports System.Text
 Imports System.Runtime.InteropServices.ComTypes
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Status
 Imports Newtonsoft.Json.Linq
+Imports System.Timers
+Imports System.Security.Policy
 
 Public Class Anime_Add
     Public Mass_DL_Cancel As Boolean = False
@@ -47,6 +49,16 @@ Public Class Anime_Add
         Me.StyleManager = Manager
         Btn_Close.Image = Main.CloseImg
         Btn_min.Image = Main.MinImg
+
+        btn_dl.Cursor = Cursors.No
+        btn_dl.BackgroundImage = My.Resources.main_button_download_deactivate
+
+        If File.Exists("cookies.txt") = True Or Main.BowserWasOpen = True Then
+            btn_dl.BackgroundImage = My.Resources.main_button_download_default
+            btn_dl.Cursor = Cursors.Default
+        End If
+
+
 
         Try
             Me.Icon = My.Resources.icon
@@ -147,6 +159,10 @@ Public Class Anime_Add
 
     Private Sub Btn_dl_Click(sender As Object, e As EventArgs) Handles btn_dl.Click
 
+        If btn_dl.Cursor = Cursors.No Then
+            Exit Sub
+        End If
+
 
         Main.LoginOnly = "Download Mode!"
         'MsgBox(Main.WebbrowserURL)
@@ -154,7 +170,7 @@ Public Class Anime_Add
 
         If groupBox1.Visible = True Then
             ' Main.LoadedUrls.Clear()
-        Try
+            Try
                 If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then
 
 
@@ -202,7 +218,15 @@ Public Class Anime_Add
                                     Debug.WriteLine("error- getting v1Json data for the bypass")
                                     Debug.WriteLine(ex.ToString)
                                 End Try
-
+                            ElseIf CBool(InStr(textBox1.Text, "funimation.com/shows/")) Then
+                                Main.LoadingUrl = textBox1.Text
+                                Main.LoadedUrls.Clear()
+                                Main.b = False
+                                Debug.WriteLine("loading funimation show url: " + Date.Now.ToString)
+                                StatusLabel.Text = "Status: loading funimation...."
+                                'Main.LoadBrowser()
+                                Browser.WebView2.CoreWebView2.Navigate(textBox1.Text)
+                                Exit Sub
                             End If
 
                         End If
@@ -228,8 +252,8 @@ Public Class Anime_Add
                 End If
             Catch ex As Exception
                 MsgBox(ex.ToString)
-            Main.b = True
-            MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
+                Main.b = True
+                MsgBox(Main.URL_Invaild, MsgBoxStyle.OkOnly)
             End Try
         ElseIf groupBox2.Visible = True Then
 
@@ -324,6 +348,11 @@ Public Class Anime_Add
 
 
     Private Sub Btn_dl_MouseEnter(sender As Object, e As EventArgs) Handles btn_dl.MouseEnter
+        If btn_dl.Cursor = Cursors.No Then
+            Exit Sub
+        End If
+
+
         If Mass_DL_Cancel = True Then
             btn_dl.Text = "Cancel"
             btn_dl.BackgroundImage = My.Resources.main_button_download_hovert
@@ -339,6 +368,11 @@ Public Class Anime_Add
     End Sub
 
     Private Sub Btn_dl_MouseLeave(sender As Object, e As EventArgs) Handles btn_dl.MouseLeave
+        If btn_dl.Cursor = Cursors.No Then
+            Exit Sub
+        End If
+
+
         If Mass_DL_Cancel = True Then
             btn_dl.Text = "Cancel"
             btn_dl.BackgroundImage = My.Resources.main_button_download_hovert

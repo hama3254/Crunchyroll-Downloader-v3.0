@@ -158,6 +158,7 @@ Public Class Main
     Public WebbrowserTitle As String = Nothing
     Public WebbrowserCookie As String = Nothing
     Public UserBowser As Boolean = False
+    Public BowserWasOpen As Boolean = False
     Public HybridMode As Boolean = False
     Public HardSubFunimation As String = "Disabled"
     Public Funimation_Bitrate As Integer = 0
@@ -438,6 +439,7 @@ Public Class Main
         Trace.Listeners.Add(tbtl)
         b = True
         Thread.CurrentThread.Name = "Main"
+        Debug.WriteLine("v" + Application.ProductVersion)
         Debug.WriteLine("Thread Name: " + Thread.CurrentThread.Name)
 
 
@@ -980,12 +982,12 @@ Public Class Main
 
     End Sub
 
-    Public Sub GetCRVideoProxy(ByVal requesturl As String, ByVal AuthToken As String, ByVal WebsiteURL As String)
-        Dim Evaluator = New Thread(Sub() Me.GetCRVideo(requesturl, AuthToken, WebsiteURL))
+    Public Sub GetCRVideoProxy(ByVal requesturl As String, ByVal AuthToken As String, ByVal WebsiteURL As String, ByVal RT_count As Integer)
+        Dim Evaluator = New Thread(Sub() Me.GetCRVideo(requesturl, AuthToken, WebsiteURL, RT_count))
         Evaluator.Start()
     End Sub
 
-    Public Sub GetCRVideo(ByVal Streams As String, ByVal AuthToken As String, ByVal WebsiteURL As String)
+    Public Sub GetCRVideo(ByVal Streams As String, ByVal AuthToken As String, ByVal WebsiteURL As String, ByVal RT_count As Integer)
         If b = False Then
             b = True
         End If
@@ -1204,6 +1206,8 @@ Public Class Main
             Dim VideoJObject As JObject = JObject.Parse(VideoJson)
             Dim VideoData As List(Of JToken) = VideoJObject.Children().ToList
 
+            Dim download_hls As CR_Beta_Stream = Nothing
+
             For Each item As JProperty In VideoData
                 item.CreateReader()
                 Select Case item.Name
@@ -1214,7 +1218,7 @@ Public Class Main
                             For Each VideoSubItem As JProperty In VideoSubData
 
                                 Dim JsonEntryFormat As String = VideoSubItem.Name
-                                If CBool(InStr(JsonEntryFormat, "drm")) Or CBool(InStr(JsonEntryFormat, "dash")) Or CBool(InStr(JsonEntryFormat, "download")) Or CBool(InStr(JsonEntryFormat, "urls")) Then '
+                                If CBool(InStr(JsonEntryFormat, "drm")) Or CBool(InStr(JsonEntryFormat, "dash")) Or CBool(InStr(JsonEntryFormat, "urls")) Then ' Or CBool(InStr(JsonEntryFormat, "download")) workaround http 502 / false http 400
                                     Continue For
                                 End If
 
@@ -1233,6 +1237,11 @@ Public Class Main
                                             SubLang = ""
                                         End If
 
+                                        If CBool(InStr(JsonEntryFormat, "download")) Then
+                                            download_hls = New CR_Beta_Stream(SubLang, JsonEntryFormat, Url)
+                                            Continue For
+                                        End If
+
                                         CR_Streams.Add(New CR_Beta_Stream(SubLang, JsonEntryFormat, Url))
 
                                     Next
@@ -1240,6 +1249,9 @@ Public Class Main
 
 
                             Next
+                            If download_hls IsNot Nothing Then
+                                CR_Streams.Add(download_hls)
+                            End If
                         Next
                     Case "meta" 'each record is inside the entries array
                         For Each MetaEntrys As JProperty In item.Values
@@ -1469,22 +1481,22 @@ Public Class Main
 
 
                 If CR_Chapters = True Then
-
-
-                    Dim ChaptersUrl As String = "https://static.crunchyroll.com/datalab-intro-v2/" + CR_EpisodeID + ".json"
                     Dim ChaptersJson As String = Nothing
-
-
-                    ChaptersJson = Curl(ChaptersUrl)
-
-                    If CBool(InStr(ChaptersJson, "curl:")) = True Then
+                    Dim ChaptersUrl As String = "https://static.crunchyroll.com/datalab-intro-v2/" + CR_EpisodeID + ".json"
+                    Try
                         ChaptersJson = Curl(ChaptersUrl)
-                    End If
 
-                    If CBool(InStr(ChaptersJson, "curl:")) = True Then
-                        ChaptersJson = Nothing
-                        Debug.WriteLine("no Chapter data... ignoring")
-                    End If
+                        If CBool(InStr(ChaptersJson, "curl:")) = True Then
+                            ChaptersJson = Curl(ChaptersUrl)
+                        End If
+
+                        If CBool(InStr(ChaptersJson, "curl:")) = True Then
+                            ChaptersJson = Nothing
+                            Debug.WriteLine("no Chapter data... ignoring")
+                        End If
+                    Catch ex As Exception
+
+                    End Try
 
 
                     If ChaptersJson IsNot Nothing Then
@@ -1642,16 +1654,28 @@ Public Class Main
 
 
                 For i As Integer = 0 To CR_URI_Master.Count - 1
+                    Dim Count As String = (i + 1).ToString
+                    Try
+                        str = Curl(CR_URI_Master(i))
+                        If CBool(InStr(str, "curl:")) = False Then
+                            Exit For
+                        End If
+                    Catch ex As Exception
 
-                    str = Curl(CR_URI_Master(i))
-
-                    If CBool(InStr(str, "curl:")) = False Then
-                        Exit For
-                    End If
+                        Me.Invoke(New Action(Function() As Object
+                                                 Anime_Add.StatusLabel.Text = "failed accessing master.m3u8 " + Count + "/" + CR_URI_Master.Count.ToString
+                                                 Me.Text = "failed accessing master.m3u8 " + Count + "/" + CR_URI_Master.Count.ToString
+                                                 Me.Invalidate()
+                                                 Return Nothing
+                                             End Function))
+                        Debug.WriteLine("Error accessing master #" + i.ToString + " -- " + CR_URI_Master(i))
+                        Pause(5)
+                    End Try
                 Next
 
 
-                If CBool(InStr(str, "curl:")) = True Then
+
+                If CBool(InStr(str, "curl:")) = True Or str = Nothing Then
 
                     Debug.WriteLine("Checked " + CR_URI_Master.Count.ToString)
                     MsgBox("Unable to get master.m3u8" + vbNewLine + str, MsgBoxStyle.Critical)
@@ -1980,7 +2004,18 @@ Public Class Main
             ElseIf CBool(InStr(ex.ToString, Chr(34) + "UserAbort" + Chr(34))) Then
                 MsgBox(ex.ToString, MsgBoxStyle.Information)
             ElseIf CBool(InStr(ex.ToString, "Error - Getting")) Then
-                Navigate(WebsiteURL)
+                If RT_count = 0 Then
+                    If File.Exists("cookies.txt") = True Then
+                        MsgBox("Request refused, try a new cookies.txt", MsgBoxStyle.Exclamation)
+                    End If
+                    Navigate(WebsiteURL)
+                    Pause(5)
+                    LoadBrowser(WebsiteURL, 1)
+                    Exit Sub
+                End If
+                MsgBox(ex.ToString)
+                ' b = False
+                ' Navigate(WebsiteURL)
             Else
                 MsgBox(ex.ToString, MsgBoxStyle.Information)
             End If
@@ -2189,7 +2224,7 @@ Public Class Main
     End Sub
 
     Private Sub Btn_Browser_Click(sender As Object, e As EventArgs) Handles Btn_Browser.Click
-        Debug.WriteLine(Date.Now.ToString + "." + Date.Now.Millisecond.ToString)
+        'Debug.WriteLine(Date.Now.ToString + "." + Date.Now.Millisecond.ToString)
         UserBowser = True
 
         If Application.OpenForms().OfType(Of Browser).Any = True Then
@@ -2922,7 +2957,20 @@ Public Class Main
             Dim Funimation_m3u8_final As String = Nothing
             Dim client0 As New WebClient
             client0.Encoding = Encoding.UTF8
-            If DownloadScope = 1 Then
+            If DownloadScope = DownloadScopeEnum.SubsOnly Then
+
+                Me.Invoke(New Action(Function() As Object
+                                         Me.Text = "Status: Substitles only mode - skipped video"
+                                         Anime_Add.StatusLabel.Text = "Status: Substitles only mode - skipped video"
+                                         Me.Invalidate()
+                                         Return Nothing
+                                     End Function))
+
+                'ElseIf DownloadScope = DownloadScopeEnum.MergeAudio Then
+
+
+            ElseIf DownloadScope = DownloadScopeEnum.OldDefault Or DownloadScope = DownloadScopeEnum.MergeAudio Or DownloadScope = DownloadScopeEnum.AudioOnly Then
+
                 For i As Integer = 0 To VideoStreams.Count - 1
                     If VideoStreams(i).Primary = True Then
                         Funimation_m3u8_Primary = VideoStreams(i).Url
@@ -2946,6 +2994,7 @@ Public Class Main
                     Funimation_m3u8_MainVersion = Funimation_m3u8_Primary_Version
                     FunimationDub = ConvertFunimationDub(ConvertJsonToFunimationDub(Funimation_m3u8_Primary_audioLanguage))
                 End If
+
                 If Funimation_m3u8_Main = Nothing Then
                     If MessageBox.Show("No media matching your settings." + vbNewLine + "Avalible: Not implimentented, press 'Yes' to copy the data into the clipboard.", "No media", MessageBoxButtons.YesNo) = DialogResult.Yes Then
                         Me.Invoke(New Action(Function() As Object
@@ -3113,13 +3162,7 @@ Public Class Main
                 End If
                 Debug.WriteLine("Funimation_m3u8_final: " + Funimation_m3u8_final)
                 Funimation_m3u8_final = Funimation_m3u8_final.Replace(Chr(34), "")
-            Else
-                Me.Invoke(New Action(Function() As Object
-                                         Me.Text = "Status: Substitles only mode - skipped video"
-                                         Anime_Add.StatusLabel.Text = "Status: Substitles only mode - skipped video"
-                                         Me.Invalidate()
-                                         Return Nothing
-                                     End Function))
+
             End If
             'MsgBox(FunimationName3)
             Dim ResoHTMLDisplay As String = Reso.ToString + "p"
@@ -3503,7 +3546,7 @@ Public Class Main
                     End If
                     Me.Text = "Status: Crunchyroll episode found."
                     Debug.WriteLine("Crunchyroll episode found")
-                    GetCRVideoProxy(Request.Uri, CR_AuthToken, WebbrowserURL)
+                    GetCRVideoProxy(Request.Uri, CR_AuthToken, WebbrowserURL, 0)
                     b = True
                     LoadedUrls.Clear()
                     Me.Text = "Crunchyroll Downloader"
@@ -4033,6 +4076,8 @@ Public Class Main
             Return "text/html"
         ElseIf (httpRequest.EndsWith("txt")) Then
             Return "text/plain"
+        ElseIf (httpRequest.EndsWith("css")) Then
+            Return "text/css"
         ElseIf (httpRequest.EndsWith("gif")) Then
             Return "image/gif"
         ElseIf (httpRequest.EndsWith("jpg")) Then
@@ -4294,7 +4339,7 @@ Public Class Main
 #Region "Process Urls"
 
 
-    Public Sub LoadBrowser(ByVal Url As String)
+    Public Sub LoadBrowser(ByVal Url As String, Optional ByVal RT_count As Integer = 0)
 
 
         LoadingUrl = Url
@@ -4391,7 +4436,7 @@ Public Class Main
 
             End If
 
-            Debug.WriteLine("###" + CR_Cookies + "###")
+            'Debug.WriteLine("###" + CR_Cookies + "###")
 
             Dim Loc_CR_Cookies = " -H " + Chr(34) + CR_Cookies + Chr(34)
 
@@ -4448,14 +4493,14 @@ Public Class Main
 
             Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + CRBetaBearer + Chr(34)
 
-            ProcessLoading(Url, Auth2, Loc_CR_Cookies)
+            ProcessLoading(Url, Auth2, Loc_CR_Cookies, RT_count)
 
         Else
             'to do
         End If
     End Sub
 
-    Public Sub ProcessLoading(ByVal url As String, Auth2 As String, ByVal Loc_CR_Cookies As String)
+    Public Sub ProcessLoading(ByVal url As String, Auth2 As String, ByVal Loc_CR_Cookies As String, ByVal RT_Count As Integer)
 
         If CBool(InStr(url, "crunchyroll.com")) = True And CBool(InStr(url, "series/")) = True Then
 
@@ -4538,7 +4583,7 @@ Public Class Main
                 Exit Sub
             End Try
 
-            GetCRVideoProxy(StreamsUrl, Auth2, url)
+            GetCRVideoProxy(StreamsUrl, Auth2, url, RT_Count)
 
 
         Else

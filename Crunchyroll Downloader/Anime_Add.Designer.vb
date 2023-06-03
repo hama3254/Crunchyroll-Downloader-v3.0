@@ -328,6 +328,7 @@ Partial Class Anime_Add
         '
         Me.btn_dl.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.main_button_download_default
         Me.btn_dl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_dl.Cursor = System.Windows.Forms.Cursors.No
         Me.btn_dl.FlatAppearance.BorderSize = 0
         Me.btn_dl.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btn_dl.Font = New System.Drawing.Font("Microsoft Sans Serif", 27.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))

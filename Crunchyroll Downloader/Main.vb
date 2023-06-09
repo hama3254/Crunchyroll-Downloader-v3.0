@@ -1351,6 +1351,11 @@ Public Class Main
 
             If TextBox2_Text = Nothing Or TextBox2_Text = "Use Custom Name" Or CBool(InStr(TextBox2_Text, "++")) = True Then
 
+                If IgnoreSeason = 1 And CR_season_number = "1" Or IgnoreSeason = 1 And CR_season_number = "0" Then
+                    CR_season_number = Nothing
+                ElseIf IgnoreSeason = 2 Then
+                    CR_season_number = Nothing
+                End If
 
                 If Season_Prefix = "[default season prefix]" Then
                     If CR_episode = Nothing And CR_episode2 = Nothing Then 'no episode number means most likey a movie 
@@ -1370,11 +1375,6 @@ Public Class Main
 
                 CR_FolderSeason = CR_season_number
 
-                If IgnoreSeason = 1 And CR_season_number = "1" Or IgnoreSeason = 1 And CR_season_number = "0" Then
-                    CR_season_number = Nothing
-                ElseIf IgnoreSeason = 2 Then
-                    CR_season_number = Nothing
-                End If
 
 
                 If Episode_Prefix = "[default episode prefix]" Then

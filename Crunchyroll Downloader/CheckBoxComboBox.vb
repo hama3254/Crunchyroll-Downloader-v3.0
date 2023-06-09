@@ -145,19 +145,19 @@ Public Class CheckBoxComboBox
 
     Private Sub Animation_Tick(sender As Object, e As EventArgs) Handles Animation.Tick
         If Me.Text = "CR Dub selection" Then
-            If Me.Height < 300 Then
+            If Me.Height < 330 Then
                 Me.Height = Me.Height + 30
             Else
-                Me.Height = 300
+                Me.Height = 330
                 Animation.Enabled = False
             End If
 
 
         ElseIf Me.Text = "CR Sub selection" Then
-            If Me.Height < 270 Then
+            If Me.Height < 300 Then
                 Me.Height = Me.Height + 30
             Else
-                Me.Height = 270
+                Me.Height = 300
                 Animation.Enabled = False
             End If
 

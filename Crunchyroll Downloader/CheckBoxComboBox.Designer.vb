@@ -34,7 +34,7 @@ Partial Class CheckBoxComboBox
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle
-        Me.ClientSize = New System.Drawing.Size(320, 302)
+        Me.ClientSize = New System.Drawing.Size(320, 327)
         Me.ControlBox = False
         Me.DisplayHeader = False
         Me.MaximizeBox = False

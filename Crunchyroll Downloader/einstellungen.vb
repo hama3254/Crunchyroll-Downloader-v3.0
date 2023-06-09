@@ -200,7 +200,7 @@ Public Class Einstellungen
 
         CB_CR_Harsubs.Items.Clear()
 
-        For i As Integer = 0 To Main.LangValueEnum.Count - 1
+        For i As Integer = 0 To Main.LangValueEnum.Count - 2
             CB_CR_Harsubs.Items.Add(Main.LangValueEnum(i).Name)
             If Main.LangValueEnum(i).CR_Value = Main.SubSprache.CR_Value Then
                 'MsgBox(CB_CR_Harsubs.Items.Count.ToString)

@@ -1856,6 +1856,11 @@ Public Class Main
 
                         Dim SubText As String = ""
                         SubText = Curl(SoftSubsList(i2).Url.Replace(" -i ", "").Replace(Chr(34), ""))
+
+                        If My.Settings.SubtitleMod1 = True Then
+                            SubText = AddScaledBorderAndShadow(SubText)
+                        End If
+
                         Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
                         Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + "." + GetSubFileLangName(SoftSubsList(i2).SubLangValue) + Path.GetExtension(Pfad3)), SubFormat)
                         If i = 0 And IncludeLangName = False Then
@@ -2224,6 +2229,10 @@ Public Class Main
     End Sub
 
     Private Sub Btn_Browser_Click(sender As Object, e As EventArgs) Handles Btn_Browser.Click
+
+        'Dim Teststring As String = TheTextBox.Text
+        'TheTextBox.Text = AddScaledBorderAndShadow(Teststring)
+        'Exit Sub
         'Debug.WriteLine(Date.Now.ToString + "." + Date.Now.Millisecond.ToString)
         UserBowser = True
 

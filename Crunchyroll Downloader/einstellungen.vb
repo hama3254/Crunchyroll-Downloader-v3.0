@@ -17,7 +17,7 @@ Public Class Einstellungen
     Dim LastVersionString As String = "v3.8-Beta"
 
     Public CR_SoftSubsTemp As New List(Of String)
-
+    Dim TempCheckSubMod1 As Boolean = False
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -388,6 +388,7 @@ Public Class Einstellungen
         Main.IgnoreSeason = CB_Ignore.SelectedIndex
         My.Settings.IgnoreSeason = CB_Ignore.SelectedIndex
 
+        My.Settings.SubtitleMod1 = CB_Mod1.Checked
 
         If DubMode.Checked = True Then
             Main.DubMode = True
@@ -1110,6 +1111,14 @@ Public Class Einstellungen
             TempTB.Enabled = False
         End If
 
+        If (CB_Merge.Text = "[merge disabled]") = False And DD_DLMode.Text = "Default - ffmpeg" Then
+            CB_Mod1.Enabled = False
+            CB_Mod1.Checked = False
+        Else
+            CB_Mod1.Enabled = True
+            CB_Mod1.Checked = TempCheckSubMod1
+        End If
+
     End Sub
 
     Private Sub TempTB_Click(sender As Object, e As EventArgs) Handles TempTB.Click
@@ -1191,6 +1200,25 @@ Public Class Einstellungen
         Dim Popup As New CheckBoxComboBox
         Popup.Text = "CR Sub selection"
         Popup.Show()
+    End Sub
+
+    Private Sub CB_Merge_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CB_Merge.SelectedIndexChanged
+
+        If (CB_Merge.Text = "[merge disabled]") = False And DD_DLMode.Text = "Default - ffmpeg" Then
+            CB_Mod1.Enabled = False
+            CB_Mod1.Checked = False
+        Else
+            CB_Mod1.Enabled = True
+            CB_Mod1.Checked = TempCheckSubMod1
+        End If
+
+    End Sub
+
+    Private Sub CB_Mod1_CheckedChanged(sender As Object, e As EventArgs) Handles CB_Mod1.CheckedChanged
+        If CB_Mod1.Enabled = True Then
+            TempCheckSubMod1 = CB_Mod1.Checked
+        End If
+
     End Sub
 
 

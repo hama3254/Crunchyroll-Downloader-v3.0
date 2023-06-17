@@ -1170,6 +1170,11 @@ Public Class CRD_List_Item
                         End Try
                     End If
                     Dim utf8WithoutBom2 As New System.Text.UTF8Encoding(False)
+
+                    If My.Settings.SubtitleMod1 = True Then
+                        InputData = AddScaledBorderAndShadow(InputData)
+                    End If
+
                     Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
                         sink.WriteLine(InputData)
                     End Using

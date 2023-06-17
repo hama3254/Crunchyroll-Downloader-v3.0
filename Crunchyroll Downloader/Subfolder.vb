@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.Runtime.Remoting
+Imports System.Runtime.Remoting.Messaging
 Imports System.Text
 Imports System.Windows.Forms.VisualStyles
 
@@ -49,6 +50,20 @@ Module Subfolder
         Return newPath.Replace("\\", "\")
     End Function
 
+
+    Public Function AddScaledBorderAndShadow(ByVal Subtitle As String) As String
+        Dim Output As String = Subtitle
+
+        If CBool(InStr(Output, "[V4+ Styles]")) And CBool(InStr(Output, "ScaledBorderAndShadow")) = False Then
+
+            Dim Styles() As String = Output.Split(New String() {"[V4+ Styles]"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Output = Styles(0) + "ScaledBorderAndShadow: yes" + vbNewLine + vbNewLine + "[V4+ Styles]" + Styles(1)
+
+        End If
+
+
+        Return Output
+    End Function
 
 
     Public Sub WriteText(ByVal Pfad As String, ByVal Content As String)

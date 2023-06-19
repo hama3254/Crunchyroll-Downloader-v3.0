@@ -58,6 +58,7 @@ Public Class Queue
 
     Private Sub RunQueue_CheckedChanged(sender As Object, e As EventArgs) Handles RunQueue.CheckedChanged
         RunQueueTimer.Enabled = RunQueue.Checked
+        Main.RunningQueue = RunQueue.Checked
     End Sub
 
     Private Sub RunQueueTimer_Tick(sender As Object, e As EventArgs) Handles RunQueueTimer.Tick
@@ -138,6 +139,17 @@ Public Class Queue
 
 
             End If
+        End If
+    End Sub
+
+
+
+    Private Sub ListBox1_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles ListBox1.MouseDoubleClick
+        If RunQueue.Checked = True Then
+            MessageBox.Show("Please stop the queue before removing entries", "Unable to comply.")
+        Else
+            Dim UriUsed As String = ListBox1.Text
+            Main.ListBoxList.Remove(UriUsed)
         End If
     End Sub
 End Class

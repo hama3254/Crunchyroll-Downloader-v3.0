@@ -185,14 +185,30 @@ Public Class Anime_Add
                     '    '    Exit Sub
                     '    '    pictureBox4.Enabled = True
                     'Else
-                    If Main.RunningDownloads >= Main.MaxDL Then
+                    If Main.RunningQueue = True Then
+                        If CBool(InStr(textBox1.Text, "series/")) Then
+                            Debug.WriteLine("Queue_Block_series")
+                            'textBox1.Text = "URL"
+                            StatusLabel.Text = "Status: Series add blocked, queue is running!"
+                            Pause(5)
+                            StatusLabel.Text = "Status: Idle"
+                        Else
+                            Debug.WriteLine("Queue_Block")
+                            Main.ListBoxList.Add(textBox1.Text)
+                            textBox1.Text = "URL"
+                            StatusLabel.Text = "Status: Added to Queue"
+                            Pause(5)
+                            StatusLabel.Text = "Status: Idle"
+                        End If
+                    ElseIf Main.RunningDownloads >= Main.MaxDL Then
                         Debug.WriteLine("Max_Dl")
-                        'ListBox1.Items.Add(textBox1.Text)
                         Main.ListBoxList.Add(textBox1.Text)
-                        textBox1.ForeColor = Color.FromArgb(9248044)
-                        Pause(2)
-                        textBox1.ForeColor = Color.Black
                         textBox1.Text = "URL"
+                        StatusLabel.Text = "Status: Added to Queue"
+                        Pause(5)
+                        StatusLabel.Text = "Status: Idle"
+
+
                     Else
 
                         If CBool(InStr(textBox1.Text, "funimation.com")) Then
@@ -494,7 +510,7 @@ Public Class Anime_Add
 
 
         ElseIf Main.WebbrowserURL = "https://funimation.com/js" Then
-                comboBox3.Items.Clear()
+            comboBox3.Items.Clear()
             comboBox4.Items.Clear()
             comboBox3.Text = Nothing
             comboBox4.Text = Nothing

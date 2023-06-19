@@ -36,6 +36,8 @@ Public Class Einstellungen
         CB_OverrideDub.Checked = My.Settings.OverrideDub
         CB_Cap.Checked = My.Settings.Captions
 
+        CB_Mod1.Checked = My.Settings.SubtitleMod1
+
         TempTB.Text = Main.TempFolder
         LeadingZeroDD.SelectedIndex = Main.LeadingZero
 

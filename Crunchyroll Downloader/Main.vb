@@ -103,6 +103,7 @@ Public Class Main
     'Public ErrorBrowserString As String
     'Public ErrorBrowserUrl As String
     'Public ErrorBrowserBackString As String
+    Public RunningQueue As Boolean = False
     Public UserCloseDialog As Boolean = False
     Dim Aktuell As String
     Dim Gesamt As String

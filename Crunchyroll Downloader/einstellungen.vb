@@ -18,6 +18,7 @@ Public Class Einstellungen
 
     Public CR_SoftSubsTemp As New List(Of String)
     Dim TempCheckSubMod1 As Boolean = False
+    Dim TempVTTStyle As Boolean = False
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -37,6 +38,8 @@ Public Class Einstellungen
         CB_Cap.Checked = My.Settings.Captions
 
         CB_Mod1.Checked = My.Settings.SubtitleMod1
+
+        CB_vtt.Checked = My.Settings.vttStyleRemove
 
         TempTB.Text = Main.TempFolder
         LeadingZeroDD.SelectedIndex = Main.LeadingZero
@@ -391,6 +394,7 @@ Public Class Einstellungen
         My.Settings.IgnoreSeason = CB_Ignore.SelectedIndex
 
         My.Settings.SubtitleMod1 = CB_Mod1.Checked
+        My.Settings.vttStyleRemove = CB_vttStyle.Checked
 
         If DubMode.Checked = True Then
             Main.DubMode = True
@@ -1116,9 +1120,18 @@ Public Class Einstellungen
         If (CB_Merge.Text = "[merge disabled]") = False And DD_DLMode.Text = "Default - ffmpeg" Then
             CB_Mod1.Enabled = False
             CB_Mod1.Checked = False
-        Else
+            CB_vttStyle.Enabled = False
+            CB_vttStyle.Checked = False
+        ElseIf (CB_Merge.Text = "[merge disabled]") = True And DD_DLMode.Text = "Default - ffmpeg" Then
             CB_Mod1.Enabled = True
             CB_Mod1.Checked = TempCheckSubMod1
+            CB_vttStyle.Enabled = False
+            CB_vttStyle.Checked = False
+        ElseIf (DD_DLMode.Text = "Default - ffmpeg") = False Then
+            CB_Mod1.Enabled = True
+            CB_Mod1.Checked = TempCheckSubMod1
+            CB_vttStyle.Enabled = True
+            CB_vttStyle.Checked = TempVTTStyle
         End If
 
     End Sub
@@ -1209,10 +1222,21 @@ Public Class Einstellungen
         If (CB_Merge.Text = "[merge disabled]") = False And DD_DLMode.Text = "Default - ffmpeg" Then
             CB_Mod1.Enabled = False
             CB_Mod1.Checked = False
-        Else
+            CB_vttStyle.Enabled = False
+            CB_vttStyle.Checked = False
+        ElseIf (CB_Merge.Text = "[merge disabled]") = True And DD_DLMode.Text = "Default - ffmpeg" Then
             CB_Mod1.Enabled = True
             CB_Mod1.Checked = TempCheckSubMod1
+            CB_vttStyle.Enabled = False
+            CB_vttStyle.Checked = False
+        ElseIf (DD_DLMode.Text = "Default - ffmpeg") = False Then
+            CB_Mod1.Enabled = True
+            CB_Mod1.Checked = TempCheckSubMod1
+            CB_vttStyle.Enabled = True
+            CB_vttStyle.Checked = TempVTTStyle
         End If
+
+
 
     End Sub
 
@@ -1221,6 +1245,12 @@ Public Class Einstellungen
             TempCheckSubMod1 = CB_Mod1.Checked
         End If
 
+    End Sub
+
+    Private Sub CB_vttStyle_CheckedChanged(sender As Object, e As EventArgs) Handles CB_vttStyle.CheckedChanged
+        If CB_vttStyle.Enabled = True Then
+            TempVTTStyle = CB_vttStyle.Checked
+        End If
     End Sub
 
 

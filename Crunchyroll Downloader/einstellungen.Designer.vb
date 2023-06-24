@@ -24,6 +24,7 @@ Partial Class Einstellungen
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.CB_Mod1 = New MetroFramework.Controls.MetroCheckBox()
         Me.pictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ToolTip2 = New System.Windows.Forms.ToolTip(Me.components)
         Me.GroupBox14 = New System.Windows.Forms.GroupBox()
@@ -34,6 +35,7 @@ Partial Class Einstellungen
         Me.CB_CR_Harsubs = New MetroFramework.Controls.MetroComboBox()
         Me.DubMode = New MetroFramework.Controls.MetroCheckBox()
         Me.TabPage2 = New MetroFramework.Controls.MetroTabPage()
+        Me.GroupBox23 = New System.Windows.Forms.GroupBox()
         Me.GroupBox18 = New System.Windows.Forms.GroupBox()
         Me.ListViewAdd_True = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox16 = New System.Windows.Forms.GroupBox()
@@ -157,13 +159,13 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.GroupBox23 = New System.Windows.Forms.GroupBox()
-        Me.CB_Mod1 = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_vttStyle = New MetroFramework.Controls.MetroCheckBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
         Me.GB_SubLanguage.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox23.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
         Me.GroupBox16.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -199,7 +201,6 @@ Partial Class Einstellungen
         Me.GroupBox8.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox23.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolTip1
@@ -208,6 +209,20 @@ Partial Class Einstellungen
         Me.ToolTip1.InitialDelay = 500
         Me.ToolTip1.IsBalloon = True
         Me.ToolTip1.ReshowDelay = 100
+        '
+        'CB_Mod1
+        '
+        Me.CB_Mod1.AutoSize = True
+        Me.CB_Mod1.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_Mod1.ForeColor = System.Drawing.Color.Black
+        Me.CB_Mod1.Location = New System.Drawing.Point(25, 21)
+        Me.CB_Mod1.Name = "CB_Mod1"
+        Me.CB_Mod1.Size = New System.Drawing.Size(305, 19)
+        Me.CB_Mod1.TabIndex = 5
+        Me.CB_Mod1.Text = "add 'ScaledBorderAndShadow:yes' to subtitles"
+        Me.ToolTip1.SetToolTip(Me.CB_Mod1, "adds the 'ScaledBorderAndShadow:yes' to the subtitles see more on https://github." &
+        "com/hama3254/Crunchyroll-Downloader-v3.0/issues/764")
+        Me.CB_Mod1.UseSelectable = True
         '
         'pictureBox1
         '
@@ -338,6 +353,20 @@ Partial Class Einstellungen
         Me.TabPage2.VerticalScrollbarHighlightOnWheel = False
         Me.TabPage2.VerticalScrollbarSize = 10
         Me.TabPage2.Visible = False
+        '
+        'GroupBox23
+        '
+        Me.GroupBox23.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox23.Controls.Add(Me.CB_vttStyle)
+        Me.GroupBox23.Controls.Add(Me.CB_Mod1)
+        Me.GroupBox23.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.GroupBox23.ForeColor = System.Drawing.Color.Black
+        Me.GroupBox23.Location = New System.Drawing.Point(5, 350)
+        Me.GroupBox23.Name = "GroupBox23"
+        Me.GroupBox23.Size = New System.Drawing.Size(490, 60)
+        Me.GroupBox23.TabIndex = 51
+        Me.GroupBox23.TabStop = False
+        Me.GroupBox23.Text = "Subtitle Mods"
         '
         'GroupBox18
         '
@@ -1374,9 +1403,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1852,32 +1881,19 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'GroupBox23
+        'CB_vttStyle
         '
-        Me.GroupBox23.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox23.Controls.Add(Me.CB_Mod1)
-        Me.GroupBox23.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox23.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox23.Location = New System.Drawing.Point(5, 350)
-        Me.GroupBox23.Name = "GroupBox23"
-        Me.GroupBox23.Size = New System.Drawing.Size(490, 60)
-        Me.GroupBox23.TabIndex = 51
-        Me.GroupBox23.TabStop = False
-        Me.GroupBox23.Text = "Subtitle Mods"
-        '
-        'CB_Mod1
-        '
-        Me.CB_Mod1.AutoSize = True
-        Me.CB_Mod1.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_Mod1.ForeColor = System.Drawing.Color.Black
-        Me.CB_Mod1.Location = New System.Drawing.Point(87, 25)
-        Me.CB_Mod1.Name = "CB_Mod1"
-        Me.CB_Mod1.Size = New System.Drawing.Size(305, 19)
-        Me.CB_Mod1.TabIndex = 5
-        Me.CB_Mod1.Text = "add 'ScaledBorderAndShadow:yes' to subtitles"
-        Me.ToolTip1.SetToolTip(Me.CB_Mod1, "adds the 'ScaledBorderAndShadow:yes' to the subtitles see more on https://github." &
-        "com/hama3254/Crunchyroll-Downloader-v3.0/issues/764")
-        Me.CB_Mod1.UseSelectable = True
+        Me.CB_vttStyle.AutoSize = True
+        Me.CB_vttStyle.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_vttStyle.ForeColor = System.Drawing.Color.Black
+        Me.CB_vttStyle.Location = New System.Drawing.Point(349, 21)
+        Me.CB_vttStyle.Name = "CB_vttStyle"
+        Me.CB_vttStyle.Size = New System.Drawing.Size(126, 19)
+        Me.CB_vttStyle.TabIndex = 6
+        Me.CB_vttStyle.Text = "remove CC Style"
+        Me.ToolTip1.SetToolTip(Me.CB_vttStyle, "fixing CRs mess of cc's  https://github.com/hama3254/Crunchyroll-Downloader-v3.0/" &
+        "issues/769")
+        Me.CB_vttStyle.UseSelectable = True
         '
         'Einstellungen
         '
@@ -1902,6 +1918,8 @@ Partial Class Einstellungen
         Me.SoftSubs.ResumeLayout(False)
         Me.GB_SubLanguage.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
+        Me.GroupBox23.ResumeLayout(False)
+        Me.GroupBox23.PerformLayout()
         Me.GroupBox18.ResumeLayout(False)
         Me.GroupBox18.PerformLayout()
         Me.GroupBox16.ResumeLayout(False)
@@ -1948,8 +1966,6 @@ Partial Class Einstellungen
         Me.GroupBox8.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox23.ResumeLayout(False)
-        Me.GroupBox23.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2091,4 +2107,5 @@ Partial Class Einstellungen
     Friend WithEvents CB_Cap As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents GroupBox23 As GroupBox
     Friend WithEvents CB_Mod1 As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents CB_vttStyle As MetroFramework.Controls.MetroCheckBox
 End Class

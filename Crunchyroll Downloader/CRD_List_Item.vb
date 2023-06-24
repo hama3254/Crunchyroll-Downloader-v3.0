@@ -1175,12 +1175,25 @@ Public Class CRD_List_Item
                         InputData = AddScaledBorderAndShadow(InputData)
                     End If
 
+
+                    If My.Settings.vttStyleRemove = True Then
+                        If CBool(InStr(InputData, "WEBVTT")) And CBool(InStr(InputData, "STYLE")) Then
+                            Dim VTT As String() = InputData.Split(New String() {"STYLE"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim VTT0 As String() = VTT(1).Split(New String() {"}"}, System.StringSplitOptions.RemoveEmptyEntries)
+                            InputData = VTT(0) + VTT(1).Replace("}", "").Replace(VTT0(0), "")
+                        End If
+                        If CBool(InStr(InputData, "WEBVTT")) Then
+                            InputData = InputData.Replace("<Default>", "").Replace("</Default>", "")
+                        End If
+                    End If
+
+
                     Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
-                        sink.WriteLine(InputData)
-                    End Using
-                    'replace url with local file
-                    DL_URL = DL_URL.Replace(InputURL(0), SubsFile)
-                End If
+                            sink.WriteLine(InputData)
+                        End Using
+                        'replace url with local file
+                        DL_URL = DL_URL.Replace(InputURL(0), SubsFile)
+                    End If
             Catch ex As Exception
                 Debug.WriteLine(ex.ToString)
                 DL_URL = DL_URL_old

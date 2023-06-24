@@ -2092,28 +2092,34 @@ Public Class Main
             Next
         Catch ex As Exception
         End Try
-        If KeepCache = False Then
+        Try
+
+            If KeepCache = False Then
 
 
-            Dim folderPath As String = Pfad
-            Dim files() As String = Directory.GetFiles(folderPath, "*", SearchOption.AllDirectories)
+                Dim folderPath As String = Pfad
+                Dim files() As String = Directory.GetFiles(folderPath, "*", SearchOption.AllDirectories)
 
-            For Each file As String In files
-                If CBool(InStr(file, "CRD-Temp-File-")) Then
-                    'MsgBox(file)
-                    System.IO.File.Delete(file)
-                End If
-            Next
-            Try
-                Dim di As New System.IO.DirectoryInfo(Pfad)
-                For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
-                    If CBool(InStr(fi.Name, "CRD-Temp-File-")) Then
-                        System.IO.Directory.Delete(fi.FullName, True)
+                For Each file As String In files
+                    If CBool(InStr(file, "CRD-Temp-File-")) Then
+                        'MsgBox(file)
+                        System.IO.File.Delete(file)
                     End If
                 Next
-            Catch ex As Exception
-            End Try
-        End If
+                Try
+                    Dim di As New System.IO.DirectoryInfo(Pfad)
+                    For Each fi As System.IO.DirectoryInfo In di.EnumerateDirectories("*.*", System.IO.SearchOption.TopDirectoryOnly)
+                        If CBool(InStr(fi.Name, "CRD-Temp-File-")) Then
+                            System.IO.Directory.Delete(fi.FullName, True)
+                        End If
+                    Next
+                Catch ex As Exception
+                End Try
+            End If
+
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub RetryWithCachedFiles()
@@ -4684,6 +4690,10 @@ Public Class Main
     End Sub
 
     Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
+
+    End Sub
+
+    Private Sub Main_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
 
     End Sub
 

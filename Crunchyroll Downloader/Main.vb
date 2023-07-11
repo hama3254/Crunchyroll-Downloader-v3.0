@@ -1147,12 +1147,15 @@ Public Class Main
 
             VideoJson = CurlAuthNew(Streams, Loc_CR_Cookies, Loc_AuthToken)
 
+
             Debug.WriteLine("VideoJson: " + VideoJson)
             Debug.WriteLine("VideoStreams: " + Streams)
 
 
             Dim CR_HardSubLang As String = SubSprache.CR_Value
             VideoJson = CleanJSON(VideoJson)
+
+            'MsgBox(VideoJson)
 #End Region
 
 #Region "Check for dub override"
@@ -1857,7 +1860,6 @@ Public Class Main
 
                         Dim SubText As String = ""
                         SubText = Curl(SoftSubsList(i2).Url.Replace(" -i ", "").Replace(Chr(34), ""))
-
                         If My.Settings.SubtitleMod1 = True Then
                             SubText = AddScaledBorderAndShadow(SubText)
                         End If
@@ -2010,16 +2012,37 @@ Public Class Main
             ElseIf CBool(InStr(ex.ToString, Chr(34) + "UserAbort" + Chr(34))) Then
                 MsgBox(ex.ToString, MsgBoxStyle.Information)
             ElseIf CBool(InStr(ex.ToString, "Error - Getting")) Then
-                If RT_count = 0 Then
-                    If File.Exists("cookies.txt") = True Then
-                        MsgBox("Request refused, try a new cookies.txt", MsgBoxStyle.Exclamation)
-                    End If
-                    Navigate(WebsiteURL)
-                    Pause(5)
-                    LoadBrowser(WebsiteURL, 1)
-                    Exit Sub
-                End If
+
                 MsgBox(ex.ToString)
+                'If RT_count = 0 Then
+                '    If File.Exists("cookies.txt") = True Then
+                '        MsgBox("Request refused, try a new cookies.txt", MsgBoxStyle.Exclamation)
+                '        Exit Sub
+                '    End If
+                '    Me.Invoke(New Action(Function() As Object
+                '                             Anime_Add.StatusLabel.Text = "Browser reset..."
+                '                             Me.Text = "Browser reset..."
+                '                             ResoBackString = Nothing
+                '                             Me.Invalidate()
+                '                             Return Nothing
+                '                         End Function))
+
+                '    If Application.OpenForms().OfType(Of Browser).Any = True Then
+                '        Browser.Close()
+                '        Startseite = WebsiteURL
+                '        Pause(5)
+                '        UserBowser = False
+                '        Browser.Show()
+                '        'Anime_Add.btn_dl.Cursor = Cursors.Default
+                '        'Anime_Add.btn_dl.BackgroundImage = My.Resources.main_button_download_default
+                '    End If
+
+                '    'Navigate(WebsiteURL)
+                '    'Pause(5)
+                '    'LoadBrowser(WebsiteURL, 1)
+                '    Exit Sub
+                'End If
+                ' MsgBox(ex.ToString)
                 ' b = False
                 ' Navigate(WebsiteURL)
             Else

@@ -52,11 +52,11 @@ Module GetData
         Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
 
-        If CBool(InStr(CurlError, "curl")) Then
+        If CBool(InStr(CurlError, "curl:")) Then
             Debug.WriteLine(CurlError)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
-        ElseIf CBool(InStr(CurlOutput, "curl")) Then
+        ElseIf CBool(InStr(CurlOutput, "curl:")) Then
             Debug.WriteLine(CurlOutput)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
@@ -115,11 +115,11 @@ Module GetData
         Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
 
-        If CBool(InStr(CurlError, "curl")) Then
+        If CBool(InStr(CurlError, "curl:")) Then
             Debug.WriteLine(CurlError)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
-        ElseIf CBool(InStr(CurlOutput, "curl")) Then
+        ElseIf CBool(InStr(CurlOutput, "curl:")) Then
             Debug.WriteLine(CurlOutput)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
@@ -185,11 +185,11 @@ Module GetData
 
 
 
-        If CBool(InStr(CurlError, "curl")) Then
+        If CBool(InStr(CurlError, "curl:")) Then
             Debug.WriteLine(CurlError)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
-        ElseIf CBool(InStr(CurlOutput, "curl")) Then
+        ElseIf CBool(InStr(CurlOutput, "curl:")) Then
             Debug.WriteLine(CurlOutput)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing

@@ -39,7 +39,7 @@ Public Class Einstellungen
 
         CB_Mod1.Checked = My.Settings.SubtitleMod1
 
-        CB_vtt.Checked = My.Settings.vttStyleRemove
+        CB_vttStyle.Checked = My.Settings.vttStyleRemove
 
         TempTB.Text = Main.TempFolder
         LeadingZeroDD.SelectedIndex = Main.LeadingZero

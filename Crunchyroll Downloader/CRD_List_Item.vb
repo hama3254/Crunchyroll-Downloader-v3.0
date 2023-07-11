@@ -156,22 +156,28 @@ Public Class CRD_List_Item
         Return StatusRunning
     End Function
     Public Function GetIsStatusFinished() As Boolean
-        If Canceld = True Then
+        If Canceld = True Or Finished = True Then
             Return True
-        ElseIf HybridRunning = True Then
-            Return False
         Else
-            Try
-                If proc.HasExited = True Then
-                    Return True
-                Else
-                    Return False
-                End If
-            Catch ex As Exception
-                Return False
-            End Try
-
+            Return False
         End If
+
+        'If Canceld = True Then
+        '    Return True
+        'ElseIf HybridRunning = True Then
+        '    Return False
+        'Else
+        '    Try
+        '        If proc.HasExited = True Then
+        '            Return True
+        '        Else
+        '            Return False
+        '        End If
+        '    Catch ex As Exception
+        '        Return False
+        '    End Try
+
+        'End If
 
     End Function
     Public Function GetThumbnailSource() As String
@@ -1381,6 +1387,8 @@ Public Class CRD_List_Item
 
             If CBool(InStr(e.Data, "Duration: N/A, bitrate: N/A")) Then
 
+            ElseIf Finished = True Then
+
             ElseIf CBool(InStr(e.Data, "Duration: ")) Then
                 Dim ZeitGesamt As String() = e.Data.Split(New String() {"Duration: "}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim ZeitGesamt2 As String() = ZeitGesamt(1).Split(New [Char]() {System.Convert.ToChar(".")})
@@ -1440,6 +1448,8 @@ Public Class CRD_List_Item
             ElseIf CBool(InStr(e.Data, "muxing overhead:")) Then
                 Finished = True
                 Me.Invoke(New Action(Function() As Object
+
+                                         ProgressBar1.Value = ProgressBar1.Maximum
                                          Dim Done As String() = Label_percent.Text.Split(New String() {"MB"}, System.StringSplitOptions.RemoveEmptyEntries)
                                          Label_percent.Text = "Finished - " + Done(0) + "MB"
                                          Return Nothing

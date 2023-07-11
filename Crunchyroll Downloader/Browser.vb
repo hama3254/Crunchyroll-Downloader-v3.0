@@ -18,25 +18,28 @@ Public Class Browser
 
 
     Private Sub WebView2_CoreWebView2InitializationCompleted(sender As Object, e As CoreWebView2InitializationCompletedEventArgs) Handles WebView2.CoreWebView2InitializationCompleted
-        WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
-        WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.funimation.com/*", CoreWebView2WebResourceContext.All)
+        Try
+            WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
+            WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.funimation.com/*", CoreWebView2WebResourceContext.All)
 
-        'WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
-        AddHandler WebView2.CoreWebView2.WebResourceResponseReceived, AddressOf ObserveResponse
-        AddHandler WebView2.CoreWebView2.WebResourceRequested, AddressOf ObserveHttp
-        'WebView2.CoreWebView2.Settings.UserAgent = My.Settings.User_Agend.Replace(Chr(34), "").Replace("User-Agent: ", "")
-        '
-        'WebView2.CoreWebView2.Settings.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko"
-        My.Settings.User_Agend = Chr(34) + "User-Agent: " + WebView2.CoreWebView2.Settings.UserAgent + Chr(34)
-        'MsgBox(My.Settings.User_Agend)
+            'WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
+            AddHandler WebView2.CoreWebView2.WebResourceResponseReceived, AddressOf ObserveResponse
+            AddHandler WebView2.CoreWebView2.WebResourceRequested, AddressOf ObserveHttp
+            'WebView2.CoreWebView2.Settings.UserAgent = My.Settings.User_Agend.Replace(Chr(34), "").Replace("User-Agent: ", "")
+            '
+            'WebView2.CoreWebView2.Settings.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko"
+            My.Settings.User_Agend = Chr(34) + "User-Agent: " + WebView2.CoreWebView2.Settings.UserAgent + Chr(34)
+            'MsgBox(My.Settings.User_Agend)
 
-        If WebView2.CoreWebView2.Source = "about:blank" Or WebView2.CoreWebView2.Source = Nothing Then
-            'TextBox1.Text = Main.Startseite
-            WebView2.CoreWebView2.Navigate(Main.Startseite)
+            If WebView2.CoreWebView2.Source = "about:blank" Or WebView2.CoreWebView2.Source = Nothing Then
+                'TextBox1.Text = Main.Startseite
+                WebView2.CoreWebView2.Navigate(Main.Startseite)
 
 
-        End If
+            End If
+        Catch ex As Exception
 
+        End Try
 
 
     End Sub
@@ -77,6 +80,11 @@ Public Class Browser
             If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
                 Anime_Add.btn_dl.Cursor = Cursors.Default
                 Anime_Add.btn_dl.BackgroundImage = My.Resources.main_button_download_default
+            End If
+
+            If Main.Startseite IsNot My.Settings.Startseite Then
+                Main.LoadBrowser(Main.Startseite, 1)
+                Main.Startseite = My.Settings.Startseite
             End If
 
         End If

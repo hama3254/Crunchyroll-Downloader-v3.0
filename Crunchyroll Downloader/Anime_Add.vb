@@ -147,7 +147,9 @@ Public Class Anime_Add
             ComboBox2.Items.AddRange(Result.ToArray)
             ComboBox2.SelectedItem = SubFolder_Value
         Catch ex As Exception
-
+            ' MsgBox(ex.ToString)
+            'SubFolder_Nothing
+            ComboBox2.SelectedItem = SubFolder_Nothing
         End Try
 
         'Timer3.Enabled = True

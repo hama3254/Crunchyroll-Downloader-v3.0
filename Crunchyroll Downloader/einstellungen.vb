@@ -850,7 +850,7 @@ Public Class Einstellungen
 
 
 
-    Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles copy.Click, nv_h264.Click, nv_hevc.Click, nv_AV1.Click, CPU_h264.Click, CPU_h265.Click, CPU_AV1.Click, AMD_h264.Click, AMD_hevc.Click, Intel_h264.Click, Intel_hevc.Click, Intel_AV1.Click
+    Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles copy.Click, nv_h264.Click, nv_hevc.Click, nv_AV1.Click, CPU_h264.Click, CPU_h265.Click, CPU_AV1.Click, AMD_h264.Click, AMD_hevc.Click, AMD_AV1.Click, Intel_h264.Click, Intel_hevc.Click, Intel_AV1.Click
         Dim Button As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
 
         If CBool(InStr(Button.Text, "av1")) Then

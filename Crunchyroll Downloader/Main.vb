@@ -4490,18 +4490,21 @@ Public Class Main
 
             Dim CRBetaBearer As String = "Bearer "
 
-            Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post)
+
+                Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
 
 
-            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
+                If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
 
-                v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"))
+                    v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"), "add_main-4499")
 
-            End If
+                End If
 
-            'MsgBox(v1Token)
 
-            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
+
+                'MsgBox(v1Token)
+
+                If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
                 SetStatusLabel("Status: Failed - bad request, check CR login")
                 Me.Text = "Status: Failed - bad request, check CR login"
                 Debug.WriteLine("Status: Failed - bad request, check CR login")
@@ -4510,7 +4513,7 @@ Public Class Main
                 Exit Sub
 
             ElseIf CBool(InStr(v1Token, "curl:")) = True Then
-                v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post)
+                v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4516")
             End If
 
             'MsgBox(v1Token)

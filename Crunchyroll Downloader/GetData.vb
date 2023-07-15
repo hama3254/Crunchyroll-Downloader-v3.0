@@ -67,7 +67,7 @@ Module GetData
 
     End Function
 
-    Public Function CurlPost(ByVal Url As String, ByVal Cookies As String, ByVal Auth As String, ByVal Post As String) As String
+    Public Function CurlPost(ByVal Url As String, ByVal Cookies As String, ByVal Auth As String, ByVal Post As String, ByVal Sender As String) As String
 
 
         Dim exepath As String = Path.Combine(Application.StartupPath, "lib", "curl.exe")
@@ -114,11 +114,15 @@ Module GetData
 
         Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
-
-        If CBool(InStr(CurlError, "curl:")) Then
+        If CBool(InStr(CurlOutput, "curl:")) = True And CBool(InStr(CurlOutput, "400")) = True Then
+            Return CurlOutput
+        ElseIf CBool(InStr(CurlError, "curl:")) = True And CBool(InStr(CurlError, "400")) = True Then
+            Return CurlError
+        ElseIf CBool(InStr(CurlError, "curl:")) Then
             Debug.WriteLine(CurlError)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
+
         ElseIf CBool(InStr(CurlOutput, "curl:")) Then
             Debug.WriteLine(CurlOutput)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)

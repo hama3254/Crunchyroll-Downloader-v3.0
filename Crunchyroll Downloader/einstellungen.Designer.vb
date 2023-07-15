@@ -25,6 +25,7 @@ Partial Class Einstellungen
         Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.CB_Mod1 = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_vttStyle = New MetroFramework.Controls.MetroCheckBox()
         Me.pictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ToolTip2 = New System.Windows.Forms.ToolTip(Me.components)
         Me.GroupBox14 = New System.Windows.Forms.GroupBox()
@@ -159,7 +160,7 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.CB_vttStyle = New MetroFramework.Controls.MetroCheckBox()
+        Me.AMD_AV1 = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -223,6 +224,20 @@ Partial Class Einstellungen
         Me.ToolTip1.SetToolTip(Me.CB_Mod1, "adds the 'ScaledBorderAndShadow:yes' to the subtitles see more on https://github." &
         "com/hama3254/Crunchyroll-Downloader-v3.0/issues/764")
         Me.CB_Mod1.UseSelectable = True
+        '
+        'CB_vttStyle
+        '
+        Me.CB_vttStyle.AutoSize = True
+        Me.CB_vttStyle.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_vttStyle.ForeColor = System.Drawing.Color.Black
+        Me.CB_vttStyle.Location = New System.Drawing.Point(349, 21)
+        Me.CB_vttStyle.Name = "CB_vttStyle"
+        Me.CB_vttStyle.Size = New System.Drawing.Size(126, 19)
+        Me.CB_vttStyle.TabIndex = 6
+        Me.CB_vttStyle.Text = "remove CC Style"
+        Me.ToolTip1.SetToolTip(Me.CB_vttStyle, "fixing CRs mess of cc's  https://github.com/hama3254/Crunchyroll-Downloader-v3.0/" &
+        "issues/769")
+        Me.CB_vttStyle.UseSelectable = True
         '
         'pictureBox1
         '
@@ -541,7 +556,7 @@ Partial Class Einstellungen
         '
         'FFMPEG_CommandP1
         '
-        Me.FFMPEG_CommandP1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.copy, Me.CPU_h264, Me.CPU_h265, Me.CPU_AV1, Me.nv_h264, Me.nv_hevc, Me.nv_AV1, Me.AMD_h264, Me.AMD_hevc, Me.Intel_h264, Me.Intel_hevc, Me.Intel_AV1})
+        Me.FFMPEG_CommandP1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.copy, Me.CPU_h264, Me.CPU_h265, Me.CPU_AV1, Me.nv_h264, Me.nv_hevc, Me.nv_AV1, Me.AMD_h264, Me.AMD_hevc, Me.AMD_AV1, Me.Intel_h264, Me.Intel_hevc, Me.Intel_AV1})
         Me.FFMPEG_CommandP1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FFMPEG_CommandP1.Name = "FFMPEG_CommandP1"
         Me.FFMPEG_CommandP1.Size = New System.Drawing.Size(63, 20)
@@ -550,84 +565,84 @@ Partial Class Einstellungen
         'copy
         '
         Me.copy.Name = "copy"
-        Me.copy.Size = New System.Drawing.Size(172, 22)
+        Me.copy.Size = New System.Drawing.Size(180, 22)
         Me.copy.Text = "-c copy"
         '
         'CPU_h264
         '
         Me.CPU_h264.BackColor = System.Drawing.Color.DarkGray
         Me.CPU_h264.Name = "CPU_h264"
-        Me.CPU_h264.Size = New System.Drawing.Size(172, 22)
+        Me.CPU_h264.Size = New System.Drawing.Size(180, 22)
         Me.CPU_h264.Text = "-c:v libx264"
         '
         'CPU_h265
         '
         Me.CPU_h265.BackColor = System.Drawing.Color.DarkGray
         Me.CPU_h265.Name = "CPU_h265"
-        Me.CPU_h265.Size = New System.Drawing.Size(172, 22)
+        Me.CPU_h265.Size = New System.Drawing.Size(180, 22)
         Me.CPU_h265.Text = "-c:v libx265"
         '
         'CPU_AV1
         '
         Me.CPU_AV1.BackColor = System.Drawing.Color.DarkGray
         Me.CPU_AV1.Name = "CPU_AV1"
-        Me.CPU_AV1.Size = New System.Drawing.Size(172, 22)
+        Me.CPU_AV1.Size = New System.Drawing.Size(180, 22)
         Me.CPU_AV1.Text = "-c:v libsvtav1"
         '
         'nv_h264
         '
         Me.nv_h264.BackColor = System.Drawing.Color.YellowGreen
         Me.nv_h264.Name = "nv_h264"
-        Me.nv_h264.Size = New System.Drawing.Size(172, 22)
+        Me.nv_h264.Size = New System.Drawing.Size(180, 22)
         Me.nv_h264.Text = "-c:v h264_nvenc "
         '
         'nv_hevc
         '
         Me.nv_hevc.BackColor = System.Drawing.Color.YellowGreen
         Me.nv_hevc.Name = "nv_hevc"
-        Me.nv_hevc.Size = New System.Drawing.Size(172, 22)
+        Me.nv_hevc.Size = New System.Drawing.Size(180, 22)
         Me.nv_hevc.Text = "-c:v hevc_nvenc"
         '
         'nv_AV1
         '
         Me.nv_AV1.BackColor = System.Drawing.Color.YellowGreen
         Me.nv_AV1.Name = "nv_AV1"
-        Me.nv_AV1.Size = New System.Drawing.Size(172, 22)
+        Me.nv_AV1.Size = New System.Drawing.Size(180, 22)
         Me.nv_AV1.Text = "-c:v av1_nvenc"
         '
         'AMD_h264
         '
         Me.AMD_h264.BackColor = System.Drawing.Color.Tomato
         Me.AMD_h264.Name = "AMD_h264"
-        Me.AMD_h264.Size = New System.Drawing.Size(172, 22)
+        Me.AMD_h264.Size = New System.Drawing.Size(180, 22)
         Me.AMD_h264.Text = "-c:v h264_amf"
         '
         'AMD_hevc
         '
         Me.AMD_hevc.BackColor = System.Drawing.Color.Tomato
         Me.AMD_hevc.Name = "AMD_hevc"
-        Me.AMD_hevc.Size = New System.Drawing.Size(172, 22)
+        Me.AMD_hevc.Size = New System.Drawing.Size(180, 22)
         Me.AMD_hevc.Text = "-c:v hevc_amf"
         '
         'Intel_h264
         '
         Me.Intel_h264.BackColor = System.Drawing.Color.CornflowerBlue
         Me.Intel_h264.Name = "Intel_h264"
-        Me.Intel_h264.Size = New System.Drawing.Size(172, 22)
+        Me.Intel_h264.Size = New System.Drawing.Size(180, 22)
         Me.Intel_h264.Text = "-c:v h264_qsv"
         '
         'Intel_hevc
         '
         Me.Intel_hevc.BackColor = System.Drawing.Color.CornflowerBlue
         Me.Intel_hevc.Name = "Intel_hevc"
-        Me.Intel_hevc.Size = New System.Drawing.Size(172, 22)
+        Me.Intel_hevc.Size = New System.Drawing.Size(180, 22)
         Me.Intel_hevc.Text = "-c:v hevc_qsv"
         '
         'Intel_AV1
         '
         Me.Intel_AV1.BackColor = System.Drawing.Color.CornflowerBlue
         Me.Intel_AV1.Name = "Intel_AV1"
-        Me.Intel_AV1.Size = New System.Drawing.Size(172, 22)
+        Me.Intel_AV1.Size = New System.Drawing.Size(180, 22)
         Me.Intel_AV1.Text = "-c:v av1_qsv"
         '
         'FFMPEG_CommandP2
@@ -1881,19 +1896,12 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'CB_vttStyle
+        'AMD_AV1
         '
-        Me.CB_vttStyle.AutoSize = True
-        Me.CB_vttStyle.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_vttStyle.ForeColor = System.Drawing.Color.Black
-        Me.CB_vttStyle.Location = New System.Drawing.Point(349, 21)
-        Me.CB_vttStyle.Name = "CB_vttStyle"
-        Me.CB_vttStyle.Size = New System.Drawing.Size(126, 19)
-        Me.CB_vttStyle.TabIndex = 6
-        Me.CB_vttStyle.Text = "remove CC Style"
-        Me.ToolTip1.SetToolTip(Me.CB_vttStyle, "fixing CRs mess of cc's  https://github.com/hama3254/Crunchyroll-Downloader-v3.0/" &
-        "issues/769")
-        Me.CB_vttStyle.UseSelectable = True
+        Me.AMD_AV1.BackColor = System.Drawing.Color.Tomato
+        Me.AMD_AV1.Name = "AMD_AV1"
+        Me.AMD_AV1.Size = New System.Drawing.Size(180, 22)
+        Me.AMD_AV1.Text = "-c:v av1_amf"
         '
         'Einstellungen
         '
@@ -2108,4 +2116,5 @@ Partial Class Einstellungen
     Friend WithEvents GroupBox23 As GroupBox
     Friend WithEvents CB_Mod1 As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CB_vttStyle As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents AMD_AV1 As ToolStripMenuItem
 End Class

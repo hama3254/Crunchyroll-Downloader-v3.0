@@ -4459,18 +4459,19 @@ Public Class Main
                     Url_locale = locale2(0)
                 End If
 
-                If CBool(InStr(Url, "musicvideo/")) Then
-                    SetStatusLabel("Status: musicvideo detected - partial support only")
+                'If CBool(InStr(Url, "musicvideo/")) Then
+                '    SetStatusLabel("Status: musicvideo detected - partial support only")
 
-                    Browser.WebView2.CoreWebView2.Navigate(Url)
-                    Exit Sub
-                ElseIf CBool(InStr(Url, "/concert/")) Then
+                '    Browser.WebView2.CoreWebView2.Navigate(Url)
+                '    Exit Sub
+                'Else
+                'If CBool(InStr(Url, "/concert/")) Then
 
-                    SetStatusLabel("Status: concert detected - partial support only")
-                    Browser.WebView2.CoreWebView2.Navigate(Url)
-                    Exit Sub
+                '        SetStatusLabel("Status: concert detected - partial support only")
+                '        Browser.WebView2.CoreWebView2.Navigate(Url)
+                '        Exit Sub
 
-                End If
+                '    End If
 
 
             End If
@@ -4495,8 +4496,9 @@ Public Class Main
 
 
                 If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
-
-                    v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"), "add_main-4499")
+                Debug.WriteLine("Post error!, 400")
+                Debug.WriteLine(Post.Replace("etp_rt_cookie", "client_id"))
+                v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"), "add_main-4499")
 
                 End If
 
@@ -4544,6 +4546,7 @@ Public Class Main
 
     Public Sub ProcessLoading(ByVal url As String, Auth2 As String, ByVal Loc_CR_Cookies As String, ByVal RT_Count As Integer)
 
+        ' MsgBox(url)
         If CBool(InStr(url, "crunchyroll.com")) = True And CBool(InStr(url, "series/")) = True Then
 
             Dim SeriesUrlBuilder() As String = url.Split(New String() {"series/"}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -4556,7 +4559,9 @@ Public Class Main
             GetBetaSeasons(url, SeriesUrl, Auth2)
 
 
-        ElseIf CBool(InStr(url, "crunchyroll.com")) = True And CBool(InStr(url, "watch/")) = True And CBool(CrBetaBasic = Nothing) = False Then
+        ElseIf CBool(InStr(url, "crunchyroll.com")) = True And CBool(InStr(url, "watch/")) = True And CBool(CrBetaBasic = Nothing) = False And CBool(InStr(url, "/musicvideo/")) = False And CBool(InStr(url, "/concert/")) = False Then
+#Region "Anime"
+
 
             Dim ObjectsUrl As String = Nothing
 
@@ -4626,8 +4631,112 @@ Public Class Main
             End Try
 
             GetCRVideoProxy(StreamsUrl, Auth2, url, RT_Count)
+#End Region
+        ElseIf CBool(InStr(url, "crunchyroll.com")) = True And CBool(InStr(url, "musicvideo/")) = True And CBool(CrBetaBasic = Nothing) = False Then
+#Region "musik videos"
 
 
+            Dim ObjectsUrl As String = Nothing
+
+            Dim ObjectsURLBuilder3() As String = url.Split(New String() {"musicvideo/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+
+            ObjectsUrl = "https://www.crunchyroll.com/content/v2/music/music_videos/" + ObjectsURLBuilder4(0) + "?locale=" + locale
+
+            Debug.WriteLine("ObjectsUrl: " + ObjectsUrl)
+
+
+            Dim StreamsUrl As String = Nothing
+            Dim ObjectJson As String
+
+            Try
+
+                ObjectJson = CurlAuthNew(ObjectsUrl, Loc_CR_Cookies, Auth2)
+
+            Catch ex As Exception
+
+                If CBool(InStr(ex.ToString, "Error - Getting")) Then
+                    MsgBox("Error invalid CR respone")
+                    Exit Sub
+                Else
+                    MsgBox("Error processing data")
+                    Exit Sub
+                End If
+            End Try
+
+
+            If CBool(InStr(ObjectJson, "/content/v2/music/")) = False Then
+
+                SetStatusLabel("Status: Failed - no video, check CR login")
+                Me.Text = "Status: Failed - no video, check CR login"
+                Debug.WriteLine("Status: Failed - no video, check CR login")
+
+                Exit Sub
+            End If
+
+            'Try
+            Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"/content/v2/music/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+            StreamsUrl = "https://www.crunchyroll.com/content/v2/music/" + StreamsUrlBuilder2(0) + "/streams?locale=" + locale
+
+
+            GetCRVideoProxy(StreamsUrl, Auth2, url, RT_Count)
+#End Region
+        ElseIf CBool(InStr(url, "crunchyroll.com")) = True And CBool(InStr(url, "concert/")) = True And CBool(CrBetaBasic = Nothing) = False Then
+
+            Dim ObjectsUrl As String = Nothing
+
+            Dim ObjectsURLBuilder3() As String = url.Split(New String() {"concert/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+
+            ObjectsUrl = "https://www.crunchyroll.com/content/v2/music/concerts/" + ObjectsURLBuilder4(0) + "?locale=" + locale
+
+            Debug.WriteLine("ObjectsUrl: " + ObjectsUrl)
+
+
+            Dim StreamsUrl As String = Nothing
+            Dim ObjectJson As String
+
+            Try
+
+                ObjectJson = CurlAuthNew(ObjectsUrl, Loc_CR_Cookies, Auth2)
+
+            Catch ex As Exception
+
+                If CBool(InStr(ex.ToString, "Error - Getting")) Then
+                    MsgBox("Error invalid CR respone")
+                    Exit Sub
+                Else
+                    MsgBox("Error processing data")
+                    Exit Sub
+                End If
+            End Try
+
+
+            If CBool(InStr(ObjectJson, "/content/v2/music/")) = False Then
+
+                SetStatusLabel("Status: Failed - no video, check CR login")
+                Me.Text = "Status: Failed - no video, check CR login"
+                Debug.WriteLine("Status: Failed - no video, check CR login")
+
+                Exit Sub
+            End If
+
+            'Try
+            Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"/content/v2/music/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+            StreamsUrl = "https://www.crunchyroll.com/content/v2/music/" + StreamsUrlBuilder2(0) + "/streams?locale=" + locale
+
+
+            GetCRVideoProxy(StreamsUrl, Auth2, url, RT_Count)
         Else
             Browser.WebView2.CoreWebView2.Navigate(url)
         End If

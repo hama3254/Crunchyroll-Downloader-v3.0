@@ -21,6 +21,7 @@ Public Class Browser
         Try
             WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
             WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.funimation.com/*", CoreWebView2WebResourceContext.All)
+            '   WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
 
             'WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
             AddHandler WebView2.CoreWebView2.WebResourceResponseReceived, AddressOf ObserveResponse
@@ -269,6 +270,8 @@ Public Class Browser
     Private Sub ObserveHttp(ByVal sender As Object, ByVal e As CoreWebView2WebResourceRequestedEventArgs) 'Handles RequestResource.GetUrl
 
 
+        ' Debug.WriteLine(e.Request.Uri)
+
         If CBool(InStr(e.Request.Uri, "crunchyroll.com")) = True And Main.CrBetaBasic = Nothing Then
             Dim Headers As New List(Of KeyValuePair(Of String, String))
             Headers.AddRange(e.Request.Headers.ToList)
@@ -296,13 +299,13 @@ Public Class Browser
 
         '
         '
-        If CBool(InStr(e.Request.Uri, "9016.2bd48f1e07adf6596b2d.js")) = True Then '
-            Debug.WriteLine(e.Request.Uri)
-            'MsgBox("Found!")
-            e.Response = WebView2.CoreWebView2.Environment.CreateWebResourceResponse(StringToStream(File.ReadAllText(Application.StartupPath + "\WebInterface\9016.2bd48f1e07adf6596b2d.js"), Encoding.UTF8), 200, "Not found", "content-type: application/javascript")
+        'If CBool(InStr(e.Request.Uri, "9016.2bd48f1e07adf6596b2d.js")) = True Then '
+        '    Debug.WriteLine(e.Request.Uri)
+        '    'MsgBox("Found!")
+        '    e.Response = WebView2.CoreWebView2.Environment.CreateWebResourceResponse(StringToStream(File.ReadAllText(Application.StartupPath + "\WebInterface\9016.2bd48f1e07adf6596b2d.js"), Encoding.UTF8), 200, "Not found", "content-type: application/javascript")
 
 
-        End If
+        'End If
 
 
     End Sub

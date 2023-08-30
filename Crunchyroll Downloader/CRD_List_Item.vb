@@ -907,7 +907,7 @@ Public Class CRD_List_Item
                 Exit Function
             End If
             If CBool(InStr(textLenght(i), ".ts")) Then
-                Dim File As String = Folder + String.Format("{0:00000}", Count)
+                Dim File As String = Folder + String.Format("{0:00000}", Count) + ".ts"
                 Dim curi As String = GetFullUri(url, textLenght(i))
 
                 If Not System.IO.File.Exists(Folder + "Retry\" + String.Format("{0:00000}", Count)) Then

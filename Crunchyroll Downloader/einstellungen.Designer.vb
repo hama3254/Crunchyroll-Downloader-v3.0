@@ -59,6 +59,7 @@ Partial Class Einstellungen
         Me.nv_AV1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.AMD_h264 = New System.Windows.Forms.ToolStripMenuItem()
         Me.AMD_hevc = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AMD_AV1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.Intel_h264 = New System.Windows.Forms.ToolStripMenuItem()
         Me.Intel_hevc = New System.Windows.Forms.ToolStripMenuItem()
         Me.Intel_AV1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -160,7 +161,6 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.AMD_AV1 = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -322,7 +322,8 @@ Partial Class Einstellungen
         '
         'CB_CR_Harsubs
         '
-        Me.CB_CR_Harsubs.DropDownHeight = 275
+        Me.CB_CR_Harsubs.DropDownHeight = 279
+        Me.CB_CR_Harsubs.DropDownWidth = 320
         Me.CB_CR_Harsubs.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CB_CR_Harsubs.FormattingEnabled = True
         Me.CB_CR_Harsubs.IntegralHeight = False
@@ -565,84 +566,91 @@ Partial Class Einstellungen
         'copy
         '
         Me.copy.Name = "copy"
-        Me.copy.Size = New System.Drawing.Size(180, 22)
+        Me.copy.Size = New System.Drawing.Size(172, 22)
         Me.copy.Text = "-c copy"
         '
         'CPU_h264
         '
         Me.CPU_h264.BackColor = System.Drawing.Color.DarkGray
         Me.CPU_h264.Name = "CPU_h264"
-        Me.CPU_h264.Size = New System.Drawing.Size(180, 22)
+        Me.CPU_h264.Size = New System.Drawing.Size(172, 22)
         Me.CPU_h264.Text = "-c:v libx264"
         '
         'CPU_h265
         '
         Me.CPU_h265.BackColor = System.Drawing.Color.DarkGray
         Me.CPU_h265.Name = "CPU_h265"
-        Me.CPU_h265.Size = New System.Drawing.Size(180, 22)
+        Me.CPU_h265.Size = New System.Drawing.Size(172, 22)
         Me.CPU_h265.Text = "-c:v libx265"
         '
         'CPU_AV1
         '
         Me.CPU_AV1.BackColor = System.Drawing.Color.DarkGray
         Me.CPU_AV1.Name = "CPU_AV1"
-        Me.CPU_AV1.Size = New System.Drawing.Size(180, 22)
+        Me.CPU_AV1.Size = New System.Drawing.Size(172, 22)
         Me.CPU_AV1.Text = "-c:v libsvtav1"
         '
         'nv_h264
         '
         Me.nv_h264.BackColor = System.Drawing.Color.YellowGreen
         Me.nv_h264.Name = "nv_h264"
-        Me.nv_h264.Size = New System.Drawing.Size(180, 22)
+        Me.nv_h264.Size = New System.Drawing.Size(172, 22)
         Me.nv_h264.Text = "-c:v h264_nvenc "
         '
         'nv_hevc
         '
         Me.nv_hevc.BackColor = System.Drawing.Color.YellowGreen
         Me.nv_hevc.Name = "nv_hevc"
-        Me.nv_hevc.Size = New System.Drawing.Size(180, 22)
+        Me.nv_hevc.Size = New System.Drawing.Size(172, 22)
         Me.nv_hevc.Text = "-c:v hevc_nvenc"
         '
         'nv_AV1
         '
         Me.nv_AV1.BackColor = System.Drawing.Color.YellowGreen
         Me.nv_AV1.Name = "nv_AV1"
-        Me.nv_AV1.Size = New System.Drawing.Size(180, 22)
+        Me.nv_AV1.Size = New System.Drawing.Size(172, 22)
         Me.nv_AV1.Text = "-c:v av1_nvenc"
         '
         'AMD_h264
         '
         Me.AMD_h264.BackColor = System.Drawing.Color.Tomato
         Me.AMD_h264.Name = "AMD_h264"
-        Me.AMD_h264.Size = New System.Drawing.Size(180, 22)
+        Me.AMD_h264.Size = New System.Drawing.Size(172, 22)
         Me.AMD_h264.Text = "-c:v h264_amf"
         '
         'AMD_hevc
         '
         Me.AMD_hevc.BackColor = System.Drawing.Color.Tomato
         Me.AMD_hevc.Name = "AMD_hevc"
-        Me.AMD_hevc.Size = New System.Drawing.Size(180, 22)
+        Me.AMD_hevc.Size = New System.Drawing.Size(172, 22)
         Me.AMD_hevc.Text = "-c:v hevc_amf"
+        '
+        'AMD_AV1
+        '
+        Me.AMD_AV1.BackColor = System.Drawing.Color.Tomato
+        Me.AMD_AV1.Name = "AMD_AV1"
+        Me.AMD_AV1.Size = New System.Drawing.Size(172, 22)
+        Me.AMD_AV1.Text = "-c:v av1_amf"
         '
         'Intel_h264
         '
         Me.Intel_h264.BackColor = System.Drawing.Color.CornflowerBlue
         Me.Intel_h264.Name = "Intel_h264"
-        Me.Intel_h264.Size = New System.Drawing.Size(180, 22)
+        Me.Intel_h264.Size = New System.Drawing.Size(172, 22)
         Me.Intel_h264.Text = "-c:v h264_qsv"
         '
         'Intel_hevc
         '
         Me.Intel_hevc.BackColor = System.Drawing.Color.CornflowerBlue
         Me.Intel_hevc.Name = "Intel_hevc"
-        Me.Intel_hevc.Size = New System.Drawing.Size(180, 22)
+        Me.Intel_hevc.Size = New System.Drawing.Size(172, 22)
         Me.Intel_hevc.Text = "-c:v hevc_qsv"
         '
         'Intel_AV1
         '
         Me.Intel_AV1.BackColor = System.Drawing.Color.CornflowerBlue
         Me.Intel_AV1.Name = "Intel_AV1"
-        Me.Intel_AV1.Size = New System.Drawing.Size(180, 22)
+        Me.Intel_AV1.Size = New System.Drawing.Size(172, 22)
         Me.Intel_AV1.Text = "-c:v av1_qsv"
         '
         'FFMPEG_CommandP2
@@ -1098,7 +1106,7 @@ Partial Class Einstellungen
         Me.TabControl1.FontWeight = MetroFramework.MetroTabControlWeight.Regular
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 1
+        Me.TabControl1.SelectedIndex = 3
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1418,9 +1426,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 35)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 528)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "Crunchyroll"
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1504,7 +1512,7 @@ Partial Class Einstellungen
         '
         'CB_CR_Audio
         '
-        Me.CB_CR_Audio.DropDownHeight = 275
+        Me.CB_CR_Audio.DropDownHeight = 279
         Me.CB_CR_Audio.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CB_CR_Audio.FormattingEnabled = True
         Me.CB_CR_Audio.IntegralHeight = False
@@ -1895,13 +1903,6 @@ Partial Class Einstellungen
         Me.Btn_Save.Size = New System.Drawing.Size(355, 30)
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
-        '
-        'AMD_AV1
-        '
-        Me.AMD_AV1.BackColor = System.Drawing.Color.Tomato
-        Me.AMD_AV1.Name = "AMD_AV1"
-        Me.AMD_AV1.Size = New System.Drawing.Size(180, 22)
-        Me.AMD_AV1.Text = "-c:v av1_amf"
         '
         'Einstellungen
         '

@@ -152,5 +152,8 @@
     <Setting Name="vttStyleRemove" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="AudioOnlyReso" Type="System.String" Scope="User">
+      <Value Profile="(Default)">x480,</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

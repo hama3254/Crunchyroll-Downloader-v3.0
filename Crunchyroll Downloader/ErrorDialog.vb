@@ -67,7 +67,11 @@ Public Class ErrorDialog
                 ComboBox1.SelectedIndex = 0
             Catch ex As Exception
             End Try
-
+        ElseIf Main.DialogTaskString = "AudioOnlyResolution" Then
+            StatusLabel.Text = "" 'Main.LabelResoNotFoundText
+            ComboBox1.Items.Add("x480,")
+            ComboBox1.Items.Add("x720,")
+            ComboBox1.Items.Add("x1080,")
         ElseIf Main.DialogTaskString = "Funimation_Resolution" Then
             StatusLabel.Text = Main.LabelResoNotFoundText
             'Try

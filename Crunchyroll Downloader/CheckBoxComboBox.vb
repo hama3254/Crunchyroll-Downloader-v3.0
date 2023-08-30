@@ -11,6 +11,7 @@ Public Class CheckBoxComboBox
     Dim Manager As New MetroStyleManager
     Dim Dubs As New List(Of MetroCheckBox)
     Dim Subs As New List(Of MetroCheckBox)
+    Dim MyHeight As Integer = 330
     Private Sub Reso_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Manager.Owner = Me
         Me.StyleManager = Manager
@@ -45,6 +46,7 @@ Public Class CheckBoxComboBox
                 Dubs.Add(Dub)
                 Me.Controls.Add(Dub)
             Next
+            MyHeight = (Main.LangValueEnum.Count - 1) * 30
 
         ElseIf Me.Text = "CR Sub selection" Then
 
@@ -72,7 +74,7 @@ Public Class CheckBoxComboBox
                 Me.Controls.Add(SubT)
             Next
 
-
+            MyHeight = (Main.LangValueEnum.Count - 2) * 30
         End If
 
 
@@ -145,19 +147,19 @@ Public Class CheckBoxComboBox
 
     Private Sub Animation_Tick(sender As Object, e As EventArgs) Handles Animation.Tick
         If Me.Text = "CR Dub selection" Then
-            If Me.Height < 330 Then
+            If Me.Height < MyHeight Then
                 Me.Height = Me.Height + 30
             Else
-                Me.Height = 330
+                Me.Height = MyHeight
                 Animation.Enabled = False
             End If
 
 
         ElseIf Me.Text = "CR Sub selection" Then
-            If Me.Height < 300 Then
+            If Me.Height < MyHeight Then
                 Me.Height = Me.Height + 30
             Else
-                Me.Height = 300
+                Me.Height = MyHeight
                 Animation.Enabled = False
             End If
 

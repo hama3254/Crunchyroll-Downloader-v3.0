@@ -53,6 +53,7 @@ Partial Class Main
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ScanTimeout = New System.Windows.Forms.Timer(Me.components)
         Me.Btn_Queue = New System.Windows.Forms.Button()
+        Me.AudioOnlyQualityToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -161,7 +162,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.SaveModeToolStripMenuItem, Me.SaveThumbnailAsImageToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.DummyItemToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.SaveModeToolStripMenuItem, Me.SaveThumbnailAsImageToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.DummyItemToolStripMenuItem, Me.AudioOnlyQualityToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -240,6 +241,11 @@ Partial Class Main
         Me.Btn_Queue.Name = "Btn_Queue"
         Me.Btn_Queue.UseVisualStyleBackColor = False
         '
+        'AudioOnlyQualityToolStripMenuItem
+        '
+        Me.AudioOnlyQualityToolStripMenuItem.Name = "AudioOnlyQualityToolStripMenuItem"
+        resources.ApplyResources(Me.AudioOnlyQualityToolStripMenuItem, "AudioOnlyQualityToolStripMenuItem")
+        '
         'Main
         '
         Me.ApplyImageInvert = True
@@ -299,4 +305,5 @@ Partial Class Main
     Friend WithEvents Btn_Queue As Button
     Friend WithEvents SaveThumbnailAsImageToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SaveModeToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AudioOnlyQualityToolStripMenuItem As ToolStripMenuItem
 End Class

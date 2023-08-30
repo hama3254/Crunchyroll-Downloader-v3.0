@@ -635,7 +635,7 @@ Public Class Main
 
         RetryWithCachedFiles()
 
-
+        'MsgBox(Curl_insecure.ToString)
 
     End Sub
 
@@ -739,7 +739,7 @@ Public Class Main
             End If
         Next
 
-        Return "Error"
+        Return HardSub + " not found"
 
     End Function
 
@@ -1287,11 +1287,12 @@ Public Class Main
                 'Debug.WriteLine("1457: " + i.ToString + "/" + CR_Streams.Count.ToString + " " + CR_Streams.Item(i).subLang + " " + CR_Streams.Item(i).Format)
                 If CR_Streams.Item(i).subLang = CR_HardSubLang Then
                     CR_URI_Master.Add(CR_Streams.Item(i).Url)
+                    'MsgBox(CR_Streams.Item(i).Format + CR_Streams.Item(i).Url)
                 ElseIf CR_Streams.Item(i).subLang = "" And CR_audio_locale IsNot "ja-JP" And DubMode = True Then 'nothing/raw
                     RawStream.Add(CR_Streams.Item(i).Url)
                 End If
             Next
-
+            'MsgBox(CR_URI_Master.Count.ToString)
             If CR_URI_Master.Count = 0 And RawStream.Count > 0 Then
                 CR_URI_Master.Clear()
                 CR_URI_Master.AddRange(RawStream)
@@ -1314,6 +1315,7 @@ Public Class Main
                         Debug.WriteLine("1571: " + CR_Streams.Item(i).subLang)
                         If CR_Streams.Item(i).subLang = CR_HardSubLang Then
                             CR_URI_Master.Add(CR_Streams.Item(i).Url)
+
                         End If
 
                     Next
@@ -1688,8 +1690,8 @@ Public Class Main
 
                 ElseIf DownloadScope = DownloadScopeEnum.AudioOnly Or MergeAudio = True Then
 
-                    If CBool(InStr(str, "x480,")) Then
-                        ResoUsed = "x480"
+                    If CBool(InStr(str, My.Settings.AudioOnlyReso)) Then
+                        ResoUsed = My.Settings.AudioOnlyReso.Replace(",", "")
                     ElseIf CBool(InStr(str, "x" + Reso.ToString + ",")) Then
                         ResoUsed = "x" + Reso.ToString
                     End If
@@ -1715,6 +1717,8 @@ Public Class Main
                     End If
                 End If
 
+                'MsgBox(ResoUsed)
+
                 Dim ffmpeg_url_3 As String = Nothing
                 Dim LineChar As String = vbLf
                 If CBool(InStr(str, vbCrLf)) Then
@@ -1722,6 +1726,7 @@ Public Class Main
                 ElseIf CBool(InStr(str, vbCr)) Then
                     LineChar = vbCr
                 End If
+                'MsgBox(str)
                 Dim ffmpeg_url_1 As String() = str.Split(New String() {LineChar}, System.StringSplitOptions.RemoveEmptyEntries)
 
                 For i As Integer = 0 To ffmpeg_url_1.Count - 2 'Step 2
@@ -1729,6 +1734,8 @@ Public Class Main
                         ffmpeg_url_3 = ffmpeg_url_1(i + 1)
                     End If
                 Next
+
+                'MsgBox(ffmpeg_url_3.Trim())
 
                 ffmpegInput = "-i " + Chr(34) + ffmpeg_url_3.Trim() + Chr(34)
 
@@ -4337,6 +4344,18 @@ Public Class Main
         LangValueEnum.Add(New NameValuePair("Русский (Russian)", "ru-RU", Nothing))
         LangValueEnum.Add(New NameValuePair("Italiano (Italian)", "it-IT", Nothing))
         LangValueEnum.Add(New NameValuePair("Español (España)", "es-ES", Nothing))
+        LangValueEnum.Add(New NameValuePair("Bahasa Indonesia", "id-ID", Nothing))
+        LangValueEnum.Add(New NameValuePair("Català", "ca-ES", Nothing))
+        LangValueEnum.Add(New NameValuePair("Polski", "pl-PL", Nothing))
+        LangValueEnum.Add(New NameValuePair("Tiếng Việt", "vi-VN", Nothing))
+        LangValueEnum.Add(New NameValuePair("తెలుగు", "te-IN", Nothing))
+        LangValueEnum.Add(New NameValuePair("Türkçe", "tr-TR", Nothing))
+        LangValueEnum.Add(New NameValuePair("हिंदी", "hi-IN", Nothing))
+        LangValueEnum.Add(New NameValuePair("தமிழ்", "ta-IN", Nothing))
+        LangValueEnum.Add(New NameValuePair("中文 (中国)", "zh-CN", Nothing))
+        LangValueEnum.Add(New NameValuePair("中文 (台灣)", "zh-TW", Nothing))
+        LangValueEnum.Add(New NameValuePair("한국어", "ko-KR", Nothing))
+        LangValueEnum.Add(New NameValuePair("ไทย", "th-TH", Nothing))
         LangValueEnum.Add(New NameValuePair("Japanese", "ja-JP", Nothing))
 
     End Sub
@@ -4830,6 +4849,24 @@ Public Class Main
 
     Private Sub Main_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
 
+    End Sub
+
+    Private Sub AudioOnlyQualityToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AudioOnlyQualityToolStripMenuItem.Click
+        Me.Invoke(New Action(Function() As Object
+                                 ' ResoNotFoundString = VideoJson
+                                 DialogTaskString = "AudioOnlyResolution"
+                                 ErrorDialog.ShowDialog()
+                                 Return Nothing
+                             End Function))
+        If UserCloseDialog = True Then
+            'Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
+        Else
+
+            MsgBox(ResoBackString)
+            My.Settings.AudioOnlyReso = ResoBackString
+            ResoBackString = Nothing
+
+        End If
     End Sub
 
 #End Region

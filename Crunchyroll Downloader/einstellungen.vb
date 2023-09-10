@@ -97,7 +97,7 @@ Public Class Einstellungen
         For i As Integer = 1 To Main.LangValueEnum.Count - 2 ' index 0 = 'null' | last index = jp
 
             If Main.SoftSubs.Contains(Main.LangValueEnum(i).CR_Value) Then
-                CR_SoftSubDefault.Items.Add(Main.LangValueEnum(i).Name)
+                CR_SoftSubDefault.Items.Add(Main.LangValueEnum(i).DisplayText)
 
             End If
 
@@ -206,7 +206,7 @@ Public Class Einstellungen
         CB_CR_Harsubs.Items.Clear()
 
         For i As Integer = 0 To Main.LangValueEnum.Count - 2
-            CB_CR_Harsubs.Items.Add(Main.LangValueEnum(i).Name)
+            CB_CR_Harsubs.Items.Add(Main.LangValueEnum(i).DisplayText)
             If Main.LangValueEnum(i).CR_Value = Main.SubSprache.CR_Value Then
                 'MsgBox(CB_CR_Harsubs.Items.Count.ToString)
                 'MsgBox(i.ToString)
@@ -221,7 +221,7 @@ Public Class Einstellungen
 
         For i As Integer = 1 To Main.LangValueEnum.Count - 1
 
-            CB_CR_Audio.Items.Add(Main.LangValueEnum(i).Name)
+            CB_CR_Audio.Items.Add(Main.LangValueEnum(i).DisplayText)
             If Main.LangValueEnum(i).CR_Value = Main.DubSprache.CR_Value Then
                 CB_CR_Audio.SelectedIndex = i - 1
 
@@ -469,7 +469,7 @@ Public Class Einstellungen
 
         For i As Integer = 0 To Main.LangValueEnum.Count - 1
 
-            If CB_CR_Harsubs.SelectedItem.ToString = Main.LangValueEnum(i).Name Then
+            If CB_CR_Harsubs.SelectedItem.ToString = Main.LangValueEnum(i).DisplayText Then
                 Main.SubSprache = Main.LangValueEnum(i)
                 My.Settings.Subtitle = Main.SubSprache.CR_Value
                 'MsgBox(Main.LangValueEnum(i).Name)
@@ -481,7 +481,7 @@ Public Class Einstellungen
 
         For i As Integer = 0 To Main.LangValueEnum.Count - 1
 
-            If CB_CR_Audio.SelectedItem.ToString = Main.LangValueEnum(i).Name Then
+            If CB_CR_Audio.SelectedItem.ToString = Main.LangValueEnum(i).DisplayText Then
                 Main.DubSprache = Main.LangValueEnum(i)
                 My.Settings.CR_Dub = Main.DubSprache.CR_Value
 

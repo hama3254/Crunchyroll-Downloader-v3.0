@@ -125,8 +125,8 @@ Public Class Main
     Public ResoFunBackup As String = "6666x6666"
 
     Public LangValueEnum As New List(Of NameValuePair)
-    Public DubSprache As NameValuePair = New NameValuePair("Japanese", "ja-JP", Nothing)
-    Public SubSprache As NameValuePair = New NameValuePair("[ null ]", "", Nothing)
+    Public DubSprache As NameValuePair = New NameValuePair("Japanese", "jpn", "ja-JP", Nothing)
+    Public SubSprache As NameValuePair = New NameValuePair("[ null ]", "", "", Nothing)
 
     Public SoftSubs As New List(Of String)
     Public IncludeLangName As Boolean = False
@@ -712,30 +712,25 @@ Public Class Main
 
 
 #End Region
-#Region "Sub to display"
+#Region "Convert Subs"
 
+    Public Function ConvertSubValue(ByVal HardSub As String, ByVal Output As Integer) As String
+        ' 0 = DisplayText ; 1 = MP4CC/ISO-639-2 ; 2 = Both 
 
-    Public Function GetSubFileLangName(ByVal HardSub As String) As String
-
-        HardSub = HardSub.Replace(Chr(34), "")
-
-        If LangNameType = 1 Then
-            Return CCtoMP4CC(HardSub)
-        ElseIf LangNameType = 2 Then
-            Dim RS As String = HardSubValuesToDisplay(HardSub) + "." + CCtoMP4CC(HardSub)
-            Return RS
-        Else
-            Return HardSubValuesToDisplay(HardSub)
-        End If
-
-
-    End Function
-    Public Function HardSubValuesToDisplay(ByVal HardSub As String) As String
+        HardSub = HardSub.Replace(Chr(34), "") 'clean up any mess just in case... 
 
         For i As Integer = 0 To LangValueEnum.Count - 1
             If LangValueEnum(i).CR_Value = HardSub Or LangValueEnum(i).FM_Value = HardSub Then
-                Return LangValueEnum(i).Name
-                Exit Function
+
+                If Output = 1 Then ' MP4CC/ISO-639-2 replacing the old ConvertSubValue version |   'Return ConvertSubValue(HardSub)
+                    Return LangValueEnum(i).MP4CC
+                ElseIf Output = 2 Then '; 2 = Both replacing the old GetSubFileLangName funktion 
+                    Dim RS As String = LangValueEnum(i).DisplayText + "." + LangValueEnum(i).MP4CC
+                    Return RS
+                Else
+                    Return LangValueEnum(i).DisplayText
+                End If
+
             End If
         Next
 
@@ -743,36 +738,6 @@ Public Class Main
 
     End Function
 
-
-    Public Function CCtoMP4CC(ByVal HardSub As String) As String
-        Try
-            If HardSub = "de-DE" Then
-                Return "ger"
-            ElseIf HardSub = "en-US" Or HardSub = "en" Then
-                Return "eng"
-            ElseIf HardSub = "pt-BR" Or HardSub = "pt" Then
-                Return "por"
-            ElseIf HardSub = "es" Or HardSub = "es-419" Then
-                Return "spa"
-            ElseIf HardSub = "fr-FR" Then
-                Return "fre"
-            ElseIf HardSub = "ar-SA" Then
-                Return "ara"
-            ElseIf HardSub = "ru-RU" Then
-                Return "rus"
-            ElseIf HardSub = "it-IT" Then
-                Return "ita"
-            ElseIf HardSub = "es-ES" Then
-                Return "spa"
-            ElseIf HardSub = "ja-JP" Then
-                Return "jpn"
-            Else
-                Return "chi"
-            End If
-        Catch ex As Exception
-            Return Nothing
-        End Try
-    End Function
 #End Region
 
 
@@ -956,7 +921,7 @@ Public Class Main
                         Next
 
                         If localSeasons.Count = 0 Then
-                            Anime_Add.ComboBox1.Items.Add(HardSubValuesToDisplay(audio_localeMain) + " - Season " + season_number)
+                            Anime_Add.ComboBox1.Items.Add(ConvertSubValue(audio_localeMain, ConvertSubsEnum.DisplayText) + " - Season " + season_number)
                             CR_MassSeasons.Add(New CR_Seasons(id, audio_localeMain, Auth))
                         End If
 
@@ -972,7 +937,7 @@ Public Class Main
 
                         If localSeasons.Count > 0 Then
                             For i As Integer = 0 To localSeasons.Count - 1
-                                Anime_Add.ComboBox1.Items.Add(HardSubValuesToDisplay(localSeasons.Item(i).audio_locale) + " - Season " + season_number)
+                                Anime_Add.ComboBox1.Items.Add(ConvertSubValue(localSeasons.Item(i).audio_locale, ConvertSubsEnum.DisplayText) + " - Season " + season_number)
                                 CR_MassSeasons.Add(localSeasons.Item(i))
                             Next
                         End If
@@ -1413,7 +1378,7 @@ Public Class Main
                     ElseIf NameParts(i) = "EpisodeName" Then
                         CR_FilenName = CR_FilenName + " " + CR_title
                     ElseIf NameParts(i) = "AnimeDub" Then
-                        CR_FilenName = CR_FilenName + " " + HardSubValuesToDisplay(CR_audio_locale)
+                        CR_FilenName = CR_FilenName + " " + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.DisplayText)
                     ElseIf NameParts(i) = "AnimeSub" Then
                         ' CR_FilenName = CR_FilenName + " RepSub" 'to be done
                     End If
@@ -1778,14 +1743,14 @@ Public Class Main
             If DownloadScope = DownloadScopeEnum.AudioOnly Then
 
                 If CR_MetadataUsage = False Then
-                    ffmpegInput = ffmpegInput + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                    ffmpegInput = ffmpegInput + " -metadata:s:a:0 language=" + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.MP4CC_ISO_639_2) + " " + ffmpeg_command_temp
                 Else
-                    ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                    ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.MP4CC_ISO_639_2) + " " + ffmpeg_command_temp
                 End If
 
             ElseIf MergeAudio = True Then
 
-                ffmpegInput = "-i " + Chr(34) + Pfad6 + Chr(34) + " " + ffmpegInput + " -map 0 -map 1:a" + " -metadata:s:a:" + FFMPEG_Audio(Pfad6).ToString + " language=" + CCtoMP4CC(CR_audio_locale) + " -c copy"
+                ffmpegInput = "-i " + Chr(34) + Pfad6 + Chr(34) + " " + ffmpegInput + " -map 0 -map 1:a" + " -metadata:s:a:" + FFMPEG_Audio(Pfad6).ToString + " language=" + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.MP4CC_ISO_639_2) + " -c copy"
 
 
             ElseIf SoftSubsAvailable.Count > 0 Or CCAvailable.Count > 0 Then
@@ -1809,7 +1774,7 @@ Public Class Main
                     Dim SoftSub As String() = SubsJson.Split(New String() {Chr(34) + "locale" + Chr(34) + ":" + Chr(34) + SoftSubsAvailable(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                     Dim SoftSub_2 As String() = SoftSub(1).Split(New [Char]() {Chr(34)})
                     Dim SoftSub_3 As String = SoftSub_2(0).Replace("&amp;", "&").Replace("/u0026", "&").Replace("\u002F", "/").Replace("\u0026", "&")
-                    SoftSubsList.Add(New CR_Subtiles(SoftSubsAvailable(i), HardSubValuesToDisplay(SoftSubsAvailable(i)), " -i " + Chr(34) + SoftSub_3 + Chr(34), i.ToString, SoftSubsAvailable(i) = DefaultSubCR))
+                    SoftSubsList.Add(New CR_Subtiles(SoftSubsAvailable(i), ConvertSubValue(SoftSubsAvailable(i), ConvertSubsEnum.DisplayText), " -i " + Chr(34) + SoftSub_3 + Chr(34), i.ToString, SoftSubsAvailable(i) = DefaultSubCR))
 
                 Next
 
@@ -1828,7 +1793,7 @@ Public Class Main
 
                         SoftSubMergeURLs = SoftSubMergeURLs + " " + SoftSubsList(i).Url
                         SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (i + IndexMoveMap).ToString
-                        SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubsList(i).SubLangValue) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + SoftSubsList(i).SubLangName + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + SoftSubsList(i).SubLangName + Chr(34)
+                        SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + ConvertSubValue(SoftSubsList(i).SubLangValue, ConvertSubsEnum.MP4CC_ISO_639_2) + " -metadata:s:s:" + i.ToString + " title=" + Chr(34) + SoftSubsList(i).SubLangName + Chr(34) + " -metadata:s:s:" + i.ToString + " handler_name=" + Chr(34) + SoftSubsList(i).SubLangName + Chr(34)
 
                         If SoftSubsList(i).DefaultSub = True Then
                             DispositionIndex = i
@@ -1843,9 +1808,9 @@ Public Class Main
                     End If
 
                     If CR_MetadataUsage = False Then
-                        ffmpegInput = ffmpegInput + " " + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
+                        ffmpegInput = ffmpegInput + " " + SoftSubMergeURLs + SoftSubMergeMaps + " " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.MP4CC_ISO_639_2)
                     Else
-                        ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " -map_metadata 1 " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale)
+                        ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + SoftSubMergeURLs + SoftSubMergeMaps + " -map_metadata 1 " + ffmpeg_command_temp + " -c:s " + MergeSubsFormat + SoftSubMergeMetatata + " -metadata:s:a:0 language=" + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.MP4CC_ISO_639_2)
 
                     End If
 
@@ -1872,7 +1837,7 @@ Public Class Main
                         End If
 
                         Dim Pfad3 As String = Pfad2.Replace(Chr(34), "")
-                        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + "." + GetSubFileLangName(SoftSubsList(i2).SubLangValue) + Path.GetExtension(Pfad3)), SubFormat)
+                        Dim FN As String = Path.ChangeExtension(Path.Combine(Path.GetFileNameWithoutExtension(Pfad3) + "." + ConvertSubValue(SoftSubsList(i2).SubLangValue, LangNameType) + Path.GetExtension(Pfad3)), SubFormat)
                         If i = 0 And IncludeLangName = False Then
                             FN = Path.ChangeExtension(Path.GetFileName(Pfad3), SubFormat)
                         End If
@@ -1883,17 +1848,17 @@ Public Class Main
                     Next
 
                     If CR_MetadataUsage = False Then
-                        ffmpegInput = ffmpegInput + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                        ffmpegInput = ffmpegInput + " -metadata:s:a:0 language=" + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.MP4CC_ISO_639_2) + " " + ffmpeg_command_temp
                     Else
-                        ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                        ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.MP4CC_ISO_639_2) + " " + ffmpeg_command_temp
                     End If
                 End If
             Else
 
                 If CR_MetadataUsage = False Then
-                    ffmpegInput = ffmpegInput + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                    ffmpegInput = ffmpegInput + " -metadata:s:a:0 language=" + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.MP4CC_ISO_639_2) + " " + ffmpeg_command_temp
                 Else
-                    ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + CCtoMP4CC(CR_audio_locale) + " " + ffmpeg_command_temp
+                    ffmpegInput = ffmpegInput + " -i " + Chr(34) + Mdata_File + Chr(34) + " -map_metadata 1" + " -metadata:s:a:0 language=" + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.MP4CC_ISO_639_2) + " " + ffmpeg_command_temp
                 End If
             End If
 
@@ -1944,7 +1909,7 @@ Public Class Main
 #Region "Display Hard_Softsubs"
             Dim SubType_Value As String = Nothing
             If Not CR_HardSubLang = "" Then
-                SubType_Value = "Hardsub: " + HardSubValuesToDisplay(CR_HardSubLang)
+                SubType_Value = "Hardsub: " + ConvertSubValue(CR_HardSubLang, ConvertSubsEnum.DisplayText)
             End If
             If SoftSubsList.Count > 0 And CR_HardSubLang = "" Then
                 SubType_Value = "Softsubs: "
@@ -1978,7 +1943,7 @@ Public Class Main
 
 
             Dim L1Name_Split As String() = WebsiteURL.Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + HardSubValuesToDisplay(CR_audio_locale)
+            Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.DisplayText)
 
             'MsgBox(URL_DL)
 
@@ -2009,7 +1974,7 @@ Public Class Main
                                  End Function))
             Grapp_RDY = True
             If CBool(InStr(ex.ToString, "Could not find the sub language")) Then
-                MsgBox(Sub_language_NotFound + SubSprache.Name)
+                MsgBox(Sub_language_NotFound + SubSprache.DisplayText)
             ElseIf CBool(InStr(ex.ToString, "RESOLUTION Not Found")) Then
                 MsgBox(Resolution_NotFound)
             ElseIf CBool(InStr(ex.ToString, "Premium Episode")) Then
@@ -3243,10 +3208,10 @@ Public Class Main
                     Dim MapCount As Integer = -1
                     For i As Integer = 0 To UsedSubs.Count - 1
                         Dim SoftSub As String() = UsedSubs.Item(i).Split(New String() {" , "}, System.StringSplitOptions.RemoveEmptyEntries)
-                        If CCtoMP4CC(SoftSub(1)) = LastMerged Then
+                        If ConvertSubValue(SoftSub(1), ConvertSubsEnum.MP4CC_ISO_639_2) = LastMerged Then
                             Continue For
                         Else
-                            LastMerged = CCtoMP4CC(SoftSub(1))
+                            LastMerged = ConvertSubValue(SoftSub(1), ConvertSubsEnum.MP4CC_ISO_639_2)
                         End If
                         MapCount = MapCount + 1
                         If DefaultSubFunimation = SoftSub(1) Then
@@ -3264,11 +3229,11 @@ Public Class Main
                             SoftSubMergeMaps = SoftSubMergeMaps + " -map " + (MapCount + 2).ToString
                         End If
                         If SoftSubMergeMetatata = Nothing Then
-                            'SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSub(1))
-                            SoftSubMergeMetatata = " -metadata:s:s:" + MapCount.ToString + " language=" + CCtoMP4CC(SoftSub(1)) + " -metadata:s:s:" + MapCount.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34) + " -metadata:s:s:" + MapCount.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34)
+                            'SoftSubMergeMetatata = " -metadata:s:s:" + i.ToString + " language=" + ConvertSubValue(SoftSub(1))
+                            SoftSubMergeMetatata = " -metadata:s:s:" + MapCount.ToString + " language=" + ConvertSubValue(SoftSub(1), ConvertSubsEnum.MP4CC_ISO_639_2) + " -metadata:s:s:" + MapCount.ToString + " title=" + Chr(34) + ConvertSubValue(Chr(34) + SoftSub(1) + Chr(34), ConvertSubsEnum.DisplayText) + Chr(34) + " -metadata:s:s:" + MapCount.ToString + " handler_name=" + Chr(34) + ConvertSubValue(Chr(34) + SoftSub(1) + Chr(34), ConvertSubsEnum.DisplayText) + Chr(34)
                         Else
-                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + MapCount.ToString + " language=" + CCtoMP4CC(SoftSub(1)) + " -metadata:s:s:" + MapCount.ToString + " title=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34) + " -metadata:s:s:" + MapCount.ToString + " handler_name=" + Chr(34) + HardSubValuesToDisplay(Chr(34) + SoftSub(1) + Chr(34)) + Chr(34)
-                            'SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + CCtoMP4CC(SoftSubs2(i))
+                            SoftSubMergeMetatata = SoftSubMergeMetatata + " -metadata:s:s:" + MapCount.ToString + " language=" + ConvertSubValue(SoftSub(1), ConvertSubsEnum.MP4CC_ISO_639_2) + " -metadata:s:s:" + MapCount.ToString + " title=" + Chr(34) + ConvertSubValue(Chr(34) + SoftSub(1) + Chr(34), ConvertSubsEnum.DisplayText) + Chr(34) + " -metadata:s:s:" + MapCount.ToString + " handler_name=" + Chr(34) + ConvertSubValue(Chr(34) + SoftSub(1) + Chr(34), ConvertSubsEnum.DisplayText) + Chr(34)
+                            'SoftSubMergeMetatata + " -metadata:s:s:" + i.ToString + " language=" + ConvertSubValue(SoftSubs2(i))
                         End If
                     Next
                     If DispositionIndex < 999 Then
@@ -4333,30 +4298,53 @@ Public Class Main
 
     Sub FillArray() '
 
-        LangValueEnum.Add(New NameValuePair("[ null ]", "", Nothing))
-        LangValueEnum.Add(New NameValuePair("Deutsch", "de-DE", Nothing)) '
-        LangValueEnum.Add(New NameValuePair("English", "en-US", "en"))
-        LangValueEnum.Add(New NameValuePair("Português (Brasil)", "pt-BR", "pt"))
-        LangValueEnum.Add(New NameValuePair("Português (Portugal)", "pt-PT", Nothing))
-        LangValueEnum.Add(New NameValuePair("Español (LA)", "es-419", "es"))
-        LangValueEnum.Add(New NameValuePair("Français (France)", "fr-FR", Nothing))
-        LangValueEnum.Add(New NameValuePair("العربية (Arabic)", "ar-SA", Nothing))
-        LangValueEnum.Add(New NameValuePair("Русский (Russian)", "ru-RU", Nothing))
-        LangValueEnum.Add(New NameValuePair("Italiano (Italian)", "it-IT", Nothing))
-        LangValueEnum.Add(New NameValuePair("Español (España)", "es-ES", Nothing))
-        LangValueEnum.Add(New NameValuePair("Bahasa Indonesia", "id-ID", Nothing))
-        LangValueEnum.Add(New NameValuePair("Català", "ca-ES", Nothing))
-        LangValueEnum.Add(New NameValuePair("Polski", "pl-PL", Nothing))
-        LangValueEnum.Add(New NameValuePair("Tiếng Việt", "vi-VN", Nothing))
-        LangValueEnum.Add(New NameValuePair("తెలుగు", "te-IN", Nothing))
-        LangValueEnum.Add(New NameValuePair("Türkçe", "tr-TR", Nothing))
-        LangValueEnum.Add(New NameValuePair("हिंदी", "hi-IN", Nothing))
-        LangValueEnum.Add(New NameValuePair("தமிழ்", "ta-IN", Nothing))
-        LangValueEnum.Add(New NameValuePair("中文 (中国)", "zh-CN", Nothing))
-        LangValueEnum.Add(New NameValuePair("中文 (台灣)", "zh-TW", Nothing))
-        LangValueEnum.Add(New NameValuePair("한국어", "ko-KR", Nothing))
-        LangValueEnum.Add(New NameValuePair("ไทย", "th-TH", Nothing))
-        LangValueEnum.Add(New NameValuePair("Japanese", "ja-JP", Nothing))
+        LangValueEnum.Add(New NameValuePair("[ null ]", "", "", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Deutsch", "ger", "de-DE", Nothing)) '
+
+        LangValueEnum.Add(New NameValuePair("English", "eng", "en-US", "en"))
+
+        LangValueEnum.Add(New NameValuePair("Português (Brasil)", "por", "pt-BR", "pt"))
+
+        LangValueEnum.Add(New NameValuePair("Português (Portugal)", "por", "pt-PT", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Español (LA)", "spa", "es-419", "es"))
+
+        LangValueEnum.Add(New NameValuePair("Français (France)", "fre", "fr-FR", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("العربية (Arabic)", "ara", "ar-SA", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Русский (Russian)", "rus", "ru-RU", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Italiano (Italian)", "ita", "it-IT", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Español (España)", "spa", "es-ES", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Bahasa Indonesia", "ind", "id-ID", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Català", "cat", "ca-ES", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Polski", "pol", "pl-PL", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Tiếng Việt", "vie", "vi-VN", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("తెలుగు", "tel", "te-IN", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Türkçe", "tur", "tr-TR", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("हिंदी", "hin", "hi-IN", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("தமிழ்", "tam", "ta-IN", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("中文 (中国)", "zho", "zh-CN", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("中文 (台灣)", "zho", "zh-TW", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("한국어", "kor", "ko-KR", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("ไทย", "tha", "th-TH", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Japanese", "jpn", "ja-JP", Nothing))
 
     End Sub
 
@@ -4869,6 +4857,24 @@ Public Class Main
         End If
     End Sub
 
+
+    Public Sub ProcessLocal(ByVal Input As String)
+
+        Dim Pfad2 As String = Input.Replace(Path.GetExtension(Input), VideoFormat)
+
+
+        If File.Exists(Pfad2) = True Then
+            Pfad2 = Input.Replace(Path.GetExtension(Input), GeräteID().Replace("CRD-Temp-File-", "")) + VideoFormat
+        End If
+
+        Dim ffmpegInput As String = " -i " + Chr(34) + Input + Chr(34) + ffmpeg_command
+
+        Me.Invoke(New Action(Function() As Object
+                                 ListItemAdd(Path.GetFileName(Pfad2.Replace(Chr(34), "")), "Local", Path.GetFileName(Pfad2.Replace(Chr(34), "")), "Local", "unkown", "non", ffmpegInput, Chr(34) + Pfad2 + Chr(34))
+                                 Return Nothing
+                             End Function))
+
+    End Sub
 #End Region
 
 End Class

@@ -28,7 +28,7 @@ Public Class CheckBoxComboBox
             For i As Integer = 1 To Main.LangValueEnum.Count - 1 ' index 0 = 'null' | last index = jp
 
                 Dim Dub As New MetroCheckBox
-                Dub.Text = Main.LangValueEnum(i).Name
+                Dub.Text = Main.LangValueEnum(i).DisplayText
                 Dub.FontSize = MetroCheckBoxSize.SomethingInBetween
                 Dub.TextAlign = ContentAlignment.MiddleCenter
                 Dub.SetBounds(2, 30 * Dubs.Count + 1, 316, 25)
@@ -53,7 +53,7 @@ Public Class CheckBoxComboBox
             For i As Integer = 1 To Main.LangValueEnum.Count - 2 ' index 0 = 'null' | last index = jp
 
                 Dim SubT As New MetroCheckBox
-                SubT.Text = Main.LangValueEnum(i).Name
+                SubT.Text = Main.LangValueEnum(i).DisplayText
                 SubT.Name = Main.LangValueEnum(i).CR_Value
                 SubT.FontSize = MetroCheckBoxSize.SomethingInBetween
                 SubT.TextAlign = ContentAlignment.MiddleCenter

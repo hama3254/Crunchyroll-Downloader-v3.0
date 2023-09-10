@@ -7,6 +7,11 @@
         AudioOnly = 3
     End Enum
 
+    Public Enum ConvertSubsEnum
+        DisplayText = 0
+        MP4CC_ISO_639_2 = 1
+        Both = 2
+    End Enum
 
 End Class
 
@@ -151,16 +156,18 @@ End Class
 
 Public Class NameValuePair
 
-    Public Name As String
+    Public DisplayText As String
+    Public MP4CC As String
     Public CR_Value As String
     Public FM_Value As String
-    Public Sub New(ByVal Name As String, ByVal CR_Value As String, ByVal FM_Value As String)
-        Me.Name = Name
+    Public Sub New(ByVal DisplayText As String, ByVal MP4CC As String, ByVal CR_Value As String, ByVal FM_Value As String)
+        Me.MP4CC = MP4CC
+        Me.DisplayText = DisplayText
         Me.CR_Value = CR_Value
         Me.FM_Value = FM_Value
     End Sub
 
     Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}", Me.Name, Me.CR_Value, Me.FM_Value)
+        Return String.Format("{0}, {1}", Me.DisplayText, Me.MP4CC, Me.CR_Value, Me.FM_Value)
     End Function
 End Class

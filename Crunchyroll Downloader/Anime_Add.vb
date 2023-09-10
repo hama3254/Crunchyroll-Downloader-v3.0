@@ -173,7 +173,11 @@ Public Class Anime_Add
         If groupBox1.Visible = True Then
             ' Main.LoadedUrls.Clear()
             Try
-                If CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then
+                If CBool(InStr(textBox1.Text, ":\")) Then
+
+                    Main.ProcessLocal(textBox1.Text)
+
+                ElseIf CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then
 
 
                     'If StatusLabel.Text = "Status: waiting for episode selection" Then

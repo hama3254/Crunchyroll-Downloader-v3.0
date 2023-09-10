@@ -1,4 +1,5 @@
 ﻿Option Strict On
+Imports Crunchyroll_Downloader.CRD_Classes
 Imports MetroFramework.Components
 
 Public Class ErrorDialog
@@ -52,7 +53,7 @@ Public Class ErrorDialog
                 End If
                 'MsgBox(lang_avalibe(i))
                 Dim langsplit As String() = lang_avalibe(i).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-                ComboBox1.Items.Add(Main.HardSubValuesToDisplay(langsplit(0)))
+                ComboBox1.Items.Add(Main.ConvertSubValue(langsplit(0), ConvertSubsEnum.DisplayText))
             Next
             SurroundingSub()
         ElseIf Main.DialogTaskString = "Resolution" Then

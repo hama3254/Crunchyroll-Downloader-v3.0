@@ -14,7 +14,7 @@ Imports MetroFramework.Forms
 Public Class CRD_List_Item
     Inherits Controls.MetroUserControl
 
-
+    Dim LastUrl As String = Nothing
     Dim ZeitGesamtInteger As Integer = 0
     Dim ListOfStreams As New List(Of String)
     Dim proc As Process
@@ -881,7 +881,7 @@ Public Class CRD_List_Item
 
         Dim di As New IO.DirectoryInfo(Folder)
         For i As Integer = 0 To textLenght.Length - 1
-
+            Dim i2 As Integer = i
             CheckThreadCount()
             If Canceld = True Then
                 For www As Integer = 0 To Integer.MaxValue
@@ -906,7 +906,16 @@ Public Class CRD_List_Item
                 Return "Canceld"
                 Exit Function
             End If
-            If CBool(InStr(textLenght(i), ".ts")) Then
+
+
+
+            If CBool(InStr(textLenght(i2), ".ts")) Then
+
+                Me.Invoke(New Action(Function() As Object
+                                         LastUrl = textLenght(i2)
+                                         Return Nothing
+                                     End Function))
+
                 Dim File As String = Folder + String.Format("{0:00000}", Count) + ".ts"
                 Dim curi As String = GetFullUri(url, textLenght(i))
 
@@ -923,10 +932,10 @@ Public Class CRD_List_Item
                 RaiseEvent UpdateUI(CInt(FragmentsFinised), di, PauseTime)
                 Count = Count + 1
 
-            ElseIf textLenght(i) = "#EXT-X-PLAYLIST-TYPE:VOD" Then
+            ElseIf textLenght(i2) = "#EXT-X-PLAYLIST-TYPE:VOD" Then
 
-            ElseIf CBool(InStr(textLenght(i), "URI=" + Chr(34))) Then
-                Dim KeyLine As String = textLenght(i)
+            ElseIf CBool(InStr(textLenght(i2), "URI=" + Chr(34))) Then
+                Dim KeyLine As String = textLenght(i2)
 
                 Dim KeyFileUri() As String = KeyLine.Split(New String() {"URI=" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim KeyFileUri2() As String = KeyFileUri(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -960,7 +969,45 @@ Public Class CRD_List_Item
                 End If
                 m3u8FileContent = m3u8FileContent + KeyLine + vbLf
 
+            ElseIf CBool(InStr(textLenght(i2), "#EXT-X-ENDLIST")) Then
+                ' ElseIf textLenght(i) =  Then                'And my.Settings.FixCRStream = True Then
 
+                Try
+                    Dim StringCount As String = Count.ToString
+                    Dim StringCount_1 As String = (Count + 1).ToString
+
+                    Debug.WriteLine("old: " + LastUrl)
+
+                    Dim NewUrl As String = Nothing
+
+                    Me.Invoke(New Action(Function() As Object
+                                             NewUrl = LastUrl.Replace("-" + StringCount + "-", "-" + StringCount_1 + "-")
+                                             Return Nothing
+                                         End Function))
+
+                    Debug.WriteLine("new: " + NewUrl)
+
+                    Dim File As String = Folder + String.Format("{0:00000}", Count) + ".ts"
+                    Dim curi As String = GetFullUri(url, NewUrl)
+
+                    WC_TS = New WebClient
+
+                    WC_TS.DownloadFile(New Uri(curi), File)
+                    HybrideLog = HybrideLog + vbNewLine + Date.Now.ToString + ": " + File + " - " + curi
+                    m3u8FileContent = m3u8FileContent + "#EXTINF:4.048," + vbLf 'dummy line
+                    m3u8FileContent = m3u8FileContent + File + vbLf
+                    Dim FragmentsFinised = Count * 100 / FragmentsInt
+                    'Dim Update = New Thread(Sub() Me.TS_StatusAsync(CInt(FragmentsFinised), di, PauseTime))
+                    'Update.Start()
+                    RaiseEvent UpdateUI(CInt(FragmentsFinised), di, PauseTime)
+                    Count = Count + 1
+
+
+                    m3u8FileContent = m3u8FileContent + textLenght(i) + vbLf
+                Catch ex As Exception
+                    HybrideLog = HybrideLog + vbNewLine + Date.Now.ToString + ": CR fix failed to access unlisted file #882"
+                    m3u8FileContent = m3u8FileContent + textLenght(i) + vbLf
+                End Try
             Else
                 m3u8FileContent = m3u8FileContent + textLenght(i) + vbLf
             End If
@@ -1273,10 +1320,18 @@ Public Class CRD_List_Item
 
     Public Function DownloadFFMPEG(ByVal DLCommand As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
 
+        'MsgBox(DLCommand)
 
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
         Dim cmd As String = "-user_agent " + My.Settings.User_Agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        'Dim cmd As String = "-headers " + My.Settings.User_Agend + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+
+        If CBool(InStr(DLCommand, ":\")) And CBool(InStr(DLCommand, "-i " + Chr(34) + "https://")) Then
+            Dim Replacement As String = "-user_agent " + My.Settings.User_Agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " -i " + Chr(34) + "https://"
+            cmd = DLCommand.Replace("-i " + Chr(34) + "https://", Replacement) + " " + DL_Pfad
+        End If
+
         LogText.Add(Date.Now.ToString + " " + cmd)
         If Debug2 = True Then
             MsgBox(cmd)

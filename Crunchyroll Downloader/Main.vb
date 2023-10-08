@@ -1250,6 +1250,8 @@ Public Class Main
             For c As Integer = 0 To CR_Streams.Count - 1
                 Dim i As Integer = c
                 'Debug.WriteLine("1457: " + i.ToString + "/" + CR_Streams.Count.ToString + " " + CR_Streams.Item(i).subLang + " " + CR_Streams.Item(i).Format)
+                'https://www.crunchyroll.com/watch/GN7UD2K8N/dragon-ball-super-super-hero
+                Debug.WriteLine("Streams-1254: " + CR_Streams.Item(i).subLang)
                 If CR_Streams.Item(i).subLang = CR_HardSubLang Then
                     CR_URI_Master.Add(CR_Streams.Item(i).Url)
                     'MsgBox(CR_Streams.Item(i).Format + CR_Streams.Item(i).Url)
@@ -1277,7 +1279,7 @@ Public Class Main
                     ResoBackString = Nothing
                     'MsgBox(CR_Streams.Count.ToString)
                     For i As Integer = 0 To CR_Streams.Count - 1
-                        Debug.WriteLine("1571: " + CR_Streams.Item(i).subLang)
+                        Debug.WriteLine("1280: " + CR_Streams.Item(i).subLang)
                         If CR_Streams.Item(i).subLang = CR_HardSubLang Then
                             CR_URI_Master.Add(CR_Streams.Item(i).Url)
 
@@ -3369,7 +3371,8 @@ Public Class Main
 
         If CBool(InStr(Address, "title-api.prd.funimationsvc.com")) Then
             If FunimationJsonBrowser = "EpisodeJson" Then
-                Anime_Add.FillFunimationEpisodes(localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace("<html><head></head><pre style=" + Chr(34) + "word-wrap: break-word; white-space: pre-wrap;" + Chr(34) + ">", "")) '
+                Anime_Add.FillFunimationEpisodes(localHTML.Replace("<body>", "").Replace("</body>", "").Replace("<pre>", "").Replace("</pre>", "").Replace("</html>", "").Replace("<html><head></head><pre style=" + Chr(34) + "word-wrap: break-word; 
+-space: pre-wrap;" + Chr(34) + ">", "")) '
                 FunimationJsonBrowser = Nothing
                 WebbrowserURL = "https://funimation.com/js"
             ElseIf FunimationJsonBrowser = "v1Json" Then

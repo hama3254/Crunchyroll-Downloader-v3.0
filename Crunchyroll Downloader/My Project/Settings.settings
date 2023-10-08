@@ -155,5 +155,8 @@
     <Setting Name="AudioOnlyReso" Type="System.String" Scope="User">
       <Value Profile="(Default)">x480,</Value>
     </Setting>
+    <Setting Name="FixCRStream" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

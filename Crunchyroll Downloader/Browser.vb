@@ -30,6 +30,8 @@ Public Class Browser
             '
             'WebView2.CoreWebView2.Settings.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko"
             My.Settings.User_Agend = Chr(34) + "User-Agent: " + WebView2.CoreWebView2.Settings.UserAgent + Chr(34)
+            'My.Settings.User_Agend = Chr(34) + "User-Agent: " + "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0" + Chr(34)
+
             'MsgBox(My.Settings.User_Agend)
 
             If WebView2.CoreWebView2.Source = "about:blank" Or WebView2.CoreWebView2.Source = Nothing Then

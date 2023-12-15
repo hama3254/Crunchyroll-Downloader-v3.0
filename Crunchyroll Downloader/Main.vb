@@ -126,7 +126,7 @@ Public Class Main
 
     Public LangValueEnum As New List(Of NameValuePair)
     Public DubSprache As NameValuePair = New NameValuePair("Japanese", "jpn", "ja-JP", Nothing)
-    Public SubSprache As NameValuePair = New NameValuePair("[ null ]", "", "", Nothing)
+    Public SubSprache As NameValuePair = New NameValuePair("[ null ]", "", "null", Nothing)
 
     Public SoftSubs As New List(Of String)
     Public IncludeLangName As Boolean = False
@@ -977,8 +977,9 @@ Public Class Main
             Dim CR_Anime_Staffel_int As String = Nothing
             Dim CR_episode_int As String = Nothing
             Dim CR_title As String = Nothing
-            Dim CR_audio_locale As String = Nothing
+            Dim CR_audio_locale As String = "ja-JP"
             Dim CR_audio_isDubbed As Boolean = False
+            Dim CR_Region As String = "DE"
             Dim ResoUsed As String = "x" + Reso.ToString
             Dim ffmpegInput As String = "-i [Subtitles only]"
 
@@ -1097,6 +1098,8 @@ Public Class Main
                                                         CR_episode_duration_ms = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                     Case "is_dubbed"
                                                         CR_audio_isDubbed = CBool(SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", ""))
+                                                        'Case "eligible_region"
+                                                        '    CR_Region = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                 End Select
                                             Next '
                                     End Select
@@ -1108,11 +1111,39 @@ Public Class Main
             End If
 
 #Region "VideoJson"
+
+            Dim cms As String = CurlAuthNew("https://www.crunchyroll.com/index/v2", Loc_CR_Cookies, Loc_AuthToken)
+
+            Dim cms_web() As String = cms.Split(New String() {Chr(34) + "cms_web" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            Dim bucket1() As String = cms_web(1).Split(New String() {Chr(34) + "bucket" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim bucket2() As String = bucket1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim bucket As String = bucket2(0)
+
+            Dim policy1() As String = cms_web(1).Split(New String() {Chr(34) + "policy" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim policy2() As String = policy1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim policy As String = policy2(0)
+
+            Dim signature1() As String = cms_web(1).Split(New String() {Chr(34) + "signature" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim signature2() As String = signature1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim signature As String = signature2(0)
+
+            Dim key_pair_id1() As String = cms_web(1).Split(New String() {Chr(34) + "key_pair_id" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim key_pair_id2() As String = key_pair_id1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim key_pair_id As String = key_pair_id2(0)
+
+            'key_pair_id
+            'cms_web
+            Dim Videos1() As String = Streams.Split(New String() {"v2/cms"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim Videos2() As String = Videos1(1).Split(New String() {"streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim Videos As String = Videos2(0)
+
             Dim VideoJson As String = Nothing
+            Dim StreamUrl As String = "https://www.crunchyroll.com/cms/v2" + bucket + Videos + "streams?Policy=" + policy + "&Signature=" + signature + "&Key-Pair-Id=" + key_pair_id
 
-            VideoJson = CurlAuthNew(Streams, Loc_CR_Cookies, Loc_AuthToken)
+            VideoJson = CurlAuthNew(StreamUrl, Loc_CR_Cookies, Loc_AuthToken) 'Curl(StreamUrl) '
 
-
+            'VideoJson = CurlAuthNew(Streams, Loc_CR_Cookies, Loc_AuthToken)
             Debug.WriteLine("VideoJson: " + VideoJson)
             Debug.WriteLine("VideoStreams: " + Streams)
 
@@ -1125,45 +1156,45 @@ Public Class Main
 
 #Region "Check for dub override"
 
-            If My.Settings.OverrideDub = True And CBool(InStr(Streams, "/videos/")) Then 'einstellung ein + kein musikvideo oder Konzert
+            'If My.Settings.OverrideDub = True And CBool(InStr(Streams, "/videos/")) Then 'einstellung ein + kein musikvideo oder Konzert
 
-                Dim Meta() As String = VideoJson.Split(New String() {Chr(34) + "meta" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim Meta2() As String = Meta(1).Split(New String() {Chr(34) + "audio_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            '    Dim Meta() As String = VideoJson.Split(New String() {Chr(34) + "meta" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
+            '    Dim Meta2() As String = Meta(1).Split(New String() {Chr(34) + "audio_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                'MsgBox(DubSprache.CR_Value)
+            '    'MsgBox(DubSprache.CR_Value)
 
-                For i As Integer = 0 To Meta2.Count - 1
+            '    For i As Integer = 0 To Meta2.Count - 1
 
-                    If CBool(InStr(Meta2(i), Chr(34) + "media_guid" + Chr(34) + ":" + Chr(34))) And CBool(InStr(Meta2(i), DubSprache.CR_Value)) Then
+            '        If CBool(InStr(Meta2(i), Chr(34) + "media_guid" + Chr(34) + ":" + Chr(34))) And CBool(InStr(Meta2(i), DubSprache.CR_Value)) Then
 
-                        Dim media_guid() As String = Meta2(i).Split(New String() {Chr(34) + "media_guid" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            '            Dim media_guid() As String = Meta2(i).Split(New String() {Chr(34) + "media_guid" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                        Dim media_guid2() As String = media_guid(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            '            Dim media_guid2() As String = media_guid(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                        If CBool(InStr(Streams, media_guid2(0))) Then
-                            'MsgBox("done")
-                            'done 
-                            Exit For
-                        Else
-                            ' overriding '	https://www.crunchyroll.com/content/v2/cms/videos/GPPFKG08N/streams?locale=de-DE
+            '            If CBool(InStr(Streams, media_guid2(0))) Then
+            '                'MsgBox("done")
+            '                'done 
+            '                Exit For
+            '            Else
+            '                ' overriding '	https://www.crunchyroll.com/content/v2/cms/videos/GPPFKG08N/streams?locale=de-DE
 
-                            Streams = "https://www.crunchyroll.com/content/v2/cms/videos/" + media_guid2(0) + "/streams?locale=" + locale
+            '                Streams = "https://www.crunchyroll.com/content/v2/cms/videos/" + media_guid2(0) + "/streams?locale=" + locale
 
-                            'MsgBox(Streams)
-
-
+            '                'MsgBox(Streams)
 
 
-                            VideoJson = CurlAuthNew(Streams, Loc_CR_Cookies, Loc_AuthToken)
 
 
-                        End If
-
-                    End If
-                Next
+            '                VideoJson = CurlAuthNew(Streams, Loc_CR_Cookies, Loc_AuthToken)
 
 
-            End If
+            '            End If
+
+            '        End If
+            '    Next
+
+
+            'End If
 
 #End Region
 
@@ -1180,65 +1211,74 @@ Public Class Main
             For Each item As JProperty In VideoData
                 item.CreateReader()
                 Select Case item.Name
-                    Case "data" 'each record is inside the entries array
-                        For Each Entry As JObject In item.Values
+                    Case "streams" 'each record is inside the entries array
+                        For Each Entry As JProperty In item.Values
 
-                            Dim VideoSubData As List(Of JToken) = Entry.Children().ToList
-                            For Each VideoSubItem As JProperty In VideoSubData
-
-                                Dim JsonEntryFormat As String = VideoSubItem.Name
-                                If CBool(InStr(JsonEntryFormat, "drm")) Or CBool(InStr(JsonEntryFormat, "dash")) Or CBool(InStr(JsonEntryFormat, "urls")) Then ' Or CBool(InStr(JsonEntryFormat, "download")) workaround http 502 / false http 400
-                                    Continue For
-                                End If
-
-                                Dim SubData As List(Of JToken) = VideoSubItem.Children().ToList
-                                For Each SubItem As JObject In SubData
-                                    SubItem.CreateReader()
-
-                                    Dim StreamFormats As List(Of JToken) = SubItem.Children().ToList
-
-
-                                    For Each HardsubStreams As JProperty In StreamFormats
-                                        HardsubStreams.CreateReader()
-                                        Dim SubLang As String = HardsubStreams.Name
-                                        Dim Url As String = HardsubStreams.Value("url").ToString
-                                        If SubLang = Nothing Or SubLang = "" Then
-                                            SubLang = ""
-                                        End If
-
-                                        If CBool(InStr(JsonEntryFormat, "download")) Then
-                                            download_hls = New CR_Beta_Stream(SubLang, JsonEntryFormat, Url)
-                                            Continue For
-                                        End If
-
-                                        CR_Streams.Add(New CR_Beta_Stream(SubLang, JsonEntryFormat, Url))
-
-                                    Next
-                                Next
-
-
-                            Next
-                            If download_hls IsNot Nothing Then
-                                CR_Streams.Add(download_hls)
+                            Dim JsonEntryFormat As String = Entry.Name
+                            If CBool(InStr(Entry.Name, "drm")) Or CBool(InStr(Entry.Name, "dash")) Or CBool(InStr(Entry.Name, "download")) Then
+                                Continue For
                             End If
-                        Next
-                    Case "meta" 'each record is inside the entries array
-                        For Each MetaEntrys As JProperty In item.Values
-                            Select Case MetaEntrys.Name
-                                Case "audio_locale"
-                                    If CR_audio_isDubbed = True Then
-                                        Dim AudioTag As String = MetaEntrys.Value.ToString
-                                        CR_audio_locale = String.Join(" ", AudioTag.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                    Else
-                                        CR_audio_locale = "ja-JP"
+
+
+
+
+                            Dim SubData As List(Of JToken) = Entry.Children().ToList
+                            For Each SubItem As JObject In SubData
+                                SubItem.CreateReader()
+
+                                Dim StreamFormats As List(Of JToken) = SubItem.Children().ToList
+
+
+                                For Each Formats As JProperty In StreamFormats
+                                    Formats.CreateReader()
+                                    Dim SubLang As String = Formats.Name
+                                    If SubLang = Nothing Or SubLang = "" Then
+                                        SubLang = "null"
                                     End If
 
-                            End Select
+                                    Dim Url As String = CStr(Formats.Value("url"))
 
+
+                                    If CBool(InStr(JsonEntryFormat, "download")) Then
+                                        download_hls = New CR_Beta_Stream(SubLang, JsonEntryFormat, Url)
+                                        Continue For
+                                    End If
+
+                                    CR_Streams.Add(New CR_Beta_Stream(SubLang, JsonEntryFormat, Url))
+
+
+                                Next
+                            Next
                         Next
+                        'Case "meta" 'each record is inside the entries array
+                        '    For Each MetaEntrys As JProperty In item.Values
+                        '        Select Case MetaEntrys.Name
+                        '            Case "audio_locale"
+                        '                If CR_audio_isDubbed = True Then
+                        '                    Dim AudioTag As String = MetaEntrys.Value.ToString
+                        '                    CR_audio_locale = String.Join(" ", AudioTag.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                        '                Else
+                        '                    CR_audio_locale = "ja-JP"
+                        '                End If
 
+                        '        End Select
+
+                        '    Next
+                    Case "audio_locale" 'each record is inside the entries array
+                        'MsgBox(item.Value)
+                        If CR_audio_isDubbed = True Then
+                            Dim AudioTag As String = CStr(item.Value)
+                            CR_audio_locale = String.Join(" ", AudioTag.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                        Else
+                            CR_audio_locale = "ja-JP"
+                        End If
                 End Select
             Next
+
+
+            'MsgBox(CR_Streams.Count.ToString)
+
+            MsgBox(CR_HardSubLang)
 
             Dim CR_URI_Master As New List(Of String)
 
@@ -1447,7 +1487,7 @@ Public Class Main
 
 #Region "Chapters"
             Dim Mdata_File As String = Application.StartupPath + "\" + CR_EpisodeID + "-mdata.txt"
-
+            Debug.WriteLine("Checking chapters")
             If CR_EpisodeID = "" Then
                 'ignore for music video
             Else
@@ -1535,6 +1575,7 @@ Public Class Main
                     End If
                 End If
             End If
+            Debug.WriteLine("Checking chapters ended")
 #End Region
 
 
@@ -4301,7 +4342,7 @@ Public Class Main
 
     Sub FillArray() '
 
-        LangValueEnum.Add(New NameValuePair("[ null ]", "", "", Nothing))
+        LangValueEnum.Add(New NameValuePair("[ null ]", "", "null", Nothing))
 
         LangValueEnum.Add(New NameValuePair("Deutsch", "ger", "de-DE", Nothing)) '
 
@@ -4878,6 +4919,8 @@ Public Class Main
                              End Function))
 
     End Sub
+
+
 #End Region
 
 End Class

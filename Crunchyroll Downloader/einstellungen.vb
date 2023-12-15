@@ -939,6 +939,9 @@ Public Class Einstellungen
         GroupBox18.ForeColor = color
         GroupBox19.ForeColor = color
         GroupBox20.ForeColor = color
+        GroupBox21.ForeColor = color
+        GroupBox22.ForeColor = color
+        GroupBox23.ForeColor = color
     End Sub
 
 
@@ -1252,6 +1255,7 @@ Public Class Einstellungen
             TempVTTStyle = CB_vttStyle.Checked
         End If
     End Sub
+
 
 
 

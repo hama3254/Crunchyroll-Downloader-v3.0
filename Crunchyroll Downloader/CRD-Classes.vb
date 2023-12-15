@@ -84,6 +84,22 @@ Public Class CR_Beta_Stream
 
 End Class
 
+Public Class CR_MediaVersion
+
+    Public AudioLang As String
+    Public media_guid As String
+
+    Public Sub New(ByVal AudioLang As String, ByVal media_guid As String)
+        Me.AudioLang = AudioLang
+        Me.media_guid = media_guid
+    End Sub
+    'Me.audioLanguage,
+    Public Overrides Function ToString() As String
+        Return String.Format("{0}, {1}", Me.AudioLang, Me.media_guid)
+    End Function
+
+End Class
+
 Public Class CR_Subtiles
     Public Url As String
     Public SubLangValue As String

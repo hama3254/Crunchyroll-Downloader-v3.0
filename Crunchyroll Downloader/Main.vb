@@ -1137,7 +1137,7 @@ Public Class Main
             Dim Videos1() As String = Streams.Split(New String() {"v2/cms"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim Videos2() As String = Videos1(1).Split(New String() {"streams"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim Videos As String = Videos2(0)
-
+            'MsgBox(Videos)
             Dim VideoJson As String = Nothing
             Dim StreamUrl As String = "https://www.crunchyroll.com/cms/v2" + bucket + Videos + "streams?Policy=" + policy + "&Signature=" + signature + "&Key-Pair-Id=" + key_pair_id
 
@@ -1156,51 +1156,70 @@ Public Class Main
 
 #Region "Check for dub override"
 
-            'If My.Settings.OverrideDub = True And CBool(InStr(Streams, "/videos/")) Then 'einstellung ein + kein musikvideo oder Konzert
 
-            '    Dim Meta() As String = VideoJson.Split(New String() {Chr(34) + "meta" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
-            '    Dim Meta2() As String = Meta(1).Split(New String() {Chr(34) + "audio_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim OverrideDubJObject As JObject = JObject.Parse(VideoJson)
+            Dim OverrideDubData As List(Of JToken) = OverrideDubJObject.Children().ToList
 
-            '    'MsgBox(DubSprache.CR_Value)
+            Dim DubsAvalible As New List(Of CR_MediaVersion)
 
-            '    For i As Integer = 0 To Meta2.Count - 1
+            For Each item As JProperty In OverrideDubData
+                item.CreateReader()
+                Select Case item.Name
+                    Case "versions" 'each record is inside the entries array
+                        For Each Entry As JObject In item.Values
 
-            '        If CBool(InStr(Meta2(i), Chr(34) + "media_guid" + Chr(34) + ":" + Chr(34))) And CBool(InStr(Meta2(i), DubSprache.CR_Value)) Then
+                            Dim VideoSubData As List(Of JToken) = Entry.Children().ToList
+                            Dim media_guid As String = Nothing
+                            Dim audio_locale As String = Nothing
 
-            '            Dim media_guid() As String = Meta2(i).Split(New String() {Chr(34) + "media_guid" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            For Each VideoSubItem As JProperty In VideoSubData
+                                Select Case VideoSubItem.Name
+                                    Case "audio_locale"
+                                        audio_locale = VideoSubItem.Value.ToString
+                                        'Debug.WriteLine(audio_locale)
+                                    Case "media_guid"
+                                        media_guid = VideoSubItem.Value.ToString
+                                        'Debug.WriteLine(media_guid)
+                                End Select
+                            Next
 
-            '            Dim media_guid2() As String = media_guid(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                            If audio_locale = Nothing Or media_guid = Nothing Then
+                            Else
+                                DubsAvalible.Add(New CR_MediaVersion(audio_locale, media_guid))
+                            End If
+                        Next
+                    Case "audio_locale" 'each record is inside the entries array
+                        'MsgBox(item.Value)
+                        If CR_audio_isDubbed = True Then
+                            Dim AudioTag As String = CStr(item.Value)
+                            CR_audio_locale = String.Join(" ", AudioTag.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                        Else
+                            CR_audio_locale = "ja-JP"
+                        End If
+                End Select
+            Next
+            ' MsgBox(CR_audio_locale + vbNewLine + DubSprache.CR_Value)
 
-            '            If CBool(InStr(Streams, media_guid2(0))) Then
-            '                'MsgBox("done")
-            '                'done 
-            '                Exit For
-            '            Else
-            '                ' overriding '	https://www.crunchyroll.com/content/v2/cms/videos/GPPFKG08N/streams?locale=de-DE
+            If My.Settings.OverrideDub = True And CR_audio_locale = DubSprache.CR_Value = False Then 'einstellung ein + kein musikvideo oder Konzert
+                'MsgBox("Trigger on!")
+                For i As Integer = 0 To DubsAvalible.Count - 1
+                    If DubsAvalible(i).AudioLang = DubSprache.CR_Value Then
+                        Dim NewStream As String = "https://www.crunchyroll.com/cms/v2" + bucket + "/videos/" + DubsAvalible(i).media_guid + "/" + "streams?Policy=" + policy + "&Signature=" + signature + "&Key-Pair-Id=" + key_pair_id
+                        ' MsgBox(NewStream)
+                        VideoJson = CurlAuthNew(NewStream, Loc_CR_Cookies, Loc_AuthToken) 'Curl(StreamUrl) '
 
-            '                Streams = "https://www.crunchyroll.com/content/v2/cms/videos/" + media_guid2(0) + "/streams?locale=" + locale
-
-            '                'MsgBox(Streams)
-
-
+                    End If
+                Next
 
 
-            '                VideoJson = CurlAuthNew(Streams, Loc_CR_Cookies, Loc_AuthToken)
+            End If
 
+            ' MsgBox("Trigger off!")
 
-            '            End If
-
-            '        End If
-            '    Next
-
-
-            'End If
 
 #End Region
 
 #Region "m3u8 suche"
-
-
 
 
             Dim VideoJObject As JObject = JObject.Parse(VideoJson)
@@ -1250,20 +1269,6 @@ Public Class Main
                                 Next
                             Next
                         Next
-                        'Case "meta" 'each record is inside the entries array
-                        '    For Each MetaEntrys As JProperty In item.Values
-                        '        Select Case MetaEntrys.Name
-                        '            Case "audio_locale"
-                        '                If CR_audio_isDubbed = True Then
-                        '                    Dim AudioTag As String = MetaEntrys.Value.ToString
-                        '                    CR_audio_locale = String.Join(" ", AudioTag.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                        '                Else
-                        '                    CR_audio_locale = "ja-JP"
-                        '                End If
-
-                        '        End Select
-
-                        '    Next
                     Case "audio_locale" 'each record is inside the entries array
                         'MsgBox(item.Value)
                         If CR_audio_isDubbed = True Then
@@ -1275,10 +1280,6 @@ Public Class Main
                 End Select
             Next
 
-
-            'MsgBox(CR_Streams.Count.ToString)
-
-            MsgBox(CR_HardSubLang)
 
             Dim CR_URI_Master As New List(Of String)
 
@@ -1954,7 +1955,7 @@ Public Class Main
             If Not CR_HardSubLang = "" Then
                 SubType_Value = "Hardsub: " + ConvertSubValue(CR_HardSubLang, ConvertSubsEnum.DisplayText)
             End If
-            If SoftSubsList.Count > 0 And CR_HardSubLang = "" Then
+            If SoftSubsList.Count > 0 And CR_HardSubLang = "null" Then
                 SubType_Value = "Softsubs: "
                 For i As Integer = 0 To SoftSubsList.Count - 1
                     SubType_Value = SubType_Value + SoftSubsList(i).SubLangName
@@ -4543,21 +4544,21 @@ Public Class Main
             Dim CRBetaBearer As String = "Bearer "
 
 
-                Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
+            Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
 
 
-                If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
+            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
                 Debug.WriteLine("Post error!, 400")
                 Debug.WriteLine(Post.Replace("etp_rt_cookie", "client_id"))
                 v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"), "add_main-4499")
 
-                End If
+            End If
 
 
 
-                'MsgBox(v1Token)
+            'MsgBox(v1Token)
 
-                If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
+            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
                 SetStatusLabel("Status: Failed - bad request, check CR login")
                 Me.Text = "Status: Failed - bad request, check CR login"
                 Debug.WriteLine("Status: Failed - bad request, check CR login")

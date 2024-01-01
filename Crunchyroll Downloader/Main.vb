@@ -1156,64 +1156,69 @@ Public Class Main
 
 #Region "Check for dub override"
 
+            Try
 
-            Dim OverrideDubJObject As JObject = JObject.Parse(VideoJson)
-            Dim OverrideDubData As List(Of JToken) = OverrideDubJObject.Children().ToList
 
-            Dim DubsAvalible As New List(Of CR_MediaVersion)
+                Dim OverrideDubJObject As JObject = JObject.Parse(VideoJson)
+                Dim OverrideDubData As List(Of JToken) = OverrideDubJObject.Children().ToList
 
-            For Each item As JProperty In OverrideDubData
-                item.CreateReader()
-                Select Case item.Name
-                    Case "versions" 'each record is inside the entries array
-                        For Each Entry As JObject In item.Values
+                Dim DubsAvalible As New List(Of CR_MediaVersion)
 
-                            Dim VideoSubData As List(Of JToken) = Entry.Children().ToList
-                            Dim media_guid As String = Nothing
-                            Dim audio_locale As String = Nothing
+                For Each item As JProperty In OverrideDubData
+                    item.CreateReader()
+                    Select Case item.Name
+                        Case "versions" 'each record is inside the entries array
+                            For Each Entry As JObject In item.Values
 
-                            For Each VideoSubItem As JProperty In VideoSubData
-                                Select Case VideoSubItem.Name
-                                    Case "audio_locale"
-                                        audio_locale = VideoSubItem.Value.ToString
+                                Dim VideoSubData As List(Of JToken) = Entry.Children().ToList
+                                Dim media_guid As String = Nothing
+                                Dim audio_locale As String = Nothing
+
+                                For Each VideoSubItem As JProperty In VideoSubData
+                                    Select Case VideoSubItem.Name
+                                        Case "audio_locale"
+                                            audio_locale = VideoSubItem.Value.ToString
                                         'Debug.WriteLine(audio_locale)
-                                    Case "media_guid"
-                                        media_guid = VideoSubItem.Value.ToString
-                                        'Debug.WriteLine(media_guid)
-                                End Select
+                                        Case "media_guid"
+                                            media_guid = VideoSubItem.Value.ToString
+                                            'Debug.WriteLine(media_guid)
+                                    End Select
+                                Next
+
+                                If audio_locale = Nothing Or media_guid = Nothing Then
+                                Else
+                                    DubsAvalible.Add(New CR_MediaVersion(audio_locale, media_guid))
+                                End If
                             Next
-
-                            If audio_locale = Nothing Or media_guid = Nothing Then
+                        Case "audio_locale" 'each record is inside the entries array
+                            'MsgBox(item.Value)
+                            If CR_audio_isDubbed = True Then
+                                Dim AudioTag As String = CStr(item.Value)
+                                CR_audio_locale = String.Join(" ", AudioTag.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                             Else
-                                DubsAvalible.Add(New CR_MediaVersion(audio_locale, media_guid))
+                                CR_audio_locale = "ja-JP"
                             End If
-                        Next
-                    Case "audio_locale" 'each record is inside the entries array
-                        'MsgBox(item.Value)
-                        If CR_audio_isDubbed = True Then
-                            Dim AudioTag As String = CStr(item.Value)
-                            CR_audio_locale = String.Join(" ", AudioTag.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                        Else
-                            CR_audio_locale = "ja-JP"
-                        End If
-                End Select
-            Next
-            ' MsgBox(CR_audio_locale + vbNewLine + DubSprache.CR_Value)
-
-            If My.Settings.OverrideDub = True And CR_audio_locale = DubSprache.CR_Value = False Then 'einstellung ein + kein musikvideo oder Konzert
-                'MsgBox("Trigger on!")
-                For i As Integer = 0 To DubsAvalible.Count - 1
-                    If DubsAvalible(i).AudioLang = DubSprache.CR_Value Then
-                        Dim NewStream As String = "https://www.crunchyroll.com/cms/v2" + bucket + "/videos/" + DubsAvalible(i).media_guid + "/" + "streams?Policy=" + policy + "&Signature=" + signature + "&Key-Pair-Id=" + key_pair_id
-                        ' MsgBox(NewStream)
-                        VideoJson = CurlAuthNew(NewStream, Loc_CR_Cookies, Loc_AuthToken) 'Curl(StreamUrl) '
-
-                    End If
+                    End Select
                 Next
+                'MsgBox(CR_audio_locale + vbNewLine + DubSprache.CR_Value)
+
+                If My.Settings.OverrideDub = True And CR_audio_locale = DubSprache.CR_Value = False Then 'einstellung ein + kein musikvideo oder Konzert
+                    'MsgBox("Trigger on!")
+                    For i As Integer = 0 To DubsAvalible.Count - 1
+                        If DubsAvalible(i).AudioLang = DubSprache.CR_Value Then
+                            Dim NewStream As String = "https://www.crunchyroll.com/cms/v2" + bucket + "/videos/" + DubsAvalible(i).media_guid + "/" + "streams?Policy=" + policy + "&Signature=" + signature + "&Key-Pair-Id=" + key_pair_id
+                            ' MsgBox(NewStream)
+                            VideoJson = CurlAuthNew(NewStream, Loc_CR_Cookies, Loc_AuthToken) 'Curl(StreamUrl) '
+
+                        End If
+                    Next
 
 
-            End If
+                End If
 
+            Catch ex As Exception
+
+            End Try
             ' MsgBox("Trigger off!")
 
 
@@ -1296,7 +1301,9 @@ Public Class Main
                 If CR_Streams.Item(i).subLang = CR_HardSubLang Then
                     CR_URI_Master.Add(CR_Streams.Item(i).Url)
                     'MsgBox(CR_Streams.Item(i).Format + CR_Streams.Item(i).Url)
-                ElseIf CR_Streams.Item(i).subLang = "" And CR_audio_locale IsNot "ja-JP" And DubMode = True Then 'nothing/raw
+                ElseIf CR_Streams.Item(i).subLang = "" And CR_audio_locale IsNot "ja-JP" And DubMode = True Then 'nothing/raw ohne subs
+                    RawStream.Add(CR_Streams.Item(i).Url)
+                ElseIf CR_Streams.Item(i).subLang = "null" And CR_audio_locale IsNot "ja-JP" And DubMode = True Then 'nothing/raw mit 'null' tagged
                     RawStream.Add(CR_Streams.Item(i).Url)
                 End If
             Next
@@ -1697,13 +1704,8 @@ Public Class Main
                     Grapp_RDY = True
                     Exit Sub
 
-                ElseIf DownloadScope = DownloadScopeEnum.AudioOnly Or MergeAudio = True Then
-
-                    If CBool(InStr(str, My.Settings.AudioOnlyReso)) Then
-                        ResoUsed = My.Settings.AudioOnlyReso.Replace(",", "")
-                    ElseIf CBool(InStr(str, "x" + Reso.ToString + ",")) Then
-                        ResoUsed = "x" + Reso.ToString
-                    End If
+                ElseIf (DownloadScope = DownloadScopeEnum.AudioOnly Or MergeAudio = True) AndAlso CBool(InStr(str, My.Settings.AudioOnlyReso)) = True Then
+                    ResoUsed = My.Settings.AudioOnlyReso.Replace(",", "")
 
                 ElseIf CBool(InStr(str, "x" + Reso.ToString + ",")) Then
                     ResoUsed = "x" + Reso.ToString

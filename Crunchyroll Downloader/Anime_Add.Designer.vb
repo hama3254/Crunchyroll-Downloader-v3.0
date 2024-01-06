@@ -23,278 +23,32 @@ Partial Class Anime_Add
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Anime_Add))
-        Me.groupBox1 = New System.Windows.Forms.GroupBox()
-        Me.DownloadScope = New MetroFramework.Controls.MetroComboBox()
-        Me.StatusLabel = New MetroFramework.Controls.MetroLabel()
-        Me.ComboBox2 = New MetroFramework.Controls.MetroComboBox()
-        Me.TextBox4 = New MetroFramework.Controls.MetroTextBox()
-        Me.textBox1 = New MetroFramework.Controls.MetroTextBox()
-        Me.TextBox2 = New MetroFramework.Controls.MetroTextBox()
-        Me.groupBox2 = New System.Windows.Forms.GroupBox()
-        Me.bt_Cancel_mass = New System.Windows.Forms.Button()
-        Me.comboBox4 = New MetroFramework.Controls.MetroComboBox()
-        Me.ComboBox1 = New MetroFramework.Controls.MetroComboBox()
-        Me.comboBox3 = New MetroFramework.Controls.MetroComboBox()
-        Me.Add_Display = New MetroFramework.Controls.MetroLabel()
         Me.Btn_min = New System.Windows.Forms.PictureBox()
         Me.Btn_Close = New System.Windows.Forms.PictureBox()
         Me.btn_dl = New System.Windows.Forms.Button()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
-        Me.groupBox1.SuspendLayout()
-        Me.groupBox2.SuspendLayout()
+        Me.Add_Display = New MetroFramework.Controls.MetroLabel()
+        Me.CB_EP0 = New MetroFramework.Controls.MetroComboBox()
+        Me.CB_Season = New MetroFramework.Controls.MetroComboBox()
+        Me.CB_EP1 = New MetroFramework.Controls.MetroComboBox()
+        Me.bt_Cancel_mass = New System.Windows.Forms.Button()
+        Me.groupBox2 = New System.Windows.Forms.GroupBox()
+        Me.CB_Dub = New MetroFramework.Controls.MetroComboBox()
+        Me.TextBox2 = New MetroFramework.Controls.MetroTextBox()
+        Me.textBox1 = New MetroFramework.Controls.MetroTextBox()
+        Me.TextBox4 = New MetroFramework.Controls.MetroTextBox()
+        Me.ComboBox2 = New MetroFramework.Controls.MetroComboBox()
+        Me.StatusLabel = New MetroFramework.Controls.MetroLabel()
+        Me.DownloadScope = New MetroFramework.Controls.MetroComboBox()
+        Me.groupBox1 = New System.Windows.Forms.GroupBox()
+        Me.TT_Dub = New System.Windows.Forms.ToolTip(Me.components)
         CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.groupBox2.SuspendLayout()
+        Me.groupBox1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'groupBox1
-        '
-        Me.groupBox1.BackColor = System.Drawing.Color.Transparent
-        Me.groupBox1.Controls.Add(Me.DownloadScope)
-        Me.groupBox1.Controls.Add(Me.StatusLabel)
-        Me.groupBox1.Controls.Add(Me.ComboBox2)
-        Me.groupBox1.Controls.Add(Me.TextBox4)
-        Me.groupBox1.Controls.Add(Me.textBox1)
-        Me.groupBox1.Controls.Add(Me.TextBox2)
-        Me.groupBox1.Location = New System.Drawing.Point(15, 70)
-        Me.groupBox1.Name = "groupBox1"
-        Me.groupBox1.Size = New System.Drawing.Size(720, 280)
-        Me.groupBox1.TabIndex = 33
-        Me.groupBox1.TabStop = False
-        '
-        'DownloadScope
-        '
-        Me.DownloadScope.BackColor = System.Drawing.Color.White
-        Me.DownloadScope.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DownloadScope.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.DownloadScope.FormattingEnabled = True
-        Me.DownloadScope.ItemHeight = 23
-        Me.DownloadScope.Items.AddRange(New Object() {"[Default]", "[Merge Audio with existing files]", "[Subtitles only]", "[Audio only (AAC)]"})
-        Me.DownloadScope.Location = New System.Drawing.Point(18, 190)
-        Me.DownloadScope.Name = "DownloadScope"
-        Me.DownloadScope.Size = New System.Drawing.Size(693, 29)
-        Me.DownloadScope.TabIndex = 39
-        Me.DownloadScope.UseSelectable = True
-        '
-        'StatusLabel
-        '
-        Me.StatusLabel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.StatusLabel.BackColor = System.Drawing.Color.Transparent
-        Me.StatusLabel.FontSize = MetroFramework.MetroLabelSize.Tall
-        Me.StatusLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.StatusLabel.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.StatusLabel.Location = New System.Drawing.Point(18, 228)
-        Me.StatusLabel.Name = "StatusLabel"
-        Me.StatusLabel.Size = New System.Drawing.Size(693, 46)
-        Me.StatusLabel.TabIndex = 38
-        Me.StatusLabel.Text = "Status: idle"
-        Me.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'ComboBox2
-        '
-        Me.ComboBox2.BackColor = System.Drawing.Color.White
-        Me.ComboBox2.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.ItemHeight = 23
-        Me.ComboBox2.Location = New System.Drawing.Point(18, 148)
-        Me.ComboBox2.Name = "ComboBox2"
-        Me.ComboBox2.Size = New System.Drawing.Size(693, 29)
-        Me.ComboBox2.Sorted = True
-        Me.ComboBox2.TabIndex = 37
-        Me.ComboBox2.UseSelectable = True
-        '
-        'TextBox4
-        '
-        Me.TextBox4.BackColor = System.Drawing.Color.White
-        Me.TextBox4.Cursor = System.Windows.Forms.Cursors.Hand
-        '
-        '
-        '
-        Me.TextBox4.CustomButton.Image = Nothing
-        Me.TextBox4.CustomButton.Location = New System.Drawing.Point(665, 1)
-        Me.TextBox4.CustomButton.Name = ""
-        Me.TextBox4.CustomButton.Size = New System.Drawing.Size(27, 27)
-        Me.TextBox4.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.TextBox4.CustomButton.TabIndex = 1
-        Me.TextBox4.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.TextBox4.CustomButton.UseSelectable = True
-        Me.TextBox4.CustomButton.Visible = False
-        Me.TextBox4.FontSize = MetroFramework.MetroTextBoxSize.Medium
-        Me.TextBox4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.TextBox4.Lines = New String() {"Main Directory"}
-        Me.TextBox4.Location = New System.Drawing.Point(18, 106)
-        Me.TextBox4.MaxLength = 32767
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.TextBox4.ReadOnly = True
-        Me.TextBox4.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.TextBox4.SelectedText = ""
-        Me.TextBox4.SelectionLength = 0
-        Me.TextBox4.SelectionStart = 0
-        Me.TextBox4.ShortcutsEnabled = True
-        Me.TextBox4.Size = New System.Drawing.Size(693, 29)
-        Me.TextBox4.TabIndex = 36
-        Me.TextBox4.TabStop = False
-        Me.TextBox4.Text = "Main Directory"
-        Me.TextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.TextBox4.UseSelectable = True
-        Me.TextBox4.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.TextBox4.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
-        '
-        'textBox1
-        '
-        Me.textBox1.BackColor = System.Drawing.Color.White
-        Me.textBox1.Cursor = System.Windows.Forms.Cursors.Hand
-        '
-        '
-        '
-        Me.textBox1.CustomButton.Image = Nothing
-        Me.textBox1.CustomButton.Location = New System.Drawing.Point(665, 1)
-        Me.textBox1.CustomButton.Name = ""
-        Me.textBox1.CustomButton.Size = New System.Drawing.Size(27, 27)
-        Me.textBox1.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.textBox1.CustomButton.TabIndex = 1
-        Me.textBox1.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.textBox1.CustomButton.UseSelectable = True
-        Me.textBox1.CustomButton.Visible = False
-        Me.textBox1.FontSize = MetroFramework.MetroTextBoxSize.Medium
-        Me.textBox1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.textBox1.Lines = New String() {"URL"}
-        Me.textBox1.Location = New System.Drawing.Point(18, 22)
-        Me.textBox1.MaxLength = 32767
-        Me.textBox1.Name = "textBox1"
-        Me.textBox1.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.textBox1.SelectedText = ""
-        Me.textBox1.SelectionLength = 0
-        Me.textBox1.SelectionStart = 0
-        Me.textBox1.ShortcutsEnabled = True
-        Me.textBox1.Size = New System.Drawing.Size(693, 29)
-        Me.textBox1.TabIndex = 4
-        Me.textBox1.TabStop = False
-        Me.textBox1.Text = "URL"
-        Me.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.textBox1.UseSelectable = True
-        Me.textBox1.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.textBox1.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
-        '
-        'TextBox2
-        '
-        Me.TextBox2.BackColor = System.Drawing.Color.White
-        Me.TextBox2.Cursor = System.Windows.Forms.Cursors.Hand
-        '
-        '
-        '
-        Me.TextBox2.CustomButton.Image = Nothing
-        Me.TextBox2.CustomButton.Location = New System.Drawing.Point(665, 1)
-        Me.TextBox2.CustomButton.Name = ""
-        Me.TextBox2.CustomButton.Size = New System.Drawing.Size(27, 27)
-        Me.TextBox2.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.TextBox2.CustomButton.TabIndex = 1
-        Me.TextBox2.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.TextBox2.CustomButton.UseSelectable = True
-        Me.TextBox2.CustomButton.Visible = False
-        Me.TextBox2.FontSize = MetroFramework.MetroTextBoxSize.Medium
-        Me.TextBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.TextBox2.Lines = New String() {"Use Custom Name"}
-        Me.TextBox2.Location = New System.Drawing.Point(18, 64)
-        Me.TextBox2.MaxLength = 32767
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.TextBox2.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.TextBox2.SelectedText = ""
-        Me.TextBox2.SelectionLength = 0
-        Me.TextBox2.SelectionStart = 0
-        Me.TextBox2.ShortcutsEnabled = True
-        Me.TextBox2.Size = New System.Drawing.Size(693, 29)
-        Me.TextBox2.TabIndex = 5
-        Me.TextBox2.TabStop = False
-        Me.TextBox2.Text = "Use Custom Name"
-        Me.TextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.TextBox2.UseSelectable = True
-        Me.TextBox2.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.TextBox2.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
-        '
-        'groupBox2
-        '
-        Me.groupBox2.BackColor = System.Drawing.Color.Transparent
-        Me.groupBox2.Controls.Add(Me.bt_Cancel_mass)
-        Me.groupBox2.Controls.Add(Me.comboBox4)
-        Me.groupBox2.Controls.Add(Me.ComboBox1)
-        Me.groupBox2.Controls.Add(Me.comboBox3)
-        Me.groupBox2.Controls.Add(Me.Add_Display)
-        Me.groupBox2.Location = New System.Drawing.Point(15, 70)
-        Me.groupBox2.Name = "groupBox2"
-        Me.groupBox2.Size = New System.Drawing.Size(720, 280)
-        Me.groupBox2.TabIndex = 44
-        Me.groupBox2.TabStop = False
-        Me.groupBox2.Visible = False
-        '
-        'bt_Cancel_mass
-        '
-        Me.bt_Cancel_mass.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.add_mass_cancel
-        Me.bt_Cancel_mass.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.bt_Cancel_mass.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.bt_Cancel_mass.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt_Cancel_mass.ForeColor = System.Drawing.SystemColors.Control
-        Me.bt_Cancel_mass.Location = New System.Drawing.Point(159, 231)
-        Me.bt_Cancel_mass.Name = "bt_Cancel_mass"
-        Me.bt_Cancel_mass.Size = New System.Drawing.Size(403, 36)
-        Me.bt_Cancel_mass.TabIndex = 37
-        Me.bt_Cancel_mass.Text = "Cancel"
-        Me.bt_Cancel_mass.UseVisualStyleBackColor = True
-        '
-        'comboBox4
-        '
-        Me.comboBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.comboBox4.FormattingEnabled = True
-        Me.comboBox4.ItemHeight = 23
-        Me.comboBox4.Location = New System.Drawing.Point(13, 154)
-        Me.comboBox4.Name = "comboBox4"
-        Me.comboBox4.Size = New System.Drawing.Size(693, 29)
-        Me.comboBox4.TabIndex = 2
-        Me.comboBox4.UseSelectable = True
-        '
-        'ComboBox1
-        '
-        Me.ComboBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.ItemHeight = 23
-        Me.ComboBox1.Location = New System.Drawing.Point(13, 50)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(693, 29)
-        Me.ComboBox1.TabIndex = 1
-        Me.ComboBox1.UseSelectable = True
-        '
-        'comboBox3
-        '
-        Me.comboBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.comboBox3.FormattingEnabled = True
-        Me.comboBox3.ItemHeight = 23
-        Me.comboBox3.Location = New System.Drawing.Point(13, 102)
-        Me.comboBox3.Name = "comboBox3"
-        Me.comboBox3.Size = New System.Drawing.Size(693, 29)
-        Me.comboBox3.TabIndex = 1
-        Me.comboBox3.UseSelectable = True
-        '
-        'Add_Display
-        '
-        Me.Add_Display.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Add_Display.BackColor = System.Drawing.Color.Transparent
-        Me.Add_Display.FontSize = MetroFramework.MetroLabelSize.Tall
-        Me.Add_Display.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.Add_Display.ForeColor = System.Drawing.Color.Black
-        Me.Add_Display.Location = New System.Drawing.Point(20, 228)
-        Me.Add_Display.Name = "Add_Display"
-        Me.Add_Display.Size = New System.Drawing.Size(691, 42)
-        Me.Add_Display.TabIndex = 36
-        Me.Add_Display.Text = "..."
-        Me.Add_Display.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Btn_min
         '
@@ -340,6 +94,267 @@ Partial Class Anime_Add
         Me.btn_dl.Text = "Download"
         Me.btn_dl.UseVisualStyleBackColor = True
         '
+        'Add_Display
+        '
+        Me.Add_Display.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Add_Display.BackColor = System.Drawing.Color.Transparent
+        Me.Add_Display.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.Add_Display.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.Add_Display.ForeColor = System.Drawing.Color.Black
+        Me.Add_Display.Location = New System.Drawing.Point(20, 228)
+        Me.Add_Display.Name = "Add_Display"
+        Me.Add_Display.Size = New System.Drawing.Size(691, 52)
+        Me.Add_Display.TabIndex = 36
+        Me.Add_Display.Text = "..."
+        Me.Add_Display.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'CB_EP0
+        '
+        Me.CB_EP0.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_EP0.FormattingEnabled = True
+        Me.CB_EP0.ItemHeight = 23
+        Me.CB_EP0.Location = New System.Drawing.Point(13, 135)
+        Me.CB_EP0.Name = "CB_EP0"
+        Me.CB_EP0.Size = New System.Drawing.Size(693, 29)
+        Me.CB_EP0.TabIndex = 1
+        Me.CB_EP0.UseSelectable = True
+        '
+        'CB_Season
+        '
+        Me.CB_Season.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_Season.FormattingEnabled = True
+        Me.CB_Season.ItemHeight = 23
+        Me.CB_Season.Location = New System.Drawing.Point(13, 86)
+        Me.CB_Season.Name = "CB_Season"
+        Me.CB_Season.Size = New System.Drawing.Size(693, 29)
+        Me.CB_Season.TabIndex = 1
+        Me.CB_Season.UseSelectable = True
+        '
+        'CB_EP1
+        '
+        Me.CB_EP1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_EP1.FormattingEnabled = True
+        Me.CB_EP1.ItemHeight = 23
+        Me.CB_EP1.Location = New System.Drawing.Point(13, 184)
+        Me.CB_EP1.Name = "CB_EP1"
+        Me.CB_EP1.Size = New System.Drawing.Size(693, 29)
+        Me.CB_EP1.TabIndex = 2
+        Me.CB_EP1.UseSelectable = True
+        '
+        'bt_Cancel_mass
+        '
+        Me.bt_Cancel_mass.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.add_mass_cancel
+        Me.bt_Cancel_mass.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.bt_Cancel_mass.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.bt_Cancel_mass.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.bt_Cancel_mass.ForeColor = System.Drawing.SystemColors.Control
+        Me.bt_Cancel_mass.Location = New System.Drawing.Point(159, 231)
+        Me.bt_Cancel_mass.Name = "bt_Cancel_mass"
+        Me.bt_Cancel_mass.Size = New System.Drawing.Size(403, 36)
+        Me.bt_Cancel_mass.TabIndex = 37
+        Me.bt_Cancel_mass.Text = "Cancel"
+        Me.bt_Cancel_mass.UseVisualStyleBackColor = True
+        '
+        'groupBox2
+        '
+        Me.groupBox2.BackColor = System.Drawing.Color.Transparent
+        Me.groupBox2.Controls.Add(Me.CB_Dub)
+        Me.groupBox2.Controls.Add(Me.bt_Cancel_mass)
+        Me.groupBox2.Controls.Add(Me.CB_EP1)
+        Me.groupBox2.Controls.Add(Me.CB_Season)
+        Me.groupBox2.Controls.Add(Me.CB_EP0)
+        Me.groupBox2.Controls.Add(Me.Add_Display)
+        Me.groupBox2.Location = New System.Drawing.Point(15, 60)
+        Me.groupBox2.Name = "groupBox2"
+        Me.groupBox2.Size = New System.Drawing.Size(720, 290)
+        Me.groupBox2.TabIndex = 44
+        Me.groupBox2.TabStop = False
+        Me.groupBox2.Visible = False
+        '
+        'CB_Dub
+        '
+        Me.CB_Dub.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CB_Dub.FormattingEnabled = True
+        Me.CB_Dub.ItemHeight = 23
+        Me.CB_Dub.Location = New System.Drawing.Point(13, 37)
+        Me.CB_Dub.Name = "CB_Dub"
+        Me.CB_Dub.Size = New System.Drawing.Size(693, 29)
+        Me.CB_Dub.TabIndex = 38
+        Me.CB_Dub.UseSelectable = True
+        '
+        'TextBox2
+        '
+        Me.TextBox2.BackColor = System.Drawing.Color.White
+        Me.TextBox2.Cursor = System.Windows.Forms.Cursors.Hand
+        '
+        '
+        '
+        Me.TextBox2.CustomButton.Image = Nothing
+        Me.TextBox2.CustomButton.Location = New System.Drawing.Point(665, 1)
+        Me.TextBox2.CustomButton.Name = ""
+        Me.TextBox2.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.TextBox2.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.TextBox2.CustomButton.TabIndex = 1
+        Me.TextBox2.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.TextBox2.CustomButton.UseSelectable = True
+        Me.TextBox2.CustomButton.Visible = False
+        Me.TextBox2.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.TextBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.TextBox2.Lines = New String() {"Use Custom Name"}
+        Me.TextBox2.Location = New System.Drawing.Point(18, 78)
+        Me.TextBox2.MaxLength = 32767
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.TextBox2.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.TextBox2.SelectedText = ""
+        Me.TextBox2.SelectionLength = 0
+        Me.TextBox2.SelectionStart = 0
+        Me.TextBox2.ShortcutsEnabled = True
+        Me.TextBox2.Size = New System.Drawing.Size(693, 29)
+        Me.TextBox2.TabIndex = 5
+        Me.TextBox2.TabStop = False
+        Me.TextBox2.Text = "Use Custom Name"
+        Me.TextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TextBox2.UseSelectable = True
+        Me.TextBox2.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.TextBox2.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        '
+        'textBox1
+        '
+        Me.textBox1.BackColor = System.Drawing.Color.White
+        Me.textBox1.Cursor = System.Windows.Forms.Cursors.Hand
+        '
+        '
+        '
+        Me.textBox1.CustomButton.Image = Nothing
+        Me.textBox1.CustomButton.Location = New System.Drawing.Point(665, 1)
+        Me.textBox1.CustomButton.Name = ""
+        Me.textBox1.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.textBox1.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.textBox1.CustomButton.TabIndex = 1
+        Me.textBox1.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.textBox1.CustomButton.UseSelectable = True
+        Me.textBox1.CustomButton.Visible = False
+        Me.textBox1.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.textBox1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.textBox1.Lines = New String() {"URL"}
+        Me.textBox1.Location = New System.Drawing.Point(18, 36)
+        Me.textBox1.MaxLength = 32767
+        Me.textBox1.Name = "textBox1"
+        Me.textBox1.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.textBox1.SelectedText = ""
+        Me.textBox1.SelectionLength = 0
+        Me.textBox1.SelectionStart = 0
+        Me.textBox1.ShortcutsEnabled = True
+        Me.textBox1.Size = New System.Drawing.Size(693, 29)
+        Me.textBox1.TabIndex = 4
+        Me.textBox1.TabStop = False
+        Me.textBox1.Text = "URL"
+        Me.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.textBox1.UseSelectable = True
+        Me.textBox1.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.textBox1.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        '
+        'TextBox4
+        '
+        Me.TextBox4.BackColor = System.Drawing.Color.White
+        Me.TextBox4.Cursor = System.Windows.Forms.Cursors.Hand
+        '
+        '
+        '
+        Me.TextBox4.CustomButton.Image = Nothing
+        Me.TextBox4.CustomButton.Location = New System.Drawing.Point(665, 1)
+        Me.TextBox4.CustomButton.Name = ""
+        Me.TextBox4.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.TextBox4.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.TextBox4.CustomButton.TabIndex = 1
+        Me.TextBox4.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.TextBox4.CustomButton.UseSelectable = True
+        Me.TextBox4.CustomButton.Visible = False
+        Me.TextBox4.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.TextBox4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.TextBox4.Lines = New String() {"Main Directory"}
+        Me.TextBox4.Location = New System.Drawing.Point(18, 120)
+        Me.TextBox4.MaxLength = 32767
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.TextBox4.ReadOnly = True
+        Me.TextBox4.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.TextBox4.SelectedText = ""
+        Me.TextBox4.SelectionLength = 0
+        Me.TextBox4.SelectionStart = 0
+        Me.TextBox4.ShortcutsEnabled = True
+        Me.TextBox4.Size = New System.Drawing.Size(693, 29)
+        Me.TextBox4.TabIndex = 36
+        Me.TextBox4.TabStop = False
+        Me.TextBox4.Text = "Main Directory"
+        Me.TextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TextBox4.UseSelectable = True
+        Me.TextBox4.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.TextBox4.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        '
+        'ComboBox2
+        '
+        Me.ComboBox2.BackColor = System.Drawing.Color.White
+        Me.ComboBox2.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.ComboBox2.FormattingEnabled = True
+        Me.ComboBox2.ItemHeight = 23
+        Me.ComboBox2.Location = New System.Drawing.Point(18, 162)
+        Me.ComboBox2.Name = "ComboBox2"
+        Me.ComboBox2.Size = New System.Drawing.Size(693, 29)
+        Me.ComboBox2.Sorted = True
+        Me.ComboBox2.TabIndex = 37
+        Me.ComboBox2.UseSelectable = True
+        '
+        'StatusLabel
+        '
+        Me.StatusLabel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.StatusLabel.BackColor = System.Drawing.Color.Transparent
+        Me.StatusLabel.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.StatusLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.StatusLabel.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.StatusLabel.Location = New System.Drawing.Point(18, 235)
+        Me.StatusLabel.Name = "StatusLabel"
+        Me.StatusLabel.Size = New System.Drawing.Size(693, 45)
+        Me.StatusLabel.TabIndex = 38
+        Me.StatusLabel.Text = "Status: idle"
+        Me.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'DownloadScope
+        '
+        Me.DownloadScope.BackColor = System.Drawing.Color.White
+        Me.DownloadScope.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DownloadScope.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.DownloadScope.FormattingEnabled = True
+        Me.DownloadScope.ItemHeight = 23
+        Me.DownloadScope.Items.AddRange(New Object() {"[Default]", "[Merge Audio with existing files]", "[Subtitles only]", "[Audio only (AAC)]"})
+        Me.DownloadScope.Location = New System.Drawing.Point(18, 204)
+        Me.DownloadScope.Name = "DownloadScope"
+        Me.DownloadScope.Size = New System.Drawing.Size(693, 29)
+        Me.DownloadScope.TabIndex = 39
+        Me.DownloadScope.UseSelectable = True
+        '
+        'groupBox1
+        '
+        Me.groupBox1.BackColor = System.Drawing.Color.Transparent
+        Me.groupBox1.Controls.Add(Me.DownloadScope)
+        Me.groupBox1.Controls.Add(Me.StatusLabel)
+        Me.groupBox1.Controls.Add(Me.ComboBox2)
+        Me.groupBox1.Controls.Add(Me.TextBox4)
+        Me.groupBox1.Controls.Add(Me.textBox1)
+        Me.groupBox1.Controls.Add(Me.TextBox2)
+        Me.groupBox1.Location = New System.Drawing.Point(15, 60)
+        Me.groupBox1.Name = "groupBox1"
+        Me.groupBox1.Size = New System.Drawing.Size(720, 290)
+        Me.groupBox1.TabIndex = 33
+        Me.groupBox1.TabStop = False
+        '
         'Anime_Add
         '
         Me.ApplyImageInvert = True
@@ -349,36 +364,38 @@ Partial Class Anime_Add
         Me.Controls.Add(Me.btn_dl)
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Close)
-        Me.Controls.Add(Me.groupBox1)
         Me.Controls.Add(Me.groupBox2)
+        Me.Controls.Add(Me.groupBox1)
         Me.Font = New System.Drawing.Font("Arial", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "Anime_Add"
         Me.Padding = New System.Windows.Forms.Padding(10, 60, 20, 20)
         Me.Text = "Add Video"
         Me.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center
-        Me.groupBox1.ResumeLayout(False)
-        Me.groupBox2.ResumeLayout(False)
         CType(Me.Btn_min, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Btn_Close, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.groupBox2.ResumeLayout(False)
+        Me.groupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Public WithEvents groupBox2 As GroupBox
-    Public WithEvents groupBox1 As GroupBox
-    Public WithEvents StatusLabel As MetroFramework.Controls.MetroLabel
-    Public WithEvents Add_Display As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroTextBox1 As MetroFramework.Controls.MetroTextBox
-    Public WithEvents textBox1 As MetroFramework.Controls.MetroTextBox
-    Public WithEvents TextBox4 As MetroFramework.Controls.MetroTextBox
-    Public WithEvents TextBox2 As MetroFramework.Controls.MetroTextBox
-    Public WithEvents ComboBox2 As MetroFramework.Controls.MetroComboBox
-    Public WithEvents comboBox4 As MetroFramework.Controls.MetroComboBox
-    Public WithEvents ComboBox1 As MetroFramework.Controls.MetroComboBox
-    Public WithEvents comboBox3 As MetroFramework.Controls.MetroComboBox
     Private WithEvents Btn_min As PictureBox
     Private WithEvents Btn_Close As PictureBox
-    Public WithEvents DownloadScope As MetroFramework.Controls.MetroComboBox
     Friend WithEvents btn_dl As Button
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
+    Public WithEvents Add_Display As MetroFramework.Controls.MetroLabel
+    Public WithEvents CB_EP0 As MetroFramework.Controls.MetroComboBox
+    Public WithEvents CB_Season As MetroFramework.Controls.MetroComboBox
+    Public WithEvents CB_EP1 As MetroFramework.Controls.MetroComboBox
     Friend WithEvents bt_Cancel_mass As Button
+    Public WithEvents groupBox2 As GroupBox
+    Public WithEvents TextBox2 As MetroFramework.Controls.MetroTextBox
+    Public WithEvents textBox1 As MetroFramework.Controls.MetroTextBox
+    Public WithEvents TextBox4 As MetroFramework.Controls.MetroTextBox
+    Public WithEvents ComboBox2 As MetroFramework.Controls.MetroComboBox
+    Public WithEvents StatusLabel As MetroFramework.Controls.MetroLabel
+    Public WithEvents DownloadScope As MetroFramework.Controls.MetroComboBox
+    Public WithEvents groupBox1 As GroupBox
+    Public WithEvents CB_Dub As MetroFramework.Controls.MetroComboBox
+    Public WithEvents TT_Dub As ToolTip
 End Class

@@ -734,7 +734,7 @@ Public Class Main
             End If
         Next
 
-        Return HardSub + " not found"
+        Return HardSub + "-not-found"
 
     End Function
 
@@ -759,14 +759,14 @@ Public Class Main
             Next
             Dim First As Integer = 0
             Dim Last As Integer = 0
-            If Anime_Add.comboBox4.SelectedIndex > Anime_Add.comboBox3.SelectedIndex Or Anime_Add.comboBox4.SelectedIndex = Anime_Add.comboBox3.SelectedIndex Then
-                First = Anime_Add.comboBox3.SelectedIndex
-                Last = Anime_Add.comboBox4.SelectedIndex
-            ElseIf Anime_Add.comboBox3.SelectedIndex > Anime_Add.comboBox4.SelectedIndex Then
-                First = Anime_Add.comboBox4.SelectedIndex
-                Last = Anime_Add.comboBox3.SelectedIndex
+            If Anime_Add.CB_EP1.SelectedIndex > Anime_Add.CB_EP0.SelectedIndex Or Anime_Add.CB_EP1.SelectedIndex = Anime_Add.CB_EP0.SelectedIndex Then
+                First = Anime_Add.CB_EP0.SelectedIndex
+                Last = Anime_Add.CB_EP1.SelectedIndex
+            ElseIf Anime_Add.CB_EP0.SelectedIndex > Anime_Add.CB_EP1.SelectedIndex Then
+                First = Anime_Add.CB_EP1.SelectedIndex
+                Last = Anime_Add.CB_EP0.SelectedIndex
             End If
-            Dim Anzahl As Integer = Anime_Add.comboBox4.SelectedIndex - Anime_Add.comboBox3.SelectedIndex
+            Dim Anzahl As Integer = Anime_Add.CB_EP1.SelectedIndex - Anime_Add.CB_EP0.SelectedIndex
             For i As Integer = First To Last
                 For e As Integer = 0 To Integer.MaxValue
                     If Grapp_RDY = True Then
@@ -820,8 +820,8 @@ Public Class Main
             If Debug2 = True Then
                 MsgBox(ex.ToString)
             End If
-            Anime_Add.comboBox4.Items.Clear()
-            Anime_Add.comboBox3.Items.Clear()
+            Anime_Add.CB_EP1.Items.Clear()
+            Anime_Add.CB_EP0.Items.Clear()
             Aktuell = 0.ToString
             Gesamt = 0.ToString
             Anime_Add.groupBox1.Visible = True
@@ -837,19 +837,29 @@ Public Class Main
     End Sub
 
     Public Sub GetBetaSeasons(ByVal AnimeUrl As String, ByVal JsonUrl As String, ByVal Auth As String, Optional ByVal BrowserData As String = Nothing) ', ByVal SeasonJson As String)
+
+
+        'switch UI
         Anime_Add.groupBox2.Visible = True
         Anime_Add.bt_Cancel_mass.Enabled = True
         Anime_Add.bt_Cancel_mass.Visible = True
         Anime_Add.groupBox1.Visible = False
-        Anime_Add.ComboBox1.Items.Clear()
-        Anime_Add.comboBox3.Items.Clear()
-        Anime_Add.comboBox4.Items.Clear()
-        Anime_Add.ComboBox1.Text = Nothing
-        Anime_Add.comboBox3.Text = Nothing
-        Anime_Add.comboBox4.Text = Nothing
-        Anime_Add.ComboBox1.Enabled = True
-        Anime_Add.comboBox3.Enabled = True
-        Anime_Add.comboBox4.Enabled = True
+        'clear everything 
+        Anime_Add.CB_Dub.Items.Clear()
+        Anime_Add.CB_Season.Items.Clear()
+        Anime_Add.CB_EP0.Items.Clear()
+        Anime_Add.CB_EP1.Items.Clear()
+        'also remove display text
+        Anime_Add.CB_Dub.Text = Nothing
+        Anime_Add.CB_Season.Text = Nothing
+        Anime_Add.CB_EP0.Text = Nothing
+        Anime_Add.CB_EP1.Text = Nothing
+        'disable everything for now
+        Anime_Add.CB_Dub.Enabled = False
+        Anime_Add.CB_Season.Enabled = False
+        Anime_Add.CB_EP0.Enabled = False
+        Anime_Add.CB_EP1.Enabled = False
+
         Dim SeasonJson As String = Nothing
         CR_MassSeasons.Clear()
         If BrowserData = Nothing Then
@@ -883,6 +893,8 @@ Public Class Main
         Dim SeasonJObject As JObject = JObject.Parse(SeasonJson)
         Dim SeasonData As List(Of JToken) = SeasonJObject.Children().ToList
 
+        Dim DubList As New List(Of String)
+
         For Each item As JProperty In SeasonData
             item.CreateReader()
             Select Case item.Name
@@ -892,21 +904,27 @@ Public Class Main
                         Dim localSeasons As New List(Of CR_Seasons)
                         Dim season_number As String = Nothing
                         Dim id As String = Nothing
+                        Dim title As String = Nothing
                         Dim audio_localeMain As String = Nothing
+
+                        Dim Dubs As New List(Of CR_Seasons)
 
 
                         For Each SeasonSubItem As JProperty In SeasonSubData
                             SeasonSubItem.CreateReader()
 
+
                             Select Case SeasonSubItem.Name
                                 Case "versions"
                                     Try
                                         For Each VersionItem As JObject In SeasonSubItem.Values
+                                            Dim guid As String = Nothing
+                                            Dim audio_locale As String = Nothing
 
-                                            Dim guid As String = VersionItem.GetValue("guid").ToString
-                                            Dim audio_locale As String = VersionItem.GetValue("audio_locale").ToString
+                                            guid = VersionItem.GetValue("guid").ToString
+                                            audio_locale = VersionItem.GetValue("audio_locale").ToString
+                                            Dubs.Add(New CR_Seasons(guid, audio_locale, Auth, "NaN"))
 
-                                            localSeasons.Add(New CR_Seasons(guid, audio_locale, Auth))
                                         Next
                                     Catch ex As Exception
                                         Debug.WriteLine("Error getting season data")
@@ -917,27 +935,49 @@ Public Class Main
                                     id = SeasonSubItem.Value.ToString
                                 Case "audio_locale"
                                     audio_localeMain = SeasonSubItem.Value.ToString
+                                Case "title"
+                                    title = SeasonSubItem.Value.ToString
                             End Select
+
+
                         Next
 
+                        'add dubs to local seasons
+                        For i As Integer = 0 To Dubs.Count - 1
+                            localSeasons.Add(New CR_Seasons(Dubs.Item(i).guid, Dubs.Item(i).audio_locale, Dubs.Item(i).Auth, season_number + " - " + title))
+                        Next
+
+                        'localSeasons.Add(New CR_Seasons(guid, audio_locale, Auth, season_number))
+                        'MsgBox(audio_locale)
+
+                        'Debug.WriteLine("Start-Seasons")
+
+                        'Debug.WriteLine(localSeasons.Item(0).guid)
+                        'Debug.WriteLine("END-Seasons")
+
                         If localSeasons.Count = 0 Then
-                            Anime_Add.ComboBox1.Items.Add(ConvertSubValue(audio_localeMain, ConvertSubsEnum.DisplayText) + " - Season " + season_number)
-                            CR_MassSeasons.Add(New CR_Seasons(id, audio_localeMain, Auth))
+                            Continue For
                         End If
 
-                        If localSeasons.Count > 0 Then
-                            For i As Integer = 0 To CR_MassSeasons.Count - 1
-                                If CR_MassSeasons.Item(i).guid = localSeasons.Item(0).guid Then
-                                    localSeasons.Clear()
-                                    Exit For
-                                End If
-                            Next
-                        End If
+                        'If localSeasons.Count = 0 Then
+                        '    Anime_Add.CB_Season.Items.Add(ConvertSubValue(audio_localeMain, ConvertSubsEnum.DisplayText) + " - Season " + season_number)
+                        '    CR_MassSeasons.Add(New CR_Seasons(id, audio_localeMain, Auth))
+                        'End If
+
+                        'If localSeasons.Count > 0 Then
+                        '    For i As Integer = 0 To CR_MassSeasons.Count - 1
+                        '        If CR_MassSeasons.Item(i).guid = localSeasons.Item(0).guid Then
+                        '            localSeasons.Clear()
+                        '            Exit For
+                        '        End If
+                        '    Next
+                        'End If
 
 
                         If localSeasons.Count > 0 Then
                             For i As Integer = 0 To localSeasons.Count - 1
-                                Anime_Add.ComboBox1.Items.Add(ConvertSubValue(localSeasons.Item(i).audio_locale, ConvertSubsEnum.DisplayText) + " - Season " + season_number)
+                                'Anime_Add.CB_Season.Items.Add(ConvertSubValue(localSeasons.Item(i).audio_locale, ConvertSubsEnum.DisplayText) + " - Season " + season_number)
+                                DubList.Add(localSeasons.Item(i).audio_locale)
                                 CR_MassSeasons.Add(localSeasons.Item(i))
                             Next
                         End If
@@ -945,6 +985,22 @@ Public Class Main
                     Next
             End Select
         Next
+
+        Dim CleanDubs As List(Of String) = DubList.Distinct().ToList
+        Anime_Add.CB_Dub.Enabled = True
+        Dim Index As Integer = 0
+        For i As Integer = 0 To CleanDubs.Count - 1
+            Anime_Add.CB_Dub.Items.Add(ConvertSubValue(CleanDubs.Item(i), ConvertSubsEnum.DisplayText))
+            If CleanDubs.Item(i) = DubSprache.CR_Value Then
+                Index = i
+            End If
+        Next
+
+        Anime_Add.CB_Dub.SelectedIndex = Index
+
+        'Anime_Add.TT_Dub.SetToolTip(Anime_Add.CB_Dub, "Unable to select dub, dub override enabled!")
+
+        'Anime_Add.CB_Dub.Enabled = False
 
     End Sub
 
@@ -2397,20 +2453,20 @@ Public Class Main
         Anime_Add.bt_Cancel_mass.Enabled = True
         Anime_Add.bt_Cancel_mass.Visible = True
         Anime_Add.groupBox1.Visible = False
-        Anime_Add.ComboBox1.Items.Clear()
-        Anime_Add.comboBox3.Items.Clear()
-        Anime_Add.comboBox4.Items.Clear()
-        Anime_Add.ComboBox1.Text = Nothing
-        Anime_Add.comboBox3.Text = Nothing
-        Anime_Add.comboBox4.Text = Nothing
-        Anime_Add.ComboBox1.Enabled = True
-        Anime_Add.comboBox3.Enabled = False
-        Anime_Add.comboBox4.Enabled = False
+        Anime_Add.CB_Season.Items.Clear()
+        Anime_Add.CB_EP0.Items.Clear()
+        Anime_Add.CB_EP1.Items.Clear()
+        Anime_Add.CB_Season.Text = Nothing
+        Anime_Add.CB_EP0.Text = Nothing
+        Anime_Add.CB_EP1.Text = Nothing
+        Anime_Add.CB_Season.Enabled = True
+        Anime_Add.CB_EP0.Enabled = False
+        Anime_Add.CB_EP1.Enabled = False
         WebbrowserURL = "https://funimation.com/js"
         Debug.WriteLine("Count: " + FunimtaionSeasonList.Count.ToString)
         For i As Integer = 0 To FunimtaionSeasonList.Count - 1
             Debug.WriteLine(FunimtaionSeasonList.Item(i).Title)
-            Anime_Add.ComboBox1.Items.Add(FunimtaionSeasonList.Item(i).Title)
+            Anime_Add.CB_Season.Items.Add(FunimtaionSeasonList.Item(i).Title)
         Next
     End Sub
 
@@ -2452,21 +2508,21 @@ Public Class Main
             Dim Last As Integer = 0
             Dim Anzahl As Integer = 0
 
-            If Anime_Add.comboBox4.SelectedIndex > Anime_Add.comboBox3.SelectedIndex Then
-                First = Anime_Add.comboBox3.SelectedIndex
-                Last = Anime_Add.comboBox4.SelectedIndex
+            If Anime_Add.CB_EP1.SelectedIndex > Anime_Add.CB_EP0.SelectedIndex Then
+                First = Anime_Add.CB_EP0.SelectedIndex
+                Last = Anime_Add.CB_EP1.SelectedIndex
                 Anzahl = Last - First + 1
-            ElseIf Anime_Add.comboBox4.SelectedIndex < Anime_Add.comboBox3.SelectedIndex Then
-                First = Anime_Add.comboBox4.SelectedIndex
-                Last = Anime_Add.comboBox3.SelectedIndex
+            ElseIf Anime_Add.CB_EP1.SelectedIndex < Anime_Add.CB_EP0.SelectedIndex Then
+                First = Anime_Add.CB_EP1.SelectedIndex
+                Last = Anime_Add.CB_EP0.SelectedIndex
 
-                Anime_Add.comboBox4.SelectedIndex = Last
-                Anime_Add.comboBox3.SelectedIndex = First
+                Anime_Add.CB_EP1.SelectedIndex = Last
+                Anime_Add.CB_EP0.SelectedIndex = First
                 Anzahl = Last - First + 1
-            ElseIf Anime_Add.comboBox4.SelectedIndex = Anime_Add.comboBox3.SelectedIndex Then
+            ElseIf Anime_Add.CB_EP1.SelectedIndex = Anime_Add.CB_EP0.SelectedIndex Then
 
-                First = Anime_Add.comboBox4.SelectedIndex
-                Last = Anime_Add.comboBox4.SelectedIndex
+                First = Anime_Add.CB_EP1.SelectedIndex
+                Last = Anime_Add.CB_EP1.SelectedIndex
 
                 Anzahl = Last - First + 1
             End If
@@ -2548,8 +2604,8 @@ Public Class Main
             If Debug2 = True Then
                 MsgBox(ex.ToString)
             End If
-            Anime_Add.comboBox4.Items.Clear()
-            Anime_Add.comboBox3.Items.Clear()
+            Anime_Add.CB_EP1.Items.Clear()
+            Anime_Add.CB_EP0.Items.Clear()
             Aktuell = 0.ToString
             Gesamt = 0.ToString
             Anime_Add.groupBox1.Visible = True
@@ -4361,23 +4417,25 @@ Public Class Main
 
         LangValueEnum.Add(New NameValuePair("العربية (Arabic)", "ara", "ar-SA", Nothing))
 
+        LangValueEnum.Add(New NameValuePair("Polski", "pol", "pl-PL", Nothing))
+
         LangValueEnum.Add(New NameValuePair("Русский (Russian)", "rus", "ru-RU", Nothing))
 
         LangValueEnum.Add(New NameValuePair("Italiano (Italian)", "ita", "it-IT", Nothing))
 
         LangValueEnum.Add(New NameValuePair("Español (España)", "spa", "es-ES", Nothing))
 
+        LangValueEnum.Add(New NameValuePair("Türkçe", "tur", "tr-TR", Nothing))
+
         LangValueEnum.Add(New NameValuePair("Bahasa Indonesia", "ind", "id-ID", Nothing))
 
         LangValueEnum.Add(New NameValuePair("Català", "cat", "ca-ES", Nothing))
 
-        LangValueEnum.Add(New NameValuePair("Polski", "pol", "pl-PL", Nothing))
-
         LangValueEnum.Add(New NameValuePair("Tiếng Việt", "vie", "vi-VN", Nothing))
 
-        LangValueEnum.Add(New NameValuePair("తెలుగు", "tel", "te-IN", Nothing))
+        LangValueEnum.Add(New NameValuePair("English (India)", "eng", "en-IN", Nothing))
 
-        LangValueEnum.Add(New NameValuePair("Türkçe", "tur", "tr-TR", Nothing))
+        LangValueEnum.Add(New NameValuePair("తెలుగు", "tel", "te-IN", Nothing))
 
         LangValueEnum.Add(New NameValuePair("हिंदी", "hin", "hi-IN", Nothing))
 

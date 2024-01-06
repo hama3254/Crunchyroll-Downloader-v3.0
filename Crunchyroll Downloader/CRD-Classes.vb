@@ -135,10 +135,12 @@ End Class
 
 Public Class CR_Seasons
 
+    Public Season As String
     Public guid As String
     Public audio_locale As String
     Public Auth As String
-    Public Sub New(ByVal guid As String, ByVal audio_locale As String, ByVal Auth As String)
+    Public Sub New(ByVal guid As String, ByVal audio_locale As String, ByVal Auth As String, ByVal Season As String)
+        Me.Season = Season
         Me.guid = guid
         Me.audio_locale = audio_locale
         Me.Auth = Auth
@@ -146,7 +148,7 @@ Public Class CR_Seasons
     End Sub
 
     Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}", Me.guid, Me.audio_locale)
+        Return String.Format("{0}, {1}", Me.guid, Me.audio_locale, Me.Season)
     End Function
 End Class
 

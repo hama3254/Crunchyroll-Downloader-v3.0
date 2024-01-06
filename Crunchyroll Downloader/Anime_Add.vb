@@ -13,6 +13,7 @@ Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Status
 Imports Newtonsoft.Json.Linq
 Imports System.Timers
 Imports System.Security.Policy
+Imports Crunchyroll_Downloader.CRD_Classes
 
 Public Class Anime_Add
     Public Mass_DL_Cancel As Boolean = False
@@ -299,9 +300,9 @@ Public Class Anime_Add
                 bt_Cancel_mass.Enabled = False
                 bt_Cancel_mass.Visible = False
                 Main.DownloadFunimationJS_Seasons()
-                comboBox4.Enabled = False
-                comboBox3.Enabled = False
-                ComboBox1.Enabled = False
+                CB_EP1.Enabled = False
+                CB_EP0.Enabled = False
+                CB_Season.Enabled = False
 
             ElseIf CBool(InStr(Main.WebbrowserURL, "crunchyroll.com")) = True Then
 
@@ -313,9 +314,9 @@ Public Class Anime_Add
                 bt_Cancel_mass.Visible = False
 
                 Main.DownloadBetaSeasons()
-                comboBox4.Enabled = False
-                comboBox3.Enabled = False
-                ComboBox1.Enabled = False
+                CB_EP1.Enabled = False
+                CB_EP0.Enabled = False
+                CB_Season.Enabled = False
 
 
             End If
@@ -461,34 +462,54 @@ Public Class Anime_Add
                         Dim episode_id As String = Entry.GetValue("id").ToString
                         Dim slug_title As String = Entry.GetValue("slug_title").ToString
 
-                        comboBox3.Items.Add("Episode " + episode_number)
-                        comboBox4.Items.Add("Episode " + episode_number)
-                        Main.CR_MassEpisodes.Add(New CR_Seasons(episode_id, slug_title, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth))
+                        CB_EP0.Items.Add("Episode " + episode_number)
+                        CB_EP1.Items.Add("Episode " + episode_number)
+                        Main.CR_MassEpisodes.Add(New CR_Seasons(episode_id, slug_title, Main.CR_MassSeasons.Item(CB_Season.SelectedIndex).Auth, ""))
 
                     Next
             End Select
         Next
 
-        If comboBox3.Items.Count > 0 Then
-            comboBox3.SelectedIndex = 0
-            comboBox4.SelectedIndex = comboBox4.Items.Count - 1
+        If CB_EP0.Items.Count > 0 Then
+            CB_EP0.SelectedIndex = 0
+            CB_EP1.SelectedIndex = CB_EP1.Items.Count - 1
         End If
 
-        comboBox3.Enabled = True
-        comboBox4.Enabled = True
+        CB_EP0.Enabled = True
+        CB_EP1.Enabled = True
 
     End Sub
 
-    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CB_Season.SelectedIndexChanged
         If CBool(InStr(Main.WebbrowserURL, "crunchyroll.com")) = True Then
-            comboBox3.Items.Clear()
-            comboBox4.Items.Clear()
-            comboBox3.Enabled = False
-            comboBox4.Enabled = False
-            comboBox3.Text = Nothing
-            comboBox4.Text = Nothing
+            CB_EP0.Items.Clear()
+            CB_EP1.Items.Clear()
+            CB_EP0.Enabled = False
+            CB_EP1.Enabled = False
+            CB_EP0.Text = Nothing
+            CB_EP1.Text = Nothing
 
-            Dim JsonUrl As String = "https://www.crunchyroll.com/content/v2/cms/seasons/" + Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).guid + "/episodes?preferred_audio_language=" + Main.DubSprache.CR_Value + "&locale=" + Main.locale
+
+            'get guid
+
+            Dim guid As String = Nothing
+
+            For i As Integer = 0 To Main.CR_MassSeasons.Count - 1
+                If "Season " + Main.CR_MassSeasons.Item(i).Season = CB_Season.Text And Main.ConvertSubValue(Main.CR_MassSeasons.Item(i).audio_locale, ConvertSubsEnum.DisplayText) = CB_Dub.Text Then
+                    guid = Main.CR_MassSeasons.Item(i).guid
+                    'MsgBox(guid + vbNewLine + Main.CR_MassSeasons.Item(i).audio_locale)
+                End If
+            Next
+
+            If guid = Nothing Then
+                MsgBox("Requested guid not found", MsgBoxStyle.Critical)
+                Exit Sub
+            End If
+
+            ' Dim JsonUrl As String = "https://www.crunchyroll.com/content/v2/cms/seasons/" + Main.CR_MassSeasons.Item(CB_Season.SelectedIndex).guid + "/episodes?preferred_audio_language=" + Main.DubSprache.CR_Value + "&locale=" + Main.locale
+
+            Dim JsonUrl As String = "https://www.crunchyroll.com/content/v2/cms/seasons/" + guid + "/episodes?preferred_audio_language=" + Main.DubSprache.CR_Value + "&locale=" + Main.locale
+
 
             Dim Loc_CR_Cookies = " -H " + Chr(34) + Main.CR_Cookies.Replace(Chr(34), "").Replace(" -H ", "") + Chr(34)
 
@@ -498,7 +519,7 @@ Public Class Anime_Add
 
             Try
 
-                EpisodeJson = CurlAuthNew(JsonUrl, Loc_CR_Cookies, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth) '
+                EpisodeJson = CurlAuthNew(JsonUrl, Loc_CR_Cookies, Main.CR_MassSeasons.Item(CB_Season.SelectedIndex).Auth) '
 
             Catch ex As Exception
                 If CBool(InStr(ex.ToString, "Error - Getting")) Then
@@ -516,14 +537,14 @@ Public Class Anime_Add
 
 
         ElseIf Main.WebbrowserURL = "https://funimation.com/js" Then
-            comboBox3.Items.Clear()
-            comboBox4.Items.Clear()
-            comboBox3.Text = Nothing
-            comboBox4.Text = Nothing
+            CB_EP0.Items.Clear()
+            CB_EP1.Items.Clear()
+            CB_EP0.Text = Nothing
+            CB_EP1.Text = Nothing
             Dim ContentID As String = Nothing
 
             For i As Integer = 0 To Main.FunimtaionSeasonList.Count - 1
-                If ComboBox1.Text = Main.FunimtaionSeasonList.Item(i).Title Then
+                If CB_Season.Text = Main.FunimtaionSeasonList.Item(i).Title Then
                     ContentID = Main.FunimtaionSeasonList.Item(i).ID
                     Exit For
                 End If
@@ -559,9 +580,9 @@ Public Class Anime_Add
             FillFunimationEpisodes(EpisodeJson)
 
 
-            If comboBox3.Items.Count > 0 Then
-                comboBox3.SelectedIndex = 0
-                comboBox4.SelectedIndex = comboBox4.Items.Count - 1
+            If CB_EP0.Items.Count > 0 Then
+                CB_EP0.SelectedIndex = 0
+                CB_EP1.SelectedIndex = CB_EP1.Items.Count - 1
             End If
 
 
@@ -573,16 +594,16 @@ Public Class Anime_Add
     Public Sub FillFunimationEpisodes(ByVal EpisodeJson As String)
 
         Main.FunimationEpisodeJSON = EpisodeJson
-        comboBox3.Enabled = True
-        comboBox4.Enabled = True
+        CB_EP0.Enabled = True
+        CB_EP1.Enabled = True
 
         Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episodeNumber" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
         'EpisodeJson.Split(New String() {Chr(34) + "episodeNumber" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
         Debug.WriteLine(EpisodeSplit.Count.ToString)
         For i As Integer = 1 To EpisodeSplit.Count - 1
             Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            comboBox3.Items.Add("Episode " + EpisodeSplit2(0))
-            comboBox4.Items.Add("Episode " + EpisodeSplit2(0))
+            CB_EP0.Items.Add("Episode " + EpisodeSplit2(0))
+            CB_EP1.Items.Add("Episode " + EpisodeSplit2(0))
         Next
         Main.WebbrowserURL = "https://funimation.com/js"
     End Sub
@@ -688,6 +709,35 @@ Public Class Anime_Add
         If Not TextBox2.Text = "Use Custom Name" And CBool(InStr(TextBox2.Text, "++")) = False Then
             TextBox2.Text = "Use Custom Name"
         End If
+    End Sub
+
+    Private Sub CB_Dub_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CB_Dub.SelectedIndexChanged
+        'MsgBox(CB_Dub.Text)
+        'MsgBox(Main.DubSprache.DisplayText)
+
+        If My.Settings.OverrideDub = True And CBool(InStr(CB_Dub.Text, Main.DubSprache.DisplayText)) = False Then
+            MessageBox.Show("The Duboveride might change the Dub to: " + Main.DubSprache.DisplayText, "Settings - Override enabled", MessageBoxButtons.OK)
+        End If
+
+        'clear everything below the dub 
+        CB_Season.Items.Clear()
+        CB_EP0.Items.Clear()
+        CB_EP1.Items.Clear()
+
+        'also remove display text
+        CB_Season.Text = Nothing
+        CB_EP0.Text = Nothing
+        CB_EP1.Text = Nothing
+
+        For i As Integer = 0 To Main.CR_MassSeasons.Count - 1
+            If Main.ConvertSubValue(Main.CR_MassSeasons.Item(i).audio_locale, ConvertSubsEnum.DisplayText) = CB_Dub.Text Then
+                CB_Season.Items.Add("Season " + Main.CR_MassSeasons.Item(i).Season)
+            End If
+        Next
+
+
+
+        CB_Season.Enabled = True
     End Sub
 
 

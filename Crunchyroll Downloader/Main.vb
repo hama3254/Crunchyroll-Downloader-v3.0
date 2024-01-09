@@ -942,38 +942,18 @@ Public Class Main
 
                         Next
 
+                        'MsgBox(season_number + vbNewLine + id + vbNewLine + title + vbNewLine + audio_localeMain)
                         'add dubs to local seasons
                         For i As Integer = 0 To Dubs.Count - 1
                             localSeasons.Add(New CR_Seasons(Dubs.Item(i).guid, Dubs.Item(i).audio_locale, Dubs.Item(i).Auth, season_number + " - " + title))
                         Next
 
-                        'localSeasons.Add(New CR_Seasons(guid, audio_locale, Auth, season_number))
-                        'MsgBox(audio_locale)
-
-                        'Debug.WriteLine("Start-Seasons")
-
-                        'Debug.WriteLine(localSeasons.Item(0).guid)
-                        'Debug.WriteLine("END-Seasons")
-
+                        'if version are null then add the main version
                         If localSeasons.Count = 0 Then
-                            Continue For
+                            localSeasons.Add(New CR_Seasons(id, audio_localeMain, Auth, season_number + " - " + title))
                         End If
 
-                        'If localSeasons.Count = 0 Then
-                        '    Anime_Add.CB_Season.Items.Add(ConvertSubValue(audio_localeMain, ConvertSubsEnum.DisplayText) + " - Season " + season_number)
-                        '    CR_MassSeasons.Add(New CR_Seasons(id, audio_localeMain, Auth))
-                        'End If
-
-                        'If localSeasons.Count > 0 Then
-                        '    For i As Integer = 0 To CR_MassSeasons.Count - 1
-                        '        If CR_MassSeasons.Item(i).guid = localSeasons.Item(0).guid Then
-                        '            localSeasons.Clear()
-                        '            Exit For
-                        '        End If
-                        '    Next
-                        'End If
-
-
+                        'add seasons to DubList
                         If localSeasons.Count > 0 Then
                             For i As Integer = 0 To localSeasons.Count - 1
                                 'Anime_Add.CB_Season.Items.Add(ConvertSubValue(localSeasons.Item(i).audio_locale, ConvertSubsEnum.DisplayText) + " - Season " + season_number)
@@ -987,6 +967,8 @@ Public Class Main
         Next
 
         Dim CleanDubs As List(Of String) = DubList.Distinct().ToList
+
+        'MsgBox(CleanDubs.Count.ToString)
         Anime_Add.CB_Dub.Enabled = True
         Dim Index As Integer = 0
         For i As Integer = 0 To CleanDubs.Count - 1

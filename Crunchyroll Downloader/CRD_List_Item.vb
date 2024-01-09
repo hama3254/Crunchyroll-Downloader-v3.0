@@ -85,6 +85,8 @@ Public Class CRD_List_Item
 
         If Service = "FM" Then
             MetroStyleManager1.Style = MetroColorStyle.DarkPurple
+        ElseIf Service = "other" Then
+            MetroStyleManager1.Style = MetroColorStyle.Black
         Else
             MetroStyleManager1.Style = MetroColorStyle.Orange
         End If

@@ -177,6 +177,24 @@ Public Class Anime_Add
                 If CBool(InStr(textBox1.Text, ":\")) Then
 
                     Main.ProcessLocal(textBox1.Text)
+                ElseIf CBool(InStr(textBox1.Text, ".m3u8")) Then
+
+                    ' Main.ProcessLocal(textBox1.Text)
+                    Dim NameKomplett As String = TextBox2.Text
+                    If NameKomplett = Nothing Or NameKomplett = "Use Custom Name" Then
+                        NameKomplett = GeräteID2().Replace("CRD-Temp-File", "misc_download-#")
+                    End If
+                    Dim Namep1 As String = "Other"
+                    Dim Namep2 As String = NameKomplett
+                    Dim Reso As String = "NaN"
+                    Dim HardSub As String = "maybe?"
+                    Dim ThumbnialURL As String = "no"
+                    Dim URL_DL As String = textBox1.Text
+                    Dim Pfad_DL As String = Path.Combine(Main.Pfad, Namep2)
+                    Dim Service As String = "other"
+
+
+                    Main.ItemConstructor(NameKomplett, NameP1, NameP2, Reso, HardSub, ThumbnialURL, URL_DL, Pfad_DL, Service)
 
                 ElseIf CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then
 

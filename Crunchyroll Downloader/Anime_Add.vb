@@ -189,12 +189,13 @@ Public Class Anime_Add
                     Dim Reso As String = "NaN"
                     Dim HardSub As String = "maybe?"
                     Dim ThumbnialURL As String = "no"
-                    Dim URL_DL As String = textBox1.Text
+                    Dim URL_DL As String = "-i " + Chr(34) + textBox1.Text + Chr(34) + " " + Main.ffmpeg_command
                     Dim Pfad_DL As String = Path.Combine(Main.Pfad, Namep2)
                     Dim Service As String = "other"
 
+                    MsgBox(URL_DL)
 
-                    Main.ItemConstructor(NameKomplett, NameP1, NameP2, Reso, HardSub, ThumbnialURL, URL_DL, Pfad_DL, Service)
+                    Main.ItemConstructor(NameKomplett, Namep1, Namep2, Reso, HardSub, ThumbnialURL, URL_DL, Chr(34) + Pfad_DL + Chr(34), Service)
 
                 ElseIf CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then
 

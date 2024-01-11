@@ -24,11 +24,29 @@ Partial Class CheckBoxComboBox
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.Animation = New System.Windows.Forms.Timer(Me.components)
+        Me.BGP = New MetroFramework.Controls.MetroPanel()
         Me.SuspendLayout()
         '
         'Animation
         '
         Me.Animation.Interval = 10
+        '
+        'BGP
+        '
+        Me.BGP.AutoScroll = True
+        Me.BGP.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.BGP.HorizontalScrollbar = True
+        Me.BGP.HorizontalScrollbarBarColor = True
+        Me.BGP.HorizontalScrollbarHighlightOnWheel = False
+        Me.BGP.HorizontalScrollbarSize = 10
+        Me.BGP.Location = New System.Drawing.Point(5, 5)
+        Me.BGP.Name = "BGP"
+        Me.BGP.Size = New System.Drawing.Size(310, 317)
+        Me.BGP.TabIndex = 0
+        Me.BGP.VerticalScrollbar = True
+        Me.BGP.VerticalScrollbarBarColor = True
+        Me.BGP.VerticalScrollbarHighlightOnWheel = False
+        Me.BGP.VerticalScrollbarSize = 10
         '
         'CheckBoxComboBox
         '
@@ -36,15 +54,17 @@ Partial Class CheckBoxComboBox
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle
         Me.ClientSize = New System.Drawing.Size(320, 327)
         Me.ControlBox = False
+        Me.Controls.Add(Me.BGP)
         Me.DisplayHeader = False
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "CheckBoxComboBox"
-        Me.Padding = New System.Windows.Forms.Padding(10, 30, 10, 10)
+        Me.Padding = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center
         Me.ResumeLayout(False)
 
     End Sub
 
     Friend WithEvents Animation As Timer
+    Friend WithEvents BGP As MetroFramework.Controls.MetroPanel
 End Class

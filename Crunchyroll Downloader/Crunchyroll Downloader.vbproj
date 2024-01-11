@@ -104,7 +104,7 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=x86">
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\metroframework-modern-ui\MetroFramework\bin\x64\Debug\MetroFramework.dll</HintPath>
     </Reference>
@@ -272,6 +272,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="bin\x86\Debug\Lib\chrome_100_percent.pak" />
     <None Include="bin\x86\Debug\Lib\chrome_200_percent.pak" />
     <None Include="bin\x86\Debug\Lib\icudtl.dat" />

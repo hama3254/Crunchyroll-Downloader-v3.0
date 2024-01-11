@@ -702,7 +702,7 @@ Public Class CRD_List_Item
                 Dim Zeile2 As String = zeile.Replace("#EXT-X-BYTERANGE:", "")
                 Dim Zeile3() As String = Zeile2.Split(New String() {"@"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                Dim CurrentSize As Integer = Integer.Parse(Zeile3(1))
+                Dim CurrentSize As Long = Long.Parse(Zeile3(1))
                 Dim NewBytes As Integer = Integer.Parse(Zeile3(0))
                 Dim File As String = Folder + String.Format("{0:0000}", Count)
                 Dim Evaluator = New Thread(Sub() Me.DownloadTSv4(DownloadFile, File, CurrentSize, NewBytes))
@@ -743,7 +743,7 @@ Public Class CRD_List_Item
 
     End Function
 
-    Private Sub DownloadTSv4(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal CurrentSize As Integer, ByVal NewBytes As Integer)
+    Private Sub DownloadTSv4(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal CurrentSize As Long, ByVal NewBytes As Integer)
         Dim retryCount As Integer = 3
         HybrideLog = HybrideLog + vbNewLine + Date.Now.ToString + ": " + DL_Pfad + " - " + DL_URL + " - " + CurrentSize.ToString
         While CBool(retryCount > 0)

@@ -1,0 +1,13 @@
+﻿[*.vb]
+
+# IDE0059: Unnötige Zuweisung eines Werts.
+dotnet_diagnostic.IDE0059.severity = none
+
+# IDE0054: Verbundzuweisung verwenden
+dotnet_diagnostic.IDE0054.severity = none
+
+# IDE0017: Initialisierung von Objekten vereinfachen
+dotnet_diagnostic.IDE0017.severity = none
+
+# IDE0140: Objekterstellung kann vereinfacht werden
+dotnet_diagnostic.IDE0140.severity = none

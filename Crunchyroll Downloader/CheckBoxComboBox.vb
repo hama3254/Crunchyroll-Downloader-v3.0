@@ -11,14 +11,15 @@ Public Class CheckBoxComboBox
     Dim Manager As New MetroStyleManager
     Dim Dubs As New List(Of MetroCheckBox)
     Dim Subs As New List(Of MetroCheckBox)
-    Dim MyHeight As Integer = 330
+    Dim MyHeight As Integer = 300
     Private Sub Reso_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Manager.Owner = Me
         Me.StyleManager = Manager
+        BGP.StyleManager = Manager
 
         Me.Height = 15
         Animation.Enabled = True
-
+        BGP.StyleManager.Style = MetroColorStyle.Orange
         Me.StyleManager.Style = MetroColorStyle.Orange
 
         If Me.Text = "CR Dub selection" Then
@@ -46,7 +47,7 @@ Public Class CheckBoxComboBox
                 Dubs.Add(Dub)
                 Me.Controls.Add(Dub)
             Next
-            MyHeight = (Main.LangValueEnum.Count - 1) * 30
+            'MyHeight = (Main.LangValueEnum.Count - 1) * 30
 
         ElseIf Me.Text = "CR Sub selection" Then
 
@@ -57,11 +58,11 @@ Public Class CheckBoxComboBox
                 SubT.Name = Main.LangValueEnum(i).CR_Value
                 SubT.FontSize = MetroCheckBoxSize.SomethingInBetween
                 SubT.TextAlign = ContentAlignment.MiddleCenter
-                SubT.SetBounds(2, 30 * Subs.Count + 1, 316, 25)
+                SubT.SetBounds(2, 30 * Subs.Count + 1, 295, 25)
                 SubT.UseCustomBackColor = True
                 SubT.UseCustomForeColor = True
                 SubT.ForeColor = Color.Black
-
+                SubT.StyleManager = Manager
                 AddHandler SubT.MouseEnter, AddressOf ItemMouseEnter
                 AddHandler SubT.MouseLeave, AddressOf ItemMouseLeave
                 AddHandler SubT.CheckedChanged, AddressOf ItemCheckedChanged
@@ -71,10 +72,10 @@ Public Class CheckBoxComboBox
                 End If
 
                 Subs.Add(SubT)
-                Me.Controls.Add(SubT)
+                BGP.Controls.Add(SubT)
             Next
 
-            MyHeight = (Main.LangValueEnum.Count - 2) * 30
+            'MyHeight = 300 '(Main.LangValueEnum.Count - 2) * 30
         End If
 
 
@@ -112,9 +113,9 @@ Public Class CheckBoxComboBox
 
     Private Sub CheckBoxComboBox_LocationChanged(sender As Object, e As EventArgs) Handles Me.LocationChanged
         If Me.Text = "CR Dub selection" Then
-            Me.Location = New Point(Einstellungen.Location.X + 116, Einstellungen.Location.Y + 204)
+            Me.Location = New Point(Einstellungen.Location.X + 116, Einstellungen.Location.Y + 200)
         ElseIf Me.Text = "CR Sub selection" Then
-            Me.Location = New Point(Einstellungen.Location.X + 116, Einstellungen.Location.Y + 344)
+            Me.Location = New Point(Einstellungen.Location.X + 116, Einstellungen.Location.Y + 340)
         End If
 
 
@@ -165,6 +166,5 @@ Public Class CheckBoxComboBox
 
         End If
     End Sub
-
 
 End Class

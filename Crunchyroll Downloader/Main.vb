@@ -4417,11 +4417,11 @@ Public Class Main
 
         LangValueEnum.Add(New NameValuePair("English (India)", "eng", "en-IN", Nothing))
 
-        LangValueEnum.Add(New NameValuePair("తెలుగు", "tel", "te-IN", Nothing))
+        LangValueEnum.Add(New NameValuePair("తెలుగు (Telegu)", "tel", "te-IN", Nothing))
 
-        LangValueEnum.Add(New NameValuePair("हिंदी", "hin", "hi-IN", Nothing))
+        LangValueEnum.Add(New NameValuePair("हिंदी (Hindi)", "hin", "hi-IN", Nothing))
 
-        LangValueEnum.Add(New NameValuePair("தமிழ்", "tam", "ta-IN", Nothing))
+        LangValueEnum.Add(New NameValuePair("தமிழ் (Tamil)", "tam", "ta-IN", Nothing))
 
         LangValueEnum.Add(New NameValuePair("中文 (中国)", "zho", "zh-CN", Nothing))
 

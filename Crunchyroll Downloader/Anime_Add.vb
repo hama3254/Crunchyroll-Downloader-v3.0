@@ -193,7 +193,7 @@ Public Class Anime_Add
                     Dim Pfad_DL As String = Path.Combine(Main.Pfad, Namep2)
                     Dim Service As String = "other"
 
-                    MsgBox(URL_DL)
+                    'MsgBox(URL_DL)
 
                     Main.ItemConstructor(NameKomplett, Namep1, Namep2, Reso, HardSub, ThumbnialURL, URL_DL, Chr(34) + Pfad_DL + Chr(34), Service)
 
@@ -460,6 +460,12 @@ Public Class Anime_Add
 
         Dim audio_locale_filter As String = Nothing
 
+        For i As Integer = 0 To Main.LangValueEnum.Count - 1
+            If Main.LangValueEnum.Item(i).DisplayText = CB_Dub.Text Then
+                audio_locale_filter = Main.LangValueEnum.Item(i).CR_Value
+            End If
+        Next
+
         Dim EpisodeJObject As JObject = JObject.Parse(EpisodeJson)
         Dim EpisodeData As List(Of JToken) = EpisodeJObject.Children().ToList
 
@@ -551,6 +557,7 @@ Public Class Anime_Add
             End Try
 
             'My.Computer.Clipboard.SetText(EpisodeJson)
+            Debug.WriteLine("EpisodeJson: " + EpisodeJson)
 
             FillCREpisodes(EpisodeJson)
 

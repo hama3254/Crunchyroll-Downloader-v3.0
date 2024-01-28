@@ -889,6 +889,7 @@ Public Class Main
 
 
         SeasonJson = CleanJSON(SeasonJson)
+        'Debug.WriteLine("SeasonJson: " + SeasonJson)
 
         Dim SeasonJObject As JObject = JObject.Parse(SeasonJson)
         Dim SeasonData As List(Of JToken) = SeasonJObject.Children().ToList
@@ -1366,9 +1367,10 @@ Public Class Main
                     'MsgBox(CR_Streams.Count.ToString)
                     For i As Integer = 0 To CR_Streams.Count - 1
                         Debug.WriteLine("1280: " + CR_Streams.Item(i).subLang)
-                        If CR_Streams.Item(i).subLang = CR_HardSubLang Then
+                        If CR_Streams.Item(i).subLang = CR_HardSubLang Then 'check for all hardsubs even 'null' 
                             CR_URI_Master.Add(CR_Streams.Item(i).Url)
-
+                        ElseIf CR_Streams.Item(i).subLang = "" And CR_HardSubLang = "null" Then 'keeping in mind 'null' and a empty string would be CRs style ...
+                            CR_URI_Master.Add(CR_Streams.Item(i).Url)
                         End If
 
                     Next
@@ -4030,6 +4032,73 @@ Public Class Main
 
                     End Try
 #End Region
+                ElseIf CBool(InStr(htmlReq, "m3u8_Url=")) Then
+                    Debug.WriteLine("m3u8_Url mode")
+                    Try
+                        Dim DecodedHTML As String = UrlDecode(htmlReq)
+                        'MsgBox(DecodedHTML)
+                        If CBool(InStr(DecodedHTML, "&tabName=")) Then
+                            Dim DataSplit() As String = DecodedHTML.Split(New String() {"&tabName="}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                            Dim UrlSplit() As String = DataSplit(0).Split(New String() {"m3u8_Url="}, System.StringSplitOptions.RemoveEmptyEntries)
+                            Dim NameSplit() As String = DataSplit(1).Split(New String() {" | "}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                            '  CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+
+
+                            ' MsgBox(URLSplit(1) + vbNewLine + DataSplit(1))
+
+                            Dim NameKomplett As String = Nothing
+
+                            Try
+                                NameKomplett = String.Join(" ", NameSplit(0).Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                NameKomplett = RemoveExtraSpaces(String.Join(" ", NameKomplett.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c)).Replace(Chr(34), "").Replace("\", "").Replace("/", "")
+
+                            Catch ex As Exception
+                            End Try
+                            '
+                            If NameKomplett = Nothing Or NameKomplett = "Use Custom Name" Then
+                                NameKomplett = GeräteID2().Replace("CRD-Temp-File", "misc_download-#")
+                            End If
+
+                            Dim Namep1 As String = "Other"
+                            Dim Namep2 As String = NameKomplett + VideoFormat
+                            Dim Reso As String = "NaN"
+                            Dim HardSub As String = "maybe?"
+                            Dim ThumbnialURL As String = "no"
+                            Dim URL_DL As String = "-i " + Chr(34) + UrlSplit(1).Replace(vbCrLf, "").Replace(vbCr, "").Replace(vbLf, "") + Chr(34) + ffmpeg_command
+                            Dim Pfad_DL As String = Path.Combine(Pfad, Namep2)
+                            Dim Service As String = "other"
+
+
+
+                            Me.Invoke(New Action(Function() As Object
+                                                     If MessageBox.Show(NameKomplett + vbNewLine + vbNewLine + URL_DL, "Confirm Download", MessageBoxButtons.OKCancel) = DialogResult.OK Then
+                                                     Else
+                                                         strRequest = rootPath & "Post_Mass_Sucess.html" 'PostPage
+                                                         SendHTMLResponse(stream, strRequest)
+                                                         Return Nothing
+                                                         Exit Function
+                                                     End If
+
+
+                                                     ItemConstructor(NameKomplett, Namep1, Namep2, Reso, HardSub, ThumbnialURL, URL_DL, Chr(34) + Pfad_DL + Chr(34), Service)
+                                                     Return Nothing
+                                                 End Function))
+
+
+
+                            'End If
+                            strRequest = rootPath & "Post_Mass_Sucess.html" 'PostPage
+                            SendHTMLResponse(stream, strRequest)
+                        End If
+                    Catch abort As ThreadAbortException
+                        Exit Sub
+                    Catch ex As Exception
+                        Dim ErrorPage As String = My.Resources.Post_error_Top + ex.ToString + My.Resources.Post_error_Bottom
+                        SendHTMLResponse(stream, Nothing, New ServerResponse(ErrorPage, "html"))
+
+                    End Try
                 Else
                     strRequest = rootPath & "error_Page_default.html" 'PostPage
                     SendHTMLResponse(stream, strRequest)

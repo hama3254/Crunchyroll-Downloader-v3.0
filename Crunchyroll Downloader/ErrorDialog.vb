@@ -98,12 +98,17 @@ Public Class ErrorDialog
                 End If
             Next
             SurroundingSub()
-            Try
-                ComboBox1.SelectedIndex = 0
-            Catch ex As Exception
-            End Try
+
 
         End If
+
+        'check for the first option and error if there are none
+        If ComboBox1.Items.Count > 0 Then
+            ComboBox1.SelectedIndex = 0
+        Else
+            MsgBox("Error, no available options found!", MsgBoxStyle.Information)
+        End If
+
         Delay.Enabled = True
     End Sub
 
@@ -142,6 +147,7 @@ Public Class ErrorDialog
         Else
             If Main.DialogTaskString = "Language_CR_Beta" Then
                 Main.ResoBackString = DisplayToHardSubValues(ComboBox1.SelectedItem.ToString)
+                'MsgBox(Main.ResoBackString)
                 Main.UserCloseDialog = False
                 Me.Close()
             Else
@@ -153,35 +159,13 @@ Public Class ErrorDialog
     End Sub
 
     Public Function DisplayToHardSubValues(ByVal HardSub As String) As String
-        Try
-            If HardSub = "Deutsch" Then
-                Return "de-DE"
-            ElseIf HardSub = "English" Then
-                Return "en-US"
-            ElseIf HardSub = "Português (Brasil)" Then
-                Return "pt-BR"
-            ElseIf HardSub = "Español (LA)" Then '"(LA)-Español"
-                Return "es-LA"
-            ElseIf HardSub = "Español" Then
-                Return "es-419"
-            ElseIf HardSub = "Français (France)" Then
-                Return "fr-FR"
-            ElseIf HardSub = "العربية (Arabic)" Then
-                Return "ar-SA"
-            ElseIf HardSub = "Русский (Russian)" Then
-                Return "ru-RU"
-            ElseIf HardSub = "Italiano (Italian)" Then
-                Return "it-IT"
-            ElseIf HardSub = "Español (España)" Then
-                Return "es-ES"
-            Else
-
-                Return Nothing
+        For i As Integer = 0 To Main.LangValueEnum.Count - 1
+            If Main.LangValueEnum.Item(i).DisplayText = HardSub Then ' does not find "No Hardsubs" but default is correct here anyway.
+                Return Main.LangValueEnum.Item(i).CR_Value
             End If
+        Next
 
-        Catch ex As Exception
-            Return Nothing
-        End Try
+        Return "null" ' null as text because CR does so...
 
     End Function
 

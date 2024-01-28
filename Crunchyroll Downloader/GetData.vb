@@ -120,12 +120,12 @@ Module GetData
             Return CurlError
         ElseIf CBool(InStr(CurlError, "curl:")) Then
             Debug.WriteLine(CurlError)
-            Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
+            Throw New System.Exception("Error - Getting" + Sender + vbNewLine + CurlError)
             Return Nothing
 
         ElseIf CBool(InStr(CurlOutput, "curl:")) Then
             Debug.WriteLine(CurlOutput)
-            Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
+            Throw New System.Exception("Error - Getting" + Sender + vbNewLine + CurlError)
             Return Nothing
         Else
             Return CurlOutput

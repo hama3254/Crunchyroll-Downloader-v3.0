@@ -50,10 +50,9 @@ Partial Class Main
         Me.CRCookieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UrlJsonsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DummyItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.ScanTimeout = New System.Windows.Forms.Timer(Me.components)
-        Me.Btn_Queue = New System.Windows.Forms.Button()
         Me.AudioOnlyQualityToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Btn_Queue = New System.Windows.Forms.Button()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -221,14 +220,15 @@ Partial Class Main
         Me.DummyItemToolStripMenuItem.Name = "DummyItemToolStripMenuItem"
         resources.ApplyResources(Me.DummyItemToolStripMenuItem, "DummyItemToolStripMenuItem")
         '
+        'AudioOnlyQualityToolStripMenuItem
+        '
+        Me.AudioOnlyQualityToolStripMenuItem.Name = "AudioOnlyQualityToolStripMenuItem"
+        resources.ApplyResources(Me.AudioOnlyQualityToolStripMenuItem, "AudioOnlyQualityToolStripMenuItem")
+        '
         'Panel1
         '
         resources.ApplyResources(Me.Panel1, "Panel1")
         Me.Panel1.Name = "Panel1"
-        '
-        'ScanTimeout
-        '
-        Me.ScanTimeout.Interval = 1000
         '
         'Btn_Queue
         '
@@ -240,11 +240,6 @@ Partial Class Main
         Me.Btn_Queue.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_queue
         Me.Btn_Queue.Name = "Btn_Queue"
         Me.Btn_Queue.UseVisualStyleBackColor = False
-        '
-        'AudioOnlyQualityToolStripMenuItem
-        '
-        Me.AudioOnlyQualityToolStripMenuItem.Name = "AudioOnlyQualityToolStripMenuItem"
-        resources.ApplyResources(Me.AudioOnlyQualityToolStripMenuItem, "AudioOnlyQualityToolStripMenuItem")
         '
         'Main
         '
@@ -300,7 +295,6 @@ Partial Class Main
     Friend WithEvents UrlJsonsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DummyItemToolStripMenuItem As ToolStripMenuItem
     Public WithEvents Panel1 As Panel
-    Friend WithEvents ScanTimeout As Timer
     Friend WithEvents QueueToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Btn_Queue As Button
     Friend WithEvents SaveThumbnailAsImageToolStripMenuItem As ToolStripMenuItem

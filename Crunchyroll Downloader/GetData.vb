@@ -53,11 +53,11 @@ Module GetData
 
 
         If CBool(InStr(CurlError, "curl:")) Then
-            Debug.WriteLine(CurlError)
+            Debug.WriteLine("CurlError: " + CurlError)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
         ElseIf CBool(InStr(CurlOutput, "curl:")) Then
-            Debug.WriteLine(CurlOutput)
+            Debug.WriteLine("CurlOutput: " + CurlOutput)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
         Else

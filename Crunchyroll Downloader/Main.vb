@@ -49,7 +49,6 @@ Public Class Main
     Public CrBetaBasic As String = Nothing
     Public locale As String = Nothing
     Public Url_locale As String = Nothing
-    Dim ProcessCounting As Integer = 30
     'Public CrBetaObjects As String = Nothing
     'Public CrBetaStreams As String = Nothing
     'Public CrBetaStreamsUrl As String = Nothing
@@ -100,8 +99,9 @@ Public Class Main
     'Public NonCR_URL As String = Nothing
     Public DlSoftSubsRDY As Boolean = True
     Public DialogTaskString As String
-    'Public ErrorBrowserString As String
-    'Public ErrorBrowserUrl As String
+    Dim NewAPIString1 As String
+    Dim NewAPIString2 As String
+    Dim TTL As Integer = 0
     'Public ErrorBrowserBackString As String
     Public RunningQueue As Boolean = False
     Public UserCloseDialog As Boolean = False
@@ -1195,8 +1195,10 @@ Public Class Main
                 'Debug.WriteLine("1457: " + i.ToString + "/" + CR_Streams.Count.ToString + " " + CR_Streams.Item(i).subLang + " " + CR_Streams.Item(i).Format)
                 If CR_Streams.Item(i).subLang = CR_HardSubLang Then
                     CR_URI_Master.Add(CR_Streams.Item(i).Url)
+                    'Debug.WriteLine("CR_HardSubLang-" + CR_HardSubLang + "--" + CR_Streams.Item(i).Url)
                 ElseIf CR_Streams.Item(i).subLang = "" And CR_HardSubLang = "null" Then
                     CR_URI_Master.Add(CR_Streams.Item(i).Url)
+                    'Debug.WriteLine("CR_HardSubLang-null" + CR_HardSubLang + "--" + CR_Streams.Item(i).Url)
                 ElseIf CR_Streams.Item(i).subLang = "" And CR_audio_locale IsNot "ja-JP" And DubMode = True Then 'nothing/raw
                     RawStream.Add(CR_Streams.Item(i).Url)
                 End If
@@ -1326,6 +1328,7 @@ Public Class Main
 
 
                 For i As Integer = 0 To CR_URI_Master.Count - 1
+                    'MsgBox(CR_URI_Master(i))
                     Dim Count As String = (i + 1).ToString
                     Try
                         str = Curl(CR_URI_Master(i))
@@ -1925,7 +1928,7 @@ Public Class Main
                         For Each Entry As JProperty In item.Values
 
                             Dim JsonEntryFormat As String = Entry.Name
-                            If CBool(InStr(Entry.Name, "drm")) Or CBool(InStr(Entry.Name, "dash")) Or CBool(InStr(Entry.Name, "download")) Then
+                            If CBool(InStr(Entry.Name, "drm")) Or CBool(InStr(Entry.Name, "dash")) Or CBool(InStr(Entry.Name, "urls")) Then
                                 Continue For
                             End If
 
@@ -1971,9 +1974,13 @@ Public Class Main
                 End Select
             Next
 
+            If download_hls IsNot Nothing Then
+                CR_Streams.Add(download_hls)
+            End If
 
             Dim CR_URI_Master As New List(Of String)
 
+            ' Dim CR_URI_Master2 As New List(Of CR_Beta_Stream)
 
             Dim RawStream As New List(Of String)
 
@@ -1981,17 +1988,17 @@ Public Class Main
 
             For c As Integer = 0 To CR_Streams.Count - 1
                 Dim i As Integer = c
-                'Debug.WriteLine("1457: " + i.ToString + "/" + CR_Streams.Count.ToString + " " + CR_Streams.Item(i).subLang + " " + CR_Streams.Item(i).Format)
-                'https://www.crunchyroll.com/watch/GN7UD2K8N/dragon-ball-super-super-hero
-                Debug.WriteLine("Streams-1254: " + CR_Streams.Item(i).subLang)
+
+                Debug.WriteLine(c.ToString + " Streams-1988: " + CR_Streams.Item(i).subLang + " " + CR_Streams.Item(i).Format + " " + CR_Streams.Item(i).Url)
+
                 If CR_Streams.Item(i).subLang = CR_HardSubLang Then
                     CR_URI_Master.Add(CR_Streams.Item(i).Url)
-                    'MsgBox(CR_Streams.Item(i).Format + CR_Streams.Item(i).Url)
                 ElseIf CR_Streams.Item(i).subLang = "" And CR_audio_locale IsNot "ja-JP" And DubMode = True Then 'nothing/raw ohne subs
                     RawStream.Add(CR_Streams.Item(i).Url)
                 ElseIf CR_Streams.Item(i).subLang = "null" And CR_audio_locale IsNot "ja-JP" And DubMode = True Then 'nothing/raw mit 'null' tagged
                     RawStream.Add(CR_Streams.Item(i).Url)
                 End If
+
             Next
             'MsgBox(CR_URI_Master.Count.ToString)
             If CR_URI_Master.Count = 0 And RawStream.Count > 0 Then
@@ -2364,28 +2371,67 @@ Public Class Main
 
                 Dim str As String = Nothing
 
+                Dim NewMaster2 As String = Nothing
+
+                If NewAPIString1 = Nothing And NewAPIString2 = Nothing Or TTL < 1 Then
 
 
 
-                For i As Integer = 0 To CR_URI_Master.Count - 1
-                    Dim Count As String = (i + 1).ToString
-                    Try
-                        str = Curl(CR_URI_Master(i))
-                        If CBool(InStr(str, "curl:")) = False Then
-                            Exit For
-                        End If
-                    Catch ex As Exception
+                    Dim NewAPI_0 As String() = WebsiteURL.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim NewAPI_1 As String() = NewAPI_0(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                        Me.Invoke(New Action(Function() As Object
-                                                 Anime_Add.StatusLabel.Text = "failed accessing master.m3u8 " + Count + "/" + CR_URI_Master.Count.ToString
-                                                 Me.Text = "failed accessing master.m3u8 " + Count + "/" + CR_URI_Master.Count.ToString
-                                                 Me.Invalidate()
-                                                 Return Nothing
-                                             End Function))
-                        Debug.WriteLine("Error accessing master #" + i.ToString + " -- " + CR_URI_Master(i))
-                        Pause(5)
-                    End Try
-                Next
+                    Dim NewAPI As String = "https://cr-play-service.prd.crunchyrollsvc.com/v1/" + NewAPI_1(0) + "/web/edge/play"
+
+                    Dim NewAPIData As String = CurlAuthNew(NewAPI, Loc_CR_Cookies, Loc_AuthToken)
+
+                    'MsgBox(NewAPIData)
+
+                    Dim bif_1 As String() = NewAPIData.Split(New String() {".bif?"}, System.StringSplitOptions.RemoveEmptyEntries) 'get the policy and beyond 
+                    Dim bif_2 As String() = bif_1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) 'but we don't need beyond | Index 0 is enough
+                    '
+                    Dim bif_0 As String() = bif_1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) 'again we don't need beyond the url
+                    Dim bif_3 As String() = bif_0(bif_0.Count - 1).Split(New String() {"assets/"}, System.StringSplitOptions.RemoveEmptyEntries) 'we even don't need the asset itself
+
+                    Dim NewMaster0 As String() = CR_URI_Master(0).Split(New String() {"assets/"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    Dim NewMaster1 As String() = NewMaster0(1).Split(New String() {"?Policy"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                    NewMaster2 = bif_3(0) + "assets/" + NewMaster1(0) + "?" + bif_2(0)
+                    NewAPIString1 = bif_3(0)
+                    NewAPIString2 = bif_2(0)
+                    TTL = 5
+                Else
+
+                    Dim NewMaster0 As String() = CR_URI_Master(0).Split(New String() {"assets/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    Dim NewMaster1 As String() = NewMaster0(1).Split(New String() {"?Policy"}, System.StringSplitOptions.RemoveEmptyEntries)
+                    NewMaster2 = NewAPIString1 + "assets/" + NewMaster1(0) + "?" + NewAPIString2
+                    TTL = TTL - 1
+                End If
+
+
+                'MsgBox(NewMaster2)
+
+                str = Curl(NewMaster2)
+
+                'For i As Integer = 0 To CR_URI_Master.Count - 1
+                '    Dim Count As String = (i + 1).ToString
+                '    Try
+                '        str = Curl(CR_URI_Master(i))
+                '        If CBool(InStr(str, "curl:")) = False Then
+                '            Exit For
+                '        End If
+                '    Catch ex As Exception
+
+                '        Me.Invoke(New Action(Function() As Object
+                '                                 Anime_Add.StatusLabel.Text = "failed accessing master.m3u8 " + Count + "/" + CR_URI_Master.Count.ToString
+                '                                 Me.Text = "failed accessing master.m3u8 " + Count + "/" + CR_URI_Master.Count.ToString
+                '                                 Me.Invalidate()
+                '                                 Return Nothing
+                '                             End Function))
+                '        Debug.WriteLine("Error accessing master #" + i.ToString + " -- " + CR_URI_Master(i))
+                '        Pause(5)
+                '    End Try
+                'Next
 
 
 
@@ -4161,7 +4207,7 @@ Public Class Main
         If CBool(InStr(Address, "crunchyroll.com")) Or CBool(InStr(Address, "funimation.com")) Then
             WebbrowserURL = Address
 
-            ScanTimeout.Start()
+            ' ScanTimeout.Start()
 
 
             'ElseIf CBool(InStr(Address, "funimation.com")) Then
@@ -4209,75 +4255,7 @@ Public Class Main
 
 #End Region
 
-    Private Sub Process(sender As Object, e As EventArgs) Handles ScanTimeout.Tick
-        If b = True Then
-            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                Anime_Add.StatusLabel.Text = "Status: idle"
-            End If
-            Me.Text = "Crunchyroll Downloader"
-            Grapp_RDY = True
-            LoadedUrls.Clear()
-            Debug.WriteLine("canceled....")
-            ProcessCounting = 30
-            ScanTimeout.Enabled = False
-            Exit Sub
-        End If
 
-        If LoadedUrls.Count = 0 And ProcessCounting > 0 Then
-
-            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                Anime_Add.StatusLabel.Text = "Status: Processing Url " + ProcessCounting.ToString
-            End If
-            Me.Text = "Status: Processing Url " + ProcessCounting.ToString
-
-            ProcessCounting = ProcessCounting - 1
-            Exit Sub
-        ElseIf LoadedUrls.Count = 1 And ProcessCounting > 0 Then
-
-            If CBool(InStr(LoadedUrls.Item(0).Uri, "/objects/")) Then
-                If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                    Anime_Add.StatusLabel.Text = "Status: Processing Url " + ProcessCounting.ToString
-                End If
-                Me.Text = "Status: Processing Url " + ProcessCounting.ToString
-
-                ProcessCounting = ProcessCounting - 1
-                Exit Sub
-            End If
-
-        ElseIf LoadedUrls.Count = 0 And ProcessCounting = 0 Then
-            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                Anime_Add.StatusLabel.Text = "Status: nothing found"
-            End If
-            Me.Text = "Status: nothing found"
-            'ProcessUrls()
-            b = True
-            Debug.WriteLine("3508: nothing found")
-            Grapp_RDY = True
-            ProcessCounting = 30
-            ScanTimeout.Enabled = False
-            Exit Sub
-        End If
-
-
-        Debug.WriteLine("LoadedUrls: " + LoadedUrls.Count.ToString)
-        'For i As Integer = 0 To LoadedUrls.Count - 1
-        '    Debug.WriteLine("LoadedUrls: " + LoadedUrls(i))
-        'Next
-
-        If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-            Anime_Add.StatusLabel.Text = "Status: Processing... "
-        End If
-        Me.Text = "Status: Processing... "
-        Debug.WriteLine("ProcessUrls")
-        ProcessCounting = 30
-        ScanTimeout.Enabled = False
-        ProcessUrls()
-
-        Exit Sub
-
-
-
-    End Sub
     Public Sub ProcessUrls()
         Debug.WriteLine(LoadedUrls.Count.ToString)
         Debug.WriteLine(Date.Now.ToString + " Thread Name: " + Thread.CurrentThread.Name)

@@ -21,8 +21,9 @@ Public Class Browser
         Try
             WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
             WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.funimation.com/*", CoreWebView2WebResourceContext.All)
+            'WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://cr-play-service.prd.crunchyrollsvc.com/*", CoreWebView2WebResourceContext.All)
             '   WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
-
+            'cr-play-service.prd.crunchyrollsvc.com
             'WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
             AddHandler WebView2.CoreWebView2.WebResourceResponseReceived, AddressOf ObserveResponse
             AddHandler WebView2.CoreWebView2.WebResourceRequested, AddressOf ObserveHttp

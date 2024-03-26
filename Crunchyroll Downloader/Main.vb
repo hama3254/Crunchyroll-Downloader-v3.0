@@ -445,7 +445,7 @@ Public Class Main
 
         DarkModeValue = My.Settings.DarkModeValue
 
-        DownloadScope = My.Settings.DownloadScope
+        DownloadScope = DownloadScopeEnum.SubsOnly 'My.Settings.DownloadScope
 
         Manager.Style = MetroColorStyle.Orange
         If DarkModeValue = True Then
@@ -1803,7 +1803,10 @@ Public Class Main
 
             Dim cms As String = CurlAuthNew("https://www.crunchyroll.com/index/v2", Loc_CR_Cookies, Loc_AuthToken)
 
+            'MsgBox(cms)
+
             Dim cms_web() As String = cms.Split(New String() {Chr(34) + "cms_web" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
+            'Dim cms_web() As String = cms.Split(New String() {Chr(34) + "cms_beta" + Chr(34) + ":"}, System.StringSplitOptions.RemoveEmptyEntries)
 
             Dim bucket1() As String = cms_web(1).Split(New String() {Chr(34) + "bucket" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim bucket2() As String = bucket1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -1829,7 +1832,7 @@ Public Class Main
             'MsgBox(Videos)
             Dim VideoJson As String = Nothing
             Dim StreamUrl As String = "https://www.crunchyroll.com/cms/v2" + bucket + Videos + "streams?Policy=" + policy + "&Signature=" + signature + "&Key-Pair-Id=" + key_pair_id
-
+            'MsgBox(StreamUrl)
             VideoJson = CurlAuthNew(StreamUrl, Loc_CR_Cookies, Loc_AuthToken) 'Curl(StreamUrl) '
 
             'VideoJson = CurlAuthNew(Streams, Loc_CR_Cookies, Loc_AuthToken)
@@ -1896,7 +1899,7 @@ Public Class Main
                     For i As Integer = 0 To DubsAvalible.Count - 1
                         If DubsAvalible(i).AudioLang = DubSprache.CR_Value Then
                             Dim NewStream As String = "https://www.crunchyroll.com/cms/v2" + bucket + "/videos/" + DubsAvalible(i).media_guid + "/" + "streams?Policy=" + policy + "&Signature=" + signature + "&Key-Pair-Id=" + key_pair_id
-                            ' MsgBox(NewStream)
+                            'MsgBox(NewStream)
                             VideoJson = CurlAuthNew(NewStream, Loc_CR_Cookies, Loc_AuthToken) 'Curl(StreamUrl) '
 
                         End If
@@ -1908,7 +1911,7 @@ Public Class Main
             Catch ex As Exception
 
             End Try
-            ' MsgBox("Trigger off!")
+            'MsgBox("Trigger off!")
 
 
 #End Region
@@ -5109,6 +5112,8 @@ Public Class Main
         LangValueEnum.Add(New NameValuePair("Türkçe", "tur", "tr-TR", Nothing))
 
         LangValueEnum.Add(New NameValuePair("Bahasa Indonesia", "ind", "id-ID", Nothing))
+
+        LangValueEnum.Add(New NameValuePair("Bahasa Melayu", "msa", "ms-MY", Nothing))
 
         LangValueEnum.Add(New NameValuePair("Català", "cat", "ca-ES", Nothing))
 

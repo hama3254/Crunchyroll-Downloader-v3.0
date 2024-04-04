@@ -91,60 +91,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die {&quot;sources&quot;:[{&quot;file&quot;:&quot; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property AoD_files() As String
-            Get
-                Return ResourceManager.GetString("AoD_files", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;h1 itemprop=&quot;name&quot;&gt; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property AoD_HTML_Anime_Title() As String
-            Get
-                Return ResourceManager.GetString("AoD_HTML_Anime_Title", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;h3 class=&quot;episodebox-title&quot; title=&quot; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property AoD_HTML_Episode_Title() As String
-            Get
-                Return ResourceManager.GetString("AoD_HTML_Episode_Title", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;image&quot;:&quot; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property AoD_Image() As String
-            Get
-                Return ResourceManager.GetString("AoD_Image", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;mediaid&quot;: ähnelt.
-        '''</summary>
-        Friend ReadOnly Property AoD_MediaID() As String
-            Get
-                Return ResourceManager.GetString("AoD_MediaID", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;title&quot;:&quot; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property AoD_Titel() As String
-            Get
-                Return ResourceManager.GetString("AoD_Titel", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die [Script Info]
         '''; Template for error handling in the Crunchyrol Downloader by hama3254 https://github.com/hama3254/Crunchyroll-Downloader-v3.0
         '''; ass file from https://github.com/Aegisub/Aegisub/blob/master/automation/v4-docs/template-scripting-ideas.ass 
@@ -184,78 +130,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("balken_console", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;img id=&quot;footer_country_flag&quot; src=&quot;https://www.crunchyroll.com/i/country_flags/ ähnelt.
-        '''</summary>
-        Friend ReadOnly Property CC_String() As String
-            Get
-                Return ResourceManager.GetString("CC_String", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die display_episode_number&quot;:&quot; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property CR_Episode_Nr() As String
-            Get
-                Return ResourceManager.GetString("CR_Episode_Nr", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;meta property=&quot;og:url&quot; content=&quot; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property CR_Head_Url_Split() As String
-            Get
-                Return ResourceManager.GetString("CR_Head_Url_Split", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;h4 id=&quot;showmedia_about_name&quot; class=&quot;strong&quot;&gt;“ ähnelt.
-        '''</summary>
-        Friend ReadOnly Property CR_MediaName() As String
-            Get
-                Return ResourceManager.GetString("CR_MediaName", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die ”&lt;/h4&gt; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property CR_MediaName2() As String
-            Get
-                Return ResourceManager.GetString("CR_MediaName2", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;/span&gt; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property CR_MovieBT() As String
-            Get
-                Return ResourceManager.GetString("CR_MovieBT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;span itemprop=&quot;name&quot;&gt; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property CR_MovieTop() As String
-            Get
-                Return ResourceManager.GetString("CR_MovieTop", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die seasonNumber&quot;:&quot; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property CR_Season_Nr() As String
-            Get
-                Return ResourceManager.GetString("CR_Season_Nr", resourceCulture)
             End Get
         End Property
         
@@ -487,24 +361,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;,&quot;resolution&quot;:&quot;adaptive&quot; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property hls_endString() As String
-            Get
-                Return ResourceManager.GetString("hls_endString", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;format&quot;:&quot;adaptive_hls&quot;, ähnelt.
-        '''</summary>
-        Friend ReadOnly Property hls_Value() As String
-            Get
-                Return ResourceManager.GetString("hls_Value", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;script&gt;
         '''
         '''setInterval(function loadXMLDoc() {
@@ -654,15 +510,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("icon", resourceCulture)
                 Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &quot;error&quot;:false,&quot;code&quot;:&quot;ok&quot; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property LoginSuccess() As String
-            Get
-                Return ResourceManager.GetString("LoginSuccess", resourceCulture)
             End Get
         End Property
         
@@ -1035,16 +882,6 @@ Namespace My.Resources
         Friend ReadOnly Property thumbnailString() As String
             Get
                 Return ResourceManager.GetString("thumbnailString", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die US cookies can&apos;t be used as long you are logged in.
-        '''I delete the curremt session with the unlock, if you want to be logged in with the US cookie you need to enter you data on the left. ähnelt.
-        '''</summary>
-        Friend ReadOnly Property US_ToolTip() As String
-            Get
-                Return ResourceManager.GetString("US_ToolTip", resourceCulture)
             End Get
         End Property
     End Module

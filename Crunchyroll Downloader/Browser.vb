@@ -21,7 +21,7 @@ Public Class Browser
         Try
             WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
             WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.funimation.com/*", CoreWebView2WebResourceContext.All)
-            'WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://cr-play-service.prd.crunchyrollsvc.com/*", CoreWebView2WebResourceContext.All)
+            WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://cr-play-service.prd.crunchyrollsvc.com/*", CoreWebView2WebResourceContext.All)
             '   WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
             'cr-play-service.prd.crunchyrollsvc.com
             'WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
@@ -47,7 +47,6 @@ Public Class Browser
 
 
     End Sub
-
 
 
     Private Sub WebView2_SourceChanged(sender As Object, e As CoreWebView2SourceChangedEventArgs) Handles WebView2.SourceChanged
@@ -101,9 +100,17 @@ Public Class Browser
         End Try
     End Sub
 
+    Async Sub Startup()
+        Dim WVOptions As New CoreWebView2EnvironmentOptions()
+
+        WVOptions.AdditionalBrowserArguments = "--disable-web-security" '+ " " + "--disable-cache" + " " + "--disk-cache-size=1" + " " + "--disable-gpu" '+ '" " + "--use-fake-device-for-media-stream" "--disable-web-security" + " " + 
+        Dim Env As CoreWebView2Environment = Await CoreWebView2Environment.CreateAsync(Nothing, Nothing, WVOptions)
+        Await WebView2.EnsureCoreWebView2Async(Env)
+
+    End Sub
 
     Private Sub Browser_Load(sender As Object, e As EventArgs) Handles Me.Load
-
+        Startup()
         Main.waveOutSetVolume(0, 0)
         If Me.Width > My.Computer.Screen.Bounds.Width Then
             Me.Width = My.Computer.Screen.Bounds.Width
@@ -147,7 +154,6 @@ Public Class Browser
         'Debug.WriteLine("Collecting-end")
         ''e.Cancel = True
     End Sub
-
 
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -282,12 +288,22 @@ Public Class Browser
                 If CBool(InStr(Headers.Item(i).Value, "Basic")) Then
                     Main.CrBetaBasic = Headers.Item(i).Value
                     Debug.WriteLine("Auth-Basic: " + Main.CrBetaBasic)
-                ElseIf CBool(InStr(Headers.Item(i).Value, "Bearer")) Then
-                    Main.CR_AuthToken = Headers.Item(i).Value
-                    Debug.WriteLine("Auth-Bearer: " + Main.CR_AuthToken)
                 End If
             Next
         End If
+
+        'If CBool(InStr(e.Request.Uri, "crunchyrollsvc.com")) = True And Main.CR_AuthToken = Nothing Then
+        '    Dim Headers As New List(Of KeyValuePair(Of String, String))
+        '    Headers.AddRange(e.Request.Headers.ToList)
+        '    For i As Integer = 0 To Headers.Count
+        '        Debug.WriteLine(Headers.Item(i).Key + "--" + Headers.Item(i).Value)
+        '        If CBool(InStr(Headers.Item(i).Key, "ETP-Anonymous-ID")) Then
+        '            Main.CR_AuthToken = Headers.Item(i).Value
+        '            Debug.WriteLine("ETP-Anonymous-ID: " + Main.CR_AuthToken)
+        '        End If
+        '    Next
+        'End If
+
 
         'If CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "streams?")) Then
         '    Dim Headers As New List(Of KeyValuePair(Of String, String))

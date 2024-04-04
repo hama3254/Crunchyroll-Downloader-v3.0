@@ -30,7 +30,6 @@ Public Class Main
 
     Public CheckCRLogin As Boolean = True
 
-
     Public CR_AuthToken As String = ""
     Public CR_v1Token As String = ""
 
@@ -445,7 +444,7 @@ Public Class Main
 
         DarkModeValue = My.Settings.DarkModeValue
 
-        DownloadScope = DownloadScopeEnum.SubsOnly 'My.Settings.DownloadScope
+        DownloadScope = My.Settings.DownloadScope
 
         Manager.Style = MetroColorStyle.Orange
         If DarkModeValue = True Then
@@ -1735,68 +1734,68 @@ Public Class Main
 
 
             Dim ObjectsURLBuilder() As String = Streams.Split(New String() {"videos"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim ObjectsURLBuilder2() As String = ObjectsURLBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim ObjectsURLBuilder3() As String = WebsiteURL.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim ObjectsURL As String = ObjectsURLBuilder(0) + "objects/" + ObjectsURLBuilder4(0) + ObjectsURLBuilder2(1)
+            Dim ObjectsURLBuilder2() As String = ObjectsURLBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim ObjectsURLBuilder3() As String = WebsiteURL.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim ObjectsURL As String = ObjectsURLBuilder(0) + "objects/" + ObjectsURLBuilder4(0) + ObjectsURLBuilder2(1)
 
-                CR_EpisodeID = ObjectsURLBuilder4(0)
+            CR_EpisodeID = ObjectsURLBuilder4(0)
 
-                Debug.WriteLine(ObjectsURL)
+            Debug.WriteLine(ObjectsURL)
 
-                ObjectJson = CurlAuthNew(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
+            ObjectJson = CurlAuthNew(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
 
-                'Filter JSON esqaped characters
-                'Debug.WriteLine(Date.Now.ToString + "before:" + ObjectJson)
-                Debug.WriteLine("1288: " + ObjectJson)
-                ObjectJson = CleanJSON(ObjectJson)
-                'Debug.WriteLine(Date.Now.ToString + "after:" + ObjectJson)
+            'Filter JSON esqaped characters
+            'Debug.WriteLine(Date.Now.ToString + "before:" + ObjectJson)
+            Debug.WriteLine("1288: " + ObjectJson)
+            ObjectJson = CleanJSON(ObjectJson)
+            'Debug.WriteLine(Date.Now.ToString + "after:" + ObjectJson)
 
-                Dim ser As JObject = JObject.Parse(ObjectJson)
-                Dim data As List(Of JToken) = ser.Children().ToList
+            Dim ser As JObject = JObject.Parse(ObjectJson)
+            Dim data As List(Of JToken) = ser.Children().ToList
 
-                For Each item As JProperty In data
-                    item.CreateReader()
-                    Select Case item.Name
+            For Each item As JProperty In data
+                item.CreateReader()
+                Select Case item.Name
 
-                        Case "data" 'each record is inside the entries array
-                            For Each Entry As JObject In item.Values
-                                Try
-                                    Dim Title As String = Entry("title").ToString
-                                    CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                    Debug.WriteLine(Date.Now.ToString + " CR-Title: " + CR_title)
-                                Catch ex As Exception
-                                End Try
-                                Dim SubData As List(Of JToken) = Entry.Children().ToList
-                                For Each SubItem As JProperty In SubData
-                                    'SubItem.CreateReader()
-                                    Select Case SubItem.Name
-                                        Case "episode_metadata"
-                                            For Each SubEntry As JProperty In SubItem.Values
-                                                Select Case SubEntry.Name
-                                                    Case "series_title"
-                                                        CR_series_title = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                    Case "data" 'each record is inside the entries array
+                        For Each Entry As JObject In item.Values
+                            Try
+                                Dim Title As String = Entry("title").ToString
+                                CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                Debug.WriteLine(Date.Now.ToString + " CR-Title: " + CR_title)
+                            Catch ex As Exception
+                            End Try
+                            Dim SubData As List(Of JToken) = Entry.Children().ToList
+                            For Each SubItem As JProperty In SubData
+                                'SubItem.CreateReader()
+                                Select Case SubItem.Name
+                                    Case "episode_metadata"
+                                        For Each SubEntry As JProperty In SubItem.Values
+                                            Select Case SubEntry.Name
+                                                Case "series_title"
+                                                    CR_series_title = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                     'Case "season_title"
                                                     '    CR_season_title = SubEntry.Value.ToString
-                                                    Case "season_number"
-                                                        CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                    Case "episode_number"
-                                                        CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                    Case "episode"
-                                                        CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                    Case "duration_ms"
-                                                        CR_episode_duration_ms = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                    Case "is_dubbed"
-                                                        CR_audio_isDubbed = CBool(SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", ""))
-                                                        'Case "eligible_region"
-                                                        '    CR_Region = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                End Select
-                                            Next '
-                                    End Select
-                                Next
+                                                Case "season_number"
+                                                    CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                Case "episode_number"
+                                                    CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                Case "episode"
+                                                    CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                Case "duration_ms"
+                                                    CR_episode_duration_ms = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                Case "is_dubbed"
+                                                    CR_audio_isDubbed = CBool(SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", ""))
+                                                    'Case "eligible_region"
+                                                    '    CR_Region = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                            End Select
+                                        Next '
+                                End Select
                             Next
-                    End Select
-                Next
+                        Next
+                End Select
+            Next
 
 
 #Region "VideoJson"
@@ -1928,44 +1927,44 @@ Public Class Main
                 item.CreateReader()
                 Select Case item.Name
                     Case "streams" 'each record is inside the entries array
-                        For Each Entry As JProperty In item.Values
+                        'For Each Entry As JProperty In item.Values
 
-                            Dim JsonEntryFormat As String = Entry.Name
-                            If CBool(InStr(Entry.Name, "drm")) Or CBool(InStr(Entry.Name, "dash")) Or CBool(InStr(Entry.Name, "urls")) Then
-                                Continue For
-                            End If
-
-
+                        '    Dim JsonEntryFormat As String = Entry.Name
+                        '    If CBool(InStr(Entry.Name, "drm")) Or CBool(InStr(Entry.Name, "dash")) Or CBool(InStr(Entry.Name, "urls")) Then
+                        '        Continue For
+                        '    End If
 
 
-                            Dim SubData As List(Of JToken) = Entry.Children().ToList
-                            For Each SubItem As JObject In SubData
-                                SubItem.CreateReader()
-
-                                Dim StreamFormats As List(Of JToken) = SubItem.Children().ToList
 
 
-                                For Each Formats As JProperty In StreamFormats
-                                    Formats.CreateReader()
-                                    Dim SubLang As String = Formats.Name
-                                    If SubLang = Nothing Or SubLang = "" Then
-                                        SubLang = "null"
-                                    End If
+                        '    Dim SubData As List(Of JToken) = Entry.Children().ToList
+                        '    For Each SubItem As JObject In SubData
+                        '        SubItem.CreateReader()
 
-                                    Dim Url As String = CStr(Formats.Value("url"))
+                        '        Dim StreamFormats As List(Of JToken) = SubItem.Children().ToList
 
 
-                                    If CBool(InStr(JsonEntryFormat, "download")) Then
-                                        download_hls = New CR_Beta_Stream(SubLang, JsonEntryFormat, Url)
-                                        Continue For
-                                    End If
+                        '        For Each Formats As JProperty In StreamFormats
+                        '            Formats.CreateReader()
+                        '            Dim SubLang As String = Formats.Name
+                        '            If SubLang = Nothing Or SubLang = "" Then
+                        '                SubLang = "null"
+                        '            End If
 
-                                    CR_Streams.Add(New CR_Beta_Stream(SubLang, JsonEntryFormat, Url))
+                        '            Dim Url As String = CStr(Formats.Value("url"))
 
 
-                                Next
-                            Next
-                        Next
+                        '            If CBool(InStr(JsonEntryFormat, "download")) Then
+                        '                download_hls = New CR_Beta_Stream(SubLang, JsonEntryFormat, Url)
+                        '                Continue For
+                        '            End If
+
+                        '            CR_Streams.Add(New CR_Beta_Stream(SubLang, JsonEntryFormat, Url))
+
+
+                        '        Next
+                        '    Next
+                        'Next
                     Case "audio_locale" 'each record is inside the entries array
                         'MsgBox(item.Value)
                         If CR_audio_isDubbed = True Then
@@ -1977,9 +1976,52 @@ Public Class Main
                 End Select
             Next
 
-            If download_hls IsNot Nothing Then
-                CR_Streams.Add(download_hls)
-            End If
+            'If download_hls IsNot Nothing Then
+            '    CR_Streams.Add(download_hls)
+            'End If
+
+            Dim NewAPI_0 As String() = WebsiteURL.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim NewAPI_1 As String() = NewAPI_0(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+
+
+            Dim NewAPI As String = "https://cr-play-service.prd.crunchyrollsvc.com/v1/" + NewAPI_1(0) + "/console/switch/play"
+
+            Dim NewAPIData As String = CurlAuthNew(NewAPI, "", Loc_AuthToken)
+
+            'MsgBox(NewAPIData)
+
+            Dim VideoJSON_New As String = CleanJSON(NewAPIData)
+
+
+
+            Dim VideoJObjectNew As JObject = JObject.Parse(VideoJSON_New)
+
+            Dim VideoJSON2New As String = "[" & VideoJSON_New.Replace("}{", "},{") & "]"
+
+            Dim jsonArray As JArray = JArray.Parse(VideoJSON2New)
+
+            For Each item As JObject In jsonArray
+                Dim hardSubs As JObject = CType(item("hardSubs"), JObject)
+                For Each prop As JProperty In hardSubs.Properties()
+                    Dim Sublang As String = prop.Value("hlang").ToString
+                    Dim vUrl As String = prop.Value("url").ToString.Replace("manifest.mpd", "master.m3u8")
+                    CR_Streams.Add(New CR_Beta_Stream(Sublang, "fake_hls", vUrl))
+
+                Next
+            Next
+
+            Dim VideoDataNew As List(Of JToken) = VideoJObjectNew.Children().ToList
+            For Each item As JProperty In VideoDataNew
+                item.CreateReader()
+                Select Case item.Name
+                    Case "url"
+                        Dim vUrl As String = item.Value.ToString.Replace("manifest.mpd", "master.m3u8")
+                        CR_Streams.Add(New CR_Beta_Stream("null", "fake_hls", vUrl))
+                        'MsgBox(Title)
+                End Select
+            Next
+
+
 
             Dim CR_URI_Master As New List(Of String)
 
@@ -2037,21 +2079,21 @@ Public Class Main
 
             'MsgBox(CR_URI_Master.Count.ToString)
 
-            If CBool(InStr(CR_URI_Master(0), "master.m3u8")) Then
-                Me.Invoke(New Action(Function() As Object
-                                         Anime_Add.StatusLabel.Text = "Status: m3u8 found, looking for resolution"
-                                         Me.Text = "Status: m3u8 found, looking for resolution"
-                                         Me.Invalidate()
-                                         Return Nothing
-                                     End Function))
-            Else
-                If MessageBox.Show("The Url below failed a check, continue?" + vbNewLine + CR_URI_Master(0), "Mission failed?", MessageBoxButtons.OKCancel) = DialogResult.OK Then
+            'If CBool(InStr(CR_URI_Master(0), "master.m3u8")) Then
+            '    Me.Invoke(New Action(Function() As Object
+            '                             Anime_Add.StatusLabel.Text = "Status: m3u8 found, looking for resolution"
+            '                             Me.Text = "Status: m3u8 found, looking for resolution"
+            '                             Me.Invalidate()
+            '                             Return Nothing
+            '                         End Function))
+            'Else
+            '    If MessageBox.Show("The Url below failed a check, continue?" + vbNewLine + CR_URI_Master(0), "Mission failed?", MessageBoxButtons.OKCancel) = DialogResult.OK Then
 
-                Else
-                    Throw New System.Exception("Premium Episode")
-                End If
-                'Throw New System.Exception("Premium Episode")
-            End If
+            '    Else
+            '        Throw New System.Exception("Premium Episode")
+            '    End If
+            '    Throw New System.Exception("Premium Episode")
+            'End If
 
 #End Region
 
@@ -2364,77 +2406,18 @@ Public Class Main
 
 #Region "GetResolution"
 
-            If Reso = 42 And HybridMode = False Then
 
-                ffmpegInput = "-i " + Chr(34) + CR_URI_Master(0) + Chr(34)
 
-            ElseIf DownloadScope = DownloadScopeEnum.SubsOnly Then
+            If DownloadScope = DownloadScopeEnum.SubsOnly Then
                 ffmpegInput = "-i [Subtitles only]"
             Else
 
-                Dim str As String = Nothing
 
-                Dim NewMaster2 As String = Nothing
 
-                If NewAPIString1 = Nothing And NewAPIString2 = Nothing Or TTL < 1 Then
+                Dim str As String = CurlAuthNew(CR_URI_Master(0), "", Loc_AuthToken)
 
 
 
-                    Dim NewAPI_0 As String() = WebsiteURL.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim NewAPI_1 As String() = NewAPI_0(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                    Dim NewAPI As String = "https://cr-play-service.prd.crunchyrollsvc.com/v1/" + NewAPI_1(0) + "/web/edge/play"
-
-                    Dim NewAPIData As String = CurlAuthNew(NewAPI, Loc_CR_Cookies, Loc_AuthToken)
-
-                    'MsgBox(NewAPIData)
-
-                    Dim bif_1 As String() = NewAPIData.Split(New String() {".bif?"}, System.StringSplitOptions.RemoveEmptyEntries) 'get the policy and beyond 
-                    Dim bif_2 As String() = bif_1(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) 'but we don't need beyond | Index 0 is enough
-                    '
-                    Dim bif_0 As String() = bif_1(0).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) 'again we don't need beyond the url
-                    Dim bif_3 As String() = bif_0(bif_0.Count - 1).Split(New String() {"assets/"}, System.StringSplitOptions.RemoveEmptyEntries) 'we even don't need the asset itself
-
-                    Dim NewMaster0 As String() = CR_URI_Master(0).Split(New String() {"assets/"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                    Dim NewMaster1 As String() = NewMaster0(1).Split(New String() {"?Policy"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                    NewMaster2 = bif_3(0) + "assets/" + NewMaster1(0) + "?" + bif_2(0)
-                    NewAPIString1 = bif_3(0)
-                    NewAPIString2 = bif_2(0)
-                    TTL = 5
-                Else
-
-                    Dim NewMaster0 As String() = CR_URI_Master(0).Split(New String() {"assets/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    Dim NewMaster1 As String() = NewMaster0(1).Split(New String() {"?Policy"}, System.StringSplitOptions.RemoveEmptyEntries)
-                    NewMaster2 = NewAPIString1 + "assets/" + NewMaster1(0) + "?" + NewAPIString2
-                    TTL = TTL - 1
-                End If
-
-
-                'MsgBox(NewMaster2)
-
-                str = Curl(NewMaster2)
-
-                'For i As Integer = 0 To CR_URI_Master.Count - 1
-                '    Dim Count As String = (i + 1).ToString
-                '    Try
-                '        str = Curl(CR_URI_Master(i))
-                '        If CBool(InStr(str, "curl:")) = False Then
-                '            Exit For
-                '        End If
-                '    Catch ex As Exception
-
-                '        Me.Invoke(New Action(Function() As Object
-                '                                 Anime_Add.StatusLabel.Text = "failed accessing master.m3u8 " + Count + "/" + CR_URI_Master.Count.ToString
-                '                                 Me.Text = "failed accessing master.m3u8 " + Count + "/" + CR_URI_Master.Count.ToString
-                '                                 Me.Invalidate()
-                '                                 Return Nothing
-                '                             End Function))
-                '        Debug.WriteLine("Error accessing master #" + i.ToString + " -- " + CR_URI_Master(i))
-                '        Pause(5)
-                '    End Try
-                'Next
 
 
 
@@ -2489,7 +2472,16 @@ Public Class Main
 
                 'MsgBox(ffmpeg_url_3.Trim())
 
-                ffmpegInput = "-i " + Chr(34) + ffmpeg_url_3.Trim() + Chr(34)
+
+                Dim localm3u8 As String = CurlAuthNew(ffmpeg_url_3.Trim(), "", Loc_AuthToken)
+                Dim localfile As String = Application.StartupPath + "\" + GeräteID2() + ".m3u8"
+
+                Dim utf8WithoutBom As New System.Text.UTF8Encoding(False)
+                Using sink As New StreamWriter(localfile, False, utf8WithoutBom)
+                    sink.WriteLine(localm3u8)
+                End Using
+
+                ffmpegInput = "-allowed_extensions ALL " + "-i " + Chr(34) + localfile + Chr(34)
 
             End If
 
@@ -2733,6 +2725,7 @@ Public Class Main
             Dim L1Name As String = L1Name_Split(1).Replace("www.", "") + " | Dub : " + ConvertSubValue(CR_audio_locale, ConvertSubsEnum.DisplayText)
 
             'MsgBox(URL_DL)
+
 
 
             Me.Invoke(New Action(Function() As Object

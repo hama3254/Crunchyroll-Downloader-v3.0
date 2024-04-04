@@ -492,7 +492,7 @@ Public Class CRD_List_Item
             HybridMode = True
             HybridRunning = True
         Else
-            DownloadFFMPEG(DL_URL, DL_Pfad, Filename)
+            DownloadFFMPEG("-protocol_whitelist file,http,https,tcp,tls,crypto,data " + DL_URL, DL_Pfad, Filename)
         End If
 
     End Sub
@@ -1151,19 +1151,6 @@ Public Class CRD_List_Item
 
             Dim int As Integer = i
 
-            If CBool(InStr(InuputStreams(int), ":\")) Then
-                Continue For
-            End If
-
-            Dim InputURL As String() = InuputStreams(int).Split(New [Char]() {Chr(34)})
-            Dim InputClient As New WebClient
-            InputClient.Encoding = Encoding.UTF8
-
-            If Main.WebbrowserCookie = Nothing Then
-            Else
-                InputClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
-
-            End If
             Dim SubsFile As String = Pfad2 + GeräteID() + ".txt"
 
             If File.Exists(SubsFile) Then
@@ -1171,33 +1158,53 @@ Public Class CRD_List_Item
             End If
 
             Try
-                Dim InputData As String = Nothing
-                Try
-                    InputData = InputClient.DownloadString(InputURL(0))
-                Catch ex As Exception
-                    InputClient.Headers.Add(HttpRequestHeader.AcceptEncoding, "*")
-                    InputData = DecompressString(InputClient.DownloadData(InputURL(0)))
-                End Try
 
+                Dim InputData As String = Nothing
+                Dim InputPath As String = Nothing
+                If CBool(InStr(InuputStreams(int), ":\")) = True Then
+                    Dim InputFile As String() = InuputStreams(int).Split(New [Char]() {Chr(34)})
+                    InputPath = InputFile(0)
+                    InputData = My.Computer.FileSystem.ReadAllText(InputPath)
+
+                Else
+                    Dim InputURL As String() = InuputStreams(int).Split(New [Char]() {Chr(34)})
+                    InputPath = InputURL(0)
+                    Dim InputClient As New WebClient
+                    InputClient.Encoding = Encoding.UTF8
+
+                    If Main.WebbrowserCookie = Nothing Then
+                    Else
+                        InputClient.Headers.Add(HttpRequestHeader.Cookie, Main.WebbrowserCookie)
+
+                    End If
+
+                    Try
+                        InputData = InputClient.DownloadString(InputURL(0))
+                    Catch ex As Exception
+                        InputClient.Headers.Add(HttpRequestHeader.AcceptEncoding, "*")
+                        InputData = DecompressString(InputClient.DownloadData(InputURL(0)))
+                    End Try
+
+                End If
                 If InputData = Nothing Then
                     Throw New System.Exception("No Input Data...")
                 End If
 
-                If CBool(InStr(InputData, "RESOLUTION=")) = True And CBool(InStr(InputData, "#EXT-X-BYTERANGE:")) = False Then 'master m3u8 no fragments 
+                'If CBool(InStr(InputData, "RESOLUTION=")) = True And CBool(InStr(InputData, "#EXT-X-BYTERANGE:")) = False Then 'master m3u8 no fragments 
 
-                    Dim index_m3u8() As String = InputData.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
-                    If TargetReso = 42 Then
-                        TargetReso = 1080
-                    End If
-                    For line As Integer = 0 To index_m3u8.Count - 1
-                        If CBool(InStr(index_m3u8(line), "x" + TargetReso.ToString)) = True Then
+                '    Dim index_m3u8() As String = InputData.Split(New String() {vbLf}, System.StringSplitOptions.RemoveEmptyEntries)
+                '    If TargetReso = 42 Then
+                '        TargetReso = 1080
+                '    End If
+                '    For line As Integer = 0 To index_m3u8.Count - 1
+                '        If CBool(InStr(index_m3u8(line), "x" + TargetReso.ToString)) = True Then
 
-                            InputData = InputClient.DownloadString(GetFullUri(InputURL(0), index_m3u8(line + 1)))
-                            InputURL(0) = index_m3u8(line + 1)
-                            Exit For
-                        End If
-                    Next
-                End If
+                '            InputData = InputClient.DownloadString(GetFullUri(InputURL(0), index_m3u8(line + 1)))
+                '            InputURL(0) = index_m3u8(line + 1)
+                '            Exit For
+                '        End If
+                '    Next
+                'End If
 
                 If CBool(InStr(InputData, "#EXT-X-VERSION:3")) Or CBool(InStr(InputData, "#EXT-X-VERSION:5")) Then
 
@@ -1205,13 +1212,23 @@ Public Class CRD_List_Item
                         Pfad2 = Path.GetDirectoryName(DL_Pfad.Replace(Chr(34), "")) + "\" + NameP2.Replace(" ", "-") + "\"
                     End If
 
-                    ProcessV3(InputURL(0), InputData, Pfad2, DL_Pfad, DL_URL)
+                    ProcessV3(InputPath, InputData, Pfad2, DL_Pfad, DL_URL)
 
-                    DL_URL = DL_URL.Replace("-i " + Chr(34) + InputURL(0), "-allowed_extensions ALL " + "-i " + Chr(34) + Pfad2 + "index.m3u8")
+                    If CBool(InStr(DL_URL, "-allowed_extensions ALL ")) = True Then
+                        DL_URL = DL_URL.Replace("-allowed_extensions ALL ", "")
+                    End If
+
+                    DL_URL = DL_URL.Replace("-i " + Chr(34) + InputPath, "-allowed_extensions ALL " + "-i " + Chr(34) + Pfad2 + "index.m3u8")
 
                 ElseIf CBool(InStr(InputData, "#EXT-X-VERSION:4")) Then
-                    ProcessV4(InputURL(0), InputData, Pfad2 + "Stream-" + int.ToString + "\")
-                    DL_URL = DL_URL.Replace("-i " + Chr(34) + InputURL(0), "-allowed_extensions ALL " + "-i " + Chr(34) + Pfad2 + "Stream-" + int.ToString + "\index.m3u8")
+                    ProcessV4(InputPath, InputData, Pfad2 + "Stream-" + int.ToString + "\")
+
+
+                    If CBool(InStr(DL_URL, "-allowed_extensions ALL ")) = True Then
+                        DL_URL = DL_URL.Replace("-allowed_extensions ALL ", "")
+                    End If
+
+                    DL_URL = DL_URL.Replace("-i " + Chr(34) + InputPath, "-allowed_extensions ALL " + "-i " + Chr(34) + Pfad2 + "Stream-" + int.ToString + "\index.m3u8")
                 Else
                     'write string to file
                     If Not Directory.Exists(Path.GetDirectoryName(Pfad2)) Then
@@ -1244,11 +1261,11 @@ Public Class CRD_List_Item
 
 
                     Using sink As New StreamWriter(SubsFile, False, utf8WithoutBom2)
-                            sink.WriteLine(InputData)
-                        End Using
-                        'replace url with local file
-                        DL_URL = DL_URL.Replace(InputURL(0), SubsFile)
-                    End If
+                        sink.WriteLine(InputData)
+                    End Using
+                    'replace url with local file
+                    DL_URL = DL_URL.Replace(InputPath, SubsFile)
+                End If
             Catch ex As Exception
                 Debug.WriteLine(ex.ToString)
                 DL_URL = DL_URL_old

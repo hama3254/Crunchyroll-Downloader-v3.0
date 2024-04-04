@@ -723,7 +723,7 @@ Public Class Anime_Add
     End Sub
 
     Private Sub SubTitlesOnlyCB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DownloadScope.SelectedIndexChanged
-        'DownloadScope.SelectedIndex = DownloadScopeEnum.OldDefault
+
         Main.DownloadScope = DownloadScope.SelectedIndex
         My.Settings.DownloadScope = Main.DownloadScope
         My.Settings.Save()

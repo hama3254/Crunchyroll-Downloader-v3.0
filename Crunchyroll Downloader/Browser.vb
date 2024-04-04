@@ -20,20 +20,9 @@ Public Class Browser
     Private Sub WebView2_CoreWebView2InitializationCompleted(sender As Object, e As CoreWebView2InitializationCompletedEventArgs) Handles WebView2.CoreWebView2InitializationCompleted
         Try
             WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
-            WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.funimation.com/*", CoreWebView2WebResourceContext.All)
-            WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://cr-play-service.prd.crunchyrollsvc.com/*", CoreWebView2WebResourceContext.All)
-            '   WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
-            'cr-play-service.prd.crunchyrollsvc.com
-            'WebView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All)
             AddHandler WebView2.CoreWebView2.WebResourceResponseReceived, AddressOf ObserveResponse
             AddHandler WebView2.CoreWebView2.WebResourceRequested, AddressOf ObserveHttp
-            'WebView2.CoreWebView2.Settings.UserAgent = My.Settings.User_Agend.Replace(Chr(34), "").Replace("User-Agent: ", "")
-            '
-            'WebView2.CoreWebView2.Settings.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko"
             My.Settings.User_Agend = Chr(34) + "User-Agent: " + WebView2.CoreWebView2.Settings.UserAgent + Chr(34)
-            'My.Settings.User_Agend = Chr(34) + "User-Agent: " + "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0" + Chr(34)
-
-            'MsgBox(My.Settings.User_Agend)
 
             If WebView2.CoreWebView2.Source = "about:blank" Or WebView2.CoreWebView2.Source = Nothing Then
                 'TextBox1.Text = Main.Startseite
@@ -100,17 +89,8 @@ Public Class Browser
         End Try
     End Sub
 
-    Async Sub Startup()
-        Dim WVOptions As New CoreWebView2EnvironmentOptions()
-
-        WVOptions.AdditionalBrowserArguments = "--disable-web-security" '+ " " + "--disable-cache" + " " + "--disk-cache-size=1" + " " + "--disable-gpu" '+ '" " + "--use-fake-device-for-media-stream" "--disable-web-security" + " " + 
-        Dim Env As CoreWebView2Environment = Await CoreWebView2Environment.CreateAsync(Nothing, Nothing, WVOptions)
-        Await WebView2.EnsureCoreWebView2Async(Env)
-
-    End Sub
 
     Private Sub Browser_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Startup()
         Main.waveOutSetVolume(0, 0)
         If Me.Width > My.Computer.Screen.Bounds.Width Then
             Me.Width = My.Computer.Screen.Bounds.Width
@@ -157,9 +137,6 @@ Public Class Browser
 
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        'MsgBox(Main.CR_etp_rt)
-        'MsgBox(Main.CR_ajs_user_id)
-        'MsgBox(Main.CheckCRLogin.ToString)
 
         Try
             My.Computer.Clipboard.SetText(WebView2.CoreWebView2.Source)
@@ -291,40 +268,6 @@ Public Class Browser
                 End If
             Next
         End If
-
-        'If CBool(InStr(e.Request.Uri, "crunchyrollsvc.com")) = True And Main.CR_AuthToken = Nothing Then
-        '    Dim Headers As New List(Of KeyValuePair(Of String, String))
-        '    Headers.AddRange(e.Request.Headers.ToList)
-        '    For i As Integer = 0 To Headers.Count
-        '        Debug.WriteLine(Headers.Item(i).Key + "--" + Headers.Item(i).Value)
-        '        If CBool(InStr(Headers.Item(i).Key, "ETP-Anonymous-ID")) Then
-        '            Main.CR_AuthToken = Headers.Item(i).Value
-        '            Debug.WriteLine("ETP-Anonymous-ID: " + Main.CR_AuthToken)
-        '        End If
-        '    Next
-        'End If
-
-
-        'If CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "streams?")) Then
-        '    Dim Headers As New List(Of KeyValuePair(Of String, String))
-        '    Headers.AddRange(e.Request.Headers.ToList)
-        '    For i As Integer = 0 To Headers.Count
-        '        If CBool(InStr(Headers.Item(i).Value, "Bearer")) Then
-        '            Main.CR_AuthToken = Headers.Item(i).Value
-        '            Debug.WriteLine("Auth-Bearer: " + Main.CR_AuthToken)
-        '        End If
-        '    Next
-        'End If
-
-        '
-        '
-        'If CBool(InStr(e.Request.Uri, "9016.2bd48f1e07adf6596b2d.js")) = True Then '
-        '    Debug.WriteLine(e.Request.Uri)
-        '    'MsgBox("Found!")
-        '    e.Response = WebView2.CoreWebView2.Environment.CreateWebResourceResponse(StringToStream(File.ReadAllText(Application.StartupPath + "\WebInterface\9016.2bd48f1e07adf6596b2d.js"), Encoding.UTF8), 200, "Not found", "content-type: application/javascript")
-
-
-        'End If
 
 
     End Sub

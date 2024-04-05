@@ -1343,13 +1343,14 @@ Public Class CRD_List_Item
 
         Dim exepath As String = Application.StartupPath + "\ffmpeg.exe"
         Dim startinfo As New System.Diagnostics.ProcessStartInfo
-        Dim cmd As String = "-user_agent " + My.Settings.User_Agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
-        'Dim cmd As String = "-headers " + My.Settings.User_Agend + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+        'Dim cmd As String = "-user_agent " + My.Settings.User_Agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " " + DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
 
-        If CBool(InStr(DLCommand, ":\")) And CBool(InStr(DLCommand, "-i " + Chr(34) + "https://")) Then
-            Dim Replacement As String = "-user_agent " + My.Settings.User_Agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " -i " + Chr(34) + "https://"
-            cmd = DLCommand.Replace("-i " + Chr(34) + "https://", Replacement) + " " + DL_Pfad
-        End If
+        Dim cmd As String = DLCommand + " " + DL_Pfad 'start ffmpeg with command strFFCMD string
+
+        'If CBool(InStr(DLCommand, ":\")) And CBool(InStr(DLCommand, "-i " + Chr(34) + "https://")) Then
+        '    Dim Replacement As String = "-user_agent " + My.Settings.User_Agend.Replace("User-Agent: ", "") + " -headers " + Chr(34) + "ACCEPT-ENCODING: *" + Chr(34) + " -i " + Chr(34) + "https://"
+        '    cmd = DLCommand.Replace("-i " + Chr(34) + "https://", Replacement) + " " + DL_Pfad
+        'End If
 
         LogText.Add(Date.Now.ToString + " " + cmd)
         If Debug2 = True Then

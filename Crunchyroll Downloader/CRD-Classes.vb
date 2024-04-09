@@ -87,15 +87,15 @@ End Class
 Public Class CR_MediaVersion
 
     Public AudioLang As String
-    Public media_guid As String
+    Public guid As String
 
-    Public Sub New(ByVal AudioLang As String, ByVal media_guid As String)
+    Public Sub New(ByVal AudioLang As String, ByVal guid As String)
         Me.AudioLang = AudioLang
-        Me.media_guid = media_guid
+        Me.guid = guid
     End Sub
     'Me.audioLanguage,
     Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}", Me.AudioLang, Me.media_guid)
+        Return String.Format("{0}, {1}", Me.AudioLang, Me.guid)
     End Function
 
 End Class

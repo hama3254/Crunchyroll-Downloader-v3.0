@@ -43,7 +43,6 @@ Partial Class Main
         Me.SaveModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveThumbnailAsImageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToggleDebugModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Funimation_Token = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckCRBetaTokenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Timer3OffToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ThreadCount = New System.Windows.Forms.ToolStripMenuItem()
@@ -161,7 +160,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.SaveModeToolStripMenuItem, Me.SaveThumbnailAsImageToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.Funimation_Token, Me.CheckCRBetaTokenToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.DummyItemToolStripMenuItem, Me.AudioOnlyQualityToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.SaveModeToolStripMenuItem, Me.SaveThumbnailAsImageToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.DummyItemToolStripMenuItem, Me.AudioOnlyQualityToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -184,11 +183,6 @@ Partial Class Main
         '
         Me.ToggleDebugModeToolStripMenuItem.Name = "ToggleDebugModeToolStripMenuItem"
         resources.ApplyResources(Me.ToggleDebugModeToolStripMenuItem, "ToggleDebugModeToolStripMenuItem")
-        '
-        'Funimation_Token
-        '
-        Me.Funimation_Token.Name = "Funimation_Token"
-        resources.ApplyResources(Me.Funimation_Token, "Funimation_Token")
         '
         'CheckCRBetaTokenToolStripMenuItem
         '
@@ -287,7 +281,6 @@ Partial Class Main
     Friend WithEvents Btn_Close As Button
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
     Friend WithEvents ToggleDebugModeToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents Funimation_Token As ToolStripMenuItem
     Friend WithEvents CheckCRBetaTokenToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Timer3OffToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ThreadCount As ToolStripMenuItem

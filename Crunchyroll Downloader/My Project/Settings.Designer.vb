@@ -80,18 +80,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("None")>  _
-        Public Property Fun_Sub() As String
-            Get
-                Return CType(Me("Fun_Sub"),String)
-            End Get
-            Set
-                Me("Fun_Sub") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute(" -c copy -c:a copy -bsf:a aac_adtstoasc")>  _
         Public Property ffmpeg_command() As String
             Get
@@ -111,42 +99,6 @@ Namespace My
             End Get
             Set
                 Me("AddedSubs") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Disabled")>  _
-        Public Property FunimationDub() As String
-            Get
-                Return CType(Me("FunimationDub"),String)
-            End Get
-            Set
-                Me("FunimationDub") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Disabled")>  _
-        Public Property FunimationHardsub() As String
-            Get
-                Return CType(Me("FunimationHardsub"),String)
-            End Get
-            Set
-                Me("FunimationHardsub") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Disabled")>  _
-        Public Property DefaultSubFunimation() As String
-            Get
-                Return CType(Me("DefaultSubFunimation"),String)
-            End Get
-            Set
-                Me("DefaultSubFunimation") = value
             End Set
         End Property
         
@@ -267,30 +219,6 @@ Namespace My
             End Get
             Set
                 Me("Dark_Mode") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Funimation_srt() As Boolean
-            Get
-                Return CType(Me("Funimation_srt"),Boolean)
-            End Get
-            Set
-                Me("Funimation_srt") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Funimation_vtt() As Boolean
-            Get
-                Return CType(Me("Funimation_vtt"),Boolean)
-            End Get
-            Set
-                Me("Funimation_vtt") = value
             End Set
         End Property
         
@@ -447,18 +375,6 @@ Namespace My
             End Get
             Set
                 Me("LeadingZero") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property Funimation_Bitrate() As Integer
-            Get
-                Return CType(Me("Funimation_Bitrate"),Integer)
-            End Get
-            Set
-                Me("Funimation_Bitrate") = value
             End Set
         End Property
         

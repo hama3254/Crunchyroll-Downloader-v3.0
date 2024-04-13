@@ -197,7 +197,7 @@ Public Class Anime_Add
 
                     Main.ItemConstructor(NameKomplett, Namep1, Namep2, Reso, HardSub, ThumbnialURL, URL_DL, Chr(34) + Pfad_DL + Chr(34), Service)
 
-                ElseIf CBool(InStr(textBox1.Text, "crunchyroll.com")) Or CBool(InStr(textBox1.Text, "funimation.com")) Then
+                ElseIf CBool(InStr(textBox1.Text, "crunchyroll.com")) Then
 
 
                     'If StatusLabel.Text = "Status: waiting for episode selection" Then
@@ -237,41 +237,6 @@ Public Class Anime_Add
 
                     Else
 
-                        If CBool(InStr(textBox1.Text, "funimation.com")) Then
-
-                            Main.WebbrowserURL = textBox1.Text
-
-                            If CBool(InStr(textBox1.Text, "funimation.com/v/")) Then
-                                Dim Episode0() As String = textBox1.Text.Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim Episode() As String = Episode0(0).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                                Dim v1JsonUrl As String = "https://d33et77evd9bgg.cloudfront.net/data/v1/episodes/" + Episode(Episode.Length - 1) + ".json"
-                                'MsgBox(v1JsonUrl)
-                                Dim v1Json As String = Nothing
-                                Try
-                                    Using client As New WebClient()
-                                        client.Encoding = System.Text.Encoding.UTF8
-                                        client.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
-                                        v1Json = client.DownloadString(v1JsonUrl)
-                                    End Using
-                                    Main.WebbrowserURL = textBox1.Text
-                                    Main.GetFunimationNewJS_VideoProxy(Nothing, v1Json)
-                                    Exit Sub
-                                Catch ex As Exception
-                                    Debug.WriteLine("error- getting v1Json data for the bypass")
-                                    Debug.WriteLine(ex.ToString)
-                                End Try
-                            ElseIf CBool(InStr(textBox1.Text, "funimation.com/shows/")) Then
-                                Main.LoadingUrl = textBox1.Text
-                                Main.LoadedUrls.Clear()
-                                Main.b = False
-                                Debug.WriteLine("loading funimation show url: " + Date.Now.ToString)
-                                StatusLabel.Text = "Status: loading funimation...."
-                                'Main.LoadBrowser()
-                                Browser.WebView2.CoreWebView2.Navigate(textBox1.Text)
-                                Exit Sub
-                            End If
-
-                        End If
 
                         If Main.Grapp_RDY = True Then
 
@@ -309,19 +274,7 @@ Public Class Anime_Add
                 btn_dl.Text = "Download"
                 btn_dl.BackgroundImage = My.Resources.main_button_download_default
                 StatusLabel.Text = "Status: idle"
-            ElseIf CBool(InStr(Main.WebbrowserURL, "funimation.com")) = True Then
 
-
-
-                'btn_dl.BackgroundImage = My.Resources.add_mass_running_cancel
-                btn_dl.Text = "Cancel"
-                Mass_DL_Cancel = True
-                bt_Cancel_mass.Enabled = False
-                bt_Cancel_mass.Visible = False
-                Main.DownloadFunimationJS_Seasons()
-                CB_EP1.Enabled = False
-                CB_EP0.Enabled = False
-                CB_Season.Enabled = False
 
             ElseIf CBool(InStr(Main.WebbrowserURL, "crunchyroll.com")) = True Then
 
@@ -345,47 +298,6 @@ Public Class Anime_Add
 
         btn_dl.Enabled = True
     End Sub
-
-    Public Sub ProcessFunimationJS(ByVal InputURL As String)
-
-
-        Dim FunUri As String = Nothing
-        If CBool(InStr(InputURL, "?")) Then
-            Dim ClearUri As String() = InputURL.Split(New String() {"?"}, System.StringSplitOptions.RemoveEmptyEntries)
-            FunUri = ClearUri(0)
-        Else
-            FunUri = InputURL
-        End If
-        Dim ShowPath As String = Nothing
-        Dim EpisodePath As String = Nothing
-        Dim ShowPath1 As String() = FunUri.Split(New String() {"/shows/"}, System.StringSplitOptions.RemoveEmptyEntries)
-        'If CBool(InStr(ShowPath1(1), "/") Then
-        Dim ShowPath2 As String() = ShowPath1(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-        If ShowPath2.Count > 1 Then
-
-            ShowPath = ShowPath2(0).Replace("/", "")
-            EpisodePath = ShowPath2(1).Replace("/", "")
-        Else
-            ShowPath = ShowPath1(1).Replace("/", "")
-        End If
-        Main.FunimationShowPath = ShowPath + "/"
-        Debug.WriteLine(ShowPath)
-        Debug.WriteLine(Main.FunimationAPIRegion)
-        If EpisodePath = Nothing Then 'overview site
-            Main.GetFunimationJS_Seasons("https://title-api.prd.funimationsvc.com/v2/shows/" + ShowPath + Main.FunimationAPIRegion)
-
-        Else 'single episode
-
-
-        End If
-
-        Dim FunimationCC As String() = ShowPath1(0).Split(New String() {"funimation.com"}, System.StringSplitOptions.RemoveEmptyEntries)
-        If FunimationCC.Count > 1 Then
-            Main.FunimationRegion = FunimationCC(1).Replace("/", "")
-        End If
-    End Sub
-
 
 
 
@@ -562,82 +474,10 @@ Public Class Anime_Add
             FillCREpisodes(EpisodeJson)
 
 
-        ElseIf Main.WebbrowserURL = "https://funimation.com/js" Then
-            CB_EP0.Items.Clear()
-            CB_EP1.Items.Clear()
-            CB_EP0.Text = Nothing
-            CB_EP1.Text = Nothing
-            Dim ContentID As String = Nothing
-
-            For i As Integer = 0 To Main.FunimtaionSeasonList.Count - 1
-                If CB_Season.Text = Main.FunimtaionSeasonList.Item(i).Title Then
-                    ContentID = Main.FunimtaionSeasonList.Item(i).ID
-                    Exit For
-                End If
-            Next
-
-            If ContentID = Nothing Then
-                MsgBox("error during season selection")
-                Exit Sub
-            End If
-
-            Dim BaseUrl() As String = Main.FunimationSeasonAPIUrl.Split(New String() {"/shows/"}, System.StringSplitOptions.RemoveEmptyEntries)
-
-
-
-            Dim EpisodeJsonURL As String = BaseUrl(0) + "/seasons/" + ContentID + ".json"
-            Dim EpisodeJson As String = Nothing
-            Debug.WriteLine(EpisodeJsonURL)
-
-            Try
-                Using client As New WebClient()
-                    client.Encoding = System.Text.Encoding.UTF8
-                    client.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
-                    EpisodeJson = client.DownloadString(EpisodeJsonURL)
-                End Using
-            Catch ex As Exception
-                Debug.WriteLine("error- getting EpisodeJson data")
-                Debug.WriteLine(ex.ToString)
-                Main.FunimationJsonBrowser = "EpisodeJson"
-                Main.LoadBrowser(EpisodeJsonURL)
-                Exit Sub
-            End Try
-
-            FillFunimationEpisodes(EpisodeJson)
-
-
-            If CB_EP0.Items.Count > 0 Then
-                CB_EP0.SelectedIndex = 0
-                CB_EP1.SelectedIndex = CB_EP1.Items.Count - 1
-            End If
-
 
 
         End If
     End Sub
-
-
-    Public Sub FillFunimationEpisodes(ByVal EpisodeJson As String)
-
-        Main.FunimationEpisodeJSON = EpisodeJson
-        CB_EP0.Enabled = True
-        CB_EP1.Enabled = True
-
-        Dim EpisodeSplit() As String = EpisodeJson.Split(New String() {Chr(34) + "episodeNumber" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-        'EpisodeJson.Split(New String() {Chr(34) + "episodeNumber" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-        Debug.WriteLine(EpisodeSplit.Count.ToString)
-        For i As Integer = 1 To EpisodeSplit.Count - 1
-            Dim EpisodeSplit2() As String = EpisodeSplit(i).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            CB_EP0.Items.Add("Episode " + EpisodeSplit2(0))
-            CB_EP1.Items.Add("Episode " + EpisodeSplit2(0))
-        Next
-        Main.WebbrowserURL = "https://funimation.com/js"
-    End Sub
-
-
-
-
-
 
 
     Private Sub TextBox2_Click(sender As Object, e As EventArgs) Handles TextBox2.Click

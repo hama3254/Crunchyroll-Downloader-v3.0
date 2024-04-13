@@ -205,43 +205,6 @@ Public Class Browser
             End If
 
 
-        ElseIf CBool(InStr(Main.LoadingUrl, "funimation.com")) Then
-            If CBool(InStr(e.Request.Uri, "?deviceType=web")) Then
-                'Debug.WriteLine(e.Request.Uri)
-                Dim parms As String() = e.Request.Uri.Split(New String() {"?deviceType="}, System.StringSplitOptions.RemoveEmptyEntries)
-                Main.FunimationDeviceRegion = "?deviceType=" + parms(1)
-
-            End If
-            If CBool(InStr(e.Request.Uri, "https://title-api.prd.funimationsvc.com")) Then
-                Debug.WriteLine("Funimtaion: " + e.Request.Uri)
-                If (Me.InvokeRequired) Then
-                    Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request))
-                    Exit Sub
-                Else
-                    Main.LoadedUrls.Add(e.Request)
-                    Exit Sub
-                End If
-            ElseIf CBool(InStr(e.Request.Uri, "/data/v2/shows/")) Then
-                Debug.WriteLine("Funimtaion: " + e.Request.Uri)
-                If (Me.InvokeRequired) Then
-                    Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request))
-                    Exit Sub
-                Else
-                    Main.LoadedUrls.Add(e.Request)
-                    Exit Sub
-                End If
-            ElseIf CBool(InStr(e.Request.Uri, "/data/v1/episodes/")) Then
-                Debug.WriteLine("Funimtaion: " + e.Request.Uri)
-                If (Me.InvokeRequired) Then
-                    Me.Invoke(Sub() Main.LoadedUrls.Add(e.Request))
-                    Exit Sub
-                Else
-                    Main.LoadedUrls.Add(e.Request)
-                    Exit Sub
-                End If
-            End If
-
-
 
         End If
 

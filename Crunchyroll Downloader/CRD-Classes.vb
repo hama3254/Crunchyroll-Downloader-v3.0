@@ -15,56 +15,7 @@
 
 End Class
 
-#Region "funimation"
 
-
-Public Class FunimationOverview
-    Public ID As String
-    Public Title As String
-    Public Slug As String
-    Public Sub New(ByVal Slug As String, ByVal ID As String, ByVal Title As String)
-        Me.ID = ID
-        Me.Title = Title
-        Me.Slug = Slug
-    End Sub
-
-    Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}, {2}", Me.Slug, Me.ID, Me.Title)
-    End Function
-End Class
-
-Public Class FunimationSubs
-    Public LangugageCode As String
-    Public Url As String
-    Public Format As String
-    Public Sub New(ByVal LangugageCode As String, ByVal Format As String, ByVal Url As String)
-        Me.Url = Url
-        Me.LangugageCode = LangugageCode
-        Me.Format = Format
-    End Sub
-
-    Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}, {2}", Me.LangugageCode, Me.Format, Me.Url)
-    End Function
-End Class
-
-Public Class FunimationStream
-    Public audioLanguage As String
-    Public Url As String
-    Public version As String
-    Public Primary As Boolean
-    Public Sub New(ByVal audioLanguage As String, ByVal version As String, ByVal Url As String, ByVal Primary As Boolean)
-        Me.Primary = Primary
-        Me.Url = Url
-        Me.audioLanguage = audioLanguage
-        Me.version = version
-    End Sub
-
-    Public Overrides Function ToString() As String
-        Return String.Format("{0}, {1}, {2}", Me.audioLanguage, Me.version, Me.Url)
-    End Function
-End Class
-#End Region
 #Region "CR"
 Public Class CR_Beta_Stream
     'Public audioLanguage As String

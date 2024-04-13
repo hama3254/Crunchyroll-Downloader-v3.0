@@ -44,8 +44,6 @@ Public Class Einstellungen
         TempTB.Text = Main.TempFolder
         LeadingZeroDD.SelectedIndex = Main.LeadingZero
 
-        Bitrate_Funi.SelectedIndex = Main.Funimation_Bitrate
-
         CB_Ignore.SelectedIndex = Main.IgnoreSeason
 
         CB_HideSF.SelectedIndex = Main.HideFLInt
@@ -106,16 +104,7 @@ Public Class Einstellungen
 
 #End Region
 
-        For i As Integer = 0 To Main.SubFunimation.Count - 1
-            If Main.SubFunimation(i) = "en" Then
-                CB_fun_eng.Checked = True
-            ElseIf Main.SubFunimation(i) = "es" Then
-                CB_fun_es.Checked = True
-            ElseIf Main.SubFunimation(i) = "pt" Then
-                CB_fun_ptbr.Checked = True
-            End If
 
-        Next
 
         Me.Location = New Point(CInt(Main.Location.X + Main.Width / 2 - Me.Width / 2), CInt(Main.Location.Y + Main.Height / 2 - Me.Height / 2))
         Try
@@ -132,54 +121,14 @@ Public Class Einstellungen
             DD_DLMode.SelectedIndex = 0
         End If
 
-        If Main.Funimation_srt = True Then
-            CB_srt.Checked = True
-        Else
-            CB_srt.Checked = False
-        End If
-
-        If Main.Funimation_vtt = True Then
-            CB_vtt.Checked = True
-        Else
-            CB_vtt.Checked = False
-        End If
 
 
-        If Main.HardSubFunimation = "en" Then
-            CB_Fun_HardSubs.SelectedItem = "English"
-
-        ElseIf Main.HardSubFunimation = "pt" Then
-            CB_Fun_HardSubs.SelectedItem = "Português (Brasil)"
-
-        ElseIf Main.HardSubFunimation = "es" Then
-            CB_Fun_HardSubs.SelectedItem = "Español (LA)"
-
-        Else
-            CB_Fun_HardSubs.SelectedItem = "Disabled"
-            'FunimationHardsub.Checked = True
-        End If
         If Main.VideoFormat = ".mkv" Then
             CB_Format.SelectedItem = "MKV"
         ElseIf Main.VideoFormat = ".aac" Then
             CB_Format.SelectedItem = "AAC (Audio only)"
         Else
             CB_Format.SelectedItem = "MP4"
-        End If
-
-        If Main.DubFunimation = "english" Then
-            Fun_Dub_Over.SelectedItem = "english"
-
-        ElseIf Main.DubFunimation = "japanese" Then
-            Fun_Dub_Over.SelectedItem = "japanese"
-
-        ElseIf Main.DubFunimation = "portuguese(Brazil)" Then
-            Fun_Dub_Over.SelectedItem = "portuguese(Brazil)"
-
-        ElseIf Main.DubFunimation = "spanish(Mexico)" Then
-            Fun_Dub_Over.SelectedItem = "spanish(Mexico)"
-
-        Else
-            Fun_Dub_Over.SelectedItem = "Disabled"
         End If
 
 
@@ -199,8 +148,8 @@ Public Class Einstellungen
             A480p.Checked = True
         ElseIf Main.Reso = 360 Then
             A360p.Checked = True
-        ElseIf Main.Reso = 42 Then
-            AAuto.Checked = True
+        ElseIf Main.Reso = 240 Then
+            A240p.Checked = True
         End If
 
         CB_CR_Harsubs.Items.Clear()
@@ -291,18 +240,6 @@ Public Class Einstellungen
         End If
 
 
-        If Main.DefaultSubFunimation = "en" Then
-            FunSubDef.SelectedItem = "English"
-        ElseIf Main.DefaultSubFunimation = "pt" Then
-            FunSubDef.SelectedItem = "Português (Brasil)"
-        ElseIf Main.DefaultSubFunimation = "es" Then
-            FunSubDef.SelectedItem = "Español (LA)"
-        Else
-            FunSubDef.SelectedItem = "[Disabled]"
-            'FunimationHardsub.Checked = True
-        End If
-
-
 
         If Main.DefaultSubCR = "de-DE" Then
             CR_SoftSubDefault.SelectedItem = "Deutsch"
@@ -358,9 +295,6 @@ Public Class Einstellungen
         My.Settings.LeadingZero = LeadingZeroDD.SelectedIndex
         My.Settings.OverrideDub = CB_OverrideDub.Checked
         My.Settings.Captions = CB_Cap.Checked
-        Main.Funimation_Bitrate = Bitrate_Funi.SelectedIndex
-        My.Settings.Funimation_Bitrate = Bitrate_Funi.SelectedIndex
-
 
         If http_support.Text = "add-on support disabled" Then
             My.Settings.ServerPort = 0
@@ -461,8 +395,8 @@ Public Class Einstellungen
         ElseIf A480p.Checked Then
             Main.Reso = 480
             My.Settings.Reso = Main.Reso
-        ElseIf AAuto.Checked Then
-            Main.Reso = 42
+        ElseIf A240p.Checked Then
+            Main.Reso = 240
             My.Settings.Reso = Main.Reso
         End If
 
@@ -568,101 +502,6 @@ Public Class Einstellungen
         End If
 
         My.Settings.Keep_Cache = Main.KeepCache
-
-
-#Region "funimation"
-
-
-
-
-        Main.DubFunimation = Fun_Dub_Over.SelectedItem.ToString
-
-
-        My.Settings.FunimationDub = Main.DubFunimation
-
-
-        'If CB_Fun_HardSubs.SelectedItem.ToString = "Disabled" Then
-        '    Main.HardSubFunimation = "Disabled"
-        '    rk.SetValue("FunimationHardsub", "Disabled", RegistryValueKind.String)
-
-        'ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "English" Then
-        '    Main.HardSubFunimation = "en"
-        '    rk.SetValue("FunimationHardsub", "en", RegistryValueKind.String)
-
-        'ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "Português (Brasil)" Then
-        '    Main.HardSubFunimation = "pt"
-        '    rk.SetValue("FunimationHardsub", "pt", RegistryValueKind.String)
-
-        'ElseIf CB_Fun_HardSubs.SelectedItem.ToString = "Español (LA)" Then
-        '    Main.HardSubFunimation = "es"
-        '    rk.SetValue("FunimationHardsub", "es", RegistryValueKind.String)
-
-        'End If
-
-        If FunSubDef.SelectedItem.ToString = "[Disabled]" Then
-            Main.DefaultSubFunimation = "Disabled"
-            My.Settings.DefaultSubFunimation = Main.DefaultSubFunimation
-        ElseIf FunSubDef.SelectedItem.ToString = "English" Then
-            Main.DefaultSubFunimation = "en"
-            My.Settings.DefaultSubFunimation = Main.DefaultSubFunimation
-        ElseIf FunSubDef.SelectedItem.ToString = "Português (Brasil)" Then
-            Main.DefaultSubFunimation = "pt"
-            My.Settings.DefaultSubFunimation = Main.DefaultSubFunimation
-        ElseIf FunSubDef.SelectedItem.ToString = "Español (LA)" Then
-            Main.DefaultSubFunimation = "es"
-            My.Settings.DefaultSubFunimation = Main.DefaultSubFunimation
-        End If
-
-        Main.SubFunimation.Clear()
-        If CB_fun_eng.Checked = True Then
-            Main.SubFunimation.Add("en")
-        End If
-
-        If CB_fun_es.Checked = True Then
-            Main.SubFunimation.Add("es")
-
-        End If
-
-        If CB_fun_ptbr.Checked = True Then
-            Main.SubFunimation.Add("pt")
-        End If
-
-        If Main.SubFunimation.Count > 0 And CB_vtt.Checked = False And CB_srt.Checked = False Then
-            CB_vtt.Checked = True
-        End If
-
-
-        If CB_srt.Checked = True Then
-            Main.Funimation_srt = True
-            My.Settings.Funimation_srt = True
-        Else
-            Main.Funimation_srt = False
-            My.Settings.Funimation_srt = False
-        End If
-        If CB_vtt.Checked = True Then
-            Main.Funimation_vtt = True
-            My.Settings.Funimation_vtt = True
-        Else
-            Main.Funimation_vtt = False
-            My.Settings.Funimation_vtt = False
-        End If
-
-
-        Dim FunimationSaveString As String = Nothing
-        For ii As Integer = 0 To Main.SubFunimation.Count - 1
-            If FunimationSaveString = Nothing Then
-                FunimationSaveString = Main.SubFunimation(ii)
-            Else
-                FunimationSaveString = FunimationSaveString + "," + Main.SubFunimation(ii)
-            End If
-        Next
-        If FunimationSaveString = Nothing Then
-            FunimationSaveString = "None"
-        End If
-        My.Settings.Fun_Sub = FunimationSaveString
-
-#End Region
-
 
 
 
@@ -789,7 +628,7 @@ Public Class Einstellungen
     End Sub
 
 
-    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles CB_CR_Harsubs.DrawItem, CB_Fun_HardSubs.DrawItem, Fun_Dub_Over.DrawItem
+    Private Sub ComboBox1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles CB_CR_Harsubs.DrawItem
         Dim CB As ComboBox = CType(sender, ComboBox)
         CB.BackColor = Color.White
         If e.Index >= 0 Then
@@ -802,52 +641,6 @@ Public Class Einstellungen
             End Using
         End If
     End Sub
-
-
-
-
-
-
-    Private Sub AAuto_Click(sender As Object, e As EventArgs) Handles AAuto.Click
-        If CB_Merge.SelectedIndex > 0 Then
-            If AAuto.Checked = True Then
-                If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-
-                Else
-                    AAuto.Checked = False
-                    A360p.Checked = True
-                End If
-            End If
-            'ElseIf HybridMode_CB.Checked = True Then
-            '    If AAuto.Checked = True Then
-            '        MsgBox("Resolution '[Auto]' and 'Hybride Mode' does not work together", MsgBoxStyle.Information)
-            '        AAuto.Checked = False
-            '        A1080p.Checked = True
-            '    End If
-        End If
-    End Sub
-
-    Private Sub MergeMP4_Click(sender As Object, e As EventArgs)
-        If CB_Merge.SelectedIndex > 0 Then
-            If AAuto.Checked = True Then
-                If MessageBox.Show("Resolution '[Auto]' and merge the subtitle with the video file will download all resolutions!" + vbNewLine + "Press 'Yes' to enable it anyway", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-
-                Else
-                    CB_Merge.SelectedIndex = 0
-                End If
-            End If
-        End If
-    End Sub
-
-
-
-
-
-
-
-
-
-
 
 
     Private Sub ListC1_Click(sender As Object, e As EventArgs) Handles copy.Click, nv_h264.Click, nv_hevc.Click, nv_AV1.Click, CPU_h264.Click, CPU_h265.Click, CPU_AV1.Click, AMD_h264.Click, AMD_hevc.Click, AMD_AV1.Click, Intel_h264.Click, Intel_hevc.Click, Intel_AV1.Click
@@ -892,21 +685,6 @@ Public Class Einstellungen
     End Sub
 
 
-
-    Private Sub Label7_Click(sender As Object, e As EventArgs)
-        Process.Start("https://learn.microsoft.com/de-de/microsoft-edge/webview2/")
-    End Sub
-
-    Private Sub Label3_Click(sender As Object, e As EventArgs)
-        Process.Start("https://www.ffmpeg.org/about.html")
-    End Sub
-
-    Private Sub Label9_Click(sender As Object, e As EventArgs)
-        Process.Start("https://github.com/hama3254/metroframework-modern-ui")
-    End Sub
-
-
-
     Sub GroupBoxColor(ByVal color As Color)
         NumericUpDown1.ForeColor = color
         NumericUpDown2.ForeColor = color
@@ -925,15 +703,8 @@ Public Class Einstellungen
         GroupBox4.ForeColor = color
         GroupBox5.ForeColor = color
         GroupBox6.ForeColor = color
-        GroupBox7.ForeColor = color
-        GroupBox8.ForeColor = color
-        GroupBox9.ForeColor = color
-        GroupBox10.ForeColor = color
-        GroupBox11.ForeColor = color
         GroupBox12.ForeColor = color
-        GroupBox13.ForeColor = color
         GroupBox14.ForeColor = color
-        GroupBox15.ForeColor = color
         GroupBox16.ForeColor = color
         GroupBox17.ForeColor = color
         GroupBox18.ForeColor = color
@@ -973,12 +744,6 @@ Public Class Einstellungen
     End Sub
 
 
-    Private Sub Server_Click(sender As Object, e As EventArgs)
-        'If Server.Checked = True Then
-        '    MsgBox("This feature requires a restart of the downloader", MsgBoxStyle.Information)
-        'End If
-    End Sub
-
     Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
         Try
             Dim client0 As New WebClient
@@ -1012,60 +777,6 @@ Public Class Einstellungen
     End Sub
 
 
-
-
-    Private Sub CB_Fun_HardSubs_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CB_Fun_HardSubs.SelectedIndexChanged
-        If CB_Fun_HardSubs.SelectedIndex = 0 Then
-        Else
-            If Main.HardSubFunimation = "Disabled" Then
-                If FFMPEG_CommandP1.Text = "-c copy" Then
-                    If MessageBox.Show("Funimation hard subtitle are post-processed." + vbNewLine + "This cost a lot of performance and it should not more than one download run at the time!", "Prepare for unforeseen consequences.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-
-                    Else
-                        CB_Fun_HardSubs.SelectedIndex = 0
-                    End If
-                End If
-            End If
-
-        End If
-
-        'MetroMessageBox.Show(Me, "Test", "Test Box", MessageBoxButtons.YesNo, MessageBoxIcon.None, 150)
-        'MetroMessageBox.Show(Me, "Test", "Test Box", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2, 150, MetroThemeStyle.Dark)
-
-    End Sub
-
-    Private Sub CB_fun_eng_CheckedChanged(sender As Object, e As EventArgs) Handles CB_fun_eng.CheckedChanged
-        If CB_fun_eng.Checked = True Then
-            FunSubDef.Items.Add("English")
-        Else
-            FunSubDef.Items.Remove("English")
-            If FunSubDef.Text = "English" Then
-                FunSubDef.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
-
-    Private Sub CB_fun_es_CheckedChanged(sender As Object, e As EventArgs) Handles CB_fun_es.CheckedChanged
-        If CB_fun_es.Checked = True Then
-            FunSubDef.Items.Add("Español (LA)")
-        Else
-            FunSubDef.Items.Remove("Español (LA)")
-            If FunSubDef.Text = "Español (LA)" Then
-                FunSubDef.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
-
-    Private Sub CB_fun_ptbr_CheckedChanged(sender As Object, e As EventArgs) Handles CB_fun_ptbr.CheckedChanged
-        If CB_fun_ptbr.Checked = True Then
-            FunSubDef.Items.Add("Português (Brasil)")
-        Else
-            FunSubDef.Items.Remove("Português (Brasil)")
-            If FunSubDef.Text = "Português (Brasil)" Then
-                FunSubDef.SelectedItem = "[Disabled]"
-            End If
-        End If
-    End Sub
 
 
     Private Sub MetroLink1_Click(sender As Object, e As EventArgs)
@@ -1255,16 +966,6 @@ Public Class Einstellungen
             TempVTTStyle = CB_vttStyle.Checked
         End If
     End Sub
-
-
-
-
-    'Private Sub CB_CR_Audio_Click(sender As Object, e As EventArgs) Handles CB_CR_Audio.Click
-    '    Dim Popup As New CheckBoxComboBox
-    '    Popup.Text = "CR Dub selection"
-    '    Popup.Show()
-    'End Sub
-
 
 
 

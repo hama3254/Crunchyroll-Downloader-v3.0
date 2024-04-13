@@ -8,23 +8,11 @@
     <Setting Name="Pfad" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Fun_Sub" Type="System.String" Scope="User">
-      <Value Profile="(Default)">None</Value>
-    </Setting>
     <Setting Name="ffmpeg_command" Type="System.String" Scope="User">
       <Value Profile="(Default)"> -c copy -c:a copy -bsf:a aac_adtstoasc</Value>
     </Setting>
     <Setting Name="AddedSubs" Type="System.String" Scope="User">
       <Value Profile="(Default)">None</Value>
-    </Setting>
-    <Setting Name="FunimationDub" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Disabled</Value>
-    </Setting>
-    <Setting Name="FunimationHardsub" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Disabled</Value>
-    </Setting>
-    <Setting Name="DefaultSubFunimation" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Disabled</Value>
     </Setting>
     <Setting Name="SubFolder_Value" Type="System.String" Scope="User">
       <Value Profile="(Default)">[ ignore subfolder ]</Value>
@@ -54,12 +42,6 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Dark_Mode" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="Funimation_srt" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="Funimation_vtt" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="QueueMode" Type="System.Boolean" Scope="User">
@@ -99,9 +81,6 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="LeadingZero" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="Funimation_Bitrate" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="ServerPort" Type="System.Int32" Scope="User">

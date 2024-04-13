@@ -507,12 +507,6 @@
   <data name="&gt;&gt;ToggleDebugModeToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Funimation_Token.Name" xml:space="preserve">
-    <value>Funimation_Token</value>
-  </data>
-  <data name="&gt;&gt;Funimation_Token.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;CheckCRBetaTokenToolStripMenuItem.Name" xml:space="preserve">
     <value>CheckCRBetaTokenToolStripMenuItem</value>
   </data>
@@ -590,12 +584,6 @@
   </data>
   <data name="ToggleDebugModeToolStripMenuItem.Text" xml:space="preserve">
     <value>Toggle Debug Mode</value>
-  </data>
-  <data name="Funimation_Token.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 22</value>
-  </data>
-  <data name="Funimation_Token.Text" xml:space="preserve">
-    <value>Check Funimation Token</value>
   </data>
   <data name="CheckCRBetaTokenToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>233, 22</value>

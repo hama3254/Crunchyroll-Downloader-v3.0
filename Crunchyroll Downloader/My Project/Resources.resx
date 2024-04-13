@@ -130,23 +130,14 @@
   <data name="main_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Funimation_Split_2" xml:space="preserve">
-    <value>"&gt;</value>
-  </data>
   <data name="main_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Funimation_Split_1" xml:space="preserve">
-    <value>&lt;a class="trackVideo ng-binding" href="</value>
   </data>
   <data name="add_mass_cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\add_mass_cancel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="about_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\about_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Funimation_Subtitle_String2" xml:space="preserve">
-    <value>", "kind": "subtitle", "type": "Full", "language": "</value>
   </data>
   <data name="htmlTitlel" xml:space="preserve">
     <value>&lt;a class="main_titel"&gt;Placeholder&lt;/a&gt;
@@ -162,9 +153,6 @@
 &lt;hr&gt;
 &lt;address&gt;Server at Crunchyroll Downloader Port 8080&lt;/address&gt;
 &lt;/body&gt;&lt;/html&gt;</value>
-  </data>
-  <data name="Funimation_Player_ID" xml:space="preserve">
-    <value>src="/player/</value>
   </data>
   <data name="Post_error_Top" xml:space="preserve">
     <value>&lt;html&gt;
@@ -216,9 +204,6 @@
   <data name="main_pause_play" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-pause-play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Funimation_Subtitle_String" xml:space="preserve">
-    <value>", "kind": "subtitle", "type": "CC", "language": "</value>
-  </data>
   <data name="htmlEnd" xml:space="preserve">
     <value>&lt;script&gt;
 
@@ -241,9 +226,6 @@ setInterval(function loadXMLDoc() {
       &lt;/div&gt;
     &lt;/body&gt;
 &lt;/html&gt;</value>
-  </data>
-  <data name="Funimation_src_string" xml:space="preserve">
-    <value>"src":</value>
   </data>
   <data name="ass_template" xml:space="preserve">
     <value>[Script Info]
@@ -372,9 +354,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="crdSettings_Button_SafeExit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\crdSettings_Button_SafeExit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Funimation_thumbnail" xml:space="preserve">
-    <value>&lt;meta property="og:image" content="</value>
-  </data>
   <data name="main_pause_play_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-pause-play-hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -432,9 +411,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="main_setting_invert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-setting_invert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Funimation_subs_src" xml:space="preserve">
-    <value>{"src": "</value>
-  </data>
   <data name="main_add_invert_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-add_invert_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -452,12 +428,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   </data>
   <data name="main_mini_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-mini_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Funimation_Subtitle_String3" xml:space="preserve">
-    <value>", "kind": "subtitle", "type": "full", "language": "</value>
-  </data>
-  <data name="Funimation_Player_ID_2" xml:space="preserve">
-    <value>src="https://www.funimation.com/player/</value>
   </data>
   <data name="main_close_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-close_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

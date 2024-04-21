@@ -80,7 +80,7 @@ Module GetData
         Dim cmd As String = ""
         If Main.Curl_insecure = True Then
             cmd = "--insecure "
-        End If
+        End If '-fsSLm 
         cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Settings.User_Agend.Replace("User-Agent: ", "") + Cookies + Auth + Post + " " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
         'Debug.WriteLine("CurlPost: " + cmd)

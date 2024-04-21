@@ -3099,7 +3099,7 @@ Public Class Main
 #End Region
             Dim Auth As String = " -H " + Chr(34) + "Authorization: " + CrBetaBasic + Chr(34)
             'Dim Post As String = " -d " + Chr(34) + "grant_type=etp_rt_cookie" + Chr(34) + " -X POST"
-            Dim Post As String = " -d " + Chr(34) + "username=" + Mail + "&password=" + PW + "&grant_type=password&scope=offline_access" + Chr(34) + " -X POST"
+            Dim Post As String = " -d " + Chr(34) + "username=" + HtmlEncode(Mail) + "&password=" + HtmlEncode(PW) + "&grant_type=password&scope=offline_access" + Chr(34) + " -X POST -H " + Chr(34) + "Content-Type: application/x-www-form-urlencoded; charset=utf-8" + Chr(34)
 
             '
             Dim CRBetaBearer As String = "Bearer "
@@ -3487,6 +3487,10 @@ Public Class Main
                                  Return Nothing
                              End Function))
 
+    End Sub
+
+    Private Sub LoginFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoginFormToolStripMenuItem.Click
+        LoginForm.ShowDialog()
     End Sub
 
 

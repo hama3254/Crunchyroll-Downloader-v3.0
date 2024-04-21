@@ -116,6 +116,10 @@ Module GetData
 
         If CBool(InStr(CurlOutput, "curl:")) = True And CBool(InStr(CurlOutput, "400")) = True Then
             Return CurlOutput
+        ElseIf CBool(InStr(CurlError, "curl:")) = True And CBool(InStr(CurlError, "401")) = True Then
+            Return CurlError
+        ElseIf CBool(InStr(CurlOutput, "curl:")) = True And CBool(InStr(CurlOutput, "401")) = True Then
+            Return CurlOutput
         ElseIf CBool(InStr(CurlError, "curl:")) = True And CBool(InStr(CurlError, "400")) = True Then
             Return CurlError
         ElseIf CBool(InStr(CurlError, "curl:")) Then

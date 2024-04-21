@@ -3107,6 +3107,11 @@ Public Class Main
 
             Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
 
+            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "401")) = True Then
+                MsgBox("CR reported error 401, this may mean incorrect login detail, please try again.", MsgBoxStyle.Exclamation, "CR-Error 401")
+                LoginForm.ShowDialog()
+                Exit Sub
+            End If
 
             If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
                 Debug.WriteLine("Post error!, 400")

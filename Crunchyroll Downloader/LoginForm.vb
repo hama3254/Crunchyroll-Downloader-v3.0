@@ -22,6 +22,18 @@ Public Class LoginForm
 
         Me.Location = New Point(CInt(Main.Location.X + Main.Width / 2 - Me.Width / 2), CInt(Main.Location.Y + Main.Height / 2 - Me.Height / 2))
         'MsgBox(CInt(Main.Location.X + Main.Width / 2 - Me.Width / 2).ToString)
+
+        If My.Settings.Mail = "na" Then
+        Else
+            Mail.Text = My.Settings.Mail
+            Save.Checked = True
+        End If
+        If My.Settings.PW = "na" Then
+        Else
+            PW.Text = My.Settings.PW
+            'PW.UseSystemPasswordChar = False
+            PW.PasswordChar = Nothing
+        End If
     End Sub
 
     Private Sub Btn_Save_Click(sender As Object, e As EventArgs) Handles Btn_Save.Click

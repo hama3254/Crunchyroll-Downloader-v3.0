@@ -24,13 +24,13 @@ Partial Class LoginForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Btn_Save = New System.Windows.Forms.Button()
         Me.Save = New MetroFramework.Controls.MetroCheckBox()
         Me.IssueLink = New MetroFramework.Controls.MetroLink()
         Me.PW = New MetroFramework.Controls.MetroTextBox()
         Me.Mail = New MetroFramework.Controls.MetroTextBox()
         Me.StatusLabel = New MetroFramework.Controls.MetroLabel()
         Me.Delay = New System.Windows.Forms.Timer(Me.components)
-        Me.Btn_Save = New System.Windows.Forms.Button()
         Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -48,6 +48,22 @@ Partial Class LoginForm
         Me.GroupBox3.Size = New System.Drawing.Size(480, 308)
         Me.GroupBox3.TabIndex = 38
         Me.GroupBox3.TabStop = False
+        '
+        'Btn_Save
+        '
+        Me.Btn_Save.BackColor = System.Drawing.Color.Transparent
+        Me.Btn_Save.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.Btn_Save.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Btn_Save.FlatAppearance.BorderSize = 0
+        Me.Btn_Save.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
+        Me.Btn_Save.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Btn_Save.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.DialogNotFound_Submit
+        Me.Btn_Save.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Btn_Save.Location = New System.Drawing.Point(165, 246)
+        Me.Btn_Save.Name = "Btn_Save"
+        Me.Btn_Save.Size = New System.Drawing.Size(150, 40)
+        Me.Btn_Save.TabIndex = 3
+        Me.Btn_Save.UseVisualStyleBackColor = False
         '
         'Save
         '
@@ -89,7 +105,7 @@ Partial Class LoginForm
         Me.PW.Location = New System.Drawing.Point(165, 140)
         Me.PW.MaxLength = 32767
         Me.PW.Name = "PW"
-        Me.PW.PasswordChar = Global.Microsoft.VisualBasic.ChrW(9679)
+        Me.PW.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.PW.ScrollBars = System.Windows.Forms.ScrollBars.None
         Me.PW.SelectedText = ""
         Me.PW.SelectionLength = 0
@@ -99,7 +115,6 @@ Partial Class LoginForm
         Me.PW.TabIndex = 1
         Me.PW.Text = "Password"
         Me.PW.UseSelectable = True
-        Me.PW.UseSystemPasswordChar = True
         Me.PW.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
         Me.PW.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
@@ -154,22 +169,6 @@ Partial Class LoginForm
         'Delay
         '
         Me.Delay.Interval = 2000
-        '
-        'Btn_Save
-        '
-        Me.Btn_Save.BackColor = System.Drawing.Color.Transparent
-        Me.Btn_Save.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
-        Me.Btn_Save.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Btn_Save.FlatAppearance.BorderSize = 0
-        Me.Btn_Save.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
-        Me.Btn_Save.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Btn_Save.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.DialogNotFound_Submit
-        Me.Btn_Save.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Btn_Save.Location = New System.Drawing.Point(165, 246)
-        Me.Btn_Save.Name = "Btn_Save"
-        Me.Btn_Save.Size = New System.Drawing.Size(150, 40)
-        Me.Btn_Save.TabIndex = 3
-        Me.Btn_Save.UseVisualStyleBackColor = False
         '
         'LoginForm
         '

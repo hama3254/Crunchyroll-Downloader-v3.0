@@ -3099,7 +3099,7 @@ Public Class Main
 #End Region
             Dim Auth As String = " -H " + Chr(34) + "Authorization: " + CrBetaBasic + Chr(34)
             'Dim Post As String = " -d " + Chr(34) + "grant_type=etp_rt_cookie" + Chr(34) + " -X POST"
-            Dim Post As String = " -d " + Chr(34) + "username=" + HtmlEncode(Mail) + "&password=" + HtmlEncode(PW) + "&grant_type=password&scope=offline_access" + Chr(34) + " -X POST -H " + Chr(34) + "Content-Type: application/x-www-form-urlencoded; charset=utf-8" + Chr(34)
+            Dim Post As String = " -d " + Chr(34) + "username=" + UrlEncode(Mail) + "&password=" + UrlEncode(PW) + "&grant_type=password&scope=offline_access" + Chr(34) + " -X POST -H " + Chr(34) + "Content-Type: application/x-www-form-urlencoded; charset=utf-8" + Chr(34)
 
             '
             Dim CRBetaBearer As String = "Bearer "

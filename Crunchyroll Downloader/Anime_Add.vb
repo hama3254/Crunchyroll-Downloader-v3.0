@@ -44,6 +44,16 @@ Public Class Anime_Add
 
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        If Main.Mail = Nothing And My.Settings.Mail = "na" Then
+            'Dim Login As Form = LoginForm
+            'Login.StartPosition = 0
+            'Login.Location = New Point(CInt(Main.Location.X + Main.Width / 2 - Me.Width / 2), CInt(Main.Location.Y + Main.Height / 2 - Me.Height / 2))
+            LoginForm.ShowDialog()
+        ElseIf Main.Mail = Nothing Then
+            Main.Mail = My.Settings.Mail
+            Main.PW = My.Settings.PW
+        End If
+
         DownloadScope.SelectedIndex = Main.DownloadScope
 
         Manager.Owner = Me

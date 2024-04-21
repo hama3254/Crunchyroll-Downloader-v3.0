@@ -42,7 +42,10 @@ Public Class Main
     'Public CrBetaMassParameters As String = Nothing
     'Public CrBetaMassBaseURL As String = Nothing
 
-    Public CrBetaBasic As String = Nothing
+
+    Public Mail As String = Nothing
+    Public PW As String = Nothing
+    Public CrBetaBasic As String = "Basic dC1rZGdwMmg4YzNqdWI4Zm4wZnE6eWZMRGZNZnJZdktYaDRKWFMxTEVJMmNDcXUxdjVXYW4="
     Public locale As String = Nothing
     Public Url_locale As String = Nothing
     'Public CrBetaObjects As String = Nothing
@@ -505,7 +508,7 @@ Public Class Main
         Reso = My.Settings.Reso
 
         If Reso = 42 Then
-            MsgBox("Resolution [Auto] is no longer supportet." + vbNewLine + "Please select a valid Resolution inside the settings.", MsgBoxStyle.Information)
+            MsgBox("Resolution [Auto] is no longer supported." + vbNewLine + "Please select a valid Resolution inside the settings.", MsgBoxStyle.Information)
         End If
 
         LeadingZero = My.Settings.LeadingZero
@@ -3095,8 +3098,10 @@ Public Class Main
 
 #End Region
             Dim Auth As String = " -H " + Chr(34) + "Authorization: " + CrBetaBasic + Chr(34)
-            Dim Post As String = " -d " + Chr(34) + "grant_type=etp_rt_cookie" + Chr(34) + " -X POST"
+            'Dim Post As String = " -d " + Chr(34) + "grant_type=etp_rt_cookie" + Chr(34) + " -X POST"
+            Dim Post As String = " -d " + Chr(34) + "username=" + Mail + "&password=" + PW + "&grant_type=password&scope=offline_access" + Chr(34) + " -X POST"
 
+            '
             Dim CRBetaBearer As String = "Bearer "
 
 
@@ -3105,6 +3110,8 @@ Public Class Main
 
             If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
                 Debug.WriteLine("Post error!, 400")
+                Post = " -d " + Chr(34) + "grant_type=client_id&scope=offline_access" + Chr(34) + " -X POST"
+
                 Debug.WriteLine(Post.Replace("etp_rt_cookie", "client_id"))
                 v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"), "add_main-4499")
 

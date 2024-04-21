@@ -137,5 +137,11 @@
     <Setting Name="FixCRStream" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="Mail" Type="System.String" Scope="User">
+      <Value Profile="(Default)">na</Value>
+    </Setting>
+    <Setting Name="PW" Type="System.String" Scope="User">
+      <Value Profile="(Default)">na</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

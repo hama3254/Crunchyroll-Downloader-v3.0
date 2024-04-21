@@ -594,6 +594,30 @@ Namespace My
                 Me("FixCRStream") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("na")>  _
+        Public Property Mail() As String
+            Get
+                Return CType(Me("Mail"),String)
+            End Get
+            Set
+                Me("Mail") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("na")>  _
+        Public Property PW() As String
+            Get
+                Return CType(Me("PW"),String)
+            End Get
+            Set
+                Me("PW") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

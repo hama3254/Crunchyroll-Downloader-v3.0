@@ -151,6 +151,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CRD-Classes.vb" />
+    <Compile Include="LoginForm.Designer.vb">
+      <DependentUpon>LoginForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoginForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ffmpeg_option.Designer.vb">
       <DependentUpon>ffmpeg_option.vb</DependentUpon>
     </Compile>
@@ -234,6 +240,9 @@
     <Compile Include="Subfolder.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ffmpeg_option.resx">
       <DependentUpon>ffmpeg_option.vb</DependentUpon>
     </EmbeddedResource>

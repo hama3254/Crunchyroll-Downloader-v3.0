@@ -20,8 +20,8 @@ Public Class Browser
     Private Sub WebView2_CoreWebView2InitializationCompleted(sender As Object, e As CoreWebView2InitializationCompletedEventArgs) Handles WebView2.CoreWebView2InitializationCompleted
         Try
             WebView2.CoreWebView2.AddWebResourceRequestedFilter("https://www.crunchyroll.com/*", CoreWebView2WebResourceContext.All)
-            AddHandler WebView2.CoreWebView2.WebResourceResponseReceived, AddressOf ObserveResponse
-            AddHandler WebView2.CoreWebView2.WebResourceRequested, AddressOf ObserveHttp
+            'AddHandler WebView2.CoreWebView2.WebResourceResponseReceived, AddressOf ObserveResponse
+            'AddHandler WebView2.CoreWebView2.WebResourceRequested, AddressOf ObserveHttp 'this is not the data we are looking for (anymore :( )
             My.Settings.User_Agend = Chr(34) + "User-Agent: " + WebView2.CoreWebView2.Settings.UserAgent + Chr(34)
 
             If WebView2.CoreWebView2.Source = "about:blank" Or WebView2.CoreWebView2.Source = Nothing Then
@@ -160,60 +160,6 @@ Public Class Browser
             MsgBox("Error in URL", MsgBoxStyle.Critical)
         End Try
     End Sub
-
-
-    Private Async Sub ObserveResponse(ByVal sender As Object, ByVal e As CoreWebView2WebResourceResponseReceivedEventArgs)
-
-
-        If CBool(InStr(Main.LoadingUrl, "crunchyroll.com")) Then
-
-
-
-            If CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "v1/token")) And Main.CR_v1Token = "Get" Then
-                Debug.WriteLine("Crunchyroll-v1_token: " + e.Request.Uri)
-                Dim Content As Stream = Await e.Response.GetContentAsync
-                Dim ContentString As String = Nothing
-                Dim reader As New StreamReader(Content)
-                ContentString = reader.ReadToEnd
-
-                Dim Loc_CR_Cookies = " -H " + Chr(34) + Main.CR_Cookies + Chr(34)
-                Dim Token() As String = ContentString.Split(New String() {Chr(34) + "access_token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim Token2() As String = Token(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-
-                Dim Auth As String = "Bearer " + Token2(0)
-                Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + Auth + Chr(34)
-                Main.ProcessLoading(Main.LoadingUrl, Auth2, Loc_CR_Cookies, 0)
-                Main.CR_v1Token = ""
-                Exit Sub
-
-
-            ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "seasons?preferred_audio_language=")) And CBool(InStr(Main.LoadingUrl, "/series/")) Then
-                Debug.WriteLine("Crunchyroll-Season: " + e.Request.Uri)
-                Main.LoadedUrls.Add(e.Request)
-
-                Exit Sub
-                'ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "content/v2/cms/objects/")) Then
-                '    Debug.WriteLine("Crunchyroll-objects added to cache: " + e.Request.Uri)
-                '    Main.LoadedUrls.Add(e.Request)
-
-                '    Exit Sub
-                'ElseIf CBool(InStr(e.Request.Uri, "crunchyroll.com/")) And CBool(InStr(e.Request.Uri, "seasons?preferred_audio_language=")) And CBool(InStr(Main.LoadingUrl, "/series/")) Then
-                '    Debug.WriteLine("Crunchyroll-objects added to cache: " + e.Request.Uri)
-                '    Main.LoadedUrls.Add(e.Request)
-
-                '    Exit Sub
-            End If
-
-
-
-        End If
-
-    End Sub
-
-
-
-
-
 
 
     Private Sub ObserveHttp(ByVal sender As Object, ByVal e As CoreWebView2WebResourceRequestedEventArgs) 'Handles RequestResource.GetUrl

@@ -35,6 +35,25 @@ Public Class CR_Beta_Stream
 
 End Class
 
+
+Public Class CR_Tokens
+
+    Public access_token As String
+    Public refresh_token As String
+    Public expires_Unix As Integer
+
+    Public Sub New(ByVal access_token As String, ByVal refresh_token As String, ByVal expires_Unix As Integer)
+        Me.access_token = access_token
+        Me.refresh_token = refresh_token
+        Me.expires_Unix = expires_Unix
+    End Sub
+
+    Public Overrides Function ToString() As String
+        Return String.Format("{0}, {1}, {2}", Me.access_token, Me.refresh_token, Me.expires_Unix.ToString)
+    End Function
+
+End Class
+
 Public Class CR_MediaVersion
 
     Public AudioLang As String

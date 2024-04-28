@@ -40,7 +40,6 @@ Partial Class Main
         Me.Btn_Close = New System.Windows.Forms.Button()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.QueueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveThumbnailAsImageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToggleDebugModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckCRBetaTokenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -50,9 +49,9 @@ Partial Class Main
         Me.UrlJsonsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DummyItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AudioOnlyQualityToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoginFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Btn_Queue = New System.Windows.Forms.Button()
-        Me.LoginFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -161,7 +160,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.SaveModeToolStripMenuItem, Me.SaveThumbnailAsImageToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.DummyItemToolStripMenuItem, Me.AudioOnlyQualityToolStripMenuItem, Me.LoginFormToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.SaveThumbnailAsImageToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.DummyItemToolStripMenuItem, Me.AudioOnlyQualityToolStripMenuItem, Me.LoginFormToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -169,11 +168,6 @@ Partial Class Main
         '
         Me.QueueToolStripMenuItem.Name = "QueueToolStripMenuItem"
         resources.ApplyResources(Me.QueueToolStripMenuItem, "QueueToolStripMenuItem")
-        '
-        'SaveModeToolStripMenuItem
-        '
-        Me.SaveModeToolStripMenuItem.Name = "SaveModeToolStripMenuItem"
-        resources.ApplyResources(Me.SaveModeToolStripMenuItem, "SaveModeToolStripMenuItem")
         '
         'SaveThumbnailAsImageToolStripMenuItem
         '
@@ -220,6 +214,11 @@ Partial Class Main
         Me.AudioOnlyQualityToolStripMenuItem.Name = "AudioOnlyQualityToolStripMenuItem"
         resources.ApplyResources(Me.AudioOnlyQualityToolStripMenuItem, "AudioOnlyQualityToolStripMenuItem")
         '
+        'LoginFormToolStripMenuItem
+        '
+        Me.LoginFormToolStripMenuItem.Name = "LoginFormToolStripMenuItem"
+        resources.ApplyResources(Me.LoginFormToolStripMenuItem, "LoginFormToolStripMenuItem")
+        '
         'Panel1
         '
         resources.ApplyResources(Me.Panel1, "Panel1")
@@ -235,11 +234,6 @@ Partial Class Main
         Me.Btn_Queue.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_queue
         Me.Btn_Queue.Name = "Btn_Queue"
         Me.Btn_Queue.UseVisualStyleBackColor = False
-        '
-        'LoginFormToolStripMenuItem
-        '
-        Me.LoginFormToolStripMenuItem.Name = "LoginFormToolStripMenuItem"
-        resources.ApplyResources(Me.LoginFormToolStripMenuItem, "LoginFormToolStripMenuItem")
         '
         'Main
         '
@@ -297,7 +291,6 @@ Partial Class Main
     Friend WithEvents QueueToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Btn_Queue As Button
     Friend WithEvents SaveThumbnailAsImageToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents SaveModeToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AudioOnlyQualityToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents LoginFormToolStripMenuItem As ToolStripMenuItem
 End Class

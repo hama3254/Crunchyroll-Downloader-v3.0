@@ -31,10 +31,15 @@ Public Class CRD_List_Item
     Dim TempFolder As String = Nothing
     Dim DownloadPfad As String = Nothing
     Dim ThumbnailSource As String = Nothing
+
     Dim Failed As Boolean = False
     Dim FailedCount As Integer = 0
+
+    Dim FailedKey As Boolean = False
+
     Dim HistoryDL_URL As String
     Dim HistoryDL_Pfad As String
+
     Dim HistoryFilename As String
     Dim Retry As Boolean = False
     Dim HybridMode As Boolean = False
@@ -301,6 +306,32 @@ Public Class CRD_List_Item
                 StatusRunning = False
                 bt_pause.BackgroundImage = My.Resources.main_pause_play
 
+            ElseIf Failed = True And FailedKey = True Then
+                If Not Directory.Exists(Path.GetDirectoryName(HybridModePath)) Then
+                    ' Nein! Jetzt erstellen...
+                    Try
+                        Directory.Delete(Path.GetDirectoryName(HybridModePath))
+                    Catch ex As Exception
+                        Debug.WriteLine("folder issue - delete")
+                        Exit Sub
+                    End Try
+                End If
+                Dim Evaluator = New Thread(Sub() DownloadHybrid(HistoryDL_URL, HistoryDL_Pfad, HistoryFilename))
+                Evaluator.Start()
+                HybridMode = True
+                HybridRunning = True
+                StatusRunning = True
+                Failed = False
+
+                LastDate = Date.Now
+                LastSize = 0
+                LastDataRate1 = 0
+                LastDataRate2 = 0
+                LastDataRate3 = 0
+                FailedSegments.Clear()
+                LogText.Clear()
+                ZeitGesamtInteger = 0
+
             ElseIf Failed = True Then
                 Dim Result As DialogResult = MessageBox.Show("The hybride mode has failed to download a fragment." + vbNewLine + "Press 'Retry' to retry the fragment or 'Ignore' to continue.", "Download Error", MessageBoxButtons.AbortRetryIgnore) '= DialogResult.Ignore Then
 
@@ -445,8 +476,6 @@ Public Class CRD_List_Item
 #Region "Download + Update UI"
 
     Public Sub StartDownload(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String, ByVal DownloadHybridMode As Boolean, ByVal TempFolder As String)
-        'MsgBox(DL_URL)
-
 
 
         Me.StyleManager = MetroStyleManager1
@@ -1073,7 +1102,16 @@ Public Class CRD_List_Item
 
             Catch ex2 As Exception
                 FailedCount = FailedCount + 1
-                If Item_ErrorTolerance = 0 Then
+                If CBool(InStr(DL_Pfad, ".key")) Then
+                    Failed = True
+                    FailedKey = True
+                    StatusRunning = False
+                    bt_pause.BackgroundImage = My.Resources.main_pause_play
+                    Me.Invoke(New Action(Function() As Object
+                                             Label_percent.Text = "fatal! Failed to download 'encryption.key'"
+                                             Return Nothing
+                                         End Function))
+                ElseIf Item_ErrorTolerance = 0 Then
 
                 ElseIf FailedCount >= Item_ErrorTolerance Then
                     FailedSegments.Add(New FailedSegemtsWithURL(DL_Pfad, DL_URL))
@@ -1085,6 +1123,7 @@ Public Class CRD_List_Item
                                              Label_percent.Text = "Missing segment detected, retry or resume with the play button"
                                              Return Nothing
                                          End Function))
+
                 End If
 
 
@@ -1099,6 +1138,7 @@ Public Class CRD_List_Item
 #End Region
 
     Public Function DownloadHybrid(ByVal DL_URL As String, ByVal DL_Pfad As String, ByVal Filename As String) As String
+        'MsgBox(DL_URL)
         LogText.Add(Date.Now.ToString + " " + DL_URL)
 
         Dim Folder As String = GeräteID()
@@ -1147,7 +1187,7 @@ Public Class CRD_List_Item
                                  Return Nothing
                              End Function))
 
-        For i As Integer = 0 To InuputStreams.Count - 1
+        For i As Integer = 1 To InuputStreams.Count - 1
 
             Dim int As Integer = i
 

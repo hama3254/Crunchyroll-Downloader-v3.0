@@ -15,8 +15,7 @@ Imports System.Runtime.InteropServices
 Imports MyProvider.MyProvider
 Imports Microsoft.Web.WebView2.Core
 Imports Crunchyroll_Downloader.CRD_Classes
-
-
+Imports System.Runtime.CompilerServices
 
 Public Class Main
     Inherits MetroForm
@@ -25,32 +24,21 @@ Public Class Main
     Dim HTML As String = Nothing
     Public CR_Cookies As String = "Cookie: "
 
-    Public CheckCRLogin As Boolean = True
-
-    Public CR_AuthToken As String = ""
-    Public CR_v1Token As String = ""
-
-
-    'Public GetBetaSeasonsRetry As Boolean = False
-    'Public GetBetaSeasonSingle As Boolean = False
-
     Public CR_MassSeasons As New List(Of CR_Seasons)
     Public CR_MassEpisodes As New List(Of CR_Seasons)
 
-    'Public CrBetaMass As String = Nothing
-    'Public CrBetaMassEpisodes As String = Nothing
-    'Public CrBetaMassParameters As String = Nothing
-    'Public CrBetaMassBaseURL As String = Nothing
 
 
     Public Mail As String = Nothing
     Public PW As String = Nothing
     Public CrBetaBasic As String = "Basic dC1rZGdwMmg4YzNqdWI4Zm4wZnE6eWZMRGZNZnJZdktYaDRKWFMxTEVJMmNDcXUxdjVXYW4="
+
+    Public CR_Token As CR_Tokens = New CR_Tokens(Nothing, "", 0)
+
+
     Public locale As String = Nothing
     Public Url_locale As String = Nothing
-    'Public CrBetaObjects As String = Nothing
-    'Public CrBetaStreams As String = Nothing
-    'Public CrBetaStreamsUrl As String = Nothing
+
     Public LoadingUrl As String = ""
     Public LoadedUrls As New List(Of CoreWebView2WebResourceRequest)
 
@@ -61,10 +49,8 @@ Public Class Main
     Public KodiNaming As Boolean = False
     Public ErrorTolerance As Integer = 0
     Public CookieList As New List(Of CoreWebView2Cookie)
-    'Public liList As New List(Of String)
     Public HTMLString As String = My.Resources.Startuphtml
     Public ListBoxList As New List(Of String)
-    'Public ItemList As New List(Of CRD_List_Item)
     Public RunningDownloads As Integer = 0
     Public UseQueue As Boolean = False
     Public StartServer As Integer = 0
@@ -76,17 +62,12 @@ Public Class Main
     Public LogBrowserData As Boolean = False
     Public Thumbnail As String = Nothing
     Public MergeSubs As Boolean = False
-    'Public IgnoreS1 As Boolean = False
     Public IgnoreSeason As Integer = 0
     Public HideFLInt As Integer = 0
     Public KeepCache As Boolean = False
-    'Public SubsOnly As Boolean = False
     Public DownloadScope As Integer = 0
     Public VideoFormat As String = ".mp4"
     Public MergeSubsFormat As String = "mov_text"
-    'Public LoginDialog As Boolean = False
-    'Public NonCR_Timeout As Integer = 5
-    'Public NonCR_URL As String = Nothing
     Public DlSoftSubsRDY As Boolean = True
     Public DialogTaskString As String
     Dim NewAPIString1 As String
@@ -1073,93 +1054,92 @@ Public Class Main
 
 
                 Dim ObjectsURLBuilder() As String = Streams.Split(New String() {"videos"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ObjectsURLBuilder2() As String = ObjectsURLBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ObjectsURLBuilder3() As String = WebsiteURL.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim ObjectsURL As String = ObjectsURLBuilder(0) + "objects/" + ObjectsURLBuilder4(0) + ObjectsURLBuilder2(1)
+                Dim ObjectsURLBuilder2() As String = ObjectsURLBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ObjectsURLBuilder3() As String = WebsiteURL.Split(New String() {"watch/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim ObjectsURL As String = ObjectsURLBuilder(0) + "objects/" + ObjectsURLBuilder4(0) + ObjectsURLBuilder2(1)
 
-            CR_EpisodeID = ObjectsURLBuilder4(0)
+                CR_EpisodeID = ObjectsURLBuilder4(0)
 
-            Debug.WriteLine(ObjectsURL)
+                'Debug.WriteLine(ObjectsURL)
 
-            ObjectJson = CurlAuthNew(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
+                ObjectJson = CurlAuthNew(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
 
-            'Filter JSON esqaped characters
-            'Debug.WriteLine(Date.Now.ToString + "before:" + ObjectJson)
-            Debug.WriteLine("1750: " + ObjectJson)
-            ObjectJson = CleanJSON(ObjectJson)
-            'Debug.WriteLine(Date.Now.ToString + "after:" + ObjectJson)
+                'Filter JSON esqaped characters
+                'Debug.WriteLine(Date.Now.ToString + "before:" + ObjectJson)
+                'Debug.WriteLine("1750: " + ObjectJson)
+                ObjectJson = CleanJSON(ObjectJson)
+                'Debug.WriteLine(Date.Now.ToString + "after:" + ObjectJson)
 
-            Dim DubsAvalible As New List(Of CR_MediaVersion)
+                Dim DubsAvalible As New List(Of CR_MediaVersion)
 
-            Dim ser As JObject = JObject.Parse(ObjectJson)
-            Dim data As List(Of JToken) = ser.Children().ToList
+                Dim ser As JObject = JObject.Parse(ObjectJson)
+                Dim data As List(Of JToken) = ser.Children().ToList
 
-            For Each item As JProperty In data
-                item.CreateReader()
-                Select Case item.Name
+                For Each item As JProperty In data
+                    item.CreateReader()
+                    Select Case item.Name
 
-                    Case "data" 'each record is inside the entries array
-                        For Each Entry As JObject In item.Values
-                            Try
-                                Dim Title As String = Entry("title").ToString
-                                CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                Debug.WriteLine(Date.Now.ToString + " CR-Title: " + CR_title)
-                            Catch ex As Exception
-                            End Try
-                            Dim SubData As List(Of JToken) = Entry.Children().ToList
-                            For Each SubItem As JProperty In SubData
-                                'SubItem.CreateReader()
-                                Select Case SubItem.Name
-                                    Case "episode_metadata"
-                                        For Each SubEntry As JProperty In SubItem.Values
-                                            Select Case SubEntry.Name
-                                                Case "series_title"
-                                                    CR_series_title = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                        Case "data" 'each record is inside the entries array
+                            For Each Entry As JObject In item.Values
+                                Try
+                                    Dim Title As String = Entry("title").ToString
+                                    CR_title = String.Join(" ", Title.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd("."c).Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                    Debug.WriteLine(Date.Now.ToString + " CR-Title: " + CR_title)
+                                Catch ex As Exception
+                                End Try
+                                Dim SubData As List(Of JToken) = Entry.Children().ToList
+                                For Each SubItem As JProperty In SubData
+                                    'SubItem.CreateReader()
+                                    Select Case SubItem.Name
+                                        Case "episode_metadata"
+                                            For Each SubEntry As JProperty In SubItem.Values
+                                                Select Case SubEntry.Name
+                                                    Case "series_title"
+                                                        CR_series_title = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                     'Case "season_title"
                                                     '    CR_season_title = SubEntry.Value.ToString
-                                                Case "season_number"
-                                                    CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                Case "episode_number"
-                                                    CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                Case "episode"
-                                                    CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                Case "duration_ms"
-                                                    CR_episode_duration_ms = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                Case "is_dubbed"
-                                                    CR_audio_isDubbed = CBool(SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", ""))
-                                                Case "audio_locale"
-                                                    CR_audio_locale = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
-                                                Case "versions" 'each record is inside the entries array
-                                                    For Each VersionEntry As JObject In item.Values
+                                                    Case "season_number"
+                                                        CR_season_number = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                    Case "episode_number"
+                                                        CR_episode2 = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                    Case "episode"
+                                                        CR_episode = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                    Case "duration_ms"
+                                                        CR_episode_duration_ms = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                    Case "is_dubbed"
+                                                        CR_audio_isDubbed = CBool(SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", ""))
+                                                    Case "audio_locale"
+                                                        CR_audio_locale = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
+                                                    Case "versions" 'each record is inside the entries array
+                                                        For Each VersionEntry As JObject In item.Values
 
-                                                        Dim VideoSubData As List(Of JToken) = VersionEntry.Children().ToList
-                                                        Dim guid As String = Nothing
-                                                        Dim audio_locale As String = Nothing
+                                                            Dim VideoSubData As List(Of JToken) = VersionEntry.Children().ToList
+                                                            Dim guid As String = Nothing
+                                                            Dim audio_locale As String = Nothing
 
-                                                        For Each VideoSubItem As JProperty In VideoSubData
-                                                            Select Case VideoSubItem.Name
-                                                                Case "audio_locale"
-                                                                    audio_locale = VideoSubItem.Value.ToString
-                                                                Case "guid"
-                                                                    guid = VideoSubItem.Value.ToString
-                                                                    'Debug.WriteLine(guid)
-                                                            End Select
+                                                            For Each VideoSubItem As JProperty In VideoSubData
+                                                                Select Case VideoSubItem.Name
+                                                                    Case "audio_locale"
+                                                                        audio_locale = VideoSubItem.Value.ToString
+                                                                    Case "guid"
+                                                                        guid = VideoSubItem.Value.ToString
+                                                                        'Debug.WriteLine(guid)
+                                                                End Select
+                                                            Next
+
+                                                            If audio_locale = Nothing Or guid = Nothing Then
+                                                            Else
+                                                                DubsAvalible.Add(New CR_MediaVersion(audio_locale, guid))
+                                                            End If
                                                         Next
-
-                                                        If audio_locale = Nothing Or guid = Nothing Then
-                                                        Else
-                                                            DubsAvalible.Add(New CR_MediaVersion(audio_locale, guid))
-                                                        End If
-                                                    Next
-                                            End Select
-                                        Next '
-                                End Select
+                                                End Select
+                                            Next '
+                                    End Select
+                                Next
                             Next
-                        Next
-                End Select
-            Next
-
+                    End Select
+                Next
 
 #Region "m3u8 suche"
 
@@ -1167,15 +1147,15 @@ Public Class Main
 
 #Region "Check for dub override"
                 If My.Settings.OverrideDub = True And CR_audio_locale = DubSprache.CR_Value = False Then 'einstellung ein + kein musikvideo oder Konzert
-                'MsgBox("Trigger on!")
-                For i As Integer = 0 To DubsAvalible.Count - 1
-                    If DubsAvalible(i).AudioLang = DubSprache.CR_Value Then
-                        page_guid = DubsAvalible(i).guid
-                    End If
-                Next
+                    'MsgBox("Trigger on!")
+                    For i As Integer = 0 To DubsAvalible.Count - 1
+                        If DubsAvalible(i).AudioLang = DubSprache.CR_Value Then
+                            page_guid = DubsAvalible(i).guid
+                        End If
+                    Next
 
 
-            End If
+                End If
 #End Region
             End If
 
@@ -1183,7 +1163,7 @@ Public Class Main
             Debug.WriteLine("NewAPI: " + NewAPI)
 
             Dim NewAPIData As String = CurlAuthNew(NewAPI, "", Loc_AuthToken)
-            Debug.WriteLine("NewAPIData: " + NewAPIData)
+            'Debug.WriteLine("NewAPIData: " + NewAPIData)
 
 
             Dim VideoJSON_New As String = CleanJSON(NewAPIData)
@@ -1217,7 +1197,10 @@ Public Class Main
                 End Select
             Next
 
-
+            Me.Invoke(New Action(Function() As Object
+                                     SetStatusLabel("Status: API data received")
+                                     Return Nothing
+                                 End Function))
 
             Dim CR_URI_Master As New List(Of String)
 
@@ -1273,23 +1256,11 @@ Public Class Main
                 End If
             End If
 
-            'MsgBox(CR_URI_Master.Count.ToString)
+            Me.Invoke(New Action(Function() As Object
+                                     SetStatusLabel("Status: Language found")
+                                     Return Nothing
+                                 End Function))
 
-            'If CBool(InStr(CR_URI_Master(0), "master.m3u8")) Then
-            '    Me.Invoke(New Action(Function() As Object
-            '                             Anime_Add.StatusLabel.Text = "Status: m3u8 found, looking for resolution"
-            '                             Me.Text = "Status: m3u8 found, looking for resolution"
-            '                             Me.Invalidate()
-            '                             Return Nothing
-            '                         End Function))
-            'Else
-            '    If MessageBox.Show("The Url below failed a check, continue?" + vbNewLine + CR_URI_Master(0), "Mission failed?", MessageBoxButtons.OKCancel) = DialogResult.OK Then
-
-            '    Else
-            '        Throw New System.Exception("Premium Episode")
-            '    End If
-            '    Throw New System.Exception("Premium Episode")
-            'End If
 
 #End Region
 
@@ -1606,6 +1577,7 @@ Public Class Main
 
             If DownloadScope = DownloadScopeEnum.SubsOnly Then
                 ffmpegInput = "-i [Subtitles only]"
+
             Else
 
                 Dim str As String = CurlAuthNew(CR_URI_Master(0), "", Loc_AuthToken)
@@ -1674,7 +1646,11 @@ Public Class Main
 
             End If
 
-
+            Me.Invoke(New Action(Function() As Object
+                                     SetStatusLabel("Status: Resolution found")
+                                     Pause(2)
+                                     Return Nothing
+                                 End Function))
 
 #End Region
 
@@ -1683,7 +1659,6 @@ Public Class Main
             'Dim CCAvailable As New List(Of String)
 
             Dim SoftSubsList As New List(Of CR_Subtiles)
-
 
 
 
@@ -1698,6 +1673,11 @@ Public Class Main
             'End If
             '"language":"de-DE"
             If SoftSubs.Count > 0 Then 'And CCAvailable.Count = 0 Then
+                Me.Invoke(New Action(Function() As Object
+                                         SetStatusLabel("Status: Checking Soft-Subs")
+                                         Return Nothing
+                                     End Function))
+
                 For i As Integer = 0 To SoftSubs.Count - 1
                     If CBool(InStr(VideoJSON_New, Chr(34) + "language" + Chr(34) + ":" + Chr(34) + SoftSubs(i) + Chr(34) + "," + Chr(34) + "url" + Chr(34) + ":" + Chr(34))) Then
                         SoftSubsAvailable.Add(SoftSubs(i))
@@ -2311,84 +2291,6 @@ Public Class Main
 #End Region
 
 
-    Public Sub ProcessUrls()
-        Debug.WriteLine(LoadedUrls.Count.ToString)
-        Debug.WriteLine(Date.Now.ToString + " Thread Name: " + Thread.CurrentThread.Name)
-        Dim SavedObjectsUrl = ""
-        For i As Integer = 0 To LoadedUrls.Count - 1
-
-            Dim Request As CoreWebView2WebResourceRequest = LoadedUrls.Item(i)
-
-
-            If CBool(InStr(Request.Uri, "crunchyroll.com/")) And CBool(InStr(Request.Uri, "streams?")) Then
-
-                If b = False Then
-
-                    If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                        Anime_Add.StatusLabel.Text = "Status: Crunchyroll episode found."
-                    End If
-                    Me.Text = "Status: Crunchyroll episode found."
-                    Debug.WriteLine("Crunchyroll episode found")
-                    GetCRVideoProxy(Request.Uri, CR_AuthToken, WebbrowserURL, 0)
-                    b = True
-                    LoadedUrls.Clear()
-                    Me.Text = "Crunchyroll Downloader"
-                    Exit Sub
-                End If
-
-            ElseIf CBool(InStr(Request.Uri, "crunchyroll.com/")) And CBool(InStr(Request.Uri, "seasons?preferred_audio_language=")) And CBool(InStr(WebbrowserURL, "series")) Then
-
-                If b = False Then
-
-                    If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                        Anime_Add.StatusLabel.Text = "Status: Crunchyroll season found."
-                    End If
-                    Me.Text = "Status: Crunchyroll season found."
-                    Debug.WriteLine("Crunchyroll season found")
-
-                    Dim Auth As String = " -H " + Chr(34) + "Authorization: " + Request.Headers.GetHeader("Authorization") + Chr(34)
-                    Debug.WriteLine(Auth)
-
-                    CR_Cookies = "Cookie: " + Request.Headers.GetHeader("Cookie")
-
-                    GetBetaSeasons(WebbrowserURL, Request.Uri, Auth)
-
-                    'Browser.WebBrowser1.LoadUrl(Request.Uri)
-                    b = True
-                    LoadedUrls.Clear()
-                    Me.Text = "Crunchyroll Downloader"
-                    Exit Sub
-                End If
-            ElseIf CBool(InStr(Request.Uri, "crunchyroll.com/")) And CBool(InStr(Request.Uri, "seasons?series_id=")) Then
-
-                If b = False Then
-
-                    If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                        Anime_Add.StatusLabel.Text = "Status: Error found invalid data."
-                    End If
-                    b = True
-                    LoadedUrls.Clear()
-                    Me.Text = "Crunchyroll Downloader"
-                    Exit Sub
-                End If
-
-            End If
-
-
-
-        Next
-
-        LoadedUrls.Clear()
-
-        If b = True Then
-            LoadedUrls.Clear()
-            Debug.WriteLine("Just Browsing after all, exiting...")
-            Grapp_RDY = True
-            Me.Text = "Crunchyroll Downloader"
-            Exit Sub
-        End If
-
-    End Sub
 
     Public Sub Navigate(ByVal Url As String)
         If Application.OpenForms().OfType(Of Browser).Any = True Then
@@ -2996,10 +2898,6 @@ Public Class Main
         LoadedUrls.Clear()
         Dim NoBrowser As Boolean = False
 
-        If My.Settings.SaveMode = True Then
-            Browser.WebView2.CoreWebView2.Navigate(Url)
-            Exit Sub
-        End If
 
         'CR_v1Token = "Get"
         'Browser.WebView2.Source = New Uri(Url)
@@ -3012,153 +2910,167 @@ Public Class Main
 
 #Region "Get Cookies"
 
-            CR_Cookies = "Cookie: "
-            'MsgBox("Cookies")
-            If File.Exists("cookies.txt") = True Then
-                CR_Cookies = GetCookiesFromFile("crunchyroll.com")
-                NoBrowser = True
-                CrBetaBasic = "Basic bm9haWhkZXZtXzZpeWcwYThsMHE6"
-                'MsgBox(True.ToString)
-            Else
-                Browser.GetCookies(Url)
+            'CR_Cookies = "Cookie: "
+            ''MsgBox("Cookies")
+            'If File.Exists("cookies.txt") = True Then
+            '    CR_Cookies = GetCookiesFromFile("crunchyroll.com")
+            '    NoBrowser = True
+            '    CrBetaBasic = "Basic bm9haWhkZXZtXzZpeWcwYThsMHE6"
+            '    'MsgBox(True.ToString)
+            'Else
+            '    Browser.GetCookies(Url)
 
-                Debug.WriteLine(CookieList.Count.ToString)
-                If CookieList.Count = 0 Then
-                    Browser.WebView2.CoreWebView2.Navigate(Url)
-                    SetStatusLabel("Status: loading in browser...")
-                    Me.Text = "Status: loading in browser..."
-                    Exit Sub
-                End If
-
-
-
-                For i As Integer = 0 To CookieList.Count - 1
-
-                    If CBool(InStr(CookieList.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(CookieList.Item(i).Name, "_evidon_suppress")) = False Then
-                        CR_Cookies = CR_Cookies + CookieList.Item(i).Name + "=" + CookieList.Item(i).Value + ";"
-                    End If
-
-                Next
-
-            End If
-
-            'MsgBox(Main.CR_Cookies)
-
-            Dim DeviceRegion As String = Nothing
-
-            If CBool(InStr(Url, "/series")) Then
-                Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim locale2() As String = locale1(1).Split(New String() {"/series"}, System.StringSplitOptions.RemoveEmptyEntries)
-                locale = Convert_locale(locale2(0))
-                If locale = "en-US" Then
-                    Url_locale = ""
-                Else
-                    Url_locale = locale2(0)
-                End If
+            '    Debug.WriteLine(CookieList.Count.ToString)
+            '    If CookieList.Count = 0 Then
+            '        Browser.WebView2.CoreWebView2.Navigate(Url)
+            '        SetStatusLabel("Status: loading in browser...")
+            '        Me.Text = "Status: loading in browser..."
+            '        Exit Sub
+            '    End If
 
 
-            ElseIf CBool(InStr(Url, "/watch")) Then
-                Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
-                Dim locale2() As String = locale1(1).Split(New String() {"/watch"}, System.StringSplitOptions.RemoveEmptyEntries)
-                'MsgBox(locale2(0))
 
-                locale = Convert_locale(locale2(0))
-                'End If
-                If locale = "en-US" Then
-                    Url_locale = ""
-                Else
-                    Url_locale = locale2(0)
-                End If
+            '    For i As Integer = 0 To CookieList.Count - 1
 
-                'If CBool(InStr(Url, "musicvideo/")) Then
-                '    SetStatusLabel("Status: musicvideo detected - partial support only")
+            '        If CBool(InStr(CookieList.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(CookieList.Item(i).Name, "_evidon_suppress")) = False Then
+            '            CR_Cookies = CR_Cookies + CookieList.Item(i).Name + "=" + CookieList.Item(i).Value + ";"
+            '        End If
 
-                '    Browser.WebView2.CoreWebView2.Navigate(Url)
-                '    Exit Sub
-                'Else
-                'If CBool(InStr(Url, "/concert/")) Then
+            '    Next
 
-                '        SetStatusLabel("Status: concert detected - partial support only")
-                '        Browser.WebView2.CoreWebView2.Navigate(Url)
-                '        Exit Sub
+            'End If
 
-                '    End If
+            ''MsgBox(Main.CR_Cookies)
+
+            'Dim DeviceRegion As String = Nothing
+
+            'If CBool(InStr(Url, "/series")) Then
+            '    Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            '    Dim locale2() As String = locale1(1).Split(New String() {"/series"}, System.StringSplitOptions.RemoveEmptyEntries)
+            '    locale = Convert_locale(locale2(0))
+            '    If locale = "en-US" Then
+            '        Url_locale = ""
+            '    Else
+            '        Url_locale = locale2(0)
+            '    End If
 
 
-            End If
+            'ElseIf CBool(InStr(Url, "/watch")) Then
+            '    Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
+            '    Dim locale2() As String = locale1(1).Split(New String() {"/watch"}, System.StringSplitOptions.RemoveEmptyEntries)
+            '    'MsgBox(locale2(0))
 
-            'Debug.WriteLine("###" + CR_Cookies + "###")
+            '    locale = Convert_locale(locale2(0))
+            '    'End If
+            '    If locale = "en-US" Then
+            '        Url_locale = ""
+            '    Else
+            '        Url_locale = locale2(0)
+            '    End If
 
-            Dim Loc_CR_Cookies = " -H " + Chr(34) + CR_Cookies + Chr(34)
+            '    'If CBool(InStr(Url, "musicvideo/")) Then
+            '    '    SetStatusLabel("Status: musicvideo detected - partial support only")
+
+            '    '    Browser.WebView2.CoreWebView2.Navigate(Url)
+            '    '    Exit Sub
+            '    'Else
+            '    'If CBool(InStr(Url, "/concert/")) Then
+
+            '    '        SetStatusLabel("Status: concert detected - partial support only")
+            '    '        Browser.WebView2.CoreWebView2.Navigate(Url)
+            '    '        Exit Sub
+
+            '    '    End If
 
 
-            'CR_v1Token = "Get"
-            'Browser.WebView2.Source = New Uri(Url)
-            'Exit Sub
+            'End If
+
+            ''Debug.WriteLine("###" + CR_Cookies + "###")
+
+            'Dim Loc_CR_Cookies = " -H " + Chr(34) + CR_Cookies + Chr(34)
+
+
+            ''CR_v1Token = "Get"
+            ''Browser.WebView2.Source = New Uri(Url)
+            ''Exit Sub
 
 #End Region
+
+
+            Dim Loc_CR_Cookies As String = "" ' do we need that? does not seem like it.
+
             Dim Auth As String = " -H " + Chr(34) + "Authorization: " + CrBetaBasic + Chr(34)
-            'Dim Post As String = " -d " + Chr(34) + "grant_type=etp_rt_cookie" + Chr(34) + " -X POST"
-            Dim Post As String = " -d " + Chr(34) + "username=" + UrlEncode(Mail) + "&password=" + UrlEncode(PW) + "&grant_type=password&scope=offline_access" + Chr(34) + " -X POST -H " + Chr(34) + "Content-Type: application/x-www-form-urlencoded; charset=utf-8" + Chr(34)
+
+            Dim Post As String = Nothing
+            Dim UnixTime As Integer
+            UnixTime = CInt((DateTime.UtcNow - New DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds)
+
+            If CBool(CR_Token.access_token = Nothing) = True Then ' *insert *First time* meme
+                Post = " -d " + Chr(34) + "username=" + UrlEncode(Mail) + "&password=" + UrlEncode(PW) + "&grant_type=password&scope=offline_access" + Chr(34) + " -X POST -H " + Chr(34) + "Content-Type: application/x-www-form-urlencoded; charset=utf-8" + Chr(34)
+                SetStatusLabel("Status: using login to authenticate")
+                Pause(2)
+            ElseIf CR_Token.expires_Unix + 30 > UnixTime Then 'we are not expired yet (+10% tolleranz)
+                Post = "Skip!"
+                SetStatusLabel("Status: Token not expired - skip auth")
+                Pause(2)
+            ElseIf CR_Token.expires_Unix + 30 < UnixTime Then 'we should renew it 
+                Post = " -d " + Chr(34) + "refresh_token=" + CR_Token.refresh_token + "&grant_type=refresh_token&scope=offline_access" + Chr(34) + " -X POST -H " + Chr(34) + "Content-Type: application/x-www-form-urlencoded; charset=utf-8" + Chr(34)
+                SetStatusLabel("Status: Token expired - refreshing")
+                Pause(2)
+            End If
 
             '
             Dim CRBetaBearer As String = "Bearer "
 
+            If Post = "Skip!" Then
+                Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + CRBetaBearer + CR_Token.access_token + Chr(34)
+                ProcessLoading(Url, Auth2, Loc_CR_Cookies, RT_count)
+            Else
+                Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
 
-            Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
+                If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "401")) = True Then
+                    MsgBox("CR reported error 401, this may mean incorrect login detail, please try again.", MsgBoxStyle.Exclamation, "CR-Error 401")
+                    LoginForm.ShowDialog()
+                    Exit Sub
+                End If
 
-            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "401")) = True Then
-                MsgBox("CR reported error 401, this may mean incorrect login detail, please try again.", MsgBoxStyle.Exclamation, "CR-Error 401")
-                LoginForm.ShowDialog()
-                Exit Sub
+                If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
+                    MsgBox("CR reported error 400, idk why tbh", MsgBoxStyle.Exclamation, "CR-Error 400")
+                    SetStatusLabel("Status: Unknown error. #3038")
+                    Exit Sub
+                End If
+
+
+                If CBool(InStr(v1Token, "curl: (60)")) = True Then
+                    SetStatusLabel("Status: Critical error. #3043")
+                    MsgBox("Please try the '--insecure' option found on the 'Main' page of the settings.")
+                    Exit Sub
+                    'ElseIf CBool(InStr(v1Token, "curl:")) Then
+
+                ElseIf CBool(InStr(v1Token, "curl:")) = True Then
+                    ' Browser.WebView2.CoreWebView2.Navigate(Url)
+                    SetStatusLabel("Status: Unknown error. #3050")
+                    Exit Sub
+
+                End If
+
+                Dim Token() As String = v1Token.Split(New String() {Chr(34) + "access_token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Token2() As String = Token(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                CRBetaBearer = CRBetaBearer + Token2(0)
+
+                Dim RefrehToken() As String = v1Token.Split(New String() {Chr(34) + "refresh_token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim RefrehToken2() As String = RefrehToken(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim TokenUnixTime As Integer
+                TokenUnixTime = CInt((DateTime.UtcNow - New DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds) + 300
+
+                CR_Token = New CR_Tokens(Token2(0), RefrehToken2(0), TokenUnixTime)
+
+                Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + CRBetaBearer + Chr(34)
+
+                ProcessLoading(Url, Auth2, Loc_CR_Cookies, RT_count)
+
             End If
-
-            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
-                Debug.WriteLine("Post error!, 400")
-                Post = " -d " + Chr(34) + "grant_type=client_id&scope=offline_access" + Chr(34) + " -X POST"
-
-                Debug.WriteLine(Post.Replace("etp_rt_cookie", "client_id"))
-                v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post.Replace("etp_rt_cookie", "client_id"), "add_main-4499")
-
-            End If
-
-
-
-            'MsgBox(v1Token)
-
-            If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
-                SetStatusLabel("Status: Failed - bad request, check CR login")
-                Me.Text = "Status: Failed - bad request, check CR login"
-                Debug.WriteLine("Status: Failed - bad request, check CR login")
-
-                b = True
-                Exit Sub
-
-            ElseIf CBool(InStr(v1Token, "curl:")) = True Then
-                v1Token = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4516")
-            End If
-
-            'MsgBox(v1Token)
-            If CBool(InStr(v1Token, "curl: (60)")) = True Then
-                SetStatusLabel("Status: Critical error. #4478")
-                MsgBox("Please try the '--insecure' option found on the 'Main' page of the settings.")
-                Exit Sub
-                'ElseIf CBool(InStr(v1Token, "curl:")) Then
-
-            ElseIf CBool(InStr(v1Token, "curl:")) = True Then
-                Browser.WebView2.CoreWebView2.Navigate(Url)
-                Exit Sub
-
-            End If
-
-            Dim Token() As String = v1Token.Split(New String() {Chr(34) + "access_token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim Token2() As String = Token(1).Split(New String() {Chr(34) + "," + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            CRBetaBearer = CRBetaBearer + Token2(0)
-
-            Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + CRBetaBearer + Chr(34)
-
-            ProcessLoading(Url, Auth2, Loc_CR_Cookies, RT_count)
-
         Else
             'to do
         End If
@@ -3181,7 +3093,7 @@ Public Class Main
 
         ElseIf CBool(InStr(url, "crunchyroll.com")) = True And CBool(InStr(url, "watch/")) = True And CBool(CrBetaBasic = Nothing) = False And CBool(InStr(url, "/musicvideo/")) = False And CBool(InStr(url, "/concert/")) = False Then
 #Region "Anime"
-
+            SetStatusLabel("Status: Url match - Anime episode")
 
             Dim ObjectsUrl As String = Nothing
 
@@ -3254,7 +3166,7 @@ Public Class Main
 #End Region
         ElseIf CBool(InStr(url, "crunchyroll.com")) = True And CBool(InStr(url, "musicvideo/")) = True And CBool(CrBetaBasic = Nothing) = False Then
 #Region "musik videos"
-
+            SetStatusLabel("Status: Url match - Music video")
 
             Dim ObjectsUrl As String = Nothing
 
@@ -3307,6 +3219,8 @@ Public Class Main
             GetCRVideoProxy(StreamsUrl, Auth2, url, RT_Count)
 #End Region
         ElseIf CBool(InStr(url, "crunchyroll.com")) = True And CBool(InStr(url, "concert/")) = True And CBool(CrBetaBasic = Nothing) = False Then
+#Region "concert"
+            SetStatusLabel("Status: Url match - Concert")
 
             Dim ObjectsUrl As String = Nothing
 
@@ -3357,8 +3271,10 @@ Public Class Main
 
 
             GetCRVideoProxy(StreamsUrl, Auth2, url, RT_Count)
+#End Region
         Else
-            Browser.WebView2.CoreWebView2.Navigate(url)
+
+            'Browser.WebView2.CoreWebView2.Navigate(url)
         End If
 
 
@@ -3411,9 +3327,9 @@ Public Class Main
     Sub SetStatusLabel(ByVal txt As String)
         If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
             Anime_Add.StatusLabel.Text = txt
-
         End If
-
+        Me.Text = txt
+        Debug.WriteLine("StatusLabel: " + Date.Now.ToString + " - " + txt)
     End Sub
 
     Private Sub SaveThumbnailAsImageToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveThumbnailAsImageToolStripMenuItem.Click
@@ -3425,20 +3341,6 @@ Public Class Main
         Else
             My.Settings.SaveThumbnail = False
             MsgBox("Thumbnail saving disabled")
-            My.Settings.Save()
-
-        End If
-    End Sub
-
-    Private Sub SaveModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveModeToolStripMenuItem.Click
-        If My.Settings.SaveMode = False Then
-            My.Settings.SaveMode = True
-            MsgBox("SaveMode enabled")
-            My.Settings.Save()
-
-        Else
-            My.Settings.SaveMode = False
-            MsgBox("SaveMode disabled")
             My.Settings.Save()
 
         End If

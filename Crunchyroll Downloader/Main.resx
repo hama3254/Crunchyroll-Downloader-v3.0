@@ -489,12 +489,6 @@
   <data name="&gt;&gt;QueueToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;SaveModeToolStripMenuItem.Name" xml:space="preserve">
-    <value>SaveModeToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;SaveModeToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;SaveThumbnailAsImageToolStripMenuItem.Name" xml:space="preserve">
     <value>SaveThumbnailAsImageToolStripMenuItem</value>
   </data>
@@ -573,12 +567,6 @@
   <data name="QueueToolStripMenuItem.Text" xml:space="preserve">
     <value>ffmpeg option</value>
   </data>
-  <data name="SaveModeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 22</value>
-  </data>
-  <data name="SaveModeToolStripMenuItem.Text" xml:space="preserve">
-    <value>*Save Mode*</value>
-  </data>
   <data name="SaveThumbnailAsImageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>233, 22</value>
   </data>
@@ -640,7 +628,7 @@
     <value>Login Form</value>
   </data>
   <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 290</value>
+    <value>234, 268</value>
   </data>
   <data name="&gt;&gt;ContextMenuStrip1.Name" xml:space="preserve">
     <value>ContextMenuStrip1</value>

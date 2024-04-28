@@ -479,7 +479,7 @@ Public Class Anime_Add
             End Try
 
             'My.Computer.Clipboard.SetText(EpisodeJson)
-            Debug.WriteLine("EpisodeJson: " + EpisodeJson)
+            'Debug.WriteLine("EpisodeJson: " + EpisodeJson)
 
             FillCREpisodes(EpisodeJson)
 

@@ -60,7 +60,7 @@ Public Class CRD_List_Item
 
     Dim FailedSegments As New List(Of FailedSegemtsWithURL)
     Dim LogText As New List(Of String)
-    Dim GlobalLogfile As String
+    'Dim GlobalLogfile As String
 
     Private Event UpdateUI(ByVal Percent As Integer, ByVal di As DirectoryInfo, ByVal Idle As Integer)
 
@@ -485,7 +485,7 @@ Public Class CRD_List_Item
         HistoryDL_Pfad = DL_Pfad
         HistoryFilename = Filename
 
-        GlobalLogfile = DL_Pfad.Replace(".mkv", ".txt").Replace(Chr(34), "")
+        'GlobalLogfile = DL_Pfad.Replace(".mkv", ".txt").Replace(Chr(34), "")
 
         'Debug.WriteLine(GlobalLogfile)
 

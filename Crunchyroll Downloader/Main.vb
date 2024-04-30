@@ -2908,91 +2908,36 @@ Public Class Main
 
 
 
-#Region "Get Cookies"
-
-            'CR_Cookies = "Cookie: "
-            ''MsgBox("Cookies")
-            'If File.Exists("cookies.txt") = True Then
-            '    CR_Cookies = GetCookiesFromFile("crunchyroll.com")
-            '    NoBrowser = True
-            '    CrBetaBasic = "Basic bm9haWhkZXZtXzZpeWcwYThsMHE6"
-            '    'MsgBox(True.ToString)
-            'Else
-            '    Browser.GetCookies(Url)
-
-            '    Debug.WriteLine(CookieList.Count.ToString)
-            '    If CookieList.Count = 0 Then
-            '        Browser.WebView2.CoreWebView2.Navigate(Url)
-            '        SetStatusLabel("Status: loading in browser...")
-            '        Me.Text = "Status: loading in browser..."
-            '        Exit Sub
-            '    End If
+#Region "Get local"
 
 
+            If CBool(InStr(Url, "/series")) Then
+                Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim locale2() As String = locale1(1).Split(New String() {"/series"}, System.StringSplitOptions.RemoveEmptyEntries)
+                locale = Convert_locale(locale2(0))
+                If locale = "en-US" Then
+                    Url_locale = ""
+                Else
+                    Url_locale = locale2(0)
+                End If
 
-            '    For i As Integer = 0 To CookieList.Count - 1
+            ElseIf CBool(InStr(Url, "/watch")) Then
+                Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim locale2() As String = locale1(1).Split(New String() {"/watch"}, System.StringSplitOptions.RemoveEmptyEntries)
+                'MsgBox(locale2(0))
 
-            '        If CBool(InStr(CookieList.Item(i).Domain, ".crunchyroll.com")) And CBool(InStr(CookieList.Item(i).Name, "_evidon_suppress")) = False Then
-            '            CR_Cookies = CR_Cookies + CookieList.Item(i).Name + "=" + CookieList.Item(i).Value + ";"
-            '        End If
-
-            '    Next
-
-            'End If
-
-            ''MsgBox(Main.CR_Cookies)
-
-            'Dim DeviceRegion As String = Nothing
-
-            'If CBool(InStr(Url, "/series")) Then
-            '    Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            '    Dim locale2() As String = locale1(1).Split(New String() {"/series"}, System.StringSplitOptions.RemoveEmptyEntries)
-            '    locale = Convert_locale(locale2(0))
-            '    If locale = "en-US" Then
-            '        Url_locale = ""
-            '    Else
-            '        Url_locale = locale2(0)
-            '    End If
+                locale = Convert_locale(locale2(0))
+                'End If
+                If locale = "en-US" Then
+                    Url_locale = ""
+                Else
+                    Url_locale = locale2(0)
+                End If
 
 
-            'ElseIf CBool(InStr(Url, "/watch")) Then
-            '    Dim locale1() As String = Url.Split(New String() {"crunchyroll.com/"}, System.StringSplitOptions.RemoveEmptyEntries)
-            '    Dim locale2() As String = locale1(1).Split(New String() {"/watch"}, System.StringSplitOptions.RemoveEmptyEntries)
-            '    'MsgBox(locale2(0))
-
-            '    locale = Convert_locale(locale2(0))
-            '    'End If
-            '    If locale = "en-US" Then
-            '        Url_locale = ""
-            '    Else
-            '        Url_locale = locale2(0)
-            '    End If
-
-            '    'If CBool(InStr(Url, "musicvideo/")) Then
-            '    '    SetStatusLabel("Status: musicvideo detected - partial support only")
-
-            '    '    Browser.WebView2.CoreWebView2.Navigate(Url)
-            '    '    Exit Sub
-            '    'Else
-            '    'If CBool(InStr(Url, "/concert/")) Then
-
-            '    '        SetStatusLabel("Status: concert detected - partial support only")
-            '    '        Browser.WebView2.CoreWebView2.Navigate(Url)
-            '    '        Exit Sub
-
-            '    '    End If
+            End If
 
 
-            'End If
-
-            ''Debug.WriteLine("###" + CR_Cookies + "###")
-
-            'Dim Loc_CR_Cookies = " -H " + Chr(34) + CR_Cookies + Chr(34)
-
-
-            ''CR_v1Token = "Get"
-            ''Browser.WebView2.Source = New Uri(Url)
-            ''Exit Sub
 
 #End Region
 

@@ -991,12 +991,12 @@ Public Class CRD_List_Item
                         KeyLine = KeyFileUri(0) + "URI=" + Chr(34) + KeyFileCache + Chr(34)
                     End If
 
-                    If KeepCacheFiles = True Then
-                        'Dim Bytes() As Byte = File.ReadAllBytes(Application.StartupPath + "\" + KeyFile)
-                        'File.WriteAllBytes(Folder + "\" + KeyFile, Bytes)
-                        Dim Evaluator2 = New Thread(Sub() Me.TS_DownloadAsync(KeyFileUri3, Folder + "\" + KeyFile))
-                        Evaluator2.Start()
-                    End If
+                    'If KeepCacheFiles = True Then
+                    '    'Dim Bytes() As Byte = File.ReadAllBytes(Application.StartupPath + "\" + KeyFile)
+                    '    'File.WriteAllBytes(Folder + "\" + KeyFile, Bytes)
+                    '    Dim Evaluator2 = New Thread(Sub() Me.TS_DownloadAsync(KeyFileUri3, Folder + "\" + KeyFile))
+                    '    Evaluator2.Start()
+                    'End If
                 End If
                 m3u8FileContent = m3u8FileContent + KeyLine + vbLf
 

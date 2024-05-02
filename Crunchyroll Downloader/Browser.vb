@@ -69,10 +69,10 @@ Public Class Browser
 
             Main.BowserWasOpen = True
 
-            If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
-                Anime_Add.btn_dl.Cursor = Cursors.Default
-                Anime_Add.btn_dl.BackgroundImage = My.Resources.main_button_download_default
-            End If
+            'If Application.OpenForms().OfType(Of Anime_Add).Any = True Then
+            '    Anime_Add.btn_dl.Cursor = Cursors.Default
+            '    Anime_Add.btn_dl.BackgroundImage = My.Resources.main_button_download_default
+            'End If
 
             If Main.Startseite IsNot My.Settings.Startseite Then
                 Main.LoadBrowser(Main.Startseite, 1)

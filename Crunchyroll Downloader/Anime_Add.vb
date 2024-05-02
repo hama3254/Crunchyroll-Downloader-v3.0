@@ -164,6 +164,8 @@ Public Class Anime_Add
         End Try
 
         'Timer3.Enabled = True
+        btn_dl.Cursor = Cursors.Default
+        btn_dl.BackgroundImage = My.Resources.main_button_download_default
 
     End Sub
 
@@ -458,17 +460,19 @@ Public Class Anime_Add
             Dim JsonUrl As String = "https://www.crunchyroll.com/content/v2/cms/seasons/" + guid + "/episodes?preferred_audio_language=" + Main.DubSprache.CR_Value + "&locale=" + Main.locale
 
 
-            Dim Loc_CR_Cookies = " -H " + Chr(34) + Main.CR_Cookies.Replace(Chr(34), "").Replace(" -H ", "") + Chr(34)
+            Dim Loc_CR_Cookies = "" 'No more cookies " -H " + Chr(34) + Main.CR_Cookies.Replace(Chr(34), "").Replace(" -H ", "") + Chr(34)
 
 
             Dim EpisodeJson As String = Nothing 'CurlAuth(JsonUrl, Loc_CR_Cookies, Main.CR_MassSeasons.Item(ComboBox1.SelectedIndex).Auth) '
 
+            Debug.WriteLine("TEST")
 
             Try
 
                 EpisodeJson = CurlAuthNew(JsonUrl, Loc_CR_Cookies, Main.CR_MassSeasons.Item(CB_Season.SelectedIndex).Auth) '
 
             Catch ex As Exception
+                Debug.WriteLine("TEST Failed" + ex.ToString)
                 If CBool(InStr(ex.ToString, "Error - Getting")) Then
                     MsgBox("Error invalid CR respone")
                     Exit Sub

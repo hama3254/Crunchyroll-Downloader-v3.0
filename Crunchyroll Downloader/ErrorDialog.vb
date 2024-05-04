@@ -40,22 +40,14 @@ Public Class ErrorDialog
             Debug.WriteLine(Main.ResoNotFoundString)
             Debug.WriteLine("ResoNotFoundString")
 
-            Dim lang_avalibe As String() = Main.ResoNotFoundString.Split(New String() {"hardsub_locale" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim lang_avalibe As String() = Main.ResoNotFoundString.Split(New String() {";"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-            For i As Integer = 1 To lang_avalibe.Count - 1
-                If CBool(InStr(lang_avalibe(i), "https://")) Then
-                Else
-                    Continue For
-                End If
-                If lang_avalibe(i).Substring(0, 1) = Chr(34) Then
-                    ComboBox1.Items.Add("No Hardsubs")
-                    Continue For 'Chr(34) +
-                End If
-                'MsgBox(lang_avalibe(i))
-                Dim langsplit As String() = lang_avalibe(i).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
-                ComboBox1.Items.Add(Main.ConvertSubValue(langsplit(0), ConvertSubsEnum.DisplayText))
+            For i As Integer = 0 To lang_avalibe.Count - 1
+                ComboBox1.Items.Add(Main.ConvertSubValue(lang_avalibe(i), ConvertSubsEnum.DisplayText))
             Next
+
             SurroundingSub()
+
         ElseIf Main.DialogTaskString = "Resolution" Then
             StatusLabel.Text = Main.LabelResoNotFoundText
             Dim Reso_avaible1 As String() = Main.ResoNotFoundString.Split(New String() {"RESOLUTION="}, System.StringSplitOptions.RemoveEmptyEntries)

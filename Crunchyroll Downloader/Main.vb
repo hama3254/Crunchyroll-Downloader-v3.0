@@ -1230,12 +1230,18 @@ Public Class Main
                 CR_URI_Master.AddRange(RawStream)
 
             ElseIf CR_URI_Master.Count = 0 Then
+                Dim ListOfStreams As String = ""
+                For i As Integer = 0 To CR_Streams.Count - 1 'fill back the streams to a string to use it for the error handling
+                    ListOfStreams = ListOfStreams + CR_Streams(i).subLang + ";"
+                Next
+
                 Me.Invoke(New Action(Function() As Object
-                                         ResoNotFoundString = VideoJSON_New
+                                         ResoNotFoundString = ListOfStreams
                                          DialogTaskString = "Language_CR_Beta"
                                          ErrorDialog.ShowDialog()
                                          Return Nothing
                                      End Function))
+
                 If UserCloseDialog = True Then
                     Throw New System.Exception(Chr(34) + "UserAbort" + Chr(34))
                 Else

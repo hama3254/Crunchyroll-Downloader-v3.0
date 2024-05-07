@@ -1648,7 +1648,7 @@ Public Class Main
                     sink.WriteLine(localm3u8)
                 End Using
 
-                ffmpegInput = "-allowed_extensions ALL " + "-i " + Chr(34) + localfile + Chr(34)
+                ffmpegInput = "-protocol_whitelist file,http,https,tcp,tls,crypto,data -allowed_extensions ALL " + "-i " + Chr(34) + localfile + Chr(34) 'add whitelist to the stream input directly #950
 
             End If
 

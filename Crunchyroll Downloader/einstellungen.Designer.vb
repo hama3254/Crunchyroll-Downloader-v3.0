@@ -144,6 +144,7 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
+        Me.CB_HideQueue = New MetroFramework.Controls.MetroCheckBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -334,10 +335,10 @@ Partial Class Einstellungen
         Me.TabPage2.HorizontalScrollbarBarColor = True
         Me.TabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage2.HorizontalScrollbarSize = 10
-        Me.TabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 54)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage2.Size = New System.Drawing.Size(501, 509)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "  Output  "
         Me.TabPage2.VerticalScrollbarBarColor = True
@@ -362,6 +363,7 @@ Partial Class Einstellungen
         'GroupBox18
         '
         Me.GroupBox18.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox18.Controls.Add(Me.CB_HideQueue)
         Me.GroupBox18.Controls.Add(Me.ListViewAdd_True)
         Me.GroupBox18.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox18.ForeColor = System.Drawing.Color.Black
@@ -376,7 +378,7 @@ Partial Class Einstellungen
         '
         Me.ListViewAdd_True.AutoSize = True
         Me.ListViewAdd_True.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.ListViewAdd_True.Location = New System.Drawing.Point(119, 25)
+        Me.ListViewAdd_True.Location = New System.Drawing.Point(40, 21)
         Me.ListViewAdd_True.Name = "ListViewAdd_True"
         Me.ListViewAdd_True.Size = New System.Drawing.Size(255, 19)
         Me.ListViewAdd_True.TabIndex = 5
@@ -844,10 +846,10 @@ Partial Class Einstellungen
         Me.TabPage1.HorizontalScrollbarBarColor = True
         Me.TabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.TabPage1.HorizontalScrollbarSize = 10
-        Me.TabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 54)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.TabPage1.Size = New System.Drawing.Size(501, 509)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "   Main    "
         Me.TabPage1.VerticalScrollbar = True
@@ -1081,7 +1083,7 @@ Partial Class Einstellungen
         Me.TabControl1.ItemSize = New System.Drawing.Size(86, 50)
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 4
+        Me.TabControl1.SelectedIndex = 1
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1095,9 +1097,9 @@ Partial Class Einstellungen
         Me.MetroTabPage2.HorizontalScrollbarBarColor = True
         Me.MetroTabPage2.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage2.HorizontalScrollbarSize = 10
-        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage2.Location = New System.Drawing.Point(4, 54)
         Me.MetroTabPage2.Name = "MetroTabPage2"
-        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage2.Size = New System.Drawing.Size(501, 509)
         Me.MetroTabPage2.TabIndex = 8
         Me.MetroTabPage2.Text = "   Naming   "
         Me.MetroTabPage2.VerticalScrollbarBarColor = True
@@ -1401,9 +1403,9 @@ Partial Class Einstellungen
         Me.MetroTabPage1.HorizontalScrollbarBarColor = True
         Me.MetroTabPage1.HorizontalScrollbarHighlightOnWheel = False
         Me.MetroTabPage1.HorizontalScrollbarSize = 10
-        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 44)
+        Me.MetroTabPage1.Location = New System.Drawing.Point(4, 54)
         Me.MetroTabPage1.Name = "MetroTabPage1"
-        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 519)
+        Me.MetroTabPage1.Size = New System.Drawing.Size(501, 509)
         Me.MetroTabPage1.TabIndex = 7
         Me.MetroTabPage1.Text = "   Crunchyroll   "
         Me.MetroTabPage1.VerticalScrollbarBarColor = True
@@ -1644,6 +1646,17 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
+        'CB_HideQueue
+        '
+        Me.CB_HideQueue.AutoSize = True
+        Me.CB_HideQueue.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_HideQueue.Location = New System.Drawing.Point(328, 21)
+        Me.CB_HideQueue.Name = "CB_HideQueue"
+        Me.CB_HideQueue.Size = New System.Drawing.Size(112, 19)
+        Me.CB_HideQueue.TabIndex = 6
+        Me.CB_HideQueue.Text = "hidden Queue"
+        Me.CB_HideQueue.UseSelectable = True
+        '
         'Einstellungen
         '
         Me.ApplyImageInvert = True
@@ -1831,4 +1844,5 @@ Partial Class Einstellungen
     Friend WithEvents CB_Mod1 As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents CB_vttStyle As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents AMD_AV1 As ToolStripMenuItem
+    Friend WithEvents CB_HideQueue As MetroFramework.Controls.MetroCheckBox
 End Class

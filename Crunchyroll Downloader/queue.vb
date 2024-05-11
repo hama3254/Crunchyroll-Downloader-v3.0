@@ -16,14 +16,22 @@ Public Class Queue
         ListBox1.ForeColor = Main.ForeColorValue
         bs.DataSource = Main.ListBoxList
         ListBox1.DataSource = bs
-
+        Me.Icon = My.Resources.icon
         Btn_min.Image = Main.MinImg
         Btn_Close.Image = Main.CloseImg
 
+        Me.StartPosition = 0
+        If Main.UserQueue = False Then
+            Me.Location = New Point(-10000, -10000)
+            'Me.ShowInTaskbar = False
+            'Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
+            RunQueue.Checked = True
+        End If
     End Sub
 
 
     Private Sub Btn_Close_Click(sender As Object, e As EventArgs) Handles Btn_Close.Click
+        Main.UserQueue = False
         Me.Close()
     End Sub
 
@@ -44,7 +52,6 @@ Public Class Queue
         If Main.ListBoxList.Count <> ListBox1.Items.Count Then
             bs.ResetBindings(False)
         End If
-
     End Sub
 
     Private Sub Queue_Resize(sender As Object, e As EventArgs) Handles Me.Resize

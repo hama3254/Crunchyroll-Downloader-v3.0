@@ -70,8 +70,10 @@ Public Class Main
     Public MergeSubsFormat As String = "mov_text"
     Public DlSoftSubsRDY As Boolean = True
     Public DialogTaskString As String
-    Dim NewAPIString1 As String
-    Dim NewAPIString2 As String
+    'Dim NewAPIString1 As String
+    'Dim NewAPIString2 As String
+
+
     Dim TTL As Integer = 0
     'Public ErrorBrowserBackString As String
     Public RunningQueue As Boolean = False
@@ -128,7 +130,9 @@ Public Class Main
     Public WebbrowserText As String = Nothing
     Public WebbrowserTitle As String = Nothing
     Public WebbrowserCookie As String = Nothing
+    Public UserQueue As Boolean = False
     Public UserBowser As Boolean = False
+
     Public BowserWasOpen As Boolean = False
     Public HybridMode As Boolean = False
 
@@ -735,7 +739,7 @@ Public Class Main
                         Catch ex As Exception
                             RunningDownloads = Panel1.Controls.Count
                         End Try
-                        If RunningDownloads < MaxDL Then
+                        If RunningDownloads < MaxDL Or My.Settings.HiddenQueue = True Then
                             Exit For
                         Else
                             'MsgBox(e)
@@ -2874,19 +2878,27 @@ Public Class Main
     End Sub
 
     Private Sub Btn_Queue_Click(sender As Object, e As EventArgs) Handles Btn_Queue.Click
-        If File.Exists("cookies.txt") = False Then
-            If Application.OpenForms().OfType(Of Browser).Any = True Then
-            Else
-                UserBowser = False
-                Browser.Show()
-            End If
-        End If
 
-        If Queue.WindowState = System.Windows.Forms.FormWindowState.Minimized Then
-            Queue.WindowState = System.Windows.Forms.FormWindowState.Normal
+        UserQueue = True
+        If Application.OpenForms().OfType(Of Queue).Any = True Then
+            Queue.Location = New Point(CInt(Me.Location.X + Me.Width / 2 - Queue.Width / 2), CInt(Me.Location.Y + Me.Height / 2 - Queue.Height / 2))
+            If Queue.WindowState = System.Windows.Forms.FormWindowState.Minimized Then
+                Queue.WindowState = System.Windows.Forms.FormWindowState.Normal
+                Queue.ShowInTaskbar = True
+            End If
         Else
+            Queue.Location = New Point(CInt(Me.Location.X + Me.Width / 2 - Queue.Width / 2), CInt(Me.Location.Y + Me.Height / 2 - Queue.Height / 2))
             Queue.Show()
         End If
+
+        Try
+            Dim hwnd As IntPtr = FindWindow(Nothing, Queue.Text)
+            SetForegroundWindow(hwnd)
+        Catch ex As Exception
+            Debug.WriteLine("Queue foreground failure")
+        End Try
+
+
 
     End Sub
 

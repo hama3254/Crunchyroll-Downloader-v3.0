@@ -115,7 +115,7 @@ Public Class Browser
 
         If Main.UserBowser = False Then
             Me.Location = New Point(-10000, 10000)
-            Timer1.Enabled = True
+            'Timer1.Enabled = True
         End If
         WebView2.Source = New Uri(Main.Startseite)
     End Sub

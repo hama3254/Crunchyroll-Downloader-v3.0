@@ -606,6 +606,18 @@ Namespace My
                 Me("PW") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property HiddenQueue() As Boolean
+            Get
+                Return CType(Me("HiddenQueue"),Boolean)
+            End Get
+            Set
+                Me("HiddenQueue") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

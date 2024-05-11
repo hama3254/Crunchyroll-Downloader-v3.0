@@ -44,6 +44,10 @@ Public Class Anime_Add
 
     Private Sub Anime_Add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        If My.Settings.HiddenQueue = True Then
+            Queue.Show()
+        End If
+
         If Main.Mail = Nothing And My.Settings.Mail = "na" Then
             'Dim Login As Form = LoginForm
             'Login.StartPosition = 0
@@ -224,12 +228,19 @@ Public Class Anime_Add
                     '    '    pictureBox4.Enabled = True
                     'Else
                     If Main.RunningQueue = True Then
-                        If CBool(InStr(textBox1.Text, "series/")) Then
+                        If CBool(InStr(textBox1.Text, "series/")) And My.Settings.HiddenQueue = False Then
                             Debug.WriteLine("Queue_Block_series")
                             'textBox1.Text = "URL"
                             StatusLabel.Text = "Status: Series add blocked, queue is running!"
                             Pause(5)
                             StatusLabel.Text = "Status: Idle"
+                        ElseIf CBool(InStr(textBox1.Text, "series/")) And My.Settings.HiddenQueue = True Then
+                            Debug.WriteLine("Queue_adding_series")
+                            'textBox1.Text = "URL"
+                            StatusLabel.Text = "Status: Series added to queue."
+                            'Pause(5)
+                            'StatusLabel.Text = "Status: Idle"
+                            Main.LoadBrowser(textBox1.Text)
                         Else
                             Debug.WriteLine("Queue_Block")
                             Main.ListBoxList.Add(textBox1.Text)

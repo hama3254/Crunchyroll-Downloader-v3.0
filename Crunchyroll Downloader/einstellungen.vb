@@ -19,6 +19,7 @@ Public Class Einstellungen
     Public CR_SoftSubsTemp As New List(Of String)
     Dim TempCheckSubMod1 As Boolean = False
     Dim TempVTTStyle As Boolean = False
+    Dim TempMultiDL As Boolean = False
 
     Private Sub Einstellungen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -33,6 +34,8 @@ Public Class Einstellungen
 
         Manager.Owner = Me
         Me.StyleManager = Manager
+
+        CB_HideQueue.Checked = My.Settings.HiddenQueue
 
         CB_OverrideDub.Checked = My.Settings.OverrideDub
         CB_Cap.Checked = My.Settings.Captions
@@ -545,14 +548,10 @@ Public Class Einstellungen
         Main.ErrorTolerance = CInt(NumericUpDown2.Value)
         My.Settings.ErrorTolerance = Main.ErrorTolerance
 
-        If ListViewAdd_True.Checked = True Then
-            Main.UseQueue = True
-            My.Settings.QueueMode = Main.UseQueue
-        ElseIf ListViewAdd_True.Checked = False Then
-            Main.UseQueue = False
-            My.Settings.QueueMode = Main.UseQueue
-        End If
+        Main.UseQueue = ListViewAdd_True.Checked
+        My.Settings.QueueMode = Main.UseQueue
 
+        My.Settings.HiddenQueue = CB_HideQueue.Checked
 
         Main.SoftSubs.Clear()
         Main.SoftSubs.AddRange(CR_SoftSubsTemp)
@@ -964,6 +963,18 @@ Public Class Einstellungen
     Private Sub CB_vttStyle_CheckedChanged(sender As Object, e As EventArgs) Handles CB_vttStyle.CheckedChanged
         If CB_vttStyle.Enabled = True Then
             TempVTTStyle = CB_vttStyle.Checked
+        End If
+    End Sub
+
+    Private Sub CB_HideQueue_CheckedChanged(sender As Object, e As EventArgs) Handles CB_HideQueue.CheckedChanged
+        If CB_HideQueue.Checked = True Then
+            TempMultiDL = ListViewAdd_True.Checked
+            ListViewAdd_True.Checked = True
+            ListViewAdd_True.Enabled = False
+
+        Else
+            ListViewAdd_True.Checked = TempMultiDL
+            ListViewAdd_True.Enabled = True
         End If
     End Sub
 

@@ -1165,8 +1165,9 @@ Public Class Main
 
             Dim NewAPI As String = "https://cr-play-service.prd.crunchyrollsvc.com/v1/" + page_guid + "/console/switch/play"
             Debug.WriteLine("NewAPI: " + NewAPI)
-
-            Dim NewAPIData As String = CurlAuthNew(NewAPI, "", Loc_AuthToken)
+            'MsgBox(Loc_AuthToken)
+            Dim UserAgent As String = " -H " + Chr(34) + "User-Agent: Crunchyroll/1.8.0 Nintendo Switch/12.3.12.0 UE4/4.27" + Chr(34)
+            Dim NewAPIData As String = CurlAuthNew(NewAPI, "", UserAgent + Loc_AuthToken)
             'Debug.WriteLine("NewAPIData: " + NewAPIData)
 
 

@@ -117,10 +117,14 @@ Module GetData
         If CurlOutput = Nothing And CurlError = Nothing Then
             Throw New System.Exception("Error - Getting" + Sender + vbNewLine + CurlError)
             Return Nothing
+        ElseIf CBool(InStr(CurlOutput, "HTTP Status: 4")) Then
+            Return CurlOutput
+        ElseIf CBool(InStr(CurlError, "HTTP Status: 4")) Then
+            Return CurlError
         ElseIf CurlError = Nothing Then
             Dim OutputBody() As String = CurlOutput.Split(New String() {"HTTP Status:"}, System.StringSplitOptions.RemoveEmptyEntries)
-            Return OutputBody(0)
-            'Return CurlOutput
+            Dim Output As String = OutputBody(0)
+            Return Output
         Else
             Return CurlError
         End If
@@ -261,7 +265,7 @@ Module GetData
             Return Nothing
         ElseIf CBool(InStr(CurlOutput, "HTTP Status: 4")) Then
             Debug.WriteLine(CurlOutput)
-            Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
+            Throw New System.Exception("Error - Getting" + vbNewLine + CurlOutput)
             Return Nothing
         Else
             Return CurlOutput

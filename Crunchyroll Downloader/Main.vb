@@ -3042,7 +3042,7 @@ Public Class Main
                 ProcessLoading(Url, Auth2, Loc_CR_Cookies, RT_count)
             Else
                 Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
-
+                'MsgBox(v1Token)
                 If CBool(InStr(v1Token, "HTTP Status: 401")) = True Then
                     MsgBox("CR reported :" + vbNewLine + v1Token, MsgBoxStyle.Exclamation, "CR-Error 401")
                     LoginForm.ShowDialog()
@@ -3154,7 +3154,7 @@ Public Class Main
 
                 Exit Sub
             ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
-                MsgBox(ObjectJson)
+                'MsgBox(ObjectJson)
                 SetStatusLabel("Status: Failed - no video, check CR login")
                 Me.Text = "Status: Failed - no video, check CR login"
                 Debug.WriteLine("Status: Failed - no video, check CR login")

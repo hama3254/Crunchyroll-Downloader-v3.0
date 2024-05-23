@@ -155,20 +155,28 @@
     <Compile Include="LoginForm.Designer.vb">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="LoginForm.vb" />
+    <Compile Include="LoginForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ffmpeg_option.Designer.vb">
       <DependentUpon>ffmpeg_option.vb</DependentUpon>
     </Compile>
-    <Compile Include="ffmpeg_option.vb" />
+    <Compile Include="ffmpeg_option.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CheckBoxComboBox.Designer.vb">
       <DependentUpon>CheckBoxComboBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="CheckBoxComboBox.vb" />
+    <Compile Include="CheckBoxComboBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GetData.vb" />
     <Compile Include="queue.Designer.vb">
       <DependentUpon>queue.vb</DependentUpon>
     </Compile>
-    <Compile Include="queue.vb" />
+    <Compile Include="queue.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Settings.vb" />
     <Compile Include="Trackbar.Designer.vb">
       <DependentUpon>Trackbar.vb</DependentUpon>
@@ -185,11 +193,15 @@
     <Compile Include="Anime_Add.Designer.vb">
       <DependentUpon>Anime_Add.vb</DependentUpon>
     </Compile>
-    <Compile Include="Anime_Add.vb" />
+    <Compile Include="Anime_Add.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="einstellungen.Designer.vb">
       <DependentUpon>einstellungen.vb</DependentUpon>
     </Compile>
-    <Compile Include="einstellungen.vb" />
+    <Compile Include="einstellungen.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Browser.Designer.vb">
       <DependentUpon>Browser.vb</DependentUpon>
     </Compile>
@@ -200,11 +212,15 @@
     <Compile Include="ErrorDialog.Designer.vb">
       <DependentUpon>ErrorDialog.vb</DependentUpon>
     </Compile>
-    <Compile Include="ErrorDialog.vb" />
+    <Compile Include="ErrorDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Main.designer.vb">
       <DependentUpon>Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Main.vb" />
+    <Compile Include="Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -219,7 +235,9 @@
     <Compile Include="CRD_List_Item.Designer.vb">
       <DependentUpon>CRD_List_Item.vb</DependentUpon>
     </Compile>
-    <Compile Include="CRD_List_Item.vb" />
+    <Compile Include="CRD_List_Item.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Subfolder.vb" />
   </ItemGroup>
   <ItemGroup>

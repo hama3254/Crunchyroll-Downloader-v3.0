@@ -15,7 +15,6 @@ Imports System.Runtime.InteropServices
 Imports MyProvider.MyProvider
 Imports Microsoft.Web.WebView2.Core
 Imports Crunchyroll_Downloader.CRD_Classes
-Imports System.Runtime.CompilerServices
 
 Public Class Main
     Inherits MetroForm
@@ -1069,11 +1068,7 @@ Public Class Main
 
                 ObjectJson = CurlAuthNew(ObjectsURL, Loc_CR_Cookies, Loc_AuthToken)
 
-                'Filter JSON esqaped characters
-                'Debug.WriteLine(Date.Now.ToString + "before:" + ObjectJson)
-                'Debug.WriteLine("1750: " + ObjectJson)
                 ObjectJson = CleanJSON(ObjectJson)
-                'Debug.WriteLine(Date.Now.ToString + "after:" + ObjectJson)
 
                 Dim DubsAvalible As New List(Of CR_MediaVersion)
 
@@ -1166,9 +1161,46 @@ Public Class Main
             Dim NewAPI As String = "https://cr-play-service.prd.crunchyrollsvc.com/v1/" + page_guid + "/console/switch/play"
             Debug.WriteLine("NewAPI: " + NewAPI)
             'MsgBox(Loc_AuthToken)
-            Dim UserAgent As String = " -H " + Chr(34) + "User-Agent: Crunchyroll/1.8.0 Nintendo Switch/12.3.12.0 UE4/4.27" + Chr(34)
-            Dim NewAPIData As String = CurlAuthNew(NewAPI, "", UserAgent + Loc_AuthToken)
+            'Dim UserAgent As String = " -H " + Chr(34) + "User-Agent: Crunchyroll/1.8.0 Nintendo Switch/12.3.12.0 UE4/4.27" + Chr(34)
+            Dim UserAgent As String = Chr(34) + "Crunchyroll/1.8.0 Nintendo Switch/12.3.12.0 UE4/4.27" + Chr(34)
+
+            Dim NewAPIData As String = CurlAuthNew(NewAPI, "", Loc_AuthToken, False, UserAgent)
             'Debug.WriteLine("NewAPIData: " + NewAPIData)
+
+            If CBool(InStr(NewAPIData, "HTTP Status: 420")) Then ' 
+
+                Me.Invoke(New Action(Function() As Object
+                                         SetStatusLabel("Stream limit reached - Bypassing")
+                                         Return Nothing
+                                     End Function))
+
+                'page_guid NewAPIData
+
+                Dim OldToCancel_0 As String() = NewAPIData.Split(New String() {Chr(34) + "token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
+                Dim OldToCancel_1 As String() = OldToCancel_0(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
+                Dim OldToCancel As String = OldToCancel_1(0)
+
+                Dim OldPage_0 As String() = NewAPIData.Split(New String() {Chr(34) + "contentId" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
+                Dim OldPage_1 As String() = OldPage_0(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
+                Dim OldPage As String = OldPage_1(0)
+
+
+                CurlDeleteNew("https://cr-play-service.prd.crunchyrollsvc.com/v1/token/" + OldPage + "/" + OldToCancel, Loc_AuthToken)
+                Debug.WriteLine("Error 420 - delete old Token: " + OldToCancel + " for " + OldPage)
+                Pause(3)
+                NewAPIData = CurlAuthNew(NewAPI, "", Loc_AuthToken, False, UserAgent)
+            End If
+
+            If CBool(InStr(NewAPIData, "HTTP Status: 420")) Then
+
+                Me.Invoke(New Action(Function() As Object
+                                         SetStatusLabel("Bypassing failed")
+                                         Return Nothing
+                                     End Function))
+
+
+                Throw New System.Exception("Error - Getting" + vbNewLine + "Error 420")
+            End If
 
 
             Dim VideoJSON_New As String = CleanJSON(NewAPIData)
@@ -1591,7 +1623,11 @@ Public Class Main
 
             Else
 
-                Dim str As String = CurlAuthNew(CR_URI_Master(0), "", Loc_AuthToken)
+                Dim str0 As String = CurlAuthNew(CR_URI_Master(0), "", Loc_AuthToken)
+
+                Dim str1() As String = str0.Split(New String() {""}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                Dim str As String = str1(0)
 
                 If CBool(InStr(str, "curl:")) = True Or str = Nothing Then
 
@@ -1646,6 +1682,8 @@ Public Class Main
 
 
                 Dim localm3u8 As String = CurlAuthNew(ffmpeg_url_3.Trim(), "", Loc_AuthToken)
+
+
                 Dim localfile As String = Application.StartupPath + "\" + GeräteID2() + ".m3u8"
 
                 Dim utf8WithoutBom As New System.Text.UTF8Encoding(False)
@@ -1665,8 +1703,21 @@ Public Class Main
 
 #End Region
 
+#Region "Cancel Token"
+            'page_guid NewAPIData
+
+
+            Dim ToCancel_0 As String() = NewAPIData.Split(New String() {Chr(34) + "token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
+                Dim ToCancel_1 As String() = ToCancel_0(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
+                Dim ToCancel As String = ToCancel_1(0)
+                CurlDeleteNew("https://cr-play-service.prd.crunchyrollsvc.com/v1/token/" + page_guid + "/" + ToCancel, Loc_AuthToken)
+                Debug.WriteLine("Delete Token: " + ToCancel + " for " + page_guid + " - " + CR_FilenName)
+
+
+#End Region
+
 #Region "GetSoftsubs"
-            Dim SoftSubsAvailable As New List(Of String)
+                Dim SoftSubsAvailable As New List(Of String)
             'Dim CCAvailable As New List(Of String)
 
             Dim SoftSubsList As New List(Of CR_Subtiles)
@@ -2992,15 +3043,16 @@ Public Class Main
             Else
                 Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
 
-                If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "401")) = True Then
-                    MsgBox("CR reported error 401, this may mean incorrect login detail, please try again.", MsgBoxStyle.Exclamation, "CR-Error 401")
+                If CBool(InStr(v1Token, "HTTP Status: 401")) = True Then
+                    MsgBox("CR reported :" + vbNewLine + v1Token, MsgBoxStyle.Exclamation, "CR-Error 401")
                     LoginForm.ShowDialog()
                     Exit Sub
                 End If
 
-                If CBool(InStr(v1Token, "curl:")) = True And CBool(InStr(v1Token, "400")) = True Then
-                    MsgBox("CR reported error 400, idk why tbh", MsgBoxStyle.Exclamation, "CR-Error 400")
-                    SetStatusLabel("Status: Unknown error. #3038")
+                If CBool(InStr(v1Token, "HTTP Status: 400")) = True Then
+                    'MsgBox("CR reported error 400, idk why tbh", MsgBoxStyle.Exclamation, "CR-Error 400")
+                    'SetStatusLabel("Status: Unknown error. #3038")
+                    MsgBox("CR reported :" + vbNewLine + v1Token, MsgBoxStyle.Exclamation, "CR-Error 400")
                     Exit Sub
                 End If
 
@@ -3085,14 +3137,15 @@ Public Class Main
                 ObjectJson = CurlAuthNew(ObjectsUrl, Loc_CR_Cookies, Auth2)
 
             Catch ex As Exception
-
-                If CBool(InStr(ex.ToString, "Error - Getting")) Then
-                    MsgBox("Error invalid CR respone")
-                    Exit Sub
-                Else
-                    MsgBox("Error processing data")
-                    Exit Sub
-                End If
+                MsgBox(ex.ToString)
+                Exit Sub
+                'If CBool(InStr(ex.ToString, "Error - Getting")) Then
+                '    MsgBox("Error invalid CR respone")
+                '    Exit Sub
+                'Else
+                '    MsgBox("Error processing data")
+                '    Exit Sub
+                'End If
             End Try
 
 
@@ -3101,7 +3154,7 @@ Public Class Main
 
                 Exit Sub
             ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
-
+                MsgBox(ObjectJson)
                 SetStatusLabel("Status: Failed - no video, check CR login")
                 Me.Text = "Status: Failed - no video, check CR login"
                 Debug.WriteLine("Status: Failed - no video, check CR login")

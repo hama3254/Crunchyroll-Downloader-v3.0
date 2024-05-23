@@ -81,7 +81,7 @@ Module GetData
         If Main.Curl_insecure = True Then
             cmd = "--insecure "
         End If '-fsSLm 
-        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Settings.User_Agend.Replace("User-Agent: ", "") + Cookies + Auth + Post + " " + Chr(34) + Url + Chr(34)
+        cmd = cmd + "--no-alpn -sSLm 15 -w " + Chr(34) + "\nHTTP Status: %{http_code}\n" + Chr(34) + " -A " + My.Settings.User_Agend.Replace("User-Agent: ", "") + Cookies + Auth + Post + " " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
         'Debug.WriteLine("CurlPost: " + cmd)
         Dim CurlOutput As String = Nothing
@@ -114,31 +114,22 @@ Module GetData
 
         Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
 
-        If CBool(InStr(CurlOutput, "curl:")) = True And CBool(InStr(CurlOutput, "400")) = True Then
-            Return CurlOutput
-        ElseIf CBool(InStr(CurlError, "curl:")) = True And CBool(InStr(CurlError, "401")) = True Then
-            Return CurlError
-        ElseIf CBool(InStr(CurlOutput, "curl:")) = True And CBool(InStr(CurlOutput, "401")) = True Then
-            Return CurlOutput
-        ElseIf CBool(InStr(CurlError, "curl:")) = True And CBool(InStr(CurlError, "400")) = True Then
-            Return CurlError
-        ElseIf CBool(InStr(CurlError, "curl:")) Then
-            Debug.WriteLine(CurlError)
+        If CurlOutput = Nothing And CurlError = Nothing Then
             Throw New System.Exception("Error - Getting" + Sender + vbNewLine + CurlError)
             Return Nothing
-
-        ElseIf CBool(InStr(CurlOutput, "curl:")) Then
-            Debug.WriteLine(CurlOutput)
-            Throw New System.Exception("Error - Getting" + Sender + vbNewLine + CurlError)
-            Return Nothing
+        ElseIf CurlError = Nothing Then
+            Dim OutputBody() As String = CurlOutput.Split(New String() {"HTTP Status:"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Return OutputBody(0)
+            'Return CurlOutput
         Else
-            Return CurlOutput
+            Return CurlError
         End If
+
 
     End Function
 
 
-    Public Function CurlAuthNew(ByVal Url As String, ByVal Cookies As String, ByVal Auth As String, Optional ByVal Test As Boolean = False) As String
+    Public Function CurlAuthNew(ByVal Url As String, ByVal Cookies As String, ByVal Auth As String, Optional ByVal Test As Boolean = False, Optional ByVal UserAgent As String = Chr(34) + "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0" + Chr(34)) As String
         If Test = True Then
             Throw New System.Exception("Error - Getting" + vbNewLine + "Test")
 
@@ -157,7 +148,78 @@ Module GetData
         If Main.Curl_insecure = True Then
             cmd = "--insecure "
         End If
-        cmd = cmd + "--no-alpn -fsSLm 15 -A " + My.Settings.User_Agend.Replace("User-Agent: ", "") + Cookies + Auth + " " + Chr(34) + Url + Chr(34)
+        cmd = cmd + "--no-alpn -sSLm 15 -w " + Chr(34) + "\nHTTP Status: %{http_code}\n" + Chr(34) + " -A " + UserAgent + Cookies + Auth + " " + Chr(34) + Url + Chr(34)
+        Dim Proc As New Process
+        'MsgBox(cmd)
+        Dim CurlOutput As String = Nothing
+        Dim CurlError As String = Nothing
+        ' all parameters required to run the process
+        startinfo.FileName = exepath
+        startinfo.Arguments = cmd
+        startinfo.UseShellExecute = False
+        startinfo.WindowStyle = ProcessWindowStyle.Normal
+        startinfo.RedirectStandardError = True
+        startinfo.RedirectStandardOutput = True
+        startinfo.CreateNoWindow = True
+        startinfo.StandardOutputEncoding = Encoding.UTF8
+        startinfo.StandardErrorEncoding = Encoding.UTF8
+        Proc.StartInfo = startinfo
+        Proc.Start() ' start the process
+        sr = Proc.StandardOutput 'standard error is used by ffmpeg
+        sr2 = Proc.StandardError
+        'sw = proc.StandardInput
+
+        Dim start, finish, pau As Double
+        start = CSng(Microsoft.VisualBasic.DateAndTime.Timer)
+        pau = 5
+        finish = start + pau
+
+        Do
+            CurlOutput = CurlOutput + sr.ReadToEnd
+            CurlError = CurlError + sr2.ReadToEnd
+            'ffmpegOutput2 = sr.ReadLine
+            'Debug.WriteLine(CurlOutput)
+
+        Loop Until Proc.HasExited Or Microsoft.VisualBasic.DateAndTime.Timer < finish
+
+
+        If CBool(InStr(CurlError, "HTTP Status: 420")) Then
+            Return CurlError
+        ElseIf CBool(InStr(CurlOutput, "HTTP Status: 420")) Then
+            Return CurlOutput
+        ElseIf CBool(InStr(CurlError, "HTTP Status: 4")) Then
+            Debug.WriteLine(CurlError)
+            Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
+            Return Nothing
+        ElseIf CBool(InStr(CurlOutput, "HTTP Status: 4")) Then
+            Debug.WriteLine(CurlOutput)
+            Throw New System.Exception("Error - Getting" + vbNewLine + CurlOutput)
+            Return Nothing
+        Else
+            Dim OutputBody() As String = CurlOutput.Split(New String() {"HTTP Status:"}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim Output As String = OutputBody(0)
+            Return Output
+        End If
+
+    End Function
+
+    Public Function CurlDeleteNew(ByVal Url As String, ByVal Auth As String, Optional ByVal UserAgent As String = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0") As String
+
+
+
+        Dim exepath As String = Path.Combine(Application.StartupPath, "lib", "curl.exe")
+
+        Dim startinfo As New System.Diagnostics.ProcessStartInfo
+        Dim sr As StreamReader
+        Dim sr2 As StreamReader
+
+
+
+        Dim cmd As String = ""
+        If Main.Curl_insecure = True Then
+            cmd = "--insecure "
+        End If
+        cmd = cmd + "--no-alpn -sSLm 15 -w " + Chr(34) + "\nHTTP Status: %{http_code}\n" + Chr(34) + " -A " + UserAgent + Auth + " -X DELETE " + Chr(34) + Url + Chr(34)
         Dim Proc As New Process
         'MsgBox(cmd)
         Dim CurlOutput As String = Nothing
@@ -193,11 +255,11 @@ Module GetData
 
 
 
-        If CBool(InStr(CurlError, "curl:")) Then
+        If CBool(InStr(CurlError, "HTTP Status: 4")) Then
             Debug.WriteLine(CurlError)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
-        ElseIf CBool(InStr(CurlOutput, "curl:")) Then
+        ElseIf CBool(InStr(CurlOutput, "HTTP Status: 4")) Then
             Debug.WriteLine(CurlOutput)
             Throw New System.Exception("Error - Getting" + vbNewLine + CurlError)
             Return Nothing
@@ -206,8 +268,6 @@ Module GetData
         End If
 
     End Function
-
-
 
 
 #End Region

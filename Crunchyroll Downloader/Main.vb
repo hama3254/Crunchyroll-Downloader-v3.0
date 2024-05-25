@@ -1011,7 +1011,8 @@ Public Class Main
 
 
 
-                Dim ObjectsURL As String = "https://www.crunchyroll.com/content/v2/music/music_videos/" + page_guid_1(0) 'Streams.Replace("music/", "music/music_videos/").Replace("/streams", "")
+                ' Changed from https://www.crunchyroll.com/content/v2/music/music_videos/ to https://beta-api.crunchyroll.com/content/v2/music/music_videos/ to avoid cloudflare triggering
+                Dim ObjectsURL As String = "https://beta-api.crunchyroll.com/content/v2/music/music_videos/" + page_guid_1(0) 'Streams.Replace("music/", "music/music_videos/").Replace("/streams", "")
 
                 page_guid = "music/" + page_guid_1(0)
 
@@ -1030,7 +1031,8 @@ Public Class Main
                 Dim page_guid_0 As String() = WebsiteURL.Split(New String() {"watch/concert/"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim page_guid_1 As String() = page_guid_0(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                Dim ObjectsURL As String = "https://www.crunchyroll.com/content/v2/music/concerts/" + page_guid_1(0) 'Streams.Replace("music/", "music/music_videos/").Replace("/streams", "")
+                ' Changed from https://www.crunchyroll.com/content/v2/music/concerts/ to https://beta-api.crunchyroll.com/content/v2/music/concerts/ to avoid cloudflare triggering
+                Dim ObjectsURL As String = "https://beta-api.crunchyroll.com/content/v2/music/concerts/" + page_guid_1(0) 'Streams.Replace("music/", "music/music_videos/").Replace("/streams", "")
 
                 page_guid = "music/" + page_guid_1(0)
 
@@ -3041,7 +3043,7 @@ Public Class Main
                 Dim Auth2 As String = " -H " + Chr(34) + "Authorization: " + CRBetaBearer + CR_Token.access_token + Chr(34)
                 ProcessLoading(Url, Auth2, Loc_CR_Cookies, RT_count)
             Else
-                Dim v1Token As String = CurlPost("https://www.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
+                Dim v1Token As String = CurlPost("https://beta-api.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
                 'MsgBox(v1Token)
                 If CBool(InStr(v1Token, "HTTP Status: 401")) = True Then
                     MsgBox("CR reported :" + vbNewLine + v1Token, MsgBoxStyle.Exclamation, "CR-Error 401")
@@ -3100,8 +3102,8 @@ Public Class Main
             Dim SeriesUrlBuilder() As String = url.Split(New String() {"series/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim SeriesUrlBuilder2() As String = SeriesUrlBuilder(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-
-            Dim SeriesUrl As String = "https://www.crunchyroll.com/content/v2/cms/series/" + SeriesUrlBuilder2(0) + "/seasons?preferred_audio_language=" + DubSprache.CR_Value + "&locale=" + locale '+ "&Signature=" + signature2(0) + "&Policy=" + policy2(0) + "&Key-Pair-Id=" + key_pair_id2(0)
+            ' Changed from https://www.crunchyroll.com/content/v2/cms/series/ to https://beta-api.crunchyroll.com/content/v2/cms/series/ to avoid cloudflare triggering
+            Dim SeriesUrl As String = "https://beta-api.crunchyroll.com/content/v2/cms/series/" + SeriesUrlBuilder2(0) + "/seasons?preferred_audio_language=" + DubSprache.CR_Value + "&locale=" + locale '+ "&Signature=" + signature2(0) + "&Policy=" + policy2(0) + "&Key-Pair-Id=" + key_pair_id2(0)
             Debug.WriteLine(SeriesUrl)
             'MsgBox(SeriesUrl)
             GetBetaSeasons(url, SeriesUrl, Auth2)
@@ -3119,8 +3121,8 @@ Public Class Main
             Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
-
-            ObjectsUrl = "https://www.crunchyroll.com/content/v2/cms/objects/" + ObjectsURLBuilder4(0) + "?preferred_audio_language=" + DubSprache.CR_Value + "&locale=" + locale
+            ' Changed from https://www.crunchyroll.com/content/v2/cms/objects/ to https://beta-api.crunchyroll.com/content/v2/cms/objects/ to avoid cloudflare triggering
+            ObjectsUrl = "https://beta-api.crunchyroll.com/content/v2/cms/objects/" + ObjectsURLBuilder4(0) + "?preferred_audio_language=" + DubSprache.CR_Value + "&locale=" + locale
             'End Using
             'MsgBox(ObjectsUrl)
 
@@ -3190,9 +3192,9 @@ Public Class Main
             Dim ObjectsURLBuilder3() As String = url.Split(New String() {"musicvideo/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-
-
-            ObjectsUrl = "https://www.crunchyroll.com/content/v2/music/music_videos/" + ObjectsURLBuilder4(0) + "?locale=" + locale
+ 
+            ' Changed from https://www.crunchyroll.com/content/v2/music/music_videos/ to https://beta-api.crunchyroll.com/content/v2/music/music_videos/ to avoid cloudflare triggering
+            ObjectsUrl = "https://beta-api.crunchyroll.com/content/v2/music/music_videos/" + ObjectsURLBuilder4(0) + "?locale=" + locale
 
             Debug.WriteLine("ObjectsUrl: " + ObjectsUrl)
 
@@ -3229,8 +3231,8 @@ Public Class Main
             Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"/content/v2/music/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-
-            StreamsUrl = "https://www.crunchyroll.com/content/v2/music/" + StreamsUrlBuilder2(0) + "/streams?locale=" + locale
+            ' Changed from https://www.crunchyroll.com/content/v2/music/ to https://beta-api.crunchyroll.com/content/v2/music/ to avoid cloudflare triggering
+            StreamsUrl = "https://beta-api.crunchyroll.com/content/v2/music/" + StreamsUrlBuilder2(0) + "/streams?locale=" + locale
 
 
             GetCRVideoProxy(StreamsUrl, Auth2, url, RT_Count)
@@ -3245,8 +3247,8 @@ Public Class Main
             Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
 
-
-            ObjectsUrl = "https://www.crunchyroll.com/content/v2/music/concerts/" + ObjectsURLBuilder4(0) + "?locale=" + locale
+            ' Changed from https://www.crunchyroll.com/content/v2/music/concerts/ to https://beta-api.crunchyroll.com/content/v2/music/concerts/ to avoid cloudflare triggering
+            ObjectsUrl = "https://beta-api.crunchyroll.com/content/v2/music/concerts/" + ObjectsURLBuilder4(0) + "?locale=" + locale
 
             Debug.WriteLine("ObjectsUrl: " + ObjectsUrl)
 
@@ -3283,8 +3285,8 @@ Public Class Main
             Dim StreamsUrlBuilder() As String = ObjectJson.Split(New String() {"/content/v2/music/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim StreamsUrlBuilder2() As String = StreamsUrlBuilder(1).Split(New String() {"/streams"}, System.StringSplitOptions.RemoveEmptyEntries)
 
-
-            StreamsUrl = "https://www.crunchyroll.com/content/v2/music/" + StreamsUrlBuilder2(0) + "/streams?locale=" + locale
+            ' Changed from https://www.crunchyroll.com/content/v2/music/ to https://beta-api.crunchyroll.com/content/v2/music/ to avoid cloudflare triggering
+            StreamsUrl = "https://beta-api.crunchyroll.com/content/v2/music/" + StreamsUrlBuilder2(0) + "/streams?locale=" + locale
 
 
             GetCRVideoProxy(StreamsUrl, Auth2, url, RT_Count)

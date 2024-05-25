@@ -469,7 +469,7 @@ Public Class Anime_Add
             ' Dim JsonUrl As String = "https://www.crunchyroll.com/content/v2/cms/seasons/" + Main.CR_MassSeasons.Item(CB_Season.SelectedIndex).guid + "/episodes?preferred_audio_language=" + Main.DubSprache.CR_Value + "&locale=" + Main.locale
 
             ' Changed from https://www.crunchyroll.com/content/v2/cms/seasons/ to https://beta-api.crunchyroll.com/content/v2/cms/seasons/ to avoid cloudflare triggering
-            Dim JsonUrl As String = "https://www.crunchyroll.com/content/v2/cms/seasons/" + guid + "/episodes?preferred_audio_language=" + Main.DubSprache.CR_Value + "&locale=" + Main.locale
+            Dim JsonUrl As String = "https://beta-api.crunchyroll.com/content/v2/cms/seasons/" + guid + "/episodes?preferred_audio_language=" + Main.DubSprache.CR_Value + "&locale=" + Main.locale
 
 
             Dim Loc_CR_Cookies = "" 'No more cookies " -H " + Chr(34) + Main.CR_Cookies.Replace(Chr(34), "").Replace(" -H ", "") + Chr(34)

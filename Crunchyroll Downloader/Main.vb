@@ -1113,26 +1113,14 @@ Public Class Main
                                                     Case "audio_locale"
                                                         CR_audio_locale = SubEntry.Value.ToString.Replace(Chr(34), "").Replace("\", "").Replace("/", "").Replace(":", "")
                                                     Case "versions" 'each record is inside the entries array
-                                                        For Each VersionEntry As JObject In item.Values
+                                                        Dim VersionSubData As List(Of JToken) = SubItem.Value.Item("versions").Children().ToList
 
-                                                            Dim VideoSubData As List(Of JToken) = VersionEntry.Children().ToList
-                                                            Dim guid As String = Nothing
-                                                            Dim audio_locale As String = Nothing
+                                                        For Each Version As JToken In VersionSubData
+                                                            Dim guid As String = Version("guid").Value(Of String)()
+                                                            Dim audio_locale As String = Version("audio_locale").Value(Of String)()
 
-                                                            For Each VideoSubItem As JProperty In VideoSubData
-                                                                Select Case VideoSubItem.Name
-                                                                    Case "audio_locale"
-                                                                        audio_locale = VideoSubItem.Value.ToString
-                                                                    Case "guid"
-                                                                        guid = VideoSubItem.Value.ToString
-                                                                        'Debug.WriteLine(guid)
-                                                                End Select
-                                                            Next
-
-                                                            If audio_locale = Nothing Or guid = Nothing Then
-                                                            Else
-                                                                DubsAvalible.Add(New CR_MediaVersion(audio_locale, guid))
-                                                            End If
+                                                            ' Ausgabe der Werte
+                                                            DubsAvalible.Add(New CR_MediaVersion(audio_locale, guid))
                                                         Next
                                                 End Select
                                             Next '
@@ -1145,13 +1133,18 @@ Public Class Main
 #Region "m3u8 suche"
 
 
-
 #Region "Check for dub override"
+
                 If My.Settings.OverrideDub = True And CR_audio_locale = DubSprache.CR_Value = False Then 'einstellung ein + kein musikvideo oder Konzert
                     'MsgBox("Trigger on!")
                     For i As Integer = 0 To DubsAvalible.Count - 1
                         If DubsAvalible(i).AudioLang = DubSprache.CR_Value Then
-                            page_guid = DubsAvalible(i).guid
+                            Dim ind As Integer = i
+                            page_guid = DubsAvalible(ind).guid
+                            Me.Invoke(New Action(Function() As Object
+                                                     SetStatusLabel("Status: switch " + CR_audio_locale + "to " + DubsAvalible(ind).AudioLang)
+                                                     Return Nothing
+                                                 End Function))
                         End If
                     Next
 

@@ -52,6 +52,7 @@ Partial Class Main
         Me.LoginFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Btn_Queue = New System.Windows.Forms.Button()
+        Me.ErrorDiaTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -160,7 +161,7 @@ Partial Class Main
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.SaveThumbnailAsImageToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.DummyItemToolStripMenuItem, Me.AudioOnlyQualityToolStripMenuItem, Me.LoginFormToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QueueToolStripMenuItem, Me.SaveThumbnailAsImageToolStripMenuItem, Me.ToggleDebugModeToolStripMenuItem, Me.CheckCRBetaTokenToolStripMenuItem, Me.Timer3OffToolStripMenuItem, Me.ThreadCount, Me.CRCookieToolStripMenuItem, Me.UrlJsonsToolStripMenuItem, Me.DummyItemToolStripMenuItem, Me.AudioOnlyQualityToolStripMenuItem, Me.LoginFormToolStripMenuItem, Me.ErrorDiaTestToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
         '
@@ -235,6 +236,11 @@ Partial Class Main
         Me.Btn_Queue.Name = "Btn_Queue"
         Me.Btn_Queue.UseVisualStyleBackColor = False
         '
+        'ErrorDiaTestToolStripMenuItem
+        '
+        Me.ErrorDiaTestToolStripMenuItem.Name = "ErrorDiaTestToolStripMenuItem"
+        resources.ApplyResources(Me.ErrorDiaTestToolStripMenuItem, "ErrorDiaTestToolStripMenuItem")
+        '
         'Main
         '
         Me.ApplyImageInvert = True
@@ -293,4 +299,5 @@ Partial Class Main
     Friend WithEvents SaveThumbnailAsImageToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AudioOnlyQualityToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents LoginFormToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ErrorDiaTestToolStripMenuItem As ToolStripMenuItem
 End Class

@@ -69,6 +69,7 @@ Public Class Main
     Public MergeSubsFormat As String = "mov_text"
     Public DlSoftSubsRDY As Boolean = True
     Public DialogTaskString As String
+    Public IgnoreErrorDia As Boolean = False
     'Dim NewAPIString1 As String
     'Dim NewAPIString2 As String
 
@@ -1703,16 +1704,16 @@ Public Class Main
 
 
             Dim ToCancel_0 As String() = NewAPIData.Split(New String() {Chr(34) + "token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
-                Dim ToCancel_1 As String() = ToCancel_0(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
-                Dim ToCancel As String = ToCancel_1(0)
-                CurlDeleteNew("https://cr-play-service.prd.crunchyrollsvc.com/v1/token/" + page_guid + "/" + ToCancel, Loc_AuthToken)
-                Debug.WriteLine("Delete Token: " + ToCancel + " for " + page_guid + " - " + CR_FilenName)
+            Dim ToCancel_1 As String() = ToCancel_0(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
+            Dim ToCancel As String = ToCancel_1(0)
+            CurlDeleteNew("https://cr-play-service.prd.crunchyrollsvc.com/v1/token/" + page_guid + "/" + ToCancel, Loc_AuthToken)
+            Debug.WriteLine("Delete Token: " + ToCancel + " for " + page_guid + " - " + CR_FilenName)
 
 
 #End Region
 
 #Region "GetSoftsubs"
-                Dim SoftSubsAvailable As New List(Of String)
+            Dim SoftSubsAvailable As New List(Of String)
             'Dim CCAvailable As New List(Of String)
 
             Dim SoftSubsList As New List(Of CR_Subtiles)
@@ -1989,38 +1990,12 @@ Public Class Main
                 MsgBox(ex.ToString, MsgBoxStyle.Information)
             ElseIf CBool(InStr(ex.ToString, "Error - Getting")) Then
 
-                MsgBox(ex.ToString)
-                'If RT_count = 0 Then
-                '    If File.Exists("cookies.txt") = True Then
-                '        MsgBox("Request refused, try a new cookies.txt", MsgBoxStyle.Exclamation)
-                '        Exit Sub
-                '    End If
-                '    Me.Invoke(New Action(Function() As Object
-                '                             Anime_Add.StatusLabel.Text = "Browser reset..."
-                '                             Me.Text = "Browser reset..."
-                '                             ResoBackString = Nothing
-                '                             Me.Invalidate()
-                '                             Return Nothing
-                '                         End Function))
+                Dim OutputBody() As String = ex.ToString.Split(New String() {"HTTP Status:"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim Output As String = OutputBody(0)
+                Dim Status As String = OutputBody(1)
+                Error_msg.ShowErrorDia(Output, "CR returnd : HTTP Status - " + Status)
+                'MsgBox(ex.ToString)
 
-                '    If Application.OpenForms().OfType(Of Browser).Any = True Then
-                '        Browser.Close()
-                '        Startseite = WebsiteURL
-                '        Pause(5)
-                '        UserBowser = False
-                '        Browser.Show()
-                '        'Anime_Add.btn_dl.Cursor = Cursors.Default
-                '        'Anime_Add.btn_dl.BackgroundImage = My.Resources.main_button_download_default
-                '    End If
-
-                '    'Navigate(WebsiteURL)
-                '    'Pause(5)
-                '    'LoadBrowser(WebsiteURL, 1)
-                '    Exit Sub
-                'End If
-                ' MsgBox(ex.ToString)
-                ' b = False
-                ' Navigate(WebsiteURL)
             Else
                 MsgBox(ex.ToString, MsgBoxStyle.Information)
             End If
@@ -3150,11 +3125,18 @@ Public Class Main
                 Exit Sub
             ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
                 'MsgBox(ObjectJson)
+
+                Error_msg.ShowErrorDia(ObjectJson, "Status: Failed - no video, check CR login", True)
+
                 SetStatusLabel("Status: Failed - no video, check CR login")
                 Me.Text = "Status: Failed - no video, check CR login"
-                Debug.WriteLine("Status: Failed - no video, check CR login")
+                'Debug.WriteLine("Status: Failed - no video, check CR login")
+                If IgnoreErrorDia = True Then
+                    IgnoreErrorDia = False
+                Else
+                    Exit Sub
+                End If
 
-                Exit Sub
             End If
 
             Try
@@ -3405,6 +3387,10 @@ Public Class Main
 
     Private Sub LoginFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoginFormToolStripMenuItem.Click
         LoginForm.ShowDialog()
+    End Sub
+
+    Private Sub ErrorDiaTestToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ErrorDiaTestToolStripMenuItem.Click
+        Error_msg.ShowErrorDia("Error-Error", "CR returnd : HTTP Status - " + "400")
     End Sub
 
 

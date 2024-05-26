@@ -549,6 +549,12 @@
   <data name="&gt;&gt;LoginFormToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;ErrorDiaTestToolStripMenuItem.Name" xml:space="preserve">
+    <value>ErrorDiaTestToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;ErrorDiaTestToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Main</value>
   </data>
@@ -627,8 +633,14 @@
   <data name="LoginFormToolStripMenuItem.Text" xml:space="preserve">
     <value>Login Form</value>
   </data>
+  <data name="ErrorDiaTestToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>233, 22</value>
+  </data>
+  <data name="ErrorDiaTestToolStripMenuItem.Text" xml:space="preserve">
+    <value>ErrorDiaTest</value>
+  </data>
   <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 268</value>
+    <value>234, 290</value>
   </data>
   <data name="&gt;&gt;ContextMenuStrip1.Name" xml:space="preserve">
     <value>ContextMenuStrip1</value>

@@ -152,6 +152,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CRD-Classes.vb" />
+    <Compile Include="Error_msg.Designer.vb">
+      <DependentUpon>Error_msg.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Error_msg.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LoginForm.Designer.vb">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </Compile>
@@ -241,6 +247,10 @@
     <Compile Include="Subfolder.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Error_msg.resx">
+      <DependentUpon>Error_msg.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </EmbeddedResource>
@@ -392,6 +402,7 @@
     <Content Include="bin\x86\Debug\Lib\swiftshader\libEGL.dll" />
     <Content Include="bin\x86\Debug\Lib\swiftshader\libGLESv2.dll" />
     <Content Include="icon.ico" />
+    <None Include="Resources\error_dis.png" />
     <None Include="Resources\BG.png" />
     <None Include="Resources\ffmpeg_OK_cL.png" />
     <None Include="Resources\ffmpeg_OK_cL_hover.png" />

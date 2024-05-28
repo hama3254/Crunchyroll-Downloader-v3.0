@@ -13,7 +13,6 @@ Imports System.ComponentModel
 Imports Newtonsoft.Json.Linq
 Imports System.Runtime.InteropServices
 Imports MyProvider.MyProvider
-Imports Microsoft.Web.WebView2.Core
 Imports Crunchyroll_Downloader.CRD_Classes
 
 Public Class Main
@@ -39,15 +38,12 @@ Public Class Main
     Public Url_locale As String = Nothing
 
     Public LoadingUrl As String = ""
-    Public LoadedUrls As New List(Of CoreWebView2WebResourceRequest)
-
     Public Manager As New MetroStyleManager
     Public DarkModeValue As Boolean = False
     Public invalids As Char() = System.IO.Path.GetInvalidFileNameChars()
     Dim ServerThread As Thread
     Public KodiNaming As Boolean = False
     Public ErrorTolerance As Integer = 0
-    Public CookieList As New List(Of CoreWebView2Cookie)
     Public HTMLString As String = My.Resources.Startuphtml
     Public ListBoxList As New List(Of String)
     Public RunningDownloads As Integer = 0
@@ -111,7 +107,6 @@ Public Class Main
     Public GeckoLogFile As String = Nothing
     Dim SoftSubsString As String
     Dim CR_Unlock_Error As String
-    Public Startseite As String = "https://www.crunchyroll.com/"
     Dim SubSprache2 As String
     'Dim URL_DL As String
     'Dim Pfad_DL As String
@@ -218,19 +213,6 @@ Public Class Main
         Btn_add.Image = My.Resources.main_add
     End Sub
 
-    Private Sub Btn_Browser_MouseEnter(sender As Object, e As EventArgs) Handles Btn_Browser.MouseEnter, Btn_Browser.GotFocus
-
-        If Manager.Theme = MetroThemeStyle.Dark Then
-            Btn_Browser.Image = My.Resources.main_browser_invert_dark
-        Else
-            Btn_Browser.Image = My.Resources.main_browser_invert
-        End If
-    End Sub
-
-    Private Sub Btn_Browser_MouseLeave(sender As Object, e As EventArgs) Handles Btn_Browser.MouseLeave, Btn_Browser.LostFocus
-        Btn_Browser.Image = My.Resources.main_browser
-    End Sub
-
     Private Sub Btn_Settings_MouseEnter(sender As Object, e As EventArgs) Handles Btn_Settings.MouseEnter, Btn_Settings.GotFocus
         If Manager.Theme = MetroThemeStyle.Dark Then
             Btn_Settings.Image = My.Resources.main_setting_invert_dark
@@ -317,8 +299,8 @@ Public Class Main
         TheTextBox.Width = Me.Width - 2
         Btn_Close.Location = New Point(Me.Width - 36, 1)
         Btn_min.Location = New Point(Me.Width - 67, 1)
-        Btn_Settings.Location = New Point(Me.Width - 165, 17)
-        Btn_Queue.Location = New Point(Me.Width - 265, 17)
+        Btn_Settings.Location = New Point(Me.Width - 200, 17)
+        'Btn_Queue.Location = New Point(Me.Width - 265, 17)
         Try
             Panel1.AutoScrollPosition = New Point(0, 0)
 
@@ -466,9 +448,6 @@ Public Class Main
 
 
         DefaultSubCR = My.Settings.DefaultSubCR
-
-        Startseite = My.Settings.Startseite
-
 
         UseQueue = My.Settings.QueueMode
 
@@ -2209,24 +2188,6 @@ Public Class Main
         End If
     End Sub
 
-    Private Sub Btn_Browser_Click(sender As Object, e As EventArgs) Handles Btn_Browser.Click
-
-        'Dim Teststring As String = TheTextBox.Text
-        'TheTextBox.Text = AddScaledBorderAndShadow(Teststring)
-        'Exit Sub
-        'Debug.WriteLine(Date.Now.ToString + "." + Date.Now.Millisecond.ToString)
-        UserBowser = True
-
-        If Application.OpenForms().OfType(Of Browser).Any = True Then
-            Browser.Location = Me.Location
-        Else
-            Browser.Location = Me.Location
-            Browser.Show()
-        End If
-
-
-    End Sub
-
     Public Function RemoveExtraSpaces(input_text As String) As String
         Dim rsRegEx As System.Text.RegularExpressions.Regex
         rsRegEx = New System.Text.RegularExpressions.Regex("\s+")
@@ -2293,60 +2254,6 @@ Public Class Main
     End Sub
 
 
-
-
-#Region "process html"
-    Public Sub ProcessHTML(ByVal document As String, ByVal Address As String, ByVal DocumentTitle As String)
-        Dim localHTML As String = document
-        Debug.WriteLine(Date.Now.ToString + "." + Date.Now.Millisecond.ToString)
-        Debug.WriteLine(Address)
-
-        If b = True Then
-            LoadedUrls.Clear()
-            Grapp_RDY = True
-            Debug.WriteLine("Just Browsing, exiting...")
-            'Debug.WriteLine("Just Browsing, exiting... for real...")
-            Exit Sub
-        End If
-        'MsgBox("loaded!")
-        If CBool(InStr(Address, "crunchyroll.com")) Then
-            WebbrowserURL = Address
-
-
-        End If
-        'End If
-    End Sub
-
-
-
-
-#End Region
-
-
-
-    Public Sub Navigate(ByVal Url As String)
-        If Application.OpenForms().OfType(Of Browser).Any = True Then
-            If InvokeRequired = True Then
-                Me.Invoke(New Action(Function() As Object
-                                         Browser.WebView2.CoreWebView2.Navigate(Url)
-                                         Return Nothing
-                                     End Function))
-            Else
-                Browser.WebView2.CoreWebView2.Navigate(Url)
-            End If
-        Else
-            If InvokeRequired = True Then
-                Me.Invoke(New Action(Function() As Object
-                                         Browser.Show()
-                                         Browser.WebView2.CoreWebView2.Navigate(Url)
-                                         Return Nothing
-                                     End Function))
-            Else
-                Browser.Show()
-                Browser.WebView2.CoreWebView2.Navigate(Url)
-            End If
-        End If
-    End Sub
 
 #Region "server"
     Dim ListOfThread As New List(Of Thread)
@@ -2748,26 +2655,6 @@ Public Class Main
         Trackbar.ShowDialog()
     End Sub
 
-    Private Sub MsgBoxToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        MsgBox(LoadedUrls.Count.ToString)
-        For i As Integer = 0 To LoadedUrls.Count - 1
-            MsgBox(LoadedUrls(i))
-        Next
-    End Sub
-
-    Private Sub CRCookieToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CRCookieToolStripMenuItem.Click
-
-        'MsgBox(Curl(InputBox("test", "test")))
-        'For i As Integer = 0 To CookieList.Count - 1
-
-
-        'Next
-        MsgBox(CookieList.Count.ToString)
-        'MsgBox(CR_Cookies)
-    End Sub
-
-
-
 
     Private Sub ItemBoundsToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Try
@@ -2935,7 +2822,6 @@ Public Class Main
 
 
         LoadingUrl = Url
-        LoadedUrls.Clear()
         Dim NoBrowser As Boolean = False
         WebbrowserURL = Url
 
@@ -3012,7 +2898,7 @@ Public Class Main
                 ProcessLoading(Url, Auth2, Loc_CR_Cookies, RT_count)
             Else
                 Dim v1Token As String = CurlPost("https://beta-api.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
-                'MsgBox(v1Token)
+                MsgBox(v1Token)
                 If CBool(InStr(v1Token, "HTTP Status: 401")) = True Then
                     MsgBox("CR reported :" + vbNewLine + v1Token, MsgBoxStyle.Exclamation, "CR-Error 401")
                     LoginForm.ShowDialog()
@@ -3107,23 +2993,13 @@ Public Class Main
                 ObjectJson = CurlAuthNew(ObjectsUrl, Loc_CR_Cookies, Auth2)
 
             Catch ex As Exception
-                MsgBox(ex.ToString)
+                Error_msg.ShowErrorDia(ex.ToString, "Status: Error getting ObjectJson", True)
+
+                'MsgBox(ex.ToString)
                 Exit Sub
-                'If CBool(InStr(ex.ToString, "Error - Getting")) Then
-                '    MsgBox("Error invalid CR respone")
-                '    Exit Sub
-                'Else
-                '    MsgBox("Error processing data")
-                '    Exit Sub
-                'End If
             End Try
 
-
-            If CBool(InStr(ObjectJson, "curl:")) = True Then
-                Browser.WebView2.CoreWebView2.Navigate(url)
-
-                Exit Sub
-            ElseIf CBool(InStr(ObjectJson, "videos/")) = False Then
+            If CBool(InStr(ObjectJson, "videos/")) = False Then
                 'MsgBox(ObjectJson)
 
                 Error_msg.ShowErrorDia(ObjectJson, "Status: Failed - no video, check CR login", True)
@@ -3152,7 +3028,7 @@ Public Class Main
 
                 ' Debug.WriteLine(StreamsUrl)
             Catch ex As Exception
-                Browser.WebView2.CoreWebView2.Navigate(url)
+                Error_msg.ShowErrorDia(ex.ToString, "Status: Processing Error", True)
                 Exit Sub
             End Try
 
@@ -3391,6 +3267,38 @@ Public Class Main
 
     Private Sub ErrorDiaTestToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ErrorDiaTestToolStripMenuItem.Click
         Error_msg.ShowErrorDia("Error-Error", "CR returnd : HTTP Status - " + "400")
+    End Sub
+
+    Private Sub BGW_Update_DoWork(sender As Object, e As DoWorkEventArgs) Handles BGW_Update.DoWork
+        Try
+            Dim client0 As New WebClient
+            client0.Encoding = Encoding.UTF8
+            client0.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
+
+            Dim str0 As String = client0.DownloadString("https://api.github.com/repos/hama3254/Crunchyroll-Downloader-v3.0/releases")
+
+            Dim GitHubLastIsPre() As String = str0.Split(New String() {Chr(34) + "prerelease" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim LastNonPreRelase As Integer = 0
+
+            For i As Integer = 1 To GitHubLastIsPre.Count - 1
+                Dim GitHubLastIsPre1() As String = GitHubLastIsPre(i).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
+
+                If GitHubLastIsPre1(0) = "false" Then
+                    LastNonPreRelase = i
+                    Exit For
+                End If
+            Next
+
+            Dim GitHubLastTag() As String = str0.Split(New String() {Chr(34) + "tag_name" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim GitHubLastTag1() As String = GitHubLastTag(LastNonPreRelase).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            'LastVersionString = GitHubLastTag1(0)
+
+            'Debug.WriteLine(GitHubLastTag1(0))
+
+        Catch ex As Exception
+            Debug.WriteLine(ex.ToString)
+        End Try
     End Sub
 
 

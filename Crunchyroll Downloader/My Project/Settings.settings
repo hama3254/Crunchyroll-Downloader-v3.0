@@ -20,9 +20,6 @@
     <Setting Name="TempFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Startseite" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://www.crunchyroll.com/</Value>
-    </Setting>
     <Setting Name="Prefix_S" Type="System.String" Scope="User">
       <Value Profile="(Default)">[default season prefix]</Value>
     </Setting>

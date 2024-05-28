@@ -190,7 +190,7 @@ Public Class Einstellungen
 
         NumericUpDown2.Value = Main.ErrorTolerance
         NumericUpDown1.Value = Main.MaxDL
-        TextBox1.Text = Main.Startseite
+
 
         Try
 
@@ -367,15 +367,9 @@ Public Class Einstellungen
         End If
 
         '  MsgBox(Name_season.Text)
-        If CBool(InStr(TextBox1.Text, "https://")) Then
-            Main.Startseite = TextBox1.Text
-            My.Settings.Startseite = Main.Startseite
-        ElseIf TextBox1.Text = Nothing Then
-            Main.Startseite = "https://www.crunchyroll.com/"
-            My.Settings.Startseite = Main.Startseite
-        Else
 
-        End If
+
+
         If DD_Season_Prefix.Text IsNot "[default season prefix]" Then
             Main.Season_Prefix = DD_Season_Prefix.Text
             My.Settings.Prefix_S = Main.Season_Prefix
@@ -696,7 +690,6 @@ Public Class Einstellungen
         DL_Count_simultaneous.ForeColor = color
         GB_Resolution.ForeColor = color
         GB_Filename_Pre.ForeColor = color
-        GroupBox1.ForeColor = color
         GroupBox2.ForeColor = color
         GroupBox3.ForeColor = color
         GroupBox4.ForeColor = color

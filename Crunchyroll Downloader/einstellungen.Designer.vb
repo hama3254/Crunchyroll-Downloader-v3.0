@@ -38,6 +38,7 @@ Partial Class Einstellungen
         Me.TabPage2 = New MetroFramework.Controls.MetroTabPage()
         Me.GroupBox23 = New System.Windows.Forms.GroupBox()
         Me.GroupBox18 = New System.Windows.Forms.GroupBox()
+        Me.CB_HideQueue = New MetroFramework.Controls.MetroCheckBox()
         Me.ListViewAdd_True = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox16 = New System.Windows.Forms.GroupBox()
         Me.MetroLabel3 = New MetroFramework.Controls.MetroLabel()
@@ -100,9 +101,6 @@ Partial Class Einstellungen
         Me.Chb_Ign_tls = New MetroFramework.Controls.MetroCheckBox()
         Me.http_support = New MetroFramework.Controls.MetroComboBox()
         Me.DarkMode = New MetroFramework.Controls.MetroCheckBox()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Label1 = New MetroFramework.Controls.MetroLabel()
-        Me.TextBox1 = New MetroFramework.Controls.MetroTextBox()
         Me.DL_Count_simultaneous = New System.Windows.Forms.GroupBox()
         Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
         Me.TabControl1 = New MetroFramework.Controls.MetroTabControl()
@@ -144,7 +142,7 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.CB_HideQueue = New MetroFramework.Controls.MetroCheckBox()
+        Me.CB_Update_Pre = New MetroFramework.Controls.MetroCheckBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -163,7 +161,6 @@ Partial Class Einstellungen
         Me.GroupBox6.SuspendLayout()
         CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
         Me.DL_Count_simultaneous.SuspendLayout()
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -373,6 +370,17 @@ Partial Class Einstellungen
         Me.GroupBox18.TabIndex = 32
         Me.GroupBox18.TabStop = False
         Me.GroupBox18.Text = "Multi-Download"
+        '
+        'CB_HideQueue
+        '
+        Me.CB_HideQueue.AutoSize = True
+        Me.CB_HideQueue.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_HideQueue.Location = New System.Drawing.Point(328, 21)
+        Me.CB_HideQueue.Name = "CB_HideQueue"
+        Me.CB_HideQueue.Size = New System.Drawing.Size(112, 19)
+        Me.CB_HideQueue.TabIndex = 6
+        Me.CB_HideQueue.Text = "hidden Queue"
+        Me.CB_HideQueue.UseSelectable = True
         '
         'ListViewAdd_True
         '
@@ -839,7 +847,6 @@ Partial Class Einstellungen
         Me.TabPage1.Controls.Add(Me.GroupBox21)
         Me.TabPage1.Controls.Add(Me.GroupBox6)
         Me.TabPage1.Controls.Add(Me.GroupBox5)
-        Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.DL_Count_simultaneous)
         Me.TabPage1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TabPage1.HorizontalScrollbar = True
@@ -863,7 +870,7 @@ Partial Class Einstellungen
         Me.GroupBox21.Controls.Add(Me.CB_HideSF)
         Me.GroupBox21.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox21.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox21.Location = New System.Drawing.Point(5, 417)
+        Me.GroupBox21.Location = New System.Drawing.Point(5, 349)
         Me.GroupBox21.Name = "GroupBox21"
         Me.GroupBox21.Size = New System.Drawing.Size(490, 67)
         Me.GroupBox21.TabIndex = 81
@@ -893,7 +900,7 @@ Partial Class Einstellungen
         Me.GroupBox6.Controls.Add(Me.NumericUpDown2)
         Me.GroupBox6.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox6.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox6.Location = New System.Drawing.Point(5, 299)
+        Me.GroupBox6.Location = New System.Drawing.Point(5, 231)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(490, 112)
         Me.GroupBox6.TabIndex = 80
@@ -944,12 +951,13 @@ Partial Class Einstellungen
         Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
         Me.GroupBox5.Controls.Add(Me.Chb_Ign_tls)
         Me.GroupBox5.Controls.Add(Me.http_support)
+        Me.GroupBox5.Controls.Add(Me.CB_Update_Pre)
         Me.GroupBox5.Controls.Add(Me.DarkMode)
         Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox5.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox5.Location = New System.Drawing.Point(5, 179)
+        Me.GroupBox5.Location = New System.Drawing.Point(5, 85)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(490, 114)
+        Me.GroupBox5.Size = New System.Drawing.Size(490, 140)
         Me.GroupBox5.TabIndex = 70
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Other"
@@ -958,7 +966,7 @@ Partial Class Einstellungen
         '
         Me.Chb_Ign_tls.AutoSize = True
         Me.Chb_Ign_tls.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.Chb_Ign_tls.Location = New System.Drawing.Point(135, 80)
+        Me.Chb_Ign_tls.Location = New System.Drawing.Point(242, 43)
         Me.Chb_Ign_tls.Name = "Chb_Ign_tls"
         Me.Chb_Ign_tls.Size = New System.Drawing.Size(223, 19)
         Me.Chb_Ign_tls.TabIndex = 46
@@ -974,9 +982,9 @@ Partial Class Einstellungen
         Me.http_support.IntegralHeight = False
         Me.http_support.ItemHeight = 23
         Me.http_support.Items.AddRange(New Object() {"add-on support disabled", "80", "8080"})
-        Me.http_support.Location = New System.Drawing.Point(214, 25)
+        Me.http_support.Location = New System.Drawing.Point(242, 90)
         Me.http_support.Name = "http_support"
-        Me.http_support.Size = New System.Drawing.Size(237, 29)
+        Me.http_support.Size = New System.Drawing.Size(223, 29)
         Me.http_support.TabIndex = 45
         Me.http_support.UseSelectable = True
         '
@@ -984,69 +992,12 @@ Partial Class Einstellungen
         '
         Me.DarkMode.AutoSize = True
         Me.DarkMode.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.DarkMode.Location = New System.Drawing.Point(41, 30)
+        Me.DarkMode.Location = New System.Drawing.Point(39, 43)
         Me.DarkMode.Name = "DarkMode"
         Me.DarkMode.Size = New System.Drawing.Size(135, 19)
         Me.DarkMode.TabIndex = 5
         Me.DarkMode.Text = "enable dark mode"
         Me.DarkMode.UseSelectable = True
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Controls.Add(Me.TextBox1)
-        Me.GroupBox1.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.GroupBox1.ForeColor = System.Drawing.Color.Black
-        Me.GroupBox1.Location = New System.Drawing.Point(5, 85)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(490, 88)
-        Me.GroupBox1.TabIndex = 60
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Browser Settings"
-        '
-        'Label1
-        '
-        Me.Label1.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.Label1.Location = New System.Drawing.Point(6, 20)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(469, 22)
-        Me.Label1.TabIndex = 2
-        Me.Label1.Text = "Default Website"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'TextBox1
-        '
-        '
-        '
-        '
-        Me.TextBox1.CustomButton.Image = Nothing
-        Me.TextBox1.CustomButton.Location = New System.Drawing.Point(445, 1)
-        Me.TextBox1.CustomButton.Name = ""
-        Me.TextBox1.CustomButton.Size = New System.Drawing.Size(23, 23)
-        Me.TextBox1.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.TextBox1.CustomButton.TabIndex = 1
-        Me.TextBox1.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.TextBox1.CustomButton.UseSelectable = True
-        Me.TextBox1.CustomButton.Visible = False
-        Me.TextBox1.FontSize = MetroFramework.MetroTextBoxSize.Medium
-        Me.TextBox1.Lines = New String() {"https://www.crunchyroll.com/"}
-        Me.TextBox1.Location = New System.Drawing.Point(6, 45)
-        Me.TextBox1.MaxLength = 32767
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.TextBox1.SelectedText = ""
-        Me.TextBox1.SelectionLength = 0
-        Me.TextBox1.SelectionStart = 0
-        Me.TextBox1.ShortcutsEnabled = True
-        Me.TextBox1.Size = New System.Drawing.Size(469, 25)
-        Me.TextBox1.TabIndex = 2
-        Me.TextBox1.Text = "https://www.crunchyroll.com/"
-        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.TextBox1.UseSelectable = True
-        Me.TextBox1.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.TextBox1.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'DL_Count_simultaneous
         '
@@ -1083,7 +1034,7 @@ Partial Class Einstellungen
         Me.TabControl1.ItemSize = New System.Drawing.Size(86, 50)
         Me.TabControl1.Location = New System.Drawing.Point(22, 60)
         Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 1
+        Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(509, 567)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.UseSelectable = True
@@ -1646,16 +1597,16 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'CB_HideQueue
+        'CB_Update_Pre
         '
-        Me.CB_HideQueue.AutoSize = True
-        Me.CB_HideQueue.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_HideQueue.Location = New System.Drawing.Point(328, 21)
-        Me.CB_HideQueue.Name = "CB_HideQueue"
-        Me.CB_HideQueue.Size = New System.Drawing.Size(112, 19)
-        Me.CB_HideQueue.TabIndex = 6
-        Me.CB_HideQueue.Text = "hidden Queue"
-        Me.CB_HideQueue.UseSelectable = True
+        Me.CB_Update_Pre.AutoSize = True
+        Me.CB_Update_Pre.FontSize = MetroFramework.MetroCheckBoxSize.Medium
+        Me.CB_Update_Pre.Location = New System.Drawing.Point(39, 90)
+        Me.CB_Update_Pre.Name = "CB_Update_Pre"
+        Me.CB_Update_Pre.Size = New System.Drawing.Size(176, 19)
+        Me.CB_Update_Pre.TabIndex = 5
+        Me.CB_Update_Pre.Text = "Pre-Release Notifications"
+        Me.CB_Update_Pre.UseSelectable = True
         '
         'Einstellungen
         '
@@ -1700,7 +1651,6 @@ Partial Class Einstellungen
         CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
         Me.DL_Count_simultaneous.ResumeLayout(False)
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
@@ -1748,7 +1698,6 @@ Partial Class Einstellungen
     Friend WithEvents FFMPEG_CommandP4 As ToolStripMenuItem
     Friend WithEvents GB_Resolution As GroupBox
     Friend WithEvents GroupBox5 As GroupBox
-    Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents DL_Count_simultaneous As GroupBox
     Friend WithEvents NumericUpDown1 As NumericUpDown
     Friend WithEvents SoftSubs As GroupBox
@@ -1762,7 +1711,6 @@ Partial Class Einstellungen
     Friend WithEvents TabPage7 As TabPage
     Friend WithEvents PictureBox7 As PictureBox
     Friend WithEvents Button1 As Button
-    Friend WithEvents Label1 As MetroFramework.Controls.MetroLabel
     Friend WithEvents Label2 As MetroFramework.Controls.MetroLabel
     Public WithEvents Label4 As MetroFramework.Controls.MetroLabel
     Public WithEvents Label6 As MetroFramework.Controls.MetroLabel
@@ -1779,7 +1727,6 @@ Partial Class Einstellungen
     Public WithEvents Label3 As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
     Friend WithEvents DarkMode As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents TextBox1 As MetroFramework.Controls.MetroTextBox
     Friend WithEvents CB_CR_Harsubs As MetroFramework.Controls.MetroComboBox
     Public WithEvents LastVersion As MetroFramework.Controls.MetroLabel
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
@@ -1845,4 +1792,5 @@ Partial Class Einstellungen
     Friend WithEvents CB_vttStyle As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents AMD_AV1 As ToolStripMenuItem
     Friend WithEvents CB_HideQueue As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents CB_Update_Pre As MetroFramework.Controls.MetroCheckBox
 End Class

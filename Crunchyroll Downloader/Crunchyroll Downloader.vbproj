@@ -108,15 +108,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\CRD_metroframework_x64\MetroFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.1418.22, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.1418.22\lib\net45\Microsoft.Web.WebView2.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Web.WebView2.WinForms, Version=1.0.1418.22, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.1418.22\lib\net45\Microsoft.Web.WebView2.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Web.WebView2.Wpf, Version=1.0.1418.22, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.1418.22\lib\net45\Microsoft.Web.WebView2.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="MyProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\CRD_SettingsProvider_x64\MyProvider.dll</HintPath>
@@ -208,12 +199,6 @@
     <Compile Include="einstellungen.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Browser.Designer.vb">
-      <DependentUpon>Browser.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Browser.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="ProcessSleep.vb" />
     <Compile Include="ErrorDialog.Designer.vb">
       <DependentUpon>ErrorDialog.vb</DependentUpon>
@@ -271,9 +256,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="einstellungen.resx">
       <DependentUpon>einstellungen.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Browser.resx">
-      <DependentUpon>Browser.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CRD_List_Item.resx">
       <DependentUpon>CRD_List_Item.vb</DependentUpon>
@@ -454,11 +436,4 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
-  <Import Project="..\packages\Microsoft.Web.WebView2.1.0.1418.22\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.1418.22\build\Microsoft.Web.WebView2.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.1418.22\build\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.1418.22\build\Microsoft.Web.WebView2.targets'))" />
-  </Target>
 </Project>

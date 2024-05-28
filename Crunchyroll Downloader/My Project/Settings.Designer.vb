@@ -128,18 +128,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("https://www.crunchyroll.com/")>  _
-        Public Property Startseite() As String
-            Get
-                Return CType(Me("Startseite"),String)
-            End Get
-            Set
-                Me("Startseite") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("[default season prefix]")>  _
         Public Property Prefix_S() As String
             Get

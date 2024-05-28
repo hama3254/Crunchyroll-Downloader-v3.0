@@ -34,7 +34,6 @@ Partial Class Main
         Me.MetroStyleManager1 = New MetroFramework.Components.MetroStyleManager(Me.components)
         Me.Timer4 = New System.Windows.Forms.Timer(Me.components)
         Me.Btn_add = New System.Windows.Forms.Button()
-        Me.Btn_Browser = New System.Windows.Forms.Button()
         Me.Btn_Settings = New System.Windows.Forms.Button()
         Me.Btn_min = New System.Windows.Forms.Button()
         Me.Btn_Close = New System.Windows.Forms.Button()
@@ -50,9 +49,10 @@ Partial Class Main
         Me.DummyItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AudioOnlyQualityToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoginFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ErrorDiaTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Btn_Queue = New System.Windows.Forms.Button()
-        Me.ErrorDiaTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BGW_Update = New System.ComponentModel.BackgroundWorker()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -112,17 +112,6 @@ Partial Class Main
         Me.Btn_add.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_add
         Me.Btn_add.Name = "Btn_add"
         Me.Btn_add.UseVisualStyleBackColor = False
-        '
-        'Btn_Browser
-        '
-        Me.Btn_Browser.BackColor = System.Drawing.Color.Transparent
-        resources.ApplyResources(Me.Btn_Browser, "Btn_Browser")
-        Me.Btn_Browser.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Btn_Browser.FlatAppearance.BorderSize = 0
-        Me.Btn_Browser.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
-        Me.Btn_Browser.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_browser
-        Me.Btn_Browser.Name = "Btn_Browser"
-        Me.Btn_Browser.UseVisualStyleBackColor = False
         '
         'Btn_Settings
         '
@@ -220,6 +209,11 @@ Partial Class Main
         Me.LoginFormToolStripMenuItem.Name = "LoginFormToolStripMenuItem"
         resources.ApplyResources(Me.LoginFormToolStripMenuItem, "LoginFormToolStripMenuItem")
         '
+        'ErrorDiaTestToolStripMenuItem
+        '
+        Me.ErrorDiaTestToolStripMenuItem.Name = "ErrorDiaTestToolStripMenuItem"
+        resources.ApplyResources(Me.ErrorDiaTestToolStripMenuItem, "ErrorDiaTestToolStripMenuItem")
+        '
         'Panel1
         '
         resources.ApplyResources(Me.Panel1, "Panel1")
@@ -236,10 +230,8 @@ Partial Class Main
         Me.Btn_Queue.Name = "Btn_Queue"
         Me.Btn_Queue.UseVisualStyleBackColor = False
         '
-        'ErrorDiaTestToolStripMenuItem
+        'BGW_Update
         '
-        Me.ErrorDiaTestToolStripMenuItem.Name = "ErrorDiaTestToolStripMenuItem"
-        resources.ApplyResources(Me.ErrorDiaTestToolStripMenuItem, "ErrorDiaTestToolStripMenuItem")
         '
         'Main
         '
@@ -252,7 +244,6 @@ Partial Class Main
         Me.Controls.Add(Me.Btn_Close)
         Me.Controls.Add(Me.Btn_min)
         Me.Controls.Add(Me.Btn_Settings)
-        Me.Controls.Add(Me.Btn_Browser)
         Me.Controls.Add(Me.Btn_add)
         Me.Controls.Add(Me.TheTextBox)
         Me.Controls.Add(Me.ConsoleBar)
@@ -281,7 +272,6 @@ Partial Class Main
     Friend WithEvents MetroStyleManager1 As MetroFramework.Components.MetroStyleManager
     Friend WithEvents Timer4 As Timer
     Friend WithEvents Btn_add As Button
-    Friend WithEvents Btn_Browser As Button
     Friend WithEvents Btn_Settings As Button
     Friend WithEvents Btn_min As Button
     Friend WithEvents Btn_Close As Button
@@ -300,4 +290,5 @@ Partial Class Main
     Friend WithEvents AudioOnlyQualityToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents LoginFormToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ErrorDiaTestToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents BGW_Update As System.ComponentModel.BackgroundWorker
 End Class

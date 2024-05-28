@@ -14,6 +14,8 @@ Imports Newtonsoft.Json.Linq
 Imports System.Runtime.InteropServices
 Imports MyProvider.MyProvider
 Imports Crunchyroll_Downloader.CRD_Classes
+Imports System.Runtime.Remoting.Contexts
+Imports System.Reflection
 
 Public Class Main
     Inherits MetroForm
@@ -372,6 +374,10 @@ Public Class Main
 
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        If CBool(InStr(Assembly.GetExecutingAssembly().CodeBase, "Auto_Updated.exe")) Then
+            Pause(3)
+        End If
+
         FillArray()
 
 #Region "settings path"
@@ -569,7 +575,7 @@ Public Class Main
         RetryWithCachedFiles()
 
         'MsgBox(Curl_insecure.ToString)
-
+        BGW_Update.RunWorkerAsync()
     End Sub
 
 
@@ -2260,6 +2266,7 @@ Public Class Main
     Sub ServerStart()
         Dim server As TcpListener
         server = Nothing
+        System.Threading.Thread.Sleep(5000)
         Try
             Dim Port As String = StartServer.ToString
             Dim localAddr As IPAddress = IPAddress.Parse("127.0.0.1")
@@ -3043,7 +3050,7 @@ Public Class Main
             Dim ObjectsURLBuilder3() As String = url.Split(New String() {"musicvideo/"}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim ObjectsURLBuilder4() As String = ObjectsURLBuilder3(1).Split(New String() {"/"}, System.StringSplitOptions.RemoveEmptyEntries)
 
- 
+
             ' Changed from https://www.crunchyroll.com/content/v2/music/music_videos/ to https://beta-api.crunchyroll.com/content/v2/music/music_videos/ to avoid cloudflare triggering
             ObjectsUrl = "https://beta-api.crunchyroll.com/content/v2/music/music_videos/" + ObjectsURLBuilder4(0) + "?locale=" + locale
 
@@ -3271,6 +3278,7 @@ Public Class Main
 
     Private Sub BGW_Update_DoWork(sender As Object, e As DoWorkEventArgs) Handles BGW_Update.DoWork
         Try
+
             Dim client0 As New WebClient
             client0.Encoding = Encoding.UTF8
             client0.Headers.Add(My.Settings.User_Agend.Replace(Chr(34), ""))
@@ -3283,18 +3291,121 @@ Public Class Main
             For i As Integer = 1 To GitHubLastIsPre.Count - 1
                 Dim GitHubLastIsPre1() As String = GitHubLastIsPre(i).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                If GitHubLastIsPre1(0) = "false" Then
-                    LastNonPreRelase = i
-                    Exit For
-                End If
+                'If GitHubLastIsPre1(0) = "false" Then
+                LastNonPreRelase = i
+                Exit For
+                'End If
             Next
 
             Dim GitHubLastTag() As String = str0.Split(New String() {Chr(34) + "tag_name" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
             Dim GitHubLastTag1() As String = GitHubLastTag(LastNonPreRelase).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
 
             'LastVersionString = GitHubLastTag1(0)
+            'MsgBox(GitHubLastTag1(0))
 
-            'Debug.WriteLine(GitHubLastTag1(0))
+            Dim OnlineVersionNumber As String = GitHubLastTag1(0).Replace("v", "")
+            'Debug.WriteLine("OnlineVersionNumber: " + OnlineVersionNumber)
+
+            Dim OnlineSplitVersion() As String = OnlineVersionNumber.Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim LocalSplitVersion() As String = Application.ProductVersion.Split(New String() {"."}, System.StringSplitOptions.RemoveEmptyEntries)
+
+            Dim TestLenght As Integer = OnlineSplitVersion.Length
+            Dim UpdateAv As Boolean = False
+
+            If OnlineSplitVersion.Length > LocalSplitVersion.Length Then
+                TestLenght = LocalSplitVersion.Length
+            End If
+
+            'Debug.WriteLine("TestLenght: " + TestLenght.ToString)
+            'Debug.WriteLine("OnlineSplitVersion: " + OnlineSplitVersion.ToString)
+            'Debug.WriteLine("LocalSplitVersion: " + LocalSplitVersion.ToString)
+
+            For i As Integer = 0 To TestLenght - 1
+                If CInt(OnlineSplitVersion(i)) > CInt(LocalSplitVersion(i)) Then
+                    'to update
+                    UpdateAv = True
+                    Exit For
+                End If
+            Next
+
+            If UpdateAv = False Then  'no update needed
+                Debug.WriteLine("Update check passed")
+                Exit Sub
+            End If
+            Debug.WriteLine("Update check failed")
+            'Check for updated file 
+            If File.Exists(Application.StartupPath + "\Auto_Updated.exe") And CBool(InStr(Assembly.GetExecutingAssembly().CodeBase, "Auto_Updated.exe")) = False Then
+                'there is an updated file but we are not it
+                Dim exepath As String = Application.StartupPath + "\" + "Auto_Updated.exe"
+                Dim startinfo As New System.Diagnostics.ProcessStartInfo
+
+                'all parameters required to run the process
+                startinfo.FileName = exepath
+                'startinfo.Arguments = cmd
+                startinfo.UseShellExecute = False
+                startinfo.WindowStyle = ProcessWindowStyle.Normal
+                startinfo.RedirectStandardError = True
+                startinfo.RedirectStandardInput = True
+                startinfo.RedirectStandardOutput = True
+                startinfo.CreateNoWindow = True
+
+                Dim proc As Process = New Process
+                proc.StartInfo = startinfo
+                proc.Start() ' start the process
+                Me.Invoke(New Action(Function() As Object
+                                         Me.Close()
+                                         Return Nothing
+                                     End Function))
+
+                Exit Sub 'do we need that?
+            ElseIf File.Exists(Application.StartupPath + "\Auto_Updated.exe") And CBool(InStr(Assembly.GetExecutingAssembly().CodeBase, "Auto_Updated.exe")) = True Then
+                'we are the update and failed the version check?
+
+
+                'if the online exe is tagged different/lower than the release tag we will get a loop (not good)
+                If My.Settings.UpdateLog = Date.Now.Day.ToString + Date.Now.Month.ToString Then ' is day + month enough ?
+                    Exit Sub
+                End If
+
+                My.Settings.UpdateLog = Date.Now.Day.ToString + Date.Now.Month.ToString
+                My.Computer.FileSystem.RenameFile(Application.StartupPath + "\Auto_Updated.exe", GeräteID() + ".exe")
+
+            End If
+
+
+            If CBool(InStr(str0, "Auto_Update_" + GitHubLastTag1(0) + ".exe")) Then
+                Debug.WriteLine(True.ToString)
+                Dim UpdateUrl() As String = str0.Split(New String() {"Auto_Update_" + GitHubLastTag1(0) + ".exe"}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim UpdateUrl2() As String = UpdateUrl(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
+                Dim FinalUrl As String = UpdateUrl2(UpdateUrl2.Length - 1) + "Auto_Update_" + GitHubLastTag1(0) + ".exe"
+                Debug.WriteLine("Auto-Update: " + FinalUrl)
+                Debug.WriteLine("Auto-Update: " + Application.StartupPath + "\" + "Auto_Updated.exe")
+                client0.DownloadFile(FinalUrl, Application.StartupPath + "\" + "Auto_Updated.exe")
+
+                Dim exepath As String = Application.StartupPath + "\" + "Auto_Updated.exe"
+                Dim startinfo As New System.Diagnostics.ProcessStartInfo
+
+                'all parameters required to run the process
+                startinfo.FileName = exepath
+                'startinfo.Arguments = cmd
+                startinfo.UseShellExecute = False
+                startinfo.WindowStyle = ProcessWindowStyle.Normal
+                startinfo.RedirectStandardError = True
+                startinfo.RedirectStandardInput = True
+                startinfo.RedirectStandardOutput = True
+                startinfo.CreateNoWindow = True
+
+                Dim proc As Process = New Process
+                proc.StartInfo = startinfo
+                proc.Start() ' start the process
+
+                Me.Invoke(New Action(Function() As Object
+                                         Me.Close()
+                                         Return Nothing
+                                     End Function))
+            End If
+
+
 
         Catch ex As Exception
             Debug.WriteLine(ex.ToString)

@@ -1982,7 +1982,8 @@ Public Class Main
                 'MsgBox(ex.ToString)
 
             Else
-                MsgBox(ex.ToString, MsgBoxStyle.Information)
+                Error_msg.ShowErrorDia(ex.ToString, "Unknown Error - See details", False)
+                'MsgBox(ex.ToString, MsgBoxStyle.Information)
             End If
         End Try '
     End Sub
@@ -3278,6 +3279,9 @@ Public Class Main
 
     Private Sub BGW_Update_DoWork(sender As Object, e As DoWorkEventArgs) Handles BGW_Update.DoWork
         Try
+            If My.Settings.UpdateMode = UpdateScope.Skip Then
+                Exit Sub
+            End If
 
             Dim client0 As New WebClient
             client0.Encoding = Encoding.UTF8
@@ -3286,19 +3290,23 @@ Public Class Main
             Dim str0 As String = client0.DownloadString("https://api.github.com/repos/hama3254/Crunchyroll-Downloader-v3.0/releases")
 
             Dim GitHubLastIsPre() As String = str0.Split(New String() {Chr(34) + "prerelease" + Chr(34) + ": "}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim LastNonPreRelase As Integer = 0
+            Dim LastRelase As Integer = 0
+            Dim PreRelease As Boolean = False
 
             For i As Integer = 1 To GitHubLastIsPre.Count - 1
                 Dim GitHubLastIsPre1() As String = GitHubLastIsPre(i).Split(New String() {","}, System.StringSplitOptions.RemoveEmptyEntries)
 
-                'If GitHubLastIsPre1(0) = "false" Then
-                LastNonPreRelase = i
-                Exit For
-                'End If
+                If GitHubLastIsPre1(0) = "false" Or My.Settings.UpdateMode = UpdateScope.Pre Or My.Settings.UpdateMode = UpdateScope.InfoPre Then
+                    If GitHubLastIsPre1(0) = "true" Then
+                        PreRelease = True
+                    End If
+                    LastRelase = i
+                    Exit For
+                End If
             Next
 
             Dim GitHubLastTag() As String = str0.Split(New String() {Chr(34) + "tag_name" + Chr(34) + ": " + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim GitHubLastTag1() As String = GitHubLastTag(LastNonPreRelase).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim GitHubLastTag1() As String = GitHubLastTag(LastRelase).Split(New String() {Chr(34) + ","}, System.StringSplitOptions.RemoveEmptyEntries)
 
             'LastVersionString = GitHubLastTag1(0)
             'MsgBox(GitHubLastTag1(0))
@@ -3331,6 +3339,20 @@ Public Class Main
             If UpdateAv = False Then  'no update needed
                 Debug.WriteLine("Update check passed")
                 Exit Sub
+            ElseIf UpdateAv = True Then
+                If My.Settings.UpdateMode = UpdateScope.Info Or My.Settings.UpdateMode = UpdateScope.InfoPre Then 'Infos only
+                    Dim DisplayTest As String = "Update available: v"
+                    If PreRelease = True Then
+                        DisplayTest = "PreRelease available: v"
+                    End If
+                    Me.Invoke(New Action(Function() As Object
+                                             Me.Text = DisplayTest + OnlineVersionNumber
+                                             Me.Invalidate()
+                                             Return Nothing
+                                         End Function))
+
+                    Exit Sub
+                End If
             End If
             Debug.WriteLine("Update check failed")
             'Check for updated file 
@@ -3368,12 +3390,12 @@ Public Class Main
                 End If
 
                 My.Settings.UpdateLog = Date.Now.Day.ToString + Date.Now.Month.ToString
-                My.Computer.FileSystem.RenameFile(Application.StartupPath + "\Auto_Updated.exe", GeräteID() + ".exe")
+                My.Computer.FileSystem.RenameFile(Application.StartupPath + "\Auto_Updated.exe", GeräteID() + ".exe") 'getting rid of the old version like its a temp file
 
             End If
 
 
-            If CBool(InStr(str0, "Auto_Update_" + GitHubLastTag1(0) + ".exe")) Then
+            If CBool(InStr(str0, "Auto_Update_" + GitHubLastTag1(0) + ".exe")) Then ' check if i even upoaded the autoupdate 
                 Debug.WriteLine(True.ToString)
                 Dim UpdateUrl() As String = str0.Split(New String() {"Auto_Update_" + GitHubLastTag1(0) + ".exe"}, System.StringSplitOptions.RemoveEmptyEntries)
                 Dim UpdateUrl2() As String = UpdateUrl(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries)
@@ -3401,6 +3423,12 @@ Public Class Main
 
                 Me.Invoke(New Action(Function() As Object
                                          Me.Close()
+                                         Return Nothing
+                                     End Function))
+            Else
+                Me.Invoke(New Action(Function() As Object
+                                         Me.Text = "No Auto-Update possible"
+                                         Me.Invalidate()
                                          Return Nothing
                                      End Function))
             End If

@@ -207,7 +207,7 @@ Module GetData
 
     End Function
 
-    Public Function CurlDeleteNew(ByVal Url As String, ByVal Auth As String, Optional ByVal UserAgent As String = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0") As String
+    Public Function CurlDeleteNew(ByVal Url As String, ByVal Auth As String, Optional ByVal UserAgent As String = Chr(34) + "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0" + Chr(34)) As String
 
 
 

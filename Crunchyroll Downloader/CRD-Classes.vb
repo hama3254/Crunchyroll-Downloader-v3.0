@@ -6,6 +6,13 @@
         SubsOnly = 2
         AudioOnly = 3
     End Enum
+    Public Enum UpdateScope
+        Skip = 0
+        Info = 1
+        InfoPre = 2
+        Auto = 3
+        Pre = 4
+    End Enum
 
     Public Enum ConvertSubsEnum
         DisplayText = 0

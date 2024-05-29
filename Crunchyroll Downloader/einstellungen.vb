@@ -26,7 +26,7 @@ Public Class Einstellungen
         Label6.Text = "You have: v" + Application.ProductVersion.ToString '+ " WebView2_Test"
 
         BackgroundWorker1.RunWorkerAsync()
-
+        DD_Update.SelectedIndex = My.Settings.UpdateMode
 
         'CR_Anime_Folge = CR_Name_Staffel0_Folge1(1)
         'If GitHubLastTag1(0)
@@ -298,6 +298,7 @@ Public Class Einstellungen
         My.Settings.LeadingZero = LeadingZeroDD.SelectedIndex
         My.Settings.OverrideDub = CB_OverrideDub.Checked
         My.Settings.Captions = CB_Cap.Checked
+        My.Settings.UpdateMode = DD_Update.SelectedIndex
 
         If http_support.Text = "add-on support disabled" Then
             My.Settings.ServerPort = 0

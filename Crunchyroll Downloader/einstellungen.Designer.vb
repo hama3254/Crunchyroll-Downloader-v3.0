@@ -142,7 +142,7 @@ Partial Class Einstellungen
         Me.Label5 = New MetroFramework.Controls.MetroLabel()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Btn_Save = New System.Windows.Forms.Button()
-        Me.CB_Update_Pre = New MetroFramework.Controls.MetroCheckBox()
+        Me.DD_Update = New MetroFramework.Controls.MetroComboBox()
         CType(Me.pictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox14.SuspendLayout()
         Me.SoftSubs.SuspendLayout()
@@ -949,9 +949,9 @@ Partial Class Einstellungen
         'GroupBox5
         '
         Me.GroupBox5.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox5.Controls.Add(Me.DD_Update)
         Me.GroupBox5.Controls.Add(Me.Chb_Ign_tls)
         Me.GroupBox5.Controls.Add(Me.http_support)
-        Me.GroupBox5.Controls.Add(Me.CB_Update_Pre)
         Me.GroupBox5.Controls.Add(Me.DarkMode)
         Me.GroupBox5.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.GroupBox5.ForeColor = System.Drawing.Color.Black
@@ -1597,16 +1597,19 @@ Partial Class Einstellungen
         Me.Btn_Save.TabIndex = 9
         Me.Btn_Save.UseVisualStyleBackColor = False
         '
-        'CB_Update_Pre
+        'DD_Update
         '
-        Me.CB_Update_Pre.AutoSize = True
-        Me.CB_Update_Pre.FontSize = MetroFramework.MetroCheckBoxSize.Medium
-        Me.CB_Update_Pre.Location = New System.Drawing.Point(39, 90)
-        Me.CB_Update_Pre.Name = "CB_Update_Pre"
-        Me.CB_Update_Pre.Size = New System.Drawing.Size(176, 19)
-        Me.CB_Update_Pre.TabIndex = 5
-        Me.CB_Update_Pre.Text = "Pre-Release Notifications"
-        Me.CB_Update_Pre.UseSelectable = True
+        Me.DD_Update.DropDownHeight = 275
+        Me.DD_Update.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DD_Update.FormattingEnabled = True
+        Me.DD_Update.IntegralHeight = False
+        Me.DD_Update.ItemHeight = 23
+        Me.DD_Update.Items.AddRange(New Object() {"Skip Updates", "Notify Only", "Notify Only (Beta Versions)", "Automatic Updates", "Automatic Updates (Beta Versions)"})
+        Me.DD_Update.Location = New System.Drawing.Point(21, 90)
+        Me.DD_Update.Name = "DD_Update"
+        Me.DD_Update.Size = New System.Drawing.Size(215, 29)
+        Me.DD_Update.TabIndex = 47
+        Me.DD_Update.UseSelectable = True
         '
         'Einstellungen
         '
@@ -1792,5 +1795,5 @@ Partial Class Einstellungen
     Friend WithEvents CB_vttStyle As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents AMD_AV1 As ToolStripMenuItem
     Friend WithEvents CB_HideQueue As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents CB_Update_Pre As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents DD_Update As MetroFramework.Controls.MetroComboBox
 End Class

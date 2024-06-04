@@ -985,8 +985,47 @@ Public Class CRD_List_Item
                     'End If
                 End If
                 m3u8FileContent = m3u8FileContent + KeyLine + vbLf
+            ElseIf CBool(InStr(textLenght(i2), "#EXT-X-ENDLIST")) Then 're-adding the CR playlist fix.
+                ' ElseIf textLenght(i) =  Then                'And my.Settings.FixCRStream = True Then
 
+                Try
+                    Dim StringCount As String = Count.ToString
+                    Dim StringCount_1 As String = (Count + 1).ToString
+
+                    Debug.WriteLine("old: " + LastUrl)
+
+                    Dim NewUrl As String = Nothing
+
+                    Me.Invoke(New Action(Function() As Object
+                                             NewUrl = LastUrl.Replace("-" + StringCount + "-", "-" + StringCount_1 + "-")
+                                             Return Nothing
+                                         End Function))
+
+                    Debug.WriteLine("new: " + NewUrl)
+
+                    Dim File As String = Folder + String.Format("{0:00000}", Count) + ".ts"
+                    Dim curi As String = GetFullUri(url, NewUrl)
+
+                    WC_TS = New WebClient
+
+                    WC_TS.DownloadFile(New Uri(curi), File)
+                    HybrideLog = HybrideLog + vbNewLine + Date.Now.ToString + ": " + File + " - " + curi
+                    m3u8FileContent = m3u8FileContent + "#EXTINF:4.048," + vbLf 'dummy line
+                    m3u8FileContent = m3u8FileContent + File + vbLf
+                    Dim FragmentsFinised = Count * 100 / FragmentsInt
+                    'Dim Update = New Thread(Sub() Me.TS_StatusAsync(CInt(FragmentsFinised), di, PauseTime))
+                    'Update.Start()
+                    RaiseEvent UpdateUI(CInt(FragmentsFinised), di, PauseTime)
+                    Count = Count + 1
+
+
+                    m3u8FileContent = m3u8FileContent + textLenght(i) + vbLf
+                Catch ex As Exception
+                    HybrideLog = HybrideLog + vbNewLine + Date.Now.ToString + ": CR fix failed to access unlisted file #882"
+                    m3u8FileContent = m3u8FileContent + textLenght(i) + vbLf
+                End Try
             Else
+
                 m3u8FileContent = m3u8FileContent + textLenght(i) + vbLf
             End If
 
@@ -1675,7 +1714,8 @@ Public Class CRD_List_Item
                     'File.WriteAllText(logfile, HybrideLog)
                     WriteText(logfile, HybrideLog)
                 Catch ex As Exception
-                    MsgBox(ex.ToString)
+                    Error_msg.ShowErrorDia(ex.ToString, "Unable to write Hybrid Mode logfile", False)
+                    'MsgBox(ex.ToString)
                 End Try
             End If
         Catch ex As Exception
@@ -1697,7 +1737,9 @@ Public Class CRD_List_Item
             End Using
 
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
+            Error_msg.ShowErrorDia(ex.ToString, "Unable to write logfile", False)
+
         End Try
 
     End Sub

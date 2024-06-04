@@ -2906,7 +2906,7 @@ Public Class Main
                 ProcessLoading(Url, Auth2, Loc_CR_Cookies, RT_count)
             Else
                 Dim v1Token As String = CurlPost("https://beta-api.crunchyroll.com/auth/v1/token", Loc_CR_Cookies, Auth, Post, "add_main_4494")
-                MsgBox(v1Token)
+                'MsgBox(v1Token)
                 If CBool(InStr(v1Token, "HTTP Status: 401")) = True Then
                     MsgBox("CR reported :" + vbNewLine + v1Token, MsgBoxStyle.Exclamation, "CR-Error 401")
                     LoginForm.ShowDialog()

@@ -34,6 +34,7 @@ Public Class LoginForm
             'PW.UseSystemPasswordChar = False
             PW.PasswordChar = Nothing
         End If
+        DisplayTB.TextAlign = HorizontalAlignment.Center
     End Sub
 
     Private Sub Btn_Save_Click(sender As Object, e As EventArgs) Handles Btn_Save.Click

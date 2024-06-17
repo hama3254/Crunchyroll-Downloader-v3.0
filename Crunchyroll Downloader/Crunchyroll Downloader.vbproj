@@ -168,6 +168,11 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GetData.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="queue.Designer.vb">
       <DependentUpon>queue.vb</DependentUpon>
     </Compile>
@@ -182,11 +187,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GlobalSuppressions.vb" />
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Anime_Add.Designer.vb">
       <DependentUpon>Anime_Add.vb</DependentUpon>
     </Compile>
@@ -384,6 +384,9 @@
     <Content Include="bin\x86\Debug\Lib\swiftshader\libEGL.dll" />
     <Content Include="bin\x86\Debug\Lib\swiftshader\libGLESv2.dll" />
     <Content Include="icon.ico" />
+    <None Include="Resources\main_login_invert_dark.png" />
+    <None Include="Resources\main_login_invert.png" />
+    <None Include="Resources\main_login.png" />
     <None Include="Resources\error_dis.png" />
     <None Include="Resources\BG.png" />
     <None Include="Resources\ffmpeg_OK_cL.png" />
@@ -400,10 +403,8 @@
     <None Include="Resources\main-mini.png" />
     <None Include="Resources\main-setting_invert_dark.png" />
     <None Include="Resources\main-close_dark.png" />
-    <None Include="Resources\main-browser_invert_dark.png" />
     <None Include="Resources\main-add_invert_dark.png" />
     <None Include="Resources\main-setting_invert.png" />
-    <None Include="Resources\main-browser_invert.png" />
     <None Include="Resources\main-add_invert.png" />
     <None Include="Resources\Main_top.png" />
     <None Include="Resources\about_icon.png" />
@@ -418,7 +419,6 @@
     <None Include="Resources\add_mass_cancel_hover.png" />
     <None Include="Resources\add_mass_cancel.png" />
     <None Include="Resources\main-settings.png" />
-    <None Include="Resources\main-browser.png" />
     <None Include="Resources\main-add.png" />
     <None Include="Resources\main-close.png" />
     <None Include="Resources\main-background.png" />

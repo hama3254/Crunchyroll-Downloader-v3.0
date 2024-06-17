@@ -298,9 +298,6 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
  &lt;/body&gt;
 &lt;/html&gt;</value>
   </data>
-  <data name="main_browser" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-browser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="main_button_download_hovert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main_button_download_hovert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -405,17 +402,11 @@ Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0000,0000,0000,,some ideas on how tem
   <data name="main_add_invert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-add_invert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="main_browser_invert" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-browser_invert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="main_setting_invert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-setting_invert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="main_add_invert_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-add_invert_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main_browser_invert_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\main-browser_invert_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="main_setting_invert_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main-setting_invert_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -492,5 +483,14 @@ title=Ending</value>
   </data>
   <data name="error_dis" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\error_dis.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_login" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main_login.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_login_invert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main_login_invert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="main_login_invert_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main_login_invert_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

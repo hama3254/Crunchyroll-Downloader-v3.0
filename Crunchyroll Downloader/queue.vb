@@ -88,11 +88,12 @@ Public Class Queue
             Main.RunningDownloads = Main.Panel1.Controls.Count
         End Try
 
-        If Main.RunningDownloads < Main.MaxDL Then
-            If Main.ListBoxList.Count > 0 Then
+        Try
 
+            If Main.RunningDownloads < Main.MaxDL Then
+                If Main.ListBoxList.Count > 0 Then
 
-                Dim UriUsed As String = ListBox1.GetItemText(Main.ListBoxList(0))
+                    Dim UriUsed As String = ListBox1.GetItemText(Main.ListBoxList(0))
 
                     If Main.Grapp_RDY = True Then
                         Main.Grapp_RDY = False
@@ -104,7 +105,10 @@ Public Class Queue
                 End If
 
 
-        End If
+            End If
+        Catch ex As Exception
+            Debug.WriteLine(ex.ToString)
+        End Try
     End Sub
 
 

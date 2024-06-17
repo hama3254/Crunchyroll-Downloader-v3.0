@@ -235,10 +235,21 @@ Public Class Main
         End If
     End Sub
 
+    Private Sub Btn_User_MouseLeave(sender As Object, e As EventArgs) Handles btn_User.MouseLeave, btn_User.LostFocus
+        btn_User.Image = My.Resources.main_login
+    End Sub
+
+    Private Sub Btn_User_MouseEnter(sender As Object, e As EventArgs) Handles btn_User.MouseEnter, btn_User.GotFocus
+        If Manager.Theme = MetroThemeStyle.Dark Then
+            btn_User.Image = My.Resources.main_login_invert
+        Else
+            btn_User.Image = My.Resources.main_login_invert_dark
+        End If
+    End Sub
+
     Private Sub Btn_Queue_MouseLeave(sender As Object, e As EventArgs) Handles Btn_Queue.MouseLeave, Btn_Queue.LostFocus
         Btn_Queue.Image = My.Resources.main_queue
     End Sub
-
 
 
     Private Sub Btn_min_MouseEnter(sender As Object, e As EventArgs) Handles Btn_min.MouseEnter, Btn_min.GotFocus
@@ -301,8 +312,8 @@ Public Class Main
         TheTextBox.Width = Me.Width - 2
         Btn_Close.Location = New Point(Me.Width - 36, 1)
         Btn_min.Location = New Point(Me.Width - 67, 1)
-        Btn_Settings.Location = New Point(Me.Width - 200, 17)
-        'Btn_Queue.Location = New Point(Me.Width - 265, 17)
+        Btn_Settings.Location = New Point(Me.Width - 180, 17)
+        btn_User.Location = New Point(Me.Width - 290, 17)
         Try
             Panel1.AutoScrollPosition = New Point(0, 0)
 
@@ -1686,14 +1697,16 @@ Public Class Main
 
 #Region "Cancel Token"
             'page_guid NewAPIData
+            Try
+                Dim ToCancel_0 As String() = NewAPIData.Split(New String() {Chr(34) + "token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
+                Dim ToCancel_1 As String() = ToCancel_0(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
+                Dim ToCancel As String = ToCancel_1(0)
 
-
-            Dim ToCancel_0 As String() = NewAPIData.Split(New String() {Chr(34) + "token" + Chr(34) + ":" + Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
-            Dim ToCancel_1 As String() = ToCancel_0(1).Split(New String() {Chr(34)}, System.StringSplitOptions.RemoveEmptyEntries) '
-            Dim ToCancel As String = ToCancel_1(0)
-            CurlDeleteNew("https://cr-play-service.prd.crunchyrollsvc.com/v1/token/" + page_guid + "/" + ToCancel, Loc_AuthToken)
-            Debug.WriteLine("Delete Token: " + ToCancel + " for " + page_guid + " - " + CR_FilenName)
-
+                CurlDeleteNew("https://cr-play-service.prd.crunchyrollsvc.com/v1/token/" + page_guid.Replace("music/", "") + "/" + ToCancel, Loc_AuthToken)
+                Debug.WriteLine("Delete Token: " + ToCancel + " for " + page_guid.Replace("music/", "") + " - " + CR_FilenName)
+            Catch ex As Exception
+                Debug.WriteLine("Error deleting token" + ex.ToString)
+            End Try
 
 #End Region
 
@@ -1982,7 +1995,7 @@ Public Class Main
                 'MsgBox(ex.ToString)
 
             Else
-                Error_msg.ShowErrorDia(ex.ToString, "Unknown Error - See details", False)
+                Error_msg.ShowErrorDia(ex.ToString, "Unknown Error - See details", "None")
                 'MsgBox(ex.ToString, MsgBoxStyle.Information)
             End If
         End Try '
@@ -2819,6 +2832,9 @@ Public Class Main
 
     End Sub
 
+    Private Sub btn_User_Click(sender As Object, e As EventArgs) Handles btn_User.Click
+        LoginForm.ShowDialog()
+    End Sub
 
 
 #End Region
@@ -2922,14 +2938,20 @@ Public Class Main
 
 
                 If CBool(InStr(v1Token, "curl: (60)")) = True Then
-                    SetStatusLabel("Status: Critical error. #3043")
-                    MsgBox("Please try the '--insecure' option found on the 'Main' page of the settings.")
+
+                    SetStatusLabel("Status: curl reported error (60).")
+                    Error_msg.ShowErrorDia(v1Token, "Status: 'Curl reports error 60' this usually means your antivirus is interfering with curl.", "Help")
+
+                    'Error_msg.ShowErrorDia(v1Token, "Status: curl reportet errorcode(60) ", "None")
+                    'MsgBox("Please try the '--insecure' option found on the 'Main' page of the settings.")
+
                     Exit Sub
                     'ElseIf CBool(InStr(v1Token, "curl:")) Then
 
                 ElseIf CBool(InStr(v1Token, "curl:")) = True Then
                     ' Browser.WebView2.CoreWebView2.Navigate(Url)
-                    SetStatusLabel("Status: Unknown error. #3050")
+                    Error_msg.ShowErrorDia(v1Token, "Status: Curl reported an error, see 'Details' for more Information.", "None")
+                    SetStatusLabel("Status: Unknown error. #2939")
                     Exit Sub
 
                 End If
@@ -3001,7 +3023,7 @@ Public Class Main
                 ObjectJson = CurlAuthNew(ObjectsUrl, Loc_CR_Cookies, Auth2)
 
             Catch ex As Exception
-                Error_msg.ShowErrorDia(ex.ToString, "Status: Error getting ObjectJson", True)
+                Error_msg.ShowErrorDia(ex.ToString, "Status: Error getting ObjectJson", "None")
 
                 'MsgBox(ex.ToString)
                 Exit Sub
@@ -3010,7 +3032,7 @@ Public Class Main
             If CBool(InStr(ObjectJson, "videos/")) = False Then
                 'MsgBox(ObjectJson)
 
-                Error_msg.ShowErrorDia(ObjectJson, "Status: Failed - no video, check CR login", True)
+                Error_msg.ShowErrorDia(ObjectJson, "Status: Failed - no video, check CR login", "Ignore")
 
                 SetStatusLabel("Status: Failed - no video, check CR login")
                 Me.Text = "Status: Failed - no video, check CR login"
@@ -3036,7 +3058,7 @@ Public Class Main
 
                 ' Debug.WriteLine(StreamsUrl)
             Catch ex As Exception
-                Error_msg.ShowErrorDia(ex.ToString, "Status: Processing Error", True)
+                Error_msg.ShowErrorDia(ex.ToString, "Status: Processing Error", "None")
                 Exit Sub
             End Try
 
@@ -3274,7 +3296,7 @@ Public Class Main
     End Sub
 
     Private Sub ErrorDiaTestToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ErrorDiaTestToolStripMenuItem.Click
-        Error_msg.ShowErrorDia("Error-Error", "CR returnd : HTTP Status - " + "400")
+        Error_msg.ShowErrorDia("Error-Error", "Status: 'Curl reports error 60' this usually means your antivirus is interfering with curl.", "Help")
     End Sub
 
     Private Sub BGW_Update_DoWork(sender As Object, e As DoWorkEventArgs) Handles BGW_Update.DoWork
@@ -3439,6 +3461,7 @@ Public Class Main
             Debug.WriteLine(ex.ToString)
         End Try
     End Sub
+
 
 
 #End Region

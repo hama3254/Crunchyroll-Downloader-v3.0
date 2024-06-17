@@ -24,21 +24,23 @@ Partial Class LoginForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.Btn_Save = New System.Windows.Forms.Button()
+        Me.UserTest = New System.Windows.Forms.Button()
+        Me.btn_ok = New System.Windows.Forms.Button()
+        Me.DisplayTB = New MetroFramework.Controls.MetroTextBox()
         Me.Save = New MetroFramework.Controls.MetroCheckBox()
         Me.IssueLink = New MetroFramework.Controls.MetroLink()
         Me.PW = New MetroFramework.Controls.MetroTextBox()
         Me.Mail = New MetroFramework.Controls.MetroTextBox()
         Me.Delay = New System.Windows.Forms.Timer(Me.components)
-        Me.DisplayTB = New MetroFramework.Controls.MetroTextBox()
         Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox3
         '
         Me.GroupBox3.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox3.Controls.Add(Me.UserTest)
+        Me.GroupBox3.Controls.Add(Me.btn_ok)
         Me.GroupBox3.Controls.Add(Me.DisplayTB)
-        Me.GroupBox3.Controls.Add(Me.Btn_Save)
         Me.GroupBox3.Controls.Add(Me.Save)
         Me.GroupBox3.Controls.Add(Me.IssueLink)
         Me.GroupBox3.Controls.Add(Me.PW)
@@ -49,21 +51,72 @@ Partial Class LoginForm
         Me.GroupBox3.TabIndex = 38
         Me.GroupBox3.TabStop = False
         '
-        'Btn_Save
+        'UserTest
         '
-        Me.Btn_Save.BackColor = System.Drawing.Color.Transparent
-        Me.Btn_Save.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
-        Me.Btn_Save.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Btn_Save.FlatAppearance.BorderSize = 0
-        Me.Btn_Save.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
-        Me.Btn_Save.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Btn_Save.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.DialogNotFound_Submit
-        Me.Btn_Save.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Btn_Save.Location = New System.Drawing.Point(165, 250)
-        Me.Btn_Save.Name = "Btn_Save"
-        Me.Btn_Save.Size = New System.Drawing.Size(150, 40)
-        Me.Btn_Save.TabIndex = 3
-        Me.Btn_Save.UseVisualStyleBackColor = False
+        Me.UserTest.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.ffmpeg_OK_cL
+        Me.UserTest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.UserTest.FlatAppearance.BorderSize = 0
+        Me.UserTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.UserTest.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UserTest.ForeColor = System.Drawing.SystemColors.Control
+        Me.UserTest.Location = New System.Drawing.Point(48, 256)
+        Me.UserTest.Name = "UserTest"
+        Me.UserTest.Size = New System.Drawing.Size(150, 40)
+        Me.UserTest.TabIndex = 79
+        Me.UserTest.Text = "Test Login"
+        Me.UserTest.UseVisualStyleBackColor = True
+        '
+        'btn_ok
+        '
+        Me.btn_ok.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.ffmpeg_OK_cL
+        Me.btn_ok.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_ok.FlatAppearance.BorderSize = 0
+        Me.btn_ok.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btn_ok.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btn_ok.ForeColor = System.Drawing.SystemColors.Control
+        Me.btn_ok.Location = New System.Drawing.Point(280, 256)
+        Me.btn_ok.Name = "btn_ok"
+        Me.btn_ok.Size = New System.Drawing.Size(150, 40)
+        Me.btn_ok.TabIndex = 79
+        Me.btn_ok.Text = "Ok"
+        Me.btn_ok.UseVisualStyleBackColor = True
+        '
+        'DisplayTB
+        '
+        '
+        '
+        '
+        Me.DisplayTB.CustomButton.Image = Nothing
+        Me.DisplayTB.CustomButton.Location = New System.Drawing.Point(410, 1)
+        Me.DisplayTB.CustomButton.Name = ""
+        Me.DisplayTB.CustomButton.Size = New System.Drawing.Size(51, 51)
+        Me.DisplayTB.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.DisplayTB.CustomButton.TabIndex = 1
+        Me.DisplayTB.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.DisplayTB.CustomButton.UseSelectable = True
+        Me.DisplayTB.CustomButton.Visible = False
+        Me.DisplayTB.Enabled = False
+        Me.DisplayTB.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.DisplayTB.Lines = New String() {"Due to Crunchyroll changes, we now need to fake a Nintendo Switch app login using" &
+            " Crunchyroll account credentials"}
+        Me.DisplayTB.Location = New System.Drawing.Point(10, 19)
+        Me.DisplayTB.MaxLength = 32767
+        Me.DisplayTB.Multiline = True
+        Me.DisplayTB.Name = "DisplayTB"
+        Me.DisplayTB.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.DisplayTB.ReadOnly = True
+        Me.DisplayTB.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.DisplayTB.SelectedText = ""
+        Me.DisplayTB.SelectionLength = 0
+        Me.DisplayTB.SelectionStart = 0
+        Me.DisplayTB.ShortcutsEnabled = True
+        Me.DisplayTB.Size = New System.Drawing.Size(462, 53)
+        Me.DisplayTB.TabIndex = 39
+        Me.DisplayTB.Text = "Due to Crunchyroll changes, we now need to fake a Nintendo Switch app login using" &
+    " Crunchyroll account credentials"
+        Me.DisplayTB.UseSelectable = True
+        Me.DisplayTB.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.DisplayTB.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'Save
         '
@@ -154,43 +207,6 @@ Partial Class LoginForm
         '
         Me.Delay.Interval = 2000
         '
-        'DisplayTB
-        '
-        '
-        '
-        '
-        Me.DisplayTB.CustomButton.Image = Nothing
-        Me.DisplayTB.CustomButton.Location = New System.Drawing.Point(416, 1)
-        Me.DisplayTB.CustomButton.Name = ""
-        Me.DisplayTB.CustomButton.Size = New System.Drawing.Size(51, 51)
-        Me.DisplayTB.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.DisplayTB.CustomButton.TabIndex = 1
-        Me.DisplayTB.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.DisplayTB.CustomButton.UseSelectable = True
-        Me.DisplayTB.CustomButton.Visible = False
-        Me.DisplayTB.Enabled = False
-        Me.DisplayTB.FontSize = MetroFramework.MetroTextBoxSize.Medium
-        Me.DisplayTB.Lines = New String() {"Due to Crunchyroll changes, we now need to fake a Nintendo Switch app login using" &
-            " Crunchyroll account credentials"}
-        Me.DisplayTB.Location = New System.Drawing.Point(10, 19)
-        Me.DisplayTB.MaxLength = 32767
-        Me.DisplayTB.Multiline = True
-        Me.DisplayTB.Name = "DisplayTB"
-        Me.DisplayTB.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.DisplayTB.ReadOnly = True
-        Me.DisplayTB.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.DisplayTB.SelectedText = ""
-        Me.DisplayTB.SelectionLength = 0
-        Me.DisplayTB.SelectionStart = 0
-        Me.DisplayTB.ShortcutsEnabled = True
-        Me.DisplayTB.Size = New System.Drawing.Size(462, 53)
-        Me.DisplayTB.TabIndex = 39
-        Me.DisplayTB.Text = "Due to Crunchyroll changes, we now need to fake a Nintendo Switch app login using" &
-    " Crunchyroll account credentials"
-        Me.DisplayTB.UseSelectable = True
-        Me.DisplayTB.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.DisplayTB.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
-        '
         'LoginForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -211,6 +227,7 @@ Partial Class LoginForm
     Friend WithEvents Mail As MetroFramework.Controls.MetroTextBox
     Friend WithEvents IssueLink As MetroFramework.Controls.MetroLink
     Friend WithEvents Save As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents Btn_Save As Button
     Friend WithEvents DisplayTB As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents UserTest As Button
+    Friend WithEvents btn_ok As Button
 End Class

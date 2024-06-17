@@ -49,18 +49,25 @@ Public Class Error_msg
         End Try
 
         Me.Location = New Point(CInt(Main.Location.X + Main.Width / 2 - Me.Width / 2), CInt(Main.Location.Y + Main.Height / 2 - Me.Height / 2))
-
+        ErrorText.TextAlign = HorizontalAlignment.Center
     End Sub
 
-    Public Sub ShowErrorDia(ByVal Details As String, ShortError As String, Optional ByVal IgnoreOption As Boolean = False)
+    Public Sub ShowErrorDia(ByVal Details As String, ShortError As String, Optional ByVal ThirdOption As String = "None")
         Me.Show()
         ErrorBox.Text = Details
-        ErrorLabel.Text = ShortError
-        If IgnoreOption = False Then
-            btn_ign.BackgroundImage = My.Resources.error_dis
-            btn_ign.Cursor = Cursors.No
-            btn_ign.Enabled = False
+        ErrorText.Text = ShortError
+
+        If ThirdOption = "None" Then
+            btn_option.BackgroundImage = My.Resources.error_dis
+            btn_option.Cursor = Cursors.No
+            btn_option.Enabled = False
+        ElseIf ThirdOption = "Ignore" Then
+            AddHandler btn_option.Click, AddressOf Ignore
+        ElseIf ThirdOption = "Help" Then
+            AddHandler btn_option.Click, AddressOf MoreInfo
+            btn_option.Text = "More Info"
         End If
+
     End Sub
 
     Private Sub btn_ok_Click(sender As Object, e As EventArgs) Handles btn_ok.Click
@@ -83,16 +90,21 @@ Public Class Error_msg
     Private Sub Btn_cl_MouseLeave(sender As Object, e As EventArgs) Handles btn_cl.MouseLeave
         btn_cl.BackgroundImage = My.Resources.ffmpeg_OK_cL
     End Sub
-    Private Sub Btn_ign_MouseEnter(sender As Object, e As EventArgs) Handles btn_ign.MouseEnter
-        btn_ign.BackgroundImage = My.Resources.ffmpeg_OK_cL_hover
+    Private Sub Btn_ign_MouseEnter(sender As Object, e As EventArgs) Handles btn_option.MouseEnter
+        btn_option.BackgroundImage = My.Resources.ffmpeg_OK_cL_hover
     End Sub
 
-    Private Sub Btn_ign_MouseLeave(sender As Object, e As EventArgs) Handles btn_ign.MouseLeave
-        btn_ign.BackgroundImage = My.Resources.ffmpeg_OK_cL
+    Private Sub Btn_ign_MouseLeave(sender As Object, e As EventArgs) Handles btn_option.MouseLeave
+        btn_option.BackgroundImage = My.Resources.ffmpeg_OK_cL
     End Sub
 
-    Private Sub btn_ign_Click(sender As Object, e As EventArgs) Handles btn_ign.Click
+    Private Sub Ignore(sender As Object, e As EventArgs) 'Handles btn_ign.Click
         Main.IgnoreErrorDia = True
         Me.Close()
+    End Sub
+    Private Sub MoreInfo(sender As Object, e As EventArgs) 'Handles btn_ign.Click
+        Process.Start("https://github.com/hama3254/Crunchyroll-Downloader-v3.0/issues/929")
+        'Main.IgnoreErrorDia = True
+        'Me.Close()
     End Sub
 End Class

@@ -1714,7 +1714,7 @@ Public Class CRD_List_Item
                     'File.WriteAllText(logfile, HybrideLog)
                     WriteText(logfile, HybrideLog)
                 Catch ex As Exception
-                    Error_msg.ShowErrorDia(ex.ToString, "Unable to write Hybrid Mode logfile", False)
+                    Error_msg.ShowErrorDia(ex.ToString, "Unable to write Hybrid Mode logfile", "None")
                     'MsgBox(ex.ToString)
                 End Try
             End If
@@ -1738,7 +1738,7 @@ Public Class CRD_List_Item
 
         Catch ex As Exception
             'MsgBox(ex.ToString)
-            Error_msg.ShowErrorDia(ex.ToString, "Unable to write logfile", False)
+            Error_msg.ShowErrorDia(ex.ToString, "Unable to write logfile", "None")
 
         End Try
 

@@ -53,6 +53,7 @@ Partial Class Main
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Btn_Queue = New System.Windows.Forms.Button()
         Me.BGW_Update = New System.ComponentModel.BackgroundWorker()
+        Me.btn_User = New System.Windows.Forms.Button()
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ConsoleBar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MetroStyleManager1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -233,12 +234,24 @@ Partial Class Main
         'BGW_Update
         '
         '
+        'btn_User
+        '
+        Me.btn_User.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.btn_User, "btn_User")
+        Me.btn_User.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btn_User.FlatAppearance.BorderSize = 0
+        Me.btn_User.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
+        Me.btn_User.Image = Global.Crunchyroll_Downloader.My.Resources.Resources.main_login
+        Me.btn_User.Name = "btn_User"
+        Me.btn_User.UseVisualStyleBackColor = False
+        '
         'Main
         '
         Me.ApplyImageInvert = True
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle
         resources.ApplyResources(Me, "$this")
+        Me.Controls.Add(Me.btn_User)
         Me.Controls.Add(Me.Btn_Queue)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Btn_Close)
@@ -291,4 +304,5 @@ Partial Class Main
     Friend WithEvents LoginFormToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ErrorDiaTestToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents BGW_Update As System.ComponentModel.BackgroundWorker
+    Friend WithEvents btn_User As Button
 End Class

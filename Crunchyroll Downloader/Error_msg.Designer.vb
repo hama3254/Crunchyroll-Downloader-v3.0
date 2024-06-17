@@ -24,10 +24,10 @@ Partial Class Error_msg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.ErrorText = New MetroFramework.Controls.MetroTextBox()
         Me.btn_cl = New System.Windows.Forms.Button()
-        Me.btn_ign = New System.Windows.Forms.Button()
+        Me.btn_option = New System.Windows.Forms.Button()
         Me.btn_ok = New System.Windows.Forms.Button()
-        Me.ErrorLabel = New MetroFramework.Controls.MetroLabel()
         Me.Delay = New System.Windows.Forms.Timer(Me.components)
         Me.Btn_Close = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -39,15 +39,50 @@ Partial Class Error_msg
         'GroupBox3
         '
         Me.GroupBox3.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox3.Controls.Add(Me.ErrorText)
         Me.GroupBox3.Controls.Add(Me.btn_cl)
-        Me.GroupBox3.Controls.Add(Me.btn_ign)
+        Me.GroupBox3.Controls.Add(Me.btn_option)
         Me.GroupBox3.Controls.Add(Me.btn_ok)
-        Me.GroupBox3.Controls.Add(Me.ErrorLabel)
         Me.GroupBox3.Location = New System.Drawing.Point(13, 60)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(613, 203)
         Me.GroupBox3.TabIndex = 38
         Me.GroupBox3.TabStop = False
+        '
+        'ErrorText
+        '
+        '
+        '
+        '
+        Me.ErrorText.CustomButton.Image = Nothing
+        Me.ErrorText.CustomButton.Location = New System.Drawing.Point(526, 1)
+        Me.ErrorText.CustomButton.Name = ""
+        Me.ErrorText.CustomButton.Size = New System.Drawing.Size(73, 73)
+        Me.ErrorText.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.ErrorText.CustomButton.TabIndex = 1
+        Me.ErrorText.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.ErrorText.CustomButton.UseSelectable = True
+        Me.ErrorText.CustomButton.Visible = False
+        Me.ErrorText.Enabled = False
+        Me.ErrorText.FontSize = MetroFramework.MetroTextBoxSize.Tall
+        Me.ErrorText.Lines = New String() {"Status: Hier könnte Ihre Werbung stehen"}
+        Me.ErrorText.Location = New System.Drawing.Point(6, 16)
+        Me.ErrorText.MaxLength = 32767
+        Me.ErrorText.Multiline = True
+        Me.ErrorText.Name = "ErrorText"
+        Me.ErrorText.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.ErrorText.ReadOnly = True
+        Me.ErrorText.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.ErrorText.SelectedText = ""
+        Me.ErrorText.SelectionLength = 0
+        Me.ErrorText.SelectionStart = 0
+        Me.ErrorText.ShortcutsEnabled = True
+        Me.ErrorText.Size = New System.Drawing.Size(600, 75)
+        Me.ErrorText.TabIndex = 79
+        Me.ErrorText.Text = "Status: Hier könnte Ihre Werbung stehen"
+        Me.ErrorText.UseSelectable = True
+        Me.ErrorText.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.ErrorText.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'btn_cl
         '
@@ -58,27 +93,27 @@ Partial Class Error_msg
         Me.btn_cl.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btn_cl.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn_cl.ForeColor = System.Drawing.SystemColors.Control
-        Me.btn_cl.Location = New System.Drawing.Point(28, 121)
+        Me.btn_cl.Location = New System.Drawing.Point(27, 121)
         Me.btn_cl.Name = "btn_cl"
         Me.btn_cl.Size = New System.Drawing.Size(150, 40)
         Me.btn_cl.TabIndex = 77
         Me.btn_cl.Text = "Details"
         Me.btn_cl.UseVisualStyleBackColor = True
         '
-        'btn_ign
+        'btn_option
         '
-        Me.btn_ign.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.ffmpeg_OK_cL
-        Me.btn_ign.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btn_ign.FlatAppearance.BorderSize = 0
-        Me.btn_ign.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btn_ign.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btn_ign.ForeColor = System.Drawing.SystemColors.Control
-        Me.btn_ign.Location = New System.Drawing.Point(235, 121)
-        Me.btn_ign.Name = "btn_ign"
-        Me.btn_ign.Size = New System.Drawing.Size(150, 40)
-        Me.btn_ign.TabIndex = 78
-        Me.btn_ign.Text = "Ignore"
-        Me.btn_ign.UseVisualStyleBackColor = True
+        Me.btn_option.BackgroundImage = Global.Crunchyroll_Downloader.My.Resources.Resources.ffmpeg_OK_cL
+        Me.btn_option.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_option.FlatAppearance.BorderSize = 0
+        Me.btn_option.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btn_option.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btn_option.ForeColor = System.Drawing.SystemColors.Control
+        Me.btn_option.Location = New System.Drawing.Point(228, 121)
+        Me.btn_option.Name = "btn_option"
+        Me.btn_option.Size = New System.Drawing.Size(150, 40)
+        Me.btn_option.TabIndex = 78
+        Me.btn_option.Text = "Ignore"
+        Me.btn_option.UseVisualStyleBackColor = True
         '
         'btn_ok
         '
@@ -88,28 +123,12 @@ Partial Class Error_msg
         Me.btn_ok.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btn_ok.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn_ok.ForeColor = System.Drawing.SystemColors.Control
-        Me.btn_ok.Location = New System.Drawing.Point(424, 121)
+        Me.btn_ok.Location = New System.Drawing.Point(430, 121)
         Me.btn_ok.Name = "btn_ok"
         Me.btn_ok.Size = New System.Drawing.Size(150, 40)
         Me.btn_ok.TabIndex = 78
         Me.btn_ok.Text = "Ok"
         Me.btn_ok.UseVisualStyleBackColor = True
-        '
-        'ErrorLabel
-        '
-        Me.ErrorLabel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ErrorLabel.BackColor = System.Drawing.Color.Transparent
-        Me.ErrorLabel.FontSize = MetroFramework.MetroLabelSize.Tall
-        Me.ErrorLabel.FontWeight = MetroFramework.MetroLabelWeight.Bold
-        Me.ErrorLabel.ForeColor = System.Drawing.Color.Black
-        Me.ErrorLabel.Location = New System.Drawing.Point(6, 16)
-        Me.ErrorLabel.Name = "ErrorLabel"
-        Me.ErrorLabel.Size = New System.Drawing.Size(601, 53)
-        Me.ErrorLabel.TabIndex = 34
-        Me.ErrorLabel.Text = "Status: idle"
-        Me.ErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Delay
         '
@@ -172,12 +191,12 @@ Partial Class Error_msg
 
     End Sub
     Private WithEvents GroupBox3 As GroupBox
-    Public WithEvents ErrorLabel As MetroFramework.Controls.MetroLabel
     Friend WithEvents Delay As Timer
     Friend WithEvents Btn_Close As Button
     Friend WithEvents btn_cl As Button
     Friend WithEvents btn_ok As Button
     Private WithEvents GroupBox1 As GroupBox
     Friend WithEvents ErrorBox As RichTextBox
-    Friend WithEvents btn_ign As Button
+    Friend WithEvents btn_option As Button
+    Friend WithEvents ErrorText As MetroFramework.Controls.MetroTextBox
 End Class

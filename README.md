@@ -1,12 +1,9 @@
-<details>
-  <summary></summary>
-  
-  untrue (for now)
+
   
   # Crunchyroll-Downloader-v3.0 is deprecated since Crunchyroll updated to a DRM only system.
 
 [This is the end.](https://www.youtube.com/watch?v=OUyfQLd3bCs)
-</details>
+
 
 ## Crunchyroll-Downloader-v3.0
 A simple to use Download Client for Crunchyroll, Funimation and Anime on Demand 
